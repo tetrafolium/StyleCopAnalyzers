@@ -2,6 +2,7 @@
 inspecode:
 
   global:
+    ignore: StyleCop.Analyzers/StyleCop.Analyzers.Test*/
 
   tasks:
 
