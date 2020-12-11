@@ -2,7 +2,7 @@
 inspecode:
 
   global:
-    ignore: StyleCop.Analyzers/StyleCop.Analyzers.Test*/
+    ignore: 'StyleCop.Analyzers/StyleCop.Analyzers.Test*/**.cs'
 
   tasks:
 
