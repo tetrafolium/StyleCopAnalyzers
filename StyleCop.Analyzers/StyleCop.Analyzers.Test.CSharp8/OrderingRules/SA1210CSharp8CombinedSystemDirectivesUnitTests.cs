@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8.OrderingRules
 {
-    using StyleCop.Analyzers.Test.CSharp7.OrderingRules;
+using StyleCop.Analyzers.Test.CSharp7.OrderingRules;
 
-    public class SA1210CSharp8CombinedSystemDirectivesUnitTests : SA1210CSharp7CombinedSystemDirectivesUnitTests
-    {
-    }
+public class SA1210CSharp8CombinedSystemDirectivesUnitTests : SA1210CSharp7CombinedSystemDirectivesUnitTests
+{
+}
 }

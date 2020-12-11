@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.DocumentationRules
 {
-    using StyleCop.Analyzers.Test.CSharp8.DocumentationRules;
+using StyleCop.Analyzers.Test.CSharp8.DocumentationRules;
 
-    public class CSharp9InheritdocCodeFixProviderUnitTests : CSharp8InheritdocCodeFixProviderUnitTests
-    {
-    }
+public class CSharp9InheritdocCodeFixProviderUnitTests : CSharp8InheritdocCodeFixProviderUnitTests
+{
+}
 }

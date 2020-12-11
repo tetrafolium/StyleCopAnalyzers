@@ -3,26 +3,26 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.LayoutRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.LayoutRules.SA1505OpeningBracesMustNotBeFollowedByBlankLine,
-        StyleCop.Analyzers.LayoutRules.SA1505CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.LayoutRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.LayoutRules.SA1505OpeningBracesMustNotBeFollowedByBlankLine,
+StyleCop.Analyzers.LayoutRules.SA1505CodeFixProvider>;
 
-    public class SA1505CSharp7UnitTests : SA1505UnitTests
+public class SA1505CSharp7UnitTests : SA1505UnitTests
+{
+    /// <summary>
+    /// Verifies that a valid local function will not produce any diagnostics.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task TestValidLocalFunctionAsync()
     {
-        /// <summary>
-        /// Verifies that a valid local function will not produce any diagnostics.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task TestValidLocalFunctionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -39,17 +39,17 @@ namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 }
 ";
 
-            await VerifyCSharpFixAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, testCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, testCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        /// <summary>
-        /// Verifies that an invalid local function will produce the expected diagnostics.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task TestInvalidLocalFunctionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    /// <summary>
+    /// Verifies that an invalid local function will produce the expected diagnostics.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task TestInvalidLocalFunctionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -67,7 +67,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 }
 ";
 
-            var fixedTestCode = @"namespace TestNamespace
+        var fixedTestCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -84,14 +84,14 @@ namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 }
 ";
 
-            var expectedDiagnostic = Diagnostic().WithLocation(10, 13);
-            await VerifyCSharpFixAsync(testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expectedDiagnostic = Diagnostic().WithLocation(10, 13);
+        await VerifyCSharpFixAsync(testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestStackAllocArrayCreationExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    [Fact]
+    public async Task TestStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -109,7 +109,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 }
 ";
 
-            var fixedTestCode = @"namespace TestNamespace
+        var fixedTestCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -126,14 +126,14 @@ namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 }
 ";
 
-            var expectedDiagnostic = Diagnostic().WithLocation(8, 13);
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expectedDiagnostic = Diagnostic().WithLocation(8, 13);
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    [Fact]
+    public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -151,7 +151,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 }
 ";
 
-            var fixedTestCode = @"namespace TestNamespace
+        var fixedTestCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -168,8 +168,8 @@ namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 }
 ";
 
-            var expectedDiagnostic = Diagnostic().WithLocation(8, 13);
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expectedDiagnostic = Diagnostic().WithLocation(8, 13);
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

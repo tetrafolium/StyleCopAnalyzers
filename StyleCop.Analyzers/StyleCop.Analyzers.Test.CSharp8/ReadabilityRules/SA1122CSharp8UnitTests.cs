@@ -3,26 +3,26 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.CSharp7.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1122UseStringEmptyForEmptyStrings,
-        StyleCop.Analyzers.ReadabilityRules.SA1122CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.CSharp7.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1122UseStringEmptyForEmptyStrings,
+StyleCop.Analyzers.ReadabilityRules.SA1122CodeFixProvider>;
 
-    public class SA1122CSharp8UnitTests : SA1122CSharp7UnitTests
+public class SA1122CSharp8UnitTests : SA1122CSharp7UnitTests
+{
+    /// <summary>
+    /// Verifies the analyzer will properly handle an empty string in a switch expression.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    [WorkItem(3028, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3028")]
+    public async Task TestEmptyStringInSwitchExpressionAsync()
     {
-        /// <summary>
-        /// Verifies the analyzer will properly handle an empty string in a switch expression.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        [WorkItem(3028, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3028")]
-        public async Task TestEmptyStringInSwitchExpressionAsync()
-        {
-            string testCode = @"
+        string testCode = @"
 public class TestClass
 {
     public void TestMethod(string condition)
@@ -37,7 +37,7 @@ public class TestClass
     }
 }
 ";
-            string fixedCode = @"
+        string fixedCode = @"
 public class TestClass
 {
     public void TestMethod(string condition)
@@ -53,14 +53,14 @@ public class TestClass
 }
 ";
 
-            await VerifyCSharpFixAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(3028, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3028")]
-        public async Task TestEmptyStringInTuplePatternAsync()
-        {
-            string testCode = @"
+    [Fact]
+    [WorkItem(3028, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3028")]
+    public async Task TestEmptyStringInTuplePatternAsync()
+    {
+        string testCode = @"
 public class TestClass
 {
     public bool TestMethod((string, string) condition)
@@ -70,14 +70,14 @@ public class TestClass
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(3028, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3028")]
-        public async Task TestEmptyStringInRecursivePatternAsync()
-        {
-            string testCode = @"
+    [Fact]
+    [WorkItem(3028, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3028")]
+    public async Task TestEmptyStringInRecursivePatternAsync()
+    {
+        string testCode = @"
 using System.Collections.Generic;
 public class TestClass
 {
@@ -88,7 +88,7 @@ public class TestClass
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

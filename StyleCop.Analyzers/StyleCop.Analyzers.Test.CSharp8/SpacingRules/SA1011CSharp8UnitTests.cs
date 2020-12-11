@@ -3,27 +3,27 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8.SpacingRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.CSharp7.SpacingRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.SpacingRules.SA1011ClosingSquareBracketsMustBeSpacedCorrectly,
-        StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.CSharp7.SpacingRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.SpacingRules.SA1011ClosingSquareBracketsMustBeSpacedCorrectly,
+StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
 
-    public class SA1011CSharp8UnitTests : SA1011CSharp7UnitTests
+public class SA1011CSharp8UnitTests : SA1011CSharp7UnitTests
+{
+    /// <summary>
+    /// Verify that declaring a null reference type works for arrays.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    [WorkItem(2927, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2927")]
+    public async Task VerifyNullableContextWithArraysAsync()
     {
-        /// <summary>
-        /// Verify that declaring a null reference type works for arrays.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        [WorkItem(2927, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2927")]
-        public async Task VerifyNullableContextWithArraysAsync()
-        {
-            var testCode = @"namespace TestNamespace
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -35,14 +35,14 @@ namespace StyleCop.Analyzers.Test.CSharp8.SpacingRules
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(LanguageVersion.CSharp8, testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(LanguageVersion.CSharp8, testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(2900, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2900")]
-        public async Task VerifyNullableContextWithArrayReturnsAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    [Fact]
+    [WorkItem(2900, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2900")]
+    public async Task VerifyNullableContextWithArrayReturnsAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -54,14 +54,14 @@ namespace StyleCop.Analyzers.Test.CSharp8.SpacingRules
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(LanguageVersion.CSharp8, testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(LanguageVersion.CSharp8, testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(3052, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3052")]
-        public async Task TestClosingSquareBracketFollowedByExclamationAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    [Fact]
+    [WorkItem(3052, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3052")]
+    public async Task TestClosingSquareBracketFollowedByExclamationAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -78,7 +78,7 @@ namespace StyleCop.Analyzers.Test.CSharp8.SpacingRules
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -95,15 +95,15 @@ namespace StyleCop.Analyzers.Test.CSharp8.SpacingRules
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithArguments(" not", "followed").WithLocation(7, 36),
-                Diagnostic().WithArguments(" not", "followed").WithLocation(9, 36),
-                Diagnostic().WithArguments(" not", "followed").WithLocation(10, 36),
-                Diagnostic().WithArguments(" not", "followed").WithLocation(12, 36),
-            };
+        DiagnosticResult[] expected =
+        {
+            Diagnostic().WithArguments(" not", "followed").WithLocation(7, 36),
+            Diagnostic().WithArguments(" not", "followed").WithLocation(9, 36),
+            Diagnostic().WithArguments(" not", "followed").WithLocation(10, 36),
+            Diagnostic().WithArguments(" not", "followed").WithLocation(12, 36),
+        };
 
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp8, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp8, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

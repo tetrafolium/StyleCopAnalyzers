@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.SpacingRules
 {
-    using StyleCop.Analyzers.Test.SpacingRules;
+using StyleCop.Analyzers.Test.SpacingRules;
 
-    public class SA1027UseTabsCSharp7UnitTests : SA1027UseTabsUnitTests
-    {
-    }
+public class SA1027UseTabsCSharp7UnitTests : SA1027UseTabsUnitTests
+{
+}
 }

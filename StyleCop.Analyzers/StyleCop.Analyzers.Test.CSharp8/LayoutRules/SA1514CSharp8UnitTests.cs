@@ -3,22 +3,22 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8.LayoutRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.CSharp7.LayoutRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.LayoutRules.SA1514ElementDocumentationHeaderMustBePrecededByBlankLine,
-        StyleCop.Analyzers.LayoutRules.SA1514CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.CSharp7.LayoutRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.LayoutRules.SA1514ElementDocumentationHeaderMustBePrecededByBlankLine,
+StyleCop.Analyzers.LayoutRules.SA1514CodeFixProvider>;
 
-    public class SA1514CSharp8UnitTests : SA1514CSharp7UnitTests
+public class SA1514CSharp8UnitTests : SA1514CSharp7UnitTests
+{
+    [Fact]
+    [WorkItem(3067, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3067")]
+    public async Task TestValidPropertyDeclarationAsync()
     {
-        [Fact]
-        [WorkItem(3067, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3067")]
-        public async Task TestValidPropertyDeclarationAsync()
-        {
-            var testCode = @"namespace TestNamespace
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -35,7 +35,7 @@ namespace StyleCop.Analyzers.Test.CSharp8.LayoutRules
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

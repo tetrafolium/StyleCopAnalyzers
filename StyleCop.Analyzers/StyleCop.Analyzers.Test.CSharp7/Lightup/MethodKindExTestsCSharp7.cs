@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.Lightup
 {
-    using StyleCop.Analyzers.Test.Lightup;
+using StyleCop.Analyzers.Test.Lightup;
 
-    public class MethodKindExTestsCSharp7 : MethodKindExTests
-    {
-    }
+public class MethodKindExTestsCSharp7 : MethodKindExTests
+{
+}
 }

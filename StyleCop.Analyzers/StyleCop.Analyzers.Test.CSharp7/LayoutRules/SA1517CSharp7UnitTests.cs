@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 {
-    using StyleCop.Analyzers.Test.LayoutRules;
+using StyleCop.Analyzers.Test.LayoutRules;
 
-    public class SA1517CSharp7UnitTests : SA1517UnitTests
-    {
-    }
+public class SA1517CSharp7UnitTests : SA1517UnitTests
+{
+}
 }

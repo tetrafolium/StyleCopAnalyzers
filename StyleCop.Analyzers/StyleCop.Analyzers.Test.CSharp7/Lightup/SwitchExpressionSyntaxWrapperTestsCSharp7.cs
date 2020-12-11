@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.Lightup
 {
-    using StyleCop.Analyzers.Test.Lightup;
+using StyleCop.Analyzers.Test.Lightup;
 
-    public class SwitchExpressionSyntaxWrapperTestsCSharp7 : SwitchExpressionSyntaxWrapperTests
-    {
-    }
+public class SwitchExpressionSyntaxWrapperTestsCSharp7 : SwitchExpressionSyntaxWrapperTests
+{
+}
 }

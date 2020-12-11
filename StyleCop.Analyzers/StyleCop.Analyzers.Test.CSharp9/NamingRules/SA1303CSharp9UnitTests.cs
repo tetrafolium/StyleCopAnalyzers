@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.NamingRules
 {
-    using StyleCop.Analyzers.Test.CSharp8.NamingRules;
+using StyleCop.Analyzers.Test.CSharp8.NamingRules;
 
-    public class SA1303CSharp9UnitTests : SA1303CSharp8UnitTests
-    {
-    }
+public class SA1303CSharp9UnitTests : SA1303CSharp8UnitTests
+{
+}
 }

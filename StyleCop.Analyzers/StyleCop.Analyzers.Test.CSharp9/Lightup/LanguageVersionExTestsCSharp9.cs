@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.Lightup
 {
-    using StyleCop.Analyzers.Test.CSharp8.Lightup;
+using StyleCop.Analyzers.Test.CSharp8.Lightup;
 
-    public class LanguageVersionExTestsCSharp9 : LanguageVersionExTestsCSharp8
-    {
-    }
+public class LanguageVersionExTestsCSharp9 : LanguageVersionExTestsCSharp8
+{
+}
 }

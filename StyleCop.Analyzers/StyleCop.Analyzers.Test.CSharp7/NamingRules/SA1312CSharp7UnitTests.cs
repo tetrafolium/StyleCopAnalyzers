@@ -3,22 +3,22 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.NamingRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Settings.ObjectModel;
-    using StyleCop.Analyzers.Test.NamingRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.NamingRules.SA1312VariableNamesMustBeginWithLowerCaseLetter,
-        StyleCop.Analyzers.NamingRules.RenameToLowerCaseCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Settings.ObjectModel;
+using StyleCop.Analyzers.Test.NamingRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.NamingRules.SA1312VariableNamesMustBeginWithLowerCaseLetter,
+StyleCop.Analyzers.NamingRules.RenameToLowerCaseCodeFixProvider>;
 
-    public class SA1312CSharp7UnitTests : SA1312UnitTests
+public class SA1312CSharp7UnitTests : SA1312UnitTests
+{
+    [Fact]
+    public async Task TestThatDiagnosticIsReported_SingleVariableDesignatorAsync()
     {
-        [Fact]
-        public async Task TestThatDiagnosticIsReported_SingleVariableDesignatorAsync()
-        {
-            var testCode = @"public class TypeName
+        var testCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -28,13 +28,13 @@ namespace StyleCop.Analyzers.Test.CSharp7.NamingRules
     }
 }";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithArguments("Bar").WithLocation(5, 35),
-                Diagnostic().WithArguments("Par").WithLocation(7, 35),
-            };
+        DiagnosticResult[] expected =
+        {
+            Diagnostic().WithArguments("Bar").WithLocation(5, 35),
+            Diagnostic().WithArguments("Par").WithLocation(7, 35),
+        };
 
-            var fixedCode = @"public class TypeName
+        var fixedCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -44,13 +44,13 @@ namespace StyleCop.Analyzers.Test.CSharp7.NamingRules
     }
 }";
 
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestThatDiagnosticIsReported_MultipleVariableDesignatorsAsync()
-        {
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestThatDiagnosticIsReported_MultipleVariableDesignatorsAsync()
+    {
+        var testCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -58,13 +58,13 @@ namespace StyleCop.Analyzers.Test.CSharp7.NamingRules
     }
 }";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithArguments("Bar").WithLocation(5, 14),
-                Diagnostic().WithArguments("Par").WithLocation(5, 24),
-            };
+        DiagnosticResult[] expected =
+        {
+            Diagnostic().WithArguments("Bar").WithLocation(5, 14),
+            Diagnostic().WithArguments("Par").WithLocation(5, 24),
+        };
 
-            var fixedCode = @"public class TypeName
+        var fixedCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -72,14 +72,14 @@ namespace StyleCop.Analyzers.Test.CSharp7.NamingRules
     }
 }";
 
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestVariableDesignatorStartingWithAnUnderscoreAsync()
-        {
-            // Makes sure SA1312 is reported for variables starting with an underscore
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestVariableDesignatorStartingWithAnUnderscoreAsync()
+    {
+        // Makes sure SA1312 is reported for variables starting with an underscore
+        var testCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -87,7 +87,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.NamingRules
     }
 }";
 
-            var fixedTestCode = @"public class TypeName
+        var fixedTestCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -95,14 +95,14 @@ namespace StyleCop.Analyzers.Test.CSharp7.NamingRules
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("_bar").WithLocation(5, 37);
-            await VerifyCSharpFixAsync(testCode, expected, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithArguments("_bar").WithLocation(5, 37);
+        await VerifyCSharpFixAsync(testCode, expected, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestVariableDesignatorInWhenClauseAsync()
-        {
-            var testCode = @"
+    [Fact]
+    public async Task TestVariableDesignatorInWhenClauseAsync()
+    {
+        var testCode = @"
 using System;
 public class TypeName
 {
@@ -116,7 +116,7 @@ public class TypeName
         }
     }
 }";
-            var fixedCode = @"
+        var fixedCode = @"
 using System;
 public class TypeName
 {
@@ -131,14 +131,14 @@ public class TypeName
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("ArgEx").WithLocation(10, 60);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithArguments("ArgEx").WithLocation(10, 60);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestPatternInForEachStatementAsync()
-        {
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestPatternInForEachStatementAsync()
+    {
+        var testCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -147,7 +147,7 @@ public class TypeName
         }
     }
 }";
-            var fixedCode = @"public class TypeName
+        var fixedCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -157,14 +157,14 @@ public class TypeName
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("X").WithLocation(5, 23);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithArguments("X").WithLocation(5, 23);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestPatternInSwitchCaseAsync()
-        {
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestPatternInSwitchCaseAsync()
+    {
+        var testCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -176,7 +176,7 @@ public class TypeName
         }
     }
 }";
-            var fixedCode = @"public class TypeName
+        var fixedCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -189,14 +189,14 @@ public class TypeName
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("X").WithLocation(7, 18);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithArguments("X").WithLocation(7, 18);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestPatternPlacedInsideNativeMethodsClassAsync()
-        {
-            var testCode = @"public class FooNativeMethods
+    [Fact]
+    public async Task TestPatternPlacedInsideNativeMethodsClassAsync()
+    {
+        var testCode = @"public class FooNativeMethods
 {
     public void MethodName()
     {
@@ -204,13 +204,13 @@ public class TypeName
     }
 }";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestPatternVariableRenameConflictsWithVariableAsync()
-        {
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestPatternVariableRenameConflictsWithVariableAsync()
+    {
+        var testCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -219,9 +219,9 @@ public class TypeName
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("Variable").WithLocation(6, 51);
+        DiagnosticResult expected = Diagnostic().WithArguments("Variable").WithLocation(6, 51);
 
-            var fixedCode = @"public class TypeName
+        var fixedCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -230,13 +230,13 @@ public class TypeName
     }
 }";
 
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestVariableRenameConflictsWithPatternVariableAsync()
-        {
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestVariableRenameConflictsWithPatternVariableAsync()
+    {
+        var testCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -245,9 +245,9 @@ public class TypeName
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("Variable").WithLocation(6, 16);
+        DiagnosticResult expected = Diagnostic().WithArguments("Variable").WithLocation(6, 16);
 
-            var fixedCode = @"public class TypeName
+        var fixedCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -256,13 +256,13 @@ public class TypeName
     }
 }";
 
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestPatternVariableRenameConflictsWithKeywordAsync()
-        {
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestPatternVariableRenameConflictsWithKeywordAsync()
+    {
+        var testCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -270,9 +270,9 @@ public class TypeName
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("Int").WithLocation(5, 38);
+        DiagnosticResult expected = Diagnostic().WithArguments("Int").WithLocation(5, 38);
 
-            var fixedCode = @"public class TypeName
+        var fixedCode = @"public class TypeName
 {
     public void MethodName()
     {
@@ -280,13 +280,13 @@ public class TypeName
     }
 }";
 
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestPatternVariableRenameConflictsWithParameterAsync()
-        {
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestPatternVariableRenameConflictsWithParameterAsync()
+    {
+        var testCode = @"public class TypeName
 {
     public void MethodName(int parameter)
     {
@@ -294,9 +294,9 @@ public class TypeName
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("Parameter").WithLocation(5, 52);
+        DiagnosticResult expected = Diagnostic().WithArguments("Parameter").WithLocation(5, 52);
 
-            var fixedCode = @"public class TypeName
+        var fixedCode = @"public class TypeName
 {
     public void MethodName(int parameter)
     {
@@ -304,13 +304,13 @@ public class TypeName
     }
 }";
 
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestDiscardsDoNotTriggerCodeFixAsync()
-        {
-            var testCode = @"public class TypeName
+    [Fact]
+    public async Task TestDiscardsDoNotTriggerCodeFixAsync()
+    {
+        var testCode = @"public class TypeName
 {
     public void MethodName(int parameter)
     {
@@ -320,15 +320,15 @@ public class TypeName
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithArguments("__").WithLocation(7, 52);
-            await VerifyCSharpFixAsync(testCode, expected, testCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithArguments("__").WithLocation(7, 52);
+        await VerifyCSharpFixAsync(testCode, expected, testCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(3031, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3031")]
-        public async Task TestTupleDesconstructionCamelCaseAsync()
-        {
-            var testCode = @"
+    [Fact]
+    [WorkItem(3031, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3031")]
+    public async Task TestTupleDesconstructionCamelCaseAsync()
+    {
+        var testCode = @"
 public class TypeName
 {
     public void MethodName((string name, string value) obj)
@@ -337,7 +337,7 @@ public class TypeName
     }
 }
 ";
-            var settings = $@"{{
+        var settings = $@"{{
   ""settings"": {{
     ""namingRules"": {{
       ""tupleElementNameCasing"": ""{TupleElementNameCase.CamelCase}""
@@ -346,14 +346,14 @@ public class TypeName
 }}
 ";
 
-            await VerifyCSharpDiagnosticAsync(languageVersion: null, testCode, settings, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(languageVersion: null, testCode, settings, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(3031, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3031")]
-        public async Task TestTupleDesconstructionPascalCaseAsync()
-        {
-            var testCode = @"
+    [Fact]
+    [WorkItem(3031, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3031")]
+    public async Task TestTupleDesconstructionPascalCaseAsync()
+    {
+        var testCode = @"
 public class TypeName
 {
     public void MethodName((string Name, string Value) obj)
@@ -362,7 +362,7 @@ public class TypeName
     }
 }
 ";
-            var settings = $@"{{
+        var settings = $@"{{
   ""settings"": {{
     ""namingRules"": {{
       ""tupleElementNameCasing"": ""{TupleElementNameCase.PascalCase}""
@@ -371,7 +371,7 @@ public class TypeName
 }}
 ";
 
-            await VerifyCSharpDiagnosticAsync(languageVersion: null, testCode, settings, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(languageVersion: null, testCode, settings, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.DocumentationRules
 {
-    using StyleCop.Analyzers.Test.CSharp8.DocumentationRules;
+using StyleCop.Analyzers.Test.CSharp8.DocumentationRules;
 
-    public class SA1634CSharp9UnitTests : SA1634CSharp8UnitTests
-    {
-    }
+public class SA1634CSharp9UnitTests : SA1634CSharp8UnitTests
+{
+}
 }

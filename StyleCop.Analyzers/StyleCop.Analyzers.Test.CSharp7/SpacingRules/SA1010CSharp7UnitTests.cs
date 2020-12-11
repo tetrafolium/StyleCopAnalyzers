@@ -3,23 +3,23 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.SpacingRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.SpacingRules;
-    using Xunit;
-    using static StyleCop.Analyzers.SpacingRules.SA1010OpeningSquareBracketsMustBeSpacedCorrectly;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.SpacingRules.SA1010OpeningSquareBracketsMustBeSpacedCorrectly,
-        StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.SpacingRules;
+using Xunit;
+using static StyleCop.Analyzers.SpacingRules.SA1010OpeningSquareBracketsMustBeSpacedCorrectly;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.SpacingRules.SA1010OpeningSquareBracketsMustBeSpacedCorrectly,
+StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
 
-    public class SA1010CSharp7UnitTests : SA1010UnitTests
+public class SA1010CSharp7UnitTests : SA1010UnitTests
+{
+    [Fact]
+    public async Task TestStackAllocArrayCreationExpressionAsync()
     {
-        [Fact]
-        public async Task TestStackAllocArrayCreationExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -35,7 +35,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.SpacingRules
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -51,20 +51,20 @@ namespace StyleCop.Analyzers.Test.CSharp7.SpacingRules
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic(DescriptorNotPreceded).WithLocation(7, 41),
-                Diagnostic(DescriptorNotFollowed).WithLocation(7, 41),
-                Diagnostic(DescriptorNotPreceded).WithLocation(8, 41),
-            };
-
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"namespace TestNamespace
+            Diagnostic(DescriptorNotPreceded).WithLocation(7, 41),
+            Diagnostic(DescriptorNotFollowed).WithLocation(7, 41),
+            Diagnostic(DescriptorNotPreceded).WithLocation(8, 41),
+        };
+
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -80,7 +80,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.SpacingRules
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -96,12 +96,12 @@ namespace StyleCop.Analyzers.Test.CSharp7.SpacingRules
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic(DescriptorNotFollowed).WithLocation(7, 37),
-            };
+        DiagnosticResult[] expected =
+        {
+            Diagnostic(DescriptorNotFollowed).WithLocation(7, 37),
+        };
 
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

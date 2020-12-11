@@ -3,22 +3,22 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1130UseLambdaSyntax,
-        StyleCop.Analyzers.ReadabilityRules.SA1130CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1130UseLambdaSyntax,
+StyleCop.Analyzers.ReadabilityRules.SA1130CodeFixProvider>;
 
-    public class SA1130CSharp7UnitTests : SA1130UnitTests
+public class SA1130CSharp7UnitTests : SA1130UnitTests
+{
+    [Fact]
+    [WorkItem(2902, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2902")]
+    public async Task VerifyLocalFunctionAsync()
     {
-        [Fact]
-        [WorkItem(2902, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2902")]
-        public async Task VerifyLocalFunctionAsync()
-        {
-            var testCode = @"using System;
+        var testCode = @"using System;
 public class TestClass
 {
     public void TestMethod()
@@ -28,7 +28,7 @@ public class TestClass
 }
 ";
 
-            var fixedCode = @"using System;
+        var fixedCode = @"using System;
 public class TestClass
 {
     public void TestMethod()
@@ -38,12 +38,12 @@ public class TestClass
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(6, 45),
-            };
+        DiagnosticResult[] expected =
+        {
+            Diagnostic().WithLocation(6, 45),
+        };
 
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

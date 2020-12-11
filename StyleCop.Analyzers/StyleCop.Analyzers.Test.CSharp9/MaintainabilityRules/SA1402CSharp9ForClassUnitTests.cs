@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.MaintainabilityRules
 {
-    using StyleCop.Analyzers.Test.CSharp8.MaintainabilityRules;
+using StyleCop.Analyzers.Test.CSharp8.MaintainabilityRules;
 
-    public class SA1402CSharp9ForClassUnitTests : SA1402CSharp8ForClassUnitTests
-    {
-    }
+public class SA1402CSharp9ForClassUnitTests : SA1402CSharp8ForClassUnitTests
+{
+}
 }

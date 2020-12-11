@@ -3,21 +3,21 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1110OpeningParenthesisMustBeOnDeclarationLine,
-        StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1110OpeningParenthesisMustBeOnDeclarationLine,
+StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
 
-    public class SA1110CSharp7UnitTests : SA1110UnitTests
+public class SA1110CSharp7UnitTests : SA1110UnitTests
+{
+    [Fact]
+    public async Task TestLocalFunctionDeclarationOpeningParenthesisInTheNextLineAsync()
     {
-        [Fact]
-        public async Task TestLocalFunctionDeclarationOpeningParenthesisInTheNextLineAsync()
-        {
-            var testCode = @"
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -29,7 +29,7 @@ class Foo
         }
     }
 }";
-            var fixedCode = @"
+        var fixedCode = @"
 class Foo
 {
     public void Method()
@@ -41,14 +41,14 @@ class Foo
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithLocation(7, 25);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithLocation(7, 25);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestLocalFunctionDeclarationOpeningParenthesisInTheSameLineAsync()
-        {
-            var testCode = @"
+    [Fact]
+    public async Task TestLocalFunctionDeclarationOpeningParenthesisInTheSameLineAsync()
+    {
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -61,7 +61,7 @@ class Foo
     }
 }";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

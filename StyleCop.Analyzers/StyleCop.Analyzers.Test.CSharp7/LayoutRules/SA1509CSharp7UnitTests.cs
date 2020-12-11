@@ -3,22 +3,22 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.LayoutRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.LayoutRules.SA1509OpeningBracesMustNotBePrecededByBlankLine,
-        StyleCop.Analyzers.LayoutRules.SA1509CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.LayoutRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.LayoutRules.SA1509OpeningBracesMustNotBePrecededByBlankLine,
+StyleCop.Analyzers.LayoutRules.SA1509CodeFixProvider>;
 
-    public class SA1509CSharp7UnitTests : SA1509UnitTests
+public class SA1509CSharp7UnitTests : SA1509UnitTests
+{
+    [Fact]
+    public async Task TestLocalFunctionDeclarationOpeningBraceHasBlankLineAsync()
     {
-        [Fact]
-        public async Task TestLocalFunctionDeclarationOpeningBraceHasBlankLineAsync()
-        {
-            var testCode = @"
+        var testCode = @"
 class Foo
 {
     void Method()
@@ -29,7 +29,7 @@ class Foo
         }
     }
 }";
-            var fixedCode = @"
+        var fixedCode = @"
 class Foo
 {
     void Method()
@@ -40,14 +40,14 @@ class Foo
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithLocation(8, 9);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithLocation(8, 9);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestLocalFunctionDeclarationOpeningBraceHasTwoBlankLineAsync()
-        {
-            var testCode = @"
+    [Fact]
+    public async Task TestLocalFunctionDeclarationOpeningBraceHasTwoBlankLineAsync()
+    {
+        var testCode = @"
 class Foo
 {
     void Method()
@@ -60,7 +60,7 @@ class Foo
     }
 }";
 
-            var fixedCode = @"
+        var fixedCode = @"
 class Foo
 {
     void Method()
@@ -71,14 +71,14 @@ class Foo
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithLocation(9, 9);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithLocation(9, 9);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestStackAllocArrayCreationExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    [Fact]
+    public async Task TestStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -96,7 +96,7 @@ class Foo
 }
 ";
 
-            var fixedTestCode = @"namespace TestNamespace
+        var fixedTestCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -113,14 +113,14 @@ class Foo
 }
 ";
 
-            var expectedDiagnostic = Diagnostic().WithLocation(9, 13);
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expectedDiagnostic = Diagnostic().WithLocation(9, 13);
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    [Fact]
+    public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -138,7 +138,7 @@ class Foo
 }
 ";
 
-            var fixedTestCode = @"namespace TestNamespace
+        var fixedTestCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -155,8 +155,8 @@ class Foo
 }
 ";
 
-            var expectedDiagnostic = Diagnostic().WithLocation(9, 13);
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expectedDiagnostic = Diagnostic().WithLocation(9, 13);
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expectedDiagnostic, fixedTestCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

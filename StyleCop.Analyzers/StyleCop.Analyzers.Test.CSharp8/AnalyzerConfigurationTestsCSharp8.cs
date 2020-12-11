@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8
 {
-    using StyleCop.Analyzers.Test.CSharp7;
+using StyleCop.Analyzers.Test.CSharp7;
 
-    public class AnalyzerConfigurationTestsCSharp8 : AnalyzerConfigurationTestsCSharp7
-    {
-    }
+public class AnalyzerConfigurationTestsCSharp8 : AnalyzerConfigurationTestsCSharp7
+{
+}
 }

@@ -3,19 +3,19 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopDiagnosticVerifier<StyleCop.Analyzers.ReadabilityRules.SA1115ParameterMustFollowComma>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopDiagnosticVerifier<StyleCop.Analyzers.ReadabilityRules.SA1115ParameterMustFollowComma>;
 
-    public class SA1115CSharp7UnitTests : SA1115UnitTests
+public class SA1115CSharp7UnitTests : SA1115UnitTests
+{
+    [Fact]
+    public async Task TestLocalFunctionDeclarationEmptyLinesBetweenParametersAsync()
     {
-        [Fact]
-        public async Task TestLocalFunctionDeclarationEmptyLinesBetweenParametersAsync()
-        {
-            var testCode = @"
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -31,16 +31,16 @@ int k)
     }
 }";
 
-            DiagnosticResult expected1 = Diagnostic().WithLocation(8, 1);
-            DiagnosticResult expected2 = Diagnostic().WithLocation(10, 1);
+        DiagnosticResult expected1 = Diagnostic().WithLocation(8, 1);
+        DiagnosticResult expected2 = Diagnostic().WithLocation(10, 1);
 
-            await VerifyCSharpDiagnosticAsync(testCode, new[] { expected1, expected2 }, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, new[] { expected1, expected2 }, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestLocalFunctionDeclarationSecondParameterOnTheNextLineAsync()
-        {
-            var testCode = @"
+    [Fact]
+    public async Task TestLocalFunctionDeclarationSecondParameterOnTheNextLineAsync()
+    {
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -52,13 +52,13 @@ string s)
     }
 }";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestLocalFunctionDeclarationParametersAtTheSameLineAsync()
-        {
-            var testCode = @"
+    [Fact]
+    public async Task TestLocalFunctionDeclarationParametersAtTheSameLineAsync()
+    {
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -69,7 +69,7 @@ class Foo
     }
 }";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

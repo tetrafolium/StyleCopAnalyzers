@@ -3,20 +3,20 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using StyleCop.Analyzers.Test.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1127GenericTypeConstraintsMustBeOnOwnLine,
-        StyleCop.Analyzers.ReadabilityRules.SA1127CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using StyleCop.Analyzers.Test.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1127GenericTypeConstraintsMustBeOnOwnLine,
+StyleCop.Analyzers.ReadabilityRules.SA1127CodeFixProvider>;
 
-    public class SA1127CSharp7UnitTests : SA1127UnitTests
+public class SA1127CSharp7UnitTests : SA1127UnitTests
+{
+    [Fact]
+    public async Task TestViolationWithLocalFunctionDeclarationAsync()
     {
-        [Fact]
-        public async Task TestViolationWithLocalFunctionDeclarationAsync()
-        {
-            var testCode = $@"
+        var testCode = $@"
 class Foo
 {{
     private void Method()
@@ -24,7 +24,7 @@ class Foo
         void LocalFunction<T>() where T : class {{ }}
     }}
 }}";
-            var fixedCode = $@"
+        var fixedCode = $@"
 class Foo
 {{
     private void Method()
@@ -34,15 +34,15 @@ class Foo
         {{ }}
     }}
 }}";
-            var expected = Diagnostic().WithLocation(6, 33);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expected = Diagnostic().WithLocation(6, 33);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(1476, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1476")]
-        public async Task TestViolationWithLocalFunctionDeclarationMultiLineParametersAsync()
-        {
-            var testCode = @"
+    [Fact]
+    [WorkItem(1476, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1476")]
+    public async Task TestViolationWithLocalFunctionDeclarationMultiLineParametersAsync()
+    {
+        var testCode = @"
 class Foo
 {
     private void Method()
@@ -52,7 +52,7 @@ class Foo
             int b) where T : class { }
     }
 }";
-            var fixedCode = @"
+        var fixedCode = @"
 class Foo
 {
     private void Method()
@@ -64,15 +64,15 @@ class Foo
         { }
     }
 }";
-            var expected = Diagnostic().WithLocation(8, 20);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expected = Diagnostic().WithLocation(8, 20);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(1652, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1652")]
-        public async Task TestViolationWithLocalFunctionDeclarationRegionDirectiveAsync()
-        {
-            var testCode = $@"
+    [Fact]
+    [WorkItem(1652, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1652")]
+    public async Task TestViolationWithLocalFunctionDeclarationRegionDirectiveAsync()
+    {
+        var testCode = $@"
 class Foo
 {{
     private void Method()
@@ -82,7 +82,7 @@ class Foo
         #endregion
     }}
 }}";
-            var fixedCode = $@"
+        var fixedCode = $@"
 class Foo
 {{
     private void Method()
@@ -94,14 +94,14 @@ class Foo
         #endregion
     }}
 }}";
-            var expected = Diagnostic().WithLocation(7, 33);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expected = Diagnostic().WithLocation(7, 33);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestViolationWithExpressionBodiedLocalFunctionDeclarationAsync()
-        {
-            var testCode = $@"
+    [Fact]
+    public async Task TestViolationWithExpressionBodiedLocalFunctionDeclarationAsync()
+    {
+        var testCode = $@"
 class Foo
 {{
     private void Method()
@@ -109,7 +109,7 @@ class Foo
         string LocalFunction<T>() where T : class => typeof(T).Name;
     }}
 }}";
-            var fixedCode = $@"
+        var fixedCode = $@"
 class Foo
 {{
     private void Method()
@@ -119,14 +119,14 @@ class Foo
             => typeof(T).Name;
     }}
 }}";
-            var expected = Diagnostic().WithLocation(6, 35);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expected = Diagnostic().WithLocation(6, 35);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestViolationWithLocalFunctionAndThreeTypeConstraintsOnSingleLineAsync()
-        {
-            var testCode = $@"
+    [Fact]
+    public async Task TestViolationWithLocalFunctionAndThreeTypeConstraintsOnSingleLineAsync()
+    {
+        var testCode = $@"
 class Foo
 {{
     private void Method()
@@ -134,7 +134,7 @@ class Foo
         void LocalFunction<T1, T2, T3>() where T1 : class where T2 : class where T3 : class {{ }}
     }}
 }}";
-            var fixedCode = $@"
+        var fixedCode = $@"
 class Foo
 {{
     private void Method()
@@ -146,16 +146,16 @@ class Foo
         {{ }}
     }}
 }}";
-            var expected = Diagnostic().WithLocation(6, 42);
-            var expected2 = Diagnostic().WithLocation(6, 59);
-            var expected3 = Diagnostic().WithLocation(6, 76);
-            await VerifyCSharpFixAsync(testCode, new[] { expected, expected2, expected3 }, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expected = Diagnostic().WithLocation(6, 42);
+        var expected2 = Diagnostic().WithLocation(6, 59);
+        var expected3 = Diagnostic().WithLocation(6, 76);
+        await VerifyCSharpFixAsync(testCode, new[] { expected, expected2, expected3 }, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestViolationWithLocalFunctionAndCommentTriviaAtEndOfLineAsync()
-        {
-            var testCode = $@"
+    [Fact]
+    public async Task TestViolationWithLocalFunctionAndCommentTriviaAtEndOfLineAsync()
+    {
+        var testCode = $@"
 using System;
 class Foo
 {{
@@ -167,7 +167,7 @@ class Foo
         }}
     }}
 }}";
-            var fixedCode = $@"
+        var fixedCode = $@"
 using System;
 class Foo
 {{
@@ -180,8 +180,8 @@ class Foo
         }}
     }}
 }}";
-            var expected = Diagnostic().WithLocation(7, 37);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        var expected = Diagnostic().WithLocation(7, 37);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

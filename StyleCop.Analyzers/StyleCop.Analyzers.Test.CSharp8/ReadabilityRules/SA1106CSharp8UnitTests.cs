@@ -3,22 +3,22 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.CSharp7.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1106CodeMustNotContainEmptyStatements,
-        StyleCop.Analyzers.ReadabilityRules.SA1106CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.CSharp7.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1106CodeMustNotContainEmptyStatements,
+StyleCop.Analyzers.ReadabilityRules.SA1106CodeFixProvider>;
 
-    public class SA1106CSharp8UnitTests : SA1106CSharp7UnitTests
+public class SA1106CSharp8UnitTests : SA1106CSharp7UnitTests
+{
+    [Fact]
+    [WorkItem(3075, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3075")]
+    public async Task TestNoDiagnosticForUsingDeclarationStatementAsync()
     {
-        [Fact]
-        [WorkItem(3075, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3075")]
-        public async Task TestNoDiagnosticForUsingDeclarationStatementAsync()
-        {
-            var testCode = @"
+        var testCode = @"
 using System.IO;
 public class Foo
 {
@@ -28,7 +28,7 @@ public class Foo
     }
 }";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

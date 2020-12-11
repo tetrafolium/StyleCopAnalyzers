@@ -3,30 +3,30 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp;
 
-    internal partial struct RecursivePatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
+internal partial struct RecursivePatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
+{
+    public RecursivePatternSyntaxWrapper AddPositionalPatternClauseSubpatterns(params SubpatternSyntaxWrapper[] items)
     {
-        public RecursivePatternSyntaxWrapper AddPositionalPatternClauseSubpatterns(params SubpatternSyntaxWrapper[] items)
+        var positionalPatternClause = this.PositionalPatternClause;
+        if (positionalPatternClause.SyntaxNode is null)
         {
-            var positionalPatternClause = this.PositionalPatternClause;
-            if (positionalPatternClause.SyntaxNode is null)
-            {
-                positionalPatternClause = SyntaxFactoryEx.PositionalPatternClause();
-            }
-
-            return this.WithPositionalPatternClause(positionalPatternClause.WithSubpatterns(positionalPatternClause.Subpatterns.AddRange(items)));
+            positionalPatternClause = SyntaxFactoryEx.PositionalPatternClause();
         }
 
-        public RecursivePatternSyntaxWrapper AddPropertyPatternClauseSubpatterns(params SubpatternSyntaxWrapper[] items)
-        {
-            var propertyPatternClause = this.PropertyPatternClause;
-            if (propertyPatternClause.SyntaxNode is null)
-            {
-                propertyPatternClause = SyntaxFactoryEx.PropertyPatternClause();
-            }
-
-            return this.WithPropertyPatternClause(propertyPatternClause.WithSubpatterns(propertyPatternClause.Subpatterns.AddRange(items)));
-        }
+        return this.WithPositionalPatternClause(positionalPatternClause.WithSubpatterns(positionalPatternClause.Subpatterns.AddRange(items)));
     }
+
+    public RecursivePatternSyntaxWrapper AddPropertyPatternClauseSubpatterns(params SubpatternSyntaxWrapper[] items)
+    {
+        var propertyPatternClause = this.PropertyPatternClause;
+        if (propertyPatternClause.SyntaxNode is null)
+        {
+            propertyPatternClause = SyntaxFactoryEx.PropertyPatternClause();
+        }
+
+        return this.WithPropertyPatternClause(propertyPatternClause.WithSubpatterns(propertyPatternClause.Subpatterns.AddRange(items)));
+    }
+}
 }

@@ -3,22 +3,22 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.NamingRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using StyleCop.Analyzers.Test.CSharp8.NamingRules;
-    using StyleCop.Analyzers.Test.Verifiers;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.NamingRules.SA1300ElementMustBeginWithUpperCaseLetter,
-        StyleCop.Analyzers.NamingRules.RenameToUpperCaseCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using StyleCop.Analyzers.Test.CSharp8.NamingRules;
+using StyleCop.Analyzers.Test.Verifiers;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.NamingRules.SA1300ElementMustBeginWithUpperCaseLetter,
+StyleCop.Analyzers.NamingRules.RenameToUpperCaseCodeFixProvider>;
 
-    public class SA1300CSharp9UnitTests : SA1300CSharp8UnitTests
+public class SA1300CSharp9UnitTests : SA1300CSharp8UnitTests
+{
+    [Fact]
+    public async Task TestPositionalRecord1Async()
     {
-        [Fact]
-        public async Task TestPositionalRecord1Async()
-        {
-            var testCode = @"
+        var testCode = @"
 public record {|#0:r|}(int A)
 {
     public r(int a, int b)
@@ -28,7 +28,7 @@ public record {|#0:r|}(int A)
 }
 ";
 
-            var fixedCode = @"
+        var fixedCode = @"
 public record R(int A)
 {
     public R(int a, int b)
@@ -38,26 +38,26 @@ public record R(int A)
 }
 ";
 
-            await new CSharpTest(LanguageVersion.CSharp9)
-            {
-                ReferenceAssemblies = GenericAnalyzerTest.ReferenceAssembliesNet50,
-                TestCode = testCode,
-                ExpectedDiagnostics =
-                {
-                    // /0/Test0.cs(2,15): warning SA1300: Element 'r' should begin with an uppercase letter
-                    Diagnostic().WithLocation(0).WithArguments("r"),
-
-                    // /0/Test0.cs(2,15): warning SA1300: Element 'r' should begin with an uppercase letter
-                    Diagnostic().WithLocation(0).WithArguments("r"),
-                },
-                FixedCode = fixedCode,
-            }.RunAsync(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestPositionalRecord2Async()
+        await new CSharpTest(LanguageVersion.CSharp9)
         {
-            var testCode = @"
+            ReferenceAssemblies = GenericAnalyzerTest.ReferenceAssembliesNet50,
+            TestCode = testCode,
+            ExpectedDiagnostics =
+            {
+                // /0/Test0.cs(2,15): warning SA1300: Element 'r' should begin with an uppercase letter
+                Diagnostic().WithLocation(0).WithArguments("r"),
+
+                // /0/Test0.cs(2,15): warning SA1300: Element 'r' should begin with an uppercase letter
+                Diagnostic().WithLocation(0).WithArguments("r"),
+            },
+            FixedCode = fixedCode,
+        } .RunAsync(CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestPositionalRecord2Async()
+    {
+        var testCode = @"
 public record R(int [|a|])
 {
     public R(int a, int b)
@@ -67,7 +67,7 @@ public record R(int [|a|])
 }
 ";
 
-            var fixedCode = @"
+        var fixedCode = @"
 public record R(int A)
 {
     public R(int a, int b)
@@ -77,12 +77,12 @@ public record R(int A)
 }
 ";
 
-            await new CSharpTest(LanguageVersion.CSharp9)
-            {
-                ReferenceAssemblies = GenericAnalyzerTest.ReferenceAssembliesNet50,
-                TestCode = testCode,
-                FixedCode = fixedCode,
-            }.RunAsync(CancellationToken.None).ConfigureAwait(false);
-        }
+        await new CSharpTest(LanguageVersion.CSharp9)
+        {
+            ReferenceAssemblies = GenericAnalyzerTest.ReferenceAssembliesNet50,
+            TestCode = testCode,
+            FixedCode = fixedCode,
+        } .RunAsync(CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.Lightup
 {
-    using StyleCop.Analyzers.Test.CSharp8.Lightup;
+using StyleCop.Analyzers.Test.CSharp8.Lightup;
 
-    public class MethodKindExTestsCSharp9 : MethodKindExTestsCSharp8
-    {
-    }
+public class MethodKindExTestsCSharp9 : MethodKindExTestsCSharp8
+{
+}
 }

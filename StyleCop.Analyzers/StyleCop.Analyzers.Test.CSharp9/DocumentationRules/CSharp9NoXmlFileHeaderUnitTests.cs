@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.DocumentationRules
 {
-    using StyleCop.Analyzers.Test.CSharp8.DocumentationRules;
+using StyleCop.Analyzers.Test.CSharp8.DocumentationRules;
 
-    public class CSharp9NoXmlFileHeaderUnitTests : CSharp8NoXmlFileHeaderUnitTests
-    {
-    }
+public class CSharp9NoXmlFileHeaderUnitTests : CSharp8NoXmlFileHeaderUnitTests
+{
+}
 }

@@ -3,23 +3,23 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8.SpacingRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.CSharp7.SpacingRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.SpacingRules.SA1012OpeningBracesMustBeSpacedCorrectly,
-        StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.CSharp7.SpacingRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.SpacingRules.SA1012OpeningBracesMustBeSpacedCorrectly,
+StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
 
-    public class SA1012CSharp8UnitTests : SA1012CSharp7UnitTests
+public class SA1012CSharp8UnitTests : SA1012CSharp7UnitTests
+{
+    [Fact]
+    [WorkItem(3141, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3141")]
+    public async Task TestInPropertyPatternsAsync()
     {
-        [Fact]
-        [WorkItem(3141, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3141")]
-        public async Task TestInPropertyPatternsAsync()
-        {
-            var testCode = @"
+        var testCode = @"
 class C
 {
     void M((string A, string B) tuple)
@@ -28,7 +28,7 @@ class C
     }
 }
 ";
-            var fixedCode = @"
+        var fixedCode = @"
 class C
 {
     void M((string A, string B) tuple)
@@ -38,27 +38,27 @@ class C
 }
 ";
 
-            DiagnosticResult[] expectedResults =
-            {
-                // /0/Test0.cs(6,24): warning SA1012: Opening brace should be followed by a space
-                Diagnostic().WithLocation(0).WithArguments(string.Empty, "followed"),
+        DiagnosticResult[] expectedResults =
+        {
+            // /0/Test0.cs(6,24): warning SA1012: Opening brace should be followed by a space
+            Diagnostic().WithLocation(0).WithArguments(string.Empty, "followed"),
 
-                // /0/Test0.cs(6,24): warning SA1012: Opening brace should not be preceded by a space
-                Diagnostic().WithLocation(0).WithArguments(" not", "preceded"),
+            // /0/Test0.cs(6,24): warning SA1012: Opening brace should not be preceded by a space
+            Diagnostic().WithLocation(0).WithArguments(" not", "preceded"),
 
-                // /0/Test0.cs(6,37): warning SA1012: Opening brace should be followed by a space
-                Diagnostic().WithLocation(1).WithArguments(string.Empty, "followed"),
+            // /0/Test0.cs(6,37): warning SA1012: Opening brace should be followed by a space
+            Diagnostic().WithLocation(1).WithArguments(string.Empty, "followed"),
 
-                // /0/Test0.cs(6,37): warning SA1012: Opening brace should be preceded by a space
-                Diagnostic().WithLocation(1).WithArguments(string.Empty, "preceded"),
-            };
+            // /0/Test0.cs(6,37): warning SA1012: Opening brace should be preceded by a space
+            Diagnostic().WithLocation(1).WithArguments(string.Empty, "preceded"),
+        };
 
-            await VerifyCSharpFixAsync(
-                LanguageVersion.CSharp8,
-                testCode,
-                expectedResults,
-                fixedCode,
-                CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(
+            LanguageVersion.CSharp8,
+            testCode,
+            expectedResults,
+            fixedCode,
+            CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

@@ -3,7 +3,7 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7
 {
-    public class AnalyzerConfigurationTestsCSharp7 : AnalyzerConfigurationTests
-    {
-    }
+public class AnalyzerConfigurationTestsCSharp7 : AnalyzerConfigurationTests
+{
+}
 }

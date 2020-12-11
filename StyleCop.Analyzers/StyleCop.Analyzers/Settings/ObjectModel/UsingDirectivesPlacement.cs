@@ -3,24 +3,24 @@
 
 namespace StyleCop.Analyzers.Settings.ObjectModel
 {
+/// <summary>
+/// Specifies the desired placement of using directives.
+/// </summary>
+internal enum UsingDirectivesPlacement
+{
     /// <summary>
-    /// Specifies the desired placement of using directives.
+    /// Place using directives inside the namespace definition.
     /// </summary>
-    internal enum UsingDirectivesPlacement
-    {
-        /// <summary>
-        /// Place using directives inside the namespace definition.
-        /// </summary>
-        InsideNamespace,
+    InsideNamespace,
 
-        /// <summary>
-        /// Place using directives outside the namespace definition.
-        /// </summary>
-        OutsideNamespace,
+    /// <summary>
+    /// Place using directives outside the namespace definition.
+    /// </summary>
+    OutsideNamespace,
 
-        /// <summary>
-        /// Allow using directives inside or outside the namespace definition.
-        /// </summary>
-        Preserve,
-    }
+    /// <summary>
+    /// Allow using directives inside or outside the namespace definition.
+    /// </summary>
+    Preserve,
+}
 }

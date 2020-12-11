@@ -3,23 +3,23 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8.MaintainabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.CSharp7.MaintainabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.MaintainabilityRules.SA1413UseTrailingCommasInMultiLineInitializers,
-        StyleCop.Analyzers.MaintainabilityRules.SA1413CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.CSharp7.MaintainabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.MaintainabilityRules.SA1413UseTrailingCommasInMultiLineInitializers,
+StyleCop.Analyzers.MaintainabilityRules.SA1413CodeFixProvider>;
 
-    public class SA1413CSharp8UnitTests : SA1413CSharp7UnitTests
+public class SA1413CSharp8UnitTests : SA1413CSharp7UnitTests
+{
+    [Fact]
+    [WorkItem(3056, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3056")]
+    public async Task TestSwitchExpressionAsync()
     {
-        [Fact]
-        [WorkItem(3056, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3056")]
-        public async Task TestSwitchExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -37,7 +37,7 @@ namespace StyleCop.Analyzers.Test.CSharp8.MaintainabilityRules
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -55,7 +55,7 @@ namespace StyleCop.Analyzers.Test.CSharp8.MaintainabilityRules
 }
 ";
 
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp8, testCode, DiagnosticResult.EmptyDiagnosticResults, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp8, testCode, DiagnosticResult.EmptyDiagnosticResults, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

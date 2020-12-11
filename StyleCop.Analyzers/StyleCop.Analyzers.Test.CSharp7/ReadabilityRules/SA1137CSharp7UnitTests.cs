@@ -3,22 +3,22 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1137ElementsShouldHaveTheSameIndentation,
-        StyleCop.Analyzers.ReadabilityRules.IndentationCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1137ElementsShouldHaveTheSameIndentation,
+StyleCop.Analyzers.ReadabilityRules.IndentationCodeFixProvider>;
 
-    public class SA1137CSharp7UnitTests : SA1137UnitTests
+public class SA1137CSharp7UnitTests : SA1137UnitTests
+{
+    [Fact]
+    public async Task TestTupleTypeAsync()
     {
-        [Fact]
-        public async Task TestTupleTypeAsync()
-        {
-            string testCode = @"
+        string testCode = @"
 class Container
 {
     (
@@ -32,7 +32,7 @@ int x,
         int z) ZeroAlignment;
 }
 ";
-            string fixedCode = @"
+        string fixedCode = @"
 class Container
 {
     (
@@ -47,21 +47,21 @@ int z) ZeroAlignment;
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(6, 1),
-                Diagnostic().WithLocation(7, 1),
-                Diagnostic().WithLocation(11, 1),
-                Diagnostic().WithLocation(12, 1),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestTupleExpressionAsync()
+        DiagnosticResult[] expected =
         {
-            string testCode = @"
+            Diagnostic().WithLocation(6, 1),
+            Diagnostic().WithLocation(7, 1),
+            Diagnostic().WithLocation(11, 1),
+            Diagnostic().WithLocation(12, 1),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestTupleExpressionAsync()
+    {
+        string testCode = @"
 class Container
 {
     (int x, int y, int z) NonZeroAlignment = (
@@ -75,7 +75,7 @@ class Container
         0);
 }
 ";
-            string fixedCode = @"
+        string fixedCode = @"
 class Container
 {
     (int x, int y, int z) NonZeroAlignment = (
@@ -90,21 +90,21 @@ class Container
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(6, 1),
-                Diagnostic().WithLocation(7, 1),
-                Diagnostic().WithLocation(11, 1),
-                Diagnostic().WithLocation(12, 1),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestStackAllocArrayCreationExpressionAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"namespace TestNamespace
+            Diagnostic().WithLocation(6, 1),
+            Diagnostic().WithLocation(7, 1),
+            Diagnostic().WithLocation(11, 1),
+            Diagnostic().WithLocation(12, 1),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -127,7 +127,7 @@ class Container
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -150,21 +150,21 @@ class Container
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(10, 1),
-                Diagnostic().WithLocation(11, 1),
-                Diagnostic().WithLocation(16, 1),
-                Diagnostic().WithLocation(17, 1),
-            };
-
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"namespace TestNamespace
+            Diagnostic().WithLocation(10, 1),
+            Diagnostic().WithLocation(11, 1),
+            Diagnostic().WithLocation(16, 1),
+            Diagnostic().WithLocation(17, 1),
+        };
+
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -187,7 +187,7 @@ class Container
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -210,15 +210,15 @@ class Container
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(10, 1),
-                Diagnostic().WithLocation(11, 1),
-                Diagnostic().WithLocation(16, 1),
-                Diagnostic().WithLocation(17, 1),
-            };
+        DiagnosticResult[] expected =
+        {
+            Diagnostic().WithLocation(10, 1),
+            Diagnostic().WithLocation(11, 1),
+            Diagnostic().WithLocation(16, 1),
+            Diagnostic().WithLocation(17, 1),
+        };
 
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.Lightup
 {
-    using StyleCop.Analyzers.Test.CSharp8.Lightup;
+using StyleCop.Analyzers.Test.CSharp8.Lightup;
 
-    public class TupleExpressionSyntaxWrapperTestsCSharp9 : TupleExpressionSyntaxWrapperTestsCSharp8
-    {
-    }
+public class TupleExpressionSyntaxWrapperTestsCSharp9 : TupleExpressionSyntaxWrapperTestsCSharp8
+{
+}
 }

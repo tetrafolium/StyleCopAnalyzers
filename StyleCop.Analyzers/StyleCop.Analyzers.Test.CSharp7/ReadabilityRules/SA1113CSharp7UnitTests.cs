@@ -3,21 +3,21 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1113CommaMustBeOnSameLineAsPreviousParameter,
-        StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1113CommaMustBeOnSameLineAsPreviousParameter,
+StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
 
-    public class SA1113CSharp7UnitTests : SA1113UnitTests
+public class SA1113CSharp7UnitTests : SA1113UnitTests
+{
+    [Fact]
+    public async Task TestLocalFunctionDeclarationWithTwoParametersCommaPlacedAtTheSameLineAsTheSecondParameterAsync()
     {
-        [Fact]
-        public async Task TestLocalFunctionDeclarationWithTwoParametersCommaPlacedAtTheSameLineAsTheSecondParameterAsync()
-        {
-            var testCode = @"public class Foo
+        var testCode = @"public class Foo
 {
     public void Method()
     {
@@ -27,7 +27,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
         }
     }
 }";
-            var fixedCode = @"public class Foo
+        var fixedCode = @"public class Foo
 {
     public void Method()
     {
@@ -38,14 +38,14 @@ namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithLocation(6, 18);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithLocation(6, 18);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestLocalFunctionDeclarationWithThreeParametersCommasPlacedAtTheSameLineAsTheNextParameterAsync()
-        {
-            var testCode = @"public class Foo
+    [Fact]
+    public async Task TestLocalFunctionDeclarationWithThreeParametersCommasPlacedAtTheSameLineAsTheNextParameterAsync()
+    {
+        var testCode = @"public class Foo
 {
     public void Method()
     {
@@ -56,7 +56,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
         }
     }
 }";
-            var fixedCode = @"public class Foo
+        var fixedCode = @"public class Foo
 {
     public void Method()
     {
@@ -68,19 +68,19 @@ namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
     }
 }";
 
-            DiagnosticResult[] expected =
-                {
-                    Diagnostic().WithLocation(6, 18),
-                    Diagnostic().WithLocation(7, 18),
-                };
-
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestLocalFunctionDeclarationWithTwoParametersCommaPlacedAtTheSameLineAsTheFirstParameterAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"public class Foo
+            Diagnostic().WithLocation(6, 18),
+            Diagnostic().WithLocation(7, 18),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestLocalFunctionDeclarationWithTwoParametersCommaPlacedAtTheSameLineAsTheFirstParameterAsync()
+    {
+        var testCode = @"public class Foo
 {
     public void Method()
     {
@@ -91,7 +91,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
     }
 }";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

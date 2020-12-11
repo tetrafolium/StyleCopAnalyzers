@@ -3,77 +3,79 @@
 
 namespace StyleCop.Analyzers.NamingRules
 {
-    using System;
-    using System.Collections.Immutable;
-    using System.Composition;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CodeActions;
-    using Microsoft.CodeAnalysis.CodeFixes;
-    using StyleCop.Analyzers.Helpers;
+using System;
+using System.Collections.Immutable;
+using System.Composition;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
+using StyleCop.Analyzers.Helpers;
 
-    /// <summary>
-    /// Implements a code fix for <see cref="SA1308VariableNamesMustNotBePrefixed"/>.
-    /// </summary>
-    /// <remarks>
-    /// <para>To fix a violation of this rule, remove the prefix from the beginning of the field name, or place the
-    /// item within a <c>NativeMethods</c> class if appropriate.</para>
-    /// </remarks>
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1308CodeFixProvider))]
-    [Shared]
-    internal class SA1308CodeFixProvider : CodeFixProvider
+/// <summary>
+/// Implements a code fix for <see cref="SA1308VariableNamesMustNotBePrefixed"/>.
+/// </summary>
+/// <remarks>
+/// <para>To fix a violation of this rule, remove the prefix from the beginning of the field name, or place the
+/// item within a <c>NativeMethods</c> class if appropriate.</para>
+/// </remarks>
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1308CodeFixProvider))]
+[Shared]
+internal class SA1308CodeFixProvider : CodeFixProvider
+{
+    /// <inheritdoc/>
+    public override ImmutableArray<string> FixableDiagnosticIds {
+        get;
+    } =
+        ImmutableArray.Create(SA1308VariableNamesMustNotBePrefixed.DiagnosticId);
+
+    /// <inheritdoc/>
+    public override FixAllProvider GetFixAllProvider()
     {
-        /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1308VariableNamesMustNotBePrefixed.DiagnosticId);
+        return CustomFixAllProviders.BatchFixer;
+    }
 
-        /// <inheritdoc/>
-        public override FixAllProvider GetFixAllProvider()
+    /// <inheritdoc/>
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        var document = context.Document;
+        var root = await document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+        foreach (var diagnostic in context.Diagnostics)
         {
-            return CustomFixAllProviders.BatchFixer;
-        }
+            var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
 
-        /// <inheritdoc/>
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            var document = context.Document;
-            var root = await document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            foreach (var diagnostic in context.Diagnostics)
+            var numberOfCharsToRemove = 0;
+
+            // If a variable contains multiple prefixes that would result in this diagnostic,
+            // we detect that and remove all of the bad prefixes such that after
+            // the fix is applied there are no more violations of this rule.
+            for (int i = 0; i < token.ValueText.Length; i += 2)
             {
-                var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
-
-                var numberOfCharsToRemove = 0;
-
-                // If a variable contains multiple prefixes that would result in this diagnostic,
-                // we detect that and remove all of the bad prefixes such that after
-                // the fix is applied there are no more violations of this rule.
-                for (int i = 0; i < token.ValueText.Length; i += 2)
-                {
-                    if (string.Compare("m_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0
+                if (string.Compare("m_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0
                         || string.Compare("s_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0
                         || string.Compare("t_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0)
-                    {
-                        numberOfCharsToRemove += 2;
-                        continue;
-                    }
-
-                    break;
-                }
-
-                // The prefix is the full variable name. In this case we cannot generate a valid variable name and thus will not offer a code fix.
-                if (token.ValueText.Length == numberOfCharsToRemove)
                 {
+                    numberOfCharsToRemove += 2;
                     continue;
                 }
 
-                var newName = token.ValueText.Substring(numberOfCharsToRemove);
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        string.Format(NamingResources.RenameToCodeFix, newName),
-                        cancellationToken => RenameHelper.RenameSymbolAsync(document, root, token, newName, cancellationToken),
-                        nameof(SA1308CodeFixProvider)),
-                    diagnostic);
+                break;
             }
+
+            // The prefix is the full variable name. In this case we cannot generate a valid variable name and thus will not offer a code fix.
+            if (token.ValueText.Length == numberOfCharsToRemove)
+            {
+                continue;
+            }
+
+            var newName = token.ValueText.Substring(numberOfCharsToRemove);
+            context.RegisterCodeFix(
+                CodeAction.Create(
+                    string.Format(NamingResources.RenameToCodeFix, newName),
+                    cancellationToken => RenameHelper.RenameSymbolAsync(document, root, token, newName, cancellationToken),
+                    nameof(SA1308CodeFixProvider)),
+                diagnostic);
         }
     }
+}
 }

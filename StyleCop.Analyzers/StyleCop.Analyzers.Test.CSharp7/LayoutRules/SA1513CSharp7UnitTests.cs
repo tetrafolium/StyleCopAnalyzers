@@ -3,27 +3,27 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.LayoutRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.LayoutRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.LayoutRules.SA1513ClosingBraceMustBeFollowedByBlankLine,
-        StyleCop.Analyzers.LayoutRules.SA1513CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.LayoutRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.LayoutRules.SA1513ClosingBraceMustBeFollowedByBlankLine,
+StyleCop.Analyzers.LayoutRules.SA1513CodeFixProvider>;
 
-    public class SA1513CSharp7UnitTests : SA1513UnitTests
+public class SA1513CSharp7UnitTests : SA1513UnitTests
+{
+    /// <summary>
+    /// Verifies that all valid usages of a closing brace in new C# 7 syntax without a following blank line will
+    /// report no diagnostic.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task TestValidCSharp7Async()
     {
-        /// <summary>
-        /// Verifies that all valid usages of a closing brace in new C# 7 syntax without a following blank line will
-        /// report no diagnostic.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task TestValidCSharp7Async()
-        {
-            var testCode = @"using System;
+        var testCode = @"using System;
 
 public class Foo
 {
@@ -53,18 +53,18 @@ public class Foo
 }
 ";
 
-            await VerifyCSharpFixAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, testCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, testCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        /// <summary>
-        /// Verifies that all invalid usages of a closing brace in new C# 7 syntax without a following blank line will
-        /// report a diagnostic.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task TestInvalidCSharp7Async()
-        {
-            var testCode = @"
+    /// <summary>
+    /// Verifies that all invalid usages of a closing brace in new C# 7 syntax without a following blank line will
+    /// report a diagnostic.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task TestInvalidCSharp7Async()
+    {
+        var testCode = @"
 public class Foo
 {
     private int x;
@@ -95,7 +95,7 @@ public class Foo
     }
 }
 ";
-            var fixedCode = @"
+        var fixedCode = @"
 public class Foo
 {
     private int x;
@@ -130,23 +130,23 @@ public class Foo
 }
 ";
 
-            var expected = new[]
-            {
-                // Invalid #1
-                Diagnostic().WithLocation(15, 14),
-
-                // Invalid #2, #3
-                Diagnostic().WithLocation(24, 10),
-                Diagnostic().WithLocation(27, 10),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestStackAllocArrayCreationExpressionAsync()
+        var expected = new[]
         {
-            var testCode = @"namespace TestNamespace
+            // Invalid #1
+            Diagnostic().WithLocation(15, 14),
+
+            // Invalid #2, #3
+            Diagnostic().WithLocation(24, 10),
+            Diagnostic().WithLocation(27, 10),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -169,13 +169,13 @@ public class Foo
 }
 ";
 
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, DiagnosticResult.EmptyDiagnosticResults, testCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, DiagnosticResult.EmptyDiagnosticResults, testCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    [Fact]
+    public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -198,7 +198,7 @@ public class Foo
 }
 ";
 
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, DiagnosticResult.EmptyDiagnosticResults, testCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, DiagnosticResult.EmptyDiagnosticResults, testCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

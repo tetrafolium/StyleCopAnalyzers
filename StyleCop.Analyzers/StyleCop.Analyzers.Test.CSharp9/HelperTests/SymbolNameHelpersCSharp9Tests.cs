@@ -3,12 +3,12 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.HelperTests
 {
-    using StyleCop.Analyzers.Test.CSharp8.HelperTests;
+using StyleCop.Analyzers.Test.CSharp8.HelperTests;
 
-    /// <summary>
-    /// Unit tests for the <see cref="StyleCop.Analyzers.Helpers.SymbolNameHelpers"/> class in the context of C# 9.0.
-    /// </summary>
-    public class SymbolNameHelpersCSharp9Tests : SymbolNameHelpersCSharp8Tests
-    {
-    }
+/// <summary>
+/// Unit tests for the <see cref="StyleCop.Analyzers.Helpers.SymbolNameHelpers"/> class in the context of C# 9.0.
+/// </summary>
+public class SymbolNameHelpersCSharp9Tests : SymbolNameHelpersCSharp8Tests
+{
+}
 }

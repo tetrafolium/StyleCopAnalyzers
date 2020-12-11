@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp8.Lightup
 {
-    using StyleCop.Analyzers.Test.CSharp7.Lightup;
+using StyleCop.Analyzers.Test.CSharp7.Lightup;
 
-    public class LocalFunctionStatementSyntaxWrapperTestsCSharp8 : LocalFunctionStatementSyntaxWrapperTests
-    {
-    }
+public class LocalFunctionStatementSyntaxWrapperTestsCSharp8 : LocalFunctionStatementSyntaxWrapperTests
+{
+}
 }

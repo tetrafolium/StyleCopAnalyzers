@@ -3,68 +3,68 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.SpacingRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.SpacingRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.SpacingRules.SA1000KeywordsMustBeSpacedCorrectly,
-        StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.SpacingRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.SpacingRules.SA1000KeywordsMustBeSpacedCorrectly,
+StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
 
-    public class SA1000CSharp7UnitTests : SA1000UnitTests
+public class SA1000CSharp7UnitTests : SA1000UnitTests
+{
+    [Fact]
+    public async Task TestOutVariableDeclarationAsync()
     {
-        [Fact]
-        public async Task TestOutVariableDeclarationAsync()
-        {
-            string statementWithoutSpace = @"int.TryParse(""0"", out@Int32 x);";
+        string statementWithoutSpace = @"int.TryParse(""0"", out@Int32 x);";
 
-            string statementWithSpace = @"int.TryParse(""0"", out @Int32 x);";
+        string statementWithSpace = @"int.TryParse(""0"", out @Int32 x);";
 
-            await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
+        await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
 
-            DiagnosticResult expected = Diagnostic().WithArguments("out", string.Empty, "followed").WithLocation(12, 31);
+        DiagnosticResult expected = Diagnostic().WithArguments("out", string.Empty, "followed").WithLocation(12, 31);
 
-            await this.TestKeywordStatementAsync(statementWithoutSpace, expected, statementWithSpace).ConfigureAwait(false);
-        }
+        await this.TestKeywordStatementAsync(statementWithoutSpace, expected, statementWithSpace).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(2419, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2419")]
-        public async Task TestOutVarDiscardAsync()
-        {
-            string statementWithSpace = @"int.TryParse(""0"", out var _);";
+    [Fact]
+    [WorkItem(2419, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2419")]
+    public async Task TestOutVarDiscardAsync()
+    {
+        string statementWithSpace = @"int.TryParse(""0"", out var _);";
 
-            await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
-        }
+        await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(2419, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2419")]
-        public async Task TestOutDiscardAsync()
-        {
-            string statementWithSpace = @"int.TryParse(""0"", out _);";
+    [Fact]
+    [WorkItem(2419, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2419")]
+    public async Task TestOutDiscardAsync()
+    {
+        string statementWithSpace = @"int.TryParse(""0"", out _);";
 
-            await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
-        }
+        await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestVarKeywordTupleTypeAsync()
-        {
-            string statementWithoutSpace = @"var(a, b) = (2, 3);";
+    [Fact]
+    public async Task TestVarKeywordTupleTypeAsync()
+    {
+        string statementWithoutSpace = @"var(a, b) = (2, 3);";
 
-            string statementWithSpace = @"var (a, b) = (2, 3);";
+        string statementWithSpace = @"var (a, b) = (2, 3);";
 
-            await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
+        await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
 
-            DiagnosticResult expected = Diagnostic().WithArguments("var", string.Empty, "followed").WithLocation(12, 13);
+        DiagnosticResult expected = Diagnostic().WithArguments("var", string.Empty, "followed").WithLocation(12, 13);
 
-            await this.TestKeywordStatementAsync(statementWithoutSpace, expected, statementWithSpace).ConfigureAwait(false);
-        }
+        await this.TestKeywordStatementAsync(statementWithoutSpace, expected, statementWithSpace).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestRefExpressionAndTypeAsync()
-        {
-            string statementWithoutSpace = @"
+    [Fact]
+    public async Task TestRefExpressionAndTypeAsync()
+    {
+        string statementWithoutSpace = @"
 int a = 0;
 ref@Int32 b = ref@Call(ref@a);
 
@@ -72,7 +72,7 @@ ref@Int32 Call(ref@Int32 p)
     => ref@p;
 ";
 
-            string statementWithSpace = @"
+        string statementWithSpace = @"
 int a = 0;
 ref @Int32 b = ref @Call(ref @a);
 
@@ -80,30 +80,30 @@ ref @Int32 Call(ref @Int32 p)
     => ref @p;
 ";
 
-            await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
+        await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace).ConfigureAwait(false);
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(14, 1),
-                Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(14, 15),
-                Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(14, 24),
-                Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(16, 1),
-                Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(16, 16),
-                Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(17, 8),
-            };
-
-            await this.TestKeywordStatementAsync(statementWithoutSpace, expected, statementWithSpace).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Verifies that spacing for tuple expressions is handled properly.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        /// <seealso cref="SA1008CSharp7UnitTests.TestTupleExpressionsAsync"/>
-        [Fact]
-        public async Task TestReturnTupleExpressionsAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"using System.Collections.Generic;
+            Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(14, 1),
+            Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(14, 15),
+            Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(14, 24),
+            Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(16, 1),
+            Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(16, 16),
+            Diagnostic().WithArguments("ref", string.Empty, "followed").WithLocation(17, 8),
+        };
+
+        await this.TestKeywordStatementAsync(statementWithoutSpace, expected, statementWithSpace).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Verifies that spacing for tuple expressions is handled properly.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    /// <seealso cref="SA1008CSharp7UnitTests.TestTupleExpressionsAsync"/>
+    [Fact]
+    public async Task TestReturnTupleExpressionsAsync()
+    {
+        var testCode = @"using System.Collections.Generic;
 
 namespace TestNamespace
 {
@@ -120,7 +120,7 @@ namespace TestNamespace
 }
 ";
 
-            var fixedCode = @"using System.Collections.Generic;
+        var fixedCode = @"using System.Collections.Generic;
 
 namespace TestNamespace
 {
@@ -137,25 +137,25 @@ namespace TestNamespace
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                // Returns
-                Diagnostic().WithArguments("return", string.Empty, "followed").WithLocation(10, 43),
-                Diagnostic().WithArguments("return", string.Empty, "followed").WithLocation(11, 43),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Verifies that spacing for <c>new</c> expressions for an array of a tuple type is handled correctly.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        /// <seealso cref="SA1008CSharp7UnitTests.TestNewTupleArrayAsync"/>
-        [Fact]
-        public async Task TestNewTupleArrayAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"namespace TestNamespace
+            // Returns
+            Diagnostic().WithArguments("return", string.Empty, "followed").WithLocation(10, 43),
+            Diagnostic().WithArguments("return", string.Empty, "followed").WithLocation(11, 43),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Verifies that spacing for <c>new</c> expressions for an array of a tuple type is handled correctly.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    /// <seealso cref="SA1008CSharp7UnitTests.TestNewTupleArrayAsync"/>
+    [Fact]
+    public async Task TestNewTupleArrayAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -169,7 +169,7 @@ namespace TestNamespace
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -183,24 +183,24 @@ namespace TestNamespace
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithArguments("new", string.Empty, "followed").WithLocation(7, 21),
-                Diagnostic().WithArguments("new", string.Empty, "followed").WithLocation(8, 21),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Verifies that spacing for <c>foreach</c> expressions using tuple deconstruction is handled properly.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        /// <seealso cref="SA1008CSharp7UnitTests.TestForEachVariableStatementAsync"/>
-        [Fact]
-        public async Task TestForEachVariableStatementAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"namespace TestNamespace
+            Diagnostic().WithArguments("new", string.Empty, "followed").WithLocation(7, 21),
+            Diagnostic().WithArguments("new", string.Empty, "followed").WithLocation(8, 21),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Verifies that spacing for <c>foreach</c> expressions using tuple deconstruction is handled properly.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    /// <seealso cref="SA1008CSharp7UnitTests.TestForEachVariableStatementAsync"/>
+    [Fact]
+    public async Task TestForEachVariableStatementAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -214,7 +214,7 @@ namespace TestNamespace
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -228,26 +228,26 @@ namespace TestNamespace
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithArguments("foreach", string.Empty, "followed").WithLocation(7, 13),
-                Diagnostic().WithArguments("foreach", string.Empty, "followed").WithLocation(8, 13),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestStackAllocImplicitArrayStatementAsync()
+        DiagnosticResult[] expected =
         {
-            string statementWithoutSpace = @"int* x = stackalloc[] { 3 };";
+            Diagnostic().WithArguments("foreach", string.Empty, "followed").WithLocation(7, 13),
+            Diagnostic().WithArguments("foreach", string.Empty, "followed").WithLocation(8, 13),
+        };
 
-            string statementWithSpace = @"int* x = stackalloc [] { 3 };";
-
-            await this.TestKeywordStatementAsync(statementWithoutSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithoutSpace, languageVersion: LanguageVersion.CSharp7_3).ConfigureAwait(false);
-
-            // this case is handled by SA1026, so it shouldn't be reported here
-            await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace, languageVersion: LanguageVersion.CSharp7_3).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+
+    [Fact]
+    public async Task TestStackAllocImplicitArrayStatementAsync()
+    {
+        string statementWithoutSpace = @"int* x = stackalloc[] { 3 };";
+
+        string statementWithSpace = @"int* x = stackalloc [] { 3 };";
+
+        await this.TestKeywordStatementAsync(statementWithoutSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithoutSpace, languageVersion: LanguageVersion.CSharp7_3).ConfigureAwait(false);
+
+        // this case is handled by SA1026, so it shouldn't be reported here
+        await this.TestKeywordStatementAsync(statementWithSpace, DiagnosticResult.EmptyDiagnosticResults, statementWithSpace, languageVersion: LanguageVersion.CSharp7_3).ConfigureAwait(false);
+    }
+}
 }

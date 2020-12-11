@@ -3,21 +3,21 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1111ClosingParenthesisMustBeOnLineOfLastParameter,
-        StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1111ClosingParenthesisMustBeOnLineOfLastParameter,
+StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
 
-    public class SA1111CSharp7UnitTests : SA1111UnitTests
+public class SA1111CSharp7UnitTests : SA1111UnitTests
+{
+    [Fact]
+    public async Task TestLocalFunctionDeclarationWithOneParameterClosingParenthesisOnTheNextLineAsTheLastParameterAsync()
     {
-        [Fact]
-        public async Task TestLocalFunctionDeclarationWithOneParameterClosingParenthesisOnTheNextLineAsTheLastParameterAsync()
-        {
-            var testCode = @"
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -29,7 +29,7 @@ class Foo
         }
     }
 }";
-            var fixedCode = @"
+        var fixedCode = @"
 class Foo
 {
     public void Method()
@@ -41,14 +41,14 @@ class Foo
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithLocation(7, 1);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithLocation(7, 1);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestLocalFunctionDeclarationWithThreeParameterClosingParenthesisOnTheNextLineAsTheLastParameterAsync()
-        {
-            var testCode = @"
+    [Fact]
+    public async Task TestLocalFunctionDeclarationWithThreeParameterClosingParenthesisOnTheNextLineAsTheLastParameterAsync()
+    {
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -62,7 +62,7 @@ class Foo
         }
     }
 }";
-            var fixedCode = @"
+        var fixedCode = @"
 class Foo
 {
     public void Method()
@@ -76,14 +76,14 @@ class Foo
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithLocation(9, 1);
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithLocation(9, 1);
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestLocalFunctionDeclarationWithNoParameterClosingParenthesisOnTheNextLineAsTheLastParameterAsync()
-        {
-            var testCode = @"
+    [Fact]
+    public async Task TestLocalFunctionDeclarationWithNoParameterClosingParenthesisOnTheNextLineAsTheLastParameterAsync()
+    {
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -96,13 +96,13 @@ class Foo
     }
 }";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestLocalFunctionDeclarationWithOneParameterClosingParenthesisOnTheSameLineAsTheLastParameterAsync()
-        {
-            var testCode = @"
+    [Fact]
+    public async Task TestLocalFunctionDeclarationWithOneParameterClosingParenthesisOnTheSameLineAsTheLastParameterAsync()
+    {
+        var testCode = @"
 class Foo
 {
     public void Method()
@@ -114,7 +114,7 @@ class Foo
     }
 }";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

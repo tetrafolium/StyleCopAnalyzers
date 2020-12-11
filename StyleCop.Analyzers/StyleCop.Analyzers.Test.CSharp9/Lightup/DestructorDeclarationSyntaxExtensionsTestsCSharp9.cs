@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Test.CSharp9.Lightup
 {
-    using StyleCop.Analyzers.Test.CSharp8.Lightup;
+using StyleCop.Analyzers.Test.CSharp8.Lightup;
 
-    public class DestructorDeclarationSyntaxExtensionsTestsCSharp9 : DestructorDeclarationSyntaxExtensionsTestsCSharp8
-    {
-    }
+public class DestructorDeclarationSyntaxExtensionsTestsCSharp9 : DestructorDeclarationSyntaxExtensionsTestsCSharp8
+{
+}
 }

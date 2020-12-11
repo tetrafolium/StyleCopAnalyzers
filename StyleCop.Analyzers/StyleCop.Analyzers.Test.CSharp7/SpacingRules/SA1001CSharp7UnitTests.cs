@@ -3,28 +3,28 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.SpacingRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.SpacingRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.SpacingRules.SA1001CommasMustBeSpacedCorrectly,
-        StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.SpacingRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.SpacingRules.SA1001CommasMustBeSpacedCorrectly,
+StyleCop.Analyzers.SpacingRules.TokenSpacingCodeFixProvider>;
 
-    public class SA1001CSharp7UnitTests : SA1001UnitTests
+public class SA1001CSharp7UnitTests : SA1001UnitTests
+{
+    /// <summary>
+    /// Verifies spacing around a <c>]</c> character in tuple types and expressions.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    /// <seealso cref="SA1009CSharp7UnitTests.TestBracketsInTupleTypesNotFollowedBySpaceAsync"/>
+    /// <seealso cref="SA1011CSharp7UnitTests.TestBracketsInTupleTypesNotFollowedBySpaceAsync"/>
+    [Fact]
+    public async Task TestBracketsInTupleTypesNotFollowedBySpaceAsync()
     {
-        /// <summary>
-        /// Verifies spacing around a <c>]</c> character in tuple types and expressions.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        /// <seealso cref="SA1009CSharp7UnitTests.TestBracketsInTupleTypesNotFollowedBySpaceAsync"/>
-        /// <seealso cref="SA1011CSharp7UnitTests.TestBracketsInTupleTypesNotFollowedBySpaceAsync"/>
-        [Fact]
-        public async Task TestBracketsInTupleTypesNotFollowedBySpaceAsync()
-        {
-            const string testCode = @"using System;
+        const string testCode = @"using System;
 
 public class Foo
 {
@@ -34,7 +34,7 @@ public class Foo
         return ints;
     }
 }";
-            const string fixedCode = @"using System;
+        const string fixedCode = @"using System;
 
 public class Foo
 {
@@ -45,27 +45,27 @@ public class Foo
     }
 }";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(5, 19).WithArguments(" not", "preceded"),
-                Diagnostic().WithLocation(5, 47).WithArguments(" not", "preceded"),
-                Diagnostic().WithLocation(7, 16).WithArguments(" not", "preceded"),
-                Diagnostic().WithLocation(7, 65).WithArguments(" not", "preceded"),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Verifies spacing around a <c>}</c> character in tuple expressions.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        /// <seealso cref="SA1009CSharp7UnitTests.TestSpacingAroundClosingBraceInTupleExpressionsAsync"/>
-        /// <seealso cref="SA1013CSharp7UnitTests.TestSpacingAroundClosingBraceInTupleExpressionsAsync"/>
-        [Fact]
-        public async Task TestSpacingAroundClosingBraceInTupleExpressionsAsync()
+        DiagnosticResult[] expected =
         {
-            const string testCode = @"using System;
+            Diagnostic().WithLocation(5, 19).WithArguments(" not", "preceded"),
+            Diagnostic().WithLocation(5, 47).WithArguments(" not", "preceded"),
+            Diagnostic().WithLocation(7, 16).WithArguments(" not", "preceded"),
+            Diagnostic().WithLocation(7, 65).WithArguments(" not", "preceded"),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Verifies spacing around a <c>}</c> character in tuple expressions.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    /// <seealso cref="SA1009CSharp7UnitTests.TestSpacingAroundClosingBraceInTupleExpressionsAsync"/>
+    /// <seealso cref="SA1013CSharp7UnitTests.TestSpacingAroundClosingBraceInTupleExpressionsAsync"/>
+    [Fact]
+    public async Task TestSpacingAroundClosingBraceInTupleExpressionsAsync()
+    {
+        const string testCode = @"using System;
 
 public class Foo
 {
@@ -74,7 +74,7 @@ public class Foo
         var values = (new[] { 3} , new[] { 3} );
     }
 }";
-            const string fixedCode = @"using System;
+        const string fixedCode = @"using System;
 
 public class Foo
 {
@@ -84,20 +84,20 @@ public class Foo
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithLocation(7, 34).WithArguments(" not", "preceded");
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithLocation(7, 34).WithArguments(" not", "preceded");
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        /// <summary>
-        /// Verifies spacing around a <c>&gt;</c> character in tuple types.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        /// <seealso cref="SA1009CSharp7UnitTests.TestClosingGenericBracketsInTupleTypesNotFollowedBySpaceAsync"/>
-        /// <seealso cref="SA1015CSharp7UnitTests.TestClosingGenericBracketsInTupleTypesNotPrecededBySpaceAsync"/>
-        [Fact]
-        public async Task TestClosingGenericBracketsInTupleTypesNotFollowedBySpaceAsync()
-        {
-            const string testCode = @"using System;
+    /// <summary>
+    /// Verifies spacing around a <c>&gt;</c> character in tuple types.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    /// <seealso cref="SA1009CSharp7UnitTests.TestClosingGenericBracketsInTupleTypesNotFollowedBySpaceAsync"/>
+    /// <seealso cref="SA1015CSharp7UnitTests.TestClosingGenericBracketsInTupleTypesNotPrecededBySpaceAsync"/>
+    [Fact]
+    public async Task TestClosingGenericBracketsInTupleTypesNotFollowedBySpaceAsync()
+    {
+        const string testCode = @"using System;
 
 public class Foo
 {
@@ -106,7 +106,7 @@ public class Foo
         (Func<int > , Func<int > ) value = (null, null);
     }
 }";
-            const string fixedCode = @"using System;
+        const string fixedCode = @"using System;
 
 public class Foo
 {
@@ -116,14 +116,14 @@ public class Foo
     }
 }";
 
-            DiagnosticResult expected = Diagnostic().WithLocation(7, 21).WithArguments(" not", "preceded");
-            await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        DiagnosticResult expected = Diagnostic().WithLocation(7, 21).WithArguments(" not", "preceded");
+        await VerifyCSharpFixAsync(testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task TestStackAllocArrayCreationExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+    [Fact]
+    public async Task TestStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -136,7 +136,7 @@ public class Foo
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -149,20 +149,20 @@ public class Foo
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(7, 47).WithArguments(" not", "preceded"),
-                Diagnostic().WithLocation(8, 47).WithArguments(" not", "preceded"),
-                Diagnostic().WithLocation(8, 47).WithArguments(string.Empty, "followed"),
-            };
-
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"namespace TestNamespace
+            Diagnostic().WithLocation(7, 47).WithArguments(" not", "preceded"),
+            Diagnostic().WithLocation(8, 47).WithArguments(" not", "preceded"),
+            Diagnostic().WithLocation(8, 47).WithArguments(string.Empty, "followed"),
+        };
+
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -175,7 +175,7 @@ public class Foo
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -188,14 +188,14 @@ public class Foo
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(7, 43).WithArguments(" not", "preceded"),
-                Diagnostic().WithLocation(8, 43).WithArguments(" not", "preceded"),
-                Diagnostic().WithLocation(8, 43).WithArguments(string.Empty, "followed"),
-            };
+        DiagnosticResult[] expected =
+        {
+            Diagnostic().WithLocation(7, 43).WithArguments(" not", "preceded"),
+            Diagnostic().WithLocation(8, 43).WithArguments(" not", "preceded"),
+            Diagnostic().WithLocation(8, 43).WithArguments(string.Empty, "followed"),
+        };
 
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

@@ -3,18 +3,18 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.Lightup
 {
-    using Microsoft.CodeAnalysis.CSharp;
-    using StyleCop.Analyzers.Lightup;
-    using Xunit;
+using Microsoft.CodeAnalysis.CSharp;
+using StyleCop.Analyzers.Lightup;
+using Xunit;
 
-    public class BaseMethodDeclarationSyntaxExtensionsTests
+public class BaseMethodDeclarationSyntaxExtensionsTests
+{
+    [Fact]
+    public void TestExpressionBody()
     {
-        [Fact]
-        public void TestExpressionBody()
-        {
-            var syntax = SyntaxFactory.ConstructorDeclaration(SyntaxFactory.Identifier("Anything"))
-                .WithExpressionBody(SyntaxFactory.ArrowExpressionClause(SyntaxFactory.LiteralExpression(SyntaxKind.NullLiteralExpression)));
-            Assert.Same(syntax.ExpressionBody, BaseMethodDeclarationSyntaxExtensions.ExpressionBody(syntax));
-        }
+        var syntax = SyntaxFactory.ConstructorDeclaration(SyntaxFactory.Identifier("Anything"))
+                     .WithExpressionBody(SyntaxFactory.ArrowExpressionClause(SyntaxFactory.LiteralExpression(SyntaxKind.NullLiteralExpression)));
+        Assert.Same(syntax.ExpressionBody, BaseMethodDeclarationSyntaxExtensions.ExpressionBody(syntax));
     }
+}
 }

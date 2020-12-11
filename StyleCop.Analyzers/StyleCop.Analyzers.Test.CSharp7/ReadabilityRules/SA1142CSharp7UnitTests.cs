@@ -3,30 +3,30 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1142ReferToTupleElementsByName,
-        StyleCop.Analyzers.ReadabilityRules.SA1142CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1142ReferToTupleElementsByName,
+StyleCop.Analyzers.ReadabilityRules.SA1142CodeFixProvider>;
 
+/// <summary>
+/// This class contains the CSharp 7.x unit tests for SA1142.
+/// </summary>
+/// <seealso cref="SA1142ReferToTupleElementsByName"/>
+/// <seealso cref="SA1142CodeFixProvider"/>
+public class SA1142CSharp7UnitTests
+{
     /// <summary>
-    /// This class contains the CSharp 7.x unit tests for SA1142.
+    /// Validate that tuple fields that are referenced by their name will not produce any diagnostics.
     /// </summary>
-    /// <seealso cref="SA1142ReferToTupleElementsByName"/>
-    /// <seealso cref="SA1142CodeFixProvider"/>
-    public class SA1142CSharp7UnitTests
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateFieldNameReferencesAsync()
     {
-        /// <summary>
-        /// Validate that tuple fields that are referenced by their name will not produce any diagnostics.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateFieldNameReferencesAsync()
-        {
-            var testCode = @"
+        var testCode = @"
 public class TestClass
 {
     public int TestMethod((int nameA, int nameB) p1, (int, int) p2, (int, int nameC) p3)
@@ -36,17 +36,17 @@ public class TestClass
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        /// <summary>
-        /// Verify that tuple names referenced by their metadata name will produce the expected diagnostics.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateMetadataNameReferencesAsync()
-        {
-            var testCode = @"
+    /// <summary>
+    /// Verify that tuple names referenced by their metadata name will produce the expected diagnostics.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateMetadataNameReferencesAsync()
+    {
+        var testCode = @"
 public class TestClass
 {
     public int TestMethod1((int nameA, int nameB) p1)
@@ -61,7 +61,7 @@ public class TestClass
 }
 ";
 
-            var fixedCode = @"
+        var fixedCode = @"
 public class TestClass
 {
     public int TestMethod1((int nameA, int nameB) p1)
@@ -76,12 +76,12 @@ public class TestClass
 }
 ";
 
-            DiagnosticResult[] expectedDiagnostics =
-            {
-                // diagnostics are specified inline
-            };
+        DiagnosticResult[] expectedDiagnostics =
+        {
+            // diagnostics are specified inline
+        };
 
-            await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

@@ -3,30 +3,30 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.ReadabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.ReadabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.ReadabilityRules.SA1141UseTupleSyntax,
-        StyleCop.Analyzers.ReadabilityRules.SA1141CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.ReadabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.ReadabilityRules.SA1141UseTupleSyntax,
+StyleCop.Analyzers.ReadabilityRules.SA1141CodeFixProvider>;
 
+/// <summary>
+/// This class contains the CSharp 7.x unit tests for SA1141.
+/// </summary>
+/// <seealso cref="SA1141UseTupleSyntax"/>
+/// <seealso cref="SA1141CodeFixProvider"/>
+public class SA1141CSharp7UnitTests
+{
     /// <summary>
-    /// This class contains the CSharp 7.x unit tests for SA1141.
+    /// Verifies that member declarations containing ValueTuple will result in the proper diagnostics and fixes.
     /// </summary>
-    /// <seealso cref="SA1141UseTupleSyntax"/>
-    /// <seealso cref="SA1141CodeFixProvider"/>
-    public class SA1141CSharp7UnitTests
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateMemberDeclarationsWithValueTuplesAsync()
     {
-        /// <summary>
-        /// Verifies that member declarations containing ValueTuple will result in the proper diagnostics and fixes.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateMemberDeclarationsWithValueTuplesAsync()
-        {
-            var testCode = @"using System;
+        var testCode = @"using System;
 
 public class TestClass
 {
@@ -58,7 +58,7 @@ public class TestClass
 }
 ";
 
-            var fixedCode = @"using System;
+        var fixedCode = @"using System;
 
 public class TestClass
 {
@@ -90,31 +90,31 @@ public class TestClass
 }
 ";
 
-            DiagnosticResult[] expectedDiagnostics =
-            {
-                Diagnostic().WithLocation(5, 12),
-                Diagnostic().WithLocation(5, 44),
-                Diagnostic().WithLocation(10, 12),
-                Diagnostic().WithLocation(10, 67),
-                Diagnostic().WithLocation(10, 120),
-                Diagnostic().WithLocation(15, 12),
-                Diagnostic().WithLocation(17, 44),
-                Diagnostic().WithLocation(19, 12),
-                Diagnostic().WithLocation(21, 47),
-                Diagnostic().WithLocation(26, 37),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Verify that ValueTuple object creation expressions will produce the expected diagnostics and fixes.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateValueTupleObjectCreationAsync()
+        DiagnosticResult[] expectedDiagnostics =
         {
-            var testCode = @"using System;
+            Diagnostic().WithLocation(5, 12),
+            Diagnostic().WithLocation(5, 44),
+            Diagnostic().WithLocation(10, 12),
+            Diagnostic().WithLocation(10, 67),
+            Diagnostic().WithLocation(10, 120),
+            Diagnostic().WithLocation(15, 12),
+            Diagnostic().WithLocation(17, 44),
+            Diagnostic().WithLocation(19, 12),
+            Diagnostic().WithLocation(21, 47),
+            Diagnostic().WithLocation(26, 37),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Verify that ValueTuple object creation expressions will produce the expected diagnostics and fixes.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateValueTupleObjectCreationAsync()
+    {
+        var testCode = @"using System;
 
 public class TestClass
 {
@@ -136,7 +136,7 @@ public class TestClass
 }
 ";
 
-            var fixedCode = @"using System;
+        var fixedCode = @"using System;
 
 public class TestClass
 {
@@ -158,38 +158,38 @@ public class TestClass
 }
 ";
 
-            DiagnosticResult[] expectedDiagnostics =
-            {
-                Diagnostic().WithLocation(7, 21),
-                Diagnostic().WithLocation(8, 21),
-                Diagnostic().WithLocation(9, 21),
-                Diagnostic().WithLocation(9, 63),
-                Diagnostic().WithLocation(10, 21),
-                Diagnostic().WithLocation(10, 80),
-                Diagnostic().WithLocation(11, 22),
-                Diagnostic().WithLocation(12, 21),
-                Diagnostic().WithLocation(13, 21),
-                Diagnostic().WithLocation(14, 21),
-                Diagnostic().WithLocation(15, 21),
-                Diagnostic().WithLocation(15, 49),
-                Diagnostic().WithLocation(16, 22),
-                Diagnostic().WithLocation(16, 40),
-                Diagnostic().WithLocation(17, 22),
-                Diagnostic().WithLocation(17, 67),
-                Diagnostic().WithLocation(18, 22),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Validates that the usage of <see cref="System.ValueTuple"/> within pattern matching will produce no diagnostics.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateValueTupleUsageInPatternMatchingAsync()
+        DiagnosticResult[] expectedDiagnostics =
         {
-            var testCode = @"using System;
+            Diagnostic().WithLocation(7, 21),
+            Diagnostic().WithLocation(8, 21),
+            Diagnostic().WithLocation(9, 21),
+            Diagnostic().WithLocation(9, 63),
+            Diagnostic().WithLocation(10, 21),
+            Diagnostic().WithLocation(10, 80),
+            Diagnostic().WithLocation(11, 22),
+            Diagnostic().WithLocation(12, 21),
+            Diagnostic().WithLocation(13, 21),
+            Diagnostic().WithLocation(14, 21),
+            Diagnostic().WithLocation(15, 21),
+            Diagnostic().WithLocation(15, 49),
+            Diagnostic().WithLocation(16, 22),
+            Diagnostic().WithLocation(16, 40),
+            Diagnostic().WithLocation(17, 22),
+            Diagnostic().WithLocation(17, 67),
+            Diagnostic().WithLocation(18, 22),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Validates that the usage of <see cref="System.ValueTuple"/> within pattern matching will produce no diagnostics.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateValueTupleUsageInPatternMatchingAsync()
+    {
+        var testCode = @"using System;
 
 public class TestClass
 {
@@ -215,14 +215,14 @@ public class TestClass
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        [Fact]
-        [WorkItem(3055, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3055")]
-        public async Task ValidateSingleElementValueTupleUsageAsync()
-        {
-            var testCode = @"using System;
+    [Fact]
+    [WorkItem(3055, "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3055")]
+    public async Task ValidateSingleElementValueTupleUsageAsync()
+    {
+        var testCode = @"using System;
 
 public class TestClass
 {
@@ -235,17 +235,17 @@ public class TestClass
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        /// <summary>
-        /// Validates that the usage of <see cref="System.ValueTuple"/> within exception filtering will produce no diagnostics.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateValueTupleUsageInExceptionFiltersAsync()
-        {
-            var testCode = @"using System;
+    /// <summary>
+    /// Validates that the usage of <see cref="System.ValueTuple"/> within exception filtering will produce no diagnostics.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateValueTupleUsageInExceptionFiltersAsync()
+    {
+        var testCode = @"using System;
 
 public class TestClass
 {
@@ -268,17 +268,17 @@ public class TestException : Exception
 }
 ";
 
-            await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpDiagnosticAsync(testCode, DiagnosticResult.EmptyDiagnosticResults, CancellationToken.None).ConfigureAwait(false);
+    }
 
-        /// <summary>
-        /// Validates that the usage of <see cref="System.ValueTuple"/> within type casts will produce the expected diagnostics and code fixes.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateValueTupleUsageInTypeCastsAsync()
-        {
-            var testCode = @"using System;
+    /// <summary>
+    /// Validates that the usage of <see cref="System.ValueTuple"/> within type casts will produce the expected diagnostics and code fixes.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateValueTupleUsageInTypeCastsAsync()
+    {
+        var testCode = @"using System;
 
 public class TestClass
 {
@@ -290,7 +290,7 @@ public class TestClass
 }
 ";
 
-            var fixedCode = @"using System;
+        var fixedCode = @"using System;
 
 public class TestClass
 {
@@ -302,23 +302,23 @@ public class TestClass
 }
 ";
 
-            DiagnosticResult[] expectedDiagnostics =
-            {
-                Diagnostic().WithLocation(7, 22),
-                Diagnostic().WithLocation(8, 22),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Validates that the usage of <see cref="System.ValueTuple"/> within a default expression will produce the expected diagnostics and code fixes.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateValueTupleUsageInDefaultExpressionAsync()
+        DiagnosticResult[] expectedDiagnostics =
         {
-            var testCode = @"using System;
+            Diagnostic().WithLocation(7, 22),
+            Diagnostic().WithLocation(8, 22),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Validates that the usage of <see cref="System.ValueTuple"/> within a default expression will produce the expected diagnostics and code fixes.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateValueTupleUsageInDefaultExpressionAsync()
+    {
+        var testCode = @"using System;
 
 public class TestClass
 {
@@ -330,7 +330,7 @@ public class TestClass
 }
 ";
 
-            var fixedCode = @"using System;
+        var fixedCode = @"using System;
 
 public class TestClass
 {
@@ -342,23 +342,23 @@ public class TestClass
 }
 ";
 
-            DiagnosticResult[] expectedDiagnostics =
-            {
-                Diagnostic().WithLocation(7, 29),
-                Diagnostic().WithLocation(8, 29),
-            };
-
-            await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Validates that the usage of <see cref="System.ValueTuple"/> within a delegate will produce the expected diagnostics and code fixes.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-        [Fact]
-        public async Task ValidateValueTupleUsageInDelegateAsync()
+        DiagnosticResult[] expectedDiagnostics =
         {
-            var testCode = @"using System;
+            Diagnostic().WithLocation(7, 29),
+            Diagnostic().WithLocation(8, 29),
+        };
+
+        await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Validates that the usage of <see cref="System.ValueTuple"/> within a delegate will produce the expected diagnostics and code fixes.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task ValidateValueTupleUsageInDelegateAsync()
+    {
+        var testCode = @"using System;
 
 public class TestClass
 {
@@ -366,7 +366,7 @@ public class TestClass
 }
 ";
 
-            var fixedCode = @"using System;
+        var fixedCode = @"using System;
 
 public class TestClass
 {
@@ -374,14 +374,14 @@ public class TestClass
 }
 ";
 
-            DiagnosticResult[] expectedDiagnostics =
-            {
-                Diagnostic().WithLocation(5, 21),
-                Diagnostic().WithLocation(5, 63),
-                Diagnostic().WithLocation(5, 136),
-            };
+        DiagnosticResult[] expectedDiagnostics =
+        {
+            Diagnostic().WithLocation(5, 21),
+            Diagnostic().WithLocation(5, 63),
+            Diagnostic().WithLocation(5, 136),
+        };
 
-            await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(testCode, expectedDiagnostics, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }

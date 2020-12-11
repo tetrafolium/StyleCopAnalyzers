@@ -3,22 +3,22 @@
 
 namespace StyleCop.Analyzers.Test.CSharp7.MaintainabilityRules
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Testing;
-    using StyleCop.Analyzers.Test.MaintainabilityRules;
-    using Xunit;
-    using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
-        StyleCop.Analyzers.MaintainabilityRules.SA1413UseTrailingCommasInMultiLineInitializers,
-        StyleCop.Analyzers.MaintainabilityRules.SA1413CodeFixProvider>;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
+using StyleCop.Analyzers.Test.MaintainabilityRules;
+using Xunit;
+using static StyleCop.Analyzers.Test.Verifiers.StyleCopCodeFixVerifier<
+StyleCop.Analyzers.MaintainabilityRules.SA1413UseTrailingCommasInMultiLineInitializers,
+StyleCop.Analyzers.MaintainabilityRules.SA1413CodeFixProvider>;
 
-    public class SA1413CSharp7UnitTests : SA1413UnitTests
+public class SA1413CSharp7UnitTests : SA1413UnitTests
+{
+    [Fact]
+    public async Task TestStackAllocArrayCreationExpressionAsync()
     {
-        [Fact]
-        public async Task TestStackAllocArrayCreationExpressionAsync()
-        {
-            var testCode = @"namespace TestNamespace
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -36,7 +36,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.MaintainabilityRules
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -54,18 +54,18 @@ namespace StyleCop.Analyzers.Test.CSharp7.MaintainabilityRules
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(12, 17),
-            };
-
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+        DiagnosticResult[] expected =
         {
-            var testCode = @"namespace TestNamespace
+            Diagnostic().WithLocation(12, 17),
+        };
+
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
+    }
+
+    [Fact]
+    public async Task TestImplicitStackAllocArrayCreationExpressionAsync()
+    {
+        var testCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -83,7 +83,7 @@ namespace StyleCop.Analyzers.Test.CSharp7.MaintainabilityRules
 }
 ";
 
-            var fixedCode = @"namespace TestNamespace
+        var fixedCode = @"namespace TestNamespace
 {
     public class TestClass
     {
@@ -101,12 +101,12 @@ namespace StyleCop.Analyzers.Test.CSharp7.MaintainabilityRules
 }
 ";
 
-            DiagnosticResult[] expected =
-            {
-                Diagnostic().WithLocation(12, 17),
-            };
+        DiagnosticResult[] expected =
+        {
+            Diagnostic().WithLocation(12, 17),
+        };
 
-            await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
-        }
+        await VerifyCSharpFixAsync(LanguageVersion.CSharp7_3, testCode, expected, fixedCode, CancellationToken.None).ConfigureAwait(false);
     }
+}
 }
