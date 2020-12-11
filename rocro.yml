@@ -7,54 +7,10 @@ inspecode:
 
   tools:
 
-    astyle:
-      auto-fix: true
-      thresholds: {num-issues: 999}   # too many issues detected: 1509 > 1000
-
-    clang-format:
-      auto-fix: true
-      thresholds: {num-issues: 999}   # too many issues detected: 1692 > 1000
-
-    cpd:
-      options: [--skip-lexical-errors]
-      thresholds: {num-issues: 169}
-
-    fossology:
-      thresholds: {num-issues: 11}
-
-    grep:
-      thresholds: {num-issues: 30}
-
-    jscpd:
-      thresholds: {num-issues: 999}   # too many issues detected: 1122 > 1000
-
-    markdownlint:
-      options:
-        --rules: ["~MD013", "~MD033"]   # too many issues detected by these rules
-      thresholds: {num-issues: 595}
-
-    misspell:
-      auto-fix: true
-      thresholds: {num-issues: 3}
-
-    prettier:
-      auto-fix: true
-      thresholds: {num-issues: 104}
-
-    stylecop:
-      thresholds: {num-issues: 999}   # too many issues detected: 9890 > 1000
-
-    stylelint:
-      auto-fix: true
-      thresholds: {num-issues: 0}
-
     uncrustify:
+    - ignore: StyleCop.Analyzers/StyleCop.Analyzers.Test/
       auto-fix: true
       thresholds: {num-issues: 999}   # too many issues detected: 1684 > 1000
-
-    # understand:
-    #   thresholds: {num-issues: 999}
-
-    unused:
-      options: [--single-occurrence, --all-likelihoods]
-      thresholds: {num-issues: 88}
+    - ignore: StyleCop.Analyzers/StyleCop.Analyzers.Test*/
+      auto-fix: true
+      thresholds: {num-issues: 999}   # too many issues detected: 1684 > 1000
