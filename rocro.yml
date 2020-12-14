@@ -9,20 +9,20 @@ inspecode:
   tools:
 
     astyle:
-      auto-fix: true
+      # auto-fix: true
       thresholds: {num-issues: 432}
 
     clang-format:
-      # auto-fix: true
+      auto-fix: true
       thresholds: {num-issues: 611}
 
     uncrustify:
-    - config-file: .rocro/uncrustify/avoid_error.cfg
-      auto-fix: true
-      thresholds: {num-issues: 607}
+    # - config-file: .rocro/uncrustify/avoid_error.cfg
+    #   auto-fix: true
+    #   thresholds: {num-issues: 607}
     # - config-file: .rocro/uncrustify/default.cfg
     #   auto-fix: true
     #   thresholds: {num-issues: 607}
-    - config-file: ""
+    # - config-file: ""
       auto-fix: true
       thresholds: {num-issues: 607}
