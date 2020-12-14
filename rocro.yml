@@ -9,45 +9,45 @@ inspecode:
   tools:
 
     astyle:
-      # auto-fix: true
+      auto-fix: true
       thresholds: {num-issues: 432}
 
     clang-format:
-      # auto-fix: true
+      auto-fix: true
       thresholds: {num-issues: 611}
 
-    cpd:
-      options: [--skip-lexical-errors]
-      thresholds: {num-issues: 91}
+    # cpd:
+    #   options: [--skip-lexical-errors]
+    #   thresholds: {num-issues: 91}
 
-    fossology:
-      thresholds: {num-issues: 11}
+    # fossology:
+    #   thresholds: {num-issues: 11}
 
-    grep:
-      thresholds: {num-issues: 26}
+    # grep:
+    #   thresholds: {num-issues: 26}
 
-    jscpd:
-      thresholds: {num-issues: 736}
+    # jscpd:
+    #   thresholds: {num-issues: 736}
 
-    markdownlint:
-      options:
-        --rules: ["~MD013", "~MD033"]   # too many issues detected by these rules
-      thresholds: {num-issues: 595}
+    # markdownlint:
+    #   options:
+    #     --rules: ["~MD013", "~MD033"]   # too many issues detected by these rules
+    #   thresholds: {num-issues: 595}
 
-    misspell:
-      auto-fix: true
-      thresholds: {num-issues: 3}
+    # misspell:
+    #   auto-fix: true
+    #   thresholds: {num-issues: 3}
 
-    prettier:
-      auto-fix: true
-      thresholds: {num-issues: 104}
+    # prettier:
+    #   auto-fix: true
+    #   thresholds: {num-issues: 104}
 
-    stylecop:
-      thresholds: {num-issues: 999}   # too many issues detected: 4461 > 1000
+    # stylecop:
+    #   thresholds: {num-issues: 999}   # too many issues detected: 4461 > 1000
 
-    stylelint:
-      auto-fix: true
-      thresholds: {num-issues: 0}
+    # stylelint:
+    #   auto-fix: true
+    #   thresholds: {num-issues: 0}
 
     uncrustify:
     # - config-file: .rocro/uncrustify/avoid_error.cfg
@@ -65,6 +65,6 @@ inspecode:
     # understand:
     #   thresholds: {num-issues: 999}
 
-    unused:
-      options: [--single-occurrence, --all-likelihoods]
-      thresholds: {num-issues: 125}
+    # unused:
+    #   options: [--single-occurrence, --all-likelihoods]
+    #   thresholds: {num-issues: 125}
