@@ -3,84 +3,86 @@
 
 namespace StyleCop.Analyzers.MaintainabilityRules
 {
-    using System.Collections.Immutable;
-    using System.Composition;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CodeActions;
-    using Microsoft.CodeAnalysis.CodeFixes;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using StyleCop.Analyzers.Helpers;
+using System.Collections.Immutable;
+using System.Composition;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using StyleCop.Analyzers.Helpers;
 
-    /// <summary>
-    /// Implements a code fix for <see cref="SA1410RemoveDelegateParenthesisWhenPossible"/> and <see cref="SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis"/>.
-    /// </summary>
-    /// <remarks>
-    /// <para>To fix a violation of this rule, insert parenthesis within the arithmetic expression to declare the precedence of the operations.</para>
-    /// </remarks>
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1410SA1411CodeFixProvider))]
-    [Shared]
-    internal class SA1410SA1411CodeFixProvider : CodeFixProvider
-    {
-        /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1410RemoveDelegateParenthesisWhenPossible.DiagnosticId,
-                SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis.DiagnosticId);
+/// <summary>
+/// Implements a code fix for <see cref="SA1410RemoveDelegateParenthesisWhenPossible"/> and <see cref="SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis"/>.
+/// </summary>
+/// <remarks>
+/// <para>To fix a violation of this rule, insert parenthesis within the arithmetic expression to declare the precedence of the operations.</para>
+/// </remarks>
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1410SA1411CodeFixProvider))]
+[Shared]
+internal class SA1410SA1411CodeFixProvider : CodeFixProvider
+{
+/// <inheritdoc/>
+public override ImmutableArray<string> FixableDiagnosticIds {
+	get;
+} =
+	ImmutableArray.Create(
+		SA1410RemoveDelegateParenthesisWhenPossible.DiagnosticId,
+		SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis.DiagnosticId);
 
-        /// <inheritdoc/>
-        public override FixAllProvider GetFixAllProvider()
-        {
-            return CustomFixAllProviders.BatchFixer;
-        }
+/// <inheritdoc/>
+public override FixAllProvider GetFixAllProvider()
+{
+	return CustomFixAllProviders.BatchFixer;
+}
 
-        /// <inheritdoc/>
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+/// <inheritdoc/>
+public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+{
+	var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
-                if (node.IsMissing)
-                {
-                    continue;
-                }
+	foreach (var diagnostic in context.Diagnostics)
+	{
+		SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+		if (node.IsMissing)
+		{
+			continue;
+		}
 
-                // Check if we are interested in this node
-                node = (SyntaxNode)(node as ParameterListSyntax) ?? node as AttributeArgumentListSyntax;
+		// Check if we are interested in this node
+		node = (SyntaxNode)(node as ParameterListSyntax) ?? node as AttributeArgumentListSyntax;
 
-                if (node != null)
-                {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            MaintainabilityResources.SA1410SA1411CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, root, node),
-                            nameof(SA1410SA1411CodeFixProvider)),
-                        diagnostic);
-                }
-            }
-        }
+		if (node != null)
+		{
+			context.RegisterCodeFix(
+				CodeAction.Create(
+					MaintainabilityResources.SA1410SA1411CodeFix,
+					cancellationToken => GetTransformedDocumentAsync(context.Document, root, node),
+					nameof(SA1410SA1411CodeFixProvider)),
+				diagnostic);
+		}
+	}
+}
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, SyntaxNode node)
-        {
-            // The first token is the open parenthesis token. This token has all the inner trivia
-            var firstToken = node.GetFirstToken();
-            var lastToken = node.GetLastToken();
+private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, SyntaxNode node)
+{
+	// The first token is the open parenthesis token. This token has all the inner trivia
+	var firstToken = node.GetFirstToken();
+	var lastToken = node.GetLastToken();
 
-            var previousToken = firstToken.GetPreviousToken();
+	var previousToken = firstToken.GetPreviousToken();
 
-            // We want to keep all trivia. The easiest way to do that is by doing it manually
-            var newSyntaxRoot = root.RemoveNode(node, SyntaxRemoveOptions.KeepNoTrivia);
+	// We want to keep all trivia. The easiest way to do that is by doing it manually
+	var newSyntaxRoot = root.RemoveNode(node, SyntaxRemoveOptions.KeepNoTrivia);
 
-            // The removing operation has not changed the location of the previous token
-            var newPreviousToken = newSyntaxRoot.FindToken(previousToken.Span.Start);
+	// The removing operation has not changed the location of the previous token
+	var newPreviousToken = newSyntaxRoot.FindToken(previousToken.Span.Start);
 
-            var newTrailingTrivia = newPreviousToken.TrailingTrivia.AddRange(firstToken.GetAllTrivia()).AddRange(lastToken.GetAllTrivia());
+	var newTrailingTrivia = newPreviousToken.TrailingTrivia.AddRange(firstToken.GetAllTrivia()).AddRange(lastToken.GetAllTrivia());
 
-            newSyntaxRoot = newSyntaxRoot.ReplaceToken(newPreviousToken, newPreviousToken.WithTrailingTrivia(newTrailingTrivia));
+	newSyntaxRoot = newSyntaxRoot.ReplaceToken(newPreviousToken, newPreviousToken.WithTrailingTrivia(newTrailingTrivia));
 
-            return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
-        }
-    }
+	return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
+}
+}
 }
