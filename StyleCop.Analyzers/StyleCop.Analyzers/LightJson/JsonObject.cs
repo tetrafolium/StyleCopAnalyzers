@@ -41,7 +41,7 @@ public int Count
 /// </summary>
 /// <param name="key">The key of the property to get or set.</param>
 /// <remarks>
-/// <para>The getter will return JsonValue.Null if the given key is not assosiated with any value.</para>
+/// <para>The getter will return JsonValue.Null if the given key is not associated with any value.</para>
 /// </remarks>
 public JsonValue this[string key]
 {
@@ -140,7 +140,7 @@ public JsonObject Rename(string oldKey, string newKey)
 }
 
 /// <summary>
-/// Determines whether this collection contains an item assosiated with the given key.
+/// Determines whether this collection contains an item associated with the given key.
 /// </summary>
 /// <param name="key">The key to locate in this collection.</param>
 /// <returns>Returns true if the key is found; otherwise, false.</returns>
