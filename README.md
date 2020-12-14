@@ -25,19 +25,21 @@ For users upgrading from StyleCop Classic, see [KnownChanges.md](https://github.
 for information about known differences which you may notice when switching to StyleCop Analyzers.
 
 ### C# language versions
+
 Not all versions of StyleCop.Analyzers support all features of each C# language version. The table below shows the minimum version of StyleCop.Analyzers required for proper support of a C# language version.
 
 | C# version | StyleCop.Analyzers version | Visual Studio version |
-|------------|----------------------------|-----------------------|
+| ---------- | -------------------------- | --------------------- |
 | 1.0 - 6.0  | v1.0.2 or higher           | VS2015+               |
 | 7.0 - 7.3  | v1.1.0-beta or higher      | VS2017+               |
-|    8.0     | v1.2.0-beta or higher      | VS2019                |
+| 8.0        | v1.2.0-beta or higher      | VS2019                |
 
 ## Installation
 
 StyleCopAnalyzers can be installed using the NuGet command line or the NuGet Package Manager in Visual Studio 2015.
 
 **Install using the command line:**
+
 ```bash
 Install-Package StyleCop.Analyzers
 ```

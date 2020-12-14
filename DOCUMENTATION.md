@@ -1,6 +1,7 @@
-StyleCop.Analyzers provides warnings that indicate style and consistency rule violations in C# code. The warnings are organized into rule areas such as documentation, layout, naming, ordering, readability, spacing, and so forth. Each warning signifies a violation of a style or consistency rule. This section provides an explanation of each of the default StyleCop.Analyzers rules. 
+StyleCop.Analyzers provides warnings that indicate style and consistency rule violations in C# code. The warnings are organized into rule areas such as documentation, layout, naming, ordering, readability, spacing, and so forth. Each warning signifies a violation of a style or consistency rule. This section provides an explanation of each of the default StyleCop.Analyzers rules.
 
 ### Rule areas
+
 **[Special Rules (SA0000-)](documentation/SpecialRules.md)**
 
 Rules which provide special functionality like workarounds, configuration errors, etc.
@@ -38,6 +39,7 @@ Rules which verify the content and formatting of code documentation.
 Rules which offer a non-standard extension to the default StyleCop behavior.
 
 ### Additional documentation
+
 **[Configuration](documentation/Configuration.md)**
 
 Describes the configuration options for StyleCop.Analyzers
