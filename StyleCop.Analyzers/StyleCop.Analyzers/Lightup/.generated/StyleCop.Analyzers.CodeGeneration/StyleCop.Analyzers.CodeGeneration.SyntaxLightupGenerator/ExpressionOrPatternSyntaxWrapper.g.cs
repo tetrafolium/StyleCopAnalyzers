@@ -3,59 +3,59 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using System;
-    using System.Collections.Immutable;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct ExpressionOrPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
-        internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionOrPatternSyntax";
-        private static readonly Type WrappedType;
+internal readonly partial struct ExpressionOrPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
+{
+	internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionOrPatternSyntax";
+	private static readonly Type WrappedType;
 
-        private readonly CSharpSyntaxNode node;
+	private readonly CSharpSyntaxNode node;
 
-        static ExpressionOrPatternSyntaxWrapper()
-        {
-            WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(ExpressionOrPatternSyntaxWrapper));
-        }
+	static ExpressionOrPatternSyntaxWrapper()
+	{
+		WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(ExpressionOrPatternSyntaxWrapper));
+	}
 
-        private ExpressionOrPatternSyntaxWrapper(CSharpSyntaxNode node)
-        {
-            this.node = node;
-        }
+	private ExpressionOrPatternSyntaxWrapper(CSharpSyntaxNode node)
+	{
+		this.node = node;
+	}
 
-        public CSharpSyntaxNode SyntaxNode => this.node;
+	public CSharpSyntaxNode SyntaxNode => this.node;
 
-        public static explicit operator ExpressionOrPatternSyntaxWrapper(SyntaxNode node)
-        {
-            if (node == null)
-            {
-                return default;
-            }
+	public static explicit operator ExpressionOrPatternSyntaxWrapper(SyntaxNode node)
+	{
+		if (node == null)
+		{
+			return default;
+		}
 
-            if (!IsInstance(node))
-            {
-                throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-            }
+		if (!IsInstance(node))
+		{
+			throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+		}
 
-            return new ExpressionOrPatternSyntaxWrapper((CSharpSyntaxNode)node);
-        }
+		return new ExpressionOrPatternSyntaxWrapper((CSharpSyntaxNode)node);
+	}
 
-        public static implicit operator CSharpSyntaxNode(ExpressionOrPatternSyntaxWrapper wrapper)
-        {
-            return wrapper.node;
-        }
+	public static implicit operator CSharpSyntaxNode(ExpressionOrPatternSyntaxWrapper wrapper)
+	{
+		return wrapper.node;
+	}
 
-        public static bool IsInstance(SyntaxNode node)
-        {
-            return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
-        }
+	public static bool IsInstance(SyntaxNode node)
+	{
+		return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+	}
 
-        internal static ExpressionOrPatternSyntaxWrapper FromUpcast(CSharpSyntaxNode node)
-        {
-            return new ExpressionOrPatternSyntaxWrapper(node);
-        }
-    }
+	internal static ExpressionOrPatternSyntaxWrapper FromUpcast(CSharpSyntaxNode node)
+	{
+		return new ExpressionOrPatternSyntaxWrapper(node);
+	}
+}
 }
