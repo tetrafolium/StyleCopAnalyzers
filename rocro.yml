@@ -43,8 +43,8 @@ inspecode:
       thresholds: {num-issues: 104}
 
     stylecop:
-      ignore: "**/*Tests.cs"          # reduce number of issues
-      thresholds: {num-issues: 999}   # too many issues detected: 4461 > 1000 (when no `ignore:`)
+      # ignore: "**/*Tests.cs"        # no meanings ... the ignore patterns are not applied when running StyleCop.
+      thresholds: {num-issues: 999}   # too many issues detected: 4461 > 1000
 
     stylelint:
       auto-fix: true
