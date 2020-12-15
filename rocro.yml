@@ -13,7 +13,7 @@ inspecode:
       thresholds: {num-issues: 432}
 
     clang-format:
-      auto-fix: true
+      # auto-fix: true                  # test for codelift#2128
       thresholds: {num-issues: 611}
 
     cpd:
@@ -43,7 +43,8 @@ inspecode:
       thresholds: {num-issues: 104}
 
     stylecop:
-      thresholds: {num-issues: 999}   # too many issues detected: 4461 > 1000
+      ignore: "**/*Tests.cs"          # reduce number of issues
+      thresholds: {num-issues: 999}   # too many issues detected: 4461 > 1000 (when no `ignore:`)
 
     stylelint:
       auto-fix: true
