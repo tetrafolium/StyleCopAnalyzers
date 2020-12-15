@@ -13,7 +13,7 @@ inspecode:
       thresholds: {num-issues: 432}
 
     clang-format:
-      # auto-fix: true                  # test for codelift#2128
+      auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
       thresholds: {num-issues: 611}
 
     cpd:
@@ -51,7 +51,7 @@ inspecode:
       thresholds: {num-issues: 0}
 
     uncrustify:
-      auto-fix: true
+      auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
       thresholds: {num-issues: 607}
 
     # understand:
