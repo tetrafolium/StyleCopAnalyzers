@@ -8,55 +8,10 @@ inspecode:
 
   tools:
 
-    astyle:
-      auto-fix: true
-      thresholds: {num-issues: 432}
-
     clang-format:
       auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
       thresholds: {num-issues: 611}
 
-    cpd:
-      options: [--skip-lexical-errors]
-      thresholds: {num-issues: 91}
-
-    fossology:
-      thresholds: {num-issues: 11}
-
-    grep:
-      thresholds: {num-issues: 26}
-
-    jscpd:
-      thresholds: {num-issues: 736}
-
-    markdownlint:
-      options:
-        --rules: ["~MD013", "~MD033"]   # too many issues detected by these rules
-      thresholds: {num-issues: 595}
-
-    misspell:
-      auto-fix: true
-      thresholds: {num-issues: 3}
-
-    prettier:
-      auto-fix: true
-      thresholds: {num-issues: 104}
-
-    stylecop:
-      # ignore: "**/*Tests.cs"        # no meanings ... the ignore patterns are not applied when running StyleCop.
-      thresholds: {num-issues: 999}   # too many issues detected: 4461 > 1000
-
-    stylelint:
-      auto-fix: true
-      thresholds: {num-issues: 0}
-
-    uncrustify:
-      auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
-      thresholds: {num-issues: 607}
-
-    # understand:
-    #   thresholds: {num-issues: 999}
-
-    unused:
-      options: [--single-occurrence, --all-likelihoods]
-      thresholds: {num-issues: 125}
+    # uncrustify:
+    #   auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
+    #   thresholds: {num-issues: 607}
