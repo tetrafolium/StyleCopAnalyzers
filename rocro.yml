@@ -19,14 +19,14 @@ inspecode:
         --style: '{BasedOnStyle: llvm, IndentWidth: 8, ColumnLimit: 100}'
       # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
       thresholds: {num-issues: 999}
-    - options:
-        --style:
-          BasedOnStyle: LLVM
-          IndentWidth: 4
-          Language: CSharp
-          ColumnLimit: 100
-      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
-      thresholds: {num-issues: 999}
+    # - options:
+    #     --style:
+    #       BasedOnStyle: LLVM
+    #       IndentWidth: 4
+    #       Language: CSharp
+    #       ColumnLimit: 100
+    #   # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
+    #   thresholds: {num-issues: 999}
 
     # uncrustify:
     #   auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
