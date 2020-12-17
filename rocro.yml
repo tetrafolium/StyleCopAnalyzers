@@ -11,22 +11,34 @@ inspecode:
     clang-format:
     - # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
       thresholds: {num-issues: 611}
-    - options:
-        --style: file   # to load style configuration from ".clang-format" file
-      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
-      thresholds: {num-issues: 999}
-    - options:
-        --style: '{BasedOnStyle: llvm, IndentWidth: 8, ColumnLimit: 100}'
-      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
-      thresholds: {num-issues: 999}
     # - options:
-    #     --style:
-    #       BasedOnStyle: LLVM
-    #       IndentWidth: 4
-    #       Language: CSharp
-    #       ColumnLimit: 100
+    #     --style: file   # to load style configuration from ".clang-format" file
     #   # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
     #   thresholds: {num-issues: 999}
+    - options:
+        --style: '{BasedOnStyle: LLVM, IndentWidth: 8, ColumnLimit: 100}'
+      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
+      thresholds: {num-issues: 999}
+    - options:
+        --style: '{BasedOnStyle: Google, IndentWidth: 8, ColumnLimit: 100}'
+      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
+      thresholds: {num-issues: 999}
+    - options:
+        --style: '{BasedOnStyle: Chromium, IndentWidth: 8, ColumnLimit: 100}'
+      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
+      thresholds: {num-issues: 999}
+    - options:
+        --style: '{BasedOnStyle: Mozilla, IndentWidth: 8, ColumnLimit: 100}'
+      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
+      thresholds: {num-issues: 999}
+    - options:
+        --style: '{BasedOnStyle: WebKit, IndentWidth: 8, ColumnLimit: 100}'
+      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
+      thresholds: {num-issues: 999}
+    - options:
+        --style: '{BasedOnStyle: Microsoft, IndentWidth: 8, ColumnLimit: 100}'
+      # auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
+      thresholds: {num-issues: 999}
 
     # uncrustify:
     #   auto-fix: true    # uncrustify:auto-fix aborted when clang-format:auto-fix running thgether. (codelift#2128)
