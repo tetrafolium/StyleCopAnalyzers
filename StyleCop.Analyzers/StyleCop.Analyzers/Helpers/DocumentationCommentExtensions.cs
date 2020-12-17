@@ -10,17 +10,21 @@ namespace StyleCop.Analyzers.Helpers
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class DocumentationCommentExtensions {
+        internal static class DocumentationCommentExtensions
+        {
                 public static DocumentationCommentTriviaSyntax GetDocumentationCommentTriviaSyntax(
                     this SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return null;
                         }
 
-                        foreach (var leadingTrivia in node.GetLeadingTrivia()) {
+                        foreach (var leadingTrivia in node.GetLeadingTrivia())
+                        {
                                 if (leadingTrivia.GetStructure()
-                                        is DocumentationCommentTriviaSyntax structure) {
+                                        is DocumentationCommentTriviaSyntax structure)
+                                {
                                         return structure;
                                 }
                         }
@@ -37,20 +41,25 @@ namespace StyleCop.Analyzers.Helpers
                 public static IEnumerable<XmlNodeSyntax> GetXmlElements(
                     this SyntaxList<XmlNodeSyntax> content, string elementName)
                 {
-                        foreach (XmlNodeSyntax syntax in content) {
-                                if (syntax is XmlEmptyElementSyntax emptyElement) {
+                        foreach (XmlNodeSyntax syntax in content)
+                        {
+                                if (syntax is XmlEmptyElementSyntax emptyElement)
+                                {
                                         if (string.Equals(elementName, emptyElement.Name.ToString(),
-                                                StringComparison.Ordinal)) {
+                                                          StringComparison.Ordinal))
+                                        {
                                                 yield return emptyElement;
                                         }
 
                                         continue;
                                 }
 
-                                if (syntax is XmlElementSyntax elementSyntax) {
+                                if (syntax is XmlElementSyntax elementSyntax)
+                                {
                                         if (string.Equals(elementName,
-                                                elementSyntax.StartTag?.Name?.ToString(),
-                                                StringComparison.Ordinal)) {
+                                                          elementSyntax.StartTag?.Name?.ToString(),
+                                                          StringComparison.Ordinal))
+                                        {
                                                 yield return elementSyntax;
                                         }
 
@@ -63,45 +72,52 @@ namespace StyleCop.Analyzers.Helpers
                     : XmlNodeSyntax
                 {
                         // Make sure to include a space after the '///' characters.
-                        SyntaxTrivia triviaWithSpace
-                            = SyntaxFactory.DocumentationCommentExterior(trivia.ToString() + " ");
+                        SyntaxTrivia triviaWithSpace =
+                            SyntaxFactory.DocumentationCommentExterior(trivia.ToString() + " ");
 
                         return node.ReplaceTrivia(
                             node.DescendantTrivia(descendIntoTrivia
                                                   : true)
-                                .Where(
-                                    i => i.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia)),
-                            (originalTrivia, rewrittenTrivia) => SelectExteriorTrivia(
-                                rewrittenTrivia, trivia, triviaWithSpace));
+                                .Where(i =>
+                                           i.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia)),
+                            (originalTrivia, rewrittenTrivia) =>
+                                SelectExteriorTrivia(rewrittenTrivia, trivia, triviaWithSpace));
                 }
 
                 public static SyntaxList<XmlNodeSyntax> WithoutFirstAndLastNewlines(
                     this SyntaxList<XmlNodeSyntax> summaryContent)
                 {
-                        if (summaryContent.Count == 0) {
+                        if (summaryContent.Count == 0)
+                        {
                                 return summaryContent;
                         }
 
-                        if (!(summaryContent[0] is XmlTextSyntax firstSyntax)) {
+                        if (!(summaryContent[0] is XmlTextSyntax firstSyntax))
+                        {
                                 return summaryContent;
                         }
 
-                        if (!(summaryContent[summaryContent.Count - 1] is XmlTextSyntax
-                                    lastSyntax)) {
+                        if (!(summaryContent[summaryContent.Count - 1] is XmlTextSyntax lastSyntax))
+                        {
                                 return summaryContent;
                         }
 
                         SyntaxTokenList firstSyntaxTokens = firstSyntax.TextTokens;
 
                         int removeFromStart;
-                        if (IsXmlNewLine(firstSyntaxTokens[0])) {
+                        if (IsXmlNewLine(firstSyntaxTokens[0]))
+                        {
                                 removeFromStart = 1;
-                        } else {
-                                if (!IsXmlWhitespace(firstSyntaxTokens[0])) {
+                        }
+                        else
+                        {
+                                if (!IsXmlWhitespace(firstSyntaxTokens[0]))
+                                {
                                         return summaryContent;
                                 }
 
-                                if (!IsXmlNewLine(firstSyntaxTokens[1])) {
+                                if (!IsXmlNewLine(firstSyntaxTokens[1]))
+                                {
                                         return summaryContent;
                                 }
 
@@ -111,76 +127,90 @@ namespace StyleCop.Analyzers.Helpers
                         SyntaxTokenList lastSyntaxTokens = lastSyntax.TextTokens;
 
                         int removeFromEnd;
-                        if (IsXmlNewLine(lastSyntaxTokens[lastSyntaxTokens.Count - 1])) {
+                        if (IsXmlNewLine(lastSyntaxTokens[lastSyntaxTokens.Count - 1]))
+                        {
                                 removeFromEnd = 1;
-                        } else {
-                                if (!IsXmlWhitespace(
-                                        lastSyntaxTokens[lastSyntaxTokens.Count - 1])) {
+                        }
+                        else
+                        {
+                                if (!IsXmlWhitespace(lastSyntaxTokens[lastSyntaxTokens.Count - 1]))
+                                {
                                         return summaryContent;
                                 }
 
-                                if (!IsXmlNewLine(lastSyntaxTokens[lastSyntaxTokens.Count - 2])) {
+                                if (!IsXmlNewLine(lastSyntaxTokens[lastSyntaxTokens.Count - 2]))
+                                {
                                         return summaryContent;
                                 }
 
                                 removeFromEnd = 2;
                         }
 
-                        for (int i = 0; i < removeFromStart; i++) {
+                        for (int i = 0; i < removeFromStart; i++)
+                        {
                                 firstSyntaxTokens = firstSyntaxTokens.RemoveAt(0);
                         }
 
-                        if (firstSyntax == lastSyntax) {
+                        if (firstSyntax == lastSyntax)
+                        {
                                 lastSyntaxTokens = firstSyntaxTokens;
                         }
 
-                        for (int i = 0; i < removeFromEnd; i++) {
-                                if (!lastSyntaxTokens.Any()) {
+                        for (int i = 0; i < removeFromEnd; i++)
+                        {
+                                if (!lastSyntaxTokens.Any())
+                                {
                                         break;
                                 }
 
-                                lastSyntaxTokens
-                                    = lastSyntaxTokens.RemoveAt(lastSyntaxTokens.Count - 1);
+                                lastSyntaxTokens =
+                                    lastSyntaxTokens.RemoveAt(lastSyntaxTokens.Count - 1);
                         }
 
                         summaryContent = summaryContent.RemoveAt(summaryContent.Count - 1);
-                        if (lastSyntaxTokens.Count != 0) {
-                                summaryContent = summaryContent.Add(
-                                    lastSyntax.WithTextTokens(lastSyntaxTokens));
+                        if (lastSyntaxTokens.Count != 0)
+                        {
+                                summaryContent =
+                                    summaryContent.Add(lastSyntax.WithTextTokens(lastSyntaxTokens));
                         }
 
-                        if (firstSyntax != lastSyntax) {
+                        if (firstSyntax != lastSyntax)
+                        {
                                 summaryContent = summaryContent.RemoveAt(0);
-                                if (firstSyntaxTokens.Count != 0) {
+                                if (firstSyntaxTokens.Count != 0)
+                                {
                                         summaryContent = summaryContent.Insert(
                                             0, firstSyntax.WithTextTokens(firstSyntaxTokens));
                                 }
                         }
 
-                        if (summaryContent.Count > 0) {
+                        if (summaryContent.Count > 0)
+                        {
                                 // Make sure to remove the leading trivia
                                 summaryContent = summaryContent.Replace(summaryContent[0],
-                                    summaryContent [0]
-                                        .WithLeadingTrivia());
+                                                                        summaryContent [0]
+                                                                            .WithLeadingTrivia());
 
                                 // Remove leading spaces (between the <para> start tag and the start
                                 // of the paragraph content)
-                                if (summaryContent[0] is XmlTextSyntax firstTextSyntax
-                                    && firstTextSyntax.TextTokens.Count > 0) {
+                                if (summaryContent[0] is XmlTextSyntax firstTextSyntax &&
+                                    firstTextSyntax.TextTokens.Count > 0)
+                                {
                                         SyntaxToken firstTextToken = firstTextSyntax.TextTokens[0];
                                         string firstTokenText = firstTextToken.Text;
                                         string trimmed = firstTokenText.TrimStart();
-                                        if (trimmed != firstTokenText) {
+                                        if (trimmed != firstTokenText)
+                                        {
                                                 SyntaxToken newFirstToken = SyntaxFactory.Token(
                                                     firstTextToken.LeadingTrivia,
                                                     firstTextToken.Kind(), trimmed,
                                                     firstTextToken.ValueText.TrimStart(),
                                                     firstTextToken.TrailingTrivia);
 
-                                                summaryContent
-                                                    = summaryContent.Replace(firstTextSyntax,
-                                                        firstTextSyntax.ReplaceToken(
-                                                            firstTextToken, newFirstToken));
+                                                summaryContent = summaryContent.Replace(
+                                                    firstTextSyntax,
+                                                    firstTextSyntax.ReplaceToken(firstTextToken,
+                                                                                 newFirstToken));
                                         }
                                 }
                         }
@@ -195,8 +225,8 @@ namespace StyleCop.Analyzers.Helpers
 
                 public static bool IsXmlWhitespace(this SyntaxToken node)
                 {
-                        return node.IsKind(SyntaxKind.XmlTextLiteralToken)
-                            && string.IsNullOrWhiteSpace(node.Text);
+                        return node.IsKind(SyntaxKind.XmlTextLiteralToken) &&
+                               string.IsNullOrWhiteSpace(node.Text);
                 }
 
                 /// <summary>
@@ -215,27 +245,28 @@ namespace StyleCop.Analyzers.Helpers
                 {
                         var tokensForAdjustment = from token in node.DescendantTokens() where token
                                                       .IsKind(SyntaxKind.XmlTextLiteralNewLineToken)
-                                                          where token.HasTrailingTrivia let next
-                            = token
-                                  .GetNextToken(includeZeroWidth
-                                                : true, includeSkipped
-                                                : true, includeDirectives
-                                                : true, includeDocumentationComments
-                                                : true) where !next.IsMissingOrDefault()
-                                      select new KeyValuePair<SyntaxToken, SyntaxToken>(
-                                          token, next);
+                                                          where token.HasTrailingTrivia let next =
+                            token
+                                .GetNextToken(includeZeroWidth
+                                              : true, includeSkipped
+                                              : true, includeDirectives
+                                              : true, includeDocumentationComments
+                                              : true) where !next.IsMissingOrDefault()
+                                    select new KeyValuePair<SyntaxToken, SyntaxToken>(token, next);
 
-                        Dictionary<SyntaxToken, SyntaxToken> replacements
-                            = new Dictionary<SyntaxToken, SyntaxToken>();
-                        foreach (var pair in tokensForAdjustment) {
+                        Dictionary<SyntaxToken, SyntaxToken> replacements =
+                            new Dictionary<SyntaxToken, SyntaxToken>();
+                        foreach (var pair in tokensForAdjustment)
+                        {
                                 replacements[pair.Key] = pair.Key.WithTrailingTrivia();
                                 replacements[pair.Value] = pair.Value.WithLeadingTrivia(
-                                    pair.Value.LeadingTrivia.InsertRange(
-                                        0, pair.Key.TrailingTrivia));
+                                    pair.Value.LeadingTrivia.InsertRange(0,
+                                                                         pair.Key.TrailingTrivia));
                         }
 
                         return node.ReplaceTokens(replacements.Keys,
-                            (originalToken, rewrittenToken) => replacements[originalToken]);
+                                                  (originalToken, rewrittenToken) =>
+                                                      replacements[originalToken]);
                 }
 
                 public static XmlNameSyntax GetName(this XmlNodeSyntax element)
@@ -246,11 +277,13 @@ namespace StyleCop.Analyzers.Helpers
                             ?.Name;
                 }
 
-                private static SyntaxTrivia SelectExteriorTrivia(
-                    SyntaxTrivia rewrittenTrivia, SyntaxTrivia trivia, SyntaxTrivia triviaWithSpace)
+                private static SyntaxTrivia SelectExteriorTrivia(SyntaxTrivia rewrittenTrivia,
+                                                                 SyntaxTrivia trivia,
+                                                                 SyntaxTrivia triviaWithSpace)
                 {
                         // if the trivia had a trailing space, make sure to preserve it
-                        if (rewrittenTrivia.ToString().EndsWith(" ")) {
+                        if (rewrittenTrivia.ToString().EndsWith(" "))
+                        {
                                 return triviaWithSpace;
                         }
 

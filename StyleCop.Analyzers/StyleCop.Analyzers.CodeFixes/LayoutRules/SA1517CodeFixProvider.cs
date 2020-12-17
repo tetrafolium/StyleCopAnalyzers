@@ -18,24 +18,33 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1517CodeFixProvider))]
         [Shared]
-        internal class SA1517CodeFixProvider : CodeFixProvider {
+        internal class SA1517CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1517CodeMustNotContainBlankLinesAtStartOfFile.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
+                public override FixAllProvider GetFixAllProvider()
+                {
+                        return FixAll.Instance;
+                }
 
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (Diagnostic diagnostic in context.Diagnostics) {
+                        foreach (Diagnostic diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
                                     CodeAction.Create(LayoutResources.SA1517CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, cancellationToken),
-                                        nameof(SA1517CodeFixProvider)),
+                                                      cancellationToken =>
+                                                          GetTransformedDocumentAsync(
+                                                              context.Document, cancellationToken),
+                                                      nameof(SA1517CodeFixProvider)),
                                     diagnostic);
                         }
 
@@ -54,19 +63,21 @@ namespace StyleCop.Analyzers.LayoutRules
                 private static async Task<SyntaxNode> GetTransformedSyntaxRootAsync(
                     Document document, CancellationToken token)
                 {
-                        var syntaxRoot
-                            = await document.GetSyntaxRootAsync(token).ConfigureAwait(false);
+                        var syntaxRoot =
+                            await document.GetSyntaxRootAsync(token).ConfigureAwait(false);
 
                         var firstToken = syntaxRoot.GetFirstToken(includeZeroWidth : true);
                         var leadingTrivia = firstToken.LeadingTrivia;
                         var newTriviaList = SyntaxFactory.TriviaList();
 
-                        var firstNonBlankLineTriviaIndex
-                            = TriviaHelper.IndexOfFirstNonBlankLineTrivia(leadingTrivia);
+                        var firstNonBlankLineTriviaIndex =
+                            TriviaHelper.IndexOfFirstNonBlankLineTrivia(leadingTrivia);
 
-                        if (firstNonBlankLineTriviaIndex != -1) {
+                        if (firstNonBlankLineTriviaIndex != -1)
+                        {
                                 for (var index = firstNonBlankLineTriviaIndex;
-                                     index < leadingTrivia.Count; index++) {
+                                     index < leadingTrivia.Count; index++)
+                                {
                                         newTriviaList = newTriviaList.Add(leadingTrivia[index]);
                                 }
                         }
@@ -76,8 +87,12 @@ namespace StyleCop.Analyzers.LayoutRules
                         return newSyntaxRoot;
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
-                        public static FixAllProvider Instance { get; }
+                private class FixAll : DocumentBasedFixAllProvider
+                {
+                        public static FixAllProvider Instance
+                        {
+                                get;
+                        }
                         = new FixAll();
 
                         protected override string CodeActionTitle => LayoutResources.SA1517CodeFix;
@@ -86,7 +101,8 @@ namespace StyleCop.Analyzers.LayoutRules
                             FixAllContext fixAllContext, Document document,
                             ImmutableArray<Diagnostic> diagnostics)
                         {
-                                if (diagnostics.IsEmpty) {
+                                if (diagnostics.IsEmpty)
+                                {
                                         return null;
                                 }
 

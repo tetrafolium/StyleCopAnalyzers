@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct DeclarationPatternSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.DeclarationPatternSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.DeclarationPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
@@ -29,28 +30,35 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(DeclarationPatternSyntaxWrapper));
-                        TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode,
-                            TypeSyntax>(WrappedType, nameof(Type));
-                        DesignationAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                                      WrappedType, nameof(Designation));
-                        WithTypeAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
-                                      WrappedType, nameof(Type));
-                        WithDesignationAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                CSharpSyntaxNode>(WrappedType, nameof(Designation));
+                        TypeAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                                    WrappedType, nameof(Type));
+                        DesignationAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                                    WrappedType, nameof(Designation));
+                        WithTypeAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                                    WrappedType, nameof(Type));
+                        WithDesignationAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Designation));
                 }
 
-                private DeclarationPatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
+                private DeclarationPatternSyntaxWrapper(CSharpSyntaxNode node)
+                {
+                        this.node = node;
+                }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public TypeSyntax Type
                 {
-                        get { return TypeAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return TypeAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public VariableDesignationSyntaxWrapper Designation
@@ -76,11 +84,13 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static explicit operator DeclarationPatternSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IUsingOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IUsingOperation";
+        internal readonly struct IUsingOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IUsingOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ResourcesAccessor;
                 private static readonly Func<IOperation, IOperation> BodyAccessor;
@@ -19,23 +20,25 @@ namespace StyleCop.Analyzers.Lightup
                 private readonly IOperation operation;
                 static IUsingOperationWrapper()
                 {
-                        WrappedType
-                            = OperationWrapperHelper.GetWrappedType(typeof(IUsingOperationWrapper));
-                        ResourcesAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(Resources));
-                        BodyAccessor = LightupHelpers
-                                           .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                               WrappedType, nameof(Body));
-                        LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
-                        IsAsynchronousAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                        WrappedType =
+                            OperationWrapperHelper.GetWrappedType(typeof(IUsingOperationWrapper));
+                        ResourcesAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Resources));
+                        BodyAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Body));
+                        LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<
+                            IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
+                        IsAsynchronousAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
                                 WrappedType, nameof(IsAsynchronous));
                 }
 
-                private IUsingOperationWrapper(IOperation operation) { this.operation = operation; }
+                private IUsingOperationWrapper(IOperation operation)
+                {
+                        this.operation = operation;
+                }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
@@ -45,11 +48,13 @@ namespace StyleCop.Analyzers.Lightup
                 public bool IsAsynchronous => IsAsynchronousAccessor(this.WrappedOperation);
                 public static IUsingOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -59,8 +64,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

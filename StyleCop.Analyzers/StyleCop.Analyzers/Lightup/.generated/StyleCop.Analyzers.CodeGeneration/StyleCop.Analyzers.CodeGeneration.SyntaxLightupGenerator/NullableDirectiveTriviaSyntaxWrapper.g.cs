@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct NullableDirectiveTriviaSyntaxWrapper
-            : ISyntaxWrapper<DirectiveTriviaSyntax> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.NullableDirectiveTriviaSyntax";
+            : ISyntaxWrapper<DirectiveTriviaSyntax>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.NullableDirectiveTriviaSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<DirectiveTriviaSyntax, SyntaxToken>
@@ -22,15 +23,15 @@ namespace StyleCop.Analyzers.Lightup
                 private static readonly Func<DirectiveTriviaSyntax, SyntaxToken>
                     TargetTokenAccessor;
                 private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                    DirectiveTriviaSyntax> WithHashTokenAccessor;
+                                             DirectiveTriviaSyntax> WithHashTokenAccessor;
                 private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                    DirectiveTriviaSyntax> WithNullableKeywordAccessor;
+                                             DirectiveTriviaSyntax> WithNullableKeywordAccessor;
                 private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                    DirectiveTriviaSyntax> WithSettingTokenAccessor;
+                                             DirectiveTriviaSyntax> WithSettingTokenAccessor;
                 private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                    DirectiveTriviaSyntax> WithTargetTokenAccessor;
+                                             DirectiveTriviaSyntax> WithTargetTokenAccessor;
                 private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                    DirectiveTriviaSyntax> WithEndOfDirectiveTokenAccessor;
+                                             DirectiveTriviaSyntax> WithEndOfDirectiveTokenAccessor;
                 private static readonly Func<DirectiveTriviaSyntax, bool, DirectiveTriviaSyntax>
                     WithIsActiveAccessor;
 
@@ -40,37 +41,36 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(NullableDirectiveTriviaSyntaxWrapper));
-                        NullableKeywordAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<DirectiveTriviaSyntax, SyntaxToken>(
-                                      WrappedType, nameof(NullableKeyword));
-                        SettingTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<DirectiveTriviaSyntax, SyntaxToken>(
-                                      WrappedType, nameof(SettingToken));
-                        TargetTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<DirectiveTriviaSyntax, SyntaxToken>(
-                                      WrappedType, nameof(TargetToken));
-                        WithHashTokenAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax,
-                                SyntaxToken>(WrappedType, nameof(HashToken));
-                        WithNullableKeywordAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax,
-                                SyntaxToken>(WrappedType, nameof(NullableKeyword));
-                        WithSettingTokenAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax,
-                                SyntaxToken>(WrappedType, nameof(SettingToken));
-                        WithTargetTokenAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax,
-                                SyntaxToken>(WrappedType, nameof(TargetToken));
-                        WithEndOfDirectiveTokenAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax,
-                                SyntaxToken>(WrappedType, nameof(EndOfDirectiveToken));
-                        WithIsActiveAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax, bool>(
-                                      WrappedType, nameof(IsActive));
+                        NullableKeywordAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<DirectiveTriviaSyntax, SyntaxToken>(
+                                    WrappedType, nameof(NullableKeyword));
+                        SettingTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<DirectiveTriviaSyntax, SyntaxToken>(
+                                    WrappedType, nameof(SettingToken));
+                        TargetTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<DirectiveTriviaSyntax, SyntaxToken>(
+                                    WrappedType, nameof(TargetToken));
+                        WithHashTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            DirectiveTriviaSyntax, SyntaxToken>(WrappedType, nameof(HashToken));
+                        WithNullableKeywordAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax,
+                                                                            SyntaxToken>(
+                                WrappedType, nameof(NullableKeyword));
+                        WithSettingTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            DirectiveTriviaSyntax, SyntaxToken>(WrappedType, nameof(SettingToken));
+                        WithTargetTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            DirectiveTriviaSyntax, SyntaxToken>(WrappedType, nameof(TargetToken));
+                        WithEndOfDirectiveTokenAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax,
+                                                                            SyntaxToken>(
+                                WrappedType, nameof(EndOfDirectiveToken));
+                        WithIsActiveAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<DirectiveTriviaSyntax, bool>(
+                                    WrappedType, nameof(IsActive));
                 }
 
                 private NullableDirectiveTriviaSyntaxWrapper(DirectiveTriviaSyntax node)
@@ -82,48 +82,68 @@ namespace StyleCop.Analyzers.Lightup
 
                 public SyntaxToken HashToken
                 {
-                        get { return this.SyntaxNode.HashToken; }
+                        get
+                        {
+                                return this.SyntaxNode.HashToken;
+                        }
                 }
 
                 public SyntaxToken NullableKeyword
                 {
-                        get { return NullableKeywordAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return NullableKeywordAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SyntaxToken SettingToken
                 {
-                        get { return SettingTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return SettingTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SyntaxToken TargetToken
                 {
-                        get { return TargetTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return TargetTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SyntaxToken EndOfDirectiveToken
                 {
-                        get { return this.SyntaxNode.EndOfDirectiveToken; }
+                        get
+                        {
+                                return this.SyntaxNode.EndOfDirectiveToken;
+                        }
                 }
 
                 public bool IsActive
                 {
-                        get { return this.SyntaxNode.IsActive; }
+                        get
+                        {
+                                return this.SyntaxNode.IsActive;
+                        }
                 }
 
                 public static explicit operator NullableDirectiveTriviaSyntaxWrapper(
                     SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
-                        return new NullableDirectiveTriviaSyntaxWrapper(
-                            (DirectiveTriviaSyntax) node);
+                        return new NullableDirectiveTriviaSyntaxWrapper((DirectiveTriviaSyntax)
+                                                                            node);
                 }
 
                 public static implicit operator DirectiveTriviaSyntax(

@@ -21,21 +21,30 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1507CodeFixProvider))]
         [Shared]
-        internal class SA1507CodeFixProvider : CodeFixProvider {
+        internal class SA1507CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1507CodeMustNotContainMultipleBlankLinesInARow.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
+                public override FixAllProvider GetFixAllProvider()
+                {
+                        return FixAll.Instance;
+                }
 
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (Diagnostic diagnostic in context.Diagnostics) {
+                        foreach (Diagnostic diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(LayoutResources.SA1507CodeFix,
+                                    CodeAction.Create(
+                                        LayoutResources.SA1507CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1507CodeFixProvider)),
@@ -57,8 +66,12 @@ namespace StyleCop.Analyzers.LayoutRules
                         return document.WithText(sourceText.WithChanges(textChange));
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
-                        public static FixAllProvider Instance { get; }
+                private class FixAll : DocumentBasedFixAllProvider
+                {
+                        public static FixAllProvider Instance
+                        {
+                                get;
+                        }
                         = new FixAll();
 
                         protected override string CodeActionTitle => LayoutResources.SA1507CodeFix;
@@ -67,27 +80,29 @@ namespace StyleCop.Analyzers.LayoutRules
                             FixAllContext fixAllContext, Document document,
                             ImmutableArray<Diagnostic> diagnostics)
                         {
-                                if (diagnostics.IsEmpty) {
+                                if (diagnostics.IsEmpty)
+                                {
                                         return null;
                                 }
 
-                                var newLine = fixAllContext.Document.Project.Solution.Workspace
-                                                  .Options.GetOption(FormattingOptions.NewLine,
-                                                      LanguageNames.CSharp);
+                                var newLine =
+                                    fixAllContext.Document.Project.Solution.Workspace.Options
+                                        .GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
                                 var text = await document.GetTextAsync().ConfigureAwait(false);
 
                                 List<TextChange> changes = new List<TextChange>();
 
-                                foreach (var diagnostic in diagnostics) {
-                                        changes.Add(new TextChange(
-                                            diagnostic.Location.SourceSpan, newLine));
+                                foreach (var diagnostic in diagnostics)
+                                {
+                                        changes.Add(new TextChange(diagnostic.Location.SourceSpan,
+                                                                   newLine));
                                 }
 
-                                changes.Sort(
-                                    (left, right) => left.Span.Start.CompareTo(right.Span.Start));
+                                changes.Sort((left, right) =>
+                                                 left.Span.Start.CompareTo(right.Span.Start));
 
-                                var tree
-                                    = await document.GetSyntaxTreeAsync().ConfigureAwait(false);
+                                var tree =
+                                    await document.GetSyntaxTreeAsync().ConfigureAwait(false);
                                 return await tree.WithChangedText(text.WithChanges(changes))
                                     .GetRootAsync()
                                     .ConfigureAwait(false);

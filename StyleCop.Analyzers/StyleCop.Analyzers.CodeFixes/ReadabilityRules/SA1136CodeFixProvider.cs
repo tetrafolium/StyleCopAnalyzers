@@ -20,9 +20,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1136CodeFixProvider))]
         [Shared]
-        internal class SA1136CodeFixProvider : CodeFixProvider {
+        internal class SA1136CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1136EnumValuesShouldBeOnSeparateLines.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -34,9 +38,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.SA1136CodeFix,
+                                    CodeAction.Create(
+                                        ReadabilityResources.SA1136CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1136CodeFixProvider)),
@@ -54,14 +60,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         var settings = SettingsHelper.GetStyleCopSettings(
                             document.Project.AnalyzerOptions, cancellationToken);
 
-                        var enumMemberDeclaration
-                            = (EnumMemberDeclarationSyntax)
-                                  syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
+                        var enumMemberDeclaration =
+                            (EnumMemberDeclarationSyntax)
+                                syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
                         var enumDeclaration = (EnumDeclarationSyntax) enumMemberDeclaration.Parent;
 
                         var memberIndex = enumDeclaration.Members.IndexOf(enumMemberDeclaration);
-                        var precedingSeparatorToken
-                            = enumDeclaration.Members.GetSeparator(memberIndex - 1);
+                        var precedingSeparatorToken =
+                            enumDeclaration.Members.GetSeparator(memberIndex - 1);
 
                         // determine the indentation for enum members (which is parent + 1 step)
                         var parentIndentationSteps = IndentationHelper.GetIndentationSteps(
@@ -72,9 +78,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         // combine all trivia between the separator and the enum member and place
                         // them after the separator, followed by a new line.
                         var enumMemberDeclarationFirstToken = enumMemberDeclaration.GetFirstToken();
-                        var sharedTrivia
-                            = TriviaHelper.MergeTriviaLists(precedingSeparatorToken.TrailingTrivia,
-                                enumMemberDeclarationFirstToken.LeadingTrivia);
+                        var sharedTrivia = TriviaHelper.MergeTriviaLists(
+                            precedingSeparatorToken.TrailingTrivia,
+                            enumMemberDeclarationFirstToken.LeadingTrivia);
 
                         var newTrailingTrivia = SyntaxFactory.TriviaList(sharedTrivia)
                                                     .WithoutTrailingWhitespace()
@@ -82,16 +88,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                         // replace the trivia for the tokens
                         var replacements = new Dictionary<SyntaxToken, SyntaxToken>{
-                                    [precedingSeparatorToken]
-                                = precedingSeparatorToken.WithTrailingTrivia(newTrailingTrivia),
-                                [ enumMemberDeclarationFirstToken ]
-                                = enumMemberDeclarationFirstToken.WithLeadingTrivia(indentation),
+                                [precedingSeparatorToken] =
+                                    precedingSeparatorToken.WithTrailingTrivia(newTrailingTrivia),
+                                [ enumMemberDeclarationFirstToken ] =
+                                    enumMemberDeclarationFirstToken.WithLeadingTrivia(indentation),
                         };
 
                         var newSyntaxRoot = syntaxRoot.ReplaceTokens(
                             replacements.Keys, (original, rewritten) => replacements[original]);
-                        var newDocument
-                            = document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
+                        var newDocument =
+                            document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
 
                         return newDocument;
                 }

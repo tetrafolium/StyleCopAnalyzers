@@ -11,12 +11,12 @@ namespace LightJson.Serialization
         /// <remarks>
         /// <para>This exception is only intended to be thrown by LightJson.</para>
         /// </remarks>
-        internal sealed class JsonParseException : Exception {
+        internal sealed class JsonParseException : Exception
+        {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class.
                 /// </summary>
-                public JsonParseException()
-                    : base(GetDefaultMessage(ErrorType.Unknown))
+                public JsonParseException() : base(GetDefaultMessage(ErrorType.Unknown))
                 {
                 }
 
@@ -96,7 +96,8 @@ namespace LightJson.Serialization
 
                 private static string GetDefaultMessage(ErrorType type)
                 {
-                        switch (type) {
+                        switch (type)
+                        {
                         case ErrorType.IncompleteMessage:
                                 return "The string ended before a value could be parsed.";
 

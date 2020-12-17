@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IReDimClauseOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IReDimClauseOperation";
+        internal readonly struct IReDimClauseOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IReDimClauseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> OperandAccessor;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
@@ -19,11 +20,12 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IReDimClauseOperationWrapper));
-                        OperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            IOperation>(WrappedType, nameof(Operand));
-                        DimensionSizesAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                                ImmutableArray<IOperation>>(WrappedType, nameof(DimensionSizes));
+                        OperandAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Operand));
+                        DimensionSizesAccessor = LightupHelpers.CreateOperationPropertyAccessor<
+                            IOperation, ImmutableArray<IOperation>>(WrappedType,
+                                                                    nameof(DimensionSizes));
                 }
 
                 private IReDimClauseOperationWrapper(IOperation operation)
@@ -34,15 +36,17 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IOperation Operand => OperandAccessor(this.WrappedOperation);
-                public ImmutableArray<IOperation> DimensionSizes => DimensionSizesAccessor(
-                    this.WrappedOperation);
+                public ImmutableArray<IOperation> DimensionSizes =>
+                    DimensionSizesAccessor(this.WrappedOperation);
                 public static IReDimClauseOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -52,8 +56,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

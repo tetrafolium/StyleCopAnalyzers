@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IReDimOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IReDimOperation";
+        internal readonly struct IReDimOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IReDimOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
                     ClausesAccessor;
@@ -17,17 +18,20 @@ namespace StyleCop.Analyzers.Lightup
                 private readonly IOperation operation;
                 static IReDimOperationWrapper()
                 {
-                        WrappedType
-                            = OperationWrapperHelper.GetWrappedType(typeof(IReDimOperationWrapper));
-                        ClausesAccessor
-                            = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                        WrappedType =
+                            OperationWrapperHelper.GetWrappedType(typeof(IReDimOperationWrapper));
+                        ClausesAccessor =
+                            LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
                                 WrappedType, nameof(Clauses));
-                        PreserveAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                        PreserveAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
                                 WrappedType, nameof(Preserve));
                 }
 
-                private IReDimOperationWrapper(IOperation operation) { this.operation = operation; }
+                private IReDimOperationWrapper(IOperation operation)
+                {
+                        this.operation = operation;
+                }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
@@ -35,11 +39,13 @@ namespace StyleCop.Analyzers.Lightup
                 public bool Preserve => PreserveAccessor(this.WrappedOperation);
                 public static IReDimOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -49,8 +55,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

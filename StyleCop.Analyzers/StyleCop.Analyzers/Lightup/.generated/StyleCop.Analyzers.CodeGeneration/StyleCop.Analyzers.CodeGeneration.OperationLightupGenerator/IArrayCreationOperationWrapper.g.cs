@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IArrayCreationOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IArrayCreationOperation";
+        internal readonly struct IArrayCreationOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IArrayCreationOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
                     DimensionSizesAccessor;
@@ -19,13 +20,12 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IArrayCreationOperationWrapper));
-                        DimensionSizesAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                                ImmutableArray<IOperation>>(WrappedType, nameof(DimensionSizes));
-                        InitializerAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(Initializer));
+                        DimensionSizesAccessor = LightupHelpers.CreateOperationPropertyAccessor<
+                            IOperation, ImmutableArray<IOperation>>(WrappedType,
+                                                                    nameof(DimensionSizes));
+                        InitializerAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Initializer));
                 }
 
                 private IArrayCreationOperationWrapper(IOperation operation)
@@ -35,18 +35,20 @@ namespace StyleCop.Analyzers.Lightup
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public ImmutableArray<IOperation> DimensionSizes => DimensionSizesAccessor(
-                    this.WrappedOperation);
-                public IArrayInitializerOperationWrapper
-                    Initializer => IArrayInitializerOperationWrapper.FromOperation(
+                public ImmutableArray<IOperation> DimensionSizes =>
+                    DimensionSizesAccessor(this.WrappedOperation);
+                public IArrayInitializerOperationWrapper Initializer =>
+                    IArrayInitializerOperationWrapper.FromOperation(
                         InitializerAccessor(this.WrappedOperation));
                 public static IArrayCreationOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -56,8 +58,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

@@ -18,20 +18,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1135CodeFixProvider))]
         [Shared]
-        internal class SA1135CodeFixProvider : CodeFixProvider {
+        internal class SA1135CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1135UsingDirectivesMustBeQualified.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
+                public override FixAllProvider GetFixAllProvider()
+                {
+                        return FixAll.Instance;
+                }
 
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.SA1135CodeFix,
+                                    CodeAction.Create(
+                                        ReadabilityResources.SA1135CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1135CodeFixProvider)),
@@ -48,42 +57,45 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                              .ConfigureAwait(false);
 
                         if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan)
-                                    is UsingDirectiveSyntax node)) {
+                                  is UsingDirectiveSyntax node))
+                        {
                                 return document;
                         }
 
-                        SemanticModel semanticModel
-                            = await document.GetSemanticModelAsync(cancellationToken)
-                                  .ConfigureAwait(false);
-                        var replacementNode
-                            = GetReplacementNode(semanticModel, node, cancellationToken);
+                        SemanticModel semanticModel =
+                            await document.GetSemanticModelAsync(cancellationToken)
+                                .ConfigureAwait(false);
+                        var replacementNode =
+                            GetReplacementNode(semanticModel, node, cancellationToken);
                         var newSyntaxRoot = syntaxRoot.ReplaceNode(node, replacementNode);
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
                 private static SyntaxNode GetReplacementNode(SemanticModel semanticModel,
-                    UsingDirectiveSyntax node, CancellationToken cancellationToken)
+                                                             UsingDirectiveSyntax node,
+                                                             CancellationToken cancellationToken)
                 {
-                        SymbolInfo symbolInfo
-                            = semanticModel.GetSymbolInfo(node.Name, cancellationToken);
-                        var symbolNameSyntax = SyntaxFactory.ParseName(
-                            symbolInfo.Symbol.ToQualifiedString(node.Name));
+                        SymbolInfo symbolInfo =
+                            semanticModel.GetSymbolInfo(node.Name, cancellationToken);
+                        var symbolNameSyntax =
+                            SyntaxFactory.ParseName(symbolInfo.Symbol.ToQualifiedString(node.Name));
 
                         var newName = GetReplacementName(symbolNameSyntax, node.Name);
                         return node.WithName((NameSyntax) newName);
                 }
 
-                private static TypeSyntax GetReplacementName(
-                    TypeSyntax symbolNameSyntax, TypeSyntax nameSyntax)
+                private static TypeSyntax GetReplacementName(TypeSyntax symbolNameSyntax,
+                                                             TypeSyntax nameSyntax)
                 {
-                        switch (nameSyntax.Kind()) {
+                        switch (nameSyntax.Kind())
+                        {
                         case SyntaxKind.GenericName:
-                                return GetReplacementGenericName(
-                                    symbolNameSyntax, (GenericNameSyntax) nameSyntax);
+                                return GetReplacementGenericName(symbolNameSyntax,
+                                                                 (GenericNameSyntax) nameSyntax);
 
                         case SyntaxKind.QualifiedName:
-                                return GetReplacementQualifiedName((QualifiedNameSyntax)
-                                                                       symbolNameSyntax,
+                                return GetReplacementQualifiedName(
+                                    (QualifiedNameSyntax) symbolNameSyntax,
                                     (QualifiedNameSyntax) nameSyntax);
 
                         default:
@@ -101,10 +113,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         TypeArgumentListSyntax newTypeArgumentList = GetReplacementTypeArgumentList(
                             symbolGenericNameSyntax, genericNameSyntax);
 
-                        if (symbolQualifiedNameSyntax != null) {
-                                var newRightPart
-                                    = ((GenericNameSyntax) symbolQualifiedNameSyntax.Right)
-                                          .WithTypeArgumentList(newTypeArgumentList);
+                        if (symbolQualifiedNameSyntax != null)
+                        {
+                                var newRightPart =
+                                    ((GenericNameSyntax) symbolQualifiedNameSyntax.Right)
+                                        .WithTypeArgumentList(newTypeArgumentList);
                                 return symbolQualifiedNameSyntax.WithRight(newRightPart);
                         }
 
@@ -115,63 +128,72 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     GenericNameSyntax symbolGenericNameSyntax, GenericNameSyntax genericNameSyntax)
                 {
                         var replacements = new Dictionary<TypeSyntax, TypeSyntax>();
-                        for (var i = 0; i < genericNameSyntax.TypeArgumentList.Arguments.Count;
-                             i++) {
+                        for (var i = 0; i < genericNameSyntax.TypeArgumentList.Arguments.Count; i++)
+                        {
                                 var argument = genericNameSyntax.TypeArgumentList.Arguments[i];
 
-                                if (!argument.IsKind(SyntaxKind.PredefinedType)) {
-                                        var symbolArgument
-                                            = symbolGenericNameSyntax.TypeArgumentList.Arguments[i];
+                                if (!argument.IsKind(SyntaxKind.PredefinedType))
+                                {
+                                        var symbolArgument =
+                                            symbolGenericNameSyntax.TypeArgumentList.Arguments[i];
 
-                                        var replacementArgument
-                                            = GetReplacementName(symbolArgument, argument)
-                                                  .WithLeadingTrivia(argument.GetLeadingTrivia())
-                                                  .WithTrailingTrivia(argument.GetTrailingTrivia());
+                                        var replacementArgument =
+                                            GetReplacementName(symbolArgument, argument)
+                                                .WithLeadingTrivia(argument.GetLeadingTrivia())
+                                                .WithTrailingTrivia(argument.GetTrailingTrivia());
 
                                         replacements.Add(argument, replacementArgument);
                                 }
                         }
 
-                        var newTypeArgumentList
-                            = genericNameSyntax.TypeArgumentList.ReplaceNodes(replacements.Keys,
-                                (original, maybeRewritten) => replacements[original]);
+                        var newTypeArgumentList = genericNameSyntax.TypeArgumentList.ReplaceNodes(
+                            replacements.Keys,
+                            (original, maybeRewritten) => replacements[original]);
                         return newTypeArgumentList;
                 }
 
                 private static NameSyntax GetReplacementQualifiedName(
                     QualifiedNameSyntax symbolNameSyntax, QualifiedNameSyntax nameSyntax)
                 {
-                        if (nameSyntax.Right.IsKind(SyntaxKind.GenericName)) {
+                        if (nameSyntax.Right.IsKind(SyntaxKind.GenericName))
+                        {
                                 return GetReplacementGenericName(
                                     symbolNameSyntax, (GenericNameSyntax) nameSyntax.Right);
-                        } else {
+                        }
+                        else
+                        {
                                 return symbolNameSyntax;
                         }
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
-                        public static FixAllProvider Instance { get; }
+                private class FixAll : DocumentBasedFixAllProvider
+                {
+                        public static FixAllProvider Instance
+                        {
+                                get;
+                        }
                         = new FixAll();
 
-                        protected override string
-                            CodeActionTitle => ReadabilityResources.SA1135CodeFix;
+                        protected override string CodeActionTitle =>
+                            ReadabilityResources.SA1135CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
                             FixAllContext fixAllContext, Document document,
                             ImmutableArray<Diagnostic> diagnostics)
                         {
-                                if (diagnostics.IsEmpty) {
+                                if (diagnostics.IsEmpty)
+                                {
                                         return null;
                                 }
 
-                                SyntaxNode syntaxRoot
-                                    = await document
-                                          .GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                                          .ConfigureAwait(false);
-                                SemanticModel semanticModel
-                                    = await document
-                                          .GetSemanticModelAsync(fixAllContext.CancellationToken)
-                                          .ConfigureAwait(false);
+                                SyntaxNode syntaxRoot =
+                                    await document
+                                        .GetSyntaxRootAsync(fixAllContext.CancellationToken)
+                                        .ConfigureAwait(false);
+                                SemanticModel semanticModel =
+                                    await document
+                                        .GetSemanticModelAsync(fixAllContext.CancellationToken)
+                                        .ConfigureAwait(false);
 
                                 var nodes = diagnostics.Select(
                                     diagnostic => syntaxRoot
@@ -180,10 +202,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                                                 : true)
                                                       .FirstAncestorOrSelf<UsingDirectiveSyntax>());
 
-                                return syntaxRoot.ReplaceNodes(nodes,
-                                    (originalNode, rewrittenNode) => GetReplacementNode(
-                                        semanticModel, rewrittenNode,
-                                        fixAllContext.CancellationToken));
+                                return syntaxRoot.ReplaceNodes(
+                                    nodes, (originalNode, rewrittenNode) =>
+                                               GetReplacementNode(semanticModel, rewrittenNode,
+                                                                  fixAllContext.CancellationToken));
                         }
                 }
         }

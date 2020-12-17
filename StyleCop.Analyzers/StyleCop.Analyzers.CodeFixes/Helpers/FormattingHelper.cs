@@ -10,10 +10,12 @@ namespace StyleCop.Analyzers.Helpers
         using Microsoft.CodeAnalysis.CSharp.Syntax;
         using Microsoft.CodeAnalysis.Formatting;
 
-        internal static class FormattingHelper {
+        internal static class FormattingHelper
+        {
                 public static SyntaxTrivia GetNewLineTrivia(Document document)
                 {
-                        return SyntaxFactory.SyntaxTrivia(SyntaxKind.EndOfLineTrivia,
+                        return SyntaxFactory.SyntaxTrivia(
+                            SyntaxKind.EndOfLineTrivia,
                             document.Project.Solution.Workspace.Options.GetOption(
                                 FormattingOptions.NewLine, LanguageNames.CSharp));
                 }
@@ -38,17 +40,18 @@ namespace StyleCop.Analyzers.Helpers
                          * but not the node itself
                          *  2. Transform the resulting node itself
                          */
-                        TNode result = node.ReplaceSyntax(node.DescendantNodes(descendIntoTrivia
-                                                                               : true),
+                        TNode result = node.ReplaceSyntax(
+                            node.DescendantNodes(descendIntoTrivia
+                                                 : true),
                             (originalNode, rewrittenNode) => WithoutFormattingImpl(rewrittenNode),
                             node.DescendantTokens(descendIntoTrivia
                                                   : true),
-                            (originalToken, rewrittenToken) => WithoutFormattingImpl(
-                                rewrittenToken),
+                            (originalToken, rewrittenToken) =>
+                                WithoutFormattingImpl(rewrittenToken),
                             node.DescendantTrivia(descendIntoTrivia
                                                   : true),
-                            (originalTrivia, rewrittenTrivia) => WithoutFormattingImpl(
-                                rewrittenTrivia));
+                            (originalTrivia, rewrittenTrivia) =>
+                                WithoutFormattingImpl(rewrittenTrivia));
 
                         return WithoutFormattingImpl(result);
                 }
@@ -71,10 +74,10 @@ namespace StyleCop.Analyzers.Helpers
                          * reformatted
                          *  2. Remove formatting from the resulting token
                          */
-                        SyntaxTriviaList newLeadingTrivia
-                            = token.LeadingTrivia.Select(WithoutFormatting).ToSyntaxTriviaList();
-                        SyntaxTriviaList newTrailingTrivia
-                            = token.TrailingTrivia.Select(WithoutFormatting).ToSyntaxTriviaList();
+                        SyntaxTriviaList newLeadingTrivia =
+                            token.LeadingTrivia.Select(WithoutFormatting).ToSyntaxTriviaList();
+                        SyntaxTriviaList newTrailingTrivia =
+                            token.TrailingTrivia.Select(WithoutFormatting).ToSyntaxTriviaList();
                         return WithoutFormattingImpl(token.WithLeadingTrivia(newLeadingTrivia)
                                                          .WithTrailingTrivia(newTrailingTrivia));
                 }
@@ -98,15 +101,17 @@ namespace StyleCop.Analyzers.Helpers
                          *  2. Remove formatting from the resulting trivia
                          */
                         SyntaxTrivia result = trivia;
-                        if (trivia.HasStructure) {
+                        if (trivia.HasStructure)
+                        {
                                 // GetStructure() returns SyntaxNode instead of
                                 // StructuredTriviaSyntax. For C# code, this should always be an
                                 // actual instance of StructuredTriviaSyntax, but we handle the case
                                 // where it is not by leaving the structure node unaltered rather
                                 // than throwing some sort of exception.
-                                if (trivia.GetStructure() is StructuredTriviaSyntax structure) {
-                                        result
-                                            = SyntaxFactory.Trivia(structure.WithoutFormatting());
+                                if (trivia.GetStructure() is StructuredTriviaSyntax structure)
+                                {
+                                        result =
+                                            SyntaxFactory.Trivia(structure.WithoutFormatting());
                                 }
                         }
 
@@ -132,8 +137,8 @@ namespace StyleCop.Analyzers.Helpers
                 private static TNode WithoutFormattingImpl<TNode>(TNode node) where TNode
                     : SyntaxNode
                 {
-                        return node.WithoutAnnotations(
-                            Formatter.Annotation, SyntaxAnnotation.ElasticAnnotation);
+                        return node.WithoutAnnotations(Formatter.Annotation,
+                                                       SyntaxAnnotation.ElasticAnnotation);
                 }
 
                 /// <summary>
@@ -154,8 +159,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// </returns>
                 private static SyntaxToken WithoutFormattingImpl(SyntaxToken token)
                 {
-                        return token.WithoutAnnotations(
-                            Formatter.Annotation, SyntaxAnnotation.ElasticAnnotation);
+                        return token.WithoutAnnotations(Formatter.Annotation,
+                                                        SyntaxAnnotation.ElasticAnnotation);
                 }
 
                 /// <summary>
@@ -175,8 +180,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// </returns>
                 private static SyntaxTrivia WithoutFormattingImpl(SyntaxTrivia trivia)
                 {
-                        return trivia.WithoutAnnotations(
-                            Formatter.Annotation, SyntaxAnnotation.ElasticAnnotation);
+                        return trivia.WithoutAnnotations(Formatter.Annotation,
+                                                         SyntaxAnnotation.ElasticAnnotation);
                 }
         }
 }

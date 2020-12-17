@@ -7,7 +7,8 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal static class INamedTypeSymbolExtensions {
+        internal static class INamedTypeSymbolExtensions
+        {
                 private static readonly Func<INamedTypeSymbol, INamedTypeSymbol>
                     TupleUnderlyingTypeAccessor;
                 private static readonly Func<INamedTypeSymbol, ImmutableArray<IFieldSymbol>>
@@ -16,16 +17,15 @@ namespace StyleCop.Analyzers.Lightup
 
                 static INamedTypeSymbolExtensions()
                 {
-                        TupleUnderlyingTypeAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<INamedTypeSymbol, INamedTypeSymbol>(
-                                      typeof(INamedTypeSymbol), nameof(TupleUnderlyingType));
-                        TupleElementsAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol,
-                                ImmutableArray<IFieldSymbol>>(
-                                typeof(INamedTypeSymbol), nameof(TupleElements));
-                        IsSerializableAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol, bool>(
+                        TupleUnderlyingTypeAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<INamedTypeSymbol, INamedTypeSymbol>(
+                                    typeof(INamedTypeSymbol), nameof(TupleUnderlyingType));
+                        TupleElementsAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            INamedTypeSymbol, ImmutableArray<IFieldSymbol>>(
+                            typeof(INamedTypeSymbol), nameof(TupleElements));
+                        IsSerializableAccessor =
+                            LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol, bool>(
                                 typeof(INamedTypeSymbol), nameof(IsSerializable));
                 }
 

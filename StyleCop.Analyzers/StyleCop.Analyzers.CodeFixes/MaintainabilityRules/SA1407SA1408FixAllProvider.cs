@@ -12,39 +12,44 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         using Microsoft.CodeAnalysis.CSharp.Syntax;
         using StyleCop.Analyzers.Helpers;
 
-        internal sealed class SA1407SA1408FixAllProvider : DocumentBasedFixAllProvider {
-                protected override string
-                    CodeActionTitle => MaintainabilityResources.SA1407SA1408CodeFix;
+        internal sealed class SA1407SA1408FixAllProvider : DocumentBasedFixAllProvider
+        {
+                protected override string CodeActionTitle =>
+                    MaintainabilityResources.SA1407SA1408CodeFix;
 
                 protected override async Task<SyntaxNode> FixAllInDocumentAsync(
                     FixAllContext fixAllContext, Document document,
                     ImmutableArray<Diagnostic> diagnostics)
                 {
-                        if (diagnostics.IsEmpty) {
+                        if (diagnostics.IsEmpty)
+                        {
                                 return null;
                         }
 
-                        var root
-                            = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                                  .ConfigureAwait(false);
+                        var root =
+                            await document.GetSyntaxRootAsync(fixAllContext.CancellationToken)
+                                .ConfigureAwait(false);
 
                         List<SyntaxNode> nodes = new List<SyntaxNode>();
-                        foreach (var diagnostic in diagnostics) {
+                        foreach (var diagnostic in diagnostics)
+                        {
                                 SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan);
-                                if (node.IsMissing) {
+                                if (node.IsMissing)
+                                {
                                         continue;
                                 }
 
                                 nodes.Add(node);
                         }
 
-                        return root.ReplaceNodes(
-                            nodes, (originalNode, rewrittenNode) => AddParentheses(rewrittenNode));
+                        return root.ReplaceNodes(nodes, (originalNode, rewrittenNode) =>
+                                                            AddParentheses(rewrittenNode));
                 }
 
                 private static SyntaxNode AddParentheses(SyntaxNode node)
                 {
-                        if (!(node is BinaryExpressionSyntax syntax)) {
+                        if (!(node is BinaryExpressionSyntax syntax))
+                        {
                                 return node;
                         }
 

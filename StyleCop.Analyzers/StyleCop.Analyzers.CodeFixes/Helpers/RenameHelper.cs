@@ -14,31 +14,33 @@ namespace StyleCop.Analyzers.Helpers
         using Microsoft.CodeAnalysis.Rename;
         using StyleCop.Analyzers.Lightup;
 
-        internal static class RenameHelper {
-                public static async Task<Solution> RenameSymbolAsync(Document document,
-                    SyntaxNode root, SyntaxToken declarationToken, string newName,
-                    CancellationToken cancellationToken)
+        internal static class RenameHelper
+        {
+                public static async Task<Solution> RenameSymbolAsync(
+                    Document document, SyntaxNode root, SyntaxToken declarationToken,
+                    string newName, CancellationToken cancellationToken)
                 {
-                        var annotatedRoot = root.ReplaceToken(declarationToken,
+                        var annotatedRoot = root.ReplaceToken(
+                            declarationToken,
                             declarationToken.WithAdditionalAnnotations(RenameAnnotation.Create()));
                         var annotatedSolution = document.Project.Solution.WithDocumentSyntaxRoot(
                             document.Id, annotatedRoot);
                         var annotatedDocument = annotatedSolution.GetDocument(document.Id);
 
-                        annotatedRoot
-                            = await annotatedDocument.GetSyntaxRootAsync(cancellationToken)
-                                  .ConfigureAwait(false);
+                        annotatedRoot =
+                            await annotatedDocument.GetSyntaxRootAsync(cancellationToken)
+                                .ConfigureAwait(false);
                         var annotatedToken = annotatedRoot.FindToken(declarationToken.SpanStart);
 
-                        var semanticModel
-                            = await annotatedDocument.GetSemanticModelAsync(cancellationToken)
-                                  .ConfigureAwait(false);
-                        var symbol = semanticModel.GetDeclaredSymbol(
-                            annotatedToken.Parent, cancellationToken);
+                        var semanticModel =
+                            await annotatedDocument.GetSemanticModelAsync(cancellationToken)
+                                .ConfigureAwait(false);
+                        var symbol = semanticModel.GetDeclaredSymbol(annotatedToken.Parent,
+                                                                     cancellationToken);
 
                         var newSolution = await Renamer
                                               .RenameSymbolAsync(annotatedSolution, symbol, newName,
-                                                  null, cancellationToken)
+                                                                 null, cancellationToken)
                                               .ConfigureAwait(false);
 
                         // TODO: return annotatedSolution instead of newSolution if newSolution
@@ -50,15 +52,18 @@ namespace StyleCop.Analyzers.Helpers
                     SemanticModel semanticModel, ISymbol symbol, string name,
                     CancellationToken cancellationToken)
                 {
-                        if (symbol.Kind == SymbolKind.NamedType) {
+                        if (symbol.Kind == SymbolKind.NamedType)
+                        {
                                 TypeKind typeKind = ((INamedTypeSymbol) symbol).TypeKind;
 
                                 // If the symbol is a class or struct, the name can't be the same as
                                 // any of its members.
-                                if (typeKind == TypeKind.Class || typeKind == TypeKind.Struct) {
-                                        var members
-                                            = (symbol as INamedTypeSymbol) ?.GetMembers(name);
-                                        if (members.HasValue && !members.Value.IsDefaultOrEmpty) {
+                                if (typeKind == TypeKind.Class || typeKind == TypeKind.Struct)
+                                {
+                                        var members =
+                                            (symbol as INamedTypeSymbol) ?.GetMembers(name);
+                                        if (members.HasValue && !members.Value.IsDefaultOrEmpty)
+                                        {
                                                 return false;
                                         }
                                 }
@@ -66,12 +71,14 @@ namespace StyleCop.Analyzers.Helpers
 
                         var containingSymbol = symbol.ContainingSymbol;
 
-                        if (symbol.Kind == SymbolKind.TypeParameter) {
+                        if (symbol.Kind == SymbolKind.TypeParameter)
+                        {
                                 // If the symbol is a type parameter, the name can't be the same as
                                 // any type parameters of the containing type.
                                 if (containingSymbol?.ContainingSymbol is INamedTypeSymbol
-                                        parentSymbol
-                                    && parentSymbol.TypeParameters.Any(t => t.Name == name)) {
+                                        parentSymbol &&
+                                    parentSymbol.TypeParameters.Any(t => t.Name == name))
+                                {
                                         return false;
                                 }
 
@@ -80,24 +87,29 @@ namespace StyleCop.Analyzers.Helpers
                         }
 
                         if (containingSymbol is INamespaceOrTypeSymbol
-                                containingNamespaceOrTypeSymbol) {
-                                if (containingNamespaceOrTypeSymbol.Kind == SymbolKind.Namespace) {
+                                containingNamespaceOrTypeSymbol)
+                        {
+                                if (containingNamespaceOrTypeSymbol.Kind == SymbolKind.Namespace)
+                                {
                                         // Make sure to use the compilation namespace so interfaces
                                         // in referenced assemblies are considered
-                                        containingNamespaceOrTypeSymbol
-                                            = semanticModel.Compilation.GetCompilationNamespace(
+                                        containingNamespaceOrTypeSymbol =
+                                            semanticModel.Compilation.GetCompilationNamespace(
                                                 (INamespaceSymbol) containingNamespaceOrTypeSymbol);
-                                } else if (containingNamespaceOrTypeSymbol.Kind
-                                    == SymbolKind.NamedType) {
-                                        TypeKind typeKind
-                                            = ((INamedTypeSymbol) containingNamespaceOrTypeSymbol)
-                                                  .TypeKind;
+                                }
+                                else if (containingNamespaceOrTypeSymbol.Kind ==
+                                         SymbolKind.NamedType)
+                                {
+                                        TypeKind typeKind =
+                                            ((INamedTypeSymbol) containingNamespaceOrTypeSymbol)
+                                                .TypeKind;
 
                                         // If the containing type is a class or struct, the name
                                         // can't be the same as the name of the containing type.
-                                        if ((typeKind == TypeKind.Class
-                                                || typeKind == TypeKind.Struct)
-                                            && containingNamespaceOrTypeSymbol.Name == name) {
+                                        if ((typeKind == TypeKind.Class ||
+                                             typeKind == TypeKind.Struct) &&
+                                            containingNamespaceOrTypeSymbol.Name == name)
+                                        {
                                                 return false;
                                         }
                                 }
@@ -105,46 +117,54 @@ namespace StyleCop.Analyzers.Helpers
                                 // The name can't be the same as the name of an other member of the
                                 // same type. At this point no special consideration is given to
                                 // overloaded methods.
-                                ImmutableArray<ISymbol> siblings
-                                    = containingNamespaceOrTypeSymbol.GetMembers(name);
-                                if (!siblings.IsDefaultOrEmpty) {
+                                ImmutableArray<ISymbol> siblings =
+                                    containingNamespaceOrTypeSymbol.GetMembers(name);
+                                if (!siblings.IsDefaultOrEmpty)
+                                {
                                         return false;
                                 }
 
                                 return true;
-                        } else if (containingSymbol.Kind == SymbolKind.Method) {
+                        }
+                        else if (containingSymbol.Kind == SymbolKind.Method)
+                        {
                                 IMethodSymbol methodSymbol = (IMethodSymbol) containingSymbol;
-                                if (methodSymbol.Parameters.Any(i => i.Name == name)
-                                    || methodSymbol.TypeParameters.Any(i => i.Name == name)) {
+                                if (methodSymbol.Parameters.Any(i => i.Name == name) ||
+                                    methodSymbol.TypeParameters.Any(i => i.Name == name))
+                                {
                                         return false;
                                 }
 
                                 IMethodSymbol outermostMethod = methodSymbol;
-                                while (outermostMethod.ContainingSymbol.Kind == SymbolKind.Method) {
-                                        outermostMethod
-                                            = (IMethodSymbol) outermostMethod.ContainingSymbol;
-                                        if (outermostMethod.Parameters.Any(i => i.Name == name)
-                                            || outermostMethod.TypeParameters.Any(
-                                                i => i.Name == name)) {
+                                while (outermostMethod.ContainingSymbol.Kind == SymbolKind.Method)
+                                {
+                                        outermostMethod =
+                                            (IMethodSymbol) outermostMethod.ContainingSymbol;
+                                        if (outermostMethod.Parameters.Any(i => i.Name == name) ||
+                                            outermostMethod.TypeParameters.Any(i => i.Name == name))
+                                        {
                                                 return false;
                                         }
                                 }
 
                                 foreach (var syntaxReference in outermostMethod
-                                             .DeclaringSyntaxReferences) {
-                                        SyntaxNode syntaxNode
-                                            = await syntaxReference
-                                                  .GetSyntaxAsync(cancellationToken)
-                                                  .ConfigureAwait(false);
+                                             .DeclaringSyntaxReferences)
+                                {
+                                        SyntaxNode syntaxNode =
+                                            await syntaxReference.GetSyntaxAsync(cancellationToken)
+                                                .ConfigureAwait(false);
                                         LocalNameFinder localNameFinder = new LocalNameFinder(name);
                                         localNameFinder.Visit(syntaxNode);
-                                        if (localNameFinder.Found) {
+                                        if (localNameFinder.Found)
+                                        {
                                                 return false;
                                         }
                                 }
 
                                 return true;
-                        } else {
+                        }
+                        else
+                        {
                                 return true;
                         }
                 }
@@ -153,8 +173,10 @@ namespace StyleCop.Analyzers.Helpers
                 {
                         SyntaxNode parent = token.Parent;
 
-                        while (parent != null) {
-                                switch (parent.Kind()) {
+                        while (parent != null)
+                        {
+                                switch (parent.Kind())
+                                {
                                 case SyntaxKind.VariableDeclarator:
                                 case SyntaxKind.Parameter:
                                 case SyntaxKind.TypeParameter:
@@ -174,7 +196,8 @@ namespace StyleCop.Analyzers.Helpers
                                         return parent;
 
                                 default:
-                                        if (parent is MemberDeclarationSyntax declarationParent) {
+                                        if (parent is MemberDeclarationSyntax declarationParent)
+                                        {
                                                 return declarationParent;
                                         }
 
@@ -187,10 +210,14 @@ namespace StyleCop.Analyzers.Helpers
                         return null;
                 }
 
-                private class LocalNameFinder : CSharpSyntaxWalker {
+                private class LocalNameFinder : CSharpSyntaxWalker
+                {
                         private readonly string name;
 
-                        public LocalNameFinder(string name) { this.name = name; }
+                        public LocalNameFinder(string name)
+                        {
+                                this.name = name;
+                        }
 
                         public bool Found
                         {
@@ -200,18 +227,17 @@ namespace StyleCop.Analyzers.Helpers
 
                         public override void Visit(SyntaxNode node)
                         {
-                                switch (node.Kind()) {
+                                switch (node.Kind())
+                                {
                                 case SyntaxKindEx.LocalFunctionStatement:
                                         this.Found |= ((LocalFunctionStatementSyntaxWrapper) node)
-                                                          .Identifier.ValueText
-                                            == this.name;
+                                                          .Identifier.ValueText == this.name;
                                         break;
 
                                 case SyntaxKindEx.SingleVariableDesignation:
-                                        this.Found
-                                            |= ((SingleVariableDesignationSyntaxWrapper) node)
-                                                   .Identifier.ValueText
-                                            == this.name;
+                                        this.Found |=
+                                            ((SingleVariableDesignationSyntaxWrapper) node)
+                                                .Identifier.ValueText == this.name;
                                         break;
 
                                 default:
@@ -290,8 +316,8 @@ namespace StyleCop.Analyzers.Helpers
                         public override void VisitAnonymousObjectMemberDeclarator(
                             AnonymousObjectMemberDeclaratorSyntax node)
                         {
-                                this.Found
-                                    |= node.NameEquals?.Name?.Identifier.ValueText == this.name;
+                                this.Found |=
+                                    node.NameEquals?.Name?.Identifier.ValueText == this.name;
                                 base.VisitAnonymousObjectMemberDeclarator(node);
                         }
                 }

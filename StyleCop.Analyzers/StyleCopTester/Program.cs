@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCopTester {
+namespace StyleCopTester
+{
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -28,7 +29,8 @@ using Path = System.IO.Path;
 /// the number of diagnostics it could find. This is useful to easily test performance without
 /// having the overhead of visual studio running.
 /// </summary>
-internal static class Program {
+internal static class Program
+{
         private static void Main(string[] args)
         {
                 CancellationTokenSource cts = new CancellationTokenSource();
@@ -43,7 +45,8 @@ internal static class Program {
                 //   http://blogs.msdn.com/b/pfxteam/archive/2012/01/21/10259307.aspx
                 //   https://github.com/DotNetAnalyzers/StyleCopAnalyzers/pull/1362
                 SynchronizationContext previousContext = SynchronizationContext.Current;
-                try {
+                try
+                {
                         var context = new DispatcherSynchronizationContext();
                         SynchronizationContext.SetSynchronizationContext(context);
 
@@ -53,7 +56,9 @@ internal static class Program {
 
                         Dispatcher.PushFrame(dispatcherFrame);
                         mainTask.GetAwaiter().GetResult();
-                } finally {
+                }
+                finally
+                {
                         SynchronizationContext.SetSynchronizationContext(previousContext);
                 }
         }
@@ -62,12 +67,17 @@ internal static class Program {
         {
                 // A valid call must have at least one parameter (a solution file). Optionally it
                 // can include /all or /id:SAXXXX.
-                if (args.Length < 1) {
+                if (args.Length < 1)
+                {
                         PrintHelp();
-                } else {
+                }
+                else
+                {
                         bool applyChanges = args.Contains("/apply");
-                        if (applyChanges) {
-                                if (!args.Contains("/fixall")) {
+                        if (applyChanges)
+                        {
+                                if (!args.Contains("/fixall"))
+                                {
                                         Console.Error.WriteLine(
                                             "Error: /apply can only be used with /fixall");
                                         return;
@@ -81,24 +91,25 @@ internal static class Program {
 
                         analyzers = FilterAnalyzers(analyzers, args).ToImmutableArray();
 
-                        if (analyzers.Length == 0) {
+                        if (analyzers.Length == 0)
+                        {
                                 PrintHelp();
                                 return;
                         }
 
                         var properties = new Dictionary<string, string>{
-                                // This property ensures that XAML files will be compiled in the
-                                // current
-                                // AppDomain rather than a separate one. Any tasks isolated in
-                                // AppDomains or tasks that create AppDomains will likely not work
-                                // due
-                                // to https://github.com/Microsoft/MSBuildLocator/issues/16.
-                                { "AlwaysCompileMarkupFilesInSeparateDomain", bool.FalseString },
+                            // This property ensures that XAML files will be compiled in the
+                            // current
+                            // AppDomain rather than a separate one. Any tasks isolated in
+                            // AppDomains or tasks that create AppDomains will likely not work
+                            // due
+                            // to https://github.com/Microsoft/MSBuildLocator/issues/16.
+                            {"AlwaysCompileMarkupFilesInSeparateDomain", bool.FalseString},
                         };
 
                         MSBuildWorkspace workspace = MSBuildWorkspace.Create();
-                        string solutionPath = args.SingleOrDefault(
-                            i => !i.StartsWith("/", StringComparison.Ordinal));
+                        string solutionPath =
+                            args.SingleOrDefault(i => !i.StartsWith("/", StringComparison.Ordinal));
                         Solution solution = await workspace
                                                 .OpenSolutionAsync(solutionPath, cancellationToken
                                                                    : cancellationToken)
@@ -106,26 +117,26 @@ internal static class Program {
 
                         Console.WriteLine($"Loaded solution in {stopwatch.ElapsedMilliseconds}ms");
 
-                        if (args.Contains("/stats")) {
-                                List<Project> csharpProjects
-                                    = solution.Projects
-                                          .Where(i => i.Language == LanguageNames.CSharp)
-                                          .ToList();
+                        if (args.Contains("/stats"))
+                        {
+                                List<Project> csharpProjects =
+                                    solution.Projects.Where(i => i.Language == LanguageNames.CSharp)
+                                        .ToList();
 
                                 Console.WriteLine("Number of projects:\t\t" + csharpProjects.Count);
-                                Console.WriteLine("Number of documents:\t\t"
-                                    + csharpProjects.Sum(x => x.DocumentIds.Count));
+                                Console.WriteLine("Number of documents:\t\t" +
+                                                  csharpProjects.Sum(x => x.DocumentIds.Count));
 
-                                var statistics = await GetAnalyzerStatisticsAsync(
-                                    csharpProjects, cancellationToken)
+                                var statistics = await GetAnalyzerStatisticsAsync(csharpProjects,
+                                                                                  cancellationToken)
                                                      .ConfigureAwait(true);
 
-                                Console.WriteLine(
-                                    "Number of syntax nodes:\t\t" + statistics.NumberofNodes);
-                                Console.WriteLine(
-                                    "Number of syntax tokens:\t" + statistics.NumberOfTokens);
-                                Console.WriteLine(
-                                    "Number of syntax trivia:\t" + statistics.NumberOfTrivia);
+                                Console.WriteLine("Number of syntax nodes:\t\t" +
+                                                  statistics.NumberofNodes);
+                                Console.WriteLine("Number of syntax tokens:\t" +
+                                                  statistics.NumberOfTokens);
+                                Console.WriteLine("Number of syntax trivia:\t" +
+                                                  statistics.NumberOfTrivia);
                         }
 
                         stopwatch.Restart();
@@ -133,94 +144,106 @@ internal static class Program {
                         bool force = args.Contains("/force");
 
                         var diagnostics = await GetAnalyzerDiagnosticsAsync(
-                            solution, analyzers, force, cancellationToken)
+                                              solution, analyzers, force, cancellationToken)
                                               .ConfigureAwait(true);
-                        var allDiagnostics
-                            = diagnostics.SelectMany(i => i.Value).ToImmutableArray();
+                        var allDiagnostics =
+                            diagnostics.SelectMany(i => i.Value).ToImmutableArray();
 
                         Console.WriteLine(
                             $"Found {allDiagnostics.Length} diagnostics in {stopwatch.ElapsedMilliseconds}ms");
 
-                        bool testDocuments = args.Contains("/editperf")
-                            || args.Any(arg => arg.StartsWith("/editperf:"));
-                        if (testDocuments) {
+                        bool testDocuments = args.Contains("/editperf") ||
+                                             args.Any(arg => arg.StartsWith("/editperf:"));
+                        if (testDocuments)
+                        {
                                 Func<string, bool> documentMatch = _ => true;
-                                string matchArg
-                                    = args.FirstOrDefault(arg => arg.StartsWith("/editperf:"));
-                                if (matchArg != null) {
-                                        Regex expression
-                                            = new Regex(matchArg.Substring("/editperf:".Length),
-                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                                        documentMatch
-                                            = documentPath => expression.IsMatch(documentPath);
+                                string matchArg =
+                                    args.FirstOrDefault(arg => arg.StartsWith("/editperf:"));
+                                if (matchArg != null)
+                                {
+                                        Regex expression = new Regex(
+                                            matchArg.Substring("/editperf:".Length),
+                                            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                        documentMatch = documentPath =>
+                                            expression.IsMatch(documentPath);
                                 }
 
                                 int iterations = 10;
-                                string iterationsArg
-                                    = args.FirstOrDefault(arg => arg.StartsWith("/edititer:"));
-                                if (iterationsArg != null) {
-                                        iterations = int.Parse(
-                                            iterationsArg.Substring("/edititer:".Length));
+                                string iterationsArg =
+                                    args.FirstOrDefault(arg => arg.StartsWith("/edititer:"));
+                                if (iterationsArg != null)
+                                {
+                                        iterations =
+                                            int.Parse(iterationsArg.Substring("/edititer:".Length));
                                 }
 
                                 var projectPerformance = new Dictionary<ProjectId, double>();
-                                var documentPerformance
-                                    = new Dictionary<DocumentId, DocumentAnalyzerPerformance>();
-                                foreach (var projectId in solution.ProjectIds) {
+                                var documentPerformance =
+                                    new Dictionary<DocumentId, DocumentAnalyzerPerformance>();
+                                foreach (var projectId in solution.ProjectIds)
+                                {
                                         Project project = solution.GetProject(projectId);
-                                        if (project.Language != LanguageNames.CSharp) {
+                                        if (project.Language != LanguageNames.CSharp)
+                                        {
                                                 continue;
                                         }
 
-                                        foreach (var documentId in project.DocumentIds) {
+                                        foreach (var documentId in project.DocumentIds)
+                                        {
                                                 var document = project.GetDocument(documentId);
-                                                if (!documentMatch(document.FilePath)) {
+                                                if (!documentMatch(document.FilePath))
+                                                {
                                                         continue;
                                                 }
 
-                                                var currentDocumentPerformance
-                                                    = await TestDocumentPerformanceAsync(analyzers,
-                                                        project, documentId, iterations, force,
-                                                        cancellationToken)
-                                                          .ConfigureAwait(false);
+                                                var currentDocumentPerformance =
+                                                    await TestDocumentPerformanceAsync(
+                                                        analyzers, project, documentId, iterations,
+                                                        force, cancellationToken)
+                                                        .ConfigureAwait(false);
                                                 Console.WriteLine(
                                                     $"{document.FilePath ?? document.Name}: {currentDocumentPerformance.EditsPerSecond:0.00}");
-                                                documentPerformance.Add(
-                                                    documentId, currentDocumentPerformance);
+                                                documentPerformance.Add(documentId,
+                                                                        currentDocumentPerformance);
                                         }
 
-                                        double sumOfDocumentAverages
-                                            = documentPerformance
-                                                  .Where(x => x.Key.ProjectId == projectId)
-                                                  .Sum(x => x.Value.EditsPerSecond);
-                                        double documentCount
-                                            = documentPerformance
-                                                  .Where(x => x.Key.ProjectId == projectId)
-                                                  .Count();
-                                        if (documentCount > 0) {
-                                                projectPerformance[project.Id]
-                                                    = sumOfDocumentAverages / documentCount;
+                                        double sumOfDocumentAverages =
+                                            documentPerformance
+                                                .Where(x => x.Key.ProjectId == projectId)
+                                                .Sum(x => x.Value.EditsPerSecond);
+                                        double documentCount =
+                                            documentPerformance
+                                                .Where(x => x.Key.ProjectId == projectId)
+                                                .Count();
+                                        if (documentCount > 0)
+                                        {
+                                                projectPerformance[project.Id] =
+                                                    sumOfDocumentAverages / documentCount;
                                         }
                                 }
 
-                                var slowestFiles
-                                    = documentPerformance.OrderBy(pair => pair.Value.EditsPerSecond)
-                                          .GroupBy(pair => pair.Key.ProjectId);
+                                var slowestFiles =
+                                    documentPerformance.OrderBy(pair => pair.Value.EditsPerSecond)
+                                        .GroupBy(pair => pair.Key.ProjectId);
                                 Console.WriteLine("Slowest files in each project:");
-                                foreach (var projectGroup in slowestFiles) {
+                                foreach (var projectGroup in slowestFiles)
+                                {
                                         Console.WriteLine(
                                             $"  {solution.GetProject(projectGroup.Key).Name}");
-                                        foreach (var pair in projectGroup.Take(5)) {
+                                        foreach (var pair in projectGroup.Take(5))
+                                        {
                                                 var document = solution.GetDocument(pair.Key);
                                                 Console.WriteLine(
                                                     $"    {document.FilePath ?? document.Name}: {pair.Value.EditsPerSecond:0.00}");
                                         }
                                 }
 
-                                foreach (var projectId in solution.ProjectIds) {
+                                foreach (var projectId in solution.ProjectIds)
+                                {
                                         double averageEditsInProject;
                                         if (!projectPerformance.TryGetValue(
-                                                projectId, out averageEditsInProject)) {
+                                                projectId, out averageEditsInProject))
+                                        {
                                                 continue;
                                         }
 
@@ -231,39 +254,45 @@ internal static class Program {
                         }
 
                         foreach (var group in allDiagnostics.GroupBy(i => i.Id).OrderBy(
-                                     i => i.Key, StringComparer.OrdinalIgnoreCase)) {
+                                     i => i.Key, StringComparer.OrdinalIgnoreCase))
+                        {
                                 Console.WriteLine($"  {group.Key}: {group.Count()} instances");
 
                                 // Print out analyzer diagnostics like AD0001 for analyzer
                                 // exceptions
-                                if (group.Key.StartsWith("AD", StringComparison.Ordinal)) {
-                                        foreach (var item in group) {
+                                if (group.Key.StartsWith("AD", StringComparison.Ordinal))
+                                {
+                                        foreach (var item in group)
+                                        {
                                                 Console.WriteLine(item);
                                         }
                                 }
                         }
 
                         string logArgument = args.FirstOrDefault(x => x.StartsWith("/log:"));
-                        if (logArgument != null) {
-                                string fileName
-                                    = logArgument.Substring(logArgument.IndexOf(':') + 1);
+                        if (logArgument != null)
+                        {
+                                string fileName =
+                                    logArgument.Substring(logArgument.IndexOf(':') + 1);
                                 WriteDiagnosticResults(
                                     diagnostics
-                                        .SelectMany(
-                                            i => i.Value.Select(j => Tuple.Create(i.Key, j)))
+                                        .SelectMany(i =>
+                                                        i.Value.Select(j => Tuple.Create(i.Key, j)))
                                         .ToImmutableArray(),
                                     fileName);
                         }
 
-                        if (args.Contains("/codefixes")) {
-                                await TestCodeFixesAsync(
-                                    stopwatch, solution, allDiagnostics, cancellationToken)
+                        if (args.Contains("/codefixes"))
+                        {
+                                await TestCodeFixesAsync(stopwatch, solution, allDiagnostics,
+                                                         cancellationToken)
                                     .ConfigureAwait(true);
                         }
 
-                        if (args.Contains("/fixall")) {
+                        if (args.Contains("/fixall"))
+                        {
                                 await TestFixAllAsync(stopwatch, solution, diagnostics,
-                                    applyChanges, cancellationToken)
+                                                      applyChanges, cancellationToken)
                                     .ConfigureAwait(true);
                         }
                 }
@@ -273,14 +302,17 @@ internal static class Program {
             ImmutableArray<DiagnosticAnalyzer> analyzers, Project project, DocumentId documentId,
             int iterations, bool force, CancellationToken cancellationToken)
         {
-                var supportedDiagnosticsSpecificOptions
-                    = new Dictionary<string, ReportDiagnostic>();
-                if (force) {
-                        foreach (var analyzer in analyzers) {
-                                foreach (var diagnostic in analyzer.SupportedDiagnostics) {
+                var supportedDiagnosticsSpecificOptions =
+                    new Dictionary<string, ReportDiagnostic>();
+                if (force)
+                {
+                        foreach (var analyzer in analyzers)
+                        {
+                                foreach (var diagnostic in analyzer.SupportedDiagnostics)
+                                {
                                         // make sure the analyzers we are testing are enabled
-                                        supportedDiagnosticsSpecificOptions[diagnostic.Id]
-                                            = ReportDiagnostic.Default;
+                                        supportedDiagnosticsSpecificOptions[diagnostic.Id] =
+                                            ReportDiagnostic.Default;
                                 }
                         }
                 }
@@ -289,23 +321,25 @@ internal static class Program {
                 supportedDiagnosticsSpecificOptions.Add("AD0001", ReportDiagnostic.Error);
 
                 // update the project compilation options
-                var modifiedSpecificDiagnosticOptions
-                    = supportedDiagnosticsSpecificOptions.ToImmutableDictionary().SetItems(
+                var modifiedSpecificDiagnosticOptions =
+                    supportedDiagnosticsSpecificOptions.ToImmutableDictionary().SetItems(
                         project.CompilationOptions.SpecificDiagnosticOptions);
-                var modifiedCompilationOptions
-                    = project.CompilationOptions.WithSpecificDiagnosticOptions(
+                var modifiedCompilationOptions =
+                    project.CompilationOptions.WithSpecificDiagnosticOptions(
                         modifiedSpecificDiagnosticOptions);
 
                 var stopwatch = Stopwatch.StartNew();
-                for (int i = 0; i < iterations; i++) {
-                        var processedProject
-                            = project.WithCompilationOptions(modifiedCompilationOptions);
+                for (int i = 0; i < iterations; i++)
+                {
+                        var processedProject =
+                            project.WithCompilationOptions(modifiedCompilationOptions);
 
-                        Compilation compilation
-                            = await processedProject.GetCompilationAsync(cancellationToken)
-                                  .ConfigureAwait(false);
-                        CompilationWithAnalyzers compilationWithAnalyzers
-                            = compilation.WithAnalyzers(analyzers,
+                        Compilation compilation =
+                            await processedProject.GetCompilationAsync(cancellationToken)
+                                .ConfigureAwait(false);
+                        CompilationWithAnalyzers compilationWithAnalyzers =
+                            compilation.WithAnalyzers(
+                                analyzers,
                                 new CompilationWithAnalyzersOptions(
                                     processedProject.AnalyzerOptions, null, true, false));
 
@@ -316,8 +350,8 @@ internal static class Program {
                             .GetAnalyzerSyntaxDiagnosticsAsync(tree, cancellationToken)
                             .ConfigureAwait(false);
                         await compilationWithAnalyzers
-                            .GetAnalyzerSemanticDiagnosticsAsync(
-                                compilation.GetSemanticModel(tree), null, cancellationToken)
+                            .GetAnalyzerSemanticDiagnosticsAsync(compilation.GetSemanticModel(tree),
+                                                                 null, cancellationToken)
                             .ConfigureAwait(false);
                 }
 
@@ -329,18 +363,20 @@ internal static class Program {
         {
                 var orderedDiagnostics = diagnostics.OrderBy(i => i.Item2.Id)
                                              .ThenBy(i => i.Item2.Location.SourceTree?.FilePath,
-                                                 StringComparer.OrdinalIgnoreCase)
+                                                     StringComparer.OrdinalIgnoreCase)
                                              .ThenBy(i => i.Item2.Location.SourceSpan.Start)
                                              .ThenBy(i => i.Item2.Location.SourceSpan.End);
 
                 var uniqueLines = new HashSet<string>();
                 StringBuilder completeOutput = new StringBuilder();
                 StringBuilder uniqueOutput = new StringBuilder();
-                foreach (var diagnostic in orderedDiagnostics) {
+                foreach (var diagnostic in orderedDiagnostics)
+                {
                         string message = diagnostic.Item2.ToString();
                         string uniqueMessage = $"{diagnostic.Item1}: {diagnostic.Item2}";
                         completeOutput.AppendLine(message);
-                        if (uniqueLines.Add(uniqueMessage)) {
+                        if (uniqueLines.Add(uniqueMessage))
+                        {
                                 uniqueOutput.AppendLine(message);
                         }
                 }
@@ -348,16 +384,17 @@ internal static class Program {
                 string directoryName = Path.GetDirectoryName(fileName);
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
                 string extension = Path.GetExtension(fileName);
-                string uniqueFileName
-                    = Path.Combine(directoryName, $"{fileNameWithoutExtension}-Unique{extension}");
+                string uniqueFileName =
+                    Path.Combine(directoryName, $"{fileNameWithoutExtension}-Unique{extension}");
 
                 File.WriteAllText(fileName, completeOutput.ToString(), Encoding.UTF8);
                 File.WriteAllText(uniqueFileName, uniqueOutput.ToString(), Encoding.UTF8);
         }
 
-        private static async Task TestFixAllAsync(Stopwatch stopwatch, Solution solution,
-            ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> diagnostics,
-            bool applyChanges, CancellationToken cancellationToken)
+        private static async Task
+        TestFixAllAsync(Stopwatch stopwatch, Solution solution,
+                        ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> diagnostics,
+                        bool applyChanges, CancellationToken cancellationToken)
         {
                 Console.WriteLine("Calculating fixes");
 
@@ -365,7 +402,8 @@ internal static class Program {
 
                 var equivalenceGroups = new List<CodeFixEquivalenceGroup>();
 
-                foreach (var codeFixer in codeFixers) {
+                foreach (var codeFixer in codeFixers)
+                {
                         equivalenceGroups.AddRange(
                             await CodeFixEquivalenceGroup
                                 .CreateAsync(codeFixer, diagnostics, solution, cancellationToken)
@@ -373,7 +411,8 @@ internal static class Program {
                 }
 
                 Console.WriteLine($"Found {equivalenceGroups.Count} equivalence groups.");
-                if (applyChanges && equivalenceGroups.Count > 1) {
+                if (applyChanges && equivalenceGroups.Count > 1)
+                {
                         Console.Error.WriteLine(
                             "/apply can only be used with a single equivalence group.");
                         return;
@@ -381,23 +420,31 @@ internal static class Program {
 
                 Console.WriteLine("Calculating changes");
 
-                foreach (var fix in equivalenceGroups) {
-                        try {
+                foreach (var fix in equivalenceGroups)
+                {
+                        try
+                        {
                                 stopwatch.Restart();
                                 Console.WriteLine(
                                     $"Calculating fix for {fix.CodeFixEquivalenceKey} using {fix.FixAllProvider} for {fix.NumberOfDiagnostics} instances.");
                                 var operations = await fix.GetOperationsAsync(cancellationToken)
                                                      .ConfigureAwait(true);
-                                if (applyChanges) {
-                                        var applyOperations
-                                            = operations.OfType<ApplyChangesOperation>().ToList();
-                                        if (applyOperations.Count > 1) {
+                                if (applyChanges)
+                                {
+                                        var applyOperations =
+                                            operations.OfType<ApplyChangesOperation>().ToList();
+                                        if (applyOperations.Count > 1)
+                                        {
                                                 Console.Error.WriteLine(
                                                     "/apply can only apply a single code action operation.");
-                                        } else if (applyOperations.Count == 0) {
+                                        }
+                                        else if (applyOperations.Count == 0)
+                                        {
                                                 Console.WriteLine(
                                                     "No changes were found to apply.");
-                                        } else {
+                                        }
+                                        else
+                                        {
                                                 applyOperations [0]
                                                     .Apply(solution.Workspace, cancellationToken);
                                         }
@@ -406,7 +453,9 @@ internal static class Program {
                                 WriteLine(
                                     $"Calculating changes completed in {stopwatch.ElapsedMilliseconds}ms. This is {fix.NumberOfDiagnostics / stopwatch.Elapsed.TotalSeconds:0.000} instances/second.",
                                     ConsoleColor.Yellow);
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex)
+                        {
                                 // Report thrown exceptions
                                 WriteLine(
                                     $"The fix '{fix.CodeFixEquivalenceKey}' threw an exception after {stopwatch.ElapsedMilliseconds}ms:",
@@ -424,7 +473,8 @@ internal static class Program {
         }
 
         private static async Task TestCodeFixesAsync(Stopwatch stopwatch, Solution solution,
-            ImmutableArray<Diagnostic> diagnostics, CancellationToken cancellationToken)
+                                                     ImmutableArray<Diagnostic> diagnostics,
+                                                     CancellationToken cancellationToken)
         {
                 Console.WriteLine("Calculating fixes");
 
@@ -432,11 +482,13 @@ internal static class Program {
 
                 var codeFixers = GetAllCodeFixers();
 
-                foreach (var item in diagnostics) {
+                foreach (var item in diagnostics)
+                {
                         foreach (var codeFixer in codeFixers.GetValueOrDefault(
-                                     item.Id, ImmutableList.Create<CodeFixProvider>())) {
-                                fixes.AddRange(await GetFixesAsync(
-                                    solution, codeFixer, item, cancellationToken)
+                                     item.Id, ImmutableList.Create<CodeFixProvider>()))
+                        {
+                                fixes.AddRange(await GetFixesAsync(solution, codeFixer, item,
+                                                                   cancellationToken)
                                                    .ConfigureAwait(false));
                         }
                 }
@@ -450,14 +502,17 @@ internal static class Program {
                 object lockObject = new object();
 
                 Parallel.ForEach(fixes, fix => {
-                        try {
+                        try
+                        {
                                 fix.GetOperationsAsync(cancellationToken).GetAwaiter().GetResult();
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex)
+                        {
                                 // Report thrown exceptions
                                 lock(lockObject)
                                 {
                                         WriteLine($"The fix '{fix.Title}' threw an exception:",
-                                            ConsoleColor.Yellow);
+                                                  ConsoleColor.Yellow);
                                         WriteLine(ex.ToString(), ConsoleColor.Red);
                                 }
                         }
@@ -467,16 +522,16 @@ internal static class Program {
                     $"Calculating changes completed in {stopwatch.ElapsedMilliseconds}ms");
         }
 
-        private static async Task<IEnumerable<CodeAction>> GetFixesAsync(Solution solution,
-            CodeFixProvider codeFixProvider, Diagnostic diagnostic,
+        private static async Task<IEnumerable<CodeAction>> GetFixesAsync(
+            Solution solution, CodeFixProvider codeFixProvider, Diagnostic diagnostic,
             CancellationToken cancellationToken)
         {
                 List<CodeAction> codeActions = new List<CodeAction>();
 
                 await codeFixProvider
-                    .RegisterCodeFixesAsync(
-                        new CodeFixContext(solution.GetDocument(diagnostic.Location.SourceTree),
-                            diagnostic, (a, d) => codeActions.Add(a), cancellationToken))
+                    .RegisterCodeFixesAsync(new CodeFixContext(
+                        solution.GetDocument(diagnostic.Location.SourceTree), diagnostic,
+                        (a, d) => codeActions.Add(a), cancellationToken))
                     .ConfigureAwait(false);
 
                 return codeActions;
@@ -488,24 +543,24 @@ internal static class Program {
                 ConcurrentBag<Statistic> sums = new ConcurrentBag<Statistic>();
 
                 Parallel.ForEach(projects.SelectMany(i => i.Documents), document => {
-                        var documentStatistics
-                            = GetAnalyzerStatisticsAsync(document, cancellationToken)
-                                  .ConfigureAwait(false)
-                                  .GetAwaiter()
-                                  .GetResult();
+                        var documentStatistics =
+                            GetAnalyzerStatisticsAsync(document, cancellationToken)
+                                .ConfigureAwait(false)
+                                .GetAwaiter()
+                                .GetResult();
                         sums.Add(documentStatistics);
                 });
 
-                Statistic sum = sums.Aggregate(
-                    new Statistic(0, 0, 0), (currentResult, value) => currentResult + value);
+                Statistic sum = sums.Aggregate(new Statistic(0, 0, 0),
+                                               (currentResult, value) => currentResult + value);
                 return Task.FromResult(sum);
         }
 
         private static async Task<Statistic> GetAnalyzerStatisticsAsync(
             Document document, CancellationToken cancellationToken)
         {
-                SyntaxTree tree
-                    = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
+                SyntaxTree tree =
+                    await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
 
                 SyntaxNode root = await tree.GetRootAsync(cancellationToken).ConfigureAwait(false);
 
@@ -527,16 +582,23 @@ internal static class Program {
                     args.Where(y => y.StartsWith("/id:", StringComparison.Ordinal))
                         .Select(y => y.Substring(4)));
 
-                foreach (var analyzer in analyzers) {
-                        if (useAll) {
+                foreach (var analyzer in analyzers)
+                {
+                        if (useAll)
+                        {
                                 yield return analyzer;
-                        } else if (ids.Count == 0) {
-                                if (analyzer.SupportedDiagnostics.Any(i => i.IsEnabledByDefault)) {
+                        }
+                        else if (ids.Count == 0)
+                        {
+                                if (analyzer.SupportedDiagnostics.Any(i => i.IsEnabledByDefault))
+                                {
                                         yield return analyzer;
                                 }
 
                                 continue;
-                        } else if (analyzer.SupportedDiagnostics.Any(y => ids.Contains(y.Id))) {
+                        }
+                        else if (analyzer.SupportedDiagnostics.Any(y => ids.Contains(y.Id)))
+                        {
                                 yield return analyzer;
                         }
                 }
@@ -550,8 +612,10 @@ internal static class Program {
 
                 var analyzers = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>();
 
-                foreach (var type in assembly.GetTypes()) {
-                        if (type.IsSubclassOf(diagnosticAnalyzerType) && !type.IsAbstract) {
+                foreach (var type in assembly.GetTypes())
+                {
+                        if (type.IsSubclassOf(diagnosticAnalyzerType) && !type.IsAbstract)
+                        {
                                 analyzers.Add((DiagnosticAnalyzer) Activator.CreateInstance(type));
                         }
                 }
@@ -559,23 +623,26 @@ internal static class Program {
                 return analyzers.ToImmutable();
         }
 
-        private static ImmutableDictionary<string, ImmutableList<CodeFixProvider>>
-        GetAllCodeFixers()
+        private static ImmutableDictionary<string,
+                                           ImmutableList<CodeFixProvider>> GetAllCodeFixers()
         {
-                Assembly assembly
-                    = typeof(StyleCop.Analyzers.SpacingRules.SA1027CodeFixProvider).Assembly;
+                Assembly assembly =
+                    typeof(StyleCop.Analyzers.SpacingRules.SA1027CodeFixProvider).Assembly;
 
                 var codeFixProviderType = typeof(CodeFixProvider);
 
-                Dictionary<string, ImmutableList<CodeFixProvider>> providers
-                    = new Dictionary<string, ImmutableList<CodeFixProvider>>();
+                Dictionary<string, ImmutableList<CodeFixProvider>> providers =
+                    new Dictionary<string, ImmutableList<CodeFixProvider>>();
 
-                foreach (var type in assembly.GetTypes()) {
-                        if (type.IsSubclassOf(codeFixProviderType) && !type.IsAbstract) {
-                                var codeFixProvider
-                                    = (CodeFixProvider) Activator.CreateInstance(type);
+                foreach (var type in assembly.GetTypes())
+                {
+                        if (type.IsSubclassOf(codeFixProviderType) && !type.IsAbstract)
+                        {
+                                var codeFixProvider =
+                                    (CodeFixProvider) Activator.CreateInstance(type);
 
-                                foreach (var diagnosticId in codeFixProvider.FixableDiagnosticIds) {
+                                foreach (var diagnosticId in codeFixProvider.FixableDiagnosticIds)
+                                {
                                         providers.AddToInnerList(diagnosticId, codeFixProvider);
                                 }
                         }
@@ -586,31 +653,33 @@ internal static class Program {
 
         private static async Task<ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>>>
         GetAnalyzerDiagnosticsAsync(Solution solution, ImmutableArray<DiagnosticAnalyzer> analyzers,
-            bool force, CancellationToken cancellationToken)
+                                    bool force, CancellationToken cancellationToken)
         {
                 List<KeyValuePair<ProjectId, Task<ImmutableArray<Diagnostic>>>>
-                    projectDiagnosticTasks
-                    = new List<KeyValuePair<ProjectId, Task<ImmutableArray<Diagnostic>>>>();
+                    projectDiagnosticTasks =
+                        new List<KeyValuePair<ProjectId, Task<ImmutableArray<Diagnostic>>>>();
 
                 // Make sure we analyze the projects in parallel
-                foreach (var project in solution.Projects) {
-                        if (project.Language != LanguageNames.CSharp) {
+                foreach (var project in solution.Projects)
+                {
+                        if (project.Language != LanguageNames.CSharp)
+                        {
                                 continue;
                         }
 
                         projectDiagnosticTasks.Add(
                             new KeyValuePair<ProjectId, Task<ImmutableArray<Diagnostic>>>(
-                                project.Id,
-                                GetProjectAnalyzerDiagnosticsAsync(
-                                    analyzers, project, force, cancellationToken)));
+                                project.Id, GetProjectAnalyzerDiagnosticsAsync(
+                                                analyzers, project, force, cancellationToken)));
                 }
 
                 ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>>.Builder
-                    projectDiagnosticBuilder
-                    = ImmutableDictionary.CreateBuilder<ProjectId, ImmutableArray<Diagnostic>>();
-                foreach (var task in projectDiagnosticTasks) {
-                        projectDiagnosticBuilder.Add(
-                            task.Key, await task.Value.ConfigureAwait(false));
+                    projectDiagnosticBuilder =
+                    ImmutableDictionary.CreateBuilder<ProjectId, ImmutableArray<Diagnostic>>();
+                foreach (var task in projectDiagnosticTasks)
+                {
+                        projectDiagnosticBuilder.Add(task.Key,
+                                                     await task.Value.ConfigureAwait(false));
                 }
 
                 return projectDiagnosticBuilder.ToImmutable();
@@ -631,14 +700,17 @@ internal static class Program {
             ImmutableArray<DiagnosticAnalyzer> analyzers, Project project, bool force,
             CancellationToken cancellationToken)
         {
-                var supportedDiagnosticsSpecificOptions
-                    = new Dictionary<string, ReportDiagnostic>();
-                if (force) {
-                        foreach (var analyzer in analyzers) {
-                                foreach (var diagnostic in analyzer.SupportedDiagnostics) {
+                var supportedDiagnosticsSpecificOptions =
+                    new Dictionary<string, ReportDiagnostic>();
+                if (force)
+                {
+                        foreach (var analyzer in analyzers)
+                        {
+                                foreach (var diagnostic in analyzer.SupportedDiagnostics)
+                                {
                                         // make sure the analyzers we are testing are enabled
-                                        supportedDiagnosticsSpecificOptions[diagnostic.Id]
-                                            = ReportDiagnostic.Default;
+                                        supportedDiagnosticsSpecificOptions[diagnostic.Id] =
+                                            ReportDiagnostic.Default;
                                 }
                         }
                 }
@@ -647,25 +719,24 @@ internal static class Program {
                 supportedDiagnosticsSpecificOptions.Add("AD0001", ReportDiagnostic.Error);
 
                 // update the project compilation options
-                var modifiedSpecificDiagnosticOptions
-                    = supportedDiagnosticsSpecificOptions.ToImmutableDictionary().SetItems(
+                var modifiedSpecificDiagnosticOptions =
+                    supportedDiagnosticsSpecificOptions.ToImmutableDictionary().SetItems(
                         project.CompilationOptions.SpecificDiagnosticOptions);
-                var modifiedCompilationOptions
-                    = project.CompilationOptions.WithSpecificDiagnosticOptions(
+                var modifiedCompilationOptions =
+                    project.CompilationOptions.WithSpecificDiagnosticOptions(
                         modifiedSpecificDiagnosticOptions);
                 var processedProject = project.WithCompilationOptions(modifiedCompilationOptions);
 
-                Compilation compilation
-                    = await processedProject.GetCompilationAsync(cancellationToken)
-                          .ConfigureAwait(false);
-                CompilationWithAnalyzers compilationWithAnalyzers
-                    = compilation.WithAnalyzers(analyzers,
-                        new CompilationWithAnalyzersOptions(
-                            processedProject.AnalyzerOptions, null, true, false));
+                Compilation compilation =
+                    await processedProject.GetCompilationAsync(cancellationToken)
+                        .ConfigureAwait(false);
+                CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers(
+                    analyzers, new CompilationWithAnalyzersOptions(processedProject.AnalyzerOptions,
+                                                                   null, true, false));
 
-                var diagnostics
-                    = await compilationWithAnalyzers.GetAllDiagnosticsAsync(cancellationToken)
-                          .ConfigureAwait(false);
+                var diagnostics =
+                    await compilationWithAnalyzers.GetAllDiagnosticsAsync(cancellationToken)
+                        .ConfigureAwait(false);
                 return diagnostics;
         }
 
@@ -689,13 +760,17 @@ internal static class Program {
                     "/edititer:<iterations>  Specifies the number of iterations to use for testing documents with /editperf. When this is not specified, the default value is 10.");
         }
 
-        private struct DocumentAnalyzerPerformance {
+        private struct DocumentAnalyzerPerformance
+        {
                 public DocumentAnalyzerPerformance(double editsPerSecond)
                 {
                         this.EditsPerSecond = editsPerSecond;
                 }
 
-                public double EditsPerSecond { get; }
+                public double EditsPerSecond
+                {
+                        get;
+                }
         }
 }
 }

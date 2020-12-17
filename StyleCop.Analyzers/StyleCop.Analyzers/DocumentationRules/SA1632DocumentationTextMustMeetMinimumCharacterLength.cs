@@ -35,36 +35,40 @@ namespace StyleCop.Analyzers.DocumentationRules
         [NoDiagnostic(
             "This diagnostic was determined to be too subjective and/or misleading to developers.")]
         [NoCodeFix("Cannot generate documentation")]
-        internal class SA1632DocumentationTextMustMeetMinimumCharacterLength : DiagnosticAnalyzer {
+        internal class SA1632DocumentationTextMustMeetMinimumCharacterLength : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1632DocumentationTextMustMeetMinimumCharacterLength"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1632";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1632.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1632Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1632.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1632Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1632MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1632Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1632Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS2000 // Add analyzer diagnostic IDs to analyzer release.
-                    new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.DisabledByDefault, Description, HelpLink,
-                        WellKnownDiagnosticTags.NotConfigurable);
+                    new DiagnosticDescriptor(
+                        DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                        DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault,
+                        Description, HelpLink, WellKnownDiagnosticTags.NotConfigurable);
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>

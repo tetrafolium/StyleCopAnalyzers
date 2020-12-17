@@ -28,7 +28,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         ///    If there is no intent for reusing the object, do not use pool - just use "new".
         /// </summary>
         /// <typeparam name="T">The type of the objects in this cache.</typeparam>
-        internal class ObjectPool<T> where T : class {
+        internal class ObjectPool<T> where T : class
+        {
                 private readonly Element[] items;
 
                 // factory is stored for the lifetime of the pool. We will call this only when pool
@@ -40,8 +41,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 // because we expect to be able to satisfy most requests from it.
                 private T firstItem;
 
-                internal ObjectPool(Func<T> factory)
-                    : this(factory, Environment.ProcessorCount * 2)
+                internal ObjectPool(Func<T> factory) : this(factory, Environment.ProcessorCount * 2)
                 {
                 }
 
@@ -70,9 +70,9 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                         // candidate. in a worst case we may miss some recently returned objects.
                         // Not a big deal.
                         T inst = this.firstItem;
-                        if (inst == null
-                            || inst
-                                != Interlocked.CompareExchange(ref this.firstItem, null, inst)) {
+                        if (inst == null ||
+                            inst != Interlocked.CompareExchange(ref this.firstItem, null, inst))
+                        {
                                 inst = this.AllocateSlow();
                         }
 
@@ -91,13 +91,16 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 /// <param name="obj">The object to free.</param>
                 internal void Free(T obj)
                 {
-                        if (this.firstItem == null) {
+                        if (this.firstItem == null)
+                        {
                                 // Intentionally not using interlocked here.
                                 // In a worst case scenario two objects may be stored into same
                                 // slot. It is very unlikely to happen and will only mean that one
                                 // of the objects will get collected.
                                 this.firstItem = obj;
-                        } else {
+                        }
+                        else
+                        {
                                 this.FreeSlow(obj);
                         }
                 }
@@ -112,16 +115,18 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 {
                         var items = this.items;
 
-                        for (int i = 0; i < items.Length; i++) {
+                        for (int i = 0; i < items.Length; i++)
+                        {
                                 // Note that the initial read is optimistically not synchronized.
                                 // That is intentional. We will interlock only when we have a
                                 // candidate. in a worst case we may miss some recently returned
                                 // objects. Not a big deal.
                                 T inst = items[i].Value;
-                                if (inst != null) {
-                                        if (inst
-                                            == Interlocked.CompareExchange(
-                                                ref items[i].Value, null, inst)) {
+                                if (inst != null)
+                                {
+                                        if (inst == Interlocked.CompareExchange(ref items[i].Value,
+                                                                                null, inst))
+                                        {
                                                 return inst;
                                         }
                                 }
@@ -133,8 +138,10 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 private void FreeSlow(T obj)
                 {
                         var items = this.items;
-                        for (int i = 0; i < items.Length; i++) {
-                                if (items[i].Value == null) {
+                        for (int i = 0; i < items.Length; i++)
+                        {
+                                if (items[i].Value == null)
+                                {
                                         // Intentionally not using interlocked here.
                                         // In a worst case scenario two objects may be stored into
                                         // same slot. It is very unlikely to happen and will only
@@ -146,7 +153,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 }
 
                 [DebuggerDisplay("{Value,nq}")]
-                private struct Element {
+                private struct Element
+                {
                         internal T Value;
                 }
         }

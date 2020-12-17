@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IArrayElementReferenceOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IArrayElementReferenceOperation";
+        internal readonly struct IArrayElementReferenceOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IArrayElementReferenceOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ArrayReferenceAccessor;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
@@ -19,12 +20,11 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IArrayElementReferenceOperationWrapper));
-                        ArrayReferenceAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(ArrayReference));
-                        IndicesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            ImmutableArray<IOperation>>(WrappedType, nameof(Indices));
+                        ArrayReferenceAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(ArrayReference));
+                        IndicesAccessor = LightupHelpers.CreateOperationPropertyAccessor<
+                            IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Indices));
                 }
 
                 private IArrayElementReferenceOperationWrapper(IOperation operation)
@@ -39,11 +39,13 @@ namespace StyleCop.Analyzers.Lightup
                 public static IArrayElementReferenceOperationWrapper FromOperation(
                     IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -53,8 +55,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

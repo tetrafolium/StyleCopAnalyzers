@@ -25,30 +25,31 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// documentation for one or more of its parameters.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1611ElementParametersMustBeDocumented : ElementDocumentationBase {
+        internal class SA1611ElementParametersMustBeDocumented : ElementDocumentationBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1611ElementParametersMustBeDocumented"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1611";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1611.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1611Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1611.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1611Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1611MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1611Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1611Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 public SA1611ElementParametersMustBeDocumented()
                     : base(matchElementName
@@ -58,15 +59,21 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                    StyleCopSettings settings, bool needsComment,
-                    IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
+                                                         StyleCopSettings settings,
+                                                         bool needsComment,
+                                                         IEnumerable<XmlNodeSyntax> syntaxList,
+                                                         params Location[] diagnosticLocations)
                 {
-                        if (!needsComment) {
+                        if (!needsComment)
+                        {
                                 // Omitting documentation for a parameter is allowed for this
                                 // element.
                                 return;
@@ -74,16 +81,17 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                         var node = context.Node;
                         var parameterList = GetParameters(node);
-                        if (parameterList == null) {
+                        if (parameterList == null)
+                        {
                                 return;
                         }
 
-                        var xmlParameterNames
-                            = syntaxList
-                                  .Select(XmlCommentHelper
-                                              .GetFirstAttributeOrDefault<XmlNameAttributeSyntax>)
-                                  .Where(x => x != null)
-                                  .Select(x => x.Identifier.Identifier.ValueText);
+                        var xmlParameterNames =
+                            syntaxList
+                                .Select(XmlCommentHelper
+                                            .GetFirstAttributeOrDefault<XmlNameAttributeSyntax>)
+                                .Where(x => x != null)
+                                .Select(x => x.Identifier.Identifier.ValueText);
 
                         ReportMissingParameters(context, parameterList, xmlParameterNames);
                 }
@@ -93,7 +101,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                     SyntaxNodeAnalysisContext context, bool needsComment,
                     XElement completeDocumentation, params Location[] diagnosticLocations)
                 {
-                        if (!needsComment) {
+                        if (!needsComment)
+                        {
                                 // Omitting documentation for a parameter is allowed for this
                                 // element.
                                 return;
@@ -101,7 +110,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                         var node = context.Node;
                         var parameterList = GetParameters(node);
-                        if (parameterList == null) {
+                        if (parameterList == null)
+                        {
                                 return;
                         }
 
@@ -109,10 +119,10 @@ namespace StyleCop.Analyzers.DocumentationRules
                         var paramElements = completeDocumentation.Nodes().OfType<XElement>().Where(
                             e => e.Name == XmlCommentHelper.ParamXmlTag);
 
-                        var xmlParameterNames
-                            = paramElements
-                                  .SelectMany(p => p.Attributes().Where(a => a.Name == "name"))
-                                  .Select(a => a.Value);
+                        var xmlParameterNames =
+                            paramElements
+                                .SelectMany(p => p.Attributes().Where(a => a.Name == "name"))
+                                .Select(a => a.Value);
 
                         ReportMissingParameters(context, parameterList, xmlParameterNames);
                 }
@@ -127,15 +137,17 @@ namespace StyleCop.Analyzers.DocumentationRules
                             ?.ParameterList?.Parameters;
                 }
 
-                private static void ReportMissingParameters(SyntaxNodeAnalysisContext context,
-                    IEnumerable<ParameterSyntax> parameterList,
+                private static void ReportMissingParameters(
+                    SyntaxNodeAnalysisContext context, IEnumerable<ParameterSyntax> parameterList,
                     IEnumerable<string> documentationParameterNames)
                 {
-                        foreach (var parameter in parameterList) {
+                        foreach (var parameter in parameterList)
+                        {
                                 if (!documentationParameterNames.Any(
-                                        x => x == parameter.Identifier.ValueText)) {
-                                        context.ReportDiagnostic(Diagnostic.Create(Descriptor,
-                                            parameter.Identifier.GetLocation(),
+                                        x => x == parameter.Identifier.ValueText))
+                                {
+                                        context.ReportDiagnostic(Diagnostic.Create(
+                                            Descriptor, parameter.Identifier.GetLocation(),
                                             parameter.Identifier.ValueText));
                                 }
                         }

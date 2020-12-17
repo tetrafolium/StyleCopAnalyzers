@@ -13,7 +13,8 @@ namespace StyleCop.Analyzers
         /// <summary>
         /// Provides extension methods to deal for analyzers.
         /// </summary>
-        internal static class AnalyzerExtensions {
+        internal static class AnalyzerExtensions
+        {
                 /// <summary>
                 /// Register an action to be executed at completion of parsing of a code document. A
                 /// syntax tree action reports diagnostics about the <see cref="SyntaxTree"/> of a
@@ -22,12 +23,13 @@ namespace StyleCop.Analyzers
                 /// <param name="context">The analysis context.</param>
                 /// <param name="action">Action to be executed at completion of parsing of a
                 /// document.</param>
-                public static void RegisterSyntaxTreeAction(this AnalysisContext context,
+                public static void RegisterSyntaxTreeAction(
+                    this AnalysisContext context,
                     Action<SyntaxTreeAnalysisContext, StyleCopSettings> action)
                 {
                         context.RegisterSyntaxTreeAction(c => {
-                                StyleCopSettings settings
-                                    = context.GetStyleCopSettings(c.Options, c.CancellationToken);
+                                StyleCopSettings settings =
+                                    context.GetStyleCopSettings(c.Options, c.CancellationToken);
                                 action(c, settings);
                         });
                 }
@@ -45,8 +47,8 @@ namespace StyleCop.Analyzers
                     Action<SyntaxTreeAnalysisContext, StyleCopSettings> action)
                 {
                         context.RegisterSyntaxTreeAction(c => {
-                                StyleCopSettings settings
-                                    = context.GetStyleCopSettings(c.Options, c.CancellationToken);
+                                StyleCopSettings settings =
+                                    context.GetStyleCopSettings(c.Options, c.CancellationToken);
                                 action(c, settings);
                         });
                 }
@@ -66,8 +68,10 @@ namespace StyleCop.Analyzers
                 public static void RegisterSyntaxNodeAction<TLanguageKindEnum>(
                     this AnalysisContext context,
                     Action<SyntaxNodeAnalysisContext, StyleCopSettings> action,
-                    TLanguageKindEnum syntaxKind) where TLanguageKindEnum : struct {
-                        context.RegisterSyntaxNodeAction(action,
+                    TLanguageKindEnum syntaxKind) where TLanguageKindEnum : struct
+                {
+                        context.RegisterSyntaxNodeAction(
+                            action,
                             LanguageKindArrays<TLanguageKindEnum>.GetOrCreateArray(syntaxKind));
                 }
 
@@ -86,11 +90,11 @@ namespace StyleCop.Analyzers
                 public static void RegisterSyntaxNodeAction<TLanguageKindEnum>(
                     this AnalysisContext context,
                     Action<SyntaxNodeAnalysisContext, StyleCopSettings> action,
-                    ImmutableArray<TLanguageKindEnum> syntaxKinds) where TLanguageKindEnum
-                    : struct {
+                    ImmutableArray<TLanguageKindEnum> syntaxKinds) where TLanguageKindEnum : struct
+                {
                         context.RegisterSyntaxNodeAction(c => {
-                                StyleCopSettings settings
-                                    = context.GetStyleCopSettings(c.Options, c.CancellationToken);
+                                StyleCopSettings settings =
+                                    context.GetStyleCopSettings(c.Options, c.CancellationToken);
                                 action(c, settings);
                         }, syntaxKinds);
                 }
@@ -110,8 +114,10 @@ namespace StyleCop.Analyzers
                 public static void RegisterSyntaxNodeAction<TLanguageKindEnum>(
                     this CompilationStartAnalysisContext context,
                     Action<SyntaxNodeAnalysisContext, StyleCopSettings> action,
-                    TLanguageKindEnum syntaxKind) where TLanguageKindEnum : struct {
-                        context.RegisterSyntaxNodeAction(action,
+                    TLanguageKindEnum syntaxKind) where TLanguageKindEnum : struct
+                {
+                        context.RegisterSyntaxNodeAction(
+                            action,
                             LanguageKindArrays<TLanguageKindEnum>.GetOrCreateArray(syntaxKind));
                 }
 
@@ -130,25 +136,26 @@ namespace StyleCop.Analyzers
                 public static void RegisterSyntaxNodeAction<TLanguageKindEnum>(
                     this CompilationStartAnalysisContext context,
                     Action<SyntaxNodeAnalysisContext, StyleCopSettings> action,
-                    ImmutableArray<TLanguageKindEnum> syntaxKinds) where TLanguageKindEnum
-                    : struct {
+                    ImmutableArray<TLanguageKindEnum> syntaxKinds) where TLanguageKindEnum : struct
+                {
                         context.RegisterSyntaxNodeAction(c => {
-                                StyleCopSettings settings
-                                    = context.GetStyleCopSettings(c.Options, c.CancellationToken);
+                                StyleCopSettings settings =
+                                    context.GetStyleCopSettings(c.Options, c.CancellationToken);
                                 action(c, settings);
                         }, syntaxKinds);
                 }
 
                 private static class LanguageKindArrays<TLanguageKindEnum> where TLanguageKindEnum
-                    : struct {
-                        private static readonly ConcurrentDictionary<TLanguageKindEnum,
-                            ImmutableArray<TLanguageKindEnum>> Arrays
-                            = new ConcurrentDictionary<TLanguageKindEnum,
-                                ImmutableArray<TLanguageKindEnum>>();
+                    : struct
+                {
+                        private static readonly ConcurrentDictionary<
+                            TLanguageKindEnum, ImmutableArray<TLanguageKindEnum>> Arrays =
+                            new ConcurrentDictionary<TLanguageKindEnum,
+                                                     ImmutableArray<TLanguageKindEnum>>();
 
-                        private static readonly Func<TLanguageKindEnum,
-                            ImmutableArray<TLanguageKindEnum>> CreateValueFactory
-                            = CreateValue;
+                        private static readonly
+                            Func<TLanguageKindEnum, ImmutableArray<TLanguageKindEnum>>
+                                CreateValueFactory = CreateValue;
 
                         public static ImmutableArray<TLanguageKindEnum> GetOrCreateArray(
                             TLanguageKindEnum syntaxKind)

@@ -22,10 +22,15 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1410SA1411CodeFixProvider))]
         [Shared]
-        internal class SA1410SA1411CodeFixProvider : CodeFixProvider {
+        internal class SA1410SA1411CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
-                = ImmutableArray.Create(SA1410RemoveDelegateParenthesisWhenPossible.DiagnosticId,
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
+                = ImmutableArray.Create(
+                    SA1410RemoveDelegateParenthesisWhenPossible.DiagnosticId,
                     SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -37,15 +42,17 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var root
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
+                        var root =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
-                                SyntaxNode node = root.FindNode(
-                                    diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                                    : true);
-                                if (node.IsMissing) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
+                                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan,
+                                                                getInnermostNodeForTie
+                                                                : true);
+                                if (node.IsMissing)
+                                {
                                         continue;
                                 }
 
@@ -53,7 +60,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                                 node = (SyntaxNode)(node as ParameterListSyntax)
                                     ?? node as AttributeArgumentListSyntax;
 
-                                if (node != null) {
+                                if (node != null)
+                                {
                                         context.RegisterCodeFix(
                                             CodeAction.Create(
                                                 MaintainabilityResources.SA1410SA1411CodeFix,
@@ -65,8 +73,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         }
                 }
 
-                private static Task<Document> GetTransformedDocumentAsync(
-                    Document document, SyntaxNode root, SyntaxNode node)
+                private static Task<Document> GetTransformedDocumentAsync(Document document,
+                                                                          SyntaxNode root,
+                                                                          SyntaxNode node)
                 {
                         // The first token is the open parenthesis token. This token has all the
                         // inner trivia
@@ -82,11 +91,12 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         // The removing operation has not changed the location of the previous token
                         var newPreviousToken = newSyntaxRoot.FindToken(previousToken.Span.Start);
 
-                        var newTrailingTrivia
-                            = newPreviousToken.TrailingTrivia.AddRange(firstToken.GetAllTrivia())
-                                  .AddRange(lastToken.GetAllTrivia());
+                        var newTrailingTrivia =
+                            newPreviousToken.TrailingTrivia.AddRange(firstToken.GetAllTrivia())
+                                .AddRange(lastToken.GetAllTrivia());
 
-                        newSyntaxRoot = newSyntaxRoot.ReplaceToken(newPreviousToken,
+                        newSyntaxRoot = newSyntaxRoot.ReplaceToken(
+                            newPreviousToken,
                             newPreviousToken.WithTrailingTrivia(newTrailingTrivia));
 
                         return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));

@@ -24,7 +24,8 @@ namespace StyleCop.Analyzers.SpecialRules
             "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class SpecialResources {
+        internal class SpecialResources
+        {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
@@ -44,9 +45,10 @@ namespace StyleCop.Analyzers.SpecialRules
                 {
                         get
                         {
-                                if (object.ReferenceEquals(resourceMan, null)) {
-                                        global::System.Resources.ResourceManager temp
-                                            = new global::System.Resources.ResourceManager(
+                                if (object.ReferenceEquals(resourceMan, null))
+                                {
+                                        global::System.Resources.ResourceManager temp =
+                                            new global::System.Resources.ResourceManager(
                                                 "StyleCop.Analyzers.SpecialRules.SpecialResources",
                                                 typeof(SpecialResources).GetTypeInfo().Assembly);
                                         resourceMan = temp;
@@ -63,8 +65,14 @@ namespace StyleCop.Analyzers.SpecialRules
                     global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Globalization.CultureInfo Culture
                 {
-                        get { return resourceCulture; }
-                        set { resourceCulture = value; }
+                        get
+                        {
+                                return resourceCulture;
+                        }
+                        set
+                        {
+                                resourceCulture = value;
+                        }
                 }
 
                 /// <summary>
@@ -77,8 +85,8 @@ namespace StyleCop.Analyzers.SpecialRules
                 {
                         get
                         {
-                                return ResourceManager.GetString(
-                                    "SA0001Description", resourceCulture);
+                                return ResourceManager.GetString("SA0001Description",
+                                                                 resourceCulture);
                         }
                 }
 
@@ -90,8 +98,8 @@ namespace StyleCop.Analyzers.SpecialRules
                 {
                         get
                         {
-                                return ResourceManager.GetString(
-                                    "SA0001MessageFormat", resourceCulture);
+                                return ResourceManager.GetString("SA0001MessageFormat",
+                                                                 resourceCulture);
                         }
                 }
 
@@ -100,7 +108,10 @@ namespace StyleCop.Analyzers.SpecialRules
                 /// </summary>
                 internal static string SA0001Title
                 {
-                        get { return ResourceManager.GetString("SA0001Title", resourceCulture); }
+                        get
+                        {
+                                return ResourceManager.GetString("SA0001Title", resourceCulture);
+                        }
                 }
 
                 /// <summary>
@@ -114,8 +125,8 @@ namespace StyleCop.Analyzers.SpecialRules
                 {
                         get
                         {
-                                return ResourceManager.GetString(
-                                    "SA0002Description", resourceCulture);
+                                return ResourceManager.GetString("SA0002Description",
+                                                                 resourceCulture);
                         }
                 }
 
@@ -127,8 +138,8 @@ namespace StyleCop.Analyzers.SpecialRules
                 {
                         get
                         {
-                                return ResourceManager.GetString(
-                                    "SA0002MessageFormat", resourceCulture);
+                                return ResourceManager.GetString("SA0002MessageFormat",
+                                                                 resourceCulture);
                         }
                 }
 
@@ -137,7 +148,10 @@ namespace StyleCop.Analyzers.SpecialRules
                 /// </summary>
                 internal static string SA0002Title
                 {
-                        get { return ResourceManager.GetString("SA0002Title", resourceCulture); }
+                        get
+                        {
+                                return ResourceManager.GetString("SA0002Title", resourceCulture);
+                        }
                 }
         }
 }

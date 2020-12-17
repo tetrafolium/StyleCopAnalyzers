@@ -10,16 +10,17 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct ImplicitObjectCreationExpressionSyntaxWrapper
-            : ISyntaxWrapper<ExpressionSyntax> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.ImplicitObjectCreationExpressionSyntax";
+            : ISyntaxWrapper<ExpressionSyntax>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.ImplicitObjectCreationExpressionSyntax";
                 private static readonly Type WrappedType;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
                     WithNewKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, ArgumentListSyntax, ExpressionSyntax>
                     WithArgumentListAccessor;
                 private static readonly Func<ExpressionSyntax, InitializerExpressionSyntax,
-                    ExpressionSyntax> WithInitializerAccessor;
+                                             ExpressionSyntax> WithInitializerAccessor;
 
                 private readonly ExpressionSyntax node;
 
@@ -27,16 +28,17 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(ImplicitObjectCreationExpressionSyntaxWrapper));
-                        WithNewKeywordAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                      WrappedType, nameof(NewKeyword));
-                        WithArgumentListAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                ArgumentListSyntax>(WrappedType, nameof(ArgumentList));
-                        WithInitializerAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                InitializerExpressionSyntax>(WrappedType, nameof(Initializer));
+                        WithNewKeywordAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                    WrappedType, nameof(NewKeyword));
+                        WithArgumentListAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            ArgumentListSyntax>(
+                                WrappedType, nameof(ArgumentList));
+                        WithInitializerAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            ExpressionSyntax, InitializerExpressionSyntax>(WrappedType,
+                                                                           nameof(Initializer));
                 }
 
                 private ImplicitObjectCreationExpressionSyntaxWrapper(ExpressionSyntax node)
@@ -82,17 +84,19 @@ namespace StyleCop.Analyzers.Lightup
                 public static explicit operator ImplicitObjectCreationExpressionSyntaxWrapper(
                     SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
-                        return new ImplicitObjectCreationExpressionSyntaxWrapper(
-                            (ExpressionSyntax) node);
+                        return new ImplicitObjectCreationExpressionSyntaxWrapper((ExpressionSyntax)
+                                                                                     node);
                 }
 
                 public static implicit operator BaseObjectCreationExpressionSyntaxWrapper(

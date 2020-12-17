@@ -7,7 +7,8 @@ namespace StyleCop.Analyzers.CodeGeneration
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class GeneratorSyntaxExtensions {
+        internal static class GeneratorSyntaxExtensions
+        {
                 public static TSyntax WithLeadingBlankLine<TSyntax>(
                     this TSyntax syntax) where TSyntax : SyntaxNode
                 {

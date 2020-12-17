@@ -22,11 +22,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRegionCodeFixProvider))]
         [Shared]
-        internal class RemoveRegionCodeFixProvider : CodeFixProvider {
+        internal class RemoveRegionCodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1123DoNotPlaceRegionsWithinElements.DiagnosticId,
-                    SA1124DoNotUseRegions.DiagnosticId);
+                                        SA1124DoNotUseRegions.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -39,12 +43,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
                                     CodeAction.Create(ReadabilityResources.RemoveRegionCodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic),
-                                        nameof(RemoveRegionCodeFixProvider)),
+                                                      cancellationToken =>
+                                                          GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic),
+                                                      nameof(RemoveRegionCodeFixProvider)),
                                     diagnostic);
                         }
 
@@ -55,16 +61,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     Document document, Diagnostic diagnostic)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
-                        var node
-                            = syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
-                                                   : true, getInnermostNodeForTie
-                                                   : true);
-                        if (node != null && node.IsKind(SyntaxKind.RegionDirectiveTrivia)) {
+                        var node =
+                            syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                                 : true, getInnermostNodeForTie
+                                                 : true);
+                        if (node != null && node.IsKind(SyntaxKind.RegionDirectiveTrivia))
+                        {
                                 var regionDirective = node as RegionDirectiveTriviaSyntax;
 
-                                var newSyntaxRoot
-                                    = syntaxRoot.RemoveNodes(regionDirective.GetRelatedDirectives(),
-                                        SyntaxRemoveOptions.AddElasticMarker);
+                                var newSyntaxRoot =
+                                    syntaxRoot.RemoveNodes(regionDirective.GetRelatedDirectives(),
+                                                           SyntaxRemoveOptions.AddElasticMarker);
 
                                 return document.WithSyntaxRoot(newSyntaxRoot);
                         }

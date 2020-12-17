@@ -22,9 +22,13 @@ namespace StyleCop.Analyzers.NamingRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1302CodeFixProvider))]
         [Shared]
-        internal class SA1302CodeFixProvider : CodeFixProvider {
+        internal class SA1302CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1302InterfaceNamesMustBeginWithI.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -37,9 +41,11 @@ namespace StyleCop.Analyzers.NamingRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(NamingResources.SA1302CodeFix,
+                                    CodeAction.Create(
+                                        NamingResources.SA1302CodeFix,
                                         cancellationToken => CreateChangedSolutionAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1302CodeFixProvider)),
@@ -61,12 +67,13 @@ namespace StyleCop.Analyzers.NamingRules
 
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
                                                 .ConfigureAwait(false);
-                        var declaredSymbol
-                            = semanticModel.GetDeclaredSymbol(token.Parent, cancellationToken);
+                        var declaredSymbol =
+                            semanticModel.GetDeclaredSymbol(token.Parent, cancellationToken);
                         while (!await RenameHelper
-                                    .IsValidNewMemberNameAsync(
-                                        semanticModel, declaredSymbol, newName, cancellationToken)
-                                    .ConfigureAwait(false)) {
+                                    .IsValidNewMemberNameAsync(semanticModel, declaredSymbol,
+                                                               newName, cancellationToken)
+                                    .ConfigureAwait(false))
+                        {
                                 index++;
                                 newName = baseName + index;
                         }

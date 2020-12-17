@@ -18,34 +18,40 @@ namespace StyleCop.Analyzers.NamingRules
         /// with a lower-case letter.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1311StaticReadonlyFieldsMustBeginWithUpperCaseLetter : DiagnosticAnalyzer {
+        internal class SA1311StaticReadonlyFieldsMustBeginWithUpperCaseLetter : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1311StaticReadonlyFieldsMustBeginWithUpperCaseLetter"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1311";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1311.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(NamingResources.SA1311Title),
-                        NamingResources.ResourceManager, typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(NamingResources.SA1311MessageFormat),
-                        NamingResources.ResourceManager, typeof(NamingResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(NamingResources.SA1311Description),
-                        NamingResources.ResourceManager, typeof(NamingResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1311.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(NamingResources.SA1311Title), NamingResources.ResourceManager,
+                    typeof(NamingResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(NamingResources.SA1311MessageFormat),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(NamingResources.SA1311Description),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction
-                    = HandleFieldDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction =
+                    HandleFieldDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -54,36 +60,42 @@ namespace StyleCop.Analyzers.NamingRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(
-                            FieldDeclarationAction, SyntaxKind.FieldDeclaration);
+                        context.RegisterSyntaxNodeAction(FieldDeclarationAction,
+                                                         SyntaxKind.FieldDeclaration);
                 }
 
                 private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
                 {
                         var fieldDeclaration = (FieldDeclarationSyntax) context.Node;
 
-                        if (!fieldDeclaration.Modifiers.Any(SyntaxKind.StaticKeyword)
-                            || !fieldDeclaration.Modifiers.Any(SyntaxKind.ReadOnlyKeyword)) {
+                        if (!fieldDeclaration.Modifiers.Any(SyntaxKind.StaticKeyword) ||
+                            !fieldDeclaration.Modifiers.Any(SyntaxKind.ReadOnlyKeyword))
+                        {
                                 return;
                         }
 
                         var variables = fieldDeclaration.Declaration?.Variables;
-                        if (variables == null) {
+                        if (variables == null)
+                        {
                                 return;
                         }
 
-                        foreach (VariableDeclaratorSyntax variableDeclarator in variables.Value) {
-                                if (variableDeclarator == null) {
+                        foreach (VariableDeclaratorSyntax variableDeclarator in variables.Value)
+                        {
+                                if (variableDeclarator == null)
+                                {
                                         continue;
                                 }
 
                                 var identifier = variableDeclarator.Identifier;
-                                if (identifier.IsMissing) {
+                                if (identifier.IsMissing)
+                                {
                                         continue;
                                 }
 
                                 string name = identifier.ValueText;
-                                if (string.IsNullOrEmpty(name) || !char.IsLower(name[0])) {
+                                if (string.IsNullOrEmpty(name) || !char.IsLower(name[0]))
+                                {
                                         continue;
                                 }
 

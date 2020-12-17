@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct DiscardDesignationSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.DiscardDesignationSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.DiscardDesignationSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> UnderscoreTokenAccessor;
@@ -25,23 +26,29 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(DiscardDesignationSyntaxWrapper));
-                        UnderscoreTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(UnderscoreToken));
-                        WithUnderscoreTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(UnderscoreToken));
+                        UnderscoreTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(UnderscoreToken));
+                        WithUnderscoreTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(UnderscoreToken));
                 }
 
-                private DiscardDesignationSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
+                private DiscardDesignationSyntaxWrapper(CSharpSyntaxNode node)
+                {
+                        this.node = node;
+                }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public SyntaxToken UnderscoreToken
                 {
-                        get { return UnderscoreTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return UnderscoreTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator DiscardDesignationSyntaxWrapper(
@@ -52,11 +59,13 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static explicit operator DiscardDesignationSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

@@ -24,7 +24,8 @@ namespace StyleCop.Analyzers.Helpers
             "System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class HelpersResources {
+        internal class HelpersResources
+        {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
@@ -44,9 +45,10 @@ namespace StyleCop.Analyzers.Helpers
                 {
                         get
                         {
-                                if (object.ReferenceEquals(resourceMan, null)) {
-                                        global::System.Resources.ResourceManager temp
-                                            = new global::System.Resources.ResourceManager(
+                                if (object.ReferenceEquals(resourceMan, null))
+                                {
+                                        global::System.Resources.ResourceManager temp =
+                                            new global::System.Resources.ResourceManager(
                                                 "StyleCop.Analyzers.Helpers.HelpersResources",
                                                 typeof(HelpersResources).GetTypeInfo().Assembly);
                                         resourceMan = temp;
@@ -63,8 +65,14 @@ namespace StyleCop.Analyzers.Helpers
                     global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Globalization.CultureInfo Culture
                 {
-                        get { return resourceCulture; }
-                        set { resourceCulture = value; }
+                        get
+                        {
+                                return resourceCulture;
+                        }
+                        set
+                        {
+                                resourceCulture = value;
+                        }
                 }
 
                 /// <summary>
@@ -74,8 +82,8 @@ namespace StyleCop.Analyzers.Helpers
                 {
                         get
                         {
-                                return ResourceManager.GetString(
-                                    "FixAllOccurrencesOfDiagnostic", resourceCulture);
+                                return ResourceManager.GetString("FixAllOccurrencesOfDiagnostic",
+                                                                 resourceCulture);
                         }
                 }
 

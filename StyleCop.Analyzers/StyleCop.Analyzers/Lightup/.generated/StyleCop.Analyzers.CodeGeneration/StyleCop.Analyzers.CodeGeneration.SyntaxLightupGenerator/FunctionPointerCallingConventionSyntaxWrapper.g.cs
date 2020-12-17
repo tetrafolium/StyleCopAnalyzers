@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct FunctionPointerCallingConventionSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerCallingConventionSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerCallingConventionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken>
@@ -30,21 +31,21 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(FunctionPointerCallingConventionSyntaxWrapper));
-                        ManagedOrUnmanagedKeywordAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(ManagedOrUnmanagedKeyword));
-                        UnmanagedCallingConventionListAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                                      WrappedType, nameof(UnmanagedCallingConventionList));
-                        WithManagedOrUnmanagedKeywordAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(ManagedOrUnmanagedKeyword));
-                        WithUnmanagedCallingConventionListAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                CSharpSyntaxNode>(
+                        ManagedOrUnmanagedKeywordAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(ManagedOrUnmanagedKeyword));
+                        UnmanagedCallingConventionListAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                                    WrappedType, nameof(UnmanagedCallingConventionList));
+                        WithManagedOrUnmanagedKeywordAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(ManagedOrUnmanagedKeyword));
+                        WithUnmanagedCallingConventionListAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            CSharpSyntaxNode>(
                                 WrappedType, nameof(UnmanagedCallingConventionList));
                 }
 
@@ -57,7 +58,10 @@ namespace StyleCop.Analyzers.Lightup
 
                 public SyntaxToken ManagedOrUnmanagedKeyword
                 {
-                        get { return ManagedOrUnmanagedKeywordAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return ManagedOrUnmanagedKeywordAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public FunctionPointerUnmanagedCallingConventionListSyntaxWrapper
@@ -73,17 +77,19 @@ namespace StyleCop.Analyzers.Lightup
                 public static explicit operator FunctionPointerCallingConventionSyntaxWrapper(
                     SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
-                        return new FunctionPointerCallingConventionSyntaxWrapper(
-                            (CSharpSyntaxNode) node);
+                        return new FunctionPointerCallingConventionSyntaxWrapper((CSharpSyntaxNode)
+                                                                                     node);
                 }
 
                 public static implicit operator CSharpSyntaxNode(
@@ -101,8 +107,8 @@ namespace StyleCop.Analyzers.Lightup
                     SyntaxToken managedOrUnmanagedKeyword)
                 {
                         return new FunctionPointerCallingConventionSyntaxWrapper(
-                            WithManagedOrUnmanagedKeywordAccessor(
-                                this.SyntaxNode, managedOrUnmanagedKeyword));
+                            WithManagedOrUnmanagedKeywordAccessor(this.SyntaxNode,
+                                                                  managedOrUnmanagedKeyword));
                 }
 
                 public FunctionPointerCallingConventionSyntaxWrapper

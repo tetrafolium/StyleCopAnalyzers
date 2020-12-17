@@ -26,42 +26,48 @@ namespace StyleCop.Analyzers.OrderingRules
         /// indeed the same.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1207ProtectedMustComeBeforeInternal : DiagnosticAnalyzer {
+        internal class SA1207ProtectedMustComeBeforeInternal : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1207ProtectedMustComeBeforeInternal"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1207";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1207.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(OrderingResources.SA1207Title),
-                        OrderingResources.ResourceManager, typeof(OrderingResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(OrderingResources.SA1207MessageFormat),
-                        OrderingResources.ResourceManager, typeof(OrderingResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(OrderingResources.SA1207Description),
-                        OrderingResources.ResourceManager, typeof(OrderingResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1207.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(OrderingResources.SA1207Title), OrderingResources.ResourceManager,
+                    typeof(OrderingResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1207MessageFormat),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1207Description),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds
-                    = ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                        SyntaxKind.DelegateDeclaration, SyntaxKind.EventDeclaration,
-                        SyntaxKind.EventFieldDeclaration, SyntaxKind.FieldDeclaration,
-                        SyntaxKind.IndexerDeclaration, SyntaxKind.InterfaceDeclaration,
-                        SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration,
-                        SyntaxKind.StructDeclaration);
+                private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds =
+                    ImmutableArray.Create(
+                        SyntaxKind.ClassDeclaration, SyntaxKind.DelegateDeclaration,
+                        SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration,
+                        SyntaxKind.FieldDeclaration, SyntaxKind.IndexerDeclaration,
+                        SyntaxKind.InterfaceDeclaration, SyntaxKind.MethodDeclaration,
+                        SyntaxKind.PropertyDeclaration, SyntaxKind.StructDeclaration);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction
-                    = HandleDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction =
+                    HandleDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -76,30 +82,41 @@ namespace StyleCop.Analyzers.OrderingRules
                 private static void HandleDeclaration(SyntaxNodeAnalysisContext context)
                 {
                         var childTokens = context.Node?.ChildTokens();
-                        if (childTokens == null) {
+                        if (childTokens == null)
+                        {
                                 return;
                         }
 
                         bool protectedKeywordFound = false;
                         bool internalKeywordFound = false;
-                        foreach (var childToken in childTokens) {
-                                if (childToken.IsKind(SyntaxKind.InternalKeyword)) {
+                        foreach (var childToken in childTokens)
+                        {
+                                if (childToken.IsKind(SyntaxKind.InternalKeyword))
+                                {
                                         internalKeywordFound = true;
                                         continue;
-                                } else if (childToken.IsKind(SyntaxKind.ProtectedKeyword)) {
-                                        if (internalKeywordFound) {
+                                }
+                                else if (childToken.IsKind(SyntaxKind.ProtectedKeyword))
+                                {
+                                        if (internalKeywordFound)
+                                        {
                                                 context.ReportDiagnostic(Diagnostic.Create(
                                                     Descriptor, childToken.GetLocation(),
                                                     "protected", "internal"));
                                                 break;
-                                        } else {
+                                        }
+                                        else
+                                        {
                                                 protectedKeywordFound = true;
                                                 continue;
                                         }
-                                } else if (protectedKeywordFound
-                                    && childToken.IsKind(SyntaxKind.PrivateKeyword)) {
-                                        context.ReportDiagnostic(Diagnostic.Create(Descriptor,
-                                            childToken.GetLocation(), "private", "protected"));
+                                }
+                                else if (protectedKeywordFound &&
+                                         childToken.IsKind(SyntaxKind.PrivateKeyword))
+                                {
+                                        context.ReportDiagnostic(
+                                            Diagnostic.Create(Descriptor, childToken.GetLocation(),
+                                                              "private", "protected"));
                                         break;
                                 }
                         }

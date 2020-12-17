@@ -14,47 +14,51 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoCodeFix("Cannot generate appropriate names.")]
-        internal class SA1414TupleTypesInSignaturesShouldHaveElementNames : DiagnosticAnalyzer {
+        internal class SA1414TupleTypesInSignaturesShouldHaveElementNames : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1414TupleTypesInSignaturesShouldHaveElementNames"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1414";
 
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1414.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(MaintainabilityResources.SA1414Title),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1414.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1414Title),
+                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1414MessageFormat),
                         MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1414Description),
                         MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-                private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction
-                    = HandleMethodDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction =
+                    HandleMethodDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     ConstructorDeclarationAction = HandleConstructorDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> PropertyDeclarationAction
-                    = HandlePropertyDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction
-                    = HandleIndexerDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext>
+                    PropertyDeclarationAction = HandlePropertyDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction =
+                    HandleIndexerDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     ConversionOperatorDeclarationAction = HandleConversionOperatorDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> DelegateDeclarationAction
-                    = HandleDelegateDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext>
+                    DelegateDeclarationAction = HandleDelegateDeclaration;
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -63,23 +67,24 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(
-                            MethodDeclarationAction, SyntaxKind.MethodDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            ConstructorDeclarationAction, SyntaxKind.ConstructorDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            PropertyDeclarationAction, SyntaxKind.PropertyDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            IndexerDeclarationAction, SyntaxKind.IndexerDeclaration);
+                        context.RegisterSyntaxNodeAction(MethodDeclarationAction,
+                                                         SyntaxKind.MethodDeclaration);
+                        context.RegisterSyntaxNodeAction(ConstructorDeclarationAction,
+                                                         SyntaxKind.ConstructorDeclaration);
+                        context.RegisterSyntaxNodeAction(PropertyDeclarationAction,
+                                                         SyntaxKind.PropertyDeclaration);
+                        context.RegisterSyntaxNodeAction(IndexerDeclarationAction,
+                                                         SyntaxKind.IndexerDeclaration);
                         context.RegisterSyntaxNodeAction(ConversionOperatorDeclarationAction,
-                            SyntaxKind.ConversionOperatorDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            DelegateDeclarationAction, SyntaxKind.DelegateDeclaration);
+                                                         SyntaxKind.ConversionOperatorDeclaration);
+                        context.RegisterSyntaxNodeAction(DelegateDeclarationAction,
+                                                         SyntaxKind.DelegateDeclaration);
                 }
 
                 private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        if (!context.SupportsTuples()) {
+                        if (!context.SupportsTuples())
+                        {
                                 return;
                         }
 
@@ -91,7 +96,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        if (!context.SupportsTuples()) {
+                        if (!context.SupportsTuples())
+                        {
                                 return;
                         }
 
@@ -102,7 +108,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 private static void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        if (!context.SupportsTuples()) {
+                        if (!context.SupportsTuples())
+                        {
                                 return;
                         }
 
@@ -113,7 +120,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        if (!context.SupportsTuples()) {
+                        if (!context.SupportsTuples())
+                        {
                                 return;
                         }
 
@@ -125,12 +133,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static void HandleConversionOperatorDeclaration(
                     SyntaxNodeAnalysisContext context)
                 {
-                        if (!context.SupportsTuples()) {
+                        if (!context.SupportsTuples())
+                        {
                                 return;
                         }
 
-                        var conversionOperatorDeclarion
-                            = (ConversionOperatorDeclarationSyntax) context.Node;
+                        var conversionOperatorDeclarion =
+                            (ConversionOperatorDeclarationSyntax) context.Node;
 
                         CheckType(context, conversionOperatorDeclarion.Type);
                         CheckParameterList(context, conversionOperatorDeclarion.ParameterList);
@@ -138,7 +147,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        if (!context.SupportsTuples()) {
+                        if (!context.SupportsTuples())
+                        {
                                 return;
                         }
 
@@ -148,18 +158,20 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         CheckParameterList(context, delegateDeclarion.ParameterList);
                 }
 
-                private static void CheckParameterList(
-                    SyntaxNodeAnalysisContext context, ParameterListSyntax parameterList)
+                private static void CheckParameterList(SyntaxNodeAnalysisContext context,
+                                                       ParameterListSyntax parameterList)
                 {
-                        foreach (var parameter in parameterList.Parameters) {
+                        foreach (var parameter in parameterList.Parameters)
+                        {
                                 CheckType(context, parameter.Type);
                         }
                 }
 
-                private static void CheckType(
-                    SyntaxNodeAnalysisContext context, TypeSyntax typeSyntax)
+                private static void CheckType(SyntaxNodeAnalysisContext context,
+                                              TypeSyntax typeSyntax)
                 {
-                        switch (typeSyntax.Kind()) {
+                        switch (typeSyntax.Kind())
+                        {
                         case SyntaxKindEx.TupleType:
                                 CheckTupleType(context, (TupleTypeSyntaxWrapper) typeSyntax);
                                 break;
@@ -174,13 +186,15 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         }
                 }
 
-                private static void CheckTupleType(
-                    SyntaxNodeAnalysisContext context, TupleTypeSyntaxWrapper tupleTypeSyntax)
+                private static void CheckTupleType(SyntaxNodeAnalysisContext context,
+                                                   TupleTypeSyntaxWrapper tupleTypeSyntax)
                 {
-                        foreach (var tupleElementSyntax in tupleTypeSyntax.Elements) {
+                        foreach (var tupleElementSyntax in tupleTypeSyntax.Elements)
+                        {
                                 CheckType(context, tupleElementSyntax.Type);
 
-                                if (tupleElementSyntax.Identifier.IsKind(SyntaxKind.None)) {
+                                if (tupleElementSyntax.Identifier.IsKind(SyntaxKind.None))
+                                {
                                         var location = tupleElementSyntax.SyntaxNode.GetLocation();
                                         context.ReportDiagnostic(
                                             Diagnostic.Create(Descriptor, location));
@@ -188,10 +202,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         }
                 }
 
-                private static void CheckGenericName(
-                    SyntaxNodeAnalysisContext context, GenericNameSyntax genericNameSyntax)
+                private static void CheckGenericName(SyntaxNodeAnalysisContext context,
+                                                     GenericNameSyntax genericNameSyntax)
                 {
-                        foreach (var typeArgument in genericNameSyntax.TypeArgumentList.Arguments) {
+                        foreach (var typeArgument in genericNameSyntax.TypeArgumentList.Arguments)
+                        {
                                 CheckType(context, typeArgument);
                         }
                 }

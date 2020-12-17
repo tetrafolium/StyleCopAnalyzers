@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IMemberReferenceOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IMemberReferenceOperation";
+        internal readonly struct IMemberReferenceOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IMemberReferenceOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> InstanceAccessor;
                 private static readonly Func<IOperation, ISymbol> MemberAccessor;
@@ -18,12 +19,11 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IMemberReferenceOperationWrapper));
-                        InstanceAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(Instance));
-                        MemberAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
+                        InstanceAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Instance));
+                        MemberAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
                                 WrappedType, nameof(Member));
                 }
 
@@ -38,11 +38,13 @@ namespace StyleCop.Analyzers.Lightup
                 public ISymbol Member => MemberAccessor(this.WrappedOperation);
                 public static IMemberReferenceOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -52,8 +54,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
 
                 internal static IMemberReferenceOperationWrapper FromUpcast(IOperation operation)

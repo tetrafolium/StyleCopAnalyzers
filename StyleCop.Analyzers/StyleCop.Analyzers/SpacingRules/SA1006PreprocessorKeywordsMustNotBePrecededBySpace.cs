@@ -29,34 +29,40 @@ namespace StyleCop.Analyzers.SpacingRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1006PreprocessorKeywordsMustNotBePrecededBySpace : DiagnosticAnalyzer {
+        internal class SA1006PreprocessorKeywordsMustNotBePrecededBySpace : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1006PreprocessorKeywordsMustNotBePrecededBySpace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1006";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1006.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1006Title),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1006MessageFormat),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1006Description),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1006.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(SpacingResources.SA1006Title), SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1006MessageFormat),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1006Description),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
-                    = HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
+                    HandleSyntaxTree;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -70,10 +76,12 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
                 {
-                        SyntaxNode root
-                            = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-                        foreach (var token in root.DescendantTokens(descendIntoTrivia : true)) {
-                                switch (token.Kind()) {
+                        SyntaxNode root =
+                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                        foreach (var token in root.DescendantTokens(descendIntoTrivia : true))
+                        {
+                                switch (token.Kind())
+                                {
                                 case SyntaxKind.HashToken:
                                         HandleHashToken(context, token);
                                         break;
@@ -84,23 +92,25 @@ namespace StyleCop.Analyzers.SpacingRules
                         }
                 }
 
-                private static void HandleHashToken(
-                    SyntaxTreeAnalysisContext context, SyntaxToken token)
+                private static void HandleHashToken(SyntaxTreeAnalysisContext context,
+                                                    SyntaxToken token)
                 {
-                        if (!token.HasTrailingTrivia
-                            || token.TrailingTrivia.Any(SyntaxKind.EndOfLineTrivia)) {
+                        if (!token.HasTrailingTrivia ||
+                            token.TrailingTrivia.Any(SyntaxKind.EndOfLineTrivia))
+                        {
                                 return;
                         }
 
                         SyntaxToken targetToken = token.GetNextToken(includeDirectives : true);
-                        if (targetToken.IsMissingOrDefault()) {
+                        if (targetToken.IsMissingOrDefault())
+                        {
                                 return;
                         }
 
                         // Preprocessor keyword '{keyword}' should not be preceded by a space.
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, targetToken.GetLocation(),
-                                TokenSpacingProperties.RemovePreceding, targetToken.Text));
+                        context.ReportDiagnostic(Diagnostic.Create(
+                            Descriptor, targetToken.GetLocation(),
+                            TokenSpacingProperties.RemovePreceding, targetToken.Text));
                 }
         }
 }

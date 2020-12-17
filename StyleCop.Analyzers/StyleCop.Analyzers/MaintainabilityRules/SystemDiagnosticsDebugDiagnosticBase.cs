@@ -14,7 +14,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// cref="SA1405DebugAssertMustProvideMessageText"/> and <see
         /// cref="SA1406DebugFailMustProvideMessageText"/>.
         /// </summary>
-        internal abstract class SystemDiagnosticsDebugDiagnosticBase : DiagnosticAnalyzer {
+        internal abstract class SystemDiagnosticsDebugDiagnosticBase : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// Analyzes a <see cref="InvocationExpressionSyntax"/> node to add a diagnostic to
                 /// static method calls in <see cref="System.Diagnostics.Debug"/>. The diagnostic is
@@ -32,49 +33,54 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     DiagnosticDescriptor descriptor)
                 {
                         var invocationExpressionSyntax = (InvocationExpressionSyntax) context.Node;
-                        var memberAccessExpressionSyntax
-                            = invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax;
-                        var identifierNameSyntax
-                            = invocationExpressionSyntax.Expression as IdentifierNameSyntax;
+                        var memberAccessExpressionSyntax =
+                            invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax;
+                        var identifierNameSyntax =
+                            invocationExpressionSyntax.Expression as IdentifierNameSyntax;
                         var name = memberAccessExpressionSyntax?.Name?.Identifier
                                        .ValueText ?? identifierNameSyntax?.Identifier.ValueText;
-                        if (name == methodName) {
+                        if (name == methodName)
+                        {
                                 if (context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax)
-                                        .Symbol is IMethodSymbol symbolInfo) {
-                                        var debugType
-                                            = context.SemanticModel.Compilation
-                                                  .GetTypeByMetadataName(typeof(Debug).FullName);
+                                        .Symbol is IMethodSymbol symbolInfo)
+                                {
+                                        var debugType =
+                                            context.SemanticModel.Compilation.GetTypeByMetadataName(
+                                                typeof(Debug).FullName);
 
-                                        if (Equals(symbolInfo.ContainingType, debugType)
-                                            && symbolInfo.Name == methodName) {
+                                        if (Equals(symbolInfo.ContainingType, debugType) &&
+                                            symbolInfo.Name == methodName)
+                                        {
                                                 if ((invocationExpressionSyntax.ArgumentList?
-                                                            .Arguments.Count ?? 0)
-                                                    <= parameterIndex) {
+                                                         .Arguments.Count ?? 0) <= parameterIndex)
+                                                {
                                                         // Wrong overload was used, e.g.
                                                         // Debug.Assert(bool condition)
-                                                        context.ReportDiagnostic(
-                                                            Diagnostic.Create(descriptor,
-                                                                invocationExpressionSyntax
-                                                                    .GetLocation()));
-                                                } else {
-                                                        var messageParameter
-                                                            = invocationExpressionSyntax
-                                                                  .ArgumentList?
-                                                                  .Arguments[parameterIndex];
-                                                        if (messageParameter?.Expression != null) {
-                                                                Optional<object> constantValue
-                                                                    = context.SemanticModel
-                                                                          .GetConstantValue(
-                                                                              messageParameter
-                                                                                  .Expression);
+                                                        context.ReportDiagnostic(Diagnostic.Create(
+                                                            descriptor, invocationExpressionSyntax
+                                                                            .GetLocation()));
+                                                }
+                                                else
+                                                {
+                                                        var messageParameter =
+                                                            invocationExpressionSyntax.ArgumentList?
+                                                                .Arguments[parameterIndex];
+                                                        if (messageParameter?.Expression != null)
+                                                        {
+                                                                Optional<object> constantValue =
+                                                                    context.SemanticModel
+                                                                        .GetConstantValue(
+                                                                            messageParameter
+                                                                                .Expression);
 
                                                                 // Report a diagnostic if the
                                                                 // message is constant and null or
                                                                 // whitespace
-                                                                if (constantValue.HasValue
-                                                                    && string.IsNullOrWhiteSpace(
+                                                                if (constantValue.HasValue &&
+                                                                    string.IsNullOrWhiteSpace(
                                                                         constantValue
-                                                                            .Value as string)) {
+                                                                            .Value as string))
+                                                                {
                                                                         context.ReportDiagnostic(
                                                                             Diagnostic.Create(
                                                                                 descriptor,

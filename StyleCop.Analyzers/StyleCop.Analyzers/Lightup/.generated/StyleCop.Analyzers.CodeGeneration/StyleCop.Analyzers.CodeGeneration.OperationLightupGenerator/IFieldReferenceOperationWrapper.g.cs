@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IFieldReferenceOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IFieldReferenceOperation";
+        internal readonly struct IFieldReferenceOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IFieldReferenceOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IFieldSymbol> FieldAccessor;
                 private static readonly Func<IOperation, bool> IsDeclarationAccessor;
@@ -18,10 +19,12 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IFieldReferenceOperationWrapper));
-                        FieldAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            IFieldSymbol>(WrappedType, nameof(Field));
-                        IsDeclarationAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                        FieldAccessor =
+                            LightupHelpers
+                                .CreateOperationPropertyAccessor<IOperation, IFieldSymbol>(
+                                    WrappedType, nameof(Field));
+                        IsDeclarationAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
                                 WrappedType, nameof(IsDeclaration));
                 }
 
@@ -37,19 +40,20 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation Instance =>((IMemberReferenceOperationWrapper) this).Instance;
                 public ISymbol Member =>((IMemberReferenceOperationWrapper) this).Member;
                 public static explicit operator IFieldReferenceOperationWrapper(
-                    IMemberReferenceOperationWrapper
-                        wrapper) => FromOperation(wrapper.WrappedOperation);
+                    IMemberReferenceOperationWrapper wrapper) =>
+                    FromOperation(wrapper.WrappedOperation);
                 public static implicit operator IMemberReferenceOperationWrapper(
-                    IFieldReferenceOperationWrapper wrapper) => IMemberReferenceOperationWrapper
-                                                                    .FromUpcast(
-                                                                        wrapper.WrappedOperation);
+                    IFieldReferenceOperationWrapper wrapper) =>
+                    IMemberReferenceOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IFieldReferenceOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -59,8 +63,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

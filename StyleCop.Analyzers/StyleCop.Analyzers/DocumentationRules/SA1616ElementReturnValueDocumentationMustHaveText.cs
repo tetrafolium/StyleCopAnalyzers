@@ -25,31 +25,31 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoCodeFix("Cannot generate documentation")]
-        internal class SA1616ElementReturnValueDocumentationMustHaveText
-            : ElementDocumentationBase {
+        internal class SA1616ElementReturnValueDocumentationMustHaveText : ElementDocumentationBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1616ElementReturnValueDocumentationMustHaveText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1616";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1616.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1616Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1616.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1616Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1616MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1616Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1616Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 public SA1616ElementReturnValueDocumentationMustHaveText()
                     : base(matchElementName
@@ -59,18 +59,25 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                    StyleCopSettings settings, bool needsComment,
-                    IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
+                                                         StyleCopSettings settings,
+                                                         bool needsComment,
+                                                         IEnumerable<XmlNodeSyntax> syntaxList,
+                                                         params Location[] diagnosticLocations)
                 {
-                        foreach (var syntax in syntaxList) {
-                                bool isEmpty = syntax is XmlEmptyElementSyntax
-                                    || XmlCommentHelper.IsConsideredEmpty(syntax);
-                                if (isEmpty) {
+                        foreach (var syntax in syntaxList)
+                        {
+                                bool isEmpty = syntax is XmlEmptyElementSyntax ||
+                                               XmlCommentHelper.IsConsideredEmpty(syntax);
+                                if (isEmpty)
+                                {
                                         context.ReportDiagnostic(
                                             Diagnostic.Create(Descriptor, syntax.GetLocation()));
                                 }
@@ -85,8 +92,10 @@ namespace StyleCop.Analyzers.DocumentationRules
                         var returnsNodes = completeDocumentation.Nodes().OfType<XElement>().Where(
                             n => n.Name == XmlCommentHelper.ReturnsXmlTag);
 
-                        foreach (var node in returnsNodes) {
-                                if (XmlCommentHelper.IsConsideredEmpty(node)) {
+                        foreach (var node in returnsNodes)
+                        {
+                                if (XmlCommentHelper.IsConsideredEmpty(node))
+                                {
                                         context.ReportDiagnostic(Diagnostic.Create(
                                             Descriptor, diagnosticLocations.First()));
                                 }

@@ -27,11 +27,15 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1609SA1610CodeFixProvider))]
         [Shared]
-        internal class SA1609SA1610CodeFixProvider : CodeFixProvider {
+        internal class SA1609SA1610CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1609PropertyDocumentationMustHaveValue.DiagnosticId,
-                    SA1610PropertyDocumentationMustHaveValueText.DiagnosticId);
+                                        SA1610PropertyDocumentationMustHaveValueText.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -42,15 +46,18 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 if (!diagnostic.Properties.ContainsKey(
-                                        PropertyDocumentationBase.NoCodeFixKey)) {
+                                        PropertyDocumentationBase.NoCodeFixKey))
+                                {
                                         context.RegisterCodeFix(
                                             CodeAction.Create(
                                                 DocumentationResources.SA1609SA1610CodeFix,
-                                                cancellationToken => this.GetTransformedDocumentAsync(
-                                                    context.Document, diagnostic,
-                                                    cancellationToken),
+                                                cancellationToken =>
+                                                    this.GetTransformedDocumentAsync(
+                                                        context.Document, diagnostic,
+                                                        cancellationToken),
                                                 nameof(SA1609SA1610CodeFixProvider)),
                                             diagnostic);
                                 }
@@ -61,7 +68,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                 private static bool IsContentElement(XmlNodeSyntax syntax)
                 {
-                        switch (syntax.Kind()) {
+                        switch (syntax.Kind())
+                        {
                         case SyntaxKind.XmlCDataSection:
                         case SyntaxKind.XmlElement:
                         case SyntaxKind.XmlEmptyElement:
@@ -88,38 +96,44 @@ namespace StyleCop.Analyzers.DocumentationRules
                         var documentRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                                .ConfigureAwait(false);
                         SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan);
-                        if (syntax == null) {
+                        if (syntax == null)
+                        {
                                 return document;
                         }
 
-                        PropertyDeclarationSyntax propertyDeclarationSyntax
-                            = syntax.FirstAncestorOrSelf<PropertyDeclarationSyntax>();
-                        if (propertyDeclarationSyntax == null) {
+                        PropertyDeclarationSyntax propertyDeclarationSyntax =
+                            syntax.FirstAncestorOrSelf<PropertyDeclarationSyntax>();
+                        if (propertyDeclarationSyntax == null)
+                        {
                                 return document;
                         }
 
-                        DocumentationCommentTriviaSyntax documentationComment
-                            = propertyDeclarationSyntax.GetDocumentationCommentTriviaSyntax();
-                        if (documentationComment == null) {
+                        DocumentationCommentTriviaSyntax documentationComment =
+                            propertyDeclarationSyntax.GetDocumentationCommentTriviaSyntax();
+                        if (documentationComment == null)
+                        {
                                 return document;
                         }
 
                         if (!(documentationComment.Content.GetFirstXmlElement(
-                                XmlCommentHelper.SummaryXmlTag)
-                                    is XmlElementSyntax summaryElement)) {
+                                XmlCommentHelper.SummaryXmlTag) is XmlElementSyntax summaryElement))
+                        {
                                 return document;
                         }
 
                         SyntaxList<XmlNodeSyntax> summaryContent = summaryElement.Content;
-                        if (!this.TryRemoveSummaryPrefix(ref summaryContent, "Gets or sets ")) {
-                                if (!this.TryRemoveSummaryPrefix(ref summaryContent, "Gets ")) {
+                        if (!this.TryRemoveSummaryPrefix(ref summaryContent, "Gets or sets "))
+                        {
+                                if (!this.TryRemoveSummaryPrefix(ref summaryContent, "Gets "))
+                                {
                                         this.TryRemoveSummaryPrefix(ref summaryContent, "Sets ");
                                 }
                         }
 
-                        SyntaxList<XmlNodeSyntax> content
-                            = summaryContent.WithoutFirstAndLastNewlines();
-                        if (!string.IsNullOrWhiteSpace(content.ToFullString())) {
+                        SyntaxList<XmlNodeSyntax> content =
+                            summaryContent.WithoutFirstAndLastNewlines();
+                        if (!string.IsNullOrWhiteSpace(content.ToFullString()))
+                        {
                                 // wrap the content in a <placeholder> element for review
                                 content = XmlSyntaxFactory.List(
                                     XmlSyntaxFactory.PlaceholderElement(content));
@@ -136,11 +150,12 @@ namespace StyleCop.Analyzers.DocumentationRules
                         // HACK: The formatter isn't working when contents are added to an existing
                         // documentation comment, so we manually apply the indentation from the last
                         // line of the existing comment to each new line of the generated content.
-                        SyntaxTrivia exteriorTrivia
-                            = GetLastDocumentationCommentExteriorTrivia(documentationComment);
-                        if (!exteriorTrivia.Token.IsMissing) {
-                                leadingNewLine
-                                    = leadingNewLine.ReplaceExteriorTrivia(exteriorTrivia);
+                        SyntaxTrivia exteriorTrivia =
+                            GetLastDocumentationCommentExteriorTrivia(documentationComment);
+                        if (!exteriorTrivia.Token.IsMissing)
+                        {
+                                leadingNewLine =
+                                    leadingNewLine.ReplaceExteriorTrivia(exteriorTrivia);
                                 valueElement = valueElement.ReplaceExteriorTrivia(exteriorTrivia);
                         }
 
@@ -149,49 +164,57 @@ namespace StyleCop.Analyzers.DocumentationRules
                         SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken)
                                               .ConfigureAwait(false);
                         SyntaxNode newRoot;
-                        XmlNodeSyntax existingValue
-                            = documentationComment.Content.GetFirstXmlElement(
+                        XmlNodeSyntax existingValue =
+                            documentationComment.Content.GetFirstXmlElement(
                                 XmlCommentHelper.ValueXmlTag);
-                        if (existingValue != null) {
+                        if (existingValue != null)
+                        {
                                 newRoot = root.ReplaceNode(existingValue, valueElement);
-                        } else {
-                                DocumentationCommentTriviaSyntax newDocumentationComment
-                                    = documentationComment.WithContent(
+                        }
+                        else
+                        {
+                                DocumentationCommentTriviaSyntax newDocumentationComment =
+                                    documentationComment.WithContent(
                                         documentationComment.Content.InsertRange(
                                             documentationComment.Content.Count - 1,
                                             XmlSyntaxFactory.List(leadingNewLine, valueElement)));
 
-                                newRoot = root.ReplaceNode(
-                                    documentationComment, newDocumentationComment);
+                                newRoot =
+                                    root.ReplaceNode(documentationComment, newDocumentationComment);
                         }
 
                         return document.WithSyntaxRoot(newRoot);
                 }
 
-                private bool TryRemoveSummaryPrefix(
-                    ref SyntaxList<XmlNodeSyntax> summaryContent, string prefix)
+                private bool TryRemoveSummaryPrefix(ref SyntaxList<XmlNodeSyntax> summaryContent,
+                                                    string prefix)
                 {
-                        XmlNodeSyntax firstContent
-                            = summaryContent.FirstOrDefault(IsContentElement);
-                        if (!(firstContent is XmlTextSyntax firstText)) {
+                        XmlNodeSyntax firstContent =
+                            summaryContent.FirstOrDefault(IsContentElement);
+                        if (!(firstContent is XmlTextSyntax firstText))
+                        {
                                 return false;
                         }
 
                         string firstTextContent = string.Concat(firstText.DescendantTokens());
-                        if (!firstTextContent.TrimStart().StartsWith(
-                                prefix, StringComparison.Ordinal)) {
+                        if (!firstTextContent.TrimStart().StartsWith(prefix,
+                                                                     StringComparison.Ordinal))
+                        {
                                 return false;
                         }
 
                         // Find the token containing the prefix, such as "Gets or sets "
                         SyntaxToken prefixToken = default;
-                        foreach (SyntaxToken textToken in firstText.TextTokens) {
-                                if (textToken.IsMissing) {
+                        foreach (SyntaxToken textToken in firstText.TextTokens)
+                        {
+                                if (textToken.IsMissing)
+                                {
                                         continue;
                                 }
 
                                 if (!textToken.Text.TrimStart().StartsWith(
-                                        prefix, StringComparison.Ordinal)) {
+                                        prefix, StringComparison.Ordinal))
+                                {
                                         continue;
                                 }
 
@@ -199,32 +222,36 @@ namespace StyleCop.Analyzers.DocumentationRules
                                 break;
                         }
 
-                        if (prefixToken.IsMissingOrDefault()) {
+                        if (prefixToken.IsMissingOrDefault())
+                        {
                                 return false;
                         }
 
                         string text = prefixToken.Text;
                         string valueText = prefixToken.ValueText;
                         int index = text.IndexOf(prefix);
-                        if (index >= 0) {
+                        if (index >= 0)
+                        {
                                 bool additionalCharacters = index + prefix.Length < text.Length;
-                                text = text.Substring(0, index)
-                                    + (additionalCharacters ? char
-                                            .ToUpperInvariant(text[index + prefix.Length])
-                                            .ToString()
-                                        : string.Empty)
-                                    + text.Substring(index
-                                        + (additionalCharacters ?(prefix.Length + 1)
-                                            : prefix.Length));
+                                text =
+                                    text.Substring(0, index) +
+                                    (additionalCharacters ? char
+                                         .ToUpperInvariant(text[index + prefix.Length])
+                                         .ToString()
+                                     : string.Empty) +
+                                    text.Substring(index + (additionalCharacters ?(prefix.Length + 1)
+                                                            : prefix.Length));
                         }
 
                         index = valueText.IndexOf(prefix);
-                        if (index >= 0) {
+                        if (index >= 0)
+                        {
                                 valueText = valueText.Remove(index, prefix.Length);
                         }
 
-                        SyntaxToken replaced = SyntaxFactory.Token(prefixToken.LeadingTrivia,
-                            prefixToken.Kind(), text, valueText, prefixToken.TrailingTrivia);
+                        SyntaxToken replaced =
+                            SyntaxFactory.Token(prefixToken.LeadingTrivia, prefixToken.Kind(), text,
+                                                valueText, prefixToken.TrailingTrivia);
                         summaryContent = summaryContent.Replace(
                             firstText, firstText.ReplaceToken(prefixToken, replaced));
                         return true;

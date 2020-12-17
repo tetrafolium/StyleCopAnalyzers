@@ -23,9 +23,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1407SA1408CodeFixProvider))]
         [Shared]
-        internal class SA1407SA1408CodeFixProvider : CodeFixProvider {
+        internal class SA1407SA1408CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1407ArithmeticExpressionsMustDeclarePrecedence.DiagnosticId,
                     SA1408ConditionalExpressionsMustDeclarePrecedence.DiagnosticId);
@@ -39,17 +43,20 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var root
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
+                        var root =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan);
-                                if (node.IsMissing) {
+                                if (node.IsMissing)
+                                {
                                         continue;
                                 }
 
-                                if (node is BinaryExpressionSyntax syntax) {
+                                if (node is BinaryExpressionSyntax syntax)
+                                {
                                         context.RegisterCodeFix(
                                             CodeAction.Create(
                                                 MaintainabilityResources.SA1407SA1408CodeFix,

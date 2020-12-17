@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct PrimaryConstructorBaseTypeSyntaxWrapper
-            : ISyntaxWrapper<BaseTypeSyntax> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.PrimaryConstructorBaseTypeSyntax";
+            : ISyntaxWrapper<BaseTypeSyntax>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.PrimaryConstructorBaseTypeSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<BaseTypeSyntax, ArgumentListSyntax>
@@ -28,17 +29,16 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(PrimaryConstructorBaseTypeSyntaxWrapper));
-                        ArgumentListAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<BaseTypeSyntax, ArgumentListSyntax>(
-                                      WrappedType, nameof(ArgumentList));
-                        WithTypeAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<BaseTypeSyntax, TypeSyntax>(
-                                      WrappedType, nameof(Type));
-                        WithArgumentListAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<BaseTypeSyntax,
-                                ArgumentListSyntax>(WrappedType, nameof(ArgumentList));
+                        ArgumentListAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<BaseTypeSyntax, ArgumentListSyntax>(
+                                    WrappedType, nameof(ArgumentList));
+                        WithTypeAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<BaseTypeSyntax, TypeSyntax>(
+                                    WrappedType, nameof(Type));
+                        WithArgumentListAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            BaseTypeSyntax, ArgumentListSyntax>(WrappedType, nameof(ArgumentList));
                 }
 
                 private PrimaryConstructorBaseTypeSyntaxWrapper(BaseTypeSyntax node)
@@ -50,22 +50,30 @@ namespace StyleCop.Analyzers.Lightup
 
                 public TypeSyntax Type
                 {
-                        get { return this.SyntaxNode.Type; }
+                        get
+                        {
+                                return this.SyntaxNode.Type;
+                        }
                 }
 
                 public ArgumentListSyntax ArgumentList
                 {
-                        get { return ArgumentListAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return ArgumentListAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator PrimaryConstructorBaseTypeSyntaxWrapper(
                     SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

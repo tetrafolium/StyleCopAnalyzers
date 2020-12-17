@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace LightJson {
+namespace LightJson
+{
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,27 +13,32 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(JsonArrayDebugView))]
-internal sealed class JsonArray : IEnumerable<JsonValue> {
+internal sealed class JsonArray : IEnumerable<JsonValue>
+{
         private readonly IList<JsonValue> items;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonArray"/> class.
         /// </summary>
-        public JsonArray() { this.items = new List<JsonValue>(); }
+        public JsonArray()
+        {
+                this.items = new List<JsonValue>();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonArray"/> class, adding the given values
         /// to the collection.
         /// </summary>
         /// <param name="values">The values to be added to this collection.</param>
-        public JsonArray(params JsonValue[] values)
-            : this()
+        public JsonArray(params JsonValue[] values) : this()
         {
-                if (values == null) {
+                if (values == null)
+                {
                         throw new ArgumentNullException(nameof(values));
                 }
 
-                foreach (var value in values) {
+                foreach (var value in values)
+                {
                         this.items.Add(value);
                 }
         }
@@ -43,7 +49,10 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// <value>The number of values in this collection.</value>
         public int Count
         {
-                get { return this.items.Count; }
+                get
+                {
+                        return this.items.Count;
+                }
         }
 
         /// <summary>
@@ -57,14 +66,20 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         {
                 get
                 {
-                        if (index >= 0 && index < this.items.Count) {
+                        if (index >= 0 && index < this.items.Count)
+                        {
                                 return this.items[index];
-                        } else {
+                        }
+                        else
+                        {
                                 return JsonValue.Null;
                         }
                 }
 
-                set { this.items[index] = value; }
+                set
+                {
+                        this.items[index] = value;
+                }
         }
 
         /// <summary>
@@ -116,20 +131,29 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// </summary>
         /// <param name="item">The item to locate in the JsonArray.</param>
         /// <returns>Returns true if the item is found; otherwise, false.</returns>
-        public bool Contains(JsonValue item) { return this.items.Contains(item); }
+        public bool Contains(JsonValue item)
+        {
+                return this.items.Contains(item);
+        }
 
         /// <summary>
         /// Determines the index of the given item in this JsonArray.
         /// </summary>
         /// <param name="item">The item to locate in this JsonArray.</param>
         /// <returns>The index of the item, if found. Otherwise, returns -1.</returns>
-        public int IndexOf(JsonValue item) { return this.items.IndexOf(item); }
+        public int IndexOf(JsonValue item)
+        {
+                return this.items.IndexOf(item);
+        }
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>The enumerator that iterates through the collection.</returns>
-        public IEnumerator<JsonValue> GetEnumerator() { return this.items.GetEnumerator(); }
+        public IEnumerator<JsonValue> GetEnumerator()
+        {
+                return this.items.GetEnumerator();
+        }
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -141,10 +165,14 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         }
 
         [ExcludeFromCodeCoverage]
-        private class JsonArrayDebugView {
+        private class JsonArrayDebugView
+        {
                 private readonly JsonArray jsonArray;
 
-                public JsonArrayDebugView(JsonArray jsonArray) { this.jsonArray = jsonArray; }
+                public JsonArrayDebugView(JsonArray jsonArray)
+                {
+                        this.jsonArray = jsonArray;
+                }
 
                 [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
                 public JsonValue[] Items
@@ -153,7 +181,8 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
                         {
                                 var items = new JsonValue[this.jsonArray.Count];
 
-                                for (int i = 0; i < this.jsonArray.Count; i += 1) {
+                                for (int i = 0; i < this.jsonArray.Count; i += 1)
+                                {
                                         items[i] = this.jsonArray[i];
                                 }
 

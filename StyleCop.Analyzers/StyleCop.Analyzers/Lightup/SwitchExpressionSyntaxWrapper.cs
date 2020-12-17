@@ -5,7 +5,8 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal partial struct SwitchExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax> {
+        internal partial struct SwitchExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
+        {
                 public SwitchExpressionSyntaxWrapper AddArms(
                     params SwitchExpressionArmSyntaxWrapper[] arms)
                 {

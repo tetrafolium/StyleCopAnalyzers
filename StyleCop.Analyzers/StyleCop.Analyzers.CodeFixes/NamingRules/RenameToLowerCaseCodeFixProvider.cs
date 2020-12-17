@@ -21,13 +21,18 @@ namespace StyleCop.Analyzers.NamingRules
         /// it begins with a lower-case letter, or place the item within a <c>NativeMethods</c>
         /// class if appropriate.</para>
         /// </remarks>
-        [ExportCodeFixProvider(
-            LanguageNames.CSharp, Name = nameof(RenameToLowerCaseCodeFixProvider))]
+        [ExportCodeFixProvider(LanguageNames.CSharp,
+                               Name = nameof(RenameToLowerCaseCodeFixProvider))]
         [Shared]
-        internal class RenameToLowerCaseCodeFixProvider : CodeFixProvider {
+        internal class RenameToLowerCaseCodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
-                = ImmutableArray.Create(SA1306FieldNamesMustBeginWithLowerCaseLetter.DiagnosticId,
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
+                = ImmutableArray.Create(
+                    SA1306FieldNamesMustBeginWithLowerCaseLetter.DiagnosticId,
                     SA1312VariableNamesMustBeginWithLowerCaseLetter.DiagnosticId,
                     SA1313ParameterNamesMustBeginWithLowerCaseLetter.DiagnosticId);
 
@@ -44,16 +49,19 @@ namespace StyleCop.Analyzers.NamingRules
                         var root = await document.GetSyntaxRootAsync(context.CancellationToken)
                                        .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
-                                if (string.IsNullOrEmpty(token.ValueText)) {
+                                if (string.IsNullOrEmpty(token.ValueText))
+                                {
                                         continue;
                                 }
 
                                 var originalName = token.ValueText;
 
                                 var baseName = originalName.TrimStart('_');
-                                if (baseName.Length == 0) {
+                                if (baseName.Length == 0)
+                                {
                                         // only offer a code fix if the name does not consist of
                                         // only underscores.
                                         continue;
@@ -64,28 +72,30 @@ namespace StyleCop.Analyzers.NamingRules
 
                                 var memberSyntax = RenameHelper.GetParentDeclaration(token);
 
-                                SemanticModel semanticModel
-                                    = await document
-                                          .GetSemanticModelAsync(context.CancellationToken)
-                                          .ConfigureAwait(false);
+                                SemanticModel semanticModel =
+                                    await document.GetSemanticModelAsync(context.CancellationToken)
+                                        .ConfigureAwait(false);
 
                                 var declaredSymbol = semanticModel.GetDeclaredSymbol(memberSyntax);
-                                if (declaredSymbol == null) {
+                                if (declaredSymbol == null)
+                                {
                                         continue;
                                 }
 
                                 // preserve the underscores, but only for fields.
-                                var prefix = declaredSymbol.Kind
-                                    == SymbolKind.Field ? originalName
-                                           .Substring(0, underscoreCount)
+                                var prefix =
+                                    declaredSymbol.Kind == SymbolKind.Field ? originalName
+                                                               .Substring(0, underscoreCount)
                                     : string.Empty;
                                 var newName = prefix + baseName;
 
                                 int index = 0;
                                 while (!await RenameHelper
                                             .IsValidNewMemberNameAsync(semanticModel,
-                                                declaredSymbol, newName, context.CancellationToken)
-                                            .ConfigureAwait(false)) {
+                                                                       declaredSymbol, newName,
+                                                                       context.CancellationToken)
+                                            .ConfigureAwait(false))
+                                {
                                         index++;
                                         newName = prefix + baseName + index;
                                 }
@@ -95,8 +105,8 @@ namespace StyleCop.Analyzers.NamingRules
                                         string.Format(NamingResources.RenameToCodeFix, newName),
                                         cancellationToken => RenameHelper.RenameSymbolAsync(
                                             document, root, token, newName, cancellationToken),
-                                        nameof(RenameToLowerCaseCodeFixProvider) + "_"
-                                            + underscoreCount + "_" + index),
+                                        nameof(RenameToLowerCaseCodeFixProvider) + "_" +
+                                            underscoreCount + "_" + index),
                                     diagnostic);
                         }
                 }

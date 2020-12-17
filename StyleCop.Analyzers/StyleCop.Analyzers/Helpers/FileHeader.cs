@@ -9,7 +9,8 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Class containing the parsed file header information.
         /// </summary>
-        internal class FileHeader {
+        internal class FileHeader
+        {
                 private readonly int fileHeaderStart;
 
                 /// <summary>
@@ -32,7 +33,9 @@ namespace StyleCop.Analyzers.Helpers
                 /// Prevents a default instance of the <see cref="FileHeader"/> class from being
                 /// created.
                 /// </summary>
-                private FileHeader() { }
+                private FileHeader()
+                {
+                }
 
                 /// <summary>
                 /// Gets a <see cref="FileHeader"/> instance representing a missing file header.
@@ -42,7 +45,10 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 internal static FileHeader MissingFileHeader
                 {
-                        get { return new FileHeader{ IsMissing = true }; }
+                        get
+                        {
+                                return new FileHeader{IsMissing = true};
+                        }
                 }
 
                 /// <summary>
@@ -63,7 +69,10 @@ namespace StyleCop.Analyzers.Helpers
                 /// <value>
                 /// The copyright text, as parsed from the header.
                 /// </value>
-                internal string CopyrightText { get; }
+                internal string CopyrightText
+                {
+                        get;
+                }
 
                 /// <summary>
                 /// Gets the location representing the start of the file header.
@@ -73,11 +82,13 @@ namespace StyleCop.Analyzers.Helpers
                 /// header.</returns>
                 internal Location GetLocation(SyntaxTree syntaxTree)
                 {
-                        if (this.IsMissing) {
+                        if (this.IsMissing)
+                        {
                                 return Location.Create(syntaxTree, new TextSpan(0, 0));
                         }
 
-                        return Location.Create(syntaxTree,
+                        return Location.Create(
+                            syntaxTree,
                             TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderStart + 2));
                 }
         }

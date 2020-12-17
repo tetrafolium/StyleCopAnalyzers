@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ISwitchOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.ISwitchOperation";
+        internal readonly struct ISwitchOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.ISwitchOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ImmutableArray<ILocalSymbol>>
                     LocalsAccessor;
@@ -19,19 +20,20 @@ namespace StyleCop.Analyzers.Lightup
                 private readonly IOperation operation;
                 static ISwitchOperationWrapper()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(ISwitchOperationWrapper));
-                        LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
-                        ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            IOperation>(WrappedType, nameof(Value));
-                        CasesAccessor
-                            = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                        WrappedType =
+                            OperationWrapperHelper.GetWrappedType(typeof(ISwitchOperationWrapper));
+                        LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<
+                            IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
+                        ValueAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Value));
+                        CasesAccessor =
+                            LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
                                 WrappedType, nameof(Cases));
-                        ExitLabelAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
-                                      WrappedType, nameof(ExitLabel));
+                        ExitLabelAccessor =
+                            LightupHelpers
+                                .CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
+                                    WrappedType, nameof(ExitLabel));
                 }
 
                 private ISwitchOperationWrapper(IOperation operation)
@@ -47,11 +49,13 @@ namespace StyleCop.Analyzers.Lightup
                 public ILabelSymbol ExitLabel => ExitLabelAccessor(this.WrappedOperation);
                 public static ISwitchOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -61,8 +65,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ITryOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.ITryOperation";
+        internal readonly struct ITryOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.ITryOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> BodyAccessor;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
@@ -19,39 +20,45 @@ namespace StyleCop.Analyzers.Lightup
                 private readonly IOperation operation;
                 static ITryOperationWrapper()
                 {
-                        WrappedType
-                            = OperationWrapperHelper.GetWrappedType(typeof(ITryOperationWrapper));
-                        BodyAccessor = LightupHelpers
-                                           .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                               WrappedType, nameof(Body));
-                        CatchesAccessor
-                            = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                        WrappedType =
+                            OperationWrapperHelper.GetWrappedType(typeof(ITryOperationWrapper));
+                        BodyAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Body));
+                        CatchesAccessor =
+                            LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
                                 WrappedType, nameof(Catches));
-                        FinallyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            IOperation>(WrappedType, nameof(Finally));
-                        ExitLabelAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
-                                      WrappedType, nameof(ExitLabel));
+                        FinallyAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Finally));
+                        ExitLabelAccessor =
+                            LightupHelpers
+                                .CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
+                                    WrappedType, nameof(ExitLabel));
                 }
 
-                private ITryOperationWrapper(IOperation operation) { this.operation = operation; }
+                private ITryOperationWrapper(IOperation operation)
+                {
+                        this.operation = operation;
+                }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IBlockOperationWrapper Body => IBlockOperationWrapper.FromOperation(
-                    BodyAccessor(this.WrappedOperation));
+                public IBlockOperationWrapper Body =>
+                    IBlockOperationWrapper.FromOperation(BodyAccessor(this.WrappedOperation));
                 public ImmutableArray<IOperation> Catches => CatchesAccessor(this.WrappedOperation);
-                public IBlockOperationWrapper Finally => IBlockOperationWrapper.FromOperation(
-                    FinallyAccessor(this.WrappedOperation));
+                public IBlockOperationWrapper Finally =>
+                    IBlockOperationWrapper.FromOperation(FinallyAccessor(this.WrappedOperation));
                 public ILabelSymbol ExitLabel => ExitLabelAccessor(this.WrappedOperation);
                 public static ITryOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -61,8 +68,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

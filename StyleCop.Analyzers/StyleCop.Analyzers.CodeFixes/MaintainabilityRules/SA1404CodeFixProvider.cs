@@ -23,9 +23,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1404CodeFixProvider))]
         [Shared]
-        internal class SA1404CodeFixProvider : CodeFixProvider {
+        internal class SA1404CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1404CodeAnalysisSuppressionMustHaveJustification.DiagnosticId);
 
@@ -38,14 +42,16 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var root
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
+                        var root =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 var node = root.FindNode(diagnostic.Location.SourceSpan);
 
-                                if (node is AttributeSyntax attribute) {
+                                if (node is AttributeSyntax attribute)
+                                {
                                         // In this case there is no justification at all
                                         context.RegisterCodeFix(
                                             CodeAction.Create(
@@ -57,7 +63,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                                         return;
                                 }
 
-                                if (node is AttributeArgumentSyntax argument) {
+                                if (node is AttributeArgumentSyntax argument)
+                                {
                                         context.RegisterCodeFix(
                                             CodeAction.Create(
                                                 MaintainabilityResources.SA1404CodeFix,
@@ -93,7 +100,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 private static LiteralExpressionSyntax GetNewAttributeValue()
                 {
-                        return SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression,
+                        return SyntaxFactory.LiteralExpression(
+                            SyntaxKind.StringLiteralExpression,
                             SyntaxFactory.Literal(SA1404CodeAnalysisSuppressionMustHaveJustification
                                                       .JustificationPlaceholder));
                 }

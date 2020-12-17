@@ -5,7 +5,8 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis;
 
-        internal static class OperationKindEx {
+        internal static class OperationKindEx
+        {
                 public const OperationKind Invalid = (OperationKind) 0x1;
                 public const OperationKind Block = (OperationKind) 0x2;
                 public const OperationKind VariableDeclarationGroup = (OperationKind) 0x3;
@@ -99,8 +100,8 @@ namespace StyleCop.Analyzers.Lightup
                 public const OperationKind FlowCaptureReference = (OperationKind) 0x5c;
                 public const OperationKind IsNull = (OperationKind) 0x5d;
                 public const OperationKind CaughtException = (OperationKind) 0x5e;
-                public const OperationKind StaticLocalInitializationSemaphore
-                    = (OperationKind) 0x5f;
+                public const OperationKind StaticLocalInitializationSemaphore =
+                    (OperationKind) 0x5f;
                 public const OperationKind FlowAnonymousFunction = (OperationKind) 0x60;
                 public const OperationKind CoalesceAssignment = (OperationKind) 0x61;
                 public const OperationKind Range = (OperationKind) 0x63;

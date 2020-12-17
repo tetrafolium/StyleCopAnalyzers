@@ -10,15 +10,17 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct DefaultConstraintSyntaxWrapper
-            : ISyntaxWrapper<TypeParameterConstraintSyntax> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.DefaultConstraintSyntax";
+            : ISyntaxWrapper<TypeParameterConstraintSyntax>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.DefaultConstraintSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<TypeParameterConstraintSyntax, SyntaxToken>
                     DefaultKeywordAccessor;
-                private static readonly Func<TypeParameterConstraintSyntax, SyntaxToken,
-                    TypeParameterConstraintSyntax> WithDefaultKeywordAccessor;
+                private static readonly
+                    Func<TypeParameterConstraintSyntax, SyntaxToken, TypeParameterConstraintSyntax>
+                        WithDefaultKeywordAccessor;
 
                 private readonly TypeParameterConstraintSyntax node;
 
@@ -27,12 +29,12 @@ namespace StyleCop.Analyzers.Lightup
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(DefaultConstraintSyntaxWrapper));
                         DefaultKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            TypeParameterConstraintSyntax, SyntaxToken>(
-                            WrappedType, nameof(DefaultKeyword));
-                        WithDefaultKeywordAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                TypeParameterConstraintSyntax, SyntaxToken>(
-                                WrappedType, nameof(DefaultKeyword));
+                            TypeParameterConstraintSyntax, SyntaxToken>(WrappedType,
+                                                                        nameof(DefaultKeyword));
+                        WithDefaultKeywordAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                                TypeParameterConstraintSyntax, SyntaxToken>(WrappedType,
+                                                                            nameof(DefaultKeyword));
                 }
 
                 private DefaultConstraintSyntaxWrapper(TypeParameterConstraintSyntax node)
@@ -44,22 +46,27 @@ namespace StyleCop.Analyzers.Lightup
 
                 public SyntaxToken DefaultKeyword
                 {
-                        get { return DefaultKeywordAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return DefaultKeywordAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator DefaultConstraintSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
-                        return new DefaultConstraintSyntaxWrapper(
-                            (TypeParameterConstraintSyntax) node);
+                        return new DefaultConstraintSyntaxWrapper((TypeParameterConstraintSyntax)
+                                                                      node);
                 }
 
                 public static implicit operator TypeParameterConstraintSyntax(

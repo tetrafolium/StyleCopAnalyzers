@@ -31,33 +31,34 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1608ElementDocumentationMustNotHaveDefaultSummary
-            : ElementDocumentationBase {
+            : ElementDocumentationBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1608ElementDocumentationMustNotHaveDefaultSummary"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1608";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1608.md";
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1608.md";
 
                 private const string DefaultText = "Summary description for";
 
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1608Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1608Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1608MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1608Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1608Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 public SA1608ElementDocumentationMustNotHaveDefaultSummary()
                     : base(inheritDocSuppressesWarnings
@@ -67,21 +68,29 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                    StyleCopSettings settings, bool needsComment,
-                    IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
+                                                         StyleCopSettings settings,
+                                                         bool needsComment,
+                                                         IEnumerable<XmlNodeSyntax> syntaxList,
+                                                         params Location[] diagnosticLocations)
                 {
-                        foreach (var syntax in syntaxList) {
+                        foreach (var syntax in syntaxList)
+                        {
                                 var summaryElement = syntax as XmlElementSyntax;
                                 if (summaryElement?.Content.FirstOrDefault()
-                                        is XmlTextSyntax textElement) {
+                                        is XmlTextSyntax textElement)
+                                {
                                         string text = XmlCommentHelper.GetText(textElement, true);
 
-                                        if (IsDefaultText(text)) {
+                                        if (IsDefaultText(text))
+                                        {
                                                 context.ReportDiagnostic(Diagnostic.Create(
                                                     Descriptor, summaryElement.GetLocation()));
                                                 return;
@@ -96,13 +105,15 @@ namespace StyleCop.Analyzers.DocumentationRules
                     XElement completeDocumentation, params Location[] diagnosticLocations)
                 {
                         // We are working with an <include> element
-                        var includedSummaryElement
-                            = completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
+                        var includedSummaryElement =
+                            completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
                                 element => element.Name == XmlCommentHelper.SummaryXmlTag);
-                        if (includedSummaryElement != null) {
+                        if (includedSummaryElement != null)
+                        {
                                 string text = includedSummaryElement.Value;
 
-                                if (IsDefaultText(text)) {
+                                if (IsDefaultText(text))
+                                {
                                         context.ReportDiagnostic(Diagnostic.Create(
                                             Descriptor, diagnosticLocations.First()));
                                         return;
@@ -112,9 +123,11 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                 private static bool IsDefaultText(string text)
                 {
-                        if (!string.IsNullOrEmpty(text)) {
-                                if (text.TrimStart().StartsWith(
-                                        DefaultText, StringComparison.Ordinal)) {
+                        if (!string.IsNullOrEmpty(text))
+                        {
+                                if (text.TrimStart().StartsWith(DefaultText,
+                                                                StringComparison.Ordinal))
+                                {
                                         return true;
                                 }
                         }

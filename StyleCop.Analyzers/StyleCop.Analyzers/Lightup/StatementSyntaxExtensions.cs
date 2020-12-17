@@ -7,21 +7,21 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class StatementSyntaxExtensions {
+        internal static class StatementSyntaxExtensions
+        {
                 private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>>
                     AttributeListsAccessor;
                 private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>,
-                    StatementSyntax> WithAttributeListsAccessor;
+                                             StatementSyntax> WithAttributeListsAccessor;
 
                 static StatementSyntaxExtensions()
                 {
-                        AttributeListsAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax,
-                                SyntaxList<AttributeListSyntax>>(
-                                typeof(StatementSyntax), nameof(AttributeLists));
-                        WithAttributeListsAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax,
-                                SyntaxList<AttributeListSyntax>>(
+                        AttributeListsAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            StatementSyntax, SyntaxList<AttributeListSyntax>>(
+                            typeof(StatementSyntax), nameof(AttributeLists));
+                        WithAttributeListsAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                                StatementSyntax, SyntaxList<AttributeListSyntax>>(
                                 typeof(StatementSyntax), nameof(AttributeLists));
                 }
 
@@ -37,8 +37,8 @@ namespace StyleCop.Analyzers.Lightup
                         return WithAttributeListsAccessor(syntax, attributeLists);
                 }
 
-                public static StatementSyntax AddAttributeLists(
-                    this StatementSyntax syntax, params AttributeListSyntax[] items)
+                public static StatementSyntax AddAttributeLists(this StatementSyntax syntax,
+                                                                params AttributeListSyntax[] items)
                 {
                         return syntax.WithAttributeLists(syntax.AttributeLists().AddRange(items));
                 }

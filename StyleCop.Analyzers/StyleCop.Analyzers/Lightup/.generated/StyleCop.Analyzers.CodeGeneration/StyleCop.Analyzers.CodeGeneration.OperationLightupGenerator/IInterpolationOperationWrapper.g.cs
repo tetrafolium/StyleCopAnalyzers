@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IInterpolationOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IInterpolationOperation";
+        internal readonly struct IInterpolationOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IInterpolationOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ExpressionAccessor;
                 private static readonly Func<IOperation, IOperation> AlignmentAccessor;
@@ -19,18 +20,15 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IInterpolationOperationWrapper));
-                        ExpressionAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(Expression));
-                        AlignmentAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(Alignment));
-                        FormatStringAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(FormatString));
+                        ExpressionAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Expression));
+                        AlignmentAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Alignment));
+                        FormatStringAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(FormatString));
                 }
 
                 private IInterpolationOperationWrapper(IOperation operation)
@@ -44,19 +42,20 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation Alignment => AlignmentAccessor(this.WrappedOperation);
                 public IOperation FormatString => FormatStringAccessor(this.WrappedOperation);
                 public static explicit operator IInterpolationOperationWrapper(
-                    IInterpolatedStringContentOperationWrapper
-                        wrapper) => FromOperation(wrapper.WrappedOperation);
+                    IInterpolatedStringContentOperationWrapper wrapper) =>
+                    FromOperation(wrapper.WrappedOperation);
                 public static implicit operator IInterpolatedStringContentOperationWrapper(
-                    IInterpolationOperationWrapper
-                        wrapper) => IInterpolatedStringContentOperationWrapper
-                                        .FromUpcast(wrapper.WrappedOperation);
+                    IInterpolationOperationWrapper wrapper) =>
+                    IInterpolatedStringContentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IInterpolationOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -66,8 +65,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

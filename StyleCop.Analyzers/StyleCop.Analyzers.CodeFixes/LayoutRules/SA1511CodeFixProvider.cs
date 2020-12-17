@@ -17,9 +17,13 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1511CodeFixProvider))]
         [Shared]
-        internal class SA1511CodeFixProvider : CodeFixProvider {
+        internal class SA1511CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1511WhileDoFooterMustNotBePrecededByBlankLine.DiagnosticId);
 
@@ -32,9 +36,11 @@ namespace StyleCop.Analyzers.LayoutRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (Diagnostic diagnostic in context.Diagnostics) {
+                        foreach (Diagnostic diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(LayoutResources.SA1511CodeFix,
+                                    CodeAction.Create(
+                                        LayoutResources.SA1511CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1511CodeFixProvider)),

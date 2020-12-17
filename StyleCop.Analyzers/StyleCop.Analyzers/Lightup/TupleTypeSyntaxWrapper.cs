@@ -5,7 +5,8 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax> {
+        internal partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax>
+        {
                 public TupleTypeSyntaxWrapper AddElements(params TupleElementSyntaxWrapper[] items)
                 {
                         return new TupleTypeSyntaxWrapper(

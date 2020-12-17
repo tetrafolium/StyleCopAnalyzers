@@ -7,34 +7,36 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class MemberDeclarationSyntaxExtensions {
-                private static readonly Func<MemberDeclarationSyntax,
-                    SyntaxList<AttributeListSyntax>> AttributeListsAccessor;
+        internal static class MemberDeclarationSyntaxExtensions
+        {
+                private static readonly
+                    Func<MemberDeclarationSyntax, SyntaxList<AttributeListSyntax>>
+                        AttributeListsAccessor;
                 private static readonly Func<MemberDeclarationSyntax, SyntaxTokenList>
                     ModifiersAccessor;
-                private static readonly Func<MemberDeclarationSyntax,
-                    SyntaxList<AttributeListSyntax>, MemberDeclarationSyntax>
-                    WithAttributeListsAccessor;
+                private static readonly
+                    Func<MemberDeclarationSyntax, SyntaxList<AttributeListSyntax>,
+                         MemberDeclarationSyntax> WithAttributeListsAccessor;
                 private static readonly Func<MemberDeclarationSyntax, SyntaxTokenList,
-                    MemberDeclarationSyntax> WithModifiersAccessor;
+                                             MemberDeclarationSyntax> WithModifiersAccessor;
 
                 static MemberDeclarationSyntaxExtensions()
                 {
-                        AttributeListsAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<MemberDeclarationSyntax,
-                                SyntaxList<AttributeListSyntax>>(
-                                typeof(MemberDeclarationSyntax), nameof(AttributeLists));
-                        ModifiersAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<MemberDeclarationSyntax,
-                                SyntaxTokenList>(
+                        AttributeListsAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            MemberDeclarationSyntax, SyntaxList<AttributeListSyntax>>(
+                            typeof(MemberDeclarationSyntax), nameof(AttributeLists));
+                        ModifiersAccessor =
+                            LightupHelpers.CreateSyntaxPropertyAccessor<MemberDeclarationSyntax,
+                                                                        SyntaxTokenList>(
                                 typeof(MemberDeclarationSyntax), nameof(Modifiers));
-                        WithAttributeListsAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                        WithAttributeListsAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
                                 MemberDeclarationSyntax, SyntaxList<AttributeListSyntax>>(
                                 typeof(MemberDeclarationSyntax), nameof(AttributeLists));
-                        WithModifiersAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            MemberDeclarationSyntax, SyntaxTokenList>(
-                            typeof(MemberDeclarationSyntax), nameof(Modifiers));
+                        WithModifiersAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<MemberDeclarationSyntax,
+                                                                            SyntaxTokenList>(
+                                typeof(MemberDeclarationSyntax), nameof(Modifiers));
                 }
 
                 public static SyntaxList<AttributeListSyntax> AttributeLists(

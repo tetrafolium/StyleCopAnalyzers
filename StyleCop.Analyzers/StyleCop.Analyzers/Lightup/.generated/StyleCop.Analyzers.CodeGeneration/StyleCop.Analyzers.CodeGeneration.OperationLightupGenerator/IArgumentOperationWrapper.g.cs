@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IArgumentOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IArgumentOperation";
+        internal readonly struct IArgumentOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IArgumentOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IParameterSymbol> ParameterAccessor;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
@@ -18,12 +19,13 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IArgumentOperationWrapper));
-                        ParameterAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(
-                                      WrappedType, nameof(Parameter));
-                        ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            IOperation>(WrappedType, nameof(Value));
+                        ParameterAccessor =
+                            LightupHelpers
+                                .CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(
+                                    WrappedType, nameof(Parameter));
+                        ValueAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Value));
                 }
 
                 private IArgumentOperationWrapper(IOperation operation)
@@ -43,11 +45,13 @@ namespace StyleCop.Analyzers.Lightup
                     "Property 'IArgumentOperation.OutConversion' has unsupported type 'CommonConversion'");
                 public static IArgumentOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -57,8 +61,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

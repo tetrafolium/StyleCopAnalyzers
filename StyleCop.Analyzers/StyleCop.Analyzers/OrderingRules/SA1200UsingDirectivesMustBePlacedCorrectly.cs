@@ -160,48 +160,51 @@ namespace StyleCop.Analyzers.OrderingRules
         /// directives are placed outside of the namespace.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1200UsingDirectivesMustBePlacedCorrectly : DiagnosticAnalyzer {
+        internal class SA1200UsingDirectivesMustBePlacedCorrectly : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1200UsingDirectivesMustBePlacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1200";
 
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1200.md";
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1200.md";
 
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(OrderingResources.SA1200Title),
-                        OrderingResources.ResourceManager, typeof(OrderingResources));
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(OrderingResources.SA1200Title), OrderingResources.ResourceManager,
+                    typeof(OrderingResources));
 
-                private static readonly LocalizableString MessageFormatInside
-                    = new LocalizableResourceString(
+                private static readonly LocalizableString MessageFormatInside =
+                    new LocalizableResourceString(
                         nameof(OrderingResources.SA1200MessageFormatInside),
                         OrderingResources.ResourceManager, typeof(OrderingResources));
-                private static readonly LocalizableString DescriptionInside
-                    = new LocalizableResourceString(
-                        nameof(OrderingResources.SA1200DescriptionInside),
-                        OrderingResources.ResourceManager, typeof(OrderingResources));
+                private static readonly LocalizableString DescriptionInside =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1200DescriptionInside),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
 
-                private static readonly LocalizableString MessageFormatOutside
-                    = new LocalizableResourceString(
+                private static readonly LocalizableString MessageFormatOutside =
+                    new LocalizableResourceString(
                         nameof(OrderingResources.SA1200MessageFormatOutside),
                         OrderingResources.ResourceManager, typeof(OrderingResources));
-                private static readonly LocalizableString DescriptionOutside
-                    = new LocalizableResourceString(
+                private static readonly LocalizableString DescriptionOutside =
+                    new LocalizableResourceString(
                         nameof(OrderingResources.SA1200DescriptionOutside),
                         OrderingResources.ResourceManager, typeof(OrderingResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-                internal static readonly DiagnosticDescriptor DescriptorInside
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatInside,
-                        AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, DescriptionInside, HelpLink);
+                internal static readonly DiagnosticDescriptor DescriptorInside =
+                    new DiagnosticDescriptor(
+                        DiagnosticId, Title, MessageFormatInside, AnalyzerCategory.OrderingRules,
+                        DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault,
+                        DescriptionInside, HelpLink);
 
-                internal static readonly DiagnosticDescriptor DescriptorOutside
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatOutside,
-                        AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, DescriptionOutside, HelpLink);
+                internal static readonly DiagnosticDescriptor DescriptorOutside =
+                    new DiagnosticDescriptor(
+                        DiagnosticId, Title, MessageFormatOutside, AnalyzerCategory.OrderingRules,
+                        DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault,
+                        DescriptionOutside, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
@@ -210,7 +213,10 @@ namespace StyleCop.Analyzers.OrderingRules
                     NamespaceDeclarationAction = HandleNamespaceDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(DescriptorInside);
 
                 /// <inheritdoc/>
@@ -219,10 +225,10 @@ namespace StyleCop.Analyzers.OrderingRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(
-                            CompilationUnitAction, SyntaxKind.CompilationUnit);
-                        context.RegisterSyntaxNodeAction(
-                            NamespaceDeclarationAction, SyntaxKind.NamespaceDeclaration);
+                        context.RegisterSyntaxNodeAction(CompilationUnitAction,
+                                                         SyntaxKind.CompilationUnit);
+                        context.RegisterSyntaxNodeAction(NamespaceDeclarationAction,
+                                                         SyntaxKind.NamespaceDeclaration);
                 }
 
                 /// <summary>
@@ -233,19 +239,22 @@ namespace StyleCop.Analyzers.OrderingRules
                 /// </summary>
                 /// <param name="context">The analysis context.</param>
                 /// <param name="settings">The effective StyleCop analysis settings.</param>
-                private static void HandleCompilationUnit(
-                    SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context,
+                                                          StyleCopSettings settings)
                 {
-                        if (settings.OrderingRules.UsingDirectivesPlacement
-                            != UsingDirectivesPlacement.InsideNamespace) {
+                        if (settings.OrderingRules.UsingDirectivesPlacement !=
+                            UsingDirectivesPlacement.InsideNamespace)
+                        {
                                 return;
                         }
 
                         CompilationUnitSyntax syntax = (CompilationUnitSyntax) context.Node;
 
                         List<SyntaxNode> usingDirectives = new List<SyntaxNode>();
-                        foreach (SyntaxNode child in syntax.ChildNodes()) {
-                                switch (child.Kind()) {
+                        foreach (SyntaxNode child in syntax.ChildNodes())
+                        {
+                                switch (child.Kind())
+                                {
                                 case SyntaxKind.ClassDeclaration:
                                 case SyntaxKind.InterfaceDeclaration:
                                 case SyntaxKind.EnumDeclaration:
@@ -276,7 +285,8 @@ namespace StyleCop.Analyzers.OrderingRules
                                 }
                         }
 
-                        foreach (var directive in usingDirectives) {
+                        foreach (var directive in usingDirectives)
+                        {
                                 // Using directive should appear within a namespace declaration
                                 context.ReportDiagnostic(
                                     Diagnostic.Create(DescriptorInside, directive.GetLocation()));
@@ -291,17 +301,19 @@ namespace StyleCop.Analyzers.OrderingRules
                 /// </summary>
                 /// <param name="context">The analysis context.</param>
                 /// <param name="settings">The effective StyleCop analysis settings.</param>
-                private static void HandleNamespaceDeclaration(
-                    SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context,
+                                                               StyleCopSettings settings)
                 {
-                        if (settings.OrderingRules.UsingDirectivesPlacement
-                            != UsingDirectivesPlacement.OutsideNamespace) {
+                        if (settings.OrderingRules.UsingDirectivesPlacement !=
+                            UsingDirectivesPlacement.OutsideNamespace)
+                        {
                                 return;
                         }
 
-                        NamespaceDeclarationSyntax syntax
-                            = (NamespaceDeclarationSyntax) context.Node;
-                        foreach (UsingDirectiveSyntax directive in syntax.Usings) {
+                        NamespaceDeclarationSyntax syntax =
+                            (NamespaceDeclarationSyntax) context.Node;
+                        foreach (UsingDirectiveSyntax directive in syntax.Usings)
+                        {
                                 // Using directive should appear outside a namespace declaration
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)

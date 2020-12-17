@@ -22,9 +22,13 @@ namespace StyleCop.Analyzers.NamingRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1310CodeFixProvider))]
         [Shared]
-        internal class SA1310CodeFixProvider : CodeFixProvider {
+        internal class SA1310CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1310FieldNamesMustNotContainUnderscore.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -40,15 +44,17 @@ namespace StyleCop.Analyzers.NamingRules
                         var root = await document.GetSyntaxRootAsync(context.CancellationToken)
                                        .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
                                 string currentName = token.ValueText;
                                 string proposedName = BuildProposedName(currentName);
-                                if (proposedName != currentName) {
+                                if (proposedName != currentName)
+                                {
                                         context.RegisterCodeFix(
                                             CodeAction.Create(
-                                                string.Format(
-                                                    NamingResources.RenameToCodeFix, proposedName),
+                                                string.Format(NamingResources.RenameToCodeFix,
+                                                              proposedName),
                                                 cancellationToken => RenameHelper.RenameSymbolAsync(
                                                     document, root, token, proposedName,
                                                     cancellationToken),
@@ -64,22 +70,28 @@ namespace StyleCop.Analyzers.NamingRules
 
                         bool foundNonUnderscore = false;
                         bool capitalizeNextLetter = false;
-                        for (int i = 0; i < currentName.Length; i++) {
+                        for (int i = 0; i < currentName.Length; i++)
+                        {
                                 char c = currentName[i];
-                                if (c != '_') {
+                                if (c != '_')
+                                {
                                         foundNonUnderscore = true;
 
-                                        if (capitalizeNextLetter) {
+                                        if (capitalizeNextLetter)
+                                        {
                                                 builder.Append(char.ToUpperInvariant(c));
                                                 capitalizeNextLetter = false;
                                                 continue;
-                                        } else {
+                                        }
+                                        else
+                                        {
                                                 builder.Append(c);
                                                 continue;
                                         }
                                 }
 
-                                if (!foundNonUnderscore) {
+                                if (!foundNonUnderscore)
+                                {
                                         // Leave leading underscores as-is (they are handled by
                                         // SA1309)
                                         builder.Append(c);

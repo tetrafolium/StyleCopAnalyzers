@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct RecursivePatternSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.RecursivePatternSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.RecursivePatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
@@ -37,42 +38,51 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(RecursivePatternSyntaxWrapper));
-                        TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode,
-                            TypeSyntax>(WrappedType, nameof(Type));
-                        PositionalPatternClauseAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                                      WrappedType, nameof(PositionalPatternClause));
-                        PropertyPatternClauseAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                                      WrappedType, nameof(PropertyPatternClause));
-                        DesignationAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                                      WrappedType, nameof(Designation));
-                        WithTypeAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
-                                      WrappedType, nameof(Type));
-                        WithPositionalPatternClauseAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                CSharpSyntaxNode>(WrappedType, nameof(PositionalPatternClause));
-                        WithPropertyPatternClauseAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                CSharpSyntaxNode>(WrappedType, nameof(PropertyPatternClause));
-                        WithDesignationAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                CSharpSyntaxNode>(WrappedType, nameof(Designation));
+                        TypeAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                                    WrappedType, nameof(Type));
+                        PositionalPatternClauseAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                                    WrappedType, nameof(PositionalPatternClause));
+                        PropertyPatternClauseAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                                    WrappedType, nameof(PropertyPatternClause));
+                        DesignationAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                                    WrappedType, nameof(Designation));
+                        WithTypeAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                                    WrappedType, nameof(Type));
+                        WithPositionalPatternClauseAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(PositionalPatternClause));
+                        WithPropertyPatternClauseAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(PropertyPatternClause));
+                        WithDesignationAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Designation));
                 }
 
-                private RecursivePatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
+                private RecursivePatternSyntaxWrapper(CSharpSyntaxNode node)
+                {
+                        this.node = node;
+                }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public TypeSyntax Type
                 {
-                        get { return TypeAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return TypeAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public PositionalPatternClauseSyntaxWrapper PositionalPatternClause
@@ -116,11 +126,13 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static explicit operator RecursivePatternSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -161,8 +173,8 @@ namespace StyleCop.Analyzers.Lightup
                     PositionalPatternClauseSyntaxWrapper positionalPatternClause)
                 {
                         return new RecursivePatternSyntaxWrapper(
-                            WithPositionalPatternClauseAccessor(
-                                this.SyntaxNode, positionalPatternClause));
+                            WithPositionalPatternClauseAccessor(this.SyntaxNode,
+                                                                positionalPatternClause));
                 }
 
                 public RecursivePatternSyntaxWrapper WithPropertyPatternClause(

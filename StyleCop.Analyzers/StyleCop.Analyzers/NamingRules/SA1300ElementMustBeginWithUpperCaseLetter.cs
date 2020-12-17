@@ -38,58 +38,64 @@ namespace StyleCop.Analyzers.NamingRules
         /// other reasons, add the term to the <c>allowedNamespaceComponents</c> list.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1300ElementMustBeginWithUpperCaseLetter : DiagnosticAnalyzer {
+        internal class SA1300ElementMustBeginWithUpperCaseLetter : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1300ElementMustBeginWithUpperCaseLetter"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1300";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1300.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(NamingResources.SA1300Title),
-                        NamingResources.ResourceManager, typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(NamingResources.SA1300MessageFormat),
-                        NamingResources.ResourceManager, typeof(NamingResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(NamingResources.SA1300Description),
-                        NamingResources.ResourceManager, typeof(NamingResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1300.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(NamingResources.SA1300Title), NamingResources.ResourceManager,
+                    typeof(NamingResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(NamingResources.SA1300MessageFormat),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(NamingResources.SA1300Description),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     NamespaceDeclarationAction = HandleNamespaceDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> ClassDeclarationAction
-                    = HandleClassDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> RecordDeclarationAction
-                    = HandleRecordDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> EnumDeclarationAction
-                    = HandleEnumDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> ClassDeclarationAction =
+                    HandleClassDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> RecordDeclarationAction =
+                    HandleRecordDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> EnumDeclarationAction =
+                    HandleEnumDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     EnumMemberDeclarationAction = HandleEnumMemberDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> StructDeclarationAction
-                    = HandleStructDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> DelegateDeclarationAction
-                    = HandleDelegateDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> EventDeclarationAction
-                    = HandleEventDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> StructDeclarationAction =
+                    HandleStructDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext>
+                    DelegateDeclarationAction = HandleDelegateDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> EventDeclarationAction =
+                    HandleEventDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     EventFieldDeclarationAction = HandleEventFieldDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction
-                    = HandleMethodDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction =
+                    HandleMethodDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     LocalFunctionStatementAction = HandleLocalFunctionStatement;
-                private static readonly Action<SyntaxNodeAnalysisContext> PropertyDeclarationAction
-                    = HandlePropertyDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> ParameterAction
-                    = HandleParameter;
+                private static readonly Action<SyntaxNodeAnalysisContext>
+                    PropertyDeclarationAction = HandlePropertyDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> ParameterAction =
+                    HandleParameter;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -100,58 +106,62 @@ namespace StyleCop.Analyzers.NamingRules
 
                         // Note: Interfaces are handled by SA1302
                         // Note: Fields are handled by SA1303 through SA1311
-                        context.RegisterSyntaxNodeAction(
-                            NamespaceDeclarationAction, SyntaxKind.NamespaceDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            ClassDeclarationAction, SyntaxKind.ClassDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            RecordDeclarationAction, SyntaxKindEx.RecordDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            EnumDeclarationAction, SyntaxKind.EnumDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            EnumMemberDeclarationAction, SyntaxKind.EnumMemberDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            StructDeclarationAction, SyntaxKind.StructDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            DelegateDeclarationAction, SyntaxKind.DelegateDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            EventDeclarationAction, SyntaxKind.EventDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            EventFieldDeclarationAction, SyntaxKind.EventFieldDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            MethodDeclarationAction, SyntaxKind.MethodDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            LocalFunctionStatementAction, SyntaxKindEx.LocalFunctionStatement);
-                        context.RegisterSyntaxNodeAction(
-                            PropertyDeclarationAction, SyntaxKind.PropertyDeclaration);
+                        context.RegisterSyntaxNodeAction(NamespaceDeclarationAction,
+                                                         SyntaxKind.NamespaceDeclaration);
+                        context.RegisterSyntaxNodeAction(ClassDeclarationAction,
+                                                         SyntaxKind.ClassDeclaration);
+                        context.RegisterSyntaxNodeAction(RecordDeclarationAction,
+                                                         SyntaxKindEx.RecordDeclaration);
+                        context.RegisterSyntaxNodeAction(EnumDeclarationAction,
+                                                         SyntaxKind.EnumDeclaration);
+                        context.RegisterSyntaxNodeAction(EnumMemberDeclarationAction,
+                                                         SyntaxKind.EnumMemberDeclaration);
+                        context.RegisterSyntaxNodeAction(StructDeclarationAction,
+                                                         SyntaxKind.StructDeclaration);
+                        context.RegisterSyntaxNodeAction(DelegateDeclarationAction,
+                                                         SyntaxKind.DelegateDeclaration);
+                        context.RegisterSyntaxNodeAction(EventDeclarationAction,
+                                                         SyntaxKind.EventDeclaration);
+                        context.RegisterSyntaxNodeAction(EventFieldDeclarationAction,
+                                                         SyntaxKind.EventFieldDeclaration);
+                        context.RegisterSyntaxNodeAction(MethodDeclarationAction,
+                                                         SyntaxKind.MethodDeclaration);
+                        context.RegisterSyntaxNodeAction(LocalFunctionStatementAction,
+                                                         SyntaxKindEx.LocalFunctionStatement);
+                        context.RegisterSyntaxNodeAction(PropertyDeclarationAction,
+                                                         SyntaxKind.PropertyDeclaration);
                         context.RegisterSyntaxNodeAction(ParameterAction, SyntaxKind.Parameter);
                 }
 
-                private static void HandleNamespaceDeclaration(
-                    SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context,
+                                                               StyleCopSettings settings)
                 {
                         NameSyntax nameSyntax = ((NamespaceDeclarationSyntax) context.Node).Name;
                         CheckNamespaceNameSyntax(context, nameSyntax, settings);
                 }
 
                 private static void CheckNamespaceNameSyntax(SyntaxNodeAnalysisContext context,
-                    NameSyntax nameSyntax, StyleCopSettings settings)
+                                                             NameSyntax nameSyntax,
+                                                             StyleCopSettings settings)
                 {
-                        if (nameSyntax == null || nameSyntax.IsMissing) {
+                        if (nameSyntax == null || nameSyntax.IsMissing)
+                        {
                                 return;
                         }
 
-                        if (nameSyntax is QualifiedNameSyntax qualifiedNameSyntax) {
-                                CheckNamespaceNameSyntax(
-                                    context, qualifiedNameSyntax.Left, settings);
-                                CheckNamespaceNameSyntax(
-                                    context, qualifiedNameSyntax.Right, settings);
+                        if (nameSyntax is QualifiedNameSyntax qualifiedNameSyntax)
+                        {
+                                CheckNamespaceNameSyntax(context, qualifiedNameSyntax.Left,
+                                                         settings);
+                                CheckNamespaceNameSyntax(context, qualifiedNameSyntax.Right,
+                                                         settings);
                                 return;
                         }
 
-                        if (nameSyntax is SimpleNameSyntax simpleNameSyntax
-                            && !settings.NamingRules.AllowedNamespaceComponents.Contains(
-                                simpleNameSyntax.Identifier.ValueText)) {
+                        if (nameSyntax is SimpleNameSyntax simpleNameSyntax &&
+                            !settings.NamingRules.AllowedNamespaceComponents.Contains(
+                                simpleNameSyntax.Identifier.ValueText))
+                        {
                                 CheckElementNameToken(context, simpleNameSyntax.Identifier);
                                 return;
                         }
@@ -161,20 +171,20 @@ namespace StyleCop.Analyzers.NamingRules
 
                 private static void HandleClassDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        CheckElementNameToken(
-                            context, ((ClassDeclarationSyntax) context.Node).Identifier);
+                        CheckElementNameToken(context,
+                                              ((ClassDeclarationSyntax) context.Node).Identifier);
                 }
 
                 private static void HandleRecordDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        CheckElementNameToken(
-                            context, ((TypeDeclarationSyntax) context.Node).Identifier);
+                        CheckElementNameToken(context,
+                                              ((TypeDeclarationSyntax) context.Node).Identifier);
                 }
 
                 private static void HandleEnumDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        CheckElementNameToken(
-                            context, ((EnumDeclarationSyntax) context.Node).Identifier);
+                        CheckElementNameToken(context,
+                                              ((EnumDeclarationSyntax) context.Node).Identifier);
                 }
 
                 private static void HandleEnumMemberDeclaration(SyntaxNodeAnalysisContext context)
@@ -185,8 +195,8 @@ namespace StyleCop.Analyzers.NamingRules
 
                 private static void HandleStructDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        CheckElementNameToken(
-                            context, ((StructDeclarationSyntax) context.Node).Identifier);
+                        CheckElementNameToken(context,
+                                              ((StructDeclarationSyntax) context.Node).Identifier);
                 }
 
                 private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
@@ -198,7 +208,8 @@ namespace StyleCop.Analyzers.NamingRules
                 private static void HandleEventDeclaration(SyntaxNodeAnalysisContext context)
                 {
                         var eventDeclaration = (EventDeclarationSyntax) context.Node;
-                        if (eventDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword)) {
+                        if (eventDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
+                        {
                                 // Don't analyze an overridden event.
                                 return;
                         }
@@ -208,17 +219,20 @@ namespace StyleCop.Analyzers.NamingRules
 
                 private static void HandleEventFieldDeclaration(SyntaxNodeAnalysisContext context)
                 {
-                        EventFieldDeclarationSyntax eventFieldDeclarationSyntax
-                            = (EventFieldDeclarationSyntax) context.Node;
-                        VariableDeclarationSyntax variableDeclarationSyntax
-                            = eventFieldDeclarationSyntax.Declaration;
-                        if (variableDeclarationSyntax == null
-                            || variableDeclarationSyntax.IsMissing) {
+                        EventFieldDeclarationSyntax eventFieldDeclarationSyntax =
+                            (EventFieldDeclarationSyntax) context.Node;
+                        VariableDeclarationSyntax variableDeclarationSyntax =
+                            eventFieldDeclarationSyntax.Declaration;
+                        if (variableDeclarationSyntax == null ||
+                            variableDeclarationSyntax.IsMissing)
+                        {
                                 return;
                         }
 
-                        foreach (var declarator in variableDeclarationSyntax.Variables) {
-                                if (declarator == null || declarator.IsMissing) {
+                        foreach (var declarator in variableDeclarationSyntax.Variables)
+                        {
+                                if (declarator == null || declarator.IsMissing)
+                                {
                                         continue;
                                 }
 
@@ -229,7 +243,8 @@ namespace StyleCop.Analyzers.NamingRules
                 private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
                 {
                         var methodDeclaration = (MethodDeclarationSyntax) context.Node;
-                        if (methodDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword)) {
+                        if (methodDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
+                        {
                                 // Don't analyze an overridden method.
                                 return;
                         }
@@ -239,15 +254,16 @@ namespace StyleCop.Analyzers.NamingRules
 
                 private static void HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context)
                 {
-                        var localFunctionStatement
-                            = (LocalFunctionStatementSyntaxWrapper) context.Node;
+                        var localFunctionStatement =
+                            (LocalFunctionStatementSyntaxWrapper) context.Node;
                         CheckElementNameToken(context, localFunctionStatement.Identifier);
                 }
 
                 private static void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context)
                 {
                         var propertyDeclaration = (PropertyDeclarationSyntax) context.Node;
-                        if (propertyDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword)) {
+                        if (propertyDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
+                        {
                                 // Don't analyze an overridden property.
                                 return;
                         }
@@ -258,9 +274,10 @@ namespace StyleCop.Analyzers.NamingRules
                 private static void HandleParameter(SyntaxNodeAnalysisContext context)
                 {
                         var parameterDeclaration = (ParameterSyntax) context.Node;
-                        if (!parameterDeclaration.Parent.IsKind(SyntaxKind.ParameterList)
-                            || !parameterDeclaration.Parent.Parent.IsKind(
-                                SyntaxKindEx.RecordDeclaration)) {
+                        if (!parameterDeclaration.Parent.IsKind(SyntaxKind.ParameterList) ||
+                            !parameterDeclaration.Parent.Parent.IsKind(
+                                SyntaxKindEx.RecordDeclaration))
+                        {
                                 // Only positional parameters of records are treated as properties
                                 return;
                         }
@@ -269,13 +286,16 @@ namespace StyleCop.Analyzers.NamingRules
                 }
 
                 private static void CheckElementNameToken(SyntaxNodeAnalysisContext context,
-                    SyntaxToken identifier, bool allowUnderscoreDigit = false)
+                                                          SyntaxToken identifier,
+                                                          bool allowUnderscoreDigit = false)
                 {
-                        if (identifier.IsMissing) {
+                        if (identifier.IsMissing)
+                        {
                                 return;
                         }
 
-                        if (string.IsNullOrEmpty(identifier.ValueText)) {
+                        if (string.IsNullOrEmpty(identifier.ValueText))
+                        {
                                 return;
                         }
 
@@ -288,24 +308,28 @@ namespace StyleCop.Analyzers.NamingRules
                          * See DotNetAnalyzers/StyleCopAnalyzers#369 for additional information:
                          * https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/369
                          */
-                        if (!char.IsLower(identifier.ValueText[0])
-                            && identifier.ValueText[0] != '_') {
+                        if (!char.IsLower(identifier.ValueText[0]) &&
+                            identifier.ValueText[0] != '_')
+                        {
                                 return;
                         }
 
-                        if (allowUnderscoreDigit && (identifier.ValueText.Length > 1)
-                            && (identifier.ValueText[0] == '_')
-                            && char.IsDigit(identifier.ValueText[1])) {
+                        if (allowUnderscoreDigit && (identifier.ValueText.Length > 1) &&
+                            (identifier.ValueText[0] == '_') &&
+                            char.IsDigit(identifier.ValueText[1]))
+                        {
                                 return;
                         }
 
-                        if (NamedTypeHelpers.IsContainedInNativeMethodsClass(context.Node)) {
+                        if (NamedTypeHelpers.IsContainedInNativeMethodsClass(context.Node))
+                        {
                                 return;
                         }
 
                         var symbolInfo = context.SemanticModel.GetDeclaredSymbol(identifier.Parent);
-                        if (symbolInfo != null
-                            && NamedTypeHelpers.IsImplementingAnInterfaceMember(symbolInfo)) {
+                        if (symbolInfo != null &&
+                            NamedTypeHelpers.IsImplementingAnInterfaceMember(symbolInfo))
+                        {
                                 return;
                         }
 

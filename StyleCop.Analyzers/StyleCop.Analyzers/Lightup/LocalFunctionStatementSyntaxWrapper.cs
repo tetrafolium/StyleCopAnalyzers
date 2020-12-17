@@ -8,7 +8,8 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal partial struct LocalFunctionStatementSyntaxWrapper
-            : ISyntaxWrapper<StatementSyntax> {
+            : ISyntaxWrapper<StatementSyntax>
+        {
                 public LocalFunctionStatementSyntaxWrapper AddModifiers(params SyntaxToken[] items)
                 {
                         return this.WithModifiers(this.Modifiers.AddRange(items));
@@ -17,8 +18,8 @@ namespace StyleCop.Analyzers.Lightup
                 public LocalFunctionStatementSyntaxWrapper AddTypeParameterListParameters(
                     params TypeParameterSyntax[] items)
                 {
-                        var typeParameterList
-                            = this.TypeParameterList ?? SyntaxFactory.TypeParameterList();
+                        var typeParameterList =
+                            this.TypeParameterList ?? SyntaxFactory.TypeParameterList();
                         return this.WithTypeParameterList(typeParameterList.WithParameters(
                             typeParameterList.Parameters.AddRange(items)));
                 }

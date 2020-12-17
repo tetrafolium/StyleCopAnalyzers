@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IMemberInitializerOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IMemberInitializerOperation";
+        internal readonly struct IMemberInitializerOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IMemberInitializerOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> InitializedMemberAccessor;
                 private static readonly Func<IOperation, IOperation> InitializerAccessor;
@@ -18,14 +19,12 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IMemberInitializerOperationWrapper));
-                        InitializedMemberAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(InitializedMember));
-                        InitializerAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(Initializer));
+                        InitializedMemberAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(InitializedMember));
+                        InitializerAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Initializer));
                 }
 
                 private IMemberInitializerOperationWrapper(IOperation operation)
@@ -35,18 +34,20 @@ namespace StyleCop.Analyzers.Lightup
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IOperation InitializedMember => InitializedMemberAccessor(
-                    this.WrappedOperation);
-                public IObjectOrCollectionInitializerOperationWrapper
-                    Initializer => IObjectOrCollectionInitializerOperationWrapper.FromOperation(
+                public IOperation InitializedMember =>
+                    InitializedMemberAccessor(this.WrappedOperation);
+                public IObjectOrCollectionInitializerOperationWrapper Initializer =>
+                    IObjectOrCollectionInitializerOperationWrapper.FromOperation(
                         InitializerAccessor(this.WrappedOperation));
                 public static IMemberInitializerOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -56,8 +57,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

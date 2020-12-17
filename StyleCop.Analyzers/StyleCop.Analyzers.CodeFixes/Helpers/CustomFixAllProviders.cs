@@ -9,7 +9,8 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Contains custom implementations of <see cref="FixAllProvider"/>.
         /// </summary>
-        internal static class CustomFixAllProviders {
+        internal static class CustomFixAllProviders
+        {
                 /// <summary>
                 /// Gets the default batch fix all provider.
                 /// This provider batches all the individual diagnostic fixes across the scope of

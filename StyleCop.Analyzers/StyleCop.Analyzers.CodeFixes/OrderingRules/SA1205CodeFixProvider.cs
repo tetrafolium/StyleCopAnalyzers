@@ -20,26 +20,30 @@ namespace StyleCop.Analyzers.OrderingRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1205CodeFixProvider))]
         [Shared]
-        internal class SA1205CodeFixProvider : CodeFixProvider {
-                private static readonly ImmutableArray<SyntaxKind> PublicAccessibilityKeywords
-                    = ImmutableArray.Create(SyntaxKind.PublicKeyword);
-                private static readonly ImmutableArray<SyntaxKind> InternalAccessibilityKeywords
-                    = ImmutableArray.Create(SyntaxKind.InternalKeyword);
-                private static readonly ImmutableArray<SyntaxKind> ProtectedAccessibilityKeywords
-                    = ImmutableArray.Create(SyntaxKind.ProtectedKeyword);
+        internal class SA1205CodeFixProvider : CodeFixProvider
+        {
+                private static readonly ImmutableArray<SyntaxKind> PublicAccessibilityKeywords =
+                    ImmutableArray.Create(SyntaxKind.PublicKeyword);
+                private static readonly ImmutableArray<SyntaxKind> InternalAccessibilityKeywords =
+                    ImmutableArray.Create(SyntaxKind.InternalKeyword);
+                private static readonly ImmutableArray<SyntaxKind> ProtectedAccessibilityKeywords =
+                    ImmutableArray.Create(SyntaxKind.ProtectedKeyword);
                 private static readonly ImmutableArray<SyntaxKind>
                     ProtectedOrInternalAccessibilityKeywords = ImmutableArray.Create(
                         SyntaxKind.ProtectedKeyword, SyntaxKind.InternalKeyword);
                 private static readonly ImmutableArray<SyntaxKind>
-                    ProtectedAndInternalAccessibilityKeywords
-                    = ImmutableArray.Create(SyntaxKind.PrivateKeyword, SyntaxKind.ProtectedKeyword);
-                private static readonly ImmutableArray<SyntaxKind> PrivateAccessibilityKeywords
-                    = ImmutableArray.Create(SyntaxKind.PrivateKeyword);
-                private static readonly ImmutableArray<SyntaxKind> UnexpectedAccessibilityKeywords
-                    = ImmutableArray.Create<SyntaxKind>();
+                    ProtectedAndInternalAccessibilityKeywords = ImmutableArray.Create(
+                        SyntaxKind.PrivateKeyword, SyntaxKind.ProtectedKeyword);
+                private static readonly ImmutableArray<SyntaxKind> PrivateAccessibilityKeywords =
+                    ImmutableArray.Create(SyntaxKind.PrivateKeyword);
+                private static readonly ImmutableArray<SyntaxKind> UnexpectedAccessibilityKeywords =
+                    ImmutableArray.Create<SyntaxKind>();
 
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1205PartialElementsMustDeclareAccess.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -51,9 +55,11 @@ namespace StyleCop.Analyzers.OrderingRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (Diagnostic diagnostic in context.Diagnostics) {
+                        foreach (Diagnostic diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(OrderingResources.SA1205CodeFix,
+                                    CodeAction.Create(
+                                        OrderingResources.SA1205CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1205CodeFixProvider)),
@@ -72,30 +78,32 @@ namespace StyleCop.Analyzers.OrderingRules
                                                 .ConfigureAwait(false);
 
                         if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan)
-                                    is TypeDeclarationSyntax typeDeclarationNode)) {
+                                  is TypeDeclarationSyntax typeDeclarationNode))
+                        {
                                 return document;
                         }
 
                         var symbol = semanticModel.GetDeclaredSymbol(typeDeclarationNode);
-                        var accessModifierKinds
-                            = GetMissingAccessModifiers(symbol.DeclaredAccessibility);
+                        var accessModifierKinds =
+                            GetMissingAccessModifiers(symbol.DeclaredAccessibility);
 
                         var keywordToken = typeDeclarationNode.Keyword;
 
                         var replacementModifiers = DeclarationModifiersHelper.AddModifiers(
                             typeDeclarationNode.Modifiers, ref keywordToken, accessModifierKinds);
-                        var replacementNode
-                            = ReplaceModifiers(typeDeclarationNode, replacementModifiers);
+                        var replacementNode =
+                            ReplaceModifiers(typeDeclarationNode, replacementModifiers);
                         replacementNode = ReplaceKeyword(replacementNode, keywordToken);
-                        var newSyntaxRoot
-                            = syntaxRoot.ReplaceNode(typeDeclarationNode, replacementNode);
+                        var newSyntaxRoot =
+                            syntaxRoot.ReplaceNode(typeDeclarationNode, replacementNode);
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
                 private static ImmutableArray<SyntaxKind> GetMissingAccessModifiers(
                     Accessibility accessibility)
                 {
-                        switch (accessibility) {
+                        switch (accessibility)
+                        {
                         case Accessibility.Public:
                                 return PublicAccessibilityKeywords;
                         case Accessibility.Internal:
@@ -117,10 +125,11 @@ namespace StyleCop.Analyzers.OrderingRules
                 // This code was copied from the Roslyn code base (and slightly modified). It can be
                 // removed if TypeDeclarationSyntaxExtensions.WithModifiers is made public (Roslyn
                 // issue #2186)
-                private static TypeDeclarationSyntax ReplaceModifiers(
-                    TypeDeclarationSyntax node, SyntaxTokenList modifiers)
+                private static TypeDeclarationSyntax ReplaceModifiers(TypeDeclarationSyntax node,
+                                                                      SyntaxTokenList modifiers)
                 {
-                        switch (node.Kind()) {
+                        switch (node.Kind())
+                        {
                         case SyntaxKind.ClassDeclaration:
                                 return ((ClassDeclarationSyntax) node).WithModifiers(modifiers);
                         case SyntaxKind.InterfaceDeclaration:
@@ -138,10 +147,11 @@ namespace StyleCop.Analyzers.OrderingRules
                 // This code was copied from the Roslyn code base (and slightly modified). It can be
                 // removed if TypeDeclarationSyntaxExtensions.WithModifiers is made public (Roslyn
                 // issue #2186)
-                private static TypeDeclarationSyntax ReplaceKeyword(
-                    TypeDeclarationSyntax node, SyntaxToken keyword)
+                private static TypeDeclarationSyntax ReplaceKeyword(TypeDeclarationSyntax node,
+                                                                    SyntaxToken keyword)
                 {
-                        switch (node.Kind()) {
+                        switch (node.Kind())
+                        {
                         case SyntaxKind.ClassDeclaration:
                                 return ((ClassDeclarationSyntax) node).WithKeyword(keyword);
                         case SyntaxKind.InterfaceDeclaration:

@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct RangeExpressionSyntaxWrapper
-            : ISyntaxWrapper<ExpressionSyntax> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.RangeExpressionSyntax";
+            : ISyntaxWrapper<ExpressionSyntax>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.RangeExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax>
@@ -33,56 +34,68 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(RangeExpressionSyntaxWrapper));
-                        LeftOperandAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                                      WrappedType, nameof(LeftOperand));
-                        OperatorTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                      WrappedType, nameof(OperatorToken));
-                        RightOperandAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                                      WrappedType, nameof(RightOperand));
-                        WithLeftOperandAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                ExpressionSyntax>(WrappedType, nameof(LeftOperand));
-                        WithOperatorTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                      WrappedType, nameof(OperatorToken));
-                        WithRightOperandAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                ExpressionSyntax>(WrappedType, nameof(RightOperand));
+                        LeftOperandAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                                    WrappedType, nameof(LeftOperand));
+                        OperatorTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                    WrappedType, nameof(OperatorToken));
+                        RightOperandAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                                    WrappedType, nameof(RightOperand));
+                        WithLeftOperandAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(LeftOperand));
+                        WithOperatorTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                    WrappedType, nameof(OperatorToken));
+                        WithRightOperandAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(RightOperand));
                 }
 
-                private RangeExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
+                private RangeExpressionSyntaxWrapper(ExpressionSyntax node)
+                {
+                        this.node = node;
+                }
 
                 public ExpressionSyntax SyntaxNode => this.node;
 
                 public ExpressionSyntax LeftOperand
                 {
-                        get { return LeftOperandAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return LeftOperandAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SyntaxToken OperatorToken
                 {
-                        get { return OperatorTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return OperatorTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public ExpressionSyntax RightOperand
                 {
-                        get { return RightOperandAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return RightOperandAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator RangeExpressionSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

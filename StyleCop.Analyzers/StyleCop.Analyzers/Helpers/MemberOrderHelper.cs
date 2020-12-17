@@ -13,34 +13,38 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Helper for dealing with member priority.
         /// </summary>
-        internal struct MemberOrderHelper {
-                private static readonly ImmutableArray<SyntaxKind> TypeMemberOrder
-                    = ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                        SyntaxKind.StructDeclaration, SyntaxKind.MethodDeclaration,
-                        SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration,
-                        SyntaxKind.IndexerDeclaration, SyntaxKind.PropertyDeclaration,
-                        SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration,
-                        SyntaxKind.EventDeclaration, SyntaxKind.DelegateDeclaration,
-                        SyntaxKind.DestructorDeclaration, SyntaxKind.ConstructorDeclaration,
-                        SyntaxKind.FieldDeclaration, SyntaxKind.NamespaceDeclaration);
+        internal struct MemberOrderHelper
+        {
+                private static readonly ImmutableArray<SyntaxKind> TypeMemberOrder =
+                    ImmutableArray.Create(
+                        SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
+                        SyntaxKind.MethodDeclaration, SyntaxKind.OperatorDeclaration,
+                        SyntaxKind.ConversionOperatorDeclaration, SyntaxKind.IndexerDeclaration,
+                        SyntaxKind.PropertyDeclaration, SyntaxKind.InterfaceDeclaration,
+                        SyntaxKind.EnumDeclaration, SyntaxKind.EventDeclaration,
+                        SyntaxKind.DelegateDeclaration, SyntaxKind.DestructorDeclaration,
+                        SyntaxKind.ConstructorDeclaration, SyntaxKind.FieldDeclaration,
+                        SyntaxKind.NamespaceDeclaration);
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="MemberOrderHelper"/> struct.
                 /// </summary>
                 /// <param name="member">The member to wrap.</param>
                 /// <param name="elementOrder">The element ordering traits.</param>
-                internal MemberOrderHelper(
-                    MemberDeclarationSyntax member, ImmutableArray<OrderingTrait> elementOrder)
+                internal MemberOrderHelper(MemberDeclarationSyntax member,
+                                           ImmutableArray<OrderingTrait> elementOrder)
                 {
                         this.Member = member;
                         var modifiers = member.GetModifiers();
                         var type = member.Kind();
-                        type = type
-                            == SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration : type;
+                        type = type == SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration
+                            : type;
 
                         this.Priority = 0;
-                        foreach (OrderingTrait trait in elementOrder) {
-                                switch (trait) {
+                        foreach (OrderingTrait trait in elementOrder)
+                        {
+                                switch (trait)
+                                {
                                 case OrderingTrait.Kind:
                                         // 4 bits are required to store this.
                                         this.Priority <<= 4;
@@ -50,14 +54,15 @@ namespace StyleCop.Analyzers.Helpers
                                 case OrderingTrait.Accessibility:
                                         // 3 bits are required to store this.
                                         this.Priority <<= 3;
-                                        this.Priority
-                                            |= (int) GetAccessLevelForOrdering(member, modifiers)
-                                            & 0x07;
+                                        this.Priority |=
+                                            (int) GetAccessLevelForOrdering(member, modifiers) &
+                                            0x07;
                                         break;
 
                                 case OrderingTrait.Constant:
                                         this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.ConstKeyword)) {
+                                        if (modifiers.Any(SyntaxKind.ConstKeyword))
+                                        {
                                                 this.Priority |= 1;
                                         }
 
@@ -65,7 +70,8 @@ namespace StyleCop.Analyzers.Helpers
 
                                 case OrderingTrait.Static:
                                         this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.StaticKeyword)) {
+                                        if (modifiers.Any(SyntaxKind.StaticKeyword))
+                                        {
                                                 this.Priority |= 1;
                                         }
 
@@ -73,7 +79,8 @@ namespace StyleCop.Analyzers.Helpers
 
                                 case OrderingTrait.Readonly:
                                         this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.ReadOnlyKeyword)) {
+                                        if (modifiers.Any(SyntaxKind.ReadOnlyKeyword))
+                                        {
                                                 this.Priority |= 1;
                                         }
 
@@ -114,7 +121,10 @@ namespace StyleCop.Analyzers.Helpers
                 /// <value>
                 /// The wrapped member.
                 /// </value>
-                internal MemberDeclarationSyntax Member { get; }
+                internal MemberDeclarationSyntax Member
+                {
+                        get;
+                }
 
                 /// <summary>
                 /// Gets the priority for this member.
@@ -122,34 +132,43 @@ namespace StyleCop.Analyzers.Helpers
                 /// <value>
                 /// The priority for this member.
                 /// </value>
-                internal int Priority { get; }
+                internal int Priority
+                {
+                        get;
+                }
 
-                internal static AccessLevel GetAccessLevelForOrdering(
-                    SyntaxNode member, SyntaxTokenList modifiers)
+                internal static AccessLevel GetAccessLevelForOrdering(SyntaxNode member,
+                                                                      SyntaxTokenList modifiers)
                 {
                         SyntaxKind type = member.Kind();
 
                         AccessLevel accessibility;
-                        if ((type == SyntaxKind.ConstructorDeclaration
-                                && modifiers.Any(SyntaxKind.StaticKeyword))
-                            || (type == SyntaxKind.MethodDeclaration
-                                && ((MethodDeclarationSyntax) member).ExplicitInterfaceSpecifier
-                                    != null)
-                            || (type == SyntaxKind.PropertyDeclaration
-                                && ((PropertyDeclarationSyntax) member).ExplicitInterfaceSpecifier
-                                    != null)
-                            || (type == SyntaxKind.IndexerDeclaration
-                                && ((IndexerDeclarationSyntax) member).ExplicitInterfaceSpecifier
-                                    != null)) {
+                        if ((type == SyntaxKind.ConstructorDeclaration &&
+                             modifiers.Any(SyntaxKind.StaticKeyword)) ||
+                            (type == SyntaxKind.MethodDeclaration &&
+                             ((MethodDeclarationSyntax) member).ExplicitInterfaceSpecifier !=
+                                 null) ||
+                            (type == SyntaxKind.PropertyDeclaration &&
+                             ((PropertyDeclarationSyntax) member).ExplicitInterfaceSpecifier !=
+                                 null) ||
+                            (type == SyntaxKind.IndexerDeclaration &&
+                             ((IndexerDeclarationSyntax) member).ExplicitInterfaceSpecifier !=
+                                 null))
+                        {
                                 accessibility = AccessLevel.Public;
-                        } else {
+                        }
+                        else
+                        {
                                 accessibility = AccessLevelHelper.GetAccessLevel(modifiers);
-                                if (accessibility == AccessLevel.NotSpecified) {
-                                        if (member.Parent.IsKind(SyntaxKind.CompilationUnit)
-                                            || member.Parent.IsKind(
-                                                SyntaxKind.NamespaceDeclaration)) {
+                                if (accessibility == AccessLevel.NotSpecified)
+                                {
+                                        if (member.Parent.IsKind(SyntaxKind.CompilationUnit) ||
+                                            member.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
+                                        {
                                                 accessibility = AccessLevel.Internal;
-                                        } else {
+                                        }
+                                        else
+                                        {
                                                 accessibility = AccessLevel.Private;
                                         }
                                 }

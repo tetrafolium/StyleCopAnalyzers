@@ -18,9 +18,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1413CodeFixProvider))]
         [Shared]
-        internal class SA1413CodeFixProvider : CodeFixProvider {
+        internal class SA1413CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1413UseTrailingCommasInMultiLineInitializers.DiagnosticId);
 
@@ -33,9 +37,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(MaintainabilityResources.SA1413CodeFix,
+                                    CodeAction.Create(
+                                        MaintainabilityResources.SA1413CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1413CodeFixProvider)),
@@ -50,12 +56,12 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
-                        var text
-                            = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                        var text =
+                            await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         var syntaxNode = syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
 
-                        TextChange textChange = new TextChange(
-                            diagnostic.Location.SourceSpan, syntaxNode.ToString() + ",");
+                        TextChange textChange = new TextChange(diagnostic.Location.SourceSpan,
+                                                               syntaxNode.ToString() + ",");
                         return document.WithText(text.WithChanges(textChange));
                 }
         }

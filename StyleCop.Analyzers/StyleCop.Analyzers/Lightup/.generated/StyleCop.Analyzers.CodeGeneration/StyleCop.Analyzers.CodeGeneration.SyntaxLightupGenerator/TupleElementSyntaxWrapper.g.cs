@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct TupleElementSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.TupleElementSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.TupleElementSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
@@ -26,45 +27,58 @@ namespace StyleCop.Analyzers.Lightup
 
                 static TupleElementSyntaxWrapper()
                 {
-                        WrappedType
-                            = SyntaxWrapperHelper.GetWrappedType(typeof(TupleElementSyntaxWrapper));
-                        TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode,
-                            TypeSyntax>(WrappedType, nameof(Type));
-                        IdentifierAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(Identifier));
-                        WithTypeAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
-                                      WrappedType, nameof(Type));
-                        WithIdentifierAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(Identifier));
+                        WrappedType =
+                            SyntaxWrapperHelper.GetWrappedType(typeof(TupleElementSyntaxWrapper));
+                        TypeAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                                    WrappedType, nameof(Type));
+                        IdentifierAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(Identifier));
+                        WithTypeAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                                    WrappedType, nameof(Type));
+                        WithIdentifierAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(Identifier));
                 }
 
-                private TupleElementSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
+                private TupleElementSyntaxWrapper(CSharpSyntaxNode node)
+                {
+                        this.node = node;
+                }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public TypeSyntax Type
                 {
-                        get { return TypeAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return TypeAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SyntaxToken Identifier
                 {
-                        get { return IdentifierAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return IdentifierAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator TupleElementSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

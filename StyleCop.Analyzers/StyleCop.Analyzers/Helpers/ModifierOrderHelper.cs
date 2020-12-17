@@ -6,7 +6,8 @@ namespace StyleCop.Analyzers.OrderingRules
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class ModifierOrderHelper {
+        internal static class ModifierOrderHelper
+        {
                 /// <summary>
                 /// Represents modifier type for implementing SA1206 rule.
                 /// </summary>
@@ -44,7 +45,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 {
                         var result = default(ModifierType);
 
-                        switch (modifier.Kind()) {
+                        switch (modifier.Kind())
+                        {
                         case SyntaxKind.PublicKeyword:
                         case SyntaxKind.ProtectedKeyword:
                         case SyntaxKind.InternalKeyword:

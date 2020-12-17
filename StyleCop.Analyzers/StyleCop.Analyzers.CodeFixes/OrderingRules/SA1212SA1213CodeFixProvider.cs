@@ -21,11 +21,15 @@ namespace StyleCop.Analyzers.OrderingRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1212SA1213CodeFixProvider))]
         [Shared]
-        internal class SA1212SA1213CodeFixProvider : CodeFixProvider {
+        internal class SA1212SA1213CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1212PropertyAccessorsMustFollowOrder.DiagnosticId,
-                    SA1213EventAccessorsMustFollowOrder.DiagnosticId);
+                                        SA1213EventAccessorsMustFollowOrder.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -36,12 +40,13 @@ namespace StyleCop.Analyzers.OrderingRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (Diagnostic diagnostic in context.Diagnostics) {
+                        foreach (Diagnostic diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
                                     CodeAction.Create(OrderingResources.SA1213CodeFix,
-                                        token => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, token),
-                                        nameof(SA1212SA1213CodeFixProvider)),
+                                                      token => GetTransformedDocumentAsync(
+                                                          context.Document, diagnostic, token),
+                                                      nameof(SA1212SA1213CodeFixProvider)),
                                     diagnostic);
                         }
 
@@ -54,36 +59,37 @@ namespace StyleCop.Analyzers.OrderingRules
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
-                        var accessorToken
-                            = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
+                        var accessorToken =
+                            syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
                         var accessorList = (AccessorListSyntax) accessorToken.Parent.Parent;
 
                         var firstAccesor = accessorList.Accessors[0];
                         var secondAccessor = accessorList.Accessors[1];
                         var trackedRoot = syntaxRoot.TrackNodes(firstAccesor, secondAccessor);
                         var trackedFirstAccessor = trackedRoot.GetCurrentNode(firstAccesor);
-                        var newAccessor
-                            = GetNewAccessor(accessorList, firstAccesor, secondAccessor);
+                        var newAccessor =
+                            GetNewAccessor(accessorList, firstAccesor, secondAccessor);
 
-                        syntaxRoot = trackedRoot.InsertNodesBefore(
-                            trackedFirstAccessor, new[]{ newAccessor });
+                        syntaxRoot =
+                            trackedRoot.InsertNodesBefore(trackedFirstAccessor, new[]{newAccessor});
 
-                        if (HasLeadingBlankLines(secondAccessor)) {
+                        if (HasLeadingBlankLines(secondAccessor))
+                        {
                                 trackedFirstAccessor = syntaxRoot.GetCurrentNode(firstAccesor);
                                 var newFirstAccessor = trackedFirstAccessor.WithLeadingTrivia(
-                                    new[]{ SyntaxFactory.CarriageReturnLineFeed }.Concat(
+                                    new[]{SyntaxFactory.CarriageReturnLineFeed}.Concat(
                                         firstAccesor.GetFirstToken()
                                             .WithoutLeadingBlankLines()
                                             .LeadingTrivia));
-                                syntaxRoot = syntaxRoot.ReplaceNode(
-                                    trackedFirstAccessor, newFirstAccessor);
+                                syntaxRoot =
+                                    syntaxRoot.ReplaceNode(trackedFirstAccessor, newFirstAccessor);
                         }
 
                         var trackedLastAccessor = syntaxRoot.GetCurrentNode(secondAccessor);
-                        var keepTriviaOptions
-                            = AccessorsAreOnTheSameLine(firstAccesor, secondAccessor)
-                            ? SyntaxRemoveOptions.KeepEndOfLine
-                            : SyntaxRemoveOptions.KeepNoTrivia;
+                        var keepTriviaOptions =
+                            AccessorsAreOnTheSameLine(firstAccesor, secondAccessor)
+                                ? SyntaxRemoveOptions.KeepEndOfLine
+                                : SyntaxRemoveOptions.KeepNoTrivia;
 
                         syntaxRoot = syntaxRoot.RemoveNode(trackedLastAccessor, keepTriviaOptions);
 
@@ -108,13 +114,15 @@ namespace StyleCop.Analyzers.OrderingRules
                     AccessorListSyntax accessorList, AccessorDeclarationSyntax firstAccessor,
                     AccessorDeclarationSyntax secondAccessor)
                 {
-                        var newLeadingTrivia
-                            = GetLeadingTriviaWithoutLeadingBlankLines(secondAccessor);
-                        if (AccessorsAreOnTheSameLine(firstAccessor, secondAccessor)) {
+                        var newLeadingTrivia =
+                            GetLeadingTriviaWithoutLeadingBlankLines(secondAccessor);
+                        if (AccessorsAreOnTheSameLine(firstAccessor, secondAccessor))
+                        {
                                 var leadingWhitespace = firstAccessor.GetLeadingTrivia().Where(
                                     x => x.IsKind(SyntaxKind.WhitespaceTrivia));
-                                newLeadingTrivia = SyntaxFactory.TriviaList(
-                                    TriviaHelper.MergeTriviaLists(newLeadingTrivia,
+                                newLeadingTrivia =
+                                    SyntaxFactory.TriviaList(TriviaHelper.MergeTriviaLists(
+                                        newLeadingTrivia,
                                         SyntaxTriviaList.Empty.AddRange(leadingWhitespace)));
                         }
 
@@ -132,17 +140,21 @@ namespace StyleCop.Analyzers.OrderingRules
                         var leadingTrivia = secondAccessor.GetLeadingTrivia();
 
                         var skipIndex = 0;
-                        for (var i = 0; i < leadingTrivia.Count; i++) {
+                        for (var i = 0; i < leadingTrivia.Count; i++)
+                        {
                                 var currentTrivia = leadingTrivia[i];
-                                if (currentTrivia.IsKind(SyntaxKind.EndOfLineTrivia)) {
+                                if (currentTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                                {
                                         skipIndex = i + 1;
-                                } else if (!currentTrivia.IsKind(SyntaxKind.WhitespaceTrivia)) {
+                                }
+                                else if (!currentTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
+                                {
                                         // Preceded by whitespace
-                                        skipIndex = i > 0
-                                                && leadingTrivia [i - 1]
-                                                       .IsKind(SyntaxKind.WhitespaceTrivia)
-                                            ? i - 1
-                                            : i;
+                                        skipIndex =
+                                            i > 0 && leadingTrivia [i - 1]
+                                                         .IsKind(SyntaxKind.WhitespaceTrivia)
+                                                ? i - 1
+                                                : i;
                                         break;
                                 }
                         }

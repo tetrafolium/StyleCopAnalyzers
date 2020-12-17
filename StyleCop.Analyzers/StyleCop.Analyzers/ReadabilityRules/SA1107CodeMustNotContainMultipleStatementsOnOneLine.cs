@@ -19,34 +19,39 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// the same line. Each statement should begin on a new line.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1107CodeMustNotContainMultipleStatementsOnOneLine : DiagnosticAnalyzer {
+        internal class SA1107CodeMustNotContainMultipleStatementsOnOneLine : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1107CodeMustNotContainMultipleStatementsOnOneLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1107";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1107.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1107Title),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
-                        nameof(ReadabilityResources.SA1107MessageFormat),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1107Description),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1107.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(ReadabilityResources.SA1107Title), ReadabilityResources.ResourceManager,
+                    typeof(ReadabilityResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1107MessageFormat),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1107Description),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> BlockAction = HandleBlock;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -62,24 +67,26 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         var block = (BlockSyntax) context.Node;
 
-                        if (block.Statements.Any()) {
+                        if (block.Statements.Any())
+                        {
                                 var previousStatement = block.Statements[0];
-                                FileLinePositionSpan previousStatementLocation
-                                    = previousStatement.GetLineSpan();
+                                FileLinePositionSpan previousStatementLocation =
+                                    previousStatement.GetLineSpan();
                                 FileLinePositionSpan currentStatementLocation;
 
-                                for (int i = 1; i < block.Statements.Count; i++) {
+                                for (int i = 1; i < block.Statements.Count; i++)
+                                {
                                         var currentStatement = block.Statements[i];
                                         currentStatementLocation = currentStatement.GetLineSpan();
 
-                                        if (previousStatementLocation.EndLinePosition.Line
-                                                == currentStatementLocation.StartLinePosition.Line
-                                            && !IsLastTokenMissing(previousStatement)) {
-                                                context.ReportDiagnostic(
-                                                    Diagnostic.Create(Descriptor,
-                                                        block
-                                                            .Statements [i]
-                                                            .GetLocation()));
+                                        if (previousStatementLocation.EndLinePosition.Line ==
+                                                currentStatementLocation.StartLinePosition.Line &&
+                                            !IsLastTokenMissing(previousStatement))
+                                        {
+                                                context.ReportDiagnostic(Diagnostic.Create(
+                                                    Descriptor, block
+                                                                    .Statements [i]
+                                                                    .GetLocation()));
                                         }
 
                                         previousStatementLocation = currentStatementLocation;

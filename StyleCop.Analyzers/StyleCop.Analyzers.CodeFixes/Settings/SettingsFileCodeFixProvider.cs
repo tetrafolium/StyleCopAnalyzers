@@ -21,16 +21,17 @@ namespace StyleCop.Analyzers.Settings
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SettingsFileCodeFixProvider))]
         [Shared]
-        internal class SettingsFileCodeFixProvider : CodeFixProvider {
-                internal const string DefaultSettingsFileContent
-                    = @"{
-                      // ACTION REQUIRED: This file was automatically added to your project, but it
-                      // will not take effect until additional steps are taken to enable it. See the
-                      // following page for additional information:
-                      //
-                      // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
+        internal class SettingsFileCodeFixProvider : CodeFixProvider
+        {
+                internal const string DefaultSettingsFileContent =
+                    @"{
+                    // ACTION REQUIRED: This file was automatically added to your project, but it
+                    // will not take effect until additional steps are taken to enable it. See the
+                    // following page for additional information:
+                    //
+                    // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
 
-                      "" $schema "" : "" https
+                    "" $schema "" : "" https
                     : // raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json"",
                       "" settings "":
                 {
@@ -48,7 +49,8 @@ namespace StyleCop.Analyzers.Settings
         {
                 get;
         }
-        = ImmutableArray.Create(SA1600ElementsMustBeDocumented.DiagnosticId,
+        = ImmutableArray.Create(
+            SA1600ElementsMustBeDocumented.DiagnosticId,
             SA1601PartialElementsMustBeDocumented.DiagnosticId,
             SA1602EnumerationItemsMustBeDocumented.DiagnosticId,
             FileHeaderAnalyzers.SA1633DescriptorMissing.Id, FileHeaderAnalyzers.SA1634Descriptor.Id,
@@ -65,21 +67,24 @@ namespace StyleCop.Analyzers.Settings
 
                 // check if the settings file already exists
                 if (project.AdditionalDocuments.Any(
-                        document => SettingsHelper.IsStyleCopSettingsFile(document.Name))) {
+                        document => SettingsHelper.IsStyleCopSettingsFile(document.Name)))
+                {
                         return SpecializedTasks.CompletedTask;
                 }
 
                 // check if we are allowed to add it
-                if (!workspace.CanApplyChange(ApplyChangesKind.AddAdditionalDocument)) {
+                if (!workspace.CanApplyChange(ApplyChangesKind.AddAdditionalDocument))
+                {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                foreach (var diagnostic in context.Diagnostics) {
+                foreach (var diagnostic in context.Diagnostics)
+                {
                         context.RegisterCodeFix(
                             CodeAction.Create(SettingsResources.SettingsFileCodeFix,
-                                cancellationToken => GetTransformedSolutionAsync(
-                                    context.Document, cancellationToken),
-                                nameof(SettingsFileCodeFixProvider)),
+                                              cancellationToken => GetTransformedSolutionAsync(
+                                                  context.Document, cancellationToken),
+                                              nameof(SettingsFileCodeFixProvider)),
                             diagnostic);
                 }
 

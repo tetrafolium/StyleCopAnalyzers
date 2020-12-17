@@ -27,29 +27,32 @@ namespace StyleCop.Analyzers.OrderingRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1210UsingDirectivesMustBeOrderedAlphabeticallyByNamespace
-            : DiagnosticAnalyzer {
+            : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1210UsingDirectivesMustBeOrderedAlphabeticallyByNamespace"/>
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1210";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1210.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(OrderingResources.SA1210Title),
-                        OrderingResources.ResourceManager, typeof(OrderingResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(OrderingResources.SA1210MessageFormat),
-                        OrderingResources.ResourceManager, typeof(OrderingResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(OrderingResources.SA1210Description),
-                        OrderingResources.ResourceManager, typeof(OrderingResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1210.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(OrderingResources.SA1210Title), OrderingResources.ResourceManager,
+                    typeof(OrderingResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1210MessageFormat),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1210Description),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     CompilationUnitAction = HandleCompilationUnit;
@@ -57,7 +60,10 @@ namespace StyleCop.Analyzers.OrderingRules
                     NamespaceDeclarationAction = HandleNamespaceDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -66,22 +72,22 @@ namespace StyleCop.Analyzers.OrderingRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(
-                            CompilationUnitAction, SyntaxKind.CompilationUnit);
-                        context.RegisterSyntaxNodeAction(
-                            NamespaceDeclarationAction, SyntaxKind.NamespaceDeclaration);
+                        context.RegisterSyntaxNodeAction(CompilationUnitAction,
+                                                         SyntaxKind.CompilationUnit);
+                        context.RegisterSyntaxNodeAction(NamespaceDeclarationAction,
+                                                         SyntaxKind.NamespaceDeclaration);
                 }
 
-                private static void HandleCompilationUnit(
-                    SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context,
+                                                          StyleCopSettings settings)
                 {
                         var compilationUnit = (CompilationUnitSyntax) context.Node;
 
                         ProcessUsings(context, settings.OrderingRules, compilationUnit.Usings);
                 }
 
-                private static void HandleNamespaceDeclaration(
-                    SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context,
+                                                               StyleCopSettings settings)
                 {
                         var namespaceDeclaration = (NamespaceDeclarationSyntax) context.Node;
 
@@ -89,13 +95,16 @@ namespace StyleCop.Analyzers.OrderingRules
                 }
 
                 private static void ProcessUsings(SyntaxNodeAnalysisContext context,
-                    OrderingSettings orderingSettings, SyntaxList<UsingDirectiveSyntax> usings)
+                                                  OrderingSettings orderingSettings,
+                                                  SyntaxList<UsingDirectiveSyntax> usings)
                 {
                         var usingDirectives = new List<UsingDirectiveSyntax>();
                         var systemUsingDirectives = new List<UsingDirectiveSyntax>();
 
-                        foreach (var usingDirective in usings) {
-                                if (usingDirective.IsPrecededByPreprocessorDirective()) {
+                        foreach (var usingDirective in usings)
+                        {
+                                if (usingDirective.IsPrecededByPreprocessorDirective())
+                                {
                                         CheckIncorrectlyOrderedUsingsAndReportDiagnostic(
                                             context, usingDirectives);
                                         CheckIncorrectlyOrderedUsingsAndReportDiagnostic(
@@ -104,22 +113,26 @@ namespace StyleCop.Analyzers.OrderingRules
                                         systemUsingDirectives.Clear();
                                 }
 
-                                if (IsAliasOrStaticUsingDirective(usingDirective)) {
+                                if (IsAliasOrStaticUsingDirective(usingDirective))
+                                {
                                         continue;
                                 }
 
-                                if (usingDirective.HasNamespaceAliasQualifier()
-                                    || !usingDirective.IsSystemUsingDirective()
-                                    || !orderingSettings.SystemUsingDirectivesFirst) {
+                                if (usingDirective.HasNamespaceAliasQualifier() ||
+                                    !usingDirective.IsSystemUsingDirective() ||
+                                    !orderingSettings.SystemUsingDirectivesFirst)
+                                {
                                         usingDirectives.Add(usingDirective);
-                                } else {
+                                }
+                                else
+                                {
                                         systemUsingDirectives.Add(usingDirective);
                                 }
                         }
 
                         CheckIncorrectlyOrderedUsingsAndReportDiagnostic(context, usingDirectives);
-                        CheckIncorrectlyOrderedUsingsAndReportDiagnostic(
-                            context, systemUsingDirectives);
+                        CheckIncorrectlyOrderedUsingsAndReportDiagnostic(context,
+                                                                         systemUsingDirectives);
                 }
 
                 private static void CheckIncorrectlyOrderedUsingsAndReportDiagnostic(
@@ -127,14 +140,16 @@ namespace StyleCop.Analyzers.OrderingRules
                 {
                         UsingDirectiveSyntax previousUsingDirective = null;
 
-                        foreach (var directive in usings) {
-                                if (previousUsingDirective != null) {
-                                        if (NameSyntaxHelpers.Compare(
-                                                previousUsingDirective.Name, directive.Name)
-                                            > 0) {
-                                                context.ReportDiagnostic(
-                                                    Diagnostic.Create(Descriptor,
-                                                        previousUsingDirective.GetLocation()));
+                        foreach (var directive in usings)
+                        {
+                                if (previousUsingDirective != null)
+                                {
+                                        if (NameSyntaxHelpers.Compare(previousUsingDirective.Name,
+                                                                      directive.Name) > 0)
+                                        {
+                                                context.ReportDiagnostic(Diagnostic.Create(
+                                                    Descriptor,
+                                                    previousUsingDirective.GetLocation()));
                                         }
                                 }
 
@@ -143,7 +158,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 }
 
                 private static bool IsAliasOrStaticUsingDirective(
-                    UsingDirectiveSyntax usingDirective) => usingDirective.Alias != null
+                    UsingDirectiveSyntax usingDirective) =>
+                    usingDirective.Alias != null
                     || usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword);
         }
 }

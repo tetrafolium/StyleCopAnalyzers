@@ -32,23 +32,24 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1410RemoveDelegateParenthesisWhenPossible : DiagnosticAnalyzer {
+        internal class SA1410RemoveDelegateParenthesisWhenPossible : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1410RemoveDelegateParenthesisWhenPossible"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1410";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1410.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(MaintainabilityResources.SA1410Title),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1410.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1410Title),
+                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1410MessageFormat),
                         MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1410Description),
                         MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
@@ -61,7 +62,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -70,8 +74,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(
-                            AnonymousMethodExpressionAction, SyntaxKind.AnonymousMethodExpression);
+                        context.RegisterSyntaxNodeAction(AnonymousMethodExpressionAction,
+                                                         SyntaxKind.AnonymousMethodExpression);
                 }
 
                 private static void HandleAnonymousMethodExpression(
@@ -80,26 +84,31 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         var syntax = (AnonymousMethodExpressionSyntax) context.Node;
 
                         // ignore if no parameter list exists
-                        if (syntax.ParameterList == null) {
+                        if (syntax.ParameterList == null)
+                        {
                                 return;
                         }
 
                         // ignore if parameter list is not empty
-                        if (syntax.ParameterList.Parameters.Count > 0) {
+                        if (syntax.ParameterList.Parameters.Count > 0)
+                        {
                                 return;
                         }
 
                         // if the delegate is passed as a parameter, verify that there is no
                         // ambiguity.
-                        if (syntax.Parent.IsKind(SyntaxKind.Argument)) {
+                        if (syntax.Parent.IsKind(SyntaxKind.Argument))
+                        {
                                 var argumentSyntax = (ArgumentSyntax) syntax.Parent;
                                 var argumentListSyntax = (ArgumentListSyntax) argumentSyntax.Parent;
 
-                                switch (argumentListSyntax.Parent.Kind()) {
+                                switch (argumentListSyntax.Parent.Kind())
+                                {
                                 case SyntaxKind.ObjectCreationExpression:
                                 case SyntaxKind.InvocationExpression:
-                                        if (HasAmbiguousOverload(
-                                                context, syntax, argumentListSyntax.Parent)) {
+                                        if (HasAmbiguousOverload(context, syntax,
+                                                                 argumentListSyntax.Parent))
+                                        {
                                                 return;
                                         }
 
@@ -112,13 +121,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                             Diagnostic.Create(Descriptor, syntax.ParameterList.GetLocation()));
                 }
 
-                private static bool HasAmbiguousOverload(SyntaxNodeAnalysisContext context,
+                private static bool HasAmbiguousOverload(
+                    SyntaxNodeAnalysisContext context,
                     AnonymousMethodExpressionSyntax anonymousMethodExpression,
                     SyntaxNode methodCallSyntax)
                 {
-                        var nodeForSpeculation
-                            = methodCallSyntax.ReplaceNode(anonymousMethodExpression,
-                                anonymousMethodExpression.WithParameterList(null));
+                        var nodeForSpeculation = methodCallSyntax.ReplaceNode(
+                            anonymousMethodExpression,
+                            anonymousMethodExpression.WithParameterList(null));
                         var speculativeSymbolInfo = context.SemanticModel.GetSpeculativeSymbolInfo(
                             methodCallSyntax.SpanStart, nodeForSpeculation,
                             SpeculativeBindingOption.BindAsExpression);

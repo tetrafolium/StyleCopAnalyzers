@@ -6,17 +6,16 @@ namespace StyleCop.Analyzers.Lightup
         using System;
         using Microsoft.CodeAnalysis;
 
-        internal static class ITypeParameterSymbolExtensions {
+        internal static class ITypeParameterSymbolExtensions
+        {
                 private static readonly Func<ITypeParameterSymbol, bool>
                     HasUnmanagedTypeConstraintAccessor;
 
                 static ITypeParameterSymbolExtensions()
                 {
-                        HasUnmanagedTypeConstraintAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<ITypeParameterSymbol, bool>(
-                                      typeof(ITypeParameterSymbol),
-                                      nameof(HasUnmanagedTypeConstraint));
+                        HasUnmanagedTypeConstraintAccessor =
+                            LightupHelpers.CreateSyntaxPropertyAccessor<ITypeParameterSymbol, bool>(
+                                typeof(ITypeParameterSymbol), nameof(HasUnmanagedTypeConstraint));
                 }
 
                 public static bool HasUnmanagedTypeConstraint(this ITypeParameterSymbol symbol)

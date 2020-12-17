@@ -13,7 +13,8 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Provides helper methods to work with diagnostics options.
         /// </summary>
-        internal static class DiagnosticOptionsHelper {
+        internal static class DiagnosticOptionsHelper
+        {
                 /// <summary>
                 /// Determines if the diagnostic identified by the given identifier is currently
                 /// suppressed.
@@ -22,8 +23,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// diagnostic is currently suppressed.</param> <param name="descriptor">The
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
-                internal static bool IsAnalyzerSuppressed(
-                    this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor)
+                internal static bool IsAnalyzerSuppressed(this SyntaxNodeAnalysisContext context,
+                                                          DiagnosticDescriptor descriptor)
                 {
                         return context.SemanticModel.Compilation.IsAnalyzerSuppressed(descriptor);
                 }
@@ -50,8 +51,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// diagnostic is currently suppressed.</param> <param name="descriptor">The
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
-                internal static bool IsAnalyzerSuppressed(
-                    this Compilation compilation, DiagnosticDescriptor descriptor)
+                internal static bool IsAnalyzerSuppressed(this Compilation compilation,
+                                                          DiagnosticDescriptor descriptor)
                 {
                         return compilation.Options.IsAnalyzerSuppressed(descriptor);
                 }
@@ -67,7 +68,8 @@ namespace StyleCop.Analyzers.Helpers
                 internal static bool IsAnalyzerSuppressed(
                     this CompilationOptions compilationOptions, DiagnosticDescriptor descriptor)
                 {
-                        switch (descriptor.GetEffectiveSeverity(compilationOptions)) {
+                        switch (descriptor.GetEffectiveSeverity(compilationOptions))
+                        {
                         case ReportDiagnostic.Suppress:
                                 return true;
                         case ReportDiagnostic.Default:

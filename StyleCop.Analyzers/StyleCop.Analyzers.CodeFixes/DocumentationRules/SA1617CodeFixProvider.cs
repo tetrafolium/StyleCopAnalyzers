@@ -23,9 +23,13 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1617CodeFixProvider))]
         [Shared]
-        internal class SA1617CodeFixProvider : CodeFixProvider {
+        internal class SA1617CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -37,15 +41,18 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (Diagnostic diagnostic in context.Diagnostics) {
+                        foreach (Diagnostic diagnostic in context.Diagnostics)
+                        {
                                 if (!diagnostic.Properties.ContainsKey(
-                                        SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey)) {
+                                        SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey))
+                                {
                                         context.RegisterCodeFix(
                                             CodeAction.Create(DocumentationResources.SA1617CodeFix,
-                                                cancellationToken => GetTransformedDocumentAsync(
-                                                    context.Document, diagnostic,
-                                                    cancellationToken),
-                                                nameof(SA1617CodeFixProvider)),
+                                                              cancellationToken =>
+                                                                  GetTransformedDocumentAsync(
+                                                                      context.Document, diagnostic,
+                                                                      cancellationToken),
+                                                              nameof(SA1617CodeFixProvider)),
                                             diagnostic);
                                 }
                         }
@@ -65,7 +72,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                         var returnsElement = documentation.Content.GetFirstXmlElement(
                             XmlCommentHelper.ReturnsXmlTag);
 
-                        if (returnsElement == null) {
+                        if (returnsElement == null)
+                        {
                                 return document;
                         }
 
@@ -73,8 +81,10 @@ namespace StyleCop.Analyzers.DocumentationRules
                         // comment indicator. If so, we will remove that node from the syntax tree
                         // as well.
                         SyntaxNode previous = null;
-                        foreach (var item in documentation.ChildNodes()) {
-                                if (item.Equals(returnsElement)) {
+                        foreach (var item in documentation.ChildNodes())
+                        {
+                                if (item.Equals(returnsElement))
+                                {
                                         break;
                                 }
 
@@ -84,13 +94,14 @@ namespace StyleCop.Analyzers.DocumentationRules
                         List<SyntaxNode> nodesToFix = new List<SyntaxNode>();
                         nodesToFix.Add(returnsElement);
 
-                        if (previous is XmlTextSyntax previousAsTextSyntax
-                            && XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax)) {
+                        if (previous is XmlTextSyntax previousAsTextSyntax &&
+                            XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax))
+                        {
                                 nodesToFix.Add(previous);
                         }
 
-                        var newSyntaxRoot
-                            = root.RemoveNodes(nodesToFix, SyntaxRemoveOptions.KeepLeadingTrivia);
+                        var newSyntaxRoot =
+                            root.RemoveNodes(nodesToFix, SyntaxRemoveOptions.KeepLeadingTrivia);
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

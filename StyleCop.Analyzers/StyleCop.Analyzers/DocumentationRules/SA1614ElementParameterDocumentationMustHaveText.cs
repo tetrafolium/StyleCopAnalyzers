@@ -26,30 +26,31 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoCodeFix("Cannot generate documentation")]
-        internal class SA1614ElementParameterDocumentationMustHaveText : ElementDocumentationBase {
+        internal class SA1614ElementParameterDocumentationMustHaveText : ElementDocumentationBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1614ElementParameterDocumentationMustHaveText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1614";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1614.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1614Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1614.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1614Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1614MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1614Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1614Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 public SA1614ElementParameterDocumentationMustHaveText()
                     : base(matchElementName
@@ -59,19 +60,26 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                    StyleCopSettings settings, bool needsComment,
-                    IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
+                                                         StyleCopSettings settings,
+                                                         bool needsComment,
+                                                         IEnumerable<XmlNodeSyntax> syntaxList,
+                                                         params Location[] diagnosticLocations)
                 {
-                        foreach (var syntax in syntaxList) {
-                                bool isEmpty = syntax is XmlEmptyElementSyntax
-                                    || XmlCommentHelper.IsConsideredEmpty(syntax);
+                        foreach (var syntax in syntaxList)
+                        {
+                                bool isEmpty = syntax is XmlEmptyElementSyntax ||
+                                               XmlCommentHelper.IsConsideredEmpty(syntax);
 
-                                if (isEmpty) {
+                                if (isEmpty)
+                                {
                                         context.ReportDiagnostic(
                                             Diagnostic.Create(Descriptor, syntax.GetLocation()));
                                 }
@@ -86,10 +94,12 @@ namespace StyleCop.Analyzers.DocumentationRules
                         var xmlParamTags = completeDocumentation.Nodes().OfType<XElement>().Where(
                             e => e.Name == XmlCommentHelper.ParamXmlTag);
 
-                        foreach (var paramTag in xmlParamTags) {
+                        foreach (var paramTag in xmlParamTags)
+                        {
                                 bool isEmpty = XmlCommentHelper.IsConsideredEmpty(paramTag);
 
-                                if (isEmpty) {
+                                if (isEmpty)
+                                {
                                         context.ReportDiagnostic(Diagnostic.Create(
                                             Descriptor, diagnosticLocations.First()));
                                 }

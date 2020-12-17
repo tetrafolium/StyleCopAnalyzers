@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct RelationalPatternSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.RelationalPatternSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.RelationalPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> OperatorTokenAccessor;
@@ -28,35 +29,43 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(RelationalPatternSyntaxWrapper));
-                        OperatorTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(OperatorToken));
-                        ExpressionAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
-                                      WrappedType, nameof(Expression));
-                        WithOperatorTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(OperatorToken));
-                        WithExpressionAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                ExpressionSyntax>(WrappedType, nameof(Expression));
+                        OperatorTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(OperatorToken));
+                        ExpressionAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
+                                    WrappedType, nameof(Expression));
+                        WithOperatorTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(OperatorToken));
+                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Expression));
                 }
 
-                private RelationalPatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
+                private RelationalPatternSyntaxWrapper(CSharpSyntaxNode node)
+                {
+                        this.node = node;
+                }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public SyntaxToken OperatorToken
                 {
-                        get { return OperatorTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return OperatorTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public ExpressionSyntax Expression
                 {
-                        get { return ExpressionAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return ExpressionAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator RelationalPatternSyntaxWrapper(
@@ -73,11 +82,13 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static explicit operator RelationalPatternSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

@@ -25,9 +25,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1116CodeFixProvider))]
         [Shared]
-        internal class SA1116CodeFixProvider : CodeFixProvider {
+        internal class SA1116CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1116SplitParametersMustStartOnLineAfterDeclaration.DiagnosticId);
 
@@ -40,9 +44,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.SA1116CodeFix,
+                                    CodeAction.Create(
+                                        ReadabilityResources.SA1116CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1116CodeFixProvider)),
@@ -57,30 +63,32 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken)
                                               .ConfigureAwait(false);
-                        SyntaxToken originalToken
-                            = root.FindToken(diagnostic.Location.SourceSpan.Start);
+                        SyntaxToken originalToken =
+                            root.FindToken(diagnostic.Location.SourceSpan.Start);
 
                         SyntaxTree tree = root.SyntaxTree;
-                        SourceText sourceText
-                            = await tree.GetTextAsync(cancellationToken).ConfigureAwait(false);
-                        TextLine sourceLine
-                            = sourceText.Lines.GetLineFromPosition(originalToken.SpanStart);
+                        SourceText sourceText =
+                            await tree.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                        TextLine sourceLine =
+                            sourceText.Lines.GetLineFromPosition(originalToken.SpanStart);
 
                         string lineText = sourceText.ToString(sourceLine.Span);
                         int indentLength;
-                        for (indentLength = 0; indentLength < lineText.Length; indentLength++) {
-                                if (!char.IsWhiteSpace(lineText[indentLength])) {
+                        for (indentLength = 0; indentLength < lineText.Length; indentLength++)
+                        {
+                                if (!char.IsWhiteSpace(lineText[indentLength]))
+                                {
                                         break;
                                 }
                         }
 
                         var settings = SettingsHelper.GetStyleCopSettings(
                             document.Project.AnalyzerOptions, cancellationToken);
-                        SyntaxTriviaList newTrivia
-                            = SyntaxFactory.TriviaList(SyntaxFactory.CarriageReturnLineFeed,
-                                SyntaxFactory.Whitespace(lineText.Substring(0, indentLength)
-                                    + IndentationHelper.GenerateIndentationString(
-                                        settings.Indentation, 1)));
+                        SyntaxTriviaList newTrivia = SyntaxFactory.TriviaList(
+                            SyntaxFactory.CarriageReturnLineFeed,
+                            SyntaxFactory.Whitespace(lineText.Substring(0, indentLength) +
+                                                     IndentationHelper.GenerateIndentationString(
+                                                         settings.Indentation, 1)));
 
                         SyntaxToken updatedToken = originalToken.WithLeadingTrivia(
                             originalToken.LeadingTrivia.AddRange(newTrivia));

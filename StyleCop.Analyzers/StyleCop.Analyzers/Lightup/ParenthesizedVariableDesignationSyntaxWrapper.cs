@@ -6,7 +6,8 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp;
 
         internal partial struct ParenthesizedVariableDesignationSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
                 public ParenthesizedVariableDesignationSyntaxWrapper AddVariables(
                     params VariableDesignationSyntaxWrapper[] items)
                 {

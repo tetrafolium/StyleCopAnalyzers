@@ -31,34 +31,40 @@ namespace StyleCop.Analyzers.NamingRules
         /// within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1313ParameterNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer {
+        internal class SA1313ParameterNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1313ParameterNamesMustBeginWithLowerCaseLetter"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1313";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1313.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(NamingResources.SA1313Title),
-                        NamingResources.ResourceManager, typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(NamingResources.SA1313MessageFormat),
-                        NamingResources.ResourceManager, typeof(NamingResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(NamingResources.SA1313Description),
-                        NamingResources.ResourceManager, typeof(NamingResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1313.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(NamingResources.SA1313Title), NamingResources.ResourceManager,
+                    typeof(NamingResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(NamingResources.SA1313MessageFormat),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(NamingResources.SA1313Description),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> ParameterAction
-                    = HandleParameter;
+                private static readonly Action<SyntaxNodeAnalysisContext> ParameterAction =
+                    HandleParameter;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -73,31 +79,37 @@ namespace StyleCop.Analyzers.NamingRules
                 private static void HandleParameter(SyntaxNodeAnalysisContext context)
                 {
                         ParameterSyntax syntax = (ParameterSyntax) context.Node;
-                        if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax)) {
+                        if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax))
+                        {
                                 return;
                         }
 
-                        if (syntax.Parent.Parent.IsKind(SyntaxKindEx.RecordDeclaration)) {
+                        if (syntax.Parent.Parent.IsKind(SyntaxKindEx.RecordDeclaration))
+                        {
                                 // Positional parameters of a record are treated as properties for
                                 // naming conventions
                                 return;
                         }
 
                         var identifier = syntax.Identifier;
-                        if (identifier.IsMissing) {
+                        if (identifier.IsMissing)
+                        {
                                 return;
                         }
 
                         string name = identifier.ValueText;
-                        if (string.IsNullOrEmpty(name) || char.IsLower(name[0])) {
+                        if (string.IsNullOrEmpty(name) || char.IsLower(name[0]))
+                        {
                                 return;
                         }
 
-                        if ((name == "_" || name == "__") && IsInLambda(syntax)) {
+                        if ((name == "_" || name == "__") && IsInLambda(syntax))
+                        {
                                 return;
                         }
 
-                        if (NameMatchesAbstraction(syntax, context.SemanticModel)) {
+                        if (NameMatchesAbstraction(syntax, context.SemanticModel))
+                        {
                                 return;
                         }
 
@@ -108,22 +120,25 @@ namespace StyleCop.Analyzers.NamingRules
 
                 private static bool IsInLambda(ParameterSyntax syntax)
                 {
-                        if (syntax.Parent.IsKind(SyntaxKind.SimpleLambdaExpression)) {
+                        if (syntax.Parent.IsKind(SyntaxKind.SimpleLambdaExpression))
+                        {
                                 return true;
                         }
 
-                        if (syntax.Parent.Parent.IsKind(SyntaxKind.ParenthesizedLambdaExpression)
-                            || syntax.Parent.Parent.IsKind(SyntaxKind.AnonymousMethodExpression)) {
+                        if (syntax.Parent.Parent.IsKind(SyntaxKind.ParenthesizedLambdaExpression) ||
+                            syntax.Parent.Parent.IsKind(SyntaxKind.AnonymousMethodExpression))
+                        {
                                 return true;
                         }
 
                         return false;
                 }
 
-                private static bool NameMatchesAbstraction(
-                    ParameterSyntax syntax, SemanticModel semanticModel)
+                private static bool NameMatchesAbstraction(ParameterSyntax syntax,
+                                                           SemanticModel semanticModel)
                 {
-                        if (!(syntax.Parent is ParameterListSyntax parameterList)) {
+                        if (!(syntax.Parent is ParameterListSyntax parameterList))
+                        {
                                 // This occurs for simple lambda expressions (without parentheses)
                                 return false;
                         }
@@ -131,39 +146,48 @@ namespace StyleCop.Analyzers.NamingRules
                         var index = parameterList.Parameters.IndexOf(syntax);
                         var declaringMember = syntax.Parent.Parent;
 
-                        if (!declaringMember.IsKind(SyntaxKind.MethodDeclaration)) {
+                        if (!declaringMember.IsKind(SyntaxKind.MethodDeclaration))
+                        {
                                 return false;
                         }
 
                         var methodDeclaration = (MethodDeclarationSyntax) declaringMember;
                         var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration);
 
-                        if (methodSymbol.IsOverride) {
+                        if (methodSymbol.IsOverride)
+                        {
                                 // OverridenMethod can be null in case of an invalid method
                                 // declaration -> exit because there is no meaningful analysis to be
                                 // done.
-                                if ((methodSymbol.OverriddenMethod == null)
-                                    || (methodSymbol.OverriddenMethod.Parameters[index].Name
-                                        == syntax.Identifier.ValueText)) {
+                                if ((methodSymbol.OverriddenMethod == null) ||
+                                    (methodSymbol.OverriddenMethod.Parameters[index].Name ==
+                                     syntax.Identifier.ValueText))
+                                {
                                         return true;
                                 }
-                        } else {
+                        }
+                        else
+                        {
                                 var containingType = methodSymbol.ContainingType;
-                                if (containingType == null) {
+                                if (containingType == null)
+                                {
                                         return false;
                                 }
 
                                 var implementedInterfaces = containingType.Interfaces;
-                                foreach (var implementedInterface in implementedInterfaces) {
+                                foreach (var implementedInterface in implementedInterfaces)
+                                {
                                         foreach (var member in implementedInterface
                                                      .GetMembers(methodSymbol.Name)
-                                                     .OfType<IMethodSymbol>()) {
+                                                     .OfType<IMethodSymbol>())
+                                        {
                                                 if (methodSymbol.Equals(
                                                         containingType
                                                             .FindImplementationForInterfaceMember(
-                                                                member))) {
-                                                        return member.Parameters[index].Name
-                                                            == syntax.Identifier.ValueText;
+                                                                member)))
+                                                {
+                                                        return member.Parameters[index].Name ==
+                                                               syntax.Identifier.ValueText;
                                                 }
                                         }
                                 }

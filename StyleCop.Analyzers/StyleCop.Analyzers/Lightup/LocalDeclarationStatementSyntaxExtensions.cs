@@ -7,16 +7,19 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class LocalDeclarationStatementSyntaxExtensions {
+        internal static class LocalDeclarationStatementSyntaxExtensions
+        {
                 private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken>
                     AwaitKeywordAccessor;
                 private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken>
                     UsingKeywordAccessor;
 
                 private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken,
-                    LocalDeclarationStatementSyntax> WithAwaitKeywordAccessor;
+                                             LocalDeclarationStatementSyntax>
+                    WithAwaitKeywordAccessor;
                 private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken,
-                    LocalDeclarationStatementSyntax> WithUsingKeywordAccessor;
+                                             LocalDeclarationStatementSyntax>
+                    WithUsingKeywordAccessor;
 
                 static LocalDeclarationStatementSyntaxExtensions()
                 {

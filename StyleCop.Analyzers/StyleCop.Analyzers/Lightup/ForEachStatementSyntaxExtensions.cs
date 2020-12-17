@@ -7,20 +7,23 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class ForEachStatementSyntaxExtensions {
+        internal static class ForEachStatementSyntaxExtensions
+        {
                 private static readonly Func<ForEachStatementSyntax, SyntaxToken>
                     AwaitKeywordAccessor;
                 private static readonly Func<ForEachStatementSyntax, SyntaxToken,
-                    ForEachStatementSyntax> WithAwaitKeywordAccessor;
+                                             ForEachStatementSyntax> WithAwaitKeywordAccessor;
 
                 static ForEachStatementSyntaxExtensions()
                 {
-                        AwaitKeywordAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<ForEachStatementSyntax,
-                                SyntaxToken>(typeof(ForEachStatementSyntax), nameof(AwaitKeyword));
-                        WithAwaitKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ForEachStatementSyntax, SyntaxToken>(
-                            typeof(ForEachStatementSyntax), nameof(AwaitKeyword));
+                        AwaitKeywordAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<ForEachStatementSyntax, SyntaxToken>(
+                                    typeof(ForEachStatementSyntax), nameof(AwaitKeyword));
+                        WithAwaitKeywordAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ForEachStatementSyntax,
+                                                                            SyntaxToken>(
+                                typeof(ForEachStatementSyntax), nameof(AwaitKeyword));
                 }
 
                 public static SyntaxToken AwaitKeyword(this ForEachStatementSyntax syntax)

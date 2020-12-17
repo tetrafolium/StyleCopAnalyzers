@@ -14,14 +14,18 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         /// For example, if you want to create a million of small objects within a second,
         /// use the ObjectPool directly. it should have much less overhead than using this.
         /// </summary>
-        internal static class SharedPools {
+        internal static class SharedPools
+        {
                 /// <summary>
                 /// pool that uses default constructor with 100 elements pooled.
                 /// </summary>
                 /// <typeparam name="T">The type of the object pool.</typeparam>
                 /// <returns>A default big object pool.</returns>
                 public static ObjectPool<T> BigDefault<T>() where T : class
-                , new () { return DefaultBigPool<T>.Instance; }
+                , new ()
+                {
+                        return DefaultBigPool<T>.Instance;
+                }
 
                 /// <summary>
                 /// pool that uses default constructor with 20 elements pooled.
@@ -29,15 +33,26 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 /// <typeparam name="T">The type of the object pool.</typeparam>
                 /// <returns>A default object pool.</returns>
                 public static ObjectPool<T> Default<T>() where T : class
-                , new () { return DefaultNormalPool<T>.Instance; }
+                , new ()
+                {
+                        return DefaultNormalPool<T>.Instance;
+                }
 
-                private static class DefaultBigPool<T> where T : class, new () {
-                        public static ObjectPool<T> Instance { get; }
+                private static class DefaultBigPool<T> where T : class, new ()
+                {
+                        public static ObjectPool<T> Instance
+                        {
+                                get;
+                        }
                         = new ObjectPool<T>(() => new T(), 100);
                 }
 
-                private static class DefaultNormalPool<T> where T : class, new () {
-                        public static ObjectPool<T> Instance { get; }
+                private static class DefaultNormalPool<T> where T : class, new ()
+                {
+                        public static ObjectPool<T> Instance
+                        {
+                                get;
+                        }
                         = new ObjectPool<T>(() => new T(), 20);
                 }
         }

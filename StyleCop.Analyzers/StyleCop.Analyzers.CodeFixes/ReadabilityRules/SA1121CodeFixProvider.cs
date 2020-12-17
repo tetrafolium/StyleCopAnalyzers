@@ -24,20 +24,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1121CodeFixProvider))]
         [Shared]
-        internal class SA1121CodeFixProvider : CodeFixProvider {
+        internal class SA1121CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1121UseBuiltInTypeAlias.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
+                public override FixAllProvider GetFixAllProvider()
+                {
+                        return FixAll.Instance;
+                }
 
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.SA1121CodeFix,
+                                    CodeAction.Create(
+                                        ReadabilityResources.SA1121CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1121CodeFixProvider)),
@@ -48,10 +57,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 }
 
                 private static SyntaxNode ComputeReplacement(SemanticModel semanticModel,
-                    SyntaxNode node, CancellationToken cancellationToken)
+                                                             SyntaxNode node,
+                                                             CancellationToken cancellationToken)
                 {
-                        if (node.Parent is MemberAccessExpressionSyntax memberAccess) {
-                                if (node == memberAccess.Name) {
+                        if (node.Parent is MemberAccessExpressionSyntax memberAccess)
+                        {
+                                if (node == memberAccess.Name)
+                                {
                                         node = memberAccess;
                                 }
                         }
@@ -60,15 +72,19 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                        .Symbol as INamedTypeSymbol;
 
                         PredefinedTypeSyntax typeSyntax;
-                        if (!SpecialTypeHelper.TryGetPredefinedType(
-                                type.SpecialType, out typeSyntax)) {
+                        if (!SpecialTypeHelper.TryGetPredefinedType(type.SpecialType,
+                                                                    out typeSyntax))
+                        {
                                 return node;
                         }
 
                         SyntaxNode newNode;
-                        if (node is CrefSyntax) {
+                        if (node is CrefSyntax)
+                        {
                                 newNode = SyntaxFactory.TypeCref(typeSyntax);
-                        } else {
+                        }
+                        else
+                        {
                                 newNode = typeSyntax;
                         }
 
@@ -82,7 +98,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                        .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
                                                 .ConfigureAwait(false);
-                        if (semanticModel == null) {
+                        if (semanticModel == null)
+                        {
                                 return document;
                         }
 
@@ -96,31 +113,37 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         return document.WithSyntaxRoot(newRoot);
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
-                        public static FixAllProvider Instance { get; }
+                private class FixAll : DocumentBasedFixAllProvider
+                {
+                        public static FixAllProvider Instance
+                        {
+                                get;
+                        }
                         = new FixAll();
 
-                        protected override string
-                            CodeActionTitle => ReadabilityResources.SA1121CodeFix;
+                        protected override string CodeActionTitle =>
+                            ReadabilityResources.SA1121CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
                             FixAllContext fixAllContext, Document document,
                             ImmutableArray<Diagnostic> diagnostics)
                         {
-                                if (diagnostics.IsEmpty) {
+                                if (diagnostics.IsEmpty)
+                                {
                                         return null;
                                 }
 
-                                var syntaxRoot
-                                    = await document.GetSyntaxRootAsync().ConfigureAwait(false);
-                                var semanticModel
-                                    = await document
-                                          .GetSemanticModelAsync(fixAllContext.CancellationToken)
-                                          .ConfigureAwait(false);
+                                var syntaxRoot =
+                                    await document.GetSyntaxRootAsync().ConfigureAwait(false);
+                                var semanticModel =
+                                    await document
+                                        .GetSemanticModelAsync(fixAllContext.CancellationToken)
+                                        .ConfigureAwait(false);
 
-                                List<SyntaxNode> nodesToReplace
-                                    = new List<SyntaxNode>(diagnostics.Length);
-                                foreach (var diagnostic in diagnostics) {
+                                List<SyntaxNode> nodesToReplace =
+                                    new List<SyntaxNode>(diagnostics.Length);
+                                foreach (var diagnostic in diagnostics)
+                                {
                                         var node = syntaxRoot.FindNode(
                                             diagnostic.Location.SourceSpan, findInsideTrivia
                                             : true, getInnermostNodeForTie
@@ -129,10 +152,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                         nodesToReplace.Add(node);
                                 }
 
-                                return syntaxRoot.ReplaceNodes(nodesToReplace,
-                                    (originalNode, rewrittenNode) => ComputeReplacement(
-                                        semanticModel, originalNode,
-                                        fixAllContext.CancellationToken));
+                                return syntaxRoot.ReplaceNodes(
+                                    nodesToReplace,
+                                    (originalNode, rewrittenNode) =>
+                                        ComputeReplacement(semanticModel, originalNode,
+                                                           fixAllContext.CancellationToken));
                         }
                 }
         }

@@ -5,7 +5,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
         using LightJson;
 
-        internal class StyleCopSettings {
+        internal class StyleCopSettings
+        {
                 /// <summary>
                 /// This is the backing field for the <see cref="Indentation"/> property.
                 /// </summary>
@@ -62,34 +63,35 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                         this.documentationRules = new DocumentationSettings();
                 }
 
-                protected internal StyleCopSettings(JsonObject settingsObject)
-                    : this()
+                protected internal StyleCopSettings(JsonObject settingsObject) : this()
                 {
-                        foreach (var kvp in settingsObject) {
+                        foreach (var kvp in settingsObject)
+                        {
                                 var childSettingsObject = kvp.Value.AsJsonObject;
-                                switch (kvp.Key) {
+                                switch (kvp.Key)
+                                {
                                 case "indentation":
                                         kvp.AssertIsObject();
-                                        this.indentation
-                                            = new IndentationSettings(childSettingsObject);
+                                        this.indentation =
+                                            new IndentationSettings(childSettingsObject);
                                         break;
 
                                 case "spacingRules":
                                         kvp.AssertIsObject();
-                                        this.spacingRules
-                                            = new SpacingSettings(childSettingsObject);
+                                        this.spacingRules =
+                                            new SpacingSettings(childSettingsObject);
                                         break;
 
                                 case "readabilityRules":
                                         kvp.AssertIsObject();
-                                        this.readabilityRules
-                                            = new ReadabilitySettings(childSettingsObject);
+                                        this.readabilityRules =
+                                            new ReadabilitySettings(childSettingsObject);
                                         break;
 
                                 case "orderingRules":
                                         kvp.AssertIsObject();
-                                        this.orderingRules
-                                            = new OrderingSettings(childSettingsObject);
+                                        this.orderingRules =
+                                            new OrderingSettings(childSettingsObject);
                                         break;
 
                                 case "namingRules":
@@ -99,8 +101,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 
                                 case "maintainabilityRules":
                                         kvp.AssertIsObject();
-                                        this.maintainabilityRules
-                                            = new MaintainabilitySettings(childSettingsObject);
+                                        this.maintainabilityRules =
+                                            new MaintainabilitySettings(childSettingsObject);
                                         break;
 
                                 case "layoutRules":
@@ -110,8 +112,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 
                                 case "documentationRules":
                                         kvp.AssertIsObject();
-                                        this.documentationRules
-                                            = new DocumentationSettings(childSettingsObject);
+                                        this.documentationRules =
+                                            new DocumentationSettings(childSettingsObject);
                                         break;
 
                                 default:

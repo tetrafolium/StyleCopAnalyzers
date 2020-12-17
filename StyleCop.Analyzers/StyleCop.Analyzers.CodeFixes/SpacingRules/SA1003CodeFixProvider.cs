@@ -23,9 +23,13 @@ namespace StyleCop.Analyzers.SpacingRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1003CodeFixProvider))]
         [Shared]
-        internal class SA1003CodeFixProvider : CodeFixProvider {
+        internal class SA1003CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1003SymbolsMustBeSpacedCorrectly.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -37,15 +41,18 @@ namespace StyleCop.Analyzers.SpacingRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 if (diagnostic.Properties.ContainsKey(
-                                        SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction)) {
+                                        SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction))
+                                {
                                         context.RegisterCodeFix(
                                             CodeAction.Create(SpacingResources.SA1003CodeFix,
-                                                cancellationToken => GetTransformedDocumentAsync(
-                                                    context.Document, diagnostic,
-                                                    cancellationToken),
-                                                nameof(SA1003CodeFixProvider)),
+                                                              cancellationToken =>
+                                                                  GetTransformedDocumentAsync(
+                                                                      context.Document, diagnostic,
+                                                                      cancellationToken),
+                                                              nameof(SA1003CodeFixProvider)),
                                             diagnostic);
                                 }
                         }
@@ -60,13 +67,14 @@ namespace StyleCop.Analyzers.SpacingRules
                                              .ConfigureAwait(false);
                         var replacements = new Dictionary<SyntaxToken, SyntaxToken>();
 
-                        var token = syntaxRoot.FindToken(
-                            diagnostic.Location.SourceSpan.Start, findInsideTrivia
-                            : true);
+                        var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start,
+                                                         findInsideTrivia
+                                                         : true);
                         SyntaxToken followingToken;
 
-                        switch (diagnostic
-                                    .Properties[SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction]) {
+                        switch (
+                            diagnostic.Properties[SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction])
+                        {
                         case SA1003SymbolsMustBeSpacedCorrectly.InsertBeforeTag:
                                 replacements[token] = token.WithLeadingTrivia(
                                     token.LeadingTrivia.Add(SyntaxFactory.Space));
@@ -112,7 +120,8 @@ namespace StyleCop.Analyzers.SpacingRules
                         }
 
                         var newSyntaxRoot = syntaxRoot.ReplaceTokens(replacements.Keys,
-                            (original, maybeRewritten) => replacements[original]);
+                                                                     (original, maybeRewritten) =>
+                                                                         replacements[original]);
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

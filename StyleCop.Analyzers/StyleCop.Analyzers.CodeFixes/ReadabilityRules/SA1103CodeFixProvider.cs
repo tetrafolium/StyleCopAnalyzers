@@ -21,9 +21,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1103CodeFixProvider))]
         [Shared]
-        internal class SA1103CodeFixProvider : CodeFixProvider {
+        internal class SA1103CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA110xQueryClauses.SA1103Descriptor.Id);
 
                 /// <inheritdoc/>
@@ -35,23 +39,26 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var syntaxRoot
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
+                        var syntaxRoot =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 var queryExpression = (QueryExpressionSyntax) syntaxRoot
                                                           .FindNode(diagnostic.Location.SourceSpan)
                                                           .Parent;
 
                                 if (queryExpression.DescendantTrivia().All(
-                                        AcceptableSingleLineTrivia)) {
+                                        AcceptableSingleLineTrivia))
+                                {
                                         context.RegisterCodeFix(
                                             CodeAction.Create(
                                                 ReadabilityResources.SA1103CodeFixSingleLine,
-                                                cancellationToken => GetTransformedDocumentFromSingleLineAsync(
-                                                    context.Document, diagnostic,
-                                                    cancellationToken),
+                                                cancellationToken =>
+                                                    GetTransformedDocumentFromSingleLineAsync(
+                                                        context.Document, diagnostic,
+                                                        cancellationToken),
                                                 nameof(SA1103CodeFixProvider) + "Single"),
                                             diagnostic);
                                 }
@@ -59,8 +66,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                 context.RegisterCodeFix(
                                     CodeAction.Create(
                                         ReadabilityResources.SA1103CodeFixMultipleLines,
-                                        cancellationToken => GetTransformedDocumentForMultipleLinesAsync(
-                                            context.Document, diagnostic, cancellationToken),
+                                        cancellationToken =>
+                                            GetTransformedDocumentForMultipleLinesAsync(
+                                                context.Document, diagnostic, cancellationToken),
                                         nameof(SA1103CodeFixProvider) + "Multiple"),
                                     diagnostic);
                         }
@@ -68,15 +76,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 private static bool AcceptableSingleLineTrivia(SyntaxTrivia trivia)
                 {
-                        switch (trivia.Kind()) {
+                        switch (trivia.Kind())
+                        {
                         case SyntaxKind.WhitespaceTrivia:
                         case SyntaxKind.EndOfLineTrivia:
                                 return true;
 
                         case SyntaxKind.MultiLineCommentTrivia:
                                 var lineSpan = trivia.GetLineSpan();
-                                return lineSpan.StartLinePosition.Line
-                                    == lineSpan.EndLinePosition.Line;
+                                return lineSpan.StartLinePosition.Line ==
+                                       lineSpan.EndLinePosition.Line;
 
                         default:
                                 return false;
@@ -95,32 +104,34 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                         var nodeList = CreateQueryNodeList(queryExpression);
 
-                        for (var i = 0; i < nodeList.Length; i++) {
+                        for (var i = 0; i < nodeList.Length; i++)
+                        {
                                 var token = nodeList [i]
                                                 .GetFirstToken();
                                 var precedingToken = token.GetPreviousToken();
 
-                                var triviaList
-                                    = precedingToken.TrailingTrivia.AddRange(token.LeadingTrivia);
-                                var processedTriviaList
-                                    = triviaList
-                                          .Where(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia))
-                                          .ToSyntaxTriviaList()
-                                          .Add(SyntaxFactory.Space);
+                                var triviaList =
+                                    precedingToken.TrailingTrivia.AddRange(token.LeadingTrivia);
+                                var processedTriviaList =
+                                    triviaList
+                                        .Where(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                                        .ToSyntaxTriviaList()
+                                        .Add(SyntaxFactory.Space);
 
-                                if (processedTriviaList.Count > 1) {
-                                        processedTriviaList
-                                            = processedTriviaList.Insert(0, SyntaxFactory.Space);
+                                if (processedTriviaList.Count > 1)
+                                {
+                                        processedTriviaList =
+                                            processedTriviaList.Insert(0, SyntaxFactory.Space);
                                 }
 
-                                replaceMap.Add(precedingToken,
-                                    precedingToken.WithTrailingTrivia(processedTriviaList));
+                                replaceMap.Add(precedingToken, precedingToken.WithTrailingTrivia(
+                                                                   processedTriviaList));
                                 replaceMap.Add(token, token.WithLeadingTrivia());
                         }
 
-                        var newSyntaxRoot
-                            = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1])
-                                  .WithoutFormatting();
+                        var newSyntaxRoot =
+                            syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1])
+                                .WithoutFormatting();
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
@@ -141,28 +152,31 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         var indentationTrivia = QueryIndentationHelpers.GetQueryIndentationTrivia(
                             settings.Indentation, queryExpression);
 
-                        for (var i = 1; i < nodeList.Length; i++) {
+                        for (var i = 1; i < nodeList.Length; i++)
+                        {
                                 var token = nodeList [i]
                                                 .GetFirstToken();
                                 var precedingToken = token.GetPreviousToken();
 
-                                if (precedingToken.GetLine() == token.GetLine()) {
+                                if (precedingToken.GetLine() == token.GetLine())
+                                {
                                         var triviaList = precedingToken.TrailingTrivia.AddRange(
                                             token.LeadingTrivia);
-                                        var processedTriviaList
-                                            = triviaList.WithoutTrailingWhitespace().Add(
+                                        var processedTriviaList =
+                                            triviaList.WithoutTrailingWhitespace().Add(
                                                 SyntaxFactory.CarriageReturnLineFeed);
 
-                                        replaceMap.Add(precedingToken,
-                                            precedingToken.WithTrailingTrivia(processedTriviaList));
                                         replaceMap.Add(
-                                            token, token.WithLeadingTrivia(indentationTrivia));
+                                            precedingToken,
+                                            precedingToken.WithTrailingTrivia(processedTriviaList));
+                                        replaceMap.Add(token,
+                                                       token.WithLeadingTrivia(indentationTrivia));
                                 }
                         }
 
-                        var newSyntaxRoot
-                            = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1])
-                                  .WithoutFormatting();
+                        var newSyntaxRoot =
+                            syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1])
+                                .WithoutFormatting();
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
@@ -177,16 +191,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         return queryNodes.ToImmutableArray();
                 }
 
-                private static void ProcessQueryBody(
-                    QueryBodySyntax body, List<SyntaxNode> queryNodes)
+                private static void ProcessQueryBody(QueryBodySyntax body,
+                                                     List<SyntaxNode> queryNodes)
                 {
                         queryNodes.AddRange(body.Clauses);
 
-                        if (!body.SelectOrGroup.IsMissing) {
+                        if (!body.SelectOrGroup.IsMissing)
+                        {
                                 queryNodes.Add(body.SelectOrGroup);
                         }
 
-                        if (body.Continuation != null) {
+                        if (body.Continuation != null)
+                        {
                                 ProcessQueryBody(body.Continuation.Body, queryNodes);
                         }
                 }

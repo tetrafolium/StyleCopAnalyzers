@@ -12,7 +12,8 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Class containing the parsed file header information.
         /// </summary>
-        internal class XmlFileHeader {
+        internal class XmlFileHeader
+        {
                 private readonly XElement headerXml;
                 private readonly int fileHeaderStart;
                 private readonly int fileHeaderEnd;
@@ -35,7 +36,9 @@ namespace StyleCop.Analyzers.Helpers
                 /// Prevents a default instance of the <see cref="XmlFileHeader"/> class from being
                 /// created.
                 /// </summary>
-                private XmlFileHeader() { }
+                private XmlFileHeader()
+                {
+                }
 
                 /// <summary>
                 /// Gets a <see cref="XmlFileHeader"/> instance representing a missing file header.
@@ -45,7 +48,10 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 internal static XmlFileHeader MissingFileHeader
                 {
-                        get { return new XmlFileHeader{ IsMissing = true }; }
+                        get
+                        {
+                                return new XmlFileHeader{IsMissing = true};
+                        }
                 }
 
                 /// <summary>
@@ -56,7 +62,10 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 internal static XmlFileHeader MalformedFileHeader
                 {
-                        get { return new XmlFileHeader{ IsMalformed = true }; }
+                        get
+                        {
+                                return new XmlFileHeader{IsMalformed = true};
+                        }
                 }
 
                 /// <summary>
@@ -103,11 +112,13 @@ namespace StyleCop.Analyzers.Helpers
                 /// header.</returns>
                 internal Location GetLocation(SyntaxTree syntaxTree)
                 {
-                        if (this.IsMissing || this.IsMalformed) {
+                        if (this.IsMissing || this.IsMalformed)
+                        {
                                 return Location.Create(syntaxTree, new TextSpan(0, 0));
                         }
 
-                        return Location.Create(syntaxTree,
+                        return Location.Create(
+                            syntaxTree,
                             TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderStart + 2));
                 }
 
@@ -129,8 +140,9 @@ namespace StyleCop.Analyzers.Helpers
                         var tagStart = "<" + element.Name.LocalName;
                         var index = headerSourceText.IndexOf(tagStart);
 
-                        var textSpan = TextSpan.FromBounds(this.fileHeaderStart + index,
-                            this.fileHeaderStart + index + tagStart.Length);
+                        var textSpan =
+                            TextSpan.FromBounds(this.fileHeaderStart + index,
+                                                this.fileHeaderStart + index + tagStart.Length);
                         return Location.Create(syntaxTree, textSpan);
                 }
         }

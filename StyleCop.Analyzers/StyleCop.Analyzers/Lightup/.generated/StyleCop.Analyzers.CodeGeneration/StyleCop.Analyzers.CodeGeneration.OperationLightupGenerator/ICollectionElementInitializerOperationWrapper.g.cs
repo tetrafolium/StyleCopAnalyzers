@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ICollectionElementInitializerOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.ICollectionElementInitializerOperation";
+        internal readonly struct ICollectionElementInitializerOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.ICollectionElementInitializerOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IMethodSymbol> AddMethodAccessor;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
@@ -20,15 +21,14 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(ICollectionElementInitializerOperationWrapper));
-                        AddMethodAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
-                                      WrappedType, nameof(AddMethod));
-                        ArgumentsAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                                ImmutableArray<IOperation>>(WrappedType, nameof(Arguments));
-                        IsDynamicAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                        AddMethodAccessor =
+                            LightupHelpers
+                                .CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                                    WrappedType, nameof(AddMethod));
+                        ArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<
+                            IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Arguments));
+                        IsDynamicAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
                                 WrappedType, nameof(IsDynamic));
                 }
 
@@ -40,17 +40,19 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IMethodSymbol AddMethod => AddMethodAccessor(this.WrappedOperation);
-                public ImmutableArray<IOperation> Arguments => ArgumentsAccessor(
-                    this.WrappedOperation);
+                public ImmutableArray<IOperation> Arguments =>
+                    ArgumentsAccessor(this.WrappedOperation);
                 public bool IsDynamic => IsDynamicAccessor(this.WrappedOperation);
                 public static ICollectionElementInitializerOperationWrapper FromOperation(
                     IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -60,8 +62,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

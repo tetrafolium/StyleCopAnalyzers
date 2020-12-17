@@ -40,46 +40,52 @@ namespace StyleCop.Analyzers.LayoutRules
         /// places where closing braces are preceded by blank lines.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1508ClosingBracesMustNotBePrecededByBlankLine : DiagnosticAnalyzer {
+        internal class SA1508ClosingBracesMustNotBePrecededByBlankLine : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1508ClosingBracesMustNotBePrecededByBlankLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1508";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1508.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1508Title),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1508MessageFormat),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1508Description),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1508.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(LayoutResources.SA1508Title), LayoutResources.ResourceManager,
+                    typeof(LayoutResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1508MessageFormat),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1508Description),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> BlockAction = HandleBlock;
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     InitializerExpressionAction = HandleInitializerExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    AnonymousObjectCreationExpressionAction
-                    = HandleAnonymousObjectCreationExpression;
-                private static readonly Action<SyntaxNodeAnalysisContext> SwitchStatementAction
-                    = HandleSwitchStatement;
-                private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction
-                    = HandleNamespaceDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> BaseTypeDeclarationAction
-                    = HandleBaseTypeDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> AccessorListAction
-                    = HandleAccessorList;
+                    AnonymousObjectCreationExpressionAction =
+                        HandleAnonymousObjectCreationExpression;
+                private static readonly Action<SyntaxNodeAnalysisContext> SwitchStatementAction =
+                    HandleSwitchStatement;
+                private static readonly Action<SyntaxNodeAnalysisContext>
+                    NamespaceDeclarationAction = HandleNamespaceDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext>
+                    BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> AccessorListAction =
+                    HandleAccessorList;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -89,18 +95,19 @@ namespace StyleCop.Analyzers.LayoutRules
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxNodeAction(BlockAction, SyntaxKind.Block);
+                        context.RegisterSyntaxNodeAction(InitializerExpressionAction,
+                                                         SyntaxKinds.InitializerExpression);
                         context.RegisterSyntaxNodeAction(
-                            InitializerExpressionAction, SyntaxKinds.InitializerExpression);
-                        context.RegisterSyntaxNodeAction(AnonymousObjectCreationExpressionAction,
+                            AnonymousObjectCreationExpressionAction,
                             SyntaxKind.AnonymousObjectCreationExpression);
-                        context.RegisterSyntaxNodeAction(
-                            SwitchStatementAction, SyntaxKind.SwitchStatement);
-                        context.RegisterSyntaxNodeAction(
-                            NamespaceDeclarationAction, SyntaxKind.NamespaceDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            BaseTypeDeclarationAction, SyntaxKinds.BaseTypeDeclaration);
-                        context.RegisterSyntaxNodeAction(
-                            AccessorListAction, SyntaxKind.AccessorList);
+                        context.RegisterSyntaxNodeAction(SwitchStatementAction,
+                                                         SyntaxKind.SwitchStatement);
+                        context.RegisterSyntaxNodeAction(NamespaceDeclarationAction,
+                                                         SyntaxKind.NamespaceDeclaration);
+                        context.RegisterSyntaxNodeAction(BaseTypeDeclarationAction,
+                                                         SyntaxKinds.BaseTypeDeclaration);
+                        context.RegisterSyntaxNodeAction(AccessorListAction,
+                                                         SyntaxKind.AccessorList);
                 }
 
                 private static void HandleBlock(SyntaxNodeAnalysisContext context)
@@ -146,13 +153,13 @@ namespace StyleCop.Analyzers.LayoutRules
                         AnalyzeCloseBrace(context, accessorList.CloseBraceToken);
                 }
 
-                private static void AnalyzeCloseBrace(
-                    SyntaxNodeAnalysisContext context, SyntaxToken closeBraceToken)
+                private static void AnalyzeCloseBrace(SyntaxNodeAnalysisContext context,
+                                                      SyntaxToken closeBraceToken)
                 {
                         var previousToken = closeBraceToken.GetPreviousToken();
-                        if ((closeBraceToken.GetLineSpan().StartLinePosition.Line
-                                - previousToken.GetLineSpan().EndLinePosition.Line)
-                            < 2) {
+                        if ((closeBraceToken.GetLineSpan().StartLinePosition.Line -
+                             previousToken.GetLineSpan().EndLinePosition.Line) < 2)
+                        {
                                 // there will be no blank lines when the closing brace and the
                                 // preceding token are not at least two lines apart.
                                 return;
@@ -166,17 +173,19 @@ namespace StyleCop.Analyzers.LayoutRules
                         // apart and still only be separated by whitespace trivia due to compilation
                         // errors
                         var index = separatingTrivia.Count - 1;
-                        while (index >= 0
-                            && separatingTrivia [index]
-                                   .IsKind(SyntaxKind.WhitespaceTrivia)) {
+                        while (index >= 0 && separatingTrivia [index]
+                                                 .IsKind(SyntaxKind.WhitespaceTrivia))
+                        {
                                 index--;
                         }
 
                         var done = false;
                         var eolCount = 0;
-                        while (!done && index >= 0) {
+                        while (!done && index >= 0)
+                        {
                                 switch (separatingTrivia [index]
-                                            .Kind()) {
+                                            .Kind())
+                                {
                                 case SyntaxKind.WhitespaceTrivia:
                                         break;
                                 case SyntaxKind.EndOfLineTrivia:
@@ -190,7 +199,8 @@ namespace StyleCop.Analyzers.LayoutRules
                                 index--;
                         }
 
-                        if (eolCount > 1) {
+                        if (eolCount > 1)
+                        {
                                 context.ReportDiagnostic(
                                     Diagnostic.Create(Descriptor, closeBraceToken.GetLocation()));
                         }

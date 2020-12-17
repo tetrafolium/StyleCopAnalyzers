@@ -5,7 +5,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
         using LightJson;
 
-        internal class IndentationSettings {
+        internal class IndentationSettings
+        {
                 /// <summary>
                 /// This is the backing field for the <see cref="IndentationSize"/> property.
                 /// </summary>
@@ -39,8 +40,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 protected internal IndentationSettings(JsonObject indentationSettingsObject)
                     : this()
                 {
-                        foreach (var kvp in indentationSettingsObject) {
-                                switch (kvp.Key) {
+                        foreach (var kvp in indentationSettingsObject)
+                        {
+                                switch (kvp.Key)
+                                {
                                 case "indentationSize":
                                         this.indentationSize = kvp.ToInt32Value();
                                         break;

@@ -20,34 +20,40 @@ namespace StyleCop.Analyzers.SpacingRules
         /// item that is being incremented or decremented.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1020IncrementDecrementSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer {
+        internal class SA1020IncrementDecrementSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1020IncrementDecrementSymbolsMustBeSpacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1020";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1020.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1020Title),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1020MessageFormat),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1020Description),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1020.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(SpacingResources.SA1020Title), SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1020MessageFormat),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1020Description),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
-                    = HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
+                    HandleSyntaxTree;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -61,10 +67,12 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
                 {
-                        SyntaxNode root
-                            = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-                        foreach (var token in root.DescendantTokens()) {
-                                switch (token.Kind()) {
+                        SyntaxNode root =
+                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                        foreach (var token in root.DescendantTokens())
+                        {
+                                switch (token.Kind())
+                                {
                                 case SyntaxKind.MinusMinusToken:
                                 case SyntaxKind.PlusPlusToken:
                                         HandleIncrementDecrementToken(context, token);
@@ -76,30 +84,36 @@ namespace StyleCop.Analyzers.SpacingRules
                         }
                 }
 
-                private static void HandleIncrementDecrementToken(
-                    SyntaxTreeAnalysisContext context, SyntaxToken token)
+                private static void HandleIncrementDecrementToken(SyntaxTreeAnalysisContext context,
+                                                                  SyntaxToken token)
                 {
-                        if (token.IsMissing) {
+                        if (token.IsMissing)
+                        {
                                 return;
                         }
 
-                        switch (token.Parent.Kind()) {
+                        switch (token.Parent.Kind())
+                        {
                         case SyntaxKind.PreIncrementExpression:
                         case SyntaxKind.PreDecrementExpression:
-                                if (token.HasTrailingTrivia) {
+                                if (token.HasTrailingTrivia)
+                                {
                                         string symbolName;
-                                        if (token.IsKind(SyntaxKind.MinusMinusToken)) {
+                                        if (token.IsKind(SyntaxKind.MinusMinusToken))
+                                        {
                                                 symbolName = "Decrement";
-                                        } else {
+                                        }
+                                        else
+                                        {
                                                 symbolName = "Increment";
                                         }
 
                                         // {Increment|Decrement} symbol '{++|--}' should not
                                         // be {followed} by a space.
                                         var properties = TokenSpacingProperties.RemoveFollowing;
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, token.GetLocation(),
-                                                properties, symbolName, token.Text, "followed"));
+                                        context.ReportDiagnostic(Diagnostic.Create(
+                                            Descriptor, token.GetLocation(), properties, symbolName,
+                                            token.Text, "followed"));
                                 }
 
                                 break;
@@ -107,20 +121,24 @@ namespace StyleCop.Analyzers.SpacingRules
                         case SyntaxKind.PostIncrementExpression:
                         case SyntaxKind.PostDecrementExpression:
                                 SyntaxToken previousToken = token.GetPreviousToken();
-                                if (!previousToken.IsMissing && previousToken.HasTrailingTrivia) {
+                                if (!previousToken.IsMissing && previousToken.HasTrailingTrivia)
+                                {
                                         string symbolName;
-                                        if (token.IsKind(SyntaxKind.MinusMinusToken)) {
+                                        if (token.IsKind(SyntaxKind.MinusMinusToken))
+                                        {
                                                 symbolName = "Decrement";
-                                        } else {
+                                        }
+                                        else
+                                        {
                                                 symbolName = "Increment";
                                         }
 
                                         // {Increment|Decrement} symbol '{++|--}' should not
                                         // be {preceded} by a space.
                                         var properties = TokenSpacingProperties.RemovePreceding;
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, token.GetLocation(),
-                                                properties, symbolName, token.Text, "preceded"));
+                                        context.ReportDiagnostic(Diagnostic.Create(
+                                            Descriptor, token.GetLocation(), properties, symbolName,
+                                            token.Text, "preceded"));
                                 }
 
                                 break;

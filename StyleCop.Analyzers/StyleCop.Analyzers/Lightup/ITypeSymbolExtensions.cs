@@ -6,13 +6,14 @@ namespace StyleCop.Analyzers.Lightup
         using System;
         using Microsoft.CodeAnalysis;
 
-        internal static class ITypeSymbolExtensions {
+        internal static class ITypeSymbolExtensions
+        {
                 private static readonly Func<ITypeSymbol, bool> IsTupleTypeAccessor;
 
                 static ITypeSymbolExtensions()
                 {
-                        IsTupleTypeAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<ITypeSymbol, bool>(
+                        IsTupleTypeAccessor =
+                            LightupHelpers.CreateSyntaxPropertyAccessor<ITypeSymbol, bool>(
                                 typeof(ITypeSymbol), nameof(IsTupleType));
                 }
 

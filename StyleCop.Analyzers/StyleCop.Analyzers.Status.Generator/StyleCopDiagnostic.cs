@@ -9,7 +9,8 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <summary>
         /// Represents a diagnostic in the StyleCop.Analyzers project.
         /// </summary>
-        public class StyleCopDiagnostic {
+        public class StyleCopDiagnostic
+        {
                 /// <summary>
                 /// Gets or sets the ID of the diagnostic, including the prefix 'SA' or 'SX'.
                 /// </summary>
@@ -161,12 +162,18 @@ namespace StyleCop.Analyzers.Status.Generator
                 /// <returns>
                 /// The string contains the diagnostic id and the short name.
                 /// </returns>
-                public override string ToString() { return this.Id + " " + this.Name; }
+                public override string ToString()
+                {
+                        return this.Id + " " + this.Name;
+                }
 
                 /// <summary>
                 /// Returns a JSON representation of this diagnostic.
                 /// </summary>
                 /// <returns>A JSON string representing this diagnostic.</returns>
-                public string ToJson() { return JsonConvert.SerializeObject(this); }
+                public string ToJson()
+                {
+                        return JsonConvert.SerializeObject(this);
+                }
         }
 }

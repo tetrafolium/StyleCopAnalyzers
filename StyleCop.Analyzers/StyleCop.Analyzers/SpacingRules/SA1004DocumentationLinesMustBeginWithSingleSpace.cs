@@ -43,34 +43,40 @@ namespace StyleCop.Analyzers.SpacingRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1004DocumentationLinesMustBeginWithSingleSpace : DiagnosticAnalyzer {
+        internal class SA1004DocumentationLinesMustBeginWithSingleSpace : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1004DocumentationLinesMustBeginWithSingleSpace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1004";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1004.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1004Title),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1004MessageFormat),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(SpacingResources.SA1004Description),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1004.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(SpacingResources.SA1004Title), SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1004MessageFormat),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1004Description),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
-                    = HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
+                    HandleSyntaxTree;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -84,10 +90,12 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
                 {
-                        SyntaxNode root
-                            = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-                        foreach (var trivia in root.DescendantTrivia(descendIntoTrivia : true)) {
-                                switch (trivia.Kind()) {
+                        SyntaxNode root =
+                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                        foreach (var trivia in root.DescendantTrivia(descendIntoTrivia : true))
+                        {
+                                switch (trivia.Kind())
+                                {
                                 case SyntaxKind.DocumentationCommentExteriorTrivia:
                                         HandleDocumentationCommentExteriorTrivia(context, trivia);
                                         break;
@@ -102,11 +110,13 @@ namespace StyleCop.Analyzers.SpacingRules
                     SyntaxTreeAnalysisContext context, SyntaxTrivia trivia)
                 {
                         SyntaxToken token = trivia.Token;
-                        if (token.IsMissing) {
+                        if (token.IsMissing)
+                        {
                                 return;
                         }
 
-                        switch (token.Kind()) {
+                        switch (token.Kind())
+                        {
                         case SyntaxKind.EqualsToken:
                         case SyntaxKind.DoubleQuoteToken:
                         case SyntaxKind.SingleQuoteToken:
@@ -119,22 +129,26 @@ namespace StyleCop.Analyzers.SpacingRules
                         case SyntaxKind.XmlCommentEndToken:
                         case SyntaxKind.XmlCDataStartToken:
                         case SyntaxKind.XmlCDataEndToken:
-                                if (!token.HasLeadingTrivia) {
+                                if (!token.HasLeadingTrivia)
+                                {
                                         break;
                                 }
 
                                 SyntaxTrivia lastLeadingTrivia = token.LeadingTrivia.Last();
-                                switch (lastLeadingTrivia.Kind()) {
+                                switch (lastLeadingTrivia.Kind())
+                                {
                                 case SyntaxKind.WhitespaceTrivia:
                                         if (lastLeadingTrivia.ToFullString().StartsWith(
-                                                " ", StringComparison.Ordinal)) {
+                                                " ", StringComparison.Ordinal))
+                                        {
                                                 return;
                                         }
 
                                         break;
 
                                 case SyntaxKind.DocumentationCommentExteriorTrivia:
-                                        if (lastLeadingTrivia.ToFullString().EndsWith(" ")) {
+                                        if (lastLeadingTrivia.ToFullString().EndsWith(" "))
+                                        {
                                                 return;
                                         }
 
@@ -151,20 +165,26 @@ namespace StyleCop.Analyzers.SpacingRules
                                 return;
 
                         case SyntaxKind.XmlTextLiteralToken:
-                                if (token.Text.StartsWith("  ", StringComparison.Ordinal)) {
-                                        SyntaxKind grandparentKind
-                                            = token.Parent?.Parent?.Kind() ?? SyntaxKind.None;
-                                        if (grandparentKind
-                                                != SyntaxKind.SingleLineDocumentationCommentTrivia
-                                            && grandparentKind
-                                                != SyntaxKind.MultiLineDocumentationCommentTrivia) {
+                                if (token.Text.StartsWith("  ", StringComparison.Ordinal))
+                                {
+                                        SyntaxKind grandparentKind =
+                                            token.Parent?.Parent?.Kind() ?? SyntaxKind.None;
+                                        if (grandparentKind !=
+                                                SyntaxKind.SingleLineDocumentationCommentTrivia &&
+                                            grandparentKind !=
+                                                SyntaxKind.MultiLineDocumentationCommentTrivia)
+                                        {
                                                 // Allow extra indentation for nested text
                                                 // and elements.
                                                 return;
                                         }
-                                } else if (token.Text.StartsWith(" ", StringComparison.Ordinal)) {
+                                }
+                                else if (token.Text.StartsWith(" ", StringComparison.Ordinal))
+                                {
                                         return;
-                                } else if (trivia.ToFullString().EndsWith(" ")) {
+                                }
+                                else if (trivia.ToFullString().EndsWith(" "))
+                                {
                                         // javadoc-style documentation comments without a
                                         // leading * on one of the lines.
                                         return;

@@ -9,10 +9,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal readonly partial struct SubpatternSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.SubpatternSyntax";
+        internal readonly partial struct SubpatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.SubpatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, NameColonSyntax> NameColonAccessor;
@@ -26,45 +26,54 @@ namespace StyleCop.Analyzers.Lightup
 
                 static SubpatternSyntaxWrapper()
                 {
-                        WrappedType
-                            = SyntaxWrapperHelper.GetWrappedType(typeof(SubpatternSyntaxWrapper));
-                        NameColonAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, NameColonSyntax>(
-                                      WrappedType, nameof(NameColon));
-                        PatternAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                                      WrappedType, nameof(Pattern));
-                        WithNameColonAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                NameColonSyntax>(WrappedType, nameof(NameColon));
-                        WithPatternAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                CSharpSyntaxNode>(WrappedType, nameof(Pattern));
+                        WrappedType =
+                            SyntaxWrapperHelper.GetWrappedType(typeof(SubpatternSyntaxWrapper));
+                        NameColonAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, NameColonSyntax>(
+                                    WrappedType, nameof(NameColon));
+                        PatternAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                                    WrappedType, nameof(Pattern));
+                        WithNameColonAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            CSharpSyntaxNode, NameColonSyntax>(WrappedType, nameof(NameColon));
+                        WithPatternAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Pattern));
                 }
 
-                private SubpatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
+                private SubpatternSyntaxWrapper(CSharpSyntaxNode node)
+                {
+                        this.node = node;
+                }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public NameColonSyntax NameColon
                 {
-                        get { return NameColonAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return NameColonAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public PatternSyntaxWrapper Pattern
                 {
-                        get { return (PatternSyntaxWrapper) PatternAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return (PatternSyntaxWrapper) PatternAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator SubpatternSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

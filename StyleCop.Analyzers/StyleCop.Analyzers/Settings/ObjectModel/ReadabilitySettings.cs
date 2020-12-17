@@ -5,7 +5,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
         using LightJson;
 
-        internal class ReadabilitySettings {
+        internal class ReadabilitySettings
+        {
                 /// <summary>
                 /// This is the backing field for the <see cref="AllowBuiltInTypeAliases"/>
                 /// property.
@@ -15,7 +16,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <summary>
                 /// Initializes a new instance of the <see cref="ReadabilitySettings"/> class.
                 /// </summary>
-                protected internal ReadabilitySettings() { this.allowBuiltInTypeAliases = false; }
+                protected internal ReadabilitySettings()
+                {
+                        this.allowBuiltInTypeAliases = false;
+                }
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="ReadabilitySettings"/> class.
@@ -25,8 +29,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 protected internal ReadabilitySettings(JsonObject readabilitySettingsObject)
                     : this()
                 {
-                        foreach (var kvp in readabilitySettingsObject) {
-                                switch (kvp.Key) {
+                        foreach (var kvp in readabilitySettingsObject)
+                        {
+                                switch (kvp.Key)
+                                {
                                 case "allowBuiltInTypeAliases":
                                         this.allowBuiltInTypeAliases = kvp.ToBooleanValue();
                                         break;

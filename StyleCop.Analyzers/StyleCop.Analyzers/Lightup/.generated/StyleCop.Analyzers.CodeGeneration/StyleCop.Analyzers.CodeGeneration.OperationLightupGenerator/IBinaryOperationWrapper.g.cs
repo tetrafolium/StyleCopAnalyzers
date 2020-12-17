@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IBinaryOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IBinaryOperation";
+        internal readonly struct IBinaryOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IBinaryOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> LeftOperandAccessor;
                 private static readonly Func<IOperation, IOperation> RightOperandAccessor;
@@ -20,29 +21,27 @@ namespace StyleCop.Analyzers.Lightup
                 private readonly IOperation operation;
                 static IBinaryOperationWrapper()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IBinaryOperationWrapper));
-                        LeftOperandAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(LeftOperand));
-                        RightOperandAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(RightOperand));
-                        IsLiftedAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                        WrappedType =
+                            OperationWrapperHelper.GetWrappedType(typeof(IBinaryOperationWrapper));
+                        LeftOperandAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(LeftOperand));
+                        RightOperandAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(RightOperand));
+                        IsLiftedAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
                                 WrappedType, nameof(IsLifted));
-                        IsCheckedAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                        IsCheckedAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
                                 WrappedType, nameof(IsChecked));
-                        IsCompareTextAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                        IsCompareTextAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
                                 WrappedType, nameof(IsCompareText));
-                        OperatorMethodAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
-                                      WrappedType, nameof(OperatorMethod));
+                        OperatorMethodAccessor =
+                            LightupHelpers
+                                .CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                                    WrappedType, nameof(OperatorMethod));
                 }
 
                 private IBinaryOperationWrapper(IOperation operation)
@@ -59,15 +58,17 @@ namespace StyleCop.Analyzers.Lightup
                 public bool IsLifted => IsLiftedAccessor(this.WrappedOperation);
                 public bool IsChecked => IsCheckedAccessor(this.WrappedOperation);
                 public bool IsCompareText => IsCompareTextAccessor(this.WrappedOperation);
-                public IMethodSymbol OperatorMethod => OperatorMethodAccessor(
-                    this.WrappedOperation);
+                public IMethodSymbol OperatorMethod =>
+                    OperatorMethodAccessor(this.WrappedOperation);
                 public static IBinaryOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -77,8 +78,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

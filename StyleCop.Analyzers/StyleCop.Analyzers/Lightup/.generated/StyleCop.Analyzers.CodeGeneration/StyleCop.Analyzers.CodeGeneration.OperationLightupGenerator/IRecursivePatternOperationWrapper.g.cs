@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IRecursivePatternOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IRecursivePatternOperation";
+        internal readonly struct IRecursivePatternOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IRecursivePatternOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ITypeSymbol> MatchedTypeAccessor;
                 private static readonly Func<IOperation, ISymbol> DeconstructSymbolAccessor;
@@ -23,21 +24,20 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IRecursivePatternOperationWrapper));
-                        MatchedTypeAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
-                                      WrappedType, nameof(MatchedType));
-                        DeconstructSymbolAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
+                        MatchedTypeAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                                WrappedType, nameof(MatchedType));
+                        DeconstructSymbolAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
                                 WrappedType, nameof(DeconstructSymbol));
-                        DeconstructionSubpatternsAccessor
-                            = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                        DeconstructionSubpatternsAccessor =
+                            LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
                                 WrappedType, nameof(DeconstructionSubpatterns));
-                        PropertySubpatternsAccessor
-                            = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                        PropertySubpatternsAccessor =
+                            LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
                                 WrappedType, nameof(PropertySubpatterns));
-                        DeclaredSymbolAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
+                        DeclaredSymbolAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
                                 WrappedType, nameof(DeclaredSymbol));
                 }
 
@@ -49,29 +49,29 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public ITypeSymbol MatchedType => MatchedTypeAccessor(this.WrappedOperation);
-                public ISymbol DeconstructSymbol => DeconstructSymbolAccessor(
-                    this.WrappedOperation);
-                public ImmutableArray<IOperation>
-                    DeconstructionSubpatterns => DeconstructionSubpatternsAccessor(
-                        this.WrappedOperation);
-                public ImmutableArray<IOperation>
-                    PropertySubpatterns => PropertySubpatternsAccessor(this.WrappedOperation);
+                public ISymbol DeconstructSymbol =>
+                    DeconstructSymbolAccessor(this.WrappedOperation);
+                public ImmutableArray<IOperation> DeconstructionSubpatterns =>
+                    DeconstructionSubpatternsAccessor(this.WrappedOperation);
+                public ImmutableArray<IOperation> PropertySubpatterns =>
+                    PropertySubpatternsAccessor(this.WrappedOperation);
                 public ISymbol DeclaredSymbol => DeclaredSymbolAccessor(this.WrappedOperation);
                 public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
                 public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
                 public static explicit operator IRecursivePatternOperationWrapper(
                     IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator IPatternOperationWrapper(
-                    IRecursivePatternOperationWrapper wrapper) => IPatternOperationWrapper
-                                                                      .FromUpcast(
-                                                                          wrapper.WrappedOperation);
+                    IRecursivePatternOperationWrapper wrapper) =>
+                    IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IRecursivePatternOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -81,8 +81,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

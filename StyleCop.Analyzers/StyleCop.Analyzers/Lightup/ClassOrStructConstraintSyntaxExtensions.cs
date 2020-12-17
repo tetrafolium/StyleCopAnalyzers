@@ -7,11 +7,13 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class ClassOrStructConstraintSyntaxExtensions {
+        internal static class ClassOrStructConstraintSyntaxExtensions
+        {
                 private static readonly Func<ClassOrStructConstraintSyntax, SyntaxToken>
                     QuestionTokenAccessor;
-                private static readonly Func<ClassOrStructConstraintSyntax, SyntaxToken,
-                    ClassOrStructConstraintSyntax> WithQuestionTokenAccessor;
+                private static readonly
+                    Func<ClassOrStructConstraintSyntax, SyntaxToken, ClassOrStructConstraintSyntax>
+                        WithQuestionTokenAccessor;
 
                 static ClassOrStructConstraintSyntaxExtensions()
                 {

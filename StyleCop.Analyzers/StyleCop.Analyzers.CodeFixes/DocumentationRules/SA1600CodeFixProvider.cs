@@ -23,9 +23,13 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1600CodeFixProvider))]
         [Shared]
-        internal class SA1600CodeFixProvider : CodeFixProvider {
+        internal class SA1600CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create("CS1591", SA1600ElementsMustBeDocumented.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -37,52 +41,60 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        SyntaxNode root
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
-                        SemanticModel semanticModel
-                            = await context.Document
-                                  .GetSemanticModelAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
+                        SyntaxNode root =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
+                        SemanticModel semanticModel =
+                            await context.Document.GetSemanticModelAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
-                                SyntaxToken identifierToken
-                                    = root.FindToken(diagnostic.Location.SourceSpan.Start);
-                                if (identifierToken.IsMissingOrDefault()) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
+                                SyntaxToken identifierToken =
+                                    root.FindToken(diagnostic.Location.SourceSpan.Start);
+                                if (identifierToken.IsMissingOrDefault())
+                                {
                                         continue;
                                 }
 
-                                switch (identifierToken.Parent.Kind()) {
+                                switch (identifierToken.Parent.Kind())
+                                {
                                 case SyntaxKind.ConstructorDeclaration:
                                 case SyntaxKind.DestructorDeclaration:
                                         context.RegisterCodeFix(
-                                            CodeAction.Create(DocumentationResources
-                                                                  .ConstructorDocumentationCodeFix,
-                                                cancellationToken => GetConstructorOrDestructorDocumentationTransformedDocumentAsync(
-                                                    context.Document, root,
-                                                    (BaseMethodDeclarationSyntax)
-                                                        identifierToken.Parent,
-                                                    cancellationToken),
+                                            CodeAction.Create(
+                                                DocumentationResources
+                                                    .ConstructorDocumentationCodeFix,
+                                                cancellationToken =>
+                                                    GetConstructorOrDestructorDocumentationTransformedDocumentAsync(
+                                                        context.Document, root,
+                                                        (BaseMethodDeclarationSyntax)
+                                                            identifierToken.Parent,
+                                                        cancellationToken),
                                                 nameof(SA1600CodeFixProvider)),
                                             diagnostic);
                                         break;
 
                                 case SyntaxKind.MethodDeclaration:
-                                        MethodDeclarationSyntax methodDeclaration
-                                            = (MethodDeclarationSyntax) identifierToken.Parent;
-                                        if (TaskHelper.IsTaskReturningMethod(semanticModel,
-                                                methodDeclaration, context.CancellationToken)
-                                            && !IsCoveredByInheritDoc(semanticModel,
-                                                methodDeclaration, context.CancellationToken)) {
+                                        MethodDeclarationSyntax methodDeclaration =
+                                            (MethodDeclarationSyntax) identifierToken.Parent;
+                                        if (TaskHelper.IsTaskReturningMethod(
+                                                semanticModel, methodDeclaration,
+                                                context.CancellationToken) &&
+                                            !IsCoveredByInheritDoc(semanticModel, methodDeclaration,
+                                                                   context.CancellationToken))
+                                        {
                                                 context.RegisterCodeFix(
                                                     CodeAction.Create(
                                                         DocumentationResources
                                                             .MethodDocumentationCodeFix,
-                                                        cancellationToken => GetMethodDocumentationTransformedDocumentAsync(
-                                                            context.Document, root, semanticModel,
-                                                            (MethodDeclarationSyntax)
-                                                                identifierToken.Parent,
-                                                            cancellationToken),
+                                                        cancellationToken =>
+                                                            GetMethodDocumentationTransformedDocumentAsync(
+                                                                context.Document, root,
+                                                                semanticModel,
+                                                                (MethodDeclarationSyntax)
+                                                                    identifierToken.Parent,
+                                                                cancellationToken),
                                                         nameof(SA1600CodeFixProvider)),
                                                     diagnostic);
                                         }
@@ -93,25 +105,28 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 private static bool IsCoveredByInheritDoc(SemanticModel semanticModel,
-                    MethodDeclarationSyntax methodDeclaration, CancellationToken cancellationToken)
+                                                          MethodDeclarationSyntax methodDeclaration,
+                                                          CancellationToken cancellationToken)
                 {
-                        if (methodDeclaration.ExplicitInterfaceSpecifier != null) {
+                        if (methodDeclaration.ExplicitInterfaceSpecifier != null)
+                        {
                                 return true;
                         }
 
-                        if (methodDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword)) {
+                        if (methodDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
+                        {
                                 return true;
                         }
 
-                        ISymbol declaredSymbol
-                            = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
-                        return (declaredSymbol != null)
-                            && NamedTypeHelpers.IsImplementingAnInterfaceMember(declaredSymbol);
+                        ISymbol declaredSymbol =
+                            semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+                        return (declaredSymbol != null) &&
+                               NamedTypeHelpers.IsImplementingAnInterfaceMember(declaredSymbol);
                 }
 
                 private static Task<Document>
-                GetConstructorOrDestructorDocumentationTransformedDocumentAsync(Document document,
-                    SyntaxNode root, BaseMethodDeclarationSyntax declaration,
+                GetConstructorOrDestructorDocumentationTransformedDocumentAsync(
+                    Document document, SyntaxNode root, BaseMethodDeclarationSyntax declaration,
                     CancellationToken cancellationToken)
                 {
                         SyntaxTriviaList leadingTrivia = declaration.GetLeadingTrivia();
@@ -122,12 +137,12 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                         var documentationNodes = new List<XmlNodeSyntax>();
 
-                        var typeDeclaration
-                            = declaration.FirstAncestorOrSelf<BaseTypeDeclarationSyntax>();
+                        var typeDeclaration =
+                            declaration.FirstAncestorOrSelf<BaseTypeDeclarationSyntax>();
                         var standardText = SA1642SA1643CodeFixProvider.GenerateStandardText(
                             document, declaration, typeDeclaration, cancellationToken);
-                        var standardTextSyntaxList
-                            = SA1642SA1643CodeFixProvider.BuildStandardTextSyntaxList(
+                        var standardTextSyntaxList =
+                            SA1642SA1643CodeFixProvider.BuildStandardTextSyntaxList(
                                 typeDeclaration, newLineText, standardText[0], standardText[1]);
 
                         // Remove the empty line generated by build standard text, as this is not
@@ -137,8 +152,10 @@ namespace StyleCop.Analyzers.DocumentationRules
                         documentationNodes.Add(
                             XmlSyntaxFactory.SummaryElement(newLineText, standardTextSyntaxList));
 
-                        if (declaration.ParameterList != null) {
-                                foreach (var parameter in declaration.ParameterList.Parameters) {
+                        if (declaration.ParameterList != null)
+                        {
+                                foreach (var parameter in declaration.ParameterList.Parameters)
+                                {
                                         documentationNodes.Add(
                                             XmlSyntaxFactory.NewLine(newLineText));
                                         documentationNodes.Add(XmlSyntaxFactory.ParamElement(
@@ -150,8 +167,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                             newLineText, documentationNodes.ToArray());
                         var trivia = SyntaxFactory.Trivia(documentationComment);
 
-                        SyntaxTriviaList newLeadingTrivia
-                            = leadingTrivia.Insert(insertionIndex, trivia);
+                        SyntaxTriviaList newLeadingTrivia =
+                            leadingTrivia.Insert(insertionIndex, trivia);
                         SyntaxNode newElement = declaration.WithLeadingTrivia(newLeadingTrivia);
                         return Task.FromResult(
                             document.WithSyntaxRoot(root.ReplaceNode(declaration, newElement)));
@@ -171,9 +188,11 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                         documentationNodes.Add(XmlSyntaxFactory.SummaryElement(newLineText));
 
-                        if (methodDeclaration.TypeParameterList != null) {
+                        if (methodDeclaration.TypeParameterList != null)
+                        {
                                 foreach (var typeParameter in methodDeclaration.TypeParameterList
-                                             .Parameters) {
+                                             .Parameters)
+                                {
                                         documentationNodes.Add(
                                             XmlSyntaxFactory.NewLine(newLineText));
                                         documentationNodes.Add(XmlSyntaxFactory.TypeParamElement(
@@ -181,9 +200,11 @@ namespace StyleCop.Analyzers.DocumentationRules
                                 }
                         }
 
-                        if (methodDeclaration.ParameterList != null) {
+                        if (methodDeclaration.ParameterList != null)
+                        {
                                 foreach (var parameter in methodDeclaration.ParameterList
-                                             .Parameters) {
+                                             .Parameters)
+                                {
                                         documentationNodes.Add(
                                             XmlSyntaxFactory.NewLine(newLineText));
                                         documentationNodes.Add(XmlSyntaxFactory.ParamElement(
@@ -193,25 +214,28 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                         TypeSyntax typeName;
 
-                        var typeSymbol
-                            = semanticModel
-                                  .GetSymbolInfo(methodDeclaration.ReturnType, cancellationToken)
-                                  .Symbol as INamedTypeSymbol;
-                        if (typeSymbol.IsGenericType) {
+                        var typeSymbol =
+                            semanticModel
+                                .GetSymbolInfo(methodDeclaration.ReturnType, cancellationToken)
+                                .Symbol as INamedTypeSymbol;
+                        if (typeSymbol.IsGenericType)
+                        {
                                 typeName = SyntaxFactory.ParseTypeName(
                                     "global::System.Threading.Tasks.Task<TResult>");
-                        } else {
+                        }
+                        else
+                        {
                                 typeName = SyntaxFactory.ParseTypeName(
                                     "global::System.Threading.Tasks.Task");
                         }
 
                         XmlNodeSyntax[] returnContent = {
-                                XmlSyntaxFactory.Text(
-                                    DocumentationResources.TaskReturnElementFirstPart),
-                                XmlSyntaxFactory.SeeElement(SyntaxFactory.TypeCref(typeName))
-                                    .WithAdditionalAnnotations(Simplifier.Annotation),
-                                XmlSyntaxFactory.Text(
-                                    DocumentationResources.TaskReturnElementSecondPart),
+                            XmlSyntaxFactory.Text(
+                                DocumentationResources.TaskReturnElementFirstPart),
+                            XmlSyntaxFactory.SeeElement(SyntaxFactory.TypeCref(typeName))
+                                .WithAdditionalAnnotations(Simplifier.Annotation),
+                            XmlSyntaxFactory.Text(
+                                DocumentationResources.TaskReturnElementSecondPart),
                         };
 
                         documentationNodes.Add(XmlSyntaxFactory.NewLine(newLineText));
@@ -221,10 +245,10 @@ namespace StyleCop.Analyzers.DocumentationRules
                             newLineText, documentationNodes.ToArray());
                         var trivia = SyntaxFactory.Trivia(documentationComment);
 
-                        SyntaxTriviaList newLeadingTrivia
-                            = leadingTrivia.Insert(insertionIndex, trivia);
-                        SyntaxNode newElement
-                            = methodDeclaration.WithLeadingTrivia(newLeadingTrivia);
+                        SyntaxTriviaList newLeadingTrivia =
+                            leadingTrivia.Insert(insertionIndex, trivia);
+                        SyntaxNode newElement =
+                            methodDeclaration.WithLeadingTrivia(newLeadingTrivia);
                         return Task.FromResult(document.WithSyntaxRoot(
                             root.ReplaceNode(methodDeclaration, newElement)));
                 }
@@ -232,9 +256,9 @@ namespace StyleCop.Analyzers.DocumentationRules
                 private static int GetInsertionIndex(ref SyntaxTriviaList leadingTrivia)
                 {
                         int insertionIndex = leadingTrivia.Count;
-                        while (insertionIndex > 0
-                            && !leadingTrivia [insertionIndex - 1]
-                                    .HasBuiltinEndLine()) {
+                        while (insertionIndex > 0 && !leadingTrivia [insertionIndex - 1]
+                                                          .HasBuiltinEndLine())
+                        {
                                 insertionIndex--;
                         }
 

@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IConstantPatternOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IConstantPatternOperation";
+        internal readonly struct IConstantPatternOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IConstantPatternOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
                 private readonly IOperation operation;
@@ -17,8 +18,9 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IConstantPatternOperationWrapper));
-                        ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            IOperation>(WrappedType, nameof(Value));
+                        ValueAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Value));
                 }
 
                 private IConstantPatternOperationWrapper(IOperation operation)
@@ -34,16 +36,17 @@ namespace StyleCop.Analyzers.Lightup
                 public static explicit operator IConstantPatternOperationWrapper(
                     IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator IPatternOperationWrapper(
-                    IConstantPatternOperationWrapper wrapper) => IPatternOperationWrapper
-                                                                     .FromUpcast(
-                                                                         wrapper.WrappedOperation);
+                    IConstantPatternOperationWrapper wrapper) =>
+                    IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IConstantPatternOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -53,8 +56,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

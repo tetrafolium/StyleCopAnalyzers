@@ -33,36 +33,40 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoDiagnostic("This is already handled by the compiler with warning CS1589.")]
-        internal class SA1645IncludedDocumentationFileDoesNotExist : DiagnosticAnalyzer {
+        internal class SA1645IncludedDocumentationFileDoesNotExist : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1645IncludedDocumentationFileDoesNotExist"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1645";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1645.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1645Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1645.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1645Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1645MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1645Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1645Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS2000 // Add analyzer diagnostic IDs to analyzer release.
-                    new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.DisabledByDefault, Description, HelpLink,
-                        WellKnownDiagnosticTags.NotConfigurable);
+                    new DiagnosticDescriptor(
+                        DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                        DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault,
+                        Description, HelpLink, WellKnownDiagnosticTags.NotConfigurable);
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>

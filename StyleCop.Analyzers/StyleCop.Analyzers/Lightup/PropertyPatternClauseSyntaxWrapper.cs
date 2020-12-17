@@ -6,7 +6,8 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp;
 
         internal partial struct PropertyPatternClauseSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
                 public PropertyPatternClauseSyntaxWrapper AddSubpatterns(
                     params SubpatternSyntaxWrapper[] items)
                 {

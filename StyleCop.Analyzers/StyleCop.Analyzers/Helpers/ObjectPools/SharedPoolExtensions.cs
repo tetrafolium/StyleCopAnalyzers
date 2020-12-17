@@ -7,7 +7,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         using System.Collections.Generic;
         using System.Text;
 
-        internal static class SharedPoolExtensions {
+        internal static class SharedPoolExtensions
+        {
                 private const int Threshold = 512;
 
                 public static PooledObject<StringBuilder> GetPooledObject(
@@ -47,7 +48,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 }
 
                 public static PooledObject<T> GetPooledObject<T>(this ObjectPool<T> pool) where T
-                    : class {
+                    : class
+                {
                         return new PooledObject<T>(pool, p => p.Allocate(), (p, o) => p.Free(o));
                 }
 
@@ -100,16 +102,18 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                         return list;
                 }
 
-                public static void ClearAndFree(
-                    this ObjectPool<StringBuilder> pool, StringBuilder sb)
+                public static void ClearAndFree(this ObjectPool<StringBuilder> pool,
+                                                StringBuilder sb)
                 {
-                        if (sb == null) {
+                        if (sb == null)
+                        {
                                 return;
                         }
 
                         sb.Clear();
 
-                        if (sb.Capacity > Threshold) {
+                        if (sb.Capacity > Threshold)
+                        {
                                 sb.Capacity = Threshold;
                         }
 
@@ -118,14 +122,16 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
 
                 public static void ClearAndFree<T>(this ObjectPool<HashSet<T>> pool, HashSet<T> set)
                 {
-                        if (set == null) {
+                        if (set == null)
+                        {
                                 return;
                         }
 
                         var count = set.Count;
                         set.Clear();
 
-                        if (count > Threshold) {
+                        if (count > Threshold)
+                        {
                                 set.TrimExcess();
                         }
 
@@ -134,14 +140,16 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
 
                 public static void ClearAndFree<T>(this ObjectPool<Stack<T>> pool, Stack<T> set)
                 {
-                        if (set == null) {
+                        if (set == null)
+                        {
                                 return;
                         }
 
                         var count = set.Count;
                         set.Clear();
 
-                        if (count > Threshold) {
+                        if (count > Threshold)
+                        {
                                 set.TrimExcess();
                         }
 
@@ -150,14 +158,16 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
 
                 public static void ClearAndFree<T>(this ObjectPool<Queue<T>> pool, Queue<T> set)
                 {
-                        if (set == null) {
+                        if (set == null)
+                        {
                                 return;
                         }
 
                         var count = set.Count;
                         set.Clear();
 
-                        if (count > Threshold) {
+                        if (count > Threshold)
+                        {
                                 set.TrimExcess();
                         }
 
@@ -167,12 +177,14 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 public static void ClearAndFree<TKey, TValue>(
                     this ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> map)
                 {
-                        if (map == null) {
+                        if (map == null)
+                        {
                                 return;
                         }
 
                         // if map grew too big, don't put it back to pool
-                        if (map.Count > Threshold) {
+                        if (map.Count > Threshold)
+                        {
                                 return;
                         }
 
@@ -182,13 +194,15 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
 
                 public static void ClearAndFree<T>(this ObjectPool<List<T>> pool, List<T> list)
                 {
-                        if (list == null) {
+                        if (list == null)
+                        {
                                 return;
                         }
 
                         list.Clear();
 
-                        if (list.Capacity > Threshold) {
+                        if (list.Capacity > Threshold)
+                        {
                                 list.Capacity = Threshold;
                         }
 

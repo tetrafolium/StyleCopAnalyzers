@@ -25,21 +25,30 @@ namespace StyleCop.Analyzers.SpacingRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1004CodeFixProvider))]
         [Shared]
-        internal class SA1004CodeFixProvider : CodeFixProvider {
+        internal class SA1004CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1004DocumentationLinesMustBeginWithSingleSpace.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
+                public override FixAllProvider GetFixAllProvider()
+                {
+                        return FixAll.Instance;
+                }
 
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(SpacingResources.SA1004CodeFix,
+                                    CodeAction.Create(
+                                        SpacingResources.SA1004CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1004CodeFixProvider)),
@@ -54,30 +63,35 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
-                        var text
-                            = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                        var text =
+                            await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         return document.WithText(text.WithChanges(GetTextChange(root, diagnostic)));
                 }
 
                 private static TextChange GetTextChange(SyntaxNode root, Diagnostic diagnostic)
                 {
-                        var token
-                            = root.FindToken(diagnostic.Location.SourceSpan.Start, findInsideTrivia
-                                             : true);
-                        switch (token.Kind()) {
+                        var token =
+                            root.FindToken(diagnostic.Location.SourceSpan.Start, findInsideTrivia
+                                           : true);
+                        switch (token.Kind())
+                        {
                         case SyntaxKind.XmlTextLiteralToken:
-                                int spaceCount = token.ValueText.Length
-                                    - token.ValueText.TrimStart(' ').Length;
-                                return new TextChange(
-                                    new TextSpan(token.SpanStart, spaceCount), " ");
+                                int spaceCount =
+                                    token.ValueText.Length - token.ValueText.TrimStart(' ').Length;
+                                return new TextChange(new TextSpan(token.SpanStart, spaceCount),
+                                                      " ");
 
                         default:
                                 return new TextChange(new TextSpan(token.SpanStart, 0), " ");
                         }
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
-                        public static FixAllProvider Instance { get; }
+                private class FixAll : DocumentBasedFixAllProvider
+                {
+                        public static FixAllProvider Instance
+                        {
+                                get;
+                        }
                         = new FixAll();
 
                         protected override string CodeActionTitle => SpacingResources.SA1004CodeFix;
@@ -86,24 +100,26 @@ namespace StyleCop.Analyzers.SpacingRules
                             FixAllContext fixAllContext, Document document,
                             ImmutableArray<Diagnostic> diagnostics)
                         {
-                                if (diagnostics.IsEmpty) {
+                                if (diagnostics.IsEmpty)
+                                {
                                         return null;
                                 }
 
                                 var root = await document
                                                .GetSyntaxRootAsync(fixAllContext.CancellationToken)
                                                .ConfigureAwait(false);
-                                var text
-                                    = await document.GetTextAsync(fixAllContext.CancellationToken)
-                                          .ConfigureAwait(false);
+                                var text =
+                                    await document.GetTextAsync(fixAllContext.CancellationToken)
+                                        .ConfigureAwait(false);
 
                                 List<TextChange> changes = new List<TextChange>();
-                                foreach (var diagnostic in diagnostics) {
+                                foreach (var diagnostic in diagnostics)
+                                {
                                         changes.Add(GetTextChange(root, diagnostic));
                                 }
 
-                                changes.Sort(
-                                    (left, right) => left.Span.Start.CompareTo(right.Span.Start));
+                                changes.Sort((left, right) =>
+                                                 left.Span.Start.CompareTo(right.Span.Start));
 
                                 var tree = await document
                                                .GetSyntaxTreeAsync(fixAllContext.CancellationToken)

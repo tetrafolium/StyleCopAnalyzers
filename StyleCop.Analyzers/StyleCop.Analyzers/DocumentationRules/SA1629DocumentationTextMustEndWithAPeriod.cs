@@ -41,7 +41,8 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1629DocumentationTextMustEndWithAPeriod : ElementDocumentationBase {
+        internal class SA1629DocumentationTextMustEndWithAPeriod : ElementDocumentationBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1629DocumentationTextMustEndWithAPeriod"/> analyzer.
@@ -55,27 +56,27 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                 internal const string ReplaceCharKey = "CharToReplace";
 
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1629.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1629Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1629.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1629Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1629MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1629Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1629Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly ImmutableDictionary<string, string> NoCodeFixProperties
-                    = ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
+                private static readonly ImmutableDictionary<string, string> NoCodeFixProperties =
+                    ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
 
                 /// <summary>
                 /// Initializes a new instance of the <see
@@ -88,18 +89,24 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                    StyleCopSettings settings, bool needsComment,
-                    IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
+                                                         StyleCopSettings settings,
+                                                         bool needsComment,
+                                                         IEnumerable<XmlNodeSyntax> syntaxList,
+                                                         params Location[] diagnosticLocations)
                 {
-                        foreach (var xmlElement in syntaxList.OfType<XmlElementSyntax>()) {
-                                HandleSectionOrBlockXmlElement(
-                                    context, settings, xmlElement, startingWithFinalParagraph
-                                    : true);
+                        foreach (var xmlElement in syntaxList.OfType<XmlElementSyntax>())
+                        {
+                                HandleSectionOrBlockXmlElement(context, settings, xmlElement,
+                                                               startingWithFinalParagraph
+                                                               : true);
                         }
                 }
 
@@ -108,14 +115,17 @@ namespace StyleCop.Analyzers.DocumentationRules
                     SyntaxNodeAnalysisContext context, bool needsComment,
                     XElement completeDocumentation, params Location[] diagnosticLocations)
                 {
-                        foreach (var node in completeDocumentation.Nodes().OfType<XElement>()) {
-                                var textWithoutTrailingWhitespace
-                                    = node.Value.TrimEnd(' ', '\r', '\n');
-                                if (!string.IsNullOrEmpty(textWithoutTrailingWhitespace)) {
+                        foreach (var node in completeDocumentation.Nodes().OfType<XElement>())
+                        {
+                                var textWithoutTrailingWhitespace =
+                                    node.Value.TrimEnd(' ', '\r', '\n');
+                                if (!string.IsNullOrEmpty(textWithoutTrailingWhitespace))
+                                {
                                         if (!textWithoutTrailingWhitespace.EndsWith(
-                                                ".", StringComparison.Ordinal)
-                                            && !textWithoutTrailingWhitespace.EndsWith(
-                                                ".)", StringComparison.Ordinal)) {
+                                                ".", StringComparison.Ordinal) &&
+                                            !textWithoutTrailingWhitespace.EndsWith(
+                                                ".)", StringComparison.Ordinal))
+                                        {
                                                 context.ReportDiagnostic(Diagnostic.Create(
                                                     Descriptor, diagnosticLocations[0],
                                                     NoCodeFixProperties));
@@ -135,58 +145,66 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         var startTag = xmlElement.StartTag?.Name?.LocalName.ValueText;
                         if (settings.DocumentationRules.ExcludeFromPunctuationCheck.Contains(
-                                startTag)) {
+                                startTag))
+                        {
                                 return;
                         }
 
                         var currentParagraphDone = false;
-                        for (var i = xmlElement.Content.Count - 1; i >= 0; i--) {
-                                if (xmlElement.Content[i] is XmlTextSyntax contentNode) {
+                        for (var i = xmlElement.Content.Count - 1; i >= 0; i--)
+                        {
+                                if (xmlElement.Content[i] is XmlTextSyntax contentNode)
+                                {
                                         for (var j = contentNode.TextTokens.Count - 1;
-                                             !currentParagraphDone && (j >= 0); j--) {
+                                             !currentParagraphDone && (j >= 0); j--)
+                                        {
                                                 var textToken = contentNode.TextTokens[j];
-                                                var textWithoutTrailingWhitespace
-                                                    = textToken.Text.TrimEnd(' ', '\r', '\n');
+                                                var textWithoutTrailingWhitespace =
+                                                    textToken.Text.TrimEnd(' ', '\r', '\n');
 
                                                 if (!string.IsNullOrEmpty(
-                                                        textWithoutTrailingWhitespace)) {
+                                                        textWithoutTrailingWhitespace))
+                                                {
                                                         if (!textWithoutTrailingWhitespace.EndsWith(
-                                                                ".", StringComparison.Ordinal)
-                                                            && !textWithoutTrailingWhitespace
-                                                                    .EndsWith(".)",
-                                                                        StringComparison.Ordinal)
-                                                            && (startingWithFinalParagraph
-                                                                || !textWithoutTrailingWhitespace
-                                                                        .EndsWith(":",
-                                                                            StringComparison
-                                                                                .Ordinal))
-                                                            && !textWithoutTrailingWhitespace
-                                                                    .EndsWith("-or-",
-                                                                        StringComparison.Ordinal)) {
-                                                                int spanStart = textToken.SpanStart
-                                                                    + textWithoutTrailingWhitespace
-                                                                          .Length;
+                                                                ".", StringComparison.Ordinal) &&
+                                                            !textWithoutTrailingWhitespace.EndsWith(
+                                                                ".)", StringComparison.Ordinal) &&
+                                                            (startingWithFinalParagraph ||
+                                                             !textWithoutTrailingWhitespace
+                                                                  .EndsWith(
+                                                                      ":",
+                                                                      StringComparison.Ordinal)) &&
+                                                            !textWithoutTrailingWhitespace.EndsWith(
+                                                                "-or-", StringComparison.Ordinal))
+                                                        {
+                                                                int spanStart =
+                                                                    textToken.SpanStart +
+                                                                    textWithoutTrailingWhitespace
+                                                                        .Length;
                                                                 ImmutableDictionary<string, string>
                                                                     properties = null;
                                                                 if (textWithoutTrailingWhitespace
                                                                         .EndsWith(",",
-                                                                            StringComparison
-                                                                                .Ordinal)
-                                                                    || textWithoutTrailingWhitespace
-                                                                           .EndsWith(";",
-                                                                               StringComparison
-                                                                                   .Ordinal)) {
+                                                                                  StringComparison
+                                                                                      .Ordinal) ||
+                                                                    textWithoutTrailingWhitespace
+                                                                        .EndsWith(";",
+                                                                                  StringComparison
+                                                                                      .Ordinal))
+                                                                {
                                                                         spanStart -= 1;
                                                                         SetReplaceChar();
-                                                                } else if (
+                                                                }
+                                                                else if (
                                                                     textWithoutTrailingWhitespace
                                                                         .EndsWith(",)",
-                                                                            StringComparison
-                                                                                .Ordinal)
-                                                                    || textWithoutTrailingWhitespace
-                                                                           .EndsWith(";)",
-                                                                               StringComparison
-                                                                                   .Ordinal)) {
+                                                                                  StringComparison
+                                                                                      .Ordinal) ||
+                                                                    textWithoutTrailingWhitespace
+                                                                        .EndsWith(";)",
+                                                                                  StringComparison
+                                                                                      .Ordinal))
+                                                                {
                                                                         spanStart -= 2;
                                                                         SetReplaceChar();
                                                                 }
@@ -196,63 +214,73 @@ namespace StyleCop.Analyzers.DocumentationRules
                                                                     new TextSpan(spanStart, 1));
                                                                 context.ReportDiagnostic(
                                                                     Diagnostic.Create(Descriptor,
-                                                                        location, properties));
+                                                                                      location,
+                                                                                      properties));
 
                                                                 void SetReplaceChar()
                                                                 {
-                                                                        var propertiesBuilder
-                                                                            = ImmutableDictionary
-                                                                                  .CreateBuilder<
-                                                                                      string,
-                                                                                      string>();
+                                                                        var propertiesBuilder =
+                                                                            ImmutableDictionary
+                                                                                .CreateBuilder<
+                                                                                    string,
+                                                                                    string>();
                                                                         propertiesBuilder.Add(
                                                                             ReplaceCharKey,
                                                                             string.Empty);
-                                                                        properties
-                                                                            = propertiesBuilder
-                                                                                  .ToImmutable();
+                                                                        properties =
+                                                                            propertiesBuilder
+                                                                                .ToImmutable();
                                                                 }
                                                         }
 
                                                         currentParagraphDone = true;
                                                 }
                                         }
-                                } else if (xmlElement
-                                               .Content [i]
-                                               .IsInlineElement()
-                                    && !currentParagraphDone) {
+                                }
+                                else if (xmlElement
+                                             .Content [i]
+                                             .IsInlineElement() &&
+                                         !currentParagraphDone)
+                                {
                                         // Treat empty XML elements as a "word not ending with a
                                         // period"
-                                        var location = Location.Create(xmlElement.SyntaxTree,
+                                        var location = Location.Create(
+                                            xmlElement.SyntaxTree,
                                             new TextSpan(xmlElement.Content[i].Span.End, 1));
                                         context.ReportDiagnostic(
                                             Diagnostic.Create(Descriptor, location));
                                         currentParagraphDone = true;
-                                } else if (xmlElement.Content[i] is XmlElementSyntax
-                                               childXmlElement) {
-                                        switch (
-                                            childXmlElement.StartTag?.Name?.LocalName.ValueText) {
+                                }
+                                else if (xmlElement.Content[i] is XmlElementSyntax childXmlElement)
+                                {
+                                        switch (childXmlElement.StartTag?.Name?.LocalName.ValueText)
+                                        {
                                         case XmlCommentHelper.NoteXmlTag:
                                         case XmlCommentHelper.ParaXmlTag:
                                                 // Recursively handle <note> and <para>
                                                 // elements
-                                                HandleSectionOrBlockXmlElement(context, settings,
-                                                    childXmlElement, startingWithFinalParagraph);
+                                                HandleSectionOrBlockXmlElement(
+                                                    context, settings, childXmlElement,
+                                                    startingWithFinalParagraph);
                                                 break;
 
                                         default:
                                                 break;
                                         }
 
-                                        if (childXmlElement.IsBlockElement()) {
+                                        if (childXmlElement.IsBlockElement())
+                                        {
                                                 currentParagraphDone = false;
                                                 startingWithFinalParagraph = false;
                                         }
-                                } else if (xmlElement.Content[i] is XmlEmptyElementSyntax
-                                               emptyElement) {
+                                }
+                                else if (xmlElement.Content[i] is XmlEmptyElementSyntax
+                                             emptyElement)
+                                {
                                         // Treat the empty element <para/> as a paragraph separator
-                                        if (emptyElement.Name?.LocalName.ValueText
-                                            == XmlCommentHelper.ParaXmlTag) {
+                                        if (emptyElement.Name?.LocalName.ValueText ==
+                                            XmlCommentHelper.ParaXmlTag)
+                                        {
                                                 currentParagraphDone = false;
                                                 startingWithFinalParagraph = false;
                                         }

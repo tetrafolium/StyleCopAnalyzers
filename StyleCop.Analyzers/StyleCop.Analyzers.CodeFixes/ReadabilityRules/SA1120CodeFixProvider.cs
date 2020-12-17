@@ -20,9 +20,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1120CodeFixProvider))]
         [Shared]
-        internal class SA1120CodeFixProvider : CodeFixProvider {
+        internal class SA1120CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1120CommentsMustContainText.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -34,9 +38,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.SA1120CodeFix,
+                                    CodeAction.Create(
+                                        ReadabilityResources.SA1120CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1120CodeFixProvider)),
@@ -54,40 +60,45 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         var trivia = root.FindTrivia(diagnostic.Location.SourceSpan.Start, true);
 
                         int diagnosticIndex = 0;
-                        var triviaList
-                            = TriviaHelper.GetContainingTriviaList(trivia, out diagnosticIndex);
+                        var triviaList =
+                            TriviaHelper.GetContainingTriviaList(trivia, out diagnosticIndex);
 
                         var triviaToRemove = new List<SyntaxTrivia>();
                         triviaToRemove.Add(trivia);
 
                         bool hasTrailingContent = TriviaHasTrailingContentOnLine(root, trivia);
-                        if (!hasTrailingContent && diagnosticIndex > 0) {
+                        if (!hasTrailingContent && diagnosticIndex > 0)
+                        {
                                 var previousTrivia = triviaList[diagnosticIndex - 1];
-                                if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia)) {
+                                if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
+                                {
                                         triviaToRemove.Add(previousTrivia);
                                 }
                         }
 
                         bool hasLeadingContent = TriviaHasLeadingContentOnLine(root, trivia);
-                        if (!hasLeadingContent && diagnosticIndex < triviaList.Count - 1) {
+                        if (!hasLeadingContent && diagnosticIndex < triviaList.Count - 1)
+                        {
                                 var nextTrivia = triviaList[diagnosticIndex + 1];
-                                if (nextTrivia.IsKind(SyntaxKind.EndOfLineTrivia)) {
+                                if (nextTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                                {
                                         triviaToRemove.Add(nextTrivia);
                                 }
                         }
 
                         // Replace all roots with an empty node
-                        var newRoot
-                            = root.ReplaceTrivia(triviaToRemove, (original, rewritten) => default);
+                        var newRoot =
+                            root.ReplaceTrivia(triviaToRemove, (original, rewritten) => default);
 
                         Document updatedDocument = document.WithSyntaxRoot(newRoot);
                         return updatedDocument;
                 }
 
-                private static bool TriviaHasLeadingContentOnLine(
-                    SyntaxNode root, SyntaxTrivia commentTrivia)
+                private static bool TriviaHasLeadingContentOnLine(SyntaxNode root,
+                                                                  SyntaxTrivia commentTrivia)
                 {
-                        if (commentTrivia.SpanStart == 0) {
+                        if (commentTrivia.SpanStart == 0)
+                        {
                                 // It is impossible to have leading content at the start of the
                                 // file.
                                 return false;
@@ -97,14 +108,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         var nodeBefore = root.FindNode(
                             new Microsoft.CodeAnalysis.Text.TextSpan(nodeBeforeStart, 1));
 
-                        return nodeBefore.GetEndLine() == commentTrivia.GetLine()
-                            && !nodeBefore.GetLeadingTrivia().Contains(commentTrivia);
+                        return nodeBefore.GetEndLine() == commentTrivia.GetLine() &&
+                               !nodeBefore.GetLeadingTrivia().Contains(commentTrivia);
                 }
 
-                private static bool TriviaHasTrailingContentOnLine(
-                    SyntaxNode root, SyntaxTrivia commentTrivia)
+                private static bool TriviaHasTrailingContentOnLine(SyntaxNode root,
+                                                                   SyntaxTrivia commentTrivia)
                 {
-                        if (commentTrivia.Span.End == root.Span.End) {
+                        if (commentTrivia.Span.End == root.Span.End)
+                        {
                                 // It is impossible to have trailing content at the end of the file.
                                 return false;
                         }
@@ -113,8 +125,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         var nodeAfterTrivia = root.FindNode(
                             new Microsoft.CodeAnalysis.Text.TextSpan(nodeAfterTriviaStart, 1));
 
-                        return nodeAfterTrivia.GetLine() == commentTrivia.GetEndLine()
-                            && !nodeAfterTrivia.GetTrailingTrivia().Contains(commentTrivia);
+                        return nodeAfterTrivia.GetLine() == commentTrivia.GetEndLine() &&
+                               !nodeAfterTrivia.GetTrailingTrivia().Contains(commentTrivia);
                 }
         }
 }

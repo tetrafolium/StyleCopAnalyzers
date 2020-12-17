@@ -39,34 +39,40 @@ namespace StyleCop.Analyzers.LayoutRules
         /// places where opening braces are preceded by blank lines.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1509OpeningBracesMustNotBePrecededByBlankLine : DiagnosticAnalyzer {
+        internal class SA1509OpeningBracesMustNotBePrecededByBlankLine : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1509OpeningBracesMustNotBePrecededByBlankLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1509";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1509.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1509Title),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1509MessageFormat),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1509Description),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1509.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(LayoutResources.SA1509Title), LayoutResources.ResourceManager,
+                    typeof(LayoutResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1509MessageFormat),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1509Description),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
-                    = HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
+                    HandleSyntaxTree;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -83,9 +89,11 @@ namespace StyleCop.Analyzers.LayoutRules
                         var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
 
                         SyntaxToken previousToken = default;
-                        foreach (var token in syntaxRoot.DescendantTokens()) {
-                                if (token.IsKind(SyntaxKind.OpenBraceToken)
-                                    && !previousToken.IsKind(SyntaxKind.CloseBraceToken)) {
+                        foreach (var token in syntaxRoot.DescendantTokens())
+                        {
+                                if (token.IsKind(SyntaxKind.OpenBraceToken) &&
+                                    !previousToken.IsKind(SyntaxKind.CloseBraceToken))
+                                {
                                         AnalyzeOpenBrace(context, token, previousToken);
                                 }
 
@@ -94,23 +102,27 @@ namespace StyleCop.Analyzers.LayoutRules
                 }
 
                 private static void AnalyzeOpenBrace(SyntaxTreeAnalysisContext context,
-                    SyntaxToken openBrace, SyntaxToken previousToken)
+                                                     SyntaxToken openBrace,
+                                                     SyntaxToken previousToken)
                 {
-                        var triviaList = TriviaHelper.MergeTriviaLists(
-                            previousToken.TrailingTrivia, openBrace.LeadingTrivia);
+                        var triviaList = TriviaHelper.MergeTriviaLists(previousToken.TrailingTrivia,
+                                                                       openBrace.LeadingTrivia);
 
                         var done = false;
                         var eolCount = 0;
-                        for (var i = triviaList.Count - 1; !done && (i >= 0); i--) {
+                        for (var i = triviaList.Count - 1; !done && (i >= 0); i--)
+                        {
                                 switch (triviaList [i]
-                                            .Kind()) {
+                                            .Kind())
+                                {
                                 case SyntaxKind.WhitespaceTrivia:
                                         break;
                                 case SyntaxKind.EndOfLineTrivia:
                                         eolCount++;
                                         break;
                                 default:
-                                        if (triviaList[i].IsDirective) {
+                                        if (triviaList[i].IsDirective)
+                                        {
                                                 // These have a built-in end of line
                                                 eolCount++;
                                         }
@@ -120,7 +132,8 @@ namespace StyleCop.Analyzers.LayoutRules
                                 }
                         }
 
-                        if (eolCount < 2) {
+                        if (eolCount < 2)
+                        {
                                 return;
                         }
 

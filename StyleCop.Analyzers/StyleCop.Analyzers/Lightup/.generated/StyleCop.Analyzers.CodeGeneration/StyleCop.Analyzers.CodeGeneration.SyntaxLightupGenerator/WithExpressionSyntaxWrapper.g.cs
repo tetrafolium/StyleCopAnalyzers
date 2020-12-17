@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct WithExpressionSyntaxWrapper
-            : ISyntaxWrapper<ExpressionSyntax> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.WithExpressionSyntax";
+            : ISyntaxWrapper<ExpressionSyntax>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.WithExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax> ExpressionAccessor;
@@ -24,63 +25,76 @@ namespace StyleCop.Analyzers.Lightup
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
                     WithWithKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, InitializerExpressionSyntax,
-                    ExpressionSyntax> WithInitializerAccessor;
+                                             ExpressionSyntax> WithInitializerAccessor;
 
                 private readonly ExpressionSyntax node;
 
                 static WithExpressionSyntaxWrapper()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(WithExpressionSyntaxWrapper));
-                        ExpressionAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                                      WrappedType, nameof(Expression));
-                        WithKeywordAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                      WrappedType, nameof(WithKeyword));
-                        InitializerAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax,
-                                InitializerExpressionSyntax>(WrappedType, nameof(Initializer));
-                        WithExpressionAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                ExpressionSyntax>(WrappedType, nameof(Expression));
-                        WithWithKeywordAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                      WrappedType, nameof(WithKeyword));
-                        WithInitializerAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                InitializerExpressionSyntax>(WrappedType, nameof(Initializer));
+                        WrappedType =
+                            SyntaxWrapperHelper.GetWrappedType(typeof(WithExpressionSyntaxWrapper));
+                        ExpressionAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                                    WrappedType, nameof(Expression));
+                        WithKeywordAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                    WrappedType, nameof(WithKeyword));
+                        InitializerAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            ExpressionSyntax, InitializerExpressionSyntax>(WrappedType,
+                                                                           nameof(Initializer));
+                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
+                        WithWithKeywordAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                    WrappedType, nameof(WithKeyword));
+                        WithInitializerAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            ExpressionSyntax, InitializerExpressionSyntax>(WrappedType,
+                                                                           nameof(Initializer));
                 }
 
-                private WithExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
+                private WithExpressionSyntaxWrapper(ExpressionSyntax node)
+                {
+                        this.node = node;
+                }
 
                 public ExpressionSyntax SyntaxNode => this.node;
 
                 public ExpressionSyntax Expression
                 {
-                        get { return ExpressionAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return ExpressionAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SyntaxToken WithKeyword
                 {
-                        get { return WithKeywordAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return WithKeywordAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public InitializerExpressionSyntax Initializer
                 {
-                        get { return InitializerAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return InitializerAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator WithExpressionSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

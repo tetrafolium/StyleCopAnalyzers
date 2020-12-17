@@ -39,43 +39,47 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoCodeFix("Cannot generate documentation")]
-        internal class SA1627DocumentationTextMustNotBeEmpty : DiagnosticAnalyzer {
+        internal class SA1627DocumentationTextMustNotBeEmpty : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1627DocumentationTextMustNotBeEmpty"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1627";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1627.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1627Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1627.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1627Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1627MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1627Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1627Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> XmlElementAction
-                    = HandleXmlElement;
-                private static readonly Action<SyntaxNodeAnalysisContext> XmlEmptyElementAction
-                    = HandleXmlEmptyElement;
+                private static readonly Action<SyntaxNodeAnalysisContext> XmlElementAction =
+                    HandleXmlElement;
+                private static readonly Action<SyntaxNodeAnalysisContext> XmlEmptyElementAction =
+                    HandleXmlEmptyElement;
 
-                private static readonly ImmutableArray<string> ElementsToCheck
-                    = ImmutableArray.Create(XmlCommentHelper.RemarksXmlTag,
-                        XmlCommentHelper.PermissionXmlTag, XmlCommentHelper.ExceptionXmlTag,
-                        XmlCommentHelper.ExampleXmlTag);
+                private static readonly ImmutableArray<string> ElementsToCheck =
+                    ImmutableArray.Create(
+                        XmlCommentHelper.RemarksXmlTag, XmlCommentHelper.PermissionXmlTag,
+                        XmlCommentHelper.ExceptionXmlTag, XmlCommentHelper.ExampleXmlTag);
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -85,8 +89,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxNodeAction(XmlElementAction, SyntaxKind.XmlElement);
-                        context.RegisterSyntaxNodeAction(
-                            XmlEmptyElementAction, SyntaxKind.XmlEmptyElement);
+                        context.RegisterSyntaxNodeAction(XmlEmptyElementAction,
+                                                         SyntaxKind.XmlEmptyElement);
                 }
 
                 private static void HandleXmlElement(SyntaxNodeAnalysisContext context)
@@ -94,8 +98,9 @@ namespace StyleCop.Analyzers.DocumentationRules
                         var element = (XmlElementSyntax) context.Node;
 
                         var name = element.StartTag.Name.ToString();
-                        if (ElementsToCheck.Contains(name)
-                            && XmlCommentHelper.IsConsideredEmpty(element)) {
+                        if (ElementsToCheck.Contains(name) &&
+                            XmlCommentHelper.IsConsideredEmpty(element))
+                        {
                                 context.ReportDiagnostic(Diagnostic.Create(
                                     Descriptor, element.GetLocation(), name.ToString()));
                         }
@@ -108,52 +113,59 @@ namespace StyleCop.Analyzers.DocumentationRules
                         var elementLocation = elementSyntax.GetLocation();
 
                         if (string.Equals(elementName, XmlCommentHelper.IncludeXmlTag,
-                                StringComparison.Ordinal)) {
-                                HandleIncludedDocumentation(
-                                    context, elementSyntax, elementLocation);
+                                          StringComparison.Ordinal))
+                        {
+                                HandleIncludedDocumentation(context, elementSyntax,
+                                                            elementLocation);
                                 return;
                         }
 
-                        if (ElementsToCheck.Contains(elementName)) {
+                        if (ElementsToCheck.Contains(elementName))
+                        {
                                 context.ReportDiagnostic(Diagnostic.Create(
                                     Descriptor, elementLocation, elementSyntax.Name.ToString()));
                         }
                 }
 
                 private static void HandleIncludedDocumentation(SyntaxNodeAnalysisContext context,
-                    XmlEmptyElementSyntax elementSyntax, Location elementLocation)
+                                                                XmlEmptyElementSyntax elementSyntax,
+                                                                Location elementLocation)
                 {
-                        var memberDeclaration
-                            = elementSyntax.FirstAncestorOrSelf<MemberDeclarationSyntax>();
-                        if (memberDeclaration == null) {
+                        var memberDeclaration =
+                            elementSyntax.FirstAncestorOrSelf<MemberDeclarationSyntax>();
+                        if (memberDeclaration == null)
+                        {
                                 return;
                         }
 
                         var declaration = context.SemanticModel.GetDeclaredSymbol(
                             memberDeclaration, context.CancellationToken);
-                        if (declaration == null) {
+                        if (declaration == null)
+                        {
                                 return;
                         }
 
-                        var rawDocumentation
-                            = declaration.GetDocumentationCommentXml(expandIncludes
-                                                                     : true, cancellationToken
-                                                                     : context.CancellationToken);
-                        var completeDocumentation
-                            = XElement.Parse(rawDocumentation, LoadOptions.None);
+                        var rawDocumentation =
+                            declaration.GetDocumentationCommentXml(expandIncludes
+                                                                   : true, cancellationToken
+                                                                   : context.CancellationToken);
+                        var completeDocumentation =
+                            XElement.Parse(rawDocumentation, LoadOptions.None);
                         if (completeDocumentation.Nodes().OfType<XElement>().Any(
-                                element => element.Name == XmlCommentHelper.InheritdocXmlTag)) {
+                                element => element.Name == XmlCommentHelper.InheritdocXmlTag))
+                        {
                                 // Ignore nodes with an <inheritdoc/> tag in the included XML.
                                 return;
                         }
 
-                        var emptyElements = completeDocumentation.Nodes()
-                                                .OfType<XElement>()
-                                                .Where(element => ElementsToCheck.Contains(
-                                                           element.Name.ToString()))
-                                                .Where(x => XmlCommentHelper.IsConsideredEmpty(x));
+                        var emptyElements =
+                            completeDocumentation.Nodes()
+                                .OfType<XElement>()
+                                .Where(element => ElementsToCheck.Contains(element.Name.ToString()))
+                                .Where(x => XmlCommentHelper.IsConsideredEmpty(x));
 
-                        foreach (var emptyElement in emptyElements) {
+                        foreach (var emptyElement in emptyElements)
+                        {
                                 context.ReportDiagnostic(Diagnostic.Create(
                                     Descriptor, elementLocation, emptyElement.Name.ToString()));
                         }

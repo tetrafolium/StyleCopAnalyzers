@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IRelationalCaseClauseOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.IRelationalCaseClauseOperation";
+        internal readonly struct IRelationalCaseClauseOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.IRelationalCaseClauseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
                 private readonly IOperation operation;
@@ -17,8 +18,9 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(IRelationalCaseClauseOperationWrapper));
-                        ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            IOperation>(WrappedType, nameof(Value));
+                        ValueAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Value));
                 }
 
                 private IRelationalCaseClauseOperationWrapper(IOperation operation)
@@ -36,17 +38,18 @@ namespace StyleCop.Analyzers.Lightup
                 public static explicit operator IRelationalCaseClauseOperationWrapper(
                     ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator ICaseClauseOperationWrapper(
-                    IRelationalCaseClauseOperationWrapper
-                        wrapper) => ICaseClauseOperationWrapper
-                                        .FromUpcast(wrapper.WrappedOperation);
+                    IRelationalCaseClauseOperationWrapper wrapper) =>
+                    ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IRelationalCaseClauseOperationWrapper FromOperation(
                     IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -56,8 +59,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

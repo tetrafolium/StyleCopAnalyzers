@@ -43,52 +43,51 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1108BlockStatementsMustNotContainEmbeddedComments : DiagnosticAnalyzer {
+        internal class SA1108BlockStatementsMustNotContainEmbeddedComments : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1108BlockStatementsMustNotContainEmbeddedComments"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1108";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1108.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1108Title),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
-                        nameof(ReadabilityResources.SA1108MessageFormat),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1108Description),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1108.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(ReadabilityResources.SA1108Title), ReadabilityResources.ResourceManager,
+                    typeof(ReadabilityResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1108MessageFormat),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1108Description),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> BlockAction = HandleBlock;
-                private static readonly Action<SyntaxNodeAnalysisContext> SwitchStatementAction
-                    = HandleSwitchStatement;
+                private static readonly Action<SyntaxNodeAnalysisContext> SwitchStatementAction =
+                    HandleSwitchStatement;
 
                 private static readonly SyntaxKind[] SupportedKinds = {
-                        SyntaxKind.ForEachStatement,
-                        SyntaxKind.ForStatement,
-                        SyntaxKind.WhileStatement,
-                        SyntaxKind.DoStatement,
-                        SyntaxKind.IfStatement,
-                        SyntaxKind.ElseClause,
-                        SyntaxKind.LockStatement,
-                        SyntaxKind.TryStatement,
-                        SyntaxKind.CatchClause,
-                        SyntaxKind.FinallyClause,
-                        SyntaxKind.CheckedStatement,
-                        SyntaxKind.UncheckedStatement,
-                        SyntaxKind.FixedStatement,
+                    SyntaxKind.ForEachStatement, SyntaxKind.ForStatement,
+                    SyntaxKind.WhileStatement,   SyntaxKind.DoStatement,
+                    SyntaxKind.IfStatement,      SyntaxKind.ElseClause,
+                    SyntaxKind.LockStatement,    SyntaxKind.TryStatement,
+                    SyntaxKind.CatchClause,      SyntaxKind.FinallyClause,
+                    SyntaxKind.CheckedStatement, SyntaxKind.UncheckedStatement,
+                    SyntaxKind.FixedStatement,
                 };
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -98,15 +97,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxNodeAction(BlockAction, SyntaxKind.Block);
-                        context.RegisterSyntaxNodeAction(
-                            SwitchStatementAction, SyntaxKind.SwitchStatement);
+                        context.RegisterSyntaxNodeAction(SwitchStatementAction,
+                                                         SyntaxKind.SwitchStatement);
                 }
 
                 private static void HandleSwitchStatement(SyntaxNodeAnalysisContext context)
                 {
                         var switchStatement = (SwitchStatementSyntax) context.Node;
                         var openBraceToken = switchStatement.OpenBraceToken;
-                        if (openBraceToken.IsMissing) {
+                        if (openBraceToken.IsMissing)
+                        {
                                 return;
                         }
 
@@ -118,17 +118,20 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 private static void HandleBlock(SyntaxNodeAnalysisContext context)
                 {
                         var block = (BlockSyntax) context.Node;
-                        if (!SupportedKinds.Any(block.Parent.IsKind)) {
+                        if (!SupportedKinds.Any(block.Parent.IsKind))
+                        {
                                 return;
                         }
 
                         var openBraceToken = block.OpenBraceToken;
-                        if (openBraceToken.IsMissing) {
+                        if (openBraceToken.IsMissing)
+                        {
                                 return;
                         }
 
                         var previousToken = openBraceToken.GetPreviousToken();
-                        if (previousToken.IsMissing) {
+                        if (previousToken.IsMissing)
+                        {
                                 return;
                         }
 
@@ -136,17 +139,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 }
 
                 private static void FindAllComments(SyntaxNodeAnalysisContext context,
-                    SyntaxToken previousToken, SyntaxToken openBraceToken)
+                                                    SyntaxToken previousToken,
+                                                    SyntaxToken openBraceToken)
                 {
-                        foreach (var comment in previousToken.TrailingTrivia) {
-                                if (IsComment(comment)) {
+                        foreach (var comment in previousToken.TrailingTrivia)
+                        {
+                                if (IsComment(comment))
+                                {
                                         context.ReportDiagnostic(
                                             Diagnostic.Create(Descriptor, comment.GetLocation()));
                                 }
                         }
 
-                        foreach (var comment in openBraceToken.LeadingTrivia) {
-                                if (IsComment(comment)) {
+                        foreach (var comment in openBraceToken.LeadingTrivia)
+                        {
+                                if (IsComment(comment))
+                                {
                                         context.ReportDiagnostic(
                                             Diagnostic.Create(Descriptor, comment.GetLocation()));
                                 }
@@ -155,12 +163,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 private static bool IsComment(SyntaxTrivia syntaxTrivia)
                 {
-                        var isSingleLineComment
-                            = syntaxTrivia.IsKind(SyntaxKind.SingleLineCommentTrivia)
-                            && !syntaxTrivia.ToFullString().StartsWith(
-                                @"////", StringComparison.Ordinal);
-                        return isSingleLineComment
-                            || syntaxTrivia.IsKind(SyntaxKind.MultiLineCommentTrivia);
+                        var isSingleLineComment =
+                            syntaxTrivia.IsKind(SyntaxKind.SingleLineCommentTrivia) &&
+                            !syntaxTrivia.ToFullString().StartsWith(@"////",
+                                                                    StringComparison.Ordinal);
+                        return isSingleLineComment ||
+                               syntaxTrivia.IsKind(SyntaxKind.MultiLineCommentTrivia);
                 }
         }
 }

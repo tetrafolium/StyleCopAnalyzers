@@ -20,18 +20,24 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1139CodeFixProvider))]
         [Shared]
-        internal class SA1139CodeFixProvider : CodeFixProvider {
+        internal class SA1139CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1139UseLiteralSuffixNotationInsteadOfCasting.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.SA1139CodeFix,
+                                    CodeAction.Create(
+                                        ReadabilityResources.SA1139CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1139CodeFixProvider)),
@@ -42,8 +48,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 }
 
                 /// <inheritdoc/>
-                public override
-                    FixAllProvider GetFixAllProvider() => CustomFixAllProviders.BatchFixer;
+                public override FixAllProvider GetFixAllProvider() =>
+                    CustomFixAllProviders.BatchFixer;
 
                 private static async Task<Document> GetTransformedDocumentAsync(
                     Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
@@ -51,9 +57,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
-                        if (!(syntaxRoot.FindNode(
-                                diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                                : true) is CastExpressionSyntax node)) {
+                        if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan,
+                                                  getInnermostNodeForTie
+                                                  : true) is CastExpressionSyntax node))
+                        {
                                 return document;
                         }
 
@@ -65,32 +72,32 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 private static SyntaxNode GenerateReplacementNode(CastExpressionSyntax node)
                 {
-                        var literalExpressionSyntax
-                            = !(node.Expression.WalkDownParentheses()
-                                      is PrefixUnaryExpressionSyntax plusMinusSyntax)
-                            ? (LiteralExpressionSyntax) node.Expression.WalkDownParentheses()
-                            : (LiteralExpressionSyntax)
-                                  plusMinusSyntax.Operand.WalkDownParentheses();
+                        var literalExpressionSyntax =
+                            !(node.Expression.WalkDownParentheses()
+                                  is PrefixUnaryExpressionSyntax plusMinusSyntax)
+                                ? (LiteralExpressionSyntax) node.Expression.WalkDownParentheses()
+                                : (LiteralExpressionSyntax)
+                                      plusMinusSyntax.Operand.WalkDownParentheses();
                         var typeToken = node.Type.GetFirstToken();
-                        var replacementLiteral
-                            = literalExpressionSyntax.WithLiteralSuffix(typeToken.Kind());
+                        var replacementLiteral =
+                            literalExpressionSyntax.WithLiteralSuffix(typeToken.Kind());
 
-                        var newLeadingTrivia
-                            = SyntaxFactory
-                                  .TriviaList(node.GetLeadingTrivia()
-                                                  .Concat(node.CloseParenToken.TrailingTrivia)
-                                                  .Concat(node.Expression.GetLeadingTrivia()))
-                                  .WithoutLeadingWhitespace()
-                                  .WithoutTrailingWhitespace();
+                        var newLeadingTrivia =
+                            SyntaxFactory
+                                .TriviaList(node.GetLeadingTrivia()
+                                                .Concat(node.CloseParenToken.TrailingTrivia)
+                                                .Concat(node.Expression.GetLeadingTrivia()))
+                                .WithoutLeadingWhitespace()
+                                .WithoutTrailingWhitespace();
 
-                        if (newLeadingTrivia.Count != 0) {
+                        if (newLeadingTrivia.Count != 0)
+                        {
                                 newLeadingTrivia = newLeadingTrivia.Add(SyntaxFactory.Space);
                         }
 
-                        var replacementNode
-                            = node.Expression
-                                  .ReplaceNode(literalExpressionSyntax, replacementLiteral)
-                                  .WithLeadingTrivia(newLeadingTrivia);
+                        var replacementNode =
+                            node.Expression.ReplaceNode(literalExpressionSyntax, replacementLiteral)
+                                .WithLeadingTrivia(newLeadingTrivia);
 
                         return replacementNode;
                 }

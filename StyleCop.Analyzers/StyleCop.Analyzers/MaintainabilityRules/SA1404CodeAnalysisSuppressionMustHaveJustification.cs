@@ -31,7 +31,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1404CodeAnalysisSuppressionMustHaveJustification : DiagnosticAnalyzer {
+        internal class SA1404CodeAnalysisSuppressionMustHaveJustification : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The placeholder to insert as part of the code fix.
                 /// </summary>
@@ -42,30 +43,33 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// cref="SA1404CodeAnalysisSuppressionMustHaveJustification"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1404";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1404.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(MaintainabilityResources.SA1404Title),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1404.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1404Title),
+                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1404MessageFormat),
                         MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1404Description),
                         MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 private static readonly Action<CompilationStartAnalysisContext>
                     CompilationStartAction = HandleCompilationStart;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -79,17 +83,18 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 private static void HandleCompilationStart(CompilationStartAnalysisContext context)
                 {
-                        AnalyzerInstance instance = new AnalyzerInstance(
-                            context.Compilation.GetOrCreateUsingAliasCache());
-                        context.RegisterSyntaxNodeAction(
-                            instance.HandleAttributeNode, SyntaxKind.Attribute);
+                        AnalyzerInstance instance =
+                            new AnalyzerInstance(context.Compilation.GetOrCreateUsingAliasCache());
+                        context.RegisterSyntaxNodeAction(instance.HandleAttributeNode,
+                                                         SyntaxKind.Attribute);
                 }
 
                 /// <summary>
                 /// This class holds analyzer state information for analysis within a particular
                 /// <see cref="Compilation"/>.
                 /// </summary>
-                private sealed class AnalyzerInstance {
+                private sealed class AnalyzerInstance
+                {
                         private readonly ConcurrentDictionary<SyntaxTree, bool> usingAliasCache;
 
                         /// <summary>
@@ -110,66 +115,74 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                                 // Return fast if the name doesn't match and the file doesn't
                                 // contain any using alias directives
-                                if (!attribute.SyntaxTree.ContainsUsingAlias(
-                                        this.usingAliasCache)) {
-                                        if (!(attribute.Name is SimpleNameSyntax
-                                                    simpleNameSyntax)) {
-                                                QualifiedNameSyntax qualifiedNameSyntax
-                                                    = attribute.Name as QualifiedNameSyntax;
+                                if (!attribute.SyntaxTree.ContainsUsingAlias(this.usingAliasCache))
+                                {
+                                        if (!(attribute.Name is SimpleNameSyntax simpleNameSyntax))
+                                        {
+                                                QualifiedNameSyntax qualifiedNameSyntax =
+                                                    attribute.Name as QualifiedNameSyntax;
                                                 simpleNameSyntax = qualifiedNameSyntax.Right;
                                         }
 
-                                        if (simpleNameSyntax.Identifier.ValueText
-                                                != nameof(SuppressMessageAttribute)
-                                            && simpleNameSyntax.Identifier.ValueText
-                                                != "SuppressMessage") {
+                                        if (simpleNameSyntax.Identifier.ValueText !=
+                                                nameof(SuppressMessageAttribute) &&
+                                            simpleNameSyntax.Identifier.ValueText !=
+                                                "SuppressMessage")
+                                        {
                                                 return;
                                         }
                                 }
 
-                                SymbolInfo symbolInfo
-                                    = context.SemanticModel.GetSymbolInfo(attribute);
+                                SymbolInfo symbolInfo =
+                                    context.SemanticModel.GetSymbolInfo(attribute);
                                 ISymbol symbol = symbolInfo.Symbol;
-                                if (symbol != null) {
-                                        if (this.suppressMessageAttribute == null) {
-                                                this.suppressMessageAttribute
-                                                    = context.SemanticModel.Compilation
-                                                          .GetTypeByMetadataName(
-                                                              typeof(SuppressMessageAttribute)
-                                                                  .FullName);
+                                if (symbol != null)
+                                {
+                                        if (this.suppressMessageAttribute == null)
+                                        {
+                                                this.suppressMessageAttribute =
+                                                    context.SemanticModel.Compilation
+                                                        .GetTypeByMetadataName(
+                                                            typeof(SuppressMessageAttribute)
+                                                                .FullName);
                                         }
 
                                         if (Equals(symbol.ContainingType,
-                                                this.suppressMessageAttribute)) {
+                                                   this.suppressMessageAttribute))
+                                        {
                                                 foreach (var attributeArgument in attribute
-                                                             .ArgumentList.Arguments) {
+                                                             .ArgumentList.Arguments)
+                                                {
                                                         if (attributeArgument.NameEquals?.Name?
-                                                                .Identifier.ValueText
-                                                            == nameof(SuppressMessageAttribute
-                                                                          .Justification)) {
+                                                                .Identifier.ValueText ==
+                                                            nameof(SuppressMessageAttribute
+                                                                       .Justification))
+                                                        {
                                                                 // Check if the justification is not
                                                                 // empty
-                                                                var value
-                                                                    = context.SemanticModel
-                                                                          .GetConstantValue(
-                                                                              attributeArgument
-                                                                                  .Expression);
+                                                                var value =
+                                                                    context.SemanticModel
+                                                                        .GetConstantValue(
+                                                                            attributeArgument
+                                                                                .Expression);
 
                                                                 // If value does not have a value
                                                                 // the expression is not constant ->
                                                                 // Compilation error
-                                                                if (!value.HasValue
-                                                                    || (!string.IsNullOrWhiteSpace(
-                                                                            value.Value as string)
-                                                                        && (value.Value as string)
-                                                                            != JustificationPlaceholder)) {
+                                                                if (!value.HasValue ||
+                                                                    (!string.IsNullOrWhiteSpace(
+                                                                         value.Value as string) &&
+                                                                     (value.Value as string) !=
+                                                                         JustificationPlaceholder))
+                                                                {
                                                                         return;
                                                                 }
 
                                                                 // Empty, Whitespace, placeholder,
                                                                 // or null justification provided
                                                                 context.ReportDiagnostic(
-                                                                    Diagnostic.Create(Descriptor,
+                                                                    Diagnostic.Create(
+                                                                        Descriptor,
                                                                         attributeArgument
                                                                             .GetLocation()));
                                                                 return;

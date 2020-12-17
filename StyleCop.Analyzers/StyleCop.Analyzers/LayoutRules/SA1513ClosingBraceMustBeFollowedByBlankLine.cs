@@ -40,34 +40,40 @@ namespace StyleCop.Analyzers.LayoutRules
         /// place where a closing brace is not followed by a blank line.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1513ClosingBraceMustBeFollowedByBlankLine : DiagnosticAnalyzer {
+        internal class SA1513ClosingBraceMustBeFollowedByBlankLine : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1513ClosingBraceMustBeFollowedByBlankLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1513";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1513.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1513Title),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1513MessageFormat),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(LayoutResources.SA1513Description),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1513.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(LayoutResources.SA1513Title), LayoutResources.ResourceManager,
+                    typeof(LayoutResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1513MessageFormat),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1513Description),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
-                    = HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
+                    HandleSyntaxTree;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -87,7 +93,8 @@ namespace StyleCop.Analyzers.LayoutRules
                         visitor.Visit(syntaxRoot);
                 }
 
-                private class BracesVisitor : CSharpSyntaxWalker {
+                private class BracesVisitor : CSharpSyntaxWalker
+                {
                         private readonly SyntaxTreeAnalysisContext context;
                         private readonly Stack<SyntaxToken> bracesStack = new Stack<SyntaxToken>();
 
@@ -99,9 +106,12 @@ namespace StyleCop.Analyzers.LayoutRules
 
                         public override void VisitToken(SyntaxToken token)
                         {
-                                if (token.IsKind(SyntaxKind.OpenBraceToken)) {
+                                if (token.IsKind(SyntaxKind.OpenBraceToken))
+                                {
                                         this.bracesStack.Push(token);
-                                } else if (token.IsKind(SyntaxKind.CloseBraceToken)) {
+                                }
+                                else if (token.IsKind(SyntaxKind.CloseBraceToken))
+                                {
                                         this.AnalyzeCloseBrace(token);
 
                                         this.bracesStack.Pop();
@@ -112,8 +122,10 @@ namespace StyleCop.Analyzers.LayoutRules
 
                         private static bool HasLeadingBlankLine(SyntaxTriviaList triviaList)
                         {
-                                foreach (var trivia in triviaList) {
-                                        switch (trivia.Kind()) {
+                                foreach (var trivia in triviaList)
+                                {
+                                        switch (trivia.Kind())
+                                        {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 // ignore
                                                 break;
@@ -131,8 +143,10 @@ namespace StyleCop.Analyzers.LayoutRules
 
                         private static bool StartsWithSpecialComment(SyntaxTriviaList triviaList)
                         {
-                                foreach (var trivia in triviaList) {
-                                        switch (trivia.Kind()) {
+                                foreach (var trivia in triviaList)
+                                {
+                                        switch (trivia.Kind())
+                                        {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 // ignore
                                                 break;
@@ -151,8 +165,10 @@ namespace StyleCop.Analyzers.LayoutRules
 
                         private static bool StartsWithDirectiveTrivia(SyntaxTriviaList triviaList)
                         {
-                                foreach (var trivia in triviaList) {
-                                        switch (trivia.Kind()) {
+                                foreach (var trivia in triviaList)
+                                {
+                                        switch (trivia.Kind())
+                                        {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 // ignore
                                                 break;
@@ -170,7 +186,8 @@ namespace StyleCop.Analyzers.LayoutRules
                                 var result = false;
 
                                 for (var current = token.Parent; !result && (current != null);
-                                     current = current.Parent) {
+                                     current = current.Parent)
+                                {
                                         result = current is T;
                                 }
 
@@ -181,81 +198,91 @@ namespace StyleCop.Analyzers.LayoutRules
                         {
                                 var nextToken = token.GetNextToken(true, true);
 
-                                if (nextToken.HasLeadingTrivia
-                                    && (HasLeadingBlankLine(nextToken.LeadingTrivia)
-                                        || StartsWithSpecialComment(nextToken.LeadingTrivia))) {
+                                if (nextToken.HasLeadingTrivia &&
+                                    (HasLeadingBlankLine(nextToken.LeadingTrivia) ||
+                                     StartsWithSpecialComment(nextToken.LeadingTrivia)))
+                                {
                                         // the close brace has a trailing blank line or is followed
                                         // by a single line comment that starts with 4 slashes.
                                         return;
                                 }
 
-                                if (this.IsOnSameLineAsOpeningBrace(token)) {
+                                if (this.IsOnSameLineAsOpeningBrace(token))
+                                {
                                         // the close brace is on the same line as the corresponding
                                         // opening token
                                         return;
                                 }
 
-                                if ((token.Parent is BlockSyntax)
-                                    && (token.Parent.Parent is DoStatementSyntax)) {
+                                if ((token.Parent is BlockSyntax) &&
+                                    (token.Parent.Parent is DoStatementSyntax))
+                                {
                                         // the close brace is part of do ... while statement
                                         return;
                                 }
 
                                 // check if the next token is not preceded by significant trivia.
                                 if (nextToken.LeadingTrivia.All(
-                                        trivia => trivia.IsKind(SyntaxKind.WhitespaceTrivia))) {
-                                        if (nextToken.IsKind(SyntaxKind.DotToken)) {
+                                        trivia => trivia.IsKind(SyntaxKind.WhitespaceTrivia)))
+                                {
+                                        if (nextToken.IsKind(SyntaxKind.DotToken))
+                                        {
                                                 // the close brace is followed by a member accessor
                                                 // on the next line
                                                 return;
                                         }
 
-                                        if (nextToken.IsKind(SyntaxKind.CloseBraceToken)) {
+                                        if (nextToken.IsKind(SyntaxKind.CloseBraceToken))
+                                        {
                                                 // the close brace is followed by another close
                                                 // brace on the next line
                                                 return;
                                         }
 
-                                        if (nextToken.IsKind(SyntaxKind.CatchKeyword)
-                                            || nextToken.IsKind(SyntaxKind.FinallyKeyword)) {
+                                        if (nextToken.IsKind(SyntaxKind.CatchKeyword) ||
+                                            nextToken.IsKind(SyntaxKind.FinallyKeyword))
+                                        {
                                                 // the close brace is followed by catch or finally
                                                 // statement
                                                 return;
                                         }
 
-                                        if (nextToken.IsKind(SyntaxKind.ElseKeyword)) {
+                                        if (nextToken.IsKind(SyntaxKind.ElseKeyword))
+                                        {
                                                 // the close brace is followed by else (no need to
                                                 // check for if -> the compiler will handle that)
                                                 return;
                                         }
 
-                                        if (IsPartOf<QueryExpressionSyntax>(token)) {
-                                                if (nextToken.Parent is QueryClauseSyntax
-                                                    || nextToken.Parent is SelectOrGroupClauseSyntax
-                                                    || nextToken.Parent is
-                                                           QueryContinuationSyntax) {
+                                        if (IsPartOf<QueryExpressionSyntax>(token))
+                                        {
+                                                if (nextToken.Parent is QueryClauseSyntax ||
+                                                    nextToken.Parent is SelectOrGroupClauseSyntax ||
+                                                    nextToken.Parent is QueryContinuationSyntax)
+                                                {
                                                         // the close brace is part of a query
                                                         // expression
                                                         return;
                                                 }
                                         }
 
-                                        if (nextToken.IsKind(SyntaxKind.SemicolonToken)
-                                            && (IsPartOf<VariableDeclaratorSyntax>(token)
-                                                || IsPartOf<YieldStatementSyntax>(token)
-                                                || IsPartOf<ArrowExpressionClauseSyntax>(token)
-                                                || IsPartOf<EqualsValueClauseSyntax>(token)
-                                                || IsPartOf<AssignmentExpressionSyntax>(token)
-                                                || IsPartOf<ReturnStatementSyntax>(token)
-                                                || IsPartOf<ObjectCreationExpressionSyntax>(
-                                                    token))) {
+                                        if (nextToken.IsKind(SyntaxKind.SemicolonToken) &&
+                                            (IsPartOf<VariableDeclaratorSyntax>(token) ||
+                                             IsPartOf<YieldStatementSyntax>(token) ||
+                                             IsPartOf<ArrowExpressionClauseSyntax>(token) ||
+                                             IsPartOf<EqualsValueClauseSyntax>(token) ||
+                                             IsPartOf<AssignmentExpressionSyntax>(token) ||
+                                             IsPartOf<ReturnStatementSyntax>(token) ||
+                                             IsPartOf<ObjectCreationExpressionSyntax>(token)))
+                                        {
                                                 // the close brace is part of a variable
                                                 // initialization statement or a return statement
                                                 return;
                                         }
 
-                                        if (nextToken.IsKind(SyntaxKind.CommaToken)
-                                            || nextToken.IsKind(SyntaxKind.CloseParenToken)) {
+                                        if (nextToken.IsKind(SyntaxKind.CommaToken) ||
+                                            nextToken.IsKind(SyntaxKind.CloseParenToken))
+                                        {
                                                 // The close brace is the end of an object
                                                 // initializer, anonymous function, lambda
                                                 // expression, etc. Comma and close parenthesis
@@ -263,42 +290,48 @@ namespace StyleCop.Analyzers.LayoutRules
                                                 return;
                                         }
 
-                                        if (nextToken.IsKind(SyntaxKind.ColonToken)) {
+                                        if (nextToken.IsKind(SyntaxKind.ColonToken))
+                                        {
                                                 // the close brace is in the first part of a
                                                 // conditional expression.
                                                 return;
                                         }
 
-                                        if (nextToken.IsKind(SyntaxKind.AddKeyword)
-                                            || nextToken.IsKind(SyntaxKind.RemoveKeyword)
-                                            || nextToken.IsKind(SyntaxKind.GetKeyword)
-                                            || nextToken.IsKind(SyntaxKind.SetKeyword)) {
+                                        if (nextToken.IsKind(SyntaxKind.AddKeyword) ||
+                                            nextToken.IsKind(SyntaxKind.RemoveKeyword) ||
+                                            nextToken.IsKind(SyntaxKind.GetKeyword) ||
+                                            nextToken.IsKind(SyntaxKind.SetKeyword))
+                                        {
                                                 // the close brace is followed by an accessor
                                                 // (SA1516 will handle that)
                                                 return;
                                         }
 
-                                        if ((nextToken.IsKind(SyntaxKind.PrivateKeyword)
-                                                || nextToken.IsKind(SyntaxKind.ProtectedKeyword)
-                                                || nextToken.IsKind(SyntaxKind.InternalKeyword))
-                                            && (nextToken.Parent is AccessorDeclarationSyntax)) {
+                                        if ((nextToken.IsKind(SyntaxKind.PrivateKeyword) ||
+                                             nextToken.IsKind(SyntaxKind.ProtectedKeyword) ||
+                                             nextToken.IsKind(SyntaxKind.InternalKeyword)) &&
+                                            (nextToken.Parent is AccessorDeclarationSyntax))
+                                        {
                                                 // the close brace is followed by an accessor with
                                                 // an accessibility restriction.
                                                 return;
                                         }
 
-                                        if (nextToken.IsKind(SyntaxKind.EndOfFileToken)) {
+                                        if (nextToken.IsKind(SyntaxKind.EndOfFileToken))
+                                        {
                                                 // this is the last close brace in the file
                                                 return;
                                         }
                                 }
 
-                                if (StartsWithDirectiveTrivia(nextToken.LeadingTrivia)) {
+                                if (StartsWithDirectiveTrivia(nextToken.LeadingTrivia))
+                                {
                                         // the close brace is followed by directive trivia.
                                         return;
                                 }
 
-                                var location = Location.Create(this.context.Tree,
+                                var location = Location.Create(
+                                    this.context.Tree,
                                     TextSpan.FromBounds(token.Span.End, nextToken.FullSpan.Start));
                                 this.context.ReportDiagnostic(
                                     Diagnostic.Create(Descriptor, location));
@@ -307,8 +340,8 @@ namespace StyleCop.Analyzers.LayoutRules
                         private bool IsOnSameLineAsOpeningBrace(SyntaxToken closeBrace)
                         {
                                 var matchingOpenBrace = this.bracesStack.Peek();
-                                return matchingOpenBrace.GetLineSpan().EndLinePosition.Line
-                                    == closeBrace.GetLineSpan().StartLinePosition.Line;
+                                return matchingOpenBrace.GetLineSpan().EndLinePosition.Line ==
+                                       closeBrace.GetLineSpan().StartLinePosition.Line;
                         }
                 }
         }

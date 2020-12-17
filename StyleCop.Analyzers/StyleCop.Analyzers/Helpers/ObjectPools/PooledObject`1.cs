@@ -12,13 +12,14 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         /// this is RAII object to automatically release pooled object when its owning pool.
         /// </summary>
         /// <typeparam name="T">The type of the pooled object.</typeparam>
-        internal struct PooledObject<T> : IDisposable where T : class {
+        internal struct PooledObject<T> : IDisposable where T : class
+        {
                 private readonly Action<ObjectPool<T>, T> releaser;
                 private readonly ObjectPool<T> pool;
                 private T pooledObject;
 
                 public PooledObject(ObjectPool<T> pool, Func<ObjectPool<T>, T> allocator,
-                    Action<ObjectPool<T>, T> releaser)
+                                    Action<ObjectPool<T>, T> releaser)
                     : this()
                 {
                         this.pool = pool;
@@ -28,7 +29,10 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
 
                 public T Object
                 {
-                        get { return this.pooledObject; }
+                        get
+                        {
+                                return this.pooledObject;
+                        }
                 }
 
                 public static PooledObject<StringBuilder> Create(ObjectPool<StringBuilder> pool)
@@ -57,8 +61,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 public static PooledObject<Dictionary<TKey, TValue>> Create<TKey, TValue>(
                     ObjectPool<Dictionary<TKey, TValue>> pool)
                 {
-                        return new PooledObject<Dictionary<TKey, TValue>>(
-                            pool, Allocator, Releaser);
+                        return new PooledObject<Dictionary<TKey, TValue>>(pool, Allocator,
+                                                                          Releaser);
                 }
 
                 public static PooledObject<List<TItem>> Create<TItem>(ObjectPool<List<TItem>> pool)
@@ -68,7 +72,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
 
                 public void Dispose()
                 {
-                        if (this.pooledObject != null) {
+                        if (this.pooledObject != null)
+                        {
                                 this.releaser(this.pool, this.pooledObject);
                                 this.pooledObject = null;
                         }
@@ -109,8 +114,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                         return pool.AllocateAndClear();
                 }
 
-                private static void Releaser<TItem>(
-                    ObjectPool<HashSet<TItem>> pool, HashSet<TItem> obj)
+                private static void Releaser<TItem>(ObjectPool<HashSet<TItem>> pool,
+                                                    HashSet<TItem> obj)
                 {
                         pool.ClearAndFree(obj);
                 }

@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ISimpleAssignmentOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.ISimpleAssignmentOperation";
+        internal readonly struct ISimpleAssignmentOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.ISimpleAssignmentOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, bool> IsRefAccessor;
                 private readonly IOperation operation;
@@ -17,8 +18,8 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(ISimpleAssignmentOperationWrapper));
-                        IsRefAccessor
-                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                        IsRefAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
                                 WrappedType, nameof(IsRef));
                 }
 
@@ -35,16 +36,17 @@ namespace StyleCop.Analyzers.Lightup
                 public static explicit operator ISimpleAssignmentOperationWrapper(
                     IAssignmentOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator IAssignmentOperationWrapper(
-                    ISimpleAssignmentOperationWrapper wrapper) => IAssignmentOperationWrapper
-                                                                      .FromUpcast(
-                                                                          wrapper.WrappedOperation);
+                    ISimpleAssignmentOperationWrapper wrapper) =>
+                    IAssignmentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static ISimpleAssignmentOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -54,8 +56,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

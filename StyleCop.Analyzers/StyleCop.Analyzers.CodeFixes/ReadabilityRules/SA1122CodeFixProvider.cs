@@ -23,38 +23,47 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1122CodeFixProvider))]
         [Shared]
-        internal class SA1122CodeFixProvider : CodeFixProvider {
+        internal class SA1122CodeFixProvider : CodeFixProvider
+        {
                 private static readonly SyntaxNode StringEmptyExpression;
 
                 static SA1122CodeFixProvider()
                 {
-                        var identifierNameSyntax
-                            = SyntaxFactory.IdentifierName(nameof(string.Empty));
+                        var identifierNameSyntax =
+                            SyntaxFactory.IdentifierName(nameof(string.Empty));
                         var stringKeyword = SyntaxFactory.PredefinedType(
                             SyntaxFactory.Token(SyntaxKind.StringKeyword));
-                        StringEmptyExpression
-                            = SyntaxFactory
-                                  .MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                                      stringKeyword, identifierNameSyntax)
-                                  .WithoutFormatting();
+                        StringEmptyExpression =
+                            SyntaxFactory
+                                .MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                                        stringKeyword, identifierNameSyntax)
+                                .WithoutFormatting();
                 }
 
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1122UseStringEmptyForEmptyStrings.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
+                public override FixAllProvider GetFixAllProvider()
+                {
+                        return FixAll.Instance;
+                }
 
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var root
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
-                        foreach (var diagnostic in context.Diagnostics) {
+                        var root =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.SA1122CodeFix,
+                                    CodeAction.Create(
+                                        ReadabilityResources.SA1122CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1122CodeFixProvider)),
@@ -68,46 +77,52 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
-                        var node = syntaxRoot.FindNode(
-                            diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                            : true);
+                        var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan,
+                                                       getInnermostNodeForTie
+                                                       : true);
                         var newSyntaxRoot = syntaxRoot.ReplaceNode(
                             node, StringEmptyExpression.WithTriviaFrom(node));
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
-                        public static FixAllProvider Instance { get; }
+                private class FixAll : DocumentBasedFixAllProvider
+                {
+                        public static FixAllProvider Instance
+                        {
+                                get;
+                        }
                         = new FixAll();
 
-                        protected override string
-                            CodeActionTitle => ReadabilityResources.SA1122CodeFix;
+                        protected override string CodeActionTitle =>
+                            ReadabilityResources.SA1122CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
                             FixAllContext fixAllContext, Document document,
                             ImmutableArray<Diagnostic> diagnostics)
                         {
-                                if (diagnostics.IsEmpty) {
+                                if (diagnostics.IsEmpty)
+                                {
                                         return null;
                                 }
 
-                                var syntaxRoot
-                                    = await document
-                                          .GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                                          .ConfigureAwait(false);
+                                var syntaxRoot =
+                                    await document
+                                        .GetSyntaxRootAsync(fixAllContext.CancellationToken)
+                                        .ConfigureAwait(false);
 
                                 List<SyntaxNode> expressions = new List<SyntaxNode>();
-                                foreach (var diagnostic in diagnostics) {
+                                foreach (var diagnostic in diagnostics)
+                                {
                                         var node = syntaxRoot.FindNode(
                                             diagnostic.Location.SourceSpan, getInnermostNodeForTie
                                             : true);
                                         expressions.Add(node);
                                 }
 
-                                return syntaxRoot.ReplaceNodes(expressions,
-                                    (originalNode, rewrittenNode) => StringEmptyExpression
-                                                                         .WithTriviaFrom(
-                                                                             rewrittenNode));
+                                return syntaxRoot.ReplaceNodes(
+                                    expressions,
+                                    (originalNode, rewrittenNode) =>
+                                        StringEmptyExpression.WithTriviaFrom(rewrittenNode));
                         }
                 }
         }

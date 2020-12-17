@@ -24,41 +24,54 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1135UsingDirectivesMustBeQualified : DiagnosticAnalyzer {
+        internal class SA1135UsingDirectivesMustBeQualified : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1135UsingDirectivesMustBeQualified"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1135";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1135.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1135Title),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormatNamespace
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1135.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(ReadabilityResources.SA1135Title), ReadabilityResources.ResourceManager,
+                    typeof(ReadabilityResources));
+                private static readonly LocalizableString MessageFormatNamespace =
+                    new LocalizableResourceString(
                         nameof(ReadabilityResources.SA1135MessageFormatNamespace),
                         ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormatType
-                    = new LocalizableResourceString(
+                private static readonly LocalizableString MessageFormatType =
+                    new LocalizableResourceString(
                         nameof(ReadabilityResources.SA1135MessageFormatType),
                         ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1135Description),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1135Description),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
 
-                public static DiagnosticDescriptor DescriptorNamespace { get; }
-                = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatNamespace,
-                    AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                public static DiagnosticDescriptor DescriptorNamespace
+                {
+                        get;
+                }
+                = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormatNamespace, AnalyzerCategory.ReadabilityRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                public static DiagnosticDescriptor DescriptorType { get; }
-                = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatType,
-                    AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                public static DiagnosticDescriptor DescriptorType
+                {
+                        get;
+                }
+                = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormatType, AnalyzerCategory.ReadabilityRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(DescriptorNamespace);
 
                 /// <inheritdoc/>
@@ -72,8 +85,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 private static void HandleCompilationStart(CompilationStartAnalysisContext context)
                 {
-                        context.RegisterSyntaxNodeAction(
-                            HandleUsingDeclaration, SyntaxKind.UsingDirective);
+                        context.RegisterSyntaxNodeAction(HandleUsingDeclaration,
+                                                         SyntaxKind.UsingDirective);
                 }
 
                 private static void HandleUsingDeclaration(SyntaxNodeAnalysisContext context)
@@ -82,51 +95,58 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         CheckUsingDeclaration(context, usingDirective);
                 }
 
-                private static void CheckUsingDeclaration(
-                    SyntaxNodeAnalysisContext context, UsingDirectiveSyntax usingDirective)
+                private static void CheckUsingDeclaration(SyntaxNodeAnalysisContext context,
+                                                          UsingDirectiveSyntax usingDirective)
                 {
-                        if (!usingDirective.Parent.IsKind(SyntaxKind.NamespaceDeclaration)) {
+                        if (!usingDirective.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
+                        {
                                 // Usings outside of a namespace are always qualified.
                                 return;
                         }
 
-                        if (usingDirective.HasNamespaceAliasQualifier()) {
+                        if (usingDirective.HasNamespaceAliasQualifier())
+                        {
                                 // global qualified namespaces are OK.
                                 return;
                         }
 
-                        var symbol
-                            = context.SemanticModel
-                                  .GetSymbolInfo(usingDirective.Name, context.CancellationToken)
-                                  .Symbol;
-                        if (symbol == null) {
+                        var symbol =
+                            context.SemanticModel
+                                .GetSymbolInfo(usingDirective.Name, context.CancellationToken)
+                                .Symbol;
+                        if (symbol == null)
+                        {
                                 // if there is no symbol, do not proceed.
                                 return;
                         }
 
-                        if (symbol is INamedTypeSymbol typeSymbol && typeSymbol.IsTupleType()) {
+                        if (symbol is INamedTypeSymbol typeSymbol && typeSymbol.IsTupleType())
+                        {
                                 symbol = typeSymbol.TupleUnderlyingTypeOrSelf();
                         }
 
                         string symbolString = symbol.ToQualifiedString(usingDirective.Name);
 
                         string usingString = UsingDirectiveSyntaxToCanonicalString(usingDirective);
-                        if ((symbolString != usingString)
-                            && !usingDirective.StartsWithAlias(
-                                context.SemanticModel, context.CancellationToken)) {
-                                switch (symbol.Kind) {
+                        if ((symbolString != usingString) &&
+                            !usingDirective.StartsWithAlias(context.SemanticModel,
+                                                            context.CancellationToken))
+                        {
+                                switch (symbol.Kind)
+                                {
                                 case SymbolKind.Namespace:
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(DescriptorNamespace,
-                                                usingDirective.GetLocation(), symbolString));
+                                        context.ReportDiagnostic(Diagnostic.Create(
+                                            DescriptorNamespace, usingDirective.GetLocation(),
+                                            symbolString));
                                         break;
 
                                 case SymbolKind.NamedType:
-                                        var containingNamespace
-                                            = ((NamespaceDeclarationSyntax) usingDirective.Parent)
-                                                  .Name.ToString();
-                                        if (containingNamespace
-                                            != symbol.ContainingNamespace.ToString()) {
+                                        var containingNamespace =
+                                            ((NamespaceDeclarationSyntax) usingDirective.Parent)
+                                                .Name.ToString();
+                                        if (containingNamespace !=
+                                            symbol.ContainingNamespace.ToString())
+                                        {
                                                 context.ReportDiagnostic(Diagnostic.Create(
                                                     DescriptorType, usingDirective.GetLocation(),
                                                     symbolString));
@@ -147,7 +167,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 private static bool AppendCanonicalString(StringBuilder builder, TypeSyntax type)
                 {
-                        switch (type) {
+                        switch (type)
+                        {
                         case AliasQualifiedNameSyntax aliasQualifiedName:
                                 AppendCanonicalString(builder, aliasQualifiedName.Alias);
                                 builder.Append("::");
@@ -163,13 +184,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                 builder.Append("<");
 
                                 var typeArgumentList = genericName.TypeArgumentList;
-                                for (int i = 0; i < typeArgumentList.Arguments.Count; i++) {
-                                        if (i > 0) {
+                                for (int i = 0; i < typeArgumentList.Arguments.Count; i++)
+                                {
+                                        if (i > 0)
+                                        {
                                                 builder.Append(", ");
                                         }
 
-                                        AppendCanonicalString(
-                                            builder, typeArgumentList.Arguments[i]);
+                                        AppendCanonicalString(builder,
+                                                              typeArgumentList.Arguments[i]);
                                 }
 
                                 builder.Append(">");
@@ -187,7 +210,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                         case ArrayTypeSyntax arrayType:
                                 AppendCanonicalString(builder, arrayType.ElementType);
-                                foreach (var rankSpecifier in arrayType.RankSpecifiers) {
+                                foreach (var rankSpecifier in arrayType.RankSpecifiers)
+                                {
                                         builder.Append("[");
                                         builder.Append(',', rankSpecifier.Rank - 1);
                                         builder.Append("]");
@@ -204,20 +228,23 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                 return false;
 
                         default:
-                                if (TupleTypeSyntaxWrapper.IsInstance(type)) {
+                                if (TupleTypeSyntaxWrapper.IsInstance(type))
+                                {
                                         var tupleType = (TupleTypeSyntaxWrapper) type;
 
                                         builder.Append("(");
 
                                         var elements = tupleType.Elements;
-                                        for (int i = 0; i < elements.Count; i++) {
-                                                if (i > 0) {
+                                        for (int i = 0; i < elements.Count; i++)
+                                        {
+                                                if (i > 0)
+                                                {
                                                         builder.Append(", ");
                                                 }
 
                                                 AppendCanonicalString(builder, elements[i].Type);
-                                                if (!elements[i].Identifier.IsKind(
-                                                        SyntaxKind.None)) {
+                                                if (!elements[i].Identifier.IsKind(SyntaxKind.None))
+                                                {
                                                         builder.Append(" ").Append(
                                                             elements[i].Identifier.Text);
                                                 }
@@ -225,7 +252,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                                         builder.Append(")");
                                         return true;
-                                } else {
+                                }
+                                else
+                                {
                                         return false;
                                 }
                         }

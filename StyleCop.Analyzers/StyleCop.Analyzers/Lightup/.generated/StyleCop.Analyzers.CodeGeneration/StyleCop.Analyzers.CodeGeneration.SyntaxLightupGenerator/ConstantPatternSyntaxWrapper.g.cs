@@ -10,9 +10,10 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct ConstantPatternSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.ConstantPatternSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.ConstantPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, ExpressionSyntax> ExpressionAccessor;
@@ -25,22 +26,27 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(ConstantPatternSyntaxWrapper));
-                        ExpressionAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
-                                      WrappedType, nameof(Expression));
-                        WithExpressionAccessor
-                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                ExpressionSyntax>(WrappedType, nameof(Expression));
+                        ExpressionAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
+                                    WrappedType, nameof(Expression));
+                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Expression));
                 }
 
-                private ConstantPatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
+                private ConstantPatternSyntaxWrapper(CSharpSyntaxNode node)
+                {
+                        this.node = node;
+                }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public ExpressionSyntax Expression
                 {
-                        get { return ExpressionAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return ExpressionAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator ConstantPatternSyntaxWrapper(
@@ -57,11 +63,13 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static explicit operator ConstantPatternSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

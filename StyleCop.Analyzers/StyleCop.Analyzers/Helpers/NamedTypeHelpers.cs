@@ -11,15 +11,18 @@ namespace StyleCop.Analyzers.Helpers
 
         using StyleCop.Analyzers.Lightup;
 
-        internal static class NamedTypeHelpers {
+        internal static class NamedTypeHelpers
+        {
                 internal static bool IsNativeMethodsClass(INamedTypeSymbol type)
                 {
-                        if (type == null || type.TypeKind != TypeKind.Class) {
+                        if (type == null || type.TypeKind != TypeKind.Class)
+                        {
                                 return false;
                         }
 
-                        if (type.Name != null
-                            && type.Name.EndsWith("NativeMethods", StringComparison.Ordinal)) {
+                        if (type.Name != null &&
+                            type.Name.EndsWith("NativeMethods", StringComparison.Ordinal))
+                        {
                                 return true;
                         }
 
@@ -29,7 +32,8 @@ namespace StyleCop.Analyzers.Helpers
                 internal static bool IsNativeMethodsClass(ClassDeclarationSyntax syntax)
                 {
                         string name = syntax?.Identifier.ValueText;
-                        if (name == null) {
+                        if (name == null)
+                        {
                                 return false;
                         }
 
@@ -38,17 +42,21 @@ namespace StyleCop.Analyzers.Helpers
 
                 internal static bool IsContainedInNativeMethodsClass(INamedTypeSymbol type)
                 {
-                        if (type == null) {
+                        if (type == null)
+                        {
                                 return false;
                         }
 
-                        if (IsNativeMethodsClass(type)) {
+                        if (IsNativeMethodsClass(type))
+                        {
                                 return true;
                         }
 
                         INamedTypeSymbol typeSymbol = type;
-                        while ((typeSymbol = typeSymbol.ContainingType) != null) {
-                                if (IsNativeMethodsClass(typeSymbol)) {
+                        while ((typeSymbol = typeSymbol.ContainingType) != null)
+                        {
+                                if (IsNativeMethodsClass(typeSymbol))
+                                {
                                         return true;
                                 }
                         }
@@ -58,10 +66,12 @@ namespace StyleCop.Analyzers.Helpers
 
                 internal static bool IsContainedInNativeMethodsClass(SyntaxNode syntax)
                 {
-                        while (syntax != null) {
-                                ClassDeclarationSyntax classDeclarationSyntax
-                                    = syntax.FirstAncestorOrSelf<ClassDeclarationSyntax>();
-                                if (IsNativeMethodsClass(classDeclarationSyntax)) {
+                        while (syntax != null)
+                        {
+                                ClassDeclarationSyntax classDeclarationSyntax =
+                                    syntax.FirstAncestorOrSelf<ClassDeclarationSyntax>();
+                                if (IsNativeMethodsClass(classDeclarationSyntax))
+                                {
                                         return true;
                                 }
 
@@ -73,7 +83,8 @@ namespace StyleCop.Analyzers.Helpers
 
                 internal static string GetNameOrIdentifier(MemberDeclarationSyntax member)
                 {
-                        switch (member.Kind()) {
+                        switch (member.Kind())
+                        {
                         case SyntaxKind.ClassDeclaration:
                         case SyntaxKind.InterfaceDeclaration:
                         case SyntaxKind.StructDeclaration:
@@ -87,8 +98,8 @@ namespace StyleCop.Analyzers.Helpers
                                 return ((DelegateDeclarationSyntax) member).Identifier.Text;
 
                         default:
-                                throw new ArgumentException(
-                                    "Unhandled declaration kind: " + member.Kind());
+                                throw new ArgumentException("Unhandled declaration kind: " +
+                                                            member.Kind());
                         }
                 }
 
@@ -108,17 +119,17 @@ namespace StyleCop.Analyzers.Helpers
                             ?.Identifier.GetLocation();
                         location = location ??(member as BaseTypeDeclarationSyntax)
                             ?.Identifier.GetLocation();
-                        location
-                            = location ??(member as NamespaceDeclarationSyntax) ?.Name.GetLocation();
+                        location =
+                            location ??(member as NamespaceDeclarationSyntax) ?.Name.GetLocation();
                         location = location ??(member as UsingDirectiveSyntax) ?.Name.GetLocation();
                         location = location ??(member as ExternAliasDirectiveSyntax)
                             ?.Identifier.GetLocation();
-                        location = location ??(member as AccessorDeclarationSyntax)
-                            ?.Keyword.GetLocation();
+                        location =
+                            location ??(member as AccessorDeclarationSyntax) ?.Keyword.GetLocation();
                         location = location ??(member as DelegateDeclarationSyntax)
                             ?.Identifier.GetLocation();
-                        location = location ??(member as EventDeclarationSyntax)
-                            ?.Identifier.GetLocation();
+                        location =
+                            location ??(member as EventDeclarationSyntax) ?.Identifier.GetLocation();
                         location = location ??(member as IndexerDeclarationSyntax)
                             ?.ThisKeyword.GetLocation();
                         location = location ?? member.GetLocation();
@@ -127,7 +138,8 @@ namespace StyleCop.Analyzers.Helpers
 
                 internal static bool IsPartialDeclaration(MemberDeclarationSyntax declaration)
                 {
-                        if (declaration is TypeDeclarationSyntax typeDeclaration) {
+                        if (declaration is TypeDeclarationSyntax typeDeclaration)
+                        {
                                 return typeDeclaration.Modifiers.Any(SyntaxKind.PartialKeyword);
                         }
 
@@ -147,37 +159,46 @@ namespace StyleCop.Analyzers.Helpers
                 /// false.</returns>
                 internal static bool IsImplementingAnInterfaceMember(ISymbol memberSymbol)
                 {
-                        if (memberSymbol.IsStatic) {
+                        if (memberSymbol.IsStatic)
+                        {
                                 return false;
                         }
 
                         bool isImplementingExplicitly;
 
                         // Only methods, properties and events can implement an interface member
-                        if (memberSymbol is IMethodSymbol methodSymbol) {
+                        if (memberSymbol is IMethodSymbol methodSymbol)
+                        {
                                 // Check if the member is implementing an interface explicitly
-                                isImplementingExplicitly
-                                    = methodSymbol.ExplicitInterfaceImplementations.Any();
-                        } else if (memberSymbol is IPropertySymbol propertySymbol) {
+                                isImplementingExplicitly =
+                                    methodSymbol.ExplicitInterfaceImplementations.Any();
+                        }
+                        else if (memberSymbol is IPropertySymbol propertySymbol)
+                        {
                                 // Check if the member is implementing an interface explicitly
-                                isImplementingExplicitly
-                                    = propertySymbol.ExplicitInterfaceImplementations.Any();
-                        } else if (memberSymbol is IEventSymbol eventSymbol) {
+                                isImplementingExplicitly =
+                                    propertySymbol.ExplicitInterfaceImplementations.Any();
+                        }
+                        else if (memberSymbol is IEventSymbol eventSymbol)
+                        {
                                 // Check if the member is implementing an interface explicitly
-                                isImplementingExplicitly
-                                    = eventSymbol.ExplicitInterfaceImplementations.Any();
-                        } else {
+                                isImplementingExplicitly =
+                                    eventSymbol.ExplicitInterfaceImplementations.Any();
+                        }
+                        else
+                        {
                                 return false;
                         }
 
-                        if (isImplementingExplicitly) {
+                        if (isImplementingExplicitly)
+                        {
                                 return true;
                         }
 
                         var typeSymbol = memberSymbol.ContainingType;
 
-                        return typeSymbol != null
-                            && typeSymbol.AllInterfaces
+                        return typeSymbol != null &&
+                               typeSymbol.AllInterfaces
                                    .SelectMany(m => m.GetMembers(memberSymbol.Name))
                                    .Select(typeSymbol.FindImplementationForInterfaceMember)
                                    .Any(x => memberSymbol.Equals(x));

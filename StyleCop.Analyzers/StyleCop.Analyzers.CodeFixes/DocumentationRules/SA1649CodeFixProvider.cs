@@ -18,9 +18,13 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1649CodeFixProvider))]
         [Shared]
-        internal class SA1649CodeFixProvider : CodeFixProvider {
+        internal class SA1649CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1649FileNameMustMatchTypeName.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -33,9 +37,11 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(DocumentationResources.SA1649CodeFix,
+                                    CodeAction.Create(
+                                        DocumentationResources.SA1649CodeFix,
                                         cancellationToken => GetTransformedSolutionAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1649CodeFixProvider)),
@@ -52,26 +58,28 @@ namespace StyleCop.Analyzers.DocumentationRules
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
-                        var expectedFileName
-                            = diagnostic
-                                  .Properties[SA1649FileNameMustMatchTypeName.ExpectedFileNameKey];
-                        var newPath = document.FilePath
-                            != null ? Path.Combine(
-                                Path.GetDirectoryName(document.FilePath), expectedFileName)
+                        var expectedFileName =
+                            diagnostic
+                                .Properties[SA1649FileNameMustMatchTypeName.ExpectedFileNameKey];
+                        var newPath = document.FilePath !=
+                                      null ? Path.Combine(Path.GetDirectoryName(document.FilePath),
+                                                         expectedFileName)
                             : null;
 
                         var newDocumentId = DocumentId.CreateNewId(document.Id.ProjectId);
 
                         var newSolution = solution.RemoveDocument(document.Id)
                                               .AddDocument(newDocumentId, expectedFileName,
-                                                  syntaxRoot, document.Folders, newPath);
+                                                           syntaxRoot, document.Folders, newPath);
 
                         // Make sure to also add the file to linked projects
-                        foreach (var linkedDocumentId in document.GetLinkedDocumentIds()) {
-                                DocumentId linkedExtractedDocumentId
-                                    = DocumentId.CreateNewId(linkedDocumentId.ProjectId);
+                        foreach (var linkedDocumentId in document.GetLinkedDocumentIds())
+                        {
+                                DocumentId linkedExtractedDocumentId =
+                                    DocumentId.CreateNewId(linkedDocumentId.ProjectId);
                                 newSolution = newSolution.AddDocument(linkedExtractedDocumentId,
-                                    expectedFileName, syntaxRoot, document.Folders);
+                                                                      expectedFileName, syntaxRoot,
+                                                                      document.Folders);
                         }
 
                         return newSolution;

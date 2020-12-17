@@ -71,71 +71,82 @@ namespace StyleCop.Analyzers.DocumentationRules
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoCodeFix("Cannot generate documentation")]
         internal class SA1607PartialElementDocumentationMustHaveSummaryText
-            : PartialElementDocumentationSummaryBase {
+            : PartialElementDocumentationSummaryBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1607PartialElementDocumentationMustHaveSummaryText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1607";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1607.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(DocumentationResources.SA1607Title),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1607.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(DocumentationResources.SA1607Title),
+                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(
                         nameof(DocumentationResources.SA1607MessageFormat),
                         DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1607Description),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1607Description),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                    bool needsComment, XmlNodeSyntax syntax, XElement completeDocumentation,
-                    Location[] diagnosticLocations)
+                                                         bool needsComment, XmlNodeSyntax syntax,
+                                                         XElement completeDocumentation,
+                                                         Location[] diagnosticLocations)
                 {
-                        if (completeDocumentation != null) {
-                                var summaryTag = completeDocumentation.Nodes()
-                                                     .OfType<XElement>()
-                                                     .FirstOrDefault(element => element.Name
-                                                             == XmlCommentHelper.SummaryXmlTag);
-                                var contentTag = completeDocumentation.Nodes()
-                                                     .OfType<XElement>()
-                                                     .FirstOrDefault(element => element.Name
-                                                             == XmlCommentHelper.ContentXmlTag);
+                        if (completeDocumentation != null)
+                        {
+                                var summaryTag =
+                                    completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
+                                        element => element.Name == XmlCommentHelper.SummaryXmlTag);
+                                var contentTag =
+                                    completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
+                                        element => element.Name == XmlCommentHelper.ContentXmlTag);
 
-                                if ((summaryTag == null) && (contentTag == null)) {
+                                if ((summaryTag == null) && (contentTag == null))
+                                {
                                         // handled by SA1605
                                         return;
                                 }
 
-                                if (!XmlCommentHelper.IsConsideredEmpty(summaryTag)
-                                    || !XmlCommentHelper.IsConsideredEmpty(contentTag)) {
+                                if (!XmlCommentHelper.IsConsideredEmpty(summaryTag) ||
+                                    !XmlCommentHelper.IsConsideredEmpty(contentTag))
+                                {
                                         return;
                                 }
-                        } else {
-                                if (syntax == null) {
+                        }
+                        else
+                        {
+                                if (syntax == null)
+                                {
                                         // handled by SA1605
                                         return;
                                 }
 
-                                if (!XmlCommentHelper.IsConsideredEmpty(syntax)) {
+                                if (!XmlCommentHelper.IsConsideredEmpty(syntax))
+                                {
                                         return;
                                 }
                         }
 
-                        foreach (var location in diagnosticLocations) {
+                        foreach (var location in diagnosticLocations)
+                        {
                                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
                         }
                 }

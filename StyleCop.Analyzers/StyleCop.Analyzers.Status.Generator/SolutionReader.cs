@@ -21,9 +21,10 @@ namespace StyleCop.Analyzers.Status.Generator
         /// A class that is used to parse the StyleCop.Analyzers solution to get an overview
         /// about the implemented diagnostics.
         /// </summary>
-        public class SolutionReader {
-                private static readonly Regex DiagnosticPathRegex
-                    = new Regex(@"(?<type>[A-Za-z]+)Rules\\(?<name>[A-Za-z0-9]+)\.cs$");
+        public class SolutionReader
+        {
+                private static readonly Regex DiagnosticPathRegex =
+                    new Regex(@"(?<type>[A-Za-z]+)Rules\\(?<name>[A-Za-z0-9]+)\.cs$");
                 private INamedTypeSymbol diagnosticAnalyzerTypeSymbol;
                 private INamedTypeSymbol noCodeFixAttributeTypeSymbol;
 
@@ -41,7 +42,8 @@ namespace StyleCop.Analyzers.Status.Generator
                 private SolutionReader()
                 {
                         AppDomain.CurrentDomain.AssemblyResolve += (s, e) => {
-                                if (e.Name.Contains(this.AnalyzerProjectName)) {
+                                if (e.Name.Contains(this.AnalyzerProjectName))
+                                {
                                         return this.analyzerAssembly;
                                 }
 
@@ -81,8 +83,8 @@ namespace StyleCop.Analyzers.Status.Generator
                 /// project.</param> <param name="codeFixProjectName">The project name of the code
                 /// fix project.</param> <returns>A <see cref="Task{TResult}"/> representing the
                 /// asynchronous operation.</returns>
-                public static async Task<SolutionReader> CreateAsync(string pathToSln,
-                    string analyzerProjectName = "StyleCop.Analyzers",
+                public static async Task<SolutionReader> CreateAsync(
+                    string pathToSln, string analyzerProjectName = "StyleCop.Analyzers",
                     string codeFixProjectName = "StyleCop.Analyzers.CodeFixes")
                 {
                         SolutionReader reader = new SolutionReader();
@@ -107,9 +109,11 @@ namespace StyleCop.Analyzers.Status.Generator
 
                         var syntaxTrees = this.analyzerCompilation.SyntaxTrees;
 
-                        foreach (var syntaxTree in syntaxTrees) {
+                        foreach (var syntaxTree in syntaxTrees)
+                        {
                                 var match = DiagnosticPathRegex.Match(syntaxTree.FilePath);
-                                if (!match.Success) {
+                                if (!match.Success)
+                                {
                                         continue;
                                 }
 
@@ -117,57 +121,63 @@ namespace StyleCop.Analyzers.Status.Generator
                                 string noCodeFixReason = null;
 
                                 // Check if this syntax tree represents a diagnostic
-                                SyntaxNode syntaxRoot
-                                    = await syntaxTree.GetRootAsync().ConfigureAwait(false);
-                                SemanticModel semanticModel
-                                    = this.analyzerCompilation.GetSemanticModel(syntaxTree);
-                                SyntaxNode classSyntaxNode
-                                    = syntaxRoot.DescendantNodes().FirstOrDefault(
+                                SyntaxNode syntaxRoot =
+                                    await syntaxTree.GetRootAsync().ConfigureAwait(false);
+                                SemanticModel semanticModel =
+                                    this.analyzerCompilation.GetSemanticModel(syntaxTree);
+                                SyntaxNode classSyntaxNode =
+                                    syntaxRoot.DescendantNodes().FirstOrDefault(
                                         x => x.IsKind(SyntaxKind.ClassDeclaration));
 
-                                if (classSyntaxNode == null) {
+                                if (classSyntaxNode == null)
+                                {
                                         continue;
                                 }
 
                                 INamedTypeSymbol classSymbol = semanticModel.GetDeclaredSymbol(
                                     classSyntaxNode) as INamedTypeSymbol;
 
-                                if (!this.InheritsFrom(
-                                        classSymbol, this.diagnosticAnalyzerTypeSymbol)) {
+                                if (!this.InheritsFrom(classSymbol,
+                                                       this.diagnosticAnalyzerTypeSymbol))
+                                {
                                         continue;
                                 }
 
-                                if (classSymbol.IsAbstract) {
+                                if (classSymbol.IsAbstract)
+                                {
                                         continue;
                                 }
 
                                 bool hasImplementation = HasImplementation(syntaxRoot);
 
-                                IEnumerable<DiagnosticDescriptor> descriptorInfos
-                                    = this.GetDescriptor(classSymbol);
+                                IEnumerable<DiagnosticDescriptor> descriptorInfos =
+                                    this.GetDescriptor(classSymbol);
 
-                                foreach (var descriptorInfo in descriptorInfos) {
-                                        var(codeFixStatus, fixAllStatus)
-                                            = this.GetCodeFixAndFixAllStatus(descriptorInfo.Id,
-                                                classSymbol, out noCodeFixReason);
+                                foreach (var descriptorInfo in descriptorInfos)
+                                {
+                                        var(codeFixStatus, fixAllStatus) =
+                                            this.GetCodeFixAndFixAllStatus(descriptorInfo.Id,
+                                                                           classSymbol,
+                                                                           out noCodeFixReason);
                                         string status = this.GetStatus(
                                             classSymbol, syntaxRoot, semanticModel, descriptorInfo);
                                         if (descriptorInfo.CustomTags.Contains(
-                                                WellKnownDiagnosticTags.NotConfigurable)) {
+                                                WellKnownDiagnosticTags.NotConfigurable))
+                                        {
                                                 continue;
                                         }
 
                                         var diagnostic = new StyleCopDiagnostic{
-                                                Id = descriptorInfo.Id,
-                                                Category = descriptorInfo.Category,
-                                                HasImplementation = hasImplementation,
-                                                Status = status,
-                                                Name = shortName,
-                                                Title = descriptorInfo.Title.ToString(),
-                                                HelpLink = descriptorInfo.HelpLinkUri,
-                                                CodeFixStatus = codeFixStatus,
-                                                FixAllStatus = fixAllStatus,
-                                                NoCodeFixReason = noCodeFixReason,
+                                            Id = descriptorInfo.Id,
+                                            Category = descriptorInfo.Category,
+                                            HasImplementation = hasImplementation,
+                                            Status = status,
+                                            Name = shortName,
+                                            Title = descriptorInfo.Title.ToString(),
+                                            HelpLink = descriptorInfo.HelpLinkUri,
+                                            CodeFixStatus = codeFixStatus,
+                                            FixAllStatus = fixAllStatus,
+                                            NoCodeFixReason = noCodeFixReason,
                                         };
                                         diagnostics.Add(diagnostic);
                                 }
@@ -179,10 +189,13 @@ namespace StyleCop.Analyzers.Status.Generator
                 private static bool HasImplementation(SyntaxNode syntaxRoot)
                 {
                         bool hasImplementation = true;
-                        foreach (var trivia in syntaxRoot.DescendantTrivia()) {
-                                if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia)) {
+                        foreach (var trivia in syntaxRoot.DescendantTrivia())
+                        {
+                                if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                                {
                                         if (trivia.ToFullString().Contains(
-                                                "TODO: Implement analysis")) {
+                                                "TODO: Implement analysis"))
+                                        {
                                                 hasImplementation = false;
                                         }
                                 }
@@ -196,35 +209,34 @@ namespace StyleCop.Analyzers.Status.Generator
                         this.solution = await this.workspace.OpenSolutionAsync(this.SlnPath)
                                             .ConfigureAwait(false);
 
-                        this.analyzerProject
-                            = this.solution.Projects.First(x => x.Name == this.AnalyzerProjectName
-                                    || x.AssemblyName == this.AnalyzerProjectName);
-                        this.analyzerCompilation
-                            = await this.analyzerProject.GetCompilationAsync().ConfigureAwait(
-                                false);
+                        this.analyzerProject = this.solution.Projects.First(
+                            x => x.Name == this.AnalyzerProjectName ||
+                                 x.AssemblyName == this.AnalyzerProjectName);
+                        this.analyzerCompilation =
+                            await this.analyzerProject.GetCompilationAsync().ConfigureAwait(false);
                         this.analyzerCompilation = this.analyzerCompilation.WithOptions(
                             this.analyzerCompilation.Options.WithOutputKind(
                                 OutputKind.DynamicallyLinkedLibrary));
 
-                        this.codeFixProject
-                            = this.solution.Projects.First(x => x.Name == this.CodeFixProjectName
-                                    || x.AssemblyName == this.CodeFixProjectName);
-                        this.codeFixCompilation
-                            = await this.codeFixProject.GetCompilationAsync().ConfigureAwait(false);
+                        this.codeFixProject = this.solution.Projects.First(
+                            x => x.Name == this.CodeFixProjectName ||
+                                 x.AssemblyName == this.CodeFixProjectName);
+                        this.codeFixCompilation =
+                            await this.codeFixProject.GetCompilationAsync().ConfigureAwait(false);
                         this.codeFixCompilation = this.codeFixCompilation.WithOptions(
                             this.codeFixCompilation.Options.WithOutputKind(
                                 OutputKind.DynamicallyLinkedLibrary));
 
-                        this.booleanType
-                            = this.analyzerCompilation.GetSpecialType(SpecialType.System_Boolean);
+                        this.booleanType =
+                            this.analyzerCompilation.GetSpecialType(SpecialType.System_Boolean);
 
                         this.LoadAssemblies();
 
-                        this.noCodeFixAttributeTypeSymbol
-                            = this.analyzerCompilation.GetTypeByMetadataName(
+                        this.noCodeFixAttributeTypeSymbol =
+                            this.analyzerCompilation.GetTypeByMetadataName(
                                 "StyleCop.Analyzers.NoCodeFixAttribute");
-                        this.diagnosticAnalyzerTypeSymbol
-                            = this.analyzerCompilation.GetTypeByMetadataName(
+                        this.diagnosticAnalyzerTypeSymbol =
+                            this.analyzerCompilation.GetTypeByMetadataName(
                                 typeof(DiagnosticAnalyzer).FullName);
 
                         this.batchFixerType = this.codeFixAssembly.GetType(
@@ -258,7 +270,7 @@ namespace StyleCop.Analyzers.Status.Generator
                 }
 
                 private string GetStatus(INamedTypeSymbol classSymbol, SyntaxNode root,
-                    SemanticModel model, DiagnosticDescriptor descriptor)
+                                         SemanticModel model, DiagnosticDescriptor descriptor)
                 {
                         // Some analyzers use multiple descriptors. We analyze the first one and
                         // hope that thats enough.
@@ -266,49 +278,56 @@ namespace StyleCop.Analyzers.Status.Generator
                                           .Where(x => x.Name.Contains("Descriptor"))
                                           .ToArray();
 
-                        foreach (var member in members) {
+                        foreach (var member in members)
+                        {
                                 ObjectCreationExpressionSyntax initializer;
-                                SyntaxNode node
-                                    = root.FindNode(member.Locations.FirstOrDefault().SourceSpan);
+                                SyntaxNode node =
+                                    root.FindNode(member.Locations.FirstOrDefault().SourceSpan);
 
-                                if (node != null) {
+                                if (node != null)
+                                {
                                         initializer = (node as PropertyDeclarationSyntax)
                                             ?.Initializer?.Value as ObjectCreationExpressionSyntax;
-                                        if (initializer == null) {
+                                        if (initializer == null)
+                                        {
                                                 initializer = (node as VariableDeclaratorSyntax)
                                                     ?.Initializer?
                                                          .Value as ObjectCreationExpressionSyntax;
 
-                                                if (initializer == null) {
+                                                if (initializer == null)
+                                                {
                                                         continue;
                                                 }
                                         }
-                                } else {
+                                }
+                                else
+                                {
                                         continue;
                                 }
 
                                 var firstArgument = initializer.ArgumentList.Arguments[0];
 
-                                string constantValue
-                                    = (string) model.GetConstantValue(firstArgument.Expression)
-                                          .Value;
+                                string constantValue =
+                                    (string) model.GetConstantValue(firstArgument.Expression).Value;
 
-                                if (constantValue != descriptor.Id) {
+                                if (constantValue != descriptor.Id)
+                                {
                                         continue;
                                 }
 
                                 // We use the fact that the only parameter that returns a boolean is
                                 // the one we are interested in
-                                var enabledByDefaultParameter
-                                    = from argument in initializer.ArgumentList
-                                          .Arguments where SymbolEqualityComparer.Default
-                                          .Equals(model.GetTypeInfo(argument.Expression).Type,
-                                              this.booleanType) select argument.Expression;
+                                var enabledByDefaultParameter =
+                                    from argument in initializer.ArgumentList
+                                        .Arguments where SymbolEqualityComparer.Default
+                                        .Equals(model.GetTypeInfo(argument.Expression).Type,
+                                                this.booleanType) select argument.Expression;
                                 var parameter = enabledByDefaultParameter.FirstOrDefault();
                                 string parameterString = parameter.ToString();
                                 var analyzerConstantLength = "AnalyzerConstants.".Length;
 
-                                if (parameterString.Length < analyzerConstantLength) {
+                                if (parameterString.Length < analyzerConstantLength)
+                                {
                                         return parameterString;
                                 }
 
@@ -330,7 +349,7 @@ namespace StyleCop.Analyzers.Status.Generator
 
                 private(CodeFixStatus codeFixStatus, FixAllStatus fixAllStatus)
                     GetCodeFixAndFixAllStatus(string diagnosticId, INamedTypeSymbol classSymbol,
-                        out string noCodeFixReason)
+                                              out string noCodeFixReason)
                 {
                         CodeFixStatus codeFixStatus;
                         FixAllStatus fixAllStatus;
@@ -342,32 +361,41 @@ namespace StyleCop.Analyzers.Status.Generator
                                 x.AttributeClass, this.noCodeFixAttributeTypeSymbol));
 
                         bool hasCodeFix = noCodeFixAttribute == null;
-                        if (!hasCodeFix) {
+                        if (!hasCodeFix)
+                        {
                                 codeFixStatus = CodeFixStatus.NotImplemented;
                                 fixAllStatus = FixAllStatus.None;
-                                if (noCodeFixAttribute.ConstructorArguments.Length > 0) {
+                                if (noCodeFixAttribute.ConstructorArguments.Length > 0)
+                                {
                                         noCodeFixReason = noCodeFixAttribute.ConstructorArguments[0]
                                                               .Value as string;
                                 }
-                        } else {
+                        }
+                        else
+                        {
                                 // Check if the code fix actually exists
-                                var codeFixes
-                                    = this.CodeFixProviders
-                                          .Where(x => x.FixableDiagnosticIds.Contains(diagnosticId))
-                                          .Select(x => this.IsBatchFixer(x))
-                                          .ToArray();
+                                var codeFixes =
+                                    this.CodeFixProviders
+                                        .Where(x => x.FixableDiagnosticIds.Contains(diagnosticId))
+                                        .Select(x => this.IsBatchFixer(x))
+                                        .ToArray();
 
                                 hasCodeFix = codeFixes.Length > 0;
 
-                                codeFixStatus
-                                    = hasCodeFix ? CodeFixStatus.Implemented
+                                codeFixStatus =
+                                    hasCodeFix ? CodeFixStatus.Implemented
                                     : CodeFixStatus.NotYetImplemented;
 
-                                if (codeFixes.Any(x => x ?? false)) {
+                                if (codeFixes.Any(x => x ?? false))
+                                {
                                         fixAllStatus = FixAllStatus.BatchFixer;
-                                } else if (codeFixes.Any(x => x != null)) {
+                                }
+                                else if (codeFixes.Any(x => x != null))
+                                {
                                         fixAllStatus = FixAllStatus.CustomImplementation;
-                                } else {
+                                }
+                                else
+                                {
                                         fixAllStatus = FixAllStatus.None;
                                 }
                         }
@@ -379,19 +407,24 @@ namespace StyleCop.Analyzers.Status.Generator
                 {
                         var fixAllProvider = provider.GetFixAllProvider();
 
-                        if (fixAllProvider == null) {
+                        if (fixAllProvider == null)
+                        {
                                 return null;
-                        } else {
+                        }
+                        else
+                        {
                                 return fixAllProvider.GetType() == this.batchFixerType;
                         }
                 }
 
-                private bool InheritsFrom(
-                    INamedTypeSymbol declaration, INamedTypeSymbol possibleBaseType)
+                private bool InheritsFrom(INamedTypeSymbol declaration,
+                                          INamedTypeSymbol possibleBaseType)
                 {
-                        while (declaration != null) {
-                                if (SymbolEqualityComparer.Default.Equals(
-                                        declaration, possibleBaseType)) {
+                        while (declaration != null)
+                        {
+                                if (SymbolEqualityComparer.Default.Equals(declaration,
+                                                                          possibleBaseType))
+                                {
                                         return true;
                                 }
 

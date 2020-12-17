@@ -19,9 +19,13 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1506CodeFixProvider))]
         [Shared]
-        internal class SA1506CodeFixProvider : CodeFixProvider {
+        internal class SA1506CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1506ElementDocumentationHeadersMustNotBeFollowedByBlankLine.DiagnosticId);
 
@@ -34,9 +38,11 @@ namespace StyleCop.Analyzers.LayoutRules
                 /// <inheritdoc/>
                 public override Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(LayoutResources.SA1506CodeFix,
+                                    CodeAction.Create(
+                                        LayoutResources.SA1506CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1506CodeFixProvider)),
@@ -55,23 +61,28 @@ namespace StyleCop.Analyzers.LayoutRules
                         var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
                         var triviaList = token.LeadingTrivia;
 
-                        var index
-                            = triviaList.IndexOf(SyntaxKind.SingleLineDocumentationCommentTrivia);
+                        var index =
+                            triviaList.IndexOf(SyntaxKind.SingleLineDocumentationCommentTrivia);
 
                         int currentLineStart = index + 1;
                         bool onBlankLine = true;
                         for (int currentIndex = currentLineStart; currentIndex < triviaList.Count;
-                             currentIndex++) {
+                             currentIndex++)
+                        {
                                 switch (triviaList [currentIndex]
-                                            .Kind()) {
+                                            .Kind())
+                                {
                                 case SyntaxKind.EndOfLineTrivia:
-                                        if (onBlankLine) {
-                                                triviaList
-                                                    = triviaList.RemoveRange(currentLineStart,
-                                                        currentIndex - currentLineStart + 1);
+                                        if (onBlankLine)
+                                        {
+                                                triviaList = triviaList.RemoveRange(
+                                                    currentLineStart,
+                                                    currentIndex - currentLineStart + 1);
                                                 currentIndex = currentLineStart - 1;
                                                 continue;
-                                        } else {
+                                        }
+                                        else
+                                        {
                                                 currentLineStart = currentIndex + 1;
                                                 onBlankLine = true;
                                                 break;
@@ -82,19 +93,22 @@ namespace StyleCop.Analyzers.LayoutRules
 
                                 default:
                                         if (triviaList [currentIndex]
-                                                .HasBuiltinEndLine()) {
+                                                .HasBuiltinEndLine())
+                                        {
                                                 currentLineStart = currentIndex + 1;
                                                 onBlankLine = true;
                                                 break;
-                                        } else {
+                                        }
+                                        else
+                                        {
                                                 onBlankLine = false;
                                                 break;
                                         }
                                 }
                         }
 
-                        var newSyntaxRoot
-                            = syntaxRoot.ReplaceToken(token, token.WithLeadingTrivia(triviaList));
+                        var newSyntaxRoot =
+                            syntaxRoot.ReplaceToken(token, token.WithLeadingTrivia(triviaList));
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

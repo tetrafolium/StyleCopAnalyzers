@@ -10,20 +10,22 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct PropertyPatternClauseSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.PropertyPatternClauseSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.PropertyPatternClauseSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> OpenBraceTokenAccessor;
-                private static readonly Func<CSharpSyntaxNode,
-                    SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>> SubpatternsAccessor;
+                private static readonly
+                    Func<CSharpSyntaxNode, SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>>
+                        SubpatternsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> CloseBraceTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
                     WithOpenBraceTokenAccessor;
-                private static readonly Func<CSharpSyntaxNode,
-                    SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>, CSharpSyntaxNode>
-                    WithSubpatternsAccessor;
+                private static readonly
+                    Func<CSharpSyntaxNode, SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
+                         CSharpSyntaxNode> WithSubpatternsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
                     WithCloseBraceTokenAccessor;
 
@@ -33,30 +35,30 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
                             typeof(PropertyPatternClauseSyntaxWrapper));
-                        OpenBraceTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(OpenBraceToken));
-                        SubpatternsAccessor
-                            = LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<
-                                CSharpSyntaxNode, SubpatternSyntaxWrapper>(
-                                WrappedType, nameof(Subpatterns));
-                        CloseBraceTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(CloseBraceToken));
-                        WithOpenBraceTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(OpenBraceToken));
-                        WithSubpatternsAccessor
-                            = LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
-                                CSharpSyntaxNode, SubpatternSyntaxWrapper>(
-                                WrappedType, nameof(Subpatterns));
-                        WithCloseBraceTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                      WrappedType, nameof(CloseBraceToken));
+                        OpenBraceTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(OpenBraceToken));
+                        SubpatternsAccessor =
+                            LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<
+                                CSharpSyntaxNode, SubpatternSyntaxWrapper>(WrappedType,
+                                                                           nameof(Subpatterns));
+                        CloseBraceTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(CloseBraceToken));
+                        WithOpenBraceTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(OpenBraceToken));
+                        WithSubpatternsAccessor =
+                            LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
+                                CSharpSyntaxNode, SubpatternSyntaxWrapper>(WrappedType,
+                                                                           nameof(Subpatterns));
+                        WithCloseBraceTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                    WrappedType, nameof(CloseBraceToken));
                 }
 
                 private PropertyPatternClauseSyntaxWrapper(CSharpSyntaxNode node)
@@ -68,26 +70,37 @@ namespace StyleCop.Analyzers.Lightup
 
                 public SyntaxToken OpenBraceToken
                 {
-                        get { return OpenBraceTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return OpenBraceTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper> Subpatterns
                 {
-                        get { return SubpatternsAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return SubpatternsAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SyntaxToken CloseBraceToken
                 {
-                        get { return CloseBraceTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return CloseBraceTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator PropertyPatternClauseSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

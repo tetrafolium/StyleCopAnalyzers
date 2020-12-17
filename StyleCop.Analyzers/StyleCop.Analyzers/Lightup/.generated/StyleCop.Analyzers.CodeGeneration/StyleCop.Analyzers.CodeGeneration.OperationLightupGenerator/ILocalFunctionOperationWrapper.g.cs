@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ILocalFunctionOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.ILocalFunctionOperation";
+        internal readonly struct ILocalFunctionOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.ILocalFunctionOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IMethodSymbol> SymbolAccessor;
                 private static readonly Func<IOperation, IOperation> BodyAccessor;
@@ -19,15 +20,16 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(ILocalFunctionOperationWrapper));
-                        SymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            IMethodSymbol>(WrappedType, nameof(Symbol));
-                        BodyAccessor = LightupHelpers
-                                           .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                               WrappedType, nameof(Body));
-                        IgnoredBodyAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(IgnoredBody));
+                        SymbolAccessor =
+                            LightupHelpers
+                                .CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                                    WrappedType, nameof(Symbol));
+                        BodyAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Body));
+                        IgnoredBodyAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(IgnoredBody));
                 }
 
                 private ILocalFunctionOperationWrapper(IOperation operation)
@@ -38,17 +40,19 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IMethodSymbol Symbol => SymbolAccessor(this.WrappedOperation);
-                public IBlockOperationWrapper Body => IBlockOperationWrapper.FromOperation(
-                    BodyAccessor(this.WrappedOperation));
+                public IBlockOperationWrapper Body =>
+                    IBlockOperationWrapper.FromOperation(BodyAccessor(this.WrappedOperation));
                 public IBlockOperationWrapper IgnoredBody => IBlockOperationWrapper.FromOperation(
                     IgnoredBodyAccessor(this.WrappedOperation));
                 public static ILocalFunctionOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -58,8 +62,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

@@ -19,35 +19,40 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// not contain any text.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1120CommentsMustContainText : DiagnosticAnalyzer {
+        internal class SA1120CommentsMustContainText : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1120CommentsMustContainText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1120";
-                private const string HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1120.md";
-                private static readonly LocalizableString Title
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1120Title),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat
-                    = new LocalizableResourceString(
-                        nameof(ReadabilityResources.SA1120MessageFormat),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString Description
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1120Description),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private const string HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1120.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString(
+                    nameof(ReadabilityResources.SA1120Title), ReadabilityResources.ResourceManager,
+                    typeof(ReadabilityResources));
+                private static readonly LocalizableString MessageFormat =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1120MessageFormat),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString Description =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1120Description),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor
-                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-                        AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
-                    = HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
+                    HandleSyntaxTree;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
@@ -61,10 +66,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
                 {
-                        SyntaxNode root
-                            = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-                        foreach (var node in root.DescendantTrivia(descendIntoTrivia : true)) {
-                                switch (node.Kind()) {
+                        SyntaxNode root =
+                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                        foreach (var node in root.DescendantTrivia(descendIntoTrivia : true))
+                        {
+                                switch (node.Kind())
+                                {
                                 case SyntaxKind.SingleLineCommentTrivia:
                                         HandleSingleLineComment(context, node);
                                         break;
@@ -76,27 +83,28 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         }
                 }
 
-                private static void HandleMultiLineComment(
-                    SyntaxTreeAnalysisContext context, SyntaxTrivia multiLineComment)
+                private static void HandleMultiLineComment(SyntaxTreeAnalysisContext context,
+                                                           SyntaxTrivia multiLineComment)
                 {
                         var nodeText = multiLineComment.ToString();
 
                         // We remove the /* and the */ and determine if the comment has any content.
                         var commentText = nodeText.Substring(2, Math.Max(0, nodeText.Length - 4));
 
-                        if (string.IsNullOrWhiteSpace(commentText)) {
-                                var diagnostic
-                                    = Diagnostic.Create(Descriptor, multiLineComment.GetLocation());
+                        if (string.IsNullOrWhiteSpace(commentText))
+                        {
+                                var diagnostic =
+                                    Diagnostic.Create(Descriptor, multiLineComment.GetLocation());
                                 context.ReportDiagnostic(diagnostic);
                         }
                 }
 
-                private static void HandleSingleLineComment(
-                    SyntaxTreeAnalysisContext context, SyntaxTrivia singleLineComment)
+                private static void HandleSingleLineComment(SyntaxTreeAnalysisContext context,
+                                                            SyntaxTrivia singleLineComment)
                 {
                         // PERF: Explicitly cast to IReadOnlyList so we only box once.
-                        IReadOnlyList<SyntaxTrivia> list = TriviaHelper.GetContainingTriviaList(
-                            singleLineComment, out int index);
+                        IReadOnlyList<SyntaxTrivia> list =
+                            TriviaHelper.GetContainingTriviaList(singleLineComment, out int index);
                         var firstNonWhiteSpace = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(list);
 
                         // When we encounter a block of single line comments, we only want to raise
@@ -105,31 +113,37 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         // will not raise the diagnostic for every blank line in the code which is
                         // commented out.
                         bool isFirst = index == firstNonWhiteSpace;
-                        if (!isFirst) {
+                        if (!isFirst)
+                        {
                                 // This is -2 because we need to go back past the end of line trivia
                                 // as well.
-                                var lastNonWhiteSpace
-                                    = TriviaHelper.IndexOfTrailingWhitespace(list) - 2;
-                                if (index != lastNonWhiteSpace) {
+                                var lastNonWhiteSpace =
+                                    TriviaHelper.IndexOfTrailingWhitespace(list) - 2;
+                                if (index != lastNonWhiteSpace)
+                                {
                                         return;
                                 }
                         }
 
-                        if (IsNullOrWhiteSpace(singleLineComment.ToString(), 2)) {
-                                var diagnostic = Diagnostic.Create(
-                                    Descriptor, singleLineComment.GetLocation());
+                        if (IsNullOrWhiteSpace(singleLineComment.ToString(), 2))
+                        {
+                                var diagnostic =
+                                    Diagnostic.Create(Descriptor, singleLineComment.GetLocation());
                                 context.ReportDiagnostic(diagnostic);
                         }
                 }
 
                 private static bool IsNullOrWhiteSpace(string value, int startIndex)
                 {
-                        if (value == null) {
+                        if (value == null)
+                        {
                                 return true;
                         }
 
-                        for (int i = startIndex; i < value.Length; i++) {
-                                if (!char.IsWhiteSpace(value[i])) {
+                        for (int i = startIndex; i < value.Length; i++)
+                        {
+                                if (!char.IsWhiteSpace(value[i]))
+                                {
                                         return false;
                                 }
                         }

@@ -7,9 +7,10 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ISwitchCaseOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.ISwitchCaseOperation";
+        internal readonly struct ISwitchCaseOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.ISwitchCaseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
                     ClausesAccessor;
@@ -21,13 +22,13 @@ namespace StyleCop.Analyzers.Lightup
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
                             typeof(ISwitchCaseOperationWrapper));
-                        ClausesAccessor
-                            = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                        ClausesAccessor =
+                            LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
                                 WrappedType, nameof(Clauses));
-                        BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            ImmutableArray<IOperation>>(WrappedType, nameof(Body));
-                        LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
+                        BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<
+                            IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Body));
+                        LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<
+                            IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
                 }
 
                 private ISwitchCaseOperationWrapper(IOperation operation)
@@ -42,11 +43,13 @@ namespace StyleCop.Analyzers.Lightup
                 public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor(this.WrappedOperation);
                 public static ISwitchCaseOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -56,8 +59,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

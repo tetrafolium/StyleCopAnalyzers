@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace LightJson {
+namespace LightJson
+{
 /// <summary>
 /// Enumerates the types of Json values.
 /// </summary>

@@ -9,20 +9,22 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal readonly partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax> {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.CSharp.Syntax.TupleTypeSyntax";
+        internal readonly partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax>
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.CSharp.Syntax.TupleTypeSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<TypeSyntax, SyntaxToken> OpenParenTokenAccessor;
-                private static readonly Func<TypeSyntax,
-                    SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>> ElementsAccessor;
+                private static readonly
+                    Func<TypeSyntax, SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>>
+                        ElementsAccessor;
                 private static readonly Func<TypeSyntax, SyntaxToken> CloseParenTokenAccessor;
                 private static readonly Func<TypeSyntax, SyntaxToken, TypeSyntax>
                     WithOpenParenTokenAccessor;
-                private static readonly Func<TypeSyntax,
-                    SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>, TypeSyntax>
-                    WithElementsAccessor;
+                private static readonly
+                    Func<TypeSyntax, SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>,
+                         TypeSyntax> WithElementsAccessor;
                 private static readonly Func<TypeSyntax, SyntaxToken, TypeSyntax>
                     WithCloseParenTokenAccessor;
 
@@ -30,57 +32,70 @@ namespace StyleCop.Analyzers.Lightup
 
                 static TupleTypeSyntaxWrapper()
                 {
-                        WrappedType
-                            = SyntaxWrapperHelper.GetWrappedType(typeof(TupleTypeSyntaxWrapper));
-                        OpenParenTokenAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken>(
+                        WrappedType =
+                            SyntaxWrapperHelper.GetWrappedType(typeof(TupleTypeSyntaxWrapper));
+                        OpenParenTokenAccessor =
+                            LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken>(
                                 WrappedType, nameof(OpenParenToken));
-                        ElementsAccessor
-                            = LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<TypeSyntax,
-                                TupleElementSyntaxWrapper>(WrappedType, nameof(Elements));
-                        CloseParenTokenAccessor
-                            = LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken>(
+                        ElementsAccessor = LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<
+                            TypeSyntax, TupleElementSyntaxWrapper>(WrappedType, nameof(Elements));
+                        CloseParenTokenAccessor =
+                            LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken>(
                                 WrappedType, nameof(CloseParenToken));
-                        WithOpenParenTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                      WrappedType, nameof(OpenParenToken));
-                        WithElementsAccessor
-                            = LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
-                                TypeSyntax, TupleElementSyntaxWrapper>(
-                                WrappedType, nameof(Elements));
-                        WithCloseParenTokenAccessor
-                            = LightupHelpers
-                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                      WrappedType, nameof(CloseParenToken));
+                        WithOpenParenTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken>(
+                                    WrappedType, nameof(OpenParenToken));
+                        WithElementsAccessor =
+                            LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
+                                TypeSyntax, TupleElementSyntaxWrapper>(WrappedType,
+                                                                       nameof(Elements));
+                        WithCloseParenTokenAccessor =
+                            LightupHelpers
+                                .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken>(
+                                    WrappedType, nameof(CloseParenToken));
                 }
 
-                private TupleTypeSyntaxWrapper(TypeSyntax node) { this.node = node; }
+                private TupleTypeSyntaxWrapper(TypeSyntax node)
+                {
+                        this.node = node;
+                }
 
                 public TypeSyntax SyntaxNode => this.node;
 
                 public SyntaxToken OpenParenToken
                 {
-                        get { return OpenParenTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return OpenParenTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper> Elements
                 {
-                        get { return ElementsAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return ElementsAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public SyntaxToken CloseParenToken
                 {
-                        get { return CloseParenTokenAccessor(this.SyntaxNode); }
+                        get
+                        {
+                                return CloseParenTokenAccessor(this.SyntaxNode);
+                        }
                 }
 
                 public static explicit operator TupleTypeSyntaxWrapper(SyntaxNode node)
                 {
-                        if (node == null) {
+                        if (node == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(node)) {
+                        if (!IsInstance(node))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }

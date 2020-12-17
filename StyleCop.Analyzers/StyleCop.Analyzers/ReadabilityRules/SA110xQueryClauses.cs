@@ -27,73 +27,86 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1105.md">SA1105
         /// Query clauses spanning multiple lines should begin on own line</seealso>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA110xQueryClauses : DiagnosticAnalyzer {
+        internal class SA110xQueryClauses : DiagnosticAnalyzer
+        {
                 private const string SA1102Identifier = "SA1102";
                 private const string SA1103Identifier = "SA1103";
                 private const string SA1104Identifier = "SA1104";
                 private const string SA1105Identifier = "SA1105";
 
-                private static readonly LocalizableString SA1102Title
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1102Title),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString SA1102MessageFormat
-                    = new LocalizableResourceString(
-                        nameof(ReadabilityResources.SA1102MessageFormat),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString SA1102Description
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1102Description),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly string SA1102HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1102.md";
+                private static readonly LocalizableString SA1102Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1102Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString SA1102MessageFormat =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1102MessageFormat),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString SA1102Description =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1102Description),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly string SA1102HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1102.md";
 
-                private static readonly LocalizableString SA1103Title
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1103Title),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString SA1103MessageFormat
-                    = new LocalizableResourceString(
-                        nameof(ReadabilityResources.SA1103MessageFormat),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString SA1103Description
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1103Description),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly string SA1103HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1103.md";
+                private static readonly LocalizableString SA1103Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1103Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString SA1103MessageFormat =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1103MessageFormat),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString SA1103Description =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1103Description),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly string SA1103HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1103.md";
 
-                private static readonly LocalizableString SA1104Title
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1104Title),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString SA1104MessageFormat
-                    = new LocalizableResourceString(
-                        nameof(ReadabilityResources.SA1104MessageFormat),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString SA1104Description
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1104Description),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly string SA1104HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1104.md";
+                private static readonly LocalizableString SA1104Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1104Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString SA1104MessageFormat =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1104MessageFormat),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString SA1104Description =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1104Description),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly string SA1104HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1104.md";
 
-                private static readonly LocalizableString SA1105Title
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1105Title),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString SA1105MessageFormat
-                    = new LocalizableResourceString(
-                        nameof(ReadabilityResources.SA1105MessageFormat),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly LocalizableString SA1105Description
-                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1105Description),
-                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-                private static readonly string SA1105HelpLink
-                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1105.md";
+                private static readonly LocalizableString SA1105Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1105Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString SA1105MessageFormat =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1105MessageFormat),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly LocalizableString SA1105Description =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1105Description),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
+                private static readonly string SA1105HelpLink =
+                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1105.md";
 
-                private static readonly Action<SyntaxNodeAnalysisContext> QueryExpressionAction
-                    = HandleQueryExpression;
+                private static readonly Action<SyntaxNodeAnalysisContext> QueryExpressionAction =
+                    HandleQueryExpression;
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1102.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1102.</value>
-                public static DiagnosticDescriptor SA1102Descriptor { get; }
-                = new DiagnosticDescriptor(SA1102Identifier, SA1102Title, SA1102MessageFormat,
+                public static DiagnosticDescriptor SA1102Descriptor
+                {
+                        get;
+                }
+                = new DiagnosticDescriptor(
+                    SA1102Identifier, SA1102Title, SA1102MessageFormat,
                     AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
                     AnalyzerConstants.EnabledByDefault, SA1102Description, SA1102HelpLink);
 
@@ -101,8 +114,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// Gets the diagnostic descriptor for SA1103.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1103.</value>
-                public static DiagnosticDescriptor SA1103Descriptor { get; }
-                = new DiagnosticDescriptor(SA1103Identifier, SA1103Title, SA1103MessageFormat,
+                public static DiagnosticDescriptor SA1103Descriptor
+                {
+                        get;
+                }
+                = new DiagnosticDescriptor(
+                    SA1103Identifier, SA1103Title, SA1103MessageFormat,
                     AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
                     AnalyzerConstants.EnabledByDefault, SA1103Description, SA1103HelpLink);
 
@@ -110,8 +127,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// Gets the diagnostic descriptor for SA1104.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1104.</value>
-                public static DiagnosticDescriptor SA1104Descriptor { get; }
-                = new DiagnosticDescriptor(SA1104Identifier, SA1104Title, SA1104MessageFormat,
+                public static DiagnosticDescriptor SA1104Descriptor
+                {
+                        get;
+                }
+                = new DiagnosticDescriptor(
+                    SA1104Identifier, SA1104Title, SA1104MessageFormat,
                     AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
                     AnalyzerConstants.EnabledByDefault, SA1104Description, SA1104HelpLink);
 
@@ -119,15 +140,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// Gets the diagnostic descriptor for SA1105.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1105.</value>
-                public static DiagnosticDescriptor SA1105Descriptor { get; }
-                = new DiagnosticDescriptor(SA1105Identifier, SA1105Title, SA1105MessageFormat,
+                public static DiagnosticDescriptor SA1105Descriptor
+                {
+                        get;
+                }
+                = new DiagnosticDescriptor(
+                    SA1105Identifier, SA1105Title, SA1105MessageFormat,
                     AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
                     AnalyzerConstants.EnabledByDefault, SA1105Description, SA1105HelpLink);
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
-                = ImmutableArray.Create(
-                    SA1102Descriptor, SA1103Descriptor, SA1104Descriptor, SA1105Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+                {
+                        get;
+                }
+                = ImmutableArray.Create(SA1102Descriptor, SA1103Descriptor, SA1104Descriptor,
+                                        SA1105Descriptor);
 
                 /// <inheritdoc/>
                 public override void Initialize(AnalysisContext context)
@@ -135,8 +163,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(
-                            QueryExpressionAction, SyntaxKind.QueryExpression);
+                        context.RegisterSyntaxNodeAction(QueryExpressionAction,
+                                                         SyntaxKind.QueryExpression);
                 }
 
                 private static void HandleQueryExpression(SyntaxNodeAnalysisContext context)
@@ -156,13 +184,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         bool allOnSeparateLine = true;
                         bool suppressSA1103 = false;
 
-                        for (var i = 0; i < tokensToCheck.Count - 1; i++) {
+                        for (var i = 0; i < tokensToCheck.Count - 1; i++)
+                        {
                                 var token1 = tokensToCheck[i];
                                 var token2 = tokensToCheck[i + 1];
                                 var parent1 = token1.Parent;
                                 var parent2 = token2.Parent;
 
-                                if (parent2 is QueryContinuationSyntax) {
+                                if (parent2 is QueryContinuationSyntax)
+                                {
                                         continue;
                                 }
 
@@ -170,25 +200,26 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                 // clause, so we need to use the token within that node for the line
                                 // determination.
                                 var location1 = !(parent1 is QueryContinuationSyntax)
-                                    ? parent1.GetLineSpan()
-                                    : token1.GetLineSpan();
+                                                    ? parent1.GetLineSpan()
+                                                    : token1.GetLineSpan();
                                 var location2 = parent2.GetLineSpan();
 
-                                if (((location2.StartLinePosition.Line
-                                         - location1.EndLinePosition.Line)
-                                        > 1)
-                                    && isEnabledSA1102
-                                    && !token2.LeadingTrivia.Any(trivia => trivia.IsDirective)) {
+                                if (((location2.StartLinePosition.Line -
+                                      location1.EndLinePosition.Line) > 1) &&
+                                    isEnabledSA1102 &&
+                                    !token2.LeadingTrivia.Any(trivia => trivia.IsDirective))
+                                {
                                         context.ReportDiagnostic(Diagnostic.Create(
                                             SA1102Descriptor, token2.GetLocation()));
                                 }
 
-                                var onSameLine = location1.EndLinePosition.Line
-                                    == location2.StartLinePosition.Line;
+                                var onSameLine = location1.EndLinePosition.Line ==
+                                                 location2.StartLinePosition.Line;
 
-                                if (onSameLine && isEnabledSA1104
-                                    && !(parent1 is QueryContinuationSyntax)
-                                    && parent1.SpansMultipleLines()) {
+                                if (onSameLine && isEnabledSA1104 &&
+                                    !(parent1 is QueryContinuationSyntax) &&
+                                    parent1.SpansMultipleLines())
+                                {
                                         context.ReportDiagnostic(Diagnostic.Create(
                                             SA1104Descriptor, token2.GetLocation()));
 
@@ -197,7 +228,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                         suppressSA1103 = true;
                                 }
 
-                                if (onSameLine && isEnabledSA1105 && parent2.SpansMultipleLines()) {
+                                if (onSameLine && isEnabledSA1105 && parent2.SpansMultipleLines())
+                                {
                                         context.ReportDiagnostic(Diagnostic.Create(
                                             SA1105Descriptor, token2.GetLocation()));
 
@@ -210,31 +242,36 @@ namespace StyleCop.Analyzers.ReadabilityRules
                                 allOnSeparateLine = allOnSeparateLine && !onSameLine;
                         }
 
-                        if (!allOnSameLine && !allOnSeparateLine && !suppressSA1103
-                            && isEnabledSA1103) {
-                                context.ReportDiagnostic(Diagnostic.Create(SA1103Descriptor,
+                        if (!allOnSameLine && !allOnSeparateLine && !suppressSA1103 &&
+                            isEnabledSA1103)
+                        {
+                                context.ReportDiagnostic(Diagnostic.Create(
+                                    SA1103Descriptor,
                                     queryExpression.FromClause.FromKeyword.GetLocation()));
                         }
                 }
 
-                private static void HandleQueryBody(
-                    QueryBodySyntax body, List<SyntaxToken> tokensToCheck)
+                private static void HandleQueryBody(QueryBodySyntax body,
+                                                    List<SyntaxToken> tokensToCheck)
                 {
-                        foreach (var clause in body.Clauses) {
+                        foreach (var clause in body.Clauses)
+                        {
                                 HandleQueryClause(clause, tokensToCheck);
                         }
 
                         HandleSelectOrGroup(body.SelectOrGroup, tokensToCheck);
 
-                        if (body.Continuation != null) {
+                        if (body.Continuation != null)
+                        {
                                 HandleContinuation(body.Continuation, tokensToCheck);
                         }
                 }
 
-                private static void HandleQueryClause(
-                    QueryClauseSyntax queryClause, List<SyntaxToken> tokensToCheck)
+                private static void HandleQueryClause(QueryClauseSyntax queryClause,
+                                                      List<SyntaxToken> tokensToCheck)
                 {
-                        switch (queryClause.Kind()) {
+                        switch (queryClause.Kind())
+                        {
                         case SyntaxKind.FromClause:
                                 var fromClause = (FromClauseSyntax) queryClause;
                                 tokensToCheck.Add(fromClause.FromKeyword);
@@ -259,13 +296,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         }
                 }
 
-                private static void HandleSelectOrGroup(
-                    SelectOrGroupClauseSyntax selectOrGroup, List<SyntaxToken> tokensToCheck)
+                private static void HandleSelectOrGroup(SelectOrGroupClauseSyntax selectOrGroup,
+                                                        List<SyntaxToken> tokensToCheck)
                 {
-                        switch (selectOrGroup.Kind()) {
+                        switch (selectOrGroup.Kind())
+                        {
                         case SyntaxKind.SelectClause:
                                 var selectClause = (SelectClauseSyntax) selectOrGroup;
-                                if (!selectClause.IsMissing) {
+                                if (!selectClause.IsMissing)
+                                {
                                         tokensToCheck.Add(selectClause.SelectKeyword);
                                 }
 
@@ -277,8 +316,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         }
                 }
 
-                private static void HandleContinuation(
-                    QueryContinuationSyntax continuation, List<SyntaxToken> tokensToCheck)
+                private static void HandleContinuation(QueryContinuationSyntax continuation,
+                                                       List<SyntaxToken> tokensToCheck)
                 {
                         tokensToCheck.Add(continuation.IntoKeyword);
                         HandleQueryBody(continuation.Body, tokensToCheck);

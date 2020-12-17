@@ -26,29 +26,38 @@ namespace StyleCop.Analyzers.SpacingRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1005CodeFixProvider))]
         [Shared]
-        internal class SA1005CodeFixProvider : CodeFixProvider {
+        internal class SA1005CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1005SingleLineCommentsMustBeginWithSingleSpace.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
+                public override FixAllProvider GetFixAllProvider()
+                {
+                        return FixAll.Instance;
+                }
 
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var root
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
+                        var root =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 context.RegisterCodeFix(
                                     CodeAction.Create(SpacingResources.SA1005CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic.Location,
-                                            cancellationToken),
-                                        nameof(SA1005CodeFixProvider)),
+                                                      cancellationToken =>
+                                                          GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic.Location,
+                                                              cancellationToken),
+                                                      nameof(SA1005CodeFixProvider)),
                                     diagnostic);
                         }
                 }
@@ -56,8 +65,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 private static async Task<Document> GetTransformedDocumentAsync(
                     Document document, Location location, CancellationToken cancellationToken)
                 {
-                        var text
-                            = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                        var text =
+                            await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         var sourceSpan = location.SourceSpan;
 
                         return document.WithText(text.WithChanges(GetTextChange(text, sourceSpan)));
@@ -68,8 +77,10 @@ namespace StyleCop.Analyzers.SpacingRules
                         var subText = text.GetSubText(sourceSpan).ToString();
 
                         int i = 2;
-                        for (; i < subText.Length; i++) {
-                                if (!char.IsWhiteSpace(subText[i])) {
+                        for (; i < subText.Length; i++)
+                        {
+                                if (!char.IsWhiteSpace(subText[i]))
+                                {
                                         break;
                                 }
                         }
@@ -77,8 +88,12 @@ namespace StyleCop.Analyzers.SpacingRules
                         return new TextChange(new TextSpan(sourceSpan.Start + 2, i - 2), " ");
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
-                        public static FixAllProvider Instance { get; }
+                private class FixAll : DocumentBasedFixAllProvider
+                {
+                        public static FixAllProvider Instance
+                        {
+                                get;
+                        }
                         = new FixAll();
 
                         protected override string CodeActionTitle => SpacingResources.SA1005CodeFix;
@@ -87,7 +102,8 @@ namespace StyleCop.Analyzers.SpacingRules
                             FixAllContext fixAllContext, Document document,
                             ImmutableArray<Diagnostic> diagnostics)
                         {
-                                if (diagnostics.IsEmpty) {
+                                if (diagnostics.IsEmpty)
+                                {
                                         return null;
                                 }
 
@@ -95,16 +111,17 @@ namespace StyleCop.Analyzers.SpacingRules
 
                                 List<TextChange> changes = new List<TextChange>();
 
-                                foreach (var diagnostic in diagnostics) {
+                                foreach (var diagnostic in diagnostics)
+                                {
                                         var sourceSpan = diagnostic.Location.SourceSpan;
                                         changes.Add(GetTextChange(text, sourceSpan));
                                 }
 
-                                changes.Sort(
-                                    (left, right) => left.Span.Start.CompareTo(right.Span.Start));
+                                changes.Sort((left, right) =>
+                                                 left.Span.Start.CompareTo(right.Span.Start));
 
-                                var tree
-                                    = await document.GetSyntaxTreeAsync().ConfigureAwait(false);
+                                var tree =
+                                    await document.GetSyntaxTreeAsync().ConfigureAwait(false);
                                 return await tree.WithChangedText(text.WithChanges(changes))
                                     .GetRootAsync()
                                     .ConfigureAwait(false);

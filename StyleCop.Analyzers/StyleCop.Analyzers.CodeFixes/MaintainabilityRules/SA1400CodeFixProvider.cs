@@ -24,9 +24,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1400CodeFixProvider))]
         [Shared]
-        internal class SA1400CodeFixProvider : CodeFixProvider {
+        internal class SA1400CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(SA1400AccessModifierMustBeDeclared.DiagnosticId);
 
                 /// <inheritdoc/>
@@ -38,24 +42,28 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var root
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
-                        foreach (var diagnostic in context.Diagnostics) {
-                                SyntaxNode node = root.FindNode(
-                                    diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                                    : true);
-                                if (node == null || node.IsMissing) {
+                        var root =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
+                                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan,
+                                                                getInnermostNodeForTie
+                                                                : true);
+                                if (node == null || node.IsMissing)
+                                {
                                         continue;
                                 }
 
                                 SyntaxNode declarationNode = FindParentDeclarationNode(node);
-                                if (declarationNode == null) {
+                                if (declarationNode == null)
+                                {
                                         continue;
                                 }
 
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(MaintainabilityResources.SA1400CodeFix,
+                                    CodeAction.Create(
+                                        MaintainabilityResources.SA1400CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, root, declarationNode),
                                         nameof(SA1400CodeFixProvider)),
@@ -67,7 +75,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     Document document, SyntaxNode root, SyntaxNode declarationNode)
                 {
                         SyntaxNode updatedDeclarationNode;
-                        switch (declarationNode.Kind()) {
+                        switch (declarationNode.Kind())
+                        {
                         case SyntaxKind.ClassDeclaration:
                                 updatedDeclarationNode = HandleClassDeclaration(
                                     (ClassDeclarationSyntax) declarationNode);
@@ -79,8 +88,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                                 break;
 
                         case SyntaxKind.EnumDeclaration:
-                                updatedDeclarationNode = HandleEnumDeclaration(
-                                    (EnumDeclarationSyntax) declarationNode);
+                                updatedDeclarationNode =
+                                    HandleEnumDeclaration((EnumDeclarationSyntax) declarationNode);
                                 break;
 
                         case SyntaxKind.StructDeclaration:
@@ -144,25 +153,26 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                                 break;
 
                         default:
-                                throw new InvalidOperationException(
-                                    "Unhandled declaration kind: " + declarationNode.Kind());
+                                throw new InvalidOperationException("Unhandled declaration kind: " +
+                                                                    declarationNode.Kind());
                         }
 
-                        var newSyntaxRoot
-                            = root.ReplaceNode(declarationNode, updatedDeclarationNode);
+                        var newSyntaxRoot =
+                            root.ReplaceNode(declarationNode, updatedDeclarationNode);
                         return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
                 }
 
                 private static SyntaxNode HandleClassDeclaration(ClassDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.Keyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
                         SyntaxKind defaultVisibility = IsNestedType(node)
-                            ? SyntaxKind.PrivateKeyword
-                            : SyntaxKind.InternalKeyword;
+                                                           ? SyntaxKind.PrivateKeyword
+                                                           : SyntaxKind.InternalKeyword;
                         SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(
                             node.Modifiers, ref triviaToken, defaultVisibility);
                         return node.WithKeyword(triviaToken)
@@ -174,13 +184,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     InterfaceDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.Keyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
                         SyntaxKind defaultVisibility = IsNestedType(node)
-                            ? SyntaxKind.PrivateKeyword
-                            : SyntaxKind.InternalKeyword;
+                                                           ? SyntaxKind.PrivateKeyword
+                                                           : SyntaxKind.InternalKeyword;
                         SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(
                             node.Modifiers, ref triviaToken, defaultVisibility);
                         return node.WithKeyword(triviaToken)
@@ -191,13 +202,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandleEnumDeclaration(EnumDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.EnumKeyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
                         SyntaxKind defaultVisibility = IsNestedType(node)
-                            ? SyntaxKind.PrivateKeyword
-                            : SyntaxKind.InternalKeyword;
+                                                           ? SyntaxKind.PrivateKeyword
+                                                           : SyntaxKind.InternalKeyword;
                         SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(
                             node.Modifiers, ref triviaToken, defaultVisibility);
                         return node.WithEnumKeyword(triviaToken)
@@ -208,13 +220,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandleStructDeclaration(StructDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.Keyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
                         SyntaxKind defaultVisibility = IsNestedType(node)
-                            ? SyntaxKind.PrivateKeyword
-                            : SyntaxKind.InternalKeyword;
+                                                           ? SyntaxKind.PrivateKeyword
+                                                           : SyntaxKind.InternalKeyword;
                         SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(
                             node.Modifiers, ref triviaToken, defaultVisibility);
                         return node.WithKeyword(triviaToken)
@@ -226,13 +239,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     RecordDeclarationSyntaxWrapper node)
                 {
                         SyntaxToken triviaToken = node.Keyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
                         SyntaxKind defaultVisibility = IsNestedType(node)
-                            ? SyntaxKind.PrivateKeyword
-                            : SyntaxKind.InternalKeyword;
+                                                           ? SyntaxKind.PrivateKeyword
+                                                           : SyntaxKind.InternalKeyword;
                         SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(
                             node.Modifiers, ref triviaToken, defaultVisibility);
                         return node.WithKeyword(triviaToken)
@@ -243,13 +257,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandleDelegateDeclaration(DelegateDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.DelegateKeyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
                         SyntaxKind defaultVisibility = IsNestedType(node)
-                            ? SyntaxKind.PrivateKeyword
-                            : SyntaxKind.InternalKeyword;
+                                                           ? SyntaxKind.PrivateKeyword
+                                                           : SyntaxKind.InternalKeyword;
                         SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(
                             node.Modifiers, ref triviaToken, defaultVisibility);
                         return node.WithDelegateKeyword(triviaToken)
@@ -260,7 +275,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandleEventDeclaration(EventDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.EventKeyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -275,7 +291,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     EventFieldDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.EventKeyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -289,7 +306,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandleMethodDeclaration(MethodDeclarationSyntax node)
                 {
                         TypeSyntax type = node.ReturnType;
-                        if (type == null || type.IsMissing) {
+                        if (type == null || type.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -303,7 +321,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandlePropertyDeclaration(PropertyDeclarationSyntax node)
                 {
                         TypeSyntax type = node.Type;
-                        if (type == null || type.IsMissing) {
+                        if (type == null || type.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -315,7 +334,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandleFieldDeclaration(FieldDeclarationSyntax node)
                 {
                         VariableDeclarationSyntax declaration = node.Declaration;
-                        if (declaration == null || declaration.IsMissing) {
+                        if (declaration == null || declaration.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -329,7 +349,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandleOperatorDeclaration(OperatorDeclarationSyntax node)
                 {
                         TypeSyntax type = node.ReturnType;
-                        if (type == null || type.IsMissing) {
+                        if (type == null || type.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -344,7 +365,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     ConversionOperatorDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.ImplicitOrExplicitKeyword;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -358,7 +380,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 private static SyntaxNode HandleIndexerDeclaration(IndexerDeclarationSyntax node)
                 {
                         TypeSyntax type = node.Type;
-                        if (type == null || type.IsMissing) {
+                        if (type == null || type.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -371,7 +394,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     ConstructorDeclarationSyntax node)
                 {
                         SyntaxToken triviaToken = node.Identifier;
-                        if (triviaToken.IsMissing) {
+                        if (triviaToken.IsMissing)
+                        {
                                 return null;
                         }
 
@@ -384,8 +408,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 private static SyntaxNode FindParentDeclarationNode(SyntaxNode node)
                 {
-                        while (node != null) {
-                                switch (node.Kind()) {
+                        while (node != null)
+                        {
+                                switch (node.Kind())
+                                {
                                 case SyntaxKind.ClassDeclaration:
                                 case SyntaxKind.InterfaceDeclaration:
                                 case SyntaxKind.EnumDeclaration:

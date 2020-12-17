@@ -26,9 +26,13 @@ namespace StyleCop.Analyzers.SpacingRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1018CodeFixProvider))]
         [Shared]
-        internal class SA1018CodeFixProvider : CodeFixProvider {
+        internal class SA1018CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                public override ImmutableArray<string> FixableDiagnosticIds
+                {
+                        get;
+                }
                 = ImmutableArray.Create(
                     SA1018NullableTypeSymbolsMustNotBePrecededBySpace.DiagnosticId);
 
@@ -41,14 +45,16 @@ namespace StyleCop.Analyzers.SpacingRules
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var syntaxRoot
-                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                  .ConfigureAwait(false);
+                        var syntaxRoot =
+                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                .ConfigureAwait(false);
 
-                        foreach (var diagnostic in context.Diagnostics) {
+                        foreach (var diagnostic in context.Diagnostics)
+                        {
                                 if (!(syntaxRoot.FindNode(
                                         diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                                        : true) is NullableTypeSyntax nullableType)) {
+                                        : true) is NullableTypeSyntax nullableType))
+                                {
                                         continue;
                                 }
 
@@ -57,14 +63,16 @@ namespace StyleCop.Analyzers.SpacingRules
                                 var triviaList = precedingToken.TrailingTrivia.AddRange(
                                     questionToken.LeadingTrivia);
 
-                                if (triviaList.Any(UnsupportedTriviaKind)) {
+                                if (triviaList.Any(UnsupportedTriviaKind))
+                                {
                                         // cannot only automatically fix multiline comments (/* ...
                                         // */)
                                         continue;
                                 }
 
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(SpacingResources.SA1018CodeFix,
+                                    CodeAction.Create(
+                                        SpacingResources.SA1018CodeFix,
                                         cancellationToken => GetTransformedDocumentAsync(
                                             context.Document, diagnostic, cancellationToken),
                                         nameof(SA1018CodeFixProvider)),
@@ -74,7 +82,8 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 private static bool UnsupportedTriviaKind(SyntaxTrivia trivia)
                 {
-                        switch (trivia.Kind()) {
+                        switch (trivia.Kind())
+                        {
                         case SyntaxKind.WhitespaceTrivia:
                         case SyntaxKind.EndOfLineTrivia:
                         case SyntaxKind.MultiLineCommentTrivia:
@@ -96,20 +105,20 @@ namespace StyleCop.Analyzers.SpacingRules
                         var questionToken = nullableType.QuestionToken;
                         var precedingToken = questionToken.GetPreviousToken();
 
-                        var triviaList
-                            = precedingToken.TrailingTrivia.AddRange(questionToken.LeadingTrivia);
-                        var correctedTriviaList
-                            = triviaList.Where(t => !t.IsKind(SyntaxKind.WhitespaceTrivia)
-                                    && !t.IsKind(SyntaxKind.EndOfLineTrivia));
+                        var triviaList =
+                            precedingToken.TrailingTrivia.AddRange(questionToken.LeadingTrivia);
+                        var correctedTriviaList =
+                            triviaList.Where(t => !t.IsKind(SyntaxKind.WhitespaceTrivia) &&
+                                                  !t.IsKind(SyntaxKind.EndOfLineTrivia));
 
                         var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
-                                    [precedingToken]
-                                = precedingToken.WithTrailingTrivia(correctedTriviaList),
+                                [precedingToken] =
+                                    precedingToken.WithTrailingTrivia(correctedTriviaList),
                                 [ questionToken ] = questionToken.WithLeadingTrivia(),
                         };
 
-                        var newSyntaxRoot
-                            = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]);
+                        var newSyntaxRoot =
+                            syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]);
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

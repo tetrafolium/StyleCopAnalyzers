@@ -7,23 +7,25 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ILabeledOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.ILabeledOperation";
+        internal readonly struct ILabeledOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.ILabeledOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ILabelSymbol> LabelAccessor;
                 private static readonly Func<IOperation, IOperation> OperationAccessor;
                 private readonly IOperation operation;
                 static ILabeledOperationWrapper()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(ILabeledOperationWrapper));
-                        LabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
-                            ILabelSymbol>(WrappedType, nameof(Label));
-                        OperationAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(Operation));
+                        WrappedType =
+                            OperationWrapperHelper.GetWrappedType(typeof(ILabeledOperationWrapper));
+                        LabelAccessor =
+                            LightupHelpers
+                                .CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
+                                    WrappedType, nameof(Label));
+                        OperationAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Operation));
                 }
 
                 private ILabeledOperationWrapper(IOperation operation)
@@ -37,11 +39,13 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation Operation => OperationAccessor(this.WrappedOperation);
                 public static ILabeledOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -51,8 +55,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

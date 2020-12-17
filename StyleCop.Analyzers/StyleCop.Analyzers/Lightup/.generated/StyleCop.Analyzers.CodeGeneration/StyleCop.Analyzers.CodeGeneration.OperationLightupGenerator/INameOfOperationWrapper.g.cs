@@ -7,20 +7,20 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct INameOfOperationWrapper : IOperationWrapper {
-                internal const string WrappedTypeName
-                    = "Microsoft.CodeAnalysis.Operations.INameOfOperation";
+        internal readonly struct INameOfOperationWrapper : IOperationWrapper
+        {
+                internal const string WrappedTypeName =
+                    "Microsoft.CodeAnalysis.Operations.INameOfOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ArgumentAccessor;
                 private readonly IOperation operation;
                 static INameOfOperationWrapper()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(INameOfOperationWrapper));
-                        ArgumentAccessor
-                            = LightupHelpers
-                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                      WrappedType, nameof(Argument));
+                        WrappedType =
+                            OperationWrapperHelper.GetWrappedType(typeof(INameOfOperationWrapper));
+                        ArgumentAccessor =
+                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                WrappedType, nameof(Argument));
                 }
 
                 private INameOfOperationWrapper(IOperation operation)
@@ -33,11 +33,13 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation Argument => ArgumentAccessor(this.WrappedOperation);
                 public static INameOfOperationWrapper FromOperation(IOperation operation)
                 {
-                        if (operation == null) {
+                        if (operation == null)
+                        {
                                 return default;
                         }
 
-                        if (!IsInstance(operation)) {
+                        if (!IsInstance(operation))
+                        {
                                 throw new InvalidCastException(
                                     $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
@@ -47,8 +49,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null
-                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null &&
+                               LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }
