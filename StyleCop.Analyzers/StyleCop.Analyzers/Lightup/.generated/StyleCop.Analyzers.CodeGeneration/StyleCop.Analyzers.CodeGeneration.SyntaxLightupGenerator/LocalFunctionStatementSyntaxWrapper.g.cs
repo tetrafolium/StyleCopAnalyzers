@@ -28,25 +28,28 @@ namespace StyleCop.Analyzers.Lightup {
                 private static readonly Func<StatementSyntax, ArrowExpressionClauseSyntax>
                     ExpressionBodyAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken> SemicolonTokenAccessor;
-                private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>,
-                                             StatementSyntax> WithAttributeListsAccessor;
+                private static readonly
+                    Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax>
+                        WithAttributeListsAccessor;
                 private static readonly Func<StatementSyntax, SyntaxTokenList, StatementSyntax>
                     WithModifiersAccessor;
                 private static readonly Func<StatementSyntax, TypeSyntax, StatementSyntax>
                     WithReturnTypeAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax>
                     WithIdentifierAccessor;
-                private static readonly Func<StatementSyntax, TypeParameterListSyntax,
-                                             StatementSyntax> WithTypeParameterListAccessor;
+                private static readonly
+                    Func<StatementSyntax, TypeParameterListSyntax, StatementSyntax>
+                        WithTypeParameterListAccessor;
                 private static readonly Func<StatementSyntax, ParameterListSyntax, StatementSyntax>
                     WithParameterListAccessor;
-                private static readonly
-                    Func<StatementSyntax, SyntaxList<TypeParameterConstraintClauseSyntax>,
-                         StatementSyntax> WithConstraintClausesAccessor;
+                private static readonly Func<StatementSyntax,
+                                             SyntaxList<TypeParameterConstraintClauseSyntax>,
+                                             StatementSyntax> WithConstraintClausesAccessor;
                 private static readonly Func<StatementSyntax, BlockSyntax, StatementSyntax>
                     WithBodyAccessor;
-                private static readonly Func<StatementSyntax, ArrowExpressionClauseSyntax,
-                                             StatementSyntax> WithExpressionBodyAccessor;
+                private static readonly
+                    Func<StatementSyntax, ArrowExpressionClauseSyntax, StatementSyntax>
+                        WithExpressionBodyAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax>
                     WithSemicolonTokenAccessor;
 

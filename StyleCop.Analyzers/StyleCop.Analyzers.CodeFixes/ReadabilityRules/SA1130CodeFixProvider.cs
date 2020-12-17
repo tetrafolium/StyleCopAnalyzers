@@ -70,7 +70,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static SyntaxNode ReplaceWithLambda(
-                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod) {
+                    SemanticModel semanticModel,
+                    AnonymousMethodExpressionSyntax anonymousMethod) {
                         var parameterList = anonymousMethod.ParameterList;
                         SyntaxNode lambdaExpression;
                         SyntaxToken arrowToken;
@@ -179,7 +180,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static ImmutableArray<string> GetMethodInvocationArgumentList(
-                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod) {
+                    SemanticModel semanticModel,
+                    AnonymousMethodExpressionSyntax anonymousMethod) {
                         var argumentSyntax = (ArgumentSyntax) anonymousMethod.Parent;
                         var argumentListSyntax = (BaseArgumentListSyntax) argumentSyntax.Parent;
                         var originalInvocableExpression = argumentListSyntax.Parent;
@@ -194,7 +196,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static ImmutableArray<string> GetEqualsArgumentList(
-                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod) {
+                    SemanticModel semanticModel,
+                    AnonymousMethodExpressionSyntax anonymousMethod) {
                         var equalsValueClauseSyntax =
                             (EqualsValueClauseSyntax) anonymousMethod.Parent;
                         var variableDeclaration =
@@ -225,7 +228,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static ImmutableArray<string> GetMemberReturnTypeArgumentList(
-                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod) {
+                    SemanticModel semanticModel,
+                    AnonymousMethodExpressionSyntax anonymousMethod) {
                         var enclosingSymbol =
                             semanticModel.GetEnclosingSymbol(anonymousMethod.Parent.SpanStart);
                         return !(((IMethodSymbol) enclosingSymbol)
@@ -237,7 +241,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static List<ParameterSyntax> GenerateUniqueParameterNames(
-                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod,
+                    SemanticModel semanticModel,
+                    AnonymousMethodExpressionSyntax anonymousMethod,
                     ImmutableArray<string> argumentNames) {
                         var parameters = new List<ParameterSyntax>();
 
@@ -294,7 +299,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
@@ -321,7 +328,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             ReadabilityResources.SA1130CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 var syntaxRoot =
                                     await document

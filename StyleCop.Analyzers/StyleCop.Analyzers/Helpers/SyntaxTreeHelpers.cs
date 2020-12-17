@@ -73,7 +73,8 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 internal static bool ContainsUsingAlias(
-                    this SyntaxTree tree, ConcurrentDictionary<SyntaxTree, bool> cache) {
+                    this SyntaxTree tree,
+                    ConcurrentDictionary<SyntaxTree, bool> cache) {
                         if (tree == null) {
                                 return false;
                         }

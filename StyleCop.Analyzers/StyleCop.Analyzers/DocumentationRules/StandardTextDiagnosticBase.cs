@@ -67,7 +67,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <returns>A <see cref="MatchResult"/> describing the result of the
                 /// analysis.</returns>
                 protected static MatchResult HandleDeclaration(
-                    SyntaxNodeAnalysisContext context, string firstTextPart, string secondTextPart,
+                    SyntaxNodeAnalysisContext context,
+                    string firstTextPart,
+                    string secondTextPart,
                     DiagnosticDescriptor diagnosticDescriptor) {
                         var declarationSyntax = (BaseMethodDeclarationSyntax) context.Node;
                         var documentationStructure =
@@ -169,7 +171,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static bool SeeTagIsCorrect(
-                    SyntaxNodeAnalysisContext context, XmlEmptyElementSyntax classReferencePart,
+                    SyntaxNodeAnalysisContext context,
+                    XmlEmptyElementSyntax classReferencePart,
                     BaseMethodDeclarationSyntax constructorDeclarationSyntax) {
                         XmlCrefAttributeSyntax crefAttribute =
                             XmlCommentHelper.GetFirstAttributeOrDefault<XmlCrefAttributeSyntax>(
@@ -192,7 +195,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static bool SeeTagIsCorrect(
-                    SyntaxNodeAnalysisContext context, XElement classReferencePart,
+                    SyntaxNodeAnalysisContext context,
+                    XElement classReferencePart,
                     BaseMethodDeclarationSyntax constructorDeclarationSyntax) {
                         var crefAttribute =
                             classReferencePart.Attribute(XmlCommentHelper.CrefArgumentName);
@@ -220,7 +224,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return Equals(actualSymbol.OriginalDefinition, expectedSymbol);
                 }
 
-                private static bool TextPartsMatch(string firstText, string secondText,
+                private static bool TextPartsMatch(string firstText,
+                                                   string secondText,
                                                    XmlTextSyntax firstTextPart,
                                                    XmlTextSyntax secondTextPart) {
                         string firstTextPartText =
@@ -236,8 +241,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return secondTextPartText.StartsWith(secondText, StringComparison.Ordinal);
                 }
 
-                private static bool TextPartsMatch(string firstText, string secondText,
-                                                   XText firstTextPart, XText secondTextPart) {
+                private static bool TextPartsMatch(string firstText,
+                                                   string secondText,
+                                                   XText firstTextPart,
+                                                   XText secondTextPart) {
                         string firstTextPartText = firstTextPart.Value.TrimStart();
                         if (!string.Equals(firstText, firstTextPartText,
                                            StringComparison.Ordinal)) {

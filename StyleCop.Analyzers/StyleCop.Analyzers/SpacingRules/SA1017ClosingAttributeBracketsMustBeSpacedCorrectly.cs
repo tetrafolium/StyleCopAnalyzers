@@ -28,9 +28,10 @@ namespace StyleCop.Analyzers.SpacingRules {
                 public const string DiagnosticId = "SA1017";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1017.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1017Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1017Title),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(SpacingResources.SA1017MessageFormat),
                                                   SpacingResources.ResourceManager,
@@ -40,10 +41,15 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                   SpacingResources.ResourceManager,
                                                   typeof(SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.SpacingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
                     HandleSyntaxTree;

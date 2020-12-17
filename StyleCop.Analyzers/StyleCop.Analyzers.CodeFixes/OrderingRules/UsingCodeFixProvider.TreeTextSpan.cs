@@ -22,7 +22,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         /// <param name="start">The start position for the span.</param>
                         /// <param name="end">The end position for the span.</param>
                         /// <param name="children">The children of the span.</param>
-                        internal TreeTextSpan(int start, int end,
+                        internal TreeTextSpan(int start,
+                                              int end,
                                               ImmutableArray<TreeTextSpan> children) {
                                 this.Start = start;
                                 this.End = end;

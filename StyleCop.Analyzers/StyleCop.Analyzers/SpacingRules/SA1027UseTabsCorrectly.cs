@@ -28,9 +28,10 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1027.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1027Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1027Title),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(SpacingResources.SA1027MessageFormat),
                                                   SpacingResources.ResourceManager,
@@ -40,22 +41,29 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                   SpacingResources.ResourceManager,
                                                   typeof(SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.SpacingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings>
                     SyntaxTreeAction = HandleSyntaxTree;
 
                 private static readonly ImmutableDictionary<string, string>
-                    ConvertToTabsProperties = ImmutableDictionary.Create<string, string>().SetItem(
-                        BehaviorKey, ConvertToTabsBehavior);
+                    ConvertToTabsProperties =
+                        ImmutableDictionary.Create<string, string>().SetItem(BehaviorKey,
+                                                                             ConvertToTabsBehavior);
 
                 private static readonly ImmutableDictionary<string, string>
                     ConvertToSpacesProperties =
                         ImmutableDictionary.Create<string, string>().SetItem(
-                            BehaviorKey, ConvertToSpacesBehavior);
+                            BehaviorKey,
+                            ConvertToSpacesBehavior);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -82,7 +90,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static void ReportIncorrectTabUsage(
-                    SyntaxTreeAnalysisContext context, IndentationSettings indentationSettings,
+                    SyntaxTreeAnalysisContext context,
+                    IndentationSettings indentationSettings,
                     ImmutableArray<TextSpan> excludedSpans) {
                         SyntaxTree syntaxTree = context.Tree;
                         SourceText sourceText = syntaxTree.GetText(context.CancellationToken);
@@ -180,7 +189,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static bool LocateExcludedSpans(
-                    SyntaxNode root, out ImmutableArray<TextSpan> excludedSpans) {
+                    SyntaxNode root,
+                    out ImmutableArray<TextSpan> excludedSpans) {
                         ImmutableArray<TextSpan>.Builder builder =
                             ImmutableArray.CreateBuilder<TextSpan>();
 

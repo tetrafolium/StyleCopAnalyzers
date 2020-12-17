@@ -6,9 +6,10 @@ namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal static class ConstructorDeclarationSyntaxExtensions {
-                private static readonly
-                    Func<ConstructorDeclarationSyntax, ArrowExpressionClauseSyntax,
-                         ConstructorDeclarationSyntax> WithExpressionBodyAccessor;
+                private static readonly Func<ConstructorDeclarationSyntax,
+                                             ArrowExpressionClauseSyntax,
+                                             ConstructorDeclarationSyntax>
+                    WithExpressionBodyAccessor;
 
                 static ConstructorDeclarationSyntaxExtensions() {
                         WithExpressionBodyAccessor =

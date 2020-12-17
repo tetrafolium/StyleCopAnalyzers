@@ -9,8 +9,9 @@ namespace StyleCop.Analyzers.Lightup {
         internal static class UsingStatementSyntaxExtensions {
                 private static readonly Func<UsingStatementSyntax, SyntaxToken>
                     AwaitKeywordAccessor;
-                private static readonly Func<UsingStatementSyntax, SyntaxToken,
-                                             UsingStatementSyntax> WithAwaitKeywordAccessor;
+                private static readonly
+                    Func<UsingStatementSyntax, SyntaxToken, UsingStatementSyntax>
+                        WithAwaitKeywordAccessor;
 
                 static UsingStatementSyntaxExtensions() {
                         AwaitKeywordAccessor =
@@ -28,7 +29,8 @@ namespace StyleCop.Analyzers.Lightup {
                 }
 
                 public static UsingStatementSyntax WithAwaitKeyword(
-                    this UsingStatementSyntax syntax, SyntaxToken awaitKeyword) {
+                    this UsingStatementSyntax syntax,
+                    SyntaxToken awaitKeyword) {
                         return WithAwaitKeywordAccessor(syntax, awaitKeyword);
                 }
         }

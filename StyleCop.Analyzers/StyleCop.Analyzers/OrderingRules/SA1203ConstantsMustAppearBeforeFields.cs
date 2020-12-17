@@ -29,9 +29,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                 public const string DiagnosticId = "SA1203";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1203.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(OrderingResources.SA1203Title), OrderingResources.ResourceManager,
-                    typeof(OrderingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1203Title),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(OrderingResources.SA1203MessageFormat),
                                                   OrderingResources.ResourceManager,
@@ -41,10 +42,15 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                   OrderingResources.ResourceManager,
                                                   typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.OrderingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
                     ImmutableArray.Create(SyntaxKind.ClassDeclaration,

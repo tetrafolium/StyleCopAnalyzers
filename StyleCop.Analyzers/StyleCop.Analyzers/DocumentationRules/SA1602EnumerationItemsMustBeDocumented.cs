@@ -42,22 +42,29 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public const string DiagnosticId = "SA1602";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1602.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1602Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1602Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1602MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1602Description),
                                                   DocumentationResources.ResourceManager,
                                                   typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     EnumMemberDeclarationAction = Analyzer.HandleEnumMemberDeclaration;
@@ -77,7 +84,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 private static class Analyzer {
                         public static void HandleEnumMemberDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }

@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Helpers {
                 /// as a <see cref="BaseTypeDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> BaseTypeDeclaration { get; }
-                = ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
-                                        SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration,
+                = ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                        SyntaxKind.StructDeclaration,
+                                        SyntaxKind.InterfaceDeclaration,
+                                        SyntaxKind.EnumDeclaration,
                                         SyntaxKindEx.RecordDeclaration);
 
                 /// <summary>
@@ -30,7 +32,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// as a <see cref="TypeDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> TypeDeclaration { get; }
-                = ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
+                = ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                        SyntaxKind.StructDeclaration,
                                         SyntaxKind.InterfaceDeclaration,
                                         SyntaxKindEx.RecordDeclaration);
 
@@ -55,10 +58,11 @@ namespace StyleCop.Analyzers.Helpers {
                 /// as a <see cref="BaseMethodDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> BaseMethodDeclaration { get; }
-                = ImmutableArray.Create(
-                    SyntaxKind.MethodDeclaration, SyntaxKind.ConstructorDeclaration,
-                    SyntaxKind.DestructorDeclaration, SyntaxKind.OperatorDeclaration,
-                    SyntaxKind.ConversionOperatorDeclaration);
+                = ImmutableArray.Create(SyntaxKind.MethodDeclaration,
+                                        SyntaxKind.ConstructorDeclaration,
+                                        SyntaxKind.DestructorDeclaration,
+                                        SyntaxKind.OperatorDeclaration,
+                                        SyntaxKind.ConversionOperatorDeclaration);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -69,7 +73,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// as a <see cref="BasePropertyDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> BasePropertyDeclaration { get; }
-                = ImmutableArray.Create(SyntaxKind.PropertyDeclaration, SyntaxKind.EventDeclaration,
+                = ImmutableArray.Create(SyntaxKind.PropertyDeclaration,
+                                        SyntaxKind.EventDeclaration,
                                         SyntaxKind.IndexerDeclaration);
 
                 /// <summary>
@@ -81,10 +86,11 @@ namespace StyleCop.Analyzers.Helpers {
                 /// as an <see cref="AccessorDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> AccessorDeclaration { get; }
-                = ImmutableArray.Create(
-                    SyntaxKind.GetAccessorDeclaration, SyntaxKind.SetAccessorDeclaration,
-                    SyntaxKind.AddAccessorDeclaration, SyntaxKind.RemoveAccessorDeclaration,
-                    SyntaxKind.UnknownAccessorDeclaration);
+                = ImmutableArray.Create(SyntaxKind.GetAccessorDeclaration,
+                                        SyntaxKind.SetAccessorDeclaration,
+                                        SyntaxKind.AddAccessorDeclaration,
+                                        SyntaxKind.RemoveAccessorDeclaration,
+                                        SyntaxKind.UnknownAccessorDeclaration);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -192,8 +198,10 @@ namespace StyleCop.Analyzers.Helpers {
                 /// integer literals.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> IntegerLiteralKeyword { get; }
-                = ImmutableArray.Create(SyntaxKind.IntKeyword, SyntaxKind.LongKeyword,
-                                        SyntaxKind.ULongKeyword, SyntaxKind.UIntKeyword);
+                = ImmutableArray.Create(SyntaxKind.IntKeyword,
+                                        SyntaxKind.LongKeyword,
+                                        SyntaxKind.ULongKeyword,
+                                        SyntaxKind.UIntKeyword);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which represent keywords of
@@ -204,7 +212,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// literals.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> RealLiteralKeyword { get; }
-                = ImmutableArray.Create(SyntaxKind.FloatKeyword, SyntaxKind.DoubleKeyword,
+                = ImmutableArray.Create(SyntaxKind.FloatKeyword,
+                                        SyntaxKind.DoubleKeyword,
                                         SyntaxKind.DecimalKeyword);
         }
 }

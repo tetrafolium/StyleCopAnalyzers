@@ -32,22 +32,29 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public const string DiagnosticId = "SA1611";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1611.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1611Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1611Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1611MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1611Description),
                                                   DocumentationResources.ResourceManager,
                                                   typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 public SA1611ElementParametersMustBeDocumented()
                     : base(matchElementName
@@ -88,8 +95,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 /// <inheritdoc/>
                 protected override void HandleCompleteDocumentation(
-                    SyntaxNodeAnalysisContext context, bool needsComment,
-                    XElement completeDocumentation, params Location[] diagnosticLocations) {
+                    SyntaxNodeAnalysisContext context,
+                    bool needsComment,
+                    XElement completeDocumentation,
+                    params Location[] diagnosticLocations) {
                         if (!needsComment) {
                                 // Omitting documentation for a parameter is allowed for this
                                 // element.
@@ -124,7 +133,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static void ReportMissingParameters(
-                    SyntaxNodeAnalysisContext context, IEnumerable<ParameterSyntax> parameterList,
+                    SyntaxNodeAnalysisContext context,
+                    IEnumerable<ParameterSyntax> parameterList,
                     IEnumerable<string> documentationParameterNames) {
                         foreach (var parameter in parameterList) {
                                 if (!documentationParameterNames.Any(

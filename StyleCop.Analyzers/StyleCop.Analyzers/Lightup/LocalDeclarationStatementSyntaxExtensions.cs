@@ -12,10 +12,12 @@ namespace StyleCop.Analyzers.Lightup {
                 private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken>
                     UsingKeywordAccessor;
 
-                private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken,
+                private static readonly Func<LocalDeclarationStatementSyntax,
+                                             SyntaxToken,
                                              LocalDeclarationStatementSyntax>
                     WithAwaitKeywordAccessor;
-                private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken,
+                private static readonly Func<LocalDeclarationStatementSyntax,
+                                             SyntaxToken,
                                              LocalDeclarationStatementSyntax>
                     WithUsingKeywordAccessor;
 
@@ -46,12 +48,14 @@ namespace StyleCop.Analyzers.Lightup {
                 }
 
                 public static LocalDeclarationStatementSyntax WithAwaitKeyword(
-                    this LocalDeclarationStatementSyntax syntax, SyntaxToken awaitKeyword) {
+                    this LocalDeclarationStatementSyntax syntax,
+                    SyntaxToken awaitKeyword) {
                         return WithAwaitKeywordAccessor(syntax, awaitKeyword);
                 }
 
                 public static LocalDeclarationStatementSyntax WithUsingKeyword(
-                    this LocalDeclarationStatementSyntax syntax, SyntaxToken usingKeyword) {
+                    this LocalDeclarationStatementSyntax syntax,
+                    SyntaxToken usingKeyword) {
                         return WithUsingKeywordAccessor(syntax, usingKeyword);
                 }
         }

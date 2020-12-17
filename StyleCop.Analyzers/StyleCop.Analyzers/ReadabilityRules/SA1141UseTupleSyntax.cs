@@ -21,9 +21,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1141.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1141Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1141Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(ReadabilityResources.SA1141MessageFormat),
                                                   ReadabilityResources.ResourceManager,
@@ -52,10 +53,15 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 private static readonly Action<SyntaxNodeAnalysisContext> CastExpressionAction =
                     HandleCastExpression;
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.ReadabilityRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly SymbolDisplayFormat DisplayFormat =
                     SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(
@@ -252,7 +258,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static bool IsValueTupleWithLanguageRepresentation(
-                    SyntaxNodeAnalysisContext context, ExpressionSyntax syntax) {
+                    SyntaxNodeAnalysisContext context,
+                    ExpressionSyntax syntax) {
                         var symbolInfo =
                             context.SemanticModel.GetSymbolInfo(syntax, context.CancellationToken);
                         return symbolInfo.Symbol is INamedTypeSymbol typeSymbol &&

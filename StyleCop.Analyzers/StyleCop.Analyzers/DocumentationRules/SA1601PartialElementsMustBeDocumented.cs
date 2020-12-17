@@ -76,25 +76,33 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public const string DiagnosticId = "SA1601";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1601.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1601Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1601Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1601MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1601Description),
                                                   DocumentationResources.ResourceManager,
                                                   typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> BaseTypeDeclarationKinds =
-                    ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
+                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                          SyntaxKind.StructDeclaration,
                                           SyntaxKind.InterfaceDeclaration);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
@@ -119,7 +127,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 private static class Analyzer {
                         public static void HandleBaseTypeDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -149,7 +158,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         public static void HandleMethodDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }

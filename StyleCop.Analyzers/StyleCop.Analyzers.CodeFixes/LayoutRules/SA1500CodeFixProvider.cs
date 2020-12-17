@@ -48,7 +48,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -234,7 +236,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static int DetermineIndentationSteps(
-                    IndentationSettings indentationSettings, SyntaxToken token) {
+                    IndentationSettings indentationSettings,
+                    SyntaxToken token) {
                         // For a closing brace use the indentation of the corresponding opening
                         // brace
                         if (token.IsKind(SyntaxKind.CloseBraceToken)) {
@@ -276,7 +279,8 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                 private static void AddReplacement(
                     Dictionary<SyntaxToken, SyntaxToken> tokenReplacements,
-                    SyntaxToken originalToken, SyntaxToken replacementToken) {
+                    SyntaxToken originalToken,
+                    SyntaxToken replacementToken) {
                         if (tokenReplacements.ContainsKey(originalToken)) {
                                 // This will only happen when a single keyword (like else) has
                                 // invalid brace tokens before and after it.
@@ -295,7 +299,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         protected override string CodeActionTitle => LayoutResources.SA1500CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

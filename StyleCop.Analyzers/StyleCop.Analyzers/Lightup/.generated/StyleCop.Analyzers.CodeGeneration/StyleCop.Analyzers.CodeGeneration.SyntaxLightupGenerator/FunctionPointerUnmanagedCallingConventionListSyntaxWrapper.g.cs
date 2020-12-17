@@ -16,10 +16,11 @@ namespace StyleCop.Analyzers.Lightup {
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken>
                     OpenBracketTokenAccessor;
-                private static readonly Func<
-                    CSharpSyntaxNode, SeparatedSyntaxListWrapper<
-                                          FunctionPointerUnmanagedCallingConventionSyntaxWrapper>>
-                    CallingConventionsAccessor;
+                private static readonly
+                    Func<CSharpSyntaxNode,
+                         SeparatedSyntaxListWrapper<
+                             FunctionPointerUnmanagedCallingConventionSyntaxWrapper>>
+                        CallingConventionsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken>
                     CloseBracketTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>

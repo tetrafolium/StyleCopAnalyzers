@@ -26,11 +26,13 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1620MissingMessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1620MissingMessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1620WrongOrderMessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1620WrongOrderMessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1620Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1620Description),
                                                   DocumentationResources.ResourceManager,
@@ -46,7 +48,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1621MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1621MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1621Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1621Description),
                                                   DocumentationResources.ResourceManager,
@@ -62,7 +65,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1622MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1622MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1622Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1622Description),
                                                   DocumentationResources.ResourceManager,
@@ -82,10 +86,14 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1620.</value>
                 public static DiagnosticDescriptor SA1620MissingTypeParameterDescriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1620DiagnosticId, SA1620Title, SA1620MissingMessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1620Description, SA1620HelpLink);
+                = new DiagnosticDescriptor(SA1620DiagnosticId,
+                                           SA1620Title,
+                                           SA1620MissingMessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1620Description,
+                                           SA1620HelpLink);
 
                 /// <summary>
                 /// Gets the descriptor for SA1620, where the typeparam tags is not ordered
@@ -93,34 +101,47 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1620.</value>
                 public static DiagnosticDescriptor SA1620WrongOrderDescriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1620DiagnosticId, SA1620Title, SA1620WrongOrderMessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1620Description, SA1620HelpLink);
+                = new DiagnosticDescriptor(SA1620DiagnosticId,
+                                           SA1620Title,
+                                           SA1620WrongOrderMessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1620Description,
+                                           SA1620HelpLink);
 
                 /// <summary>
                 /// Gets the descriptor for SA1621.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1621.</value>
                 public static DiagnosticDescriptor SA1621Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1621DiagnosticId, SA1621Title, SA1621MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1621Description, SA1621HelpLink);
+                = new DiagnosticDescriptor(SA1621DiagnosticId,
+                                           SA1621Title,
+                                           SA1621MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1621Description,
+                                           SA1621HelpLink);
 
                 /// <summary>
                 /// Gets the descriptor for SA1622.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1621.</value>
                 public static DiagnosticDescriptor SA1622Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1622DiagnosticId, SA1622Title, SA1622MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1622Description, SA1622HelpLink);
+                = new DiagnosticDescriptor(SA1622DiagnosticId,
+                                           SA1622Title,
+                                           SA1622MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1622Description,
+                                           SA1622HelpLink);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
-                = ImmutableArray.Create(SA1620MissingTypeParameterDescriptor, SA1621Descriptor,
+                = ImmutableArray.Create(SA1620MissingTypeParameterDescriptor,
+                                        SA1621Descriptor,
                                         SA1622Descriptor);
 
                 /// <inheritdoc/>
@@ -261,8 +282,11 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static void HandleTypeParamElement(
-                    SyntaxNodeAnalysisContext context, string documentedParameterName, int index,
-                    TypeParameterListSyntax typeParameterList, Location locationToReport) {
+                    SyntaxNodeAnalysisContext context,
+                    string documentedParameterName,
+                    int index,
+                    TypeParameterListSyntax typeParameterList,
+                    Location locationToReport) {
                         if (string.IsNullOrWhiteSpace(documentedParameterName)) {
                                 context.ReportDiagnostic(
                                     Diagnostic.Create(SA1621Descriptor, locationToReport));

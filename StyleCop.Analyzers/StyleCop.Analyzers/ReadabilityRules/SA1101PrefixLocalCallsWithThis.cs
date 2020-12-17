@@ -43,9 +43,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 public const string DiagnosticId = "SA1101";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1101.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1101Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1101Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(ReadabilityResources.SA1101MessageFormat),
                                                   ReadabilityResources.ResourceManager,
@@ -55,10 +56,15 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                   ReadabilityResources.ResourceManager,
                                                   typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.ReadabilityRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     MemberAccessExpressionAction = HandleMemberAccessExpression;

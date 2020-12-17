@@ -50,7 +50,9 @@ namespace StyleCop.Analyzers.NamingRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, string fixedTupleElementName,
+                    Document document,
+                    Diagnostic diagnostic,
+                    string fixedTupleElementName,
                     CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);

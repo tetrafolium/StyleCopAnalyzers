@@ -149,7 +149,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                 }
 
                 public static void ClearAndFree<TKey, TValue>(
-                    this ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> map) {
+                    this ObjectPool<Dictionary<TKey, TValue>> pool,
+                    Dictionary<TKey, TValue> map) {
                         if (map == null) {
                                 return;
                         }

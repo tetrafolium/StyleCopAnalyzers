@@ -27,36 +27,48 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public const string DiagnosticId = "SA1648";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1648.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1648Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1648Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1648MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1648Description),
                                                   DocumentationResources.ResourceManager,
                                                   typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> HandledTypeLikeDeclarationKinds =
-                    ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
+                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                          SyntaxKind.StructDeclaration,
                                           SyntaxKind.InterfaceDeclaration,
                                           SyntaxKind.EnumDeclaration,
                                           SyntaxKind.DelegateDeclaration);
 
                 private static readonly ImmutableArray<SyntaxKind> MemberDeclarationKinds =
-                    ImmutableArray.Create(
-                        SyntaxKind.ConstructorDeclaration, SyntaxKind.DestructorDeclaration,
-                        SyntaxKind.EventDeclaration, SyntaxKind.MethodDeclaration,
-                        SyntaxKind.PropertyDeclaration, SyntaxKind.EventFieldDeclaration,
-                        SyntaxKind.FieldDeclaration, SyntaxKind.IndexerDeclaration,
-                        SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
+                    ImmutableArray.Create(SyntaxKind.ConstructorDeclaration,
+                                          SyntaxKind.DestructorDeclaration,
+                                          SyntaxKind.EventDeclaration,
+                                          SyntaxKind.MethodDeclaration,
+                                          SyntaxKind.PropertyDeclaration,
+                                          SyntaxKind.EventFieldDeclaration,
+                                          SyntaxKind.FieldDeclaration,
+                                          SyntaxKind.IndexerDeclaration,
+                                          SyntaxKind.OperatorDeclaration,
+                                          SyntaxKind.ConversionOperatorDeclaration);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     BaseTypeLikeDeclarationAction = HandleBaseTypeLikeDeclaration;

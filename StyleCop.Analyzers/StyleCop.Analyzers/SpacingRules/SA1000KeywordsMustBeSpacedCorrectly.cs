@@ -44,9 +44,10 @@ namespace StyleCop.Analyzers.SpacingRules {
                 public const string DiagnosticId = "SA1000";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1000.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1000Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1000Title),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(SpacingResources.SA1000MessageFormat),
                                                   SpacingResources.ResourceManager,
@@ -56,10 +57,15 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                   SpacingResources.ResourceManager,
                                                   typeof(SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.SpacingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
                     HandleSyntaxTree;
@@ -249,7 +255,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                     HandleRequiredSpaceToken(ReportSyntaxNodeDiagnostic, ref context, token);
 
                 private static void HandleRequiredSpaceToken<TContext>(
-                    ReportDiagnosticCallback<TContext> reportDiagnostic, ref TContext context,
+                    ReportDiagnosticCallback<TContext> reportDiagnostic,
+                    ref TContext context,
                     SyntaxToken token) {
                         if (token.IsMissing) {
                                 return;
@@ -276,15 +283,18 @@ namespace StyleCop.Analyzers.SpacingRules {
                 private static void HandleDisallowedSpaceToken(
                     ref SyntaxTreeAnalysisContext context,
                     SyntaxToken token) => HandleDisallowedSpaceToken(ReportSyntaxTreeDiagnostic,
-                                                                     ref context, token);
+                                                                     ref context,
+                                                                     token);
 
                 private static void HandleDisallowedSpaceToken(
                     ref SyntaxNodeAnalysisContext context,
                     SyntaxToken token) => HandleDisallowedSpaceToken(ReportSyntaxNodeDiagnostic,
-                                                                     ref context, token);
+                                                                     ref context,
+                                                                     token);
 
                 private static void HandleDisallowedSpaceToken<TContext>(
-                    ReportDiagnosticCallback<TContext> reportDiagnostic, ref TContext context,
+                    ReportDiagnosticCallback<TContext> reportDiagnostic,
+                    ref TContext context,
                     SyntaxToken token) {
                         if (token.IsMissing || !token.HasTrailingTrivia) {
                                 return;
@@ -300,8 +310,9 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                            token.Text, " not"));
                 }
 
-                private static void HandleNewOrStackAllocKeywordToken(
-                    ref SyntaxTreeAnalysisContext context, SyntaxToken token) {
+                private static void HandleNewOrStackAllocKeywordToken(ref SyntaxTreeAnalysisContext
+                                                                          context,
+                                                                      SyntaxToken token) {
                         if (token.IsMissing) {
                                 return;
                         }

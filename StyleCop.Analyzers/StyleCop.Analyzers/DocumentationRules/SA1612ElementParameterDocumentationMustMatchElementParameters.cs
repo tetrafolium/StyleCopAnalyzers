@@ -35,9 +35,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public const string DiagnosticId = "SA1612";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1612.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1612Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1612Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1612Description),
                                                   DocumentationResources.ResourceManager,
@@ -47,23 +48,33 @@ namespace StyleCop.Analyzers.DocumentationRules {
                     MissingParamForDocumentationMessageFormat = new LocalizableResourceString(
                         nameof(
                             DocumentationResources.SA1612MissingParamForDocumentationMessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString ParamWrongOrderMessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1612ParamWrongOrderMessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor MissingParameterDescriptor =
-                    new DiagnosticDescriptor(
-                        DiagnosticId, Title, MissingParamForDocumentationMessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MissingParamForDocumentationMessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly DiagnosticDescriptor OrderDescriptor =
-                    new DiagnosticDescriptor(
-                        DiagnosticId, Title, ParamWrongOrderMessageFormat,
-                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             ParamWrongOrderMessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 public SA1612ElementParameterDocumentationMustMatchElementParameters()
                     : base(matchElementName
@@ -148,8 +159,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 /// <inheritdoc/>
                 protected override void HandleCompleteDocumentation(
-                    SyntaxNodeAnalysisContext context, bool needsComment,
-                    XElement completeDocumentation, params Location[] diagnosticLocations) {
+                    SyntaxNodeAnalysisContext context,
+                    bool needsComment,
+                    XElement completeDocumentation,
+                    params Location[] diagnosticLocations) {
                         var node = context.Node;
                         var identifier = GetIdentifier(node);
 

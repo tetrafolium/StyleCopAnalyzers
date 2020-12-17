@@ -22,17 +22,20 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
 
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1414.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1414Title),
-                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1414Title),
+                                                  MaintainabilityResources.ResourceManager,
+                                                  typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1414MessageFormat),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                        MaintainabilityResources.ResourceManager,
+                        typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1414Description),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                        MaintainabilityResources.ResourceManager,
+                        typeof(MaintainabilityResources));
 
                 private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction =
                     HandleMethodDeclaration;
@@ -47,10 +50,15 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     DelegateDeclarationAction = HandleDelegateDeclaration;
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.ReadabilityRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }

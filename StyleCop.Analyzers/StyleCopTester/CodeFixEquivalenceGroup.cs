@@ -14,7 +14,9 @@ using Microsoft.CodeAnalysis.CodeFixes;
 
 internal class CodeFixEquivalenceGroup {
         private CodeFixEquivalenceGroup(
-            string equivalenceKey, Solution solution, FixAllProvider fixAllProvider,
+            string equivalenceKey,
+            Solution solution,
+            FixAllProvider fixAllProvider,
             CodeFixProvider codeFixProvider,
             ImmutableDictionary<ProjectId, ImmutableDictionary<string, ImmutableArray<Diagnostic>>>
                 documentDiagnosticsToFix,
@@ -56,7 +58,8 @@ internal class CodeFixEquivalenceGroup {
         internal static async Task<ImmutableArray<CodeFixEquivalenceGroup>> CreateAsync(
             CodeFixProvider codeFixProvider,
             ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> allDiagnostics,
-            Solution solution, CancellationToken cancellationToken) {
+            Solution solution,
+            CancellationToken cancellationToken) {
                 var fixAllProvider = codeFixProvider.GetFixAllProvider();
                 if (fixAllProvider == null) {
                         return ImmutableArray.Create<CodeFixEquivalenceGroup>();
@@ -172,7 +175,9 @@ internal class CodeFixEquivalenceGroup {
         }
 
         private static async Task<IEnumerable<CodeAction>> GetFixesAsync(
-            Solution solution, CodeFixProvider codeFixProvider, Diagnostic diagnostic,
+            Solution solution,
+            CodeFixProvider codeFixProvider,
+            Diagnostic diagnostic,
             CancellationToken cancellationToken) {
                 List<CodeAction> codeActions = new List<CodeAction>();
 

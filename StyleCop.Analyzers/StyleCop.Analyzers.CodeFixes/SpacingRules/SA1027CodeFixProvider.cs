@@ -45,7 +45,9 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var settings = SettingsHelper.GetStyleCopSettings(
                             document.Project.AnalyzerOptions, cancellationToken);
                         SourceText sourceText =
@@ -138,7 +140,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                         protected override string CodeActionTitle => SpacingResources.SA1027CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

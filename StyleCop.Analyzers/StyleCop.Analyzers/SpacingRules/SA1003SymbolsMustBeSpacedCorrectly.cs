@@ -62,74 +62,93 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1003.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1003Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(SpacingResources.SA1003Title),
+                                                  SpacingResources.ResourceManager,
+                                                  typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatNotFollowedByComment =
                     new LocalizableResourceString(
                         nameof(SpacingResources.SA1003MessageFormatNotFollowedByComment),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                        SpacingResources.ResourceManager,
+                        typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatPrecededByWhitespace =
                     new LocalizableResourceString(
                         nameof(SpacingResources.SA1003MessageFormatPrecededByWhitespace),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                        SpacingResources.ResourceManager,
+                        typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatNotPrecededByWhitespace =
                     new LocalizableResourceString(
                         nameof(SpacingResources.SA1003MessageFormatNotPrecededByWhitespace),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                        SpacingResources.ResourceManager,
+                        typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatFollowedByWhitespace =
                     new LocalizableResourceString(
                         nameof(SpacingResources.SA1003MessageFormatFollowedByWhitespace),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                        SpacingResources.ResourceManager,
+                        typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatNotFollowedByWhitespace =
                     new LocalizableResourceString(
                         nameof(SpacingResources.SA1003MessageFormatNotFollowedByWhitespace),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                        SpacingResources.ResourceManager,
+                        typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatNotAtEndOfLine =
                     new LocalizableResourceString(
                         nameof(SpacingResources.SA1003MessageFormatNotAtEndOfLine),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                        SpacingResources.ResourceManager,
+                        typeof(SpacingResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(SpacingResources.SA1003Description),
                                                   SpacingResources.ResourceManager,
                                                   typeof(SpacingResources));
 
                 private static readonly ImmutableArray<SyntaxKind> BinaryExpressionKinds =
-                    ImmutableArray.Create(
-                        SyntaxKind.CoalesceExpression, SyntaxKind.IsExpression,
-                        SyntaxKind.AsExpression, SyntaxKind.BitwiseOrExpression,
-                        SyntaxKind.ExclusiveOrExpression, SyntaxKind.BitwiseAndExpression,
-                        SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression,
-                        SyntaxKind.LessThanExpression, SyntaxKind.LessThanOrEqualExpression,
-                        SyntaxKind.GreaterThanExpression, SyntaxKind.GreaterThanOrEqualExpression,
-                        SyntaxKind.LeftShiftExpression, SyntaxKind.RightShiftExpression,
-                        SyntaxKind.AddExpression, SyntaxKind.SubtractExpression,
-                        SyntaxKind.MultiplyExpression, SyntaxKind.DivideExpression,
-                        SyntaxKind.ModuloExpression, SyntaxKind.LogicalAndExpression,
-                        SyntaxKind.LogicalOrExpression);
+                    ImmutableArray.Create(SyntaxKind.CoalesceExpression,
+                                          SyntaxKind.IsExpression,
+                                          SyntaxKind.AsExpression,
+                                          SyntaxKind.BitwiseOrExpression,
+                                          SyntaxKind.ExclusiveOrExpression,
+                                          SyntaxKind.BitwiseAndExpression,
+                                          SyntaxKind.EqualsExpression,
+                                          SyntaxKind.NotEqualsExpression,
+                                          SyntaxKind.LessThanExpression,
+                                          SyntaxKind.LessThanOrEqualExpression,
+                                          SyntaxKind.GreaterThanExpression,
+                                          SyntaxKind.GreaterThanOrEqualExpression,
+                                          SyntaxKind.LeftShiftExpression,
+                                          SyntaxKind.RightShiftExpression,
+                                          SyntaxKind.AddExpression,
+                                          SyntaxKind.SubtractExpression,
+                                          SyntaxKind.MultiplyExpression,
+                                          SyntaxKind.DivideExpression,
+                                          SyntaxKind.ModuloExpression,
+                                          SyntaxKind.LogicalAndExpression,
+                                          SyntaxKind.LogicalOrExpression);
 
                 private static readonly ImmutableArray<SyntaxKind> PrefixUnaryExpressionKinds =
-                    ImmutableArray.Create(
-                        SyntaxKind.UnaryPlusExpression, SyntaxKind.UnaryMinusExpression,
-                        SyntaxKind.BitwiseNotExpression, SyntaxKind.LogicalNotExpression,
-                        SyntaxKind.PreIncrementExpression, SyntaxKind.PreDecrementExpression,
-                        SyntaxKind.AddressOfExpression);
+                    ImmutableArray.Create(SyntaxKind.UnaryPlusExpression,
+                                          SyntaxKind.UnaryMinusExpression,
+                                          SyntaxKind.BitwiseNotExpression,
+                                          SyntaxKind.LogicalNotExpression,
+                                          SyntaxKind.PreIncrementExpression,
+                                          SyntaxKind.PreDecrementExpression,
+                                          SyntaxKind.AddressOfExpression);
 
                 private static readonly ImmutableArray<SyntaxKind> PostfixUnaryExpressionKinds =
                     ImmutableArray.Create(SyntaxKind.PostIncrementExpression,
                                           SyntaxKind.PostDecrementExpression);
 
                 private static readonly ImmutableArray<SyntaxKind> AssignmentExpressionKinds =
-                    ImmutableArray.Create(
-                        SyntaxKind.OrAssignmentExpression, SyntaxKind.AndAssignmentExpression,
-                        SyntaxKind.ExclusiveOrAssignmentExpression,
-                        SyntaxKind.LeftShiftAssignmentExpression,
-                        SyntaxKind.RightShiftAssignmentExpression,
-                        SyntaxKind.AddAssignmentExpression, SyntaxKind.SubtractAssignmentExpression,
-                        SyntaxKind.MultiplyAssignmentExpression,
-                        SyntaxKind.DivideAssignmentExpression,
-                        SyntaxKind.ModuloAssignmentExpression,
-                        SyntaxKind.SimpleAssignmentExpression);
+                    ImmutableArray.Create(SyntaxKind.OrAssignmentExpression,
+                                          SyntaxKind.AndAssignmentExpression,
+                                          SyntaxKind.ExclusiveOrAssignmentExpression,
+                                          SyntaxKind.LeftShiftAssignmentExpression,
+                                          SyntaxKind.RightShiftAssignmentExpression,
+                                          SyntaxKind.AddAssignmentExpression,
+                                          SyntaxKind.SubtractAssignmentExpression,
+                                          SyntaxKind.MultiplyAssignmentExpression,
+                                          SyntaxKind.DivideAssignmentExpression,
+                                          SyntaxKind.ModuloAssignmentExpression,
+                                          SyntaxKind.SimpleAssignmentExpression);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     ConstructorDeclarationAction = HandleConstructorDeclaration;
@@ -162,10 +181,14 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// A diagnostic descriptor.
                 /// </value>
                 public static DiagnosticDescriptor DescriptorNotFollowedByComment { get; }
-                = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormatNotFollowedByComment,
-                    AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                = new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormatNotFollowedByComment,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <summary>
                 /// Gets the descriptor indicating that an operator should be preceded by
@@ -175,10 +198,14 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// A diagnostic descriptor.
                 /// </value>
                 public static DiagnosticDescriptor DescriptorPrecededByWhitespace { get; }
-                = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormatPrecededByWhitespace,
-                    AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                = new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormatPrecededByWhitespace,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <summary>
                 /// Gets the descriptor indicating that an operator should be preceded by
@@ -188,10 +215,14 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// A diagnostic descriptor.
                 /// </value>
                 public static DiagnosticDescriptor DescriptorNotPrecededByWhitespace { get; }
-                = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormatNotPrecededByWhitespace,
-                    AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                = new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormatNotPrecededByWhitespace,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <summary>
                 /// Gets the descriptor indicating that an operator should be followed by
@@ -201,10 +232,14 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// A diagnostic descriptor.
                 /// </value>
                 public static DiagnosticDescriptor DescriptorFollowedByWhitespace { get; }
-                = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormatFollowedByWhitespace,
-                    AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                = new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormatFollowedByWhitespace,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <summary>
                 /// Gets the descriptor indicating that an operator should be preceded by
@@ -214,10 +249,14 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// A diagnostic descriptor.
                 /// </value>
                 public static DiagnosticDescriptor DescriptorNotFollowedByWhitespace { get; }
-                = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormatNotFollowedByWhitespace,
-                    AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+                = new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormatNotFollowedByWhitespace,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <summary>
                 /// Gets the descriptor indicating that an operator should be appear at the end of a
@@ -227,10 +266,14 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// A diagnostic descriptor.
                 /// </value>
                 public static DiagnosticDescriptor DescriptorNotAtEndOfLine { get; }
-                = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormatNotAtEndOfLine, AnalyzerCategory.SpacingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                = new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormatNotAtEndOfLine,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -439,8 +482,10 @@ namespace StyleCop.Analyzers.SpacingRules {
                         CheckToken(context, arrowExpressionClause.ArrowToken, true, true, true);
                 }
 
-                private static void CheckToken(SyntaxNodeAnalysisContext context, SyntaxToken token,
-                                               bool withLeadingWhitespace, bool allowAtEndOfLine,
+                private static void CheckToken(SyntaxNodeAnalysisContext context,
+                                               SyntaxToken token,
+                                               bool withLeadingWhitespace,
+                                               bool allowAtEndOfLine,
                                                bool withTrailingWhitespace,
                                                string tokenText = null) {
                         tokenText = tokenText ?? token.Text;

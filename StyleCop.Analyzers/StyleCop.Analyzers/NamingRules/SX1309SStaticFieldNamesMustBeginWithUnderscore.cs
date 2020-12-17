@@ -37,9 +37,10 @@ namespace StyleCop.Analyzers.NamingRules {
                 public const string DiagnosticId = "SX1309S";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1309S.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(NamingResources.SX1309STitle), NamingResources.ResourceManager,
-                    typeof(NamingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(NamingResources.SX1309STitle),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(NamingResources.SX1309SMessageFormat),
                                                   NamingResources.ResourceManager,
@@ -49,10 +50,15 @@ namespace StyleCop.Analyzers.NamingRules {
                                                   NamingResources.ResourceManager,
                                                   typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.DisabledAlternative, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.NamingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.DisabledAlternative,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction =
                     HandleFieldDeclaration;

@@ -47,7 +47,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <returns>A whitespace trivia containing the proper amount of
                 /// indentation.</returns>
                 internal static SyntaxTrivia GetQueryIndentationTrivia(
-                    IndentationSettings indentationSettings, SyntaxToken token) {
+                    IndentationSettings indentationSettings,
+                    SyntaxToken token) {
                         var currentNode = token.Parent;
                         while (!currentNode.IsKind(SyntaxKind.QueryExpression)) {
                                 currentNode = currentNode.Parent;

@@ -42,9 +42,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 public const string DiagnosticId = "SA1110";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1110.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1110Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1110Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(ReadabilityResources.SA1110MessageFormat),
                                                   ReadabilityResources.ResourceManager,
@@ -54,10 +55,15 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                   ReadabilityResources.ResourceManager,
                                                   typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.ReadabilityRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction =
                     HandleMethodDeclaration;
@@ -378,7 +384,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static void CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(
-                    SyntaxNodeAnalysisContext context, SyntaxToken openToken, bool preserveLayout) {
+                    SyntaxNodeAnalysisContext context,
+                    SyntaxToken openToken,
+                    bool preserveLayout) {
                         var previousToken = openToken.GetPreviousToken();
                         if (previousToken.IsMissing) {
                                 return;

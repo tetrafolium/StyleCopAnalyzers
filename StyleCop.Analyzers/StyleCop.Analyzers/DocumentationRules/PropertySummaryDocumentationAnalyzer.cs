@@ -30,7 +30,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1623MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1623MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1623Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1623Description),
                                                   DocumentationResources.ResourceManager,
@@ -45,7 +46,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1624MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1624MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1624Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1624Description),
                                                   DocumentationResources.ResourceManager,
@@ -58,20 +60,28 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1623.</value>
                 public static DiagnosticDescriptor SA1623Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1623DiagnosticId, SA1623Title, SA1623MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1623Description, SA1623HelpLink);
+                = new DiagnosticDescriptor(SA1623DiagnosticId,
+                                           SA1623Title,
+                                           SA1623MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1623Description,
+                                           SA1623HelpLink);
 
                 /// <summary>
                 /// Gets the <see cref="DiagnosticDescriptor"/> for SA1624.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1624.</value>
                 public static DiagnosticDescriptor SA1624Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1624DiagnosticId, SA1624Title, SA1624MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1624Description, SA1624HelpLink);
+                = new DiagnosticDescriptor(SA1624DiagnosticId,
+                                           SA1624Title,
+                                           SA1624MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1624Description,
+                                           SA1624HelpLink);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -82,7 +92,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         bool needsComment, XmlNodeSyntax syntax,
+                                                         bool needsComment,
+                                                         XmlNodeSyntax syntax,
                                                          XElement completeDocumentation,
                                                          Location diagnosticLocation) {
                         var propertyDeclaration = (PropertyDeclarationSyntax) context.Node;
@@ -127,9 +138,13 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static void AnalyzeSummaryElement(
-                    SyntaxNodeAnalysisContext context, XmlNodeSyntax syntax,
-                    Location diagnosticLocation, PropertyDeclarationSyntax propertyDeclaration,
-                    string startingTextGets, string startingTextSets, string startingTextGetsOrSets,
+                    SyntaxNodeAnalysisContext context,
+                    XmlNodeSyntax syntax,
+                    Location diagnosticLocation,
+                    PropertyDeclarationSyntax propertyDeclaration,
+                    string startingTextGets,
+                    string startingTextSets,
+                    string startingTextGetsOrSets,
                     string startingTextReturns) {
                         var diagnosticProperties =
                             ImmutableDictionary.CreateBuilder<string, string>();
@@ -350,10 +365,14 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static void ReportSA1623(
-                    SyntaxNodeAnalysisContext context, Location diagnosticLocation,
-                    ImmutableDictionary<string, string>.Builder diagnosticProperties, string text,
-                    string expectedStartingText, string unexpectedStartingText1,
-                    string unexpectedStartingText2 = null, string unexpectedStartingText3 = null) {
+                    SyntaxNodeAnalysisContext context,
+                    Location diagnosticLocation,
+                    ImmutableDictionary<string, string>.Builder diagnosticProperties,
+                    string text,
+                    string expectedStartingText,
+                    string unexpectedStartingText1,
+                    string unexpectedStartingText2 = null,
+                    string unexpectedStartingText3 = null) {
                         diagnosticProperties.Add(ExpectedTextKey, expectedStartingText);
 
                         if (text.StartsWith(unexpectedStartingText1,
@@ -381,9 +400,12 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static void ReportSA1624(
-                    SyntaxNodeAnalysisContext context, Location diagnosticLocation,
+                    SyntaxNodeAnalysisContext context,
+                    Location diagnosticLocation,
                     ImmutableDictionary<string, string>.Builder diagnosticProperties,
-                    string accessor, string expectedStartingText, string startingTextToRemove) {
+                    string accessor,
+                    string expectedStartingText,
+                    string startingTextToRemove) {
                         diagnosticProperties.Add(ExpectedTextKey, expectedStartingText);
                         diagnosticProperties.Add(TextToRemoveKey, startingTextToRemove);
                         context.ReportDiagnostic(Diagnostic.Create(

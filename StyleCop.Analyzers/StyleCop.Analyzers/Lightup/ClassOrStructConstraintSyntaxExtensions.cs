@@ -27,7 +27,8 @@ namespace StyleCop.Analyzers.Lightup {
                 }
 
                 public static ClassOrStructConstraintSyntax WithQuestionToken(
-                    this ClassOrStructConstraintSyntax syntax, SyntaxToken questionToken) {
+                    this ClassOrStructConstraintSyntax syntax,
+                    SyntaxToken questionToken) {
                         return WithQuestionTokenAccessor(syntax, questionToken);
                 }
         }

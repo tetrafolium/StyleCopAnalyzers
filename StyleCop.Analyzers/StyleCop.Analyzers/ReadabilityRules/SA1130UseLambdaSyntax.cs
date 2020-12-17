@@ -24,9 +24,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1130.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1130Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1130Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(ReadabilityResources.SA1130MessageFormat),
                                                   ReadabilityResources.ResourceManager,
@@ -36,10 +37,15 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                   ReadabilityResources.ResourceManager,
                                                   typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.ReadabilityRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
@@ -133,7 +139,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static bool HandleMethodInvocation(
-                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod,
+                    SemanticModel semanticModel,
+                    AnonymousMethodExpressionSyntax anonymousMethod,
                     ArgumentSyntax argumentSyntax) {
                         // invocation -> argument list -> argument -> anonymous method
                         if (argumentSyntax?.Parent is BaseArgumentListSyntax argumentListSyntax) {

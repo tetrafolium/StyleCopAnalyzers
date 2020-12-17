@@ -15,9 +15,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 protected override string CodeActionTitle =>
                     MaintainabilityResources.SA1407SA1408CodeFix;
 
-                protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                    FixAllContext fixAllContext, Document document,
-                    ImmutableArray<Diagnostic> diagnostics) {
+                protected override async
+                    Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                           Document document,
+                                                           ImmutableArray<Diagnostic> diagnostics) {
                         if (diagnostics.IsEmpty) {
                                 return null;
                         }

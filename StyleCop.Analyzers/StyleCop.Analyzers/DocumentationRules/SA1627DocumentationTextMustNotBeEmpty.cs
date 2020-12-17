@@ -46,22 +46,29 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public const string DiagnosticId = "SA1627";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1627.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1627Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1627Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1627MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1627Description),
                                                   DocumentationResources.ResourceManager,
                                                   typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> XmlElementAction =
                     HandleXmlElement;
@@ -69,9 +76,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                     HandleXmlEmptyElement;
 
                 private static readonly ImmutableArray<string> ElementsToCheck =
-                    ImmutableArray.Create(
-                        XmlCommentHelper.RemarksXmlTag, XmlCommentHelper.PermissionXmlTag,
-                        XmlCommentHelper.ExceptionXmlTag, XmlCommentHelper.ExampleXmlTag);
+                    ImmutableArray.Create(XmlCommentHelper.RemarksXmlTag,
+                                          XmlCommentHelper.PermissionXmlTag,
+                                          XmlCommentHelper.ExceptionXmlTag,
+                                          XmlCommentHelper.ExampleXmlTag);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }

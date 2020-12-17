@@ -27,12 +27,14 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 public static XmlNodeSyntax GetFirstXmlElement(
-                    this SyntaxList<XmlNodeSyntax> content, string elementName) {
+                    this SyntaxList<XmlNodeSyntax> content,
+                    string elementName) {
                         return content.GetXmlElements(elementName).FirstOrDefault();
                 }
 
                 public static IEnumerable<XmlNodeSyntax> GetXmlElements(
-                    this SyntaxList<XmlNodeSyntax> content, string elementName) {
+                    this SyntaxList<XmlNodeSyntax> content,
+                    string elementName) {
                         foreach (XmlNodeSyntax syntax in content) {
                                 if (syntax is XmlEmptyElementSyntax emptyElement) {
                                         if (string.Equals(elementName, emptyElement.Name.ToString(),

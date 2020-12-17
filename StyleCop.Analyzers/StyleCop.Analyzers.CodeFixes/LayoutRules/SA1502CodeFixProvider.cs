@@ -47,7 +47,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -60,7 +62,8 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                 private Document CreateCodeFix(Document document,
                                                IndentationSettings indentationSettings,
-                                               Diagnostic diagnostic, SyntaxNode syntaxRoot) {
+                                               Diagnostic diagnostic,
+                                               SyntaxNode syntaxRoot) {
                         SyntaxNode newSyntaxRoot = syntaxRoot;
                         var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
 
@@ -111,14 +114,16 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private SyntaxNode RegisterBaseTypeDeclarationCodeFix(
-                    SyntaxNode syntaxRoot, BaseTypeDeclarationSyntax node,
+                    SyntaxNode syntaxRoot,
+                    BaseTypeDeclarationSyntax node,
                     IndentationSettings indentationSettings) {
                         return this.ReformatElement(syntaxRoot, node, node.OpenBraceToken,
                                                     node.CloseBraceToken, indentationSettings);
                 }
 
                 private SyntaxNode RegisterPropertyLikeDeclarationCodeFix(
-                    SyntaxNode syntaxRoot, BasePropertyDeclarationSyntax node,
+                    SyntaxNode syntaxRoot,
+                    BasePropertyDeclarationSyntax node,
                     IndentationSettings indentationSettings) {
                         return this.ReformatElement(
                             syntaxRoot, node, node.AccessorList.OpenBraceToken,
@@ -126,27 +131,31 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private SyntaxNode RegisterMethodLikeDeclarationCodeFix(
-                    SyntaxNode syntaxRoot, BaseMethodDeclarationSyntax node,
+                    SyntaxNode syntaxRoot,
+                    BaseMethodDeclarationSyntax node,
                     IndentationSettings indentationSettings) {
                         return this.ReformatElement(syntaxRoot, node, node.Body.OpenBraceToken,
                                                     node.Body.CloseBraceToken, indentationSettings);
                 }
 
                 private SyntaxNode RegisterLocalFunctionStatementCodeFix(
-                    SyntaxNode syntaxRoot, LocalFunctionStatementSyntaxWrapper node,
+                    SyntaxNode syntaxRoot,
+                    LocalFunctionStatementSyntaxWrapper node,
                     IndentationSettings indentationSettings) {
                         return this.ReformatElement(syntaxRoot, node, node.Body.OpenBraceToken,
                                                     node.Body.CloseBraceToken, indentationSettings);
                 }
 
                 private SyntaxNode RegisterNamespaceDeclarationCodeFix(
-                    SyntaxNode syntaxRoot, NamespaceDeclarationSyntax node,
+                    SyntaxNode syntaxRoot,
+                    NamespaceDeclarationSyntax node,
                     IndentationSettings indentationSettings) {
                         return this.ReformatElement(syntaxRoot, node, node.OpenBraceToken,
                                                     node.CloseBraceToken, indentationSettings);
                 }
 
-                private SyntaxNode ReformatElement(SyntaxNode syntaxRoot, SyntaxNode element,
+                private SyntaxNode ReformatElement(SyntaxNode syntaxRoot,
+                                                   SyntaxNode element,
                                                    SyntaxToken openBraceToken,
                                                    SyntaxToken closeBraceToken,
                                                    IndentationSettings indentationSettings) {

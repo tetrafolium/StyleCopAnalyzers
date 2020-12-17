@@ -172,7 +172,8 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
                         }
                 }
 
-                [DebuggerDisplay("{value.ToString(),nq}", Name = "{key}",
+                [DebuggerDisplay("{value.ToString(),nq}",
+                                 Name = "{key}",
                                  Type = "JsonValue({Type})")]
                 public class KeyValuePair {
 #pragma warning disable IDE0052  // Remove unread private members

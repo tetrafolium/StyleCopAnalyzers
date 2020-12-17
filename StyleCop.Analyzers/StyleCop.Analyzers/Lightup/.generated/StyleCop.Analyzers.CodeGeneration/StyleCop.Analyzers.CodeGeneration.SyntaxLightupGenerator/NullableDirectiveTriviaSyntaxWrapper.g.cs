@@ -20,16 +20,21 @@ namespace StyleCop.Analyzers.Lightup {
                     SettingTokenAccessor;
                 private static readonly Func<DirectiveTriviaSyntax, SyntaxToken>
                     TargetTokenAccessor;
-                private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                                             DirectiveTriviaSyntax> WithHashTokenAccessor;
-                private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                                             DirectiveTriviaSyntax> WithNullableKeywordAccessor;
-                private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                                             DirectiveTriviaSyntax> WithSettingTokenAccessor;
-                private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                                             DirectiveTriviaSyntax> WithTargetTokenAccessor;
-                private static readonly Func<DirectiveTriviaSyntax, SyntaxToken,
-                                             DirectiveTriviaSyntax> WithEndOfDirectiveTokenAccessor;
+                private static readonly
+                    Func<DirectiveTriviaSyntax, SyntaxToken, DirectiveTriviaSyntax>
+                        WithHashTokenAccessor;
+                private static readonly
+                    Func<DirectiveTriviaSyntax, SyntaxToken, DirectiveTriviaSyntax>
+                        WithNullableKeywordAccessor;
+                private static readonly
+                    Func<DirectiveTriviaSyntax, SyntaxToken, DirectiveTriviaSyntax>
+                        WithSettingTokenAccessor;
+                private static readonly
+                    Func<DirectiveTriviaSyntax, SyntaxToken, DirectiveTriviaSyntax>
+                        WithTargetTokenAccessor;
+                private static readonly
+                    Func<DirectiveTriviaSyntax, SyntaxToken, DirectiveTriviaSyntax>
+                        WithEndOfDirectiveTokenAccessor;
                 private static readonly Func<DirectiveTriviaSyntax, bool, DirectiveTriviaSyntax>
                     WithIsActiveAccessor;
 

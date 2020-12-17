@@ -16,14 +16,15 @@ namespace StyleCop.Analyzers.Lightup {
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> OpenParenTokenAccessor;
                 private static readonly Func<
-                    CSharpSyntaxNode, SeparatedSyntaxListWrapper<VariableDesignationSyntaxWrapper>>
-                    VariablesAccessor;
+                    CSharpSyntaxNode,
+                    SeparatedSyntaxListWrapper<VariableDesignationSyntaxWrapper>> VariablesAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> CloseParenTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
                     WithOpenParenTokenAccessor;
-                private static readonly Func<
-                    CSharpSyntaxNode, SeparatedSyntaxListWrapper<VariableDesignationSyntaxWrapper>,
-                    CSharpSyntaxNode> WithVariablesAccessor;
+                private static readonly
+                    Func<CSharpSyntaxNode,
+                         SeparatedSyntaxListWrapper<VariableDesignationSyntaxWrapper>,
+                         CSharpSyntaxNode> WithVariablesAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
                     WithCloseParenTokenAccessor;
 

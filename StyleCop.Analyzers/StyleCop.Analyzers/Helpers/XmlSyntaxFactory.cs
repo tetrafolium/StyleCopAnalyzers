@@ -10,7 +10,8 @@ namespace StyleCop.Analyzers.Helpers {
 
         internal static class XmlSyntaxFactory {
                 public static DocumentationCommentTriviaSyntax DocumentationComment(
-                    string newLineText, params XmlNodeSyntax[] content) {
+                    string newLineText,
+                    params XmlNodeSyntax[] content) {
                         return SyntaxFactory
                             .DocumentationCommentTrivia(
                                 SyntaxKind.SingleLineDocumentationCommentTrivia, List(content))
@@ -90,7 +91,8 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 public static XmlTextAttributeSyntax TextAttribute(
-                    string name, params SyntaxToken[] textTokens) {
+                    string name,
+                    params SyntaxToken[] textTokens) {
                         return TextAttribute(SyntaxFactory.XmlName(name),
                                              SyntaxKind.DoubleQuoteToken,
                                              SyntaxFactory.TokenList(textTokens));

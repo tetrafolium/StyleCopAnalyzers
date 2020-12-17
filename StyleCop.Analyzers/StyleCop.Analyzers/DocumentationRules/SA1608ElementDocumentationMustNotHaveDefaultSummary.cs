@@ -41,22 +41,29 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 private const string DefaultText = "Summary description for";
 
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1608Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1608Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1608MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1608Description),
                                                   DocumentationResources.ResourceManager,
                                                   typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 public SA1608ElementDocumentationMustNotHaveDefaultSummary()
                     : base(inheritDocSuppressesWarnings
@@ -90,8 +97,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 /// <inheritdoc/>
                 protected override void HandleCompleteDocumentation(
-                    SyntaxNodeAnalysisContext context, bool needsComment,
-                    XElement completeDocumentation, params Location[] diagnosticLocations) {
+                    SyntaxNodeAnalysisContext context,
+                    bool needsComment,
+                    XElement completeDocumentation,
+                    params Location[] diagnosticLocations) {
                         // We are working with an <include> element
                         var includedSummaryElement =
                             completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(

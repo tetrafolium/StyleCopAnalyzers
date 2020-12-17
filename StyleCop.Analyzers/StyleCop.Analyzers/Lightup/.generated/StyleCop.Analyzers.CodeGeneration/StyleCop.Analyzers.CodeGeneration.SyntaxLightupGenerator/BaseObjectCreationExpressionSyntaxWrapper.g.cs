@@ -23,8 +23,9 @@ namespace StyleCop.Analyzers.Lightup {
                     WithNewKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, ArgumentListSyntax, ExpressionSyntax>
                     WithArgumentListAccessor;
-                private static readonly Func<ExpressionSyntax, InitializerExpressionSyntax,
-                                             ExpressionSyntax> WithInitializerAccessor;
+                private static readonly
+                    Func<ExpressionSyntax, InitializerExpressionSyntax, ExpressionSyntax>
+                        WithInitializerAccessor;
 
                 private readonly ExpressionSyntax node;
 

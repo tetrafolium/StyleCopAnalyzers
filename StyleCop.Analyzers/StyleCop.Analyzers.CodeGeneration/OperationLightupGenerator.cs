@@ -1405,7 +1405,8 @@ namespace StyleCop.Analyzers.CodeGeneration {
                         private readonly DocumentData documentData;
 
                         public InterfaceData(
-                            DocumentData documentData, XElement node,
+                            DocumentData documentData,
+                            XElement node,
                             ImmutableArray<(string name, int value, string? extraDescription)>
                                 operationKinds) {
                                 this.documentData = documentData;

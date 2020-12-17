@@ -39,7 +39,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
                         TextChange textChange;
@@ -52,7 +54,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return document.WithText(text.WithChanges(textChange));
                 }
 
-                private static bool TryGetTextChange(Diagnostic diagnostic, SyntaxNode syntaxRoot,
+                private static bool TryGetTextChange(Diagnostic diagnostic,
+                                                     SyntaxNode syntaxRoot,
                                                      out TextChange textChange) {
                         string replacement;
                         if (!diagnostic.Properties.TryGetValue(
@@ -86,7 +89,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             ReadabilityResources.IndentationCodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

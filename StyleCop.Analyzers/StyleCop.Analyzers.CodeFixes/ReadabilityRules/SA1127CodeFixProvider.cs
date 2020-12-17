@@ -49,7 +49,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var whereToken = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);

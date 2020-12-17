@@ -52,11 +52,13 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1633MessageFormatMissing =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1633MessageFormatMissing),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1633MessageFormatMalformed =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1633MessageFormatMalformed),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1633Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1633Description),
                                                   DocumentationResources.ResourceManager,
@@ -71,7 +73,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1634MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1634MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1634Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1634Description),
                                                   DocumentationResources.ResourceManager,
@@ -86,7 +89,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1635MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1635MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1635Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1635Description),
                                                   DocumentationResources.ResourceManager,
@@ -101,7 +105,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1636MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1636MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1636Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1636Description),
                                                   DocumentationResources.ResourceManager,
@@ -116,7 +121,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1637MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1637MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1637Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1637Description),
                                                   DocumentationResources.ResourceManager,
@@ -131,7 +137,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1638MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1638MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1638Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1638Description),
                                                   DocumentationResources.ResourceManager,
@@ -146,7 +153,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1639MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1639MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1639Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1639Description),
                                                   DocumentationResources.ResourceManager,
@@ -161,7 +169,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1640MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1640MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1640Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1640Description),
                                                   DocumentationResources.ResourceManager,
@@ -176,7 +185,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static readonly LocalizableString SA1641MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1641MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString SA1641Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1641Description),
                                                   DocumentationResources.ResourceManager,
@@ -192,106 +202,152 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1633.</value>
                 public static DiagnosticDescriptor SA1633DescriptorMissing { get; }
-                = new DiagnosticDescriptor(
-                    SA1633Identifier, SA1633Title, SA1633MessageFormatMissing,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1633Description, SA1633HelpLink);
+                = new DiagnosticDescriptor(SA1633Identifier,
+                                           SA1633Title,
+                                           SA1633MessageFormatMissing,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1633Description,
+                                           SA1633HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1633 with a malformed header.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1633.</value>
                 public static DiagnosticDescriptor SA1633DescriptorMalformed { get; }
-                = new DiagnosticDescriptor(
-                    SA1633Identifier, SA1633Title, SA1633MessageFormatMalformed,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1633Description, SA1633HelpLink);
+                = new DiagnosticDescriptor(SA1633Identifier,
+                                           SA1633Title,
+                                           SA1633MessageFormatMalformed,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1633Description,
+                                           SA1633HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1634.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1634.</value>
                 public static DiagnosticDescriptor SA1634Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1634Identifier, SA1634Title, SA1634MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1634Description, SA1634HelpLink);
+                = new DiagnosticDescriptor(SA1634Identifier,
+                                           SA1634Title,
+                                           SA1634MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1634Description,
+                                           SA1634HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1635.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1635.</value>
                 public static DiagnosticDescriptor SA1635Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1635Identifier, SA1635Title, SA1635MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1635Description, SA1635HelpLink);
+                = new DiagnosticDescriptor(SA1635Identifier,
+                                           SA1635Title,
+                                           SA1635MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1635Description,
+                                           SA1635HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1636.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1636.</value>
                 public static DiagnosticDescriptor SA1636Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1636Identifier, SA1636Title, SA1636MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1636Description, SA1636HelpLink);
+                = new DiagnosticDescriptor(SA1636Identifier,
+                                           SA1636Title,
+                                           SA1636MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1636Description,
+                                           SA1636HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1637.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1637.</value>
                 public static DiagnosticDescriptor SA1637Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1637Identifier, SA1637Title, SA1637MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1637Description, SA1637HelpLink);
+                = new DiagnosticDescriptor(SA1637Identifier,
+                                           SA1637Title,
+                                           SA1637MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1637Description,
+                                           SA1637HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1638.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1638.</value>
                 public static DiagnosticDescriptor SA1638Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1638Identifier, SA1638Title, SA1638MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1638Description, SA1638HelpLink);
+                = new DiagnosticDescriptor(SA1638Identifier,
+                                           SA1638Title,
+                                           SA1638MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1638Description,
+                                           SA1638HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1639.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1639.</value>
                 public static DiagnosticDescriptor SA1639Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1639Identifier, SA1639Title, SA1639MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.DisabledByDefault, SA1639Description, SA1639HelpLink);
+                = new DiagnosticDescriptor(SA1639Identifier,
+                                           SA1639Title,
+                                           SA1639MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.DisabledByDefault,
+                                           SA1639Description,
+                                           SA1639HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1640.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1640.</value>
                 public static DiagnosticDescriptor SA1640Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1640Identifier, SA1640Title, SA1640MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1640Description, SA1640HelpLink);
+                = new DiagnosticDescriptor(SA1640Identifier,
+                                           SA1640Title,
+                                           SA1640MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1640Description,
+                                           SA1640HelpLink);
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for SA1641.
                 /// </summary>
                 /// <value>The <see cref="DiagnosticDescriptor"/> for SA1641.</value>
                 public static DiagnosticDescriptor SA1641Descriptor { get; }
-                = new DiagnosticDescriptor(
-                    SA1641Identifier, SA1641Title, SA1641MessageFormat,
-                    AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
-                    AnalyzerConstants.EnabledByDefault, SA1641Description, SA1641HelpLink);
+                = new DiagnosticDescriptor(SA1641Identifier,
+                                           SA1641Title,
+                                           SA1641MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           SA1641Description,
+                                           SA1641HelpLink);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
-                = ImmutableArray.Create(SA1633DescriptorMissing, SA1634Descriptor, SA1635Descriptor,
-                                        SA1636Descriptor, SA1637Descriptor, SA1638Descriptor,
-                                        SA1639Descriptor, SA1640Descriptor, SA1641Descriptor);
+                = ImmutableArray.Create(SA1633DescriptorMissing,
+                                        SA1634Descriptor,
+                                        SA1635Descriptor,
+                                        SA1636Descriptor,
+                                        SA1637Descriptor,
+                                        SA1638Descriptor,
+                                        SA1639Descriptor,
+                                        SA1640Descriptor,
+                                        SA1641Descriptor);
 
                 /// <inheritdoc/>
                 public override void Initialize(AnalysisContext context) {
@@ -386,7 +442,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                         private static void CheckCopyrightHeader(
                             SyntaxTreeAnalysisContext context,
-                            DocumentationSettings documentationSettings, Compilation compilation,
+                            DocumentationSettings documentationSettings,
+                            Compilation compilation,
                             XmlFileHeader fileHeader) {
                                 var copyrightElement = fileHeader.GetElement("copyright");
                                 if (copyrightElement == null) {
@@ -441,8 +498,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                         private static void CheckCopyrightText(
                             SyntaxTreeAnalysisContext context,
-                            DocumentationSettings documentationSettings, Compilation compilation,
-                            XmlFileHeader fileHeader, XElement copyrightElement) {
+                            DocumentationSettings documentationSettings,
+                            Compilation compilation,
+                            XmlFileHeader fileHeader,
+                            XElement copyrightElement) {
                                 var copyrightText = copyrightElement.Value;
                                 if (string.IsNullOrWhiteSpace(copyrightText)) {
                                         var location = fileHeader.GetElementLocation(
@@ -481,8 +540,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                         private static void CheckCompanyName(
                             SyntaxTreeAnalysisContext context,
-                            DocumentationSettings documentationSettings, Compilation compilation,
-                            XmlFileHeader fileHeader, XElement copyrightElement) {
+                            DocumentationSettings documentationSettings,
+                            Compilation compilation,
+                            XmlFileHeader fileHeader,
+                            XElement copyrightElement) {
                                 var companyName = copyrightElement.Attribute("company") ?.Value;
                                 if (string.IsNullOrWhiteSpace(companyName)) {
                                         var location = fileHeader.GetElementLocation(
@@ -533,7 +594,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                         private static bool CompareCopyrightText(
                             SyntaxTreeAnalysisContext context,
-                            DocumentationSettings documentationSettings, string copyrightText) {
+                            DocumentationSettings documentationSettings,
+                            string copyrightText) {
                                 // make sure that both \n and \r\n are accepted from the settings.
                                 string fileName = Path.GetFileName(context.Tree.FilePath);
                                 var reformattedCopyrightTextParts =

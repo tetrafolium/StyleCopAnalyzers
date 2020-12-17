@@ -44,9 +44,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 public const string DiagnosticId = "SA1113";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1113.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1113Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(ReadabilityResources.SA1113Title),
+                                                  ReadabilityResources.ResourceManager,
+                                                  typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(ReadabilityResources.SA1113MessageFormat),
                                                   ReadabilityResources.ResourceManager,
@@ -56,10 +57,15 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                   ReadabilityResources.ResourceManager,
                                                   typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.ReadabilityRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> BaseMethodDeclarationKinds =
                     ImmutableArray.Create(SyntaxKind.MethodDeclaration,
@@ -241,7 +247,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static void HandleBaseArgumentListSyntax(
-                    SyntaxNodeAnalysisContext context, BaseArgumentListSyntax argumentList) {
+                    SyntaxNodeAnalysisContext context,
+                    BaseArgumentListSyntax argumentList) {
                         if (argumentList != null && !argumentList.IsMissing) {
                                 var arguments = argumentList.Arguments;
                                 if (arguments.Count > 1) {
@@ -252,7 +259,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static void HandleBaseParameterListSyntax(
-                    SyntaxNodeAnalysisContext context, BaseParameterListSyntax parameterList) {
+                    SyntaxNodeAnalysisContext context,
+                    BaseParameterListSyntax parameterList) {
                         if (parameterList != null && !parameterList.IsMissing) {
                                 var parameters = parameterList.Parameters;
                                 if (parameters.Count > 1) {
@@ -263,7 +271,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static void CheckIfCommasAreAtTheSameLineAsThePreviousParameter(
-                    SyntaxNodeAnalysisContext context, SyntaxNodeOrTokenList nodeOrTokenList) {
+                    SyntaxNodeAnalysisContext context,
+                    SyntaxNodeOrTokenList nodeOrTokenList) {
                         SyntaxNode previousNode = null;
 
                         // If index is even we expecting parameter syntax node, otherwise we

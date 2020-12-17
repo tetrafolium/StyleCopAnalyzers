@@ -58,9 +58,10 @@ namespace StyleCop.Analyzers.NamingRules {
                 public const string DiagnosticId = "SA1305";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1305.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(NamingResources.SA1305Title), NamingResources.ResourceManager,
-                    typeof(NamingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(NamingResources.SA1305Title),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(NamingResources.SA1305MessageFormat),
                                                   NamingResources.ResourceManager,
@@ -70,14 +71,31 @@ namespace StyleCop.Analyzers.NamingRules {
                                                   NamingResources.ResourceManager,
                                                   typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.NamingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.DisabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<string> CommonPrefixes =
-                    ImmutableArray.Create("as", "at", "by", "do", "go", "if", "in", "is", "it",
-                                          "no", "of", "on", "or", "to");
+                    ImmutableArray.Create("as",
+                                          "at",
+                                          "by",
+                                          "do",
+                                          "go",
+                                          "if",
+                                          "in",
+                                          "is",
+                                          "it",
+                                          "no",
+                                          "of",
+                                          "on",
+                                          "or",
+                                          "to");
 
                 private static readonly Regex HungarianRegex =
                     new Regex(@"^(?<notation>[a-z]{1,2})[A-Z]");
@@ -133,7 +151,8 @@ namespace StyleCop.Analyzers.NamingRules {
 
                 private static class Analyzer {
                         public static void HandleVariableDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 var syntax = (VariableDeclarationSyntax) context.Node;
 
                                 if (syntax.Parent.IsKind(SyntaxKind.EventFieldDeclaration)) {
@@ -159,7 +178,8 @@ namespace StyleCop.Analyzers.NamingRules {
                         }
 
                         public static void HandleParameterDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 var parameter = (ParameterSyntax) context.Node;
 
                                 if (NamedTypeHelpers.IsContainedInNativeMethodsClass(parameter)) {
@@ -194,7 +214,8 @@ namespace StyleCop.Analyzers.NamingRules {
                         }
 
                         public static void HandleQueryContinuation(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 CheckIdentifier(context,
                                                 ((QueryContinuationSyntax) context.Node).Identifier,
                                                 settings);
@@ -235,7 +256,8 @@ namespace StyleCop.Analyzers.NamingRules {
                         }
 
                         public static void HandleSingleVariableDesignation(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 CheckIdentifier(
                                     context,
                                     ((SingleVariableDesignationSyntaxWrapper) context.Node)

@@ -56,22 +56,29 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1629.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1629Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1629Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1629MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1629Description),
                                                   DocumentationResources.ResourceManager,
                                                   typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableDictionary<string, string> NoCodeFixProperties =
                     ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
@@ -103,8 +110,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 /// <inheritdoc/>
                 protected override void HandleCompleteDocumentation(
-                    SyntaxNodeAnalysisContext context, bool needsComment,
-                    XElement completeDocumentation, params Location[] diagnosticLocations) {
+                    SyntaxNodeAnalysisContext context,
+                    bool needsComment,
+                    XElement completeDocumentation,
+                    params Location[] diagnosticLocations) {
                         foreach (var node in completeDocumentation.Nodes().OfType<XElement>()) {
                                 var textWithoutTrailingWhitespace =
                                     node.Value.TrimEnd(' ', '\r', '\n');
@@ -127,8 +136,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static void HandleSectionOrBlockXmlElement(
-                    SyntaxNodeAnalysisContext context, StyleCopSettings settings,
-                    XmlElementSyntax xmlElement, bool startingWithFinalParagraph) {
+                    SyntaxNodeAnalysisContext context,
+                    StyleCopSettings settings,
+                    XmlElementSyntax xmlElement,
+                    bool startingWithFinalParagraph) {
                         var startTag = xmlElement.StartTag?.Name?.LocalName.ValueText;
                         if (settings.DocumentationRules.ExcludeFromPunctuationCheck.Contains(
                                 startTag)) {

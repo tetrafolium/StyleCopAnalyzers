@@ -57,7 +57,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// name="diagnosticLocations">The location(s) where diagnostics, if any, should be
                 /// reported.</param>
                 protected abstract void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         bool needsComment, XmlNodeSyntax syntax,
+                                                         bool needsComment,
+                                                         XmlNodeSyntax syntax,
                                                          XElement completeDocumentation,
                                                          params Location[] diagnosticLocations);
 
@@ -121,8 +122,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                node.Identifier.GetLocation());
                 }
 
-                private void HandleDeclaration(SyntaxNodeAnalysisContext context, bool needsComment,
-                                               SyntaxNode node, params Location[] locations) {
+                private void HandleDeclaration(SyntaxNodeAnalysisContext context,
+                                               bool needsComment,
+                                               SyntaxNode node,
+                                               params Location[] locations) {
                         var documentation = node.GetDocumentationCommentTriviaSyntax();
                         if (documentation == null) {
                                 // missing documentation is reported by SA1600, SA1601, and SA1602
@@ -185,7 +188,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private string ExpandDocumentation(
-                    Compilation compilation, DocumentationCommentTriviaSyntax documentCommentTrivia,
+                    Compilation compilation,
+                    DocumentationCommentTriviaSyntax documentCommentTrivia,
                     XmlNodeSyntax includeTag) {
                         var sb = new StringBuilder();
 
@@ -204,7 +208,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return sb.ToString();
                 }
 
-                private void ExpandIncludeTag(Compilation compilation, StringBuilder sb,
+                private void ExpandIncludeTag(Compilation compilation,
+                                              StringBuilder sb,
                                               XmlNodeSyntax xmlNode) {
                         try {
                                 var includeElement =

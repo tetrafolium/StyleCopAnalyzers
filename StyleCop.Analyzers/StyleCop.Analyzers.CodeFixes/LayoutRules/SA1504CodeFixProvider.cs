@@ -110,7 +110,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentForSingleLineAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -132,7 +134,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static SyntaxNode ReformatAccessorAsSingleLine(
-                    IndentationSettings indentationSettings, AccessorDeclarationSyntax accessor) {
+                    IndentationSettings indentationSettings,
+                    AccessorDeclarationSyntax accessor) {
                         var newAccessor =
                             accessor
                                 .WithModifiers(ReformatModifiersAsSingleLine(accessor.Modifiers))
@@ -209,7 +212,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentForMutipleLinesAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -240,7 +245,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static SyntaxNode ReformatAccessorAsMultipleLines(
-                    IndentationSettings indentationSettings, AccessorDeclarationSyntax accessor) {
+                    IndentationSettings indentationSettings,
+                    AccessorDeclarationSyntax accessor) {
                         var accessorList = (AccessorListSyntax) accessor.Parent;
                         var indentationSteps =
                             IndentationHelper.GetIndentationSteps(indentationSettings,
@@ -264,7 +270,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static SyntaxTokenList ReformatModifiersAsMultipleLines(
-                    SyntaxTokenList modifiers, SyntaxTrivia indentation) {
+                    SyntaxTokenList modifiers,
+                    SyntaxTrivia indentation) {
                         if (modifiers.Count == 0) {
                                 return modifiers;
                         }
@@ -302,7 +309,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static BlockSyntax ReformatBodyAsMultipleLines(
-                    BlockSyntax body, SyntaxTrivia indentation,
+                    BlockSyntax body,
+                    SyntaxTrivia indentation,
                     SyntaxTrivia indentationStatements) {
                         SyntaxTriviaList reformattedOpenBraceTrailingTrivia;
                         SyntaxTriviaList reformattedCloseBraceLeadingTrivia;

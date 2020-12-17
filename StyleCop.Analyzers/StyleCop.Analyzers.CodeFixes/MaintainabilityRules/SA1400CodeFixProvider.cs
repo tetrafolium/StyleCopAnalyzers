@@ -62,7 +62,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static Task<Document> GetTransformedDocumentAsync(
-                    Document document, SyntaxNode root, SyntaxNode declarationNode) {
+                    Document document,
+                    SyntaxNode root,
+                    SyntaxNode declarationNode) {
                         SyntaxNode updatedDeclarationNode;
                         switch (declarationNode.Kind()) {
                                 case SyntaxKind.ClassDeclaration:

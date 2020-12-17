@@ -53,7 +53,9 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Location location, CancellationToken cancellationToken) {
+                    Document document,
+                    Location location,
+                    CancellationToken cancellationToken) {
                         var text =
                             await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         var sourceSpan = location.SourceSpan;
@@ -81,7 +83,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                         protected override string CodeActionTitle => SpacingResources.SA1005CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

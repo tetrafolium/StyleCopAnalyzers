@@ -50,7 +50,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var settings = SettingsHelper.GetStyleCopSettings(
                             document.Project.AnalyzerOptions, cancellationToken);
                         var elementOrder = settings.OrderingRules.ElementOrder;
@@ -71,7 +73,8 @@ namespace StyleCop.Analyzers.OrderingRules {
 
                 private static SyntaxNode UpdateSyntaxRoot(
                     MemberDeclarationSyntax memberDeclaration,
-                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
+                    ImmutableArray<OrderingTrait> elementOrder,
+                    SyntaxNode syntaxRoot,
                     IndentationSettings indentationSettings) {
                         var parentDeclaration = memberDeclaration.Parent;
                         var memberToMove = new MemberOrderHelper(memberDeclaration, elementOrder);
@@ -98,24 +101,30 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static SyntaxNode HandleTypeDeclaration(
-                    MemberOrderHelper memberOrder, TypeDeclarationSyntax typeDeclarationNode,
-                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
+                    MemberOrderHelper memberOrder,
+                    TypeDeclarationSyntax typeDeclarationNode,
+                    ImmutableArray<OrderingTrait> elementOrder,
+                    SyntaxNode syntaxRoot,
                     IndentationSettings indentationSettings) {
                         return OrderMember(memberOrder, typeDeclarationNode.Members, elementOrder,
                                            syntaxRoot, indentationSettings);
                 }
 
                 private static SyntaxNode HandleCompilationUnitDeclaration(
-                    MemberOrderHelper memberOrder, CompilationUnitSyntax compilationUnitDeclaration,
-                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
+                    MemberOrderHelper memberOrder,
+                    CompilationUnitSyntax compilationUnitDeclaration,
+                    ImmutableArray<OrderingTrait> elementOrder,
+                    SyntaxNode syntaxRoot,
                     IndentationSettings indentationSettings) {
                         return OrderMember(memberOrder, compilationUnitDeclaration.Members,
                                            elementOrder, syntaxRoot, indentationSettings);
                 }
 
                 private static SyntaxNode HandleNamespaceDeclaration(
-                    MemberOrderHelper memberOrder, NamespaceDeclarationSyntax namespaceDeclaration,
-                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
+                    MemberOrderHelper memberOrder,
+                    NamespaceDeclarationSyntax namespaceDeclaration,
+                    ImmutableArray<OrderingTrait> elementOrder,
+                    SyntaxNode syntaxRoot,
                     IndentationSettings indentationSettings) {
                         return OrderMember(memberOrder, namespaceDeclaration.Members, elementOrder,
                                            syntaxRoot, indentationSettings);
@@ -279,7 +288,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                             OrderingResources.ElementOrderCodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

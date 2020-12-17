@@ -143,7 +143,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// When the task completes successfully, the <see cref="Task{TResult}.Result"/>
                 /// will contain the requested diagnostics.</returns>
                 private static async Task<ImmutableArray<Diagnostic>> GetAllDiagnosticsAsync(
-                    FixAllContext fixAllContext, Project project) {
+                    FixAllContext fixAllContext,
+                    Project project) {
                         return await fixAllContext.GetAllDiagnosticsAsync(project).ConfigureAwait(
                             false);
                 }

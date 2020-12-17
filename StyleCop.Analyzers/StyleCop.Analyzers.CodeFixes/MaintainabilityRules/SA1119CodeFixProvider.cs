@@ -93,7 +93,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static Task<Document> GetTransformedDocumentAsync(
-                    Document document, SyntaxNode root, ParenthesizedExpressionSyntax syntax) {
+                    Document document,
+                    SyntaxNode root,
+                    ParenthesizedExpressionSyntax syntax) {
                         var newSyntaxRoot = root.ReplaceNode(syntax, GetReplacement(syntax));
 
                         var changedDocument = document.WithSyntaxRoot(newSyntaxRoot);
@@ -109,7 +111,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             MaintainabilityResources.SA1119CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

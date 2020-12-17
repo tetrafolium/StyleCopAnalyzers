@@ -28,9 +28,10 @@ namespace StyleCop.Analyzers.NamingRules {
 
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1316.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(NamingResources.SA1316Title), NamingResources.ResourceManager,
-                    typeof(NamingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(NamingResources.SA1316Title),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(NamingResources.SA1316MessageFormat),
                                                   NamingResources.ResourceManager,
@@ -40,10 +41,15 @@ namespace StyleCop.Analyzers.NamingRules {
                                                   NamingResources.ResourceManager,
                                                   typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.NamingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> TupleTypeAction =
                     HandleTupleTypeAction;
@@ -112,8 +118,10 @@ namespace StyleCop.Analyzers.NamingRules {
                 }
 
                 private static void CheckName(SyntaxNodeAnalysisContext context,
-                                              StyleCopSettings settings, string tupleElementName,
-                                              Location location, bool prepareCodeFix) {
+                                              StyleCopSettings settings,
+                                              string tupleElementName,
+                                              Location location,
+                                              bool prepareCodeFix) {
                         if (tupleElementName == "_") {
                                 return;
                         }

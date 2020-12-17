@@ -21,9 +21,9 @@ namespace StyleCop.Analyzers.Lightup {
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> CloseParenTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
                     WithOpenParenTokenAccessor;
-                private static readonly
-                    Func<CSharpSyntaxNode, SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
-                         CSharpSyntaxNode> WithSubpatternsAccessor;
+                private static readonly Func<CSharpSyntaxNode,
+                                             SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
+                                             CSharpSyntaxNode> WithSubpatternsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
                     WithCloseParenTokenAccessor;
 

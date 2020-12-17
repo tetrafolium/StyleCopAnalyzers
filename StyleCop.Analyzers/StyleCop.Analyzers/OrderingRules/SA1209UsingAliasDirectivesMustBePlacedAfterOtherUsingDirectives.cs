@@ -32,9 +32,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                 public const string DiagnosticId = "SA1209";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1209.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(OrderingResources.SA1209Title), OrderingResources.ResourceManager,
-                    typeof(OrderingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1209Title),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(OrderingResources.SA1209MessageFormat),
                                                   OrderingResources.ResourceManager,
@@ -44,10 +45,15 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                   OrderingResources.ResourceManager,
                                                   typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.OrderingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> CompilationUnitAction =
                     HandleCompilationUnit;
@@ -82,7 +88,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static void ProcessUsingsAndReportDiagnostic(
-                    SyntaxList<UsingDirectiveSyntax> usings, SyntaxNodeAnalysisContext context) {
+                    SyntaxList<UsingDirectiveSyntax> usings,
+                    SyntaxNodeAnalysisContext context) {
                         for (int i = 0; i < usings.Count; i++) {
                                 var usingDirective = usings[i];
                                 var notLastUsingDirective = i + 1 < usings.Count;

@@ -21,9 +21,10 @@ namespace StyleCop.Analyzers.NamingRules {
                 public const string DiagnosticId = "SA1301";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1301.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(NamingResources.SA1301Title), NamingResources.ResourceManager,
-                    typeof(NamingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(NamingResources.SA1301Title),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(NamingResources.SA1301MessageFormat),
                                                   NamingResources.ResourceManager,
@@ -35,10 +36,15 @@ namespace StyleCop.Analyzers.NamingRules {
 
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS2000  // Add analyzer diagnostic IDs to analyzer release.
-                    new DiagnosticDescriptor(
-                        DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
-                        DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault,
-                        Description, HelpLink, WellKnownDiagnosticTags.NotConfigurable);
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.NamingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.DisabledByDefault,
+                                             Description,
+                                             HelpLink,
+                                             WellKnownDiagnosticTags.NotConfigurable);
 #pragma warning restore RS2000  // Add analyzer diagnostic IDs to analyzer release.
 
                 /// <inheritdoc/>

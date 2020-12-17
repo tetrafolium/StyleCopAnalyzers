@@ -59,7 +59,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static Task<Document> GetTransformedDocumentAsync(
-                    Document document, SyntaxNode root, BinaryExpressionSyntax syntax) {
+                    Document document,
+                    SyntaxNode root,
+                    BinaryExpressionSyntax syntax) {
                         var newNode = SyntaxFactory.ParenthesizedExpression(syntax.WithoutTrivia())
                                           .WithTriviaFrom(syntax)
                                           .WithoutFormatting();

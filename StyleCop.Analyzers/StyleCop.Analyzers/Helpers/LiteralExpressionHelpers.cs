@@ -42,7 +42,8 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 internal static LiteralExpressionSyntax WithLiteralSuffix(
-                    this LiteralExpressionSyntax literalExpression, SyntaxKind syntaxKindKeyword) {
+                    this LiteralExpressionSyntax literalExpression,
+                    SyntaxKind syntaxKindKeyword) {
                         string textWithoutSuffix = literalExpression.StripLiteralSuffix();
 
                         string suffix;

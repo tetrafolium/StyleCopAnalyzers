@@ -23,8 +23,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// list.</typeparam> <returns>The index where the non-whitespace starts, or -1 if
                 /// there is no non-whitespace trivia.</returns>
                 internal static int IndexOfFirstNonWhitespaceTrivia<T>(
-                    T triviaList, bool endOfLineIsWhitespace = true) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                    T triviaList,
+                    bool endOfLineIsWhitespace = true) where T : IReadOnlyList<SyntaxTrivia> {
                         for (var index = 0; index < triviaList.Count; index++) {
                                 var currentTrivia = triviaList[index];
                                 switch (currentTrivia.Kind()) {
@@ -85,8 +85,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// langword="false"/>.</param> <returns>The index where the trailing whitespace
                 /// starts, or -1 if there is no trailing whitespace.</returns>
                 internal static int IndexOfTrailingWhitespace<T>(
-                    T triviaList, bool endOfLineIsWhitespace = true) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                    T triviaList,
+                    bool endOfLineIsWhitespace = true) where T : IReadOnlyList<SyntaxTrivia> {
                         var done = false;
                         int whiteSpaceStartIndex = -1;
                         var previousTriviaWasEndOfLine = false;
@@ -140,7 +140,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <para>If <paramref name="index"/> and <paramref name="count"/> do not denote a
                 /// valid range of elements in the <see cref="SyntaxTriviaList"/>.</para>
                 /// </exception>
-                internal static SyntaxTriviaList RemoveRange(this SyntaxTriviaList list, int index,
+                internal static SyntaxTriviaList RemoveRange(this SyntaxTriviaList list,
+                                                             int index,
                                                              int count) {
                         if (index < 0) {
                                 throw new ArgumentOutOfRangeException(nameof(index));
@@ -209,7 +210,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// to treat <see cref="SyntaxKind.EndOfLineTrivia"/> as whitespace; otherwise, <see
                 /// langword="false"/>.</param> <returns>The modified triviaList.</returns>
                 internal static SyntaxTriviaList WithoutTrailingWhitespace(
-                    this SyntaxTriviaList triviaList, bool endOfLineIsWhitespace = true) {
+                    this SyntaxTriviaList triviaList,
+                    bool endOfLineIsWhitespace = true) {
                         var trailingWhitespaceIndex =
                             IndexOfTrailingWhitespace(triviaList, endOfLineIsWhitespace);
                         return (trailingWhitespaceIndex >= 0)
@@ -227,7 +229,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// to treat <see cref="SyntaxKind.EndOfLineTrivia"/> as whitespace; otherwise, <see
                 /// langword="false"/>.</param> <returns>The modified triviaList.</returns>
                 internal static SyntaxTriviaList WithoutLeadingWhitespace(
-                    this SyntaxTriviaList triviaList, bool endOfLineIsWhitespace = true) {
+                    this SyntaxTriviaList triviaList,
+                    bool endOfLineIsWhitespace = true) {
                         var nonWhitespaceIndex =
                             IndexOfFirstNonWhitespaceTrivia(triviaList, endOfLineIsWhitespace);
                         return (nonWhitespaceIndex >= 0)

@@ -51,7 +51,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var baseFieldDeclaration = (BaseFieldDeclarationSyntax) syntaxRoot.FindNode(
@@ -73,7 +75,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static List<BaseFieldDeclarationSyntax> SplitDeclaration(
-                    Document document, BaseFieldDeclarationSyntax baseFieldDeclaration) {
+                    Document document,
+                    BaseFieldDeclarationSyntax baseFieldDeclaration) {
                         if (baseFieldDeclaration is FieldDeclarationSyntax fieldDeclaration) {
                                 return DeclarationSplitter(
                                     document, fieldDeclaration.Declaration,
@@ -93,7 +96,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static List<BaseFieldDeclarationSyntax> DeclarationSplitter(
-                    Document document, VariableDeclarationSyntax declaration,
+                    Document document,
+                    VariableDeclarationSyntax declaration,
                     Func<VariableDeclarationSyntax, BaseFieldDeclarationSyntax> declarationFactory,
                     SyntaxTriviaList declarationTrailingTrivia) {
                         SeparatedSyntaxList<VariableDeclaratorSyntax> variables =

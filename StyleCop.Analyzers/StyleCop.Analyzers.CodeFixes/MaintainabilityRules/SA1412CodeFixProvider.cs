@@ -52,7 +52,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 internal static async Task<Solution> GetTransformedSolutionAsync(
-                    Document document, CancellationToken cancellationToken) {
+                    Document document,
+                    CancellationToken cancellationToken) {
                         SourceText text =
                             await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 

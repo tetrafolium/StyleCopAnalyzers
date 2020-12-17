@@ -13,27 +13,31 @@ namespace StyleCop.Analyzers.Lightup {
         internal static class SyntaxFactoryEx {
                 private static readonly Func<SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
                                              CSharpSyntaxNode> PositionalPatternClauseAccessor1;
-                private static readonly
-                    Func<SyntaxToken, SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
-                         SyntaxToken, CSharpSyntaxNode> PositionalPatternClauseAccessor2;
+                private static readonly Func<SyntaxToken,
+                                             SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
+                                             SyntaxToken,
+                                             CSharpSyntaxNode> PositionalPatternClauseAccessor2;
                 private static readonly Func<SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
                                              CSharpSyntaxNode> PropertyPatternClauseAccessor1;
-                private static readonly
-                    Func<SyntaxToken, SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
-                         SyntaxToken, CSharpSyntaxNode> PropertyPatternClauseAccessor2;
+                private static readonly Func<SyntaxToken,
+                                             SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
+                                             SyntaxToken,
+                                             CSharpSyntaxNode> PropertyPatternClauseAccessor2;
                 private static readonly Func<TypeSyntax, CSharpSyntaxNode> TupleElementAccessor1;
                 private static readonly Func<TypeSyntax, SyntaxToken, CSharpSyntaxNode>
                     TupleElementAccessor2;
                 private static readonly Func<SeparatedSyntaxList<ArgumentSyntax>, ExpressionSyntax>
                     TupleExpressionAccessor1;
-                private static readonly Func<SyntaxToken, SeparatedSyntaxList<ArgumentSyntax>,
-                                             SyntaxToken, ExpressionSyntax>
-                    TupleExpressionAccessor2;
+                private static readonly Func<SyntaxToken,
+                                             SeparatedSyntaxList<ArgumentSyntax>,
+                                             SyntaxToken,
+                                             ExpressionSyntax> TupleExpressionAccessor2;
                 private static readonly Func<SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>,
                                              TypeSyntax> TupleTypeAccessor1;
-                private static readonly
-                    Func<SyntaxToken, SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>,
-                         SyntaxToken, TypeSyntax> TupleTypeAccessor2;
+                private static readonly Func<SyntaxToken,
+                                             SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>,
+                                             SyntaxToken,
+                                             TypeSyntax> TupleTypeAccessor2;
 
                 static SyntaxFactoryEx() {
                         var positionalPatternClauseMethods =
@@ -83,7 +87,7 @@ namespace StyleCop.Analyzers.Lightup {
                                 method =>
                                     method.GetParameters().Length == 3 &&
                                     method.GetParameters()[0].ParameterType ==
-                                        typeof(SyntaxToken) &&method.GetParameters()[1]
+                                        typeof(SyntaxToken)&& method.GetParameters()[1]
                                             .ParameterType ==
                                         typeof(SeparatedSyntaxList<>)
                                             .MakeGenericType(SyntaxWrapperHelper.GetWrappedType(
@@ -176,7 +180,7 @@ namespace StyleCop.Analyzers.Lightup {
                             method =>
                                 method.GetParameters().Length == 3 &&
                                 method.GetParameters()[0].ParameterType ==
-                                    typeof(SyntaxToken) &&method.GetParameters()[1].ParameterType ==
+                                    typeof(SyntaxToken)&& method.GetParameters()[1].ParameterType ==
                                     typeof(SeparatedSyntaxList<>)
                                         .MakeGenericType(SyntaxWrapperHelper.GetWrappedType(
                                             typeof(SubpatternSyntaxWrapper))) &&
@@ -247,7 +251,7 @@ namespace StyleCop.Analyzers.Lightup {
                             method =>
                                 method.GetParameters().Length == 2 &&
                                 method.GetParameters()[0].ParameterType ==
-                                    typeof(TypeSyntax) &&method.GetParameters()[1].ParameterType ==
+                                    typeof(TypeSyntax)&& method.GetParameters()[1].ParameterType ==
                                     typeof(SyntaxToken));
                         if (tupleElementMethod is object) {
                                 var typeParameter =
@@ -298,8 +302,8 @@ namespace StyleCop.Analyzers.Lightup {
                             method =>
                                 method.GetParameters().Length == 3 &&
                                 method.GetParameters()[0].ParameterType ==
-                                    typeof(SyntaxToken) &&method.GetParameters()[1].ParameterType ==
-                                    typeof(SeparatedSyntaxList<ArgumentSyntax>) &&method
+                                    typeof(SyntaxToken)&& method.GetParameters()[1].ParameterType ==
+                                    typeof(SeparatedSyntaxList<ArgumentSyntax>)&& method
                                         .GetParameters()[2]
                                         .ParameterType == typeof(SyntaxToken));
                         if (tupleExpressionMethod is object) {
@@ -370,7 +374,7 @@ namespace StyleCop.Analyzers.Lightup {
                             method =>
                                 method.GetParameters().Length == 3 &&
                                 method.GetParameters()[0].ParameterType ==
-                                    typeof(SyntaxToken) &&method.GetParameters()[1].ParameterType ==
+                                    typeof(SyntaxToken)&& method.GetParameters()[1].ParameterType ==
                                     typeof(SeparatedSyntaxList<>)
                                         .MakeGenericType(SyntaxWrapperHelper.GetWrappedType(
                                             typeof(TupleElementSyntaxWrapper))) &&
@@ -461,7 +465,8 @@ namespace StyleCop.Analyzers.Lightup {
                 }
 
                 public static TupleExpressionSyntaxWrapper TupleExpression(
-                    SyntaxToken openParenToken, SeparatedSyntaxList<ArgumentSyntax> arguments,
+                    SyntaxToken openParenToken,
+                    SeparatedSyntaxList<ArgumentSyntax> arguments,
                     SyntaxToken closeParenToken) {
                         return (TupleExpressionSyntaxWrapper)
                             TupleExpressionAccessor2(openParenToken, arguments, closeParenToken);
@@ -481,13 +486,15 @@ namespace StyleCop.Analyzers.Lightup {
                 }
 
                 private static Func<T, TResult> ThrowNotSupportedOnFallback<T, TResult>(
-                    string typeName, string methodName) {
+                    string typeName,
+                    string methodName) {
                         return _ => throw new NotSupportedException(
                                    $"{typeName}.{methodName} is not supported in this version");
                 }
 
                 private static Func<T1, T2, TResult> ThrowNotSupportedOnFallback<T1, T2, TResult>(
-                    string typeName, string methodName) {
+                    string typeName,
+                    string methodName) {
                         return (_, __) => throw new NotSupportedException(
                                    $"{typeName}.{methodName} is not supported in this version");
                 }

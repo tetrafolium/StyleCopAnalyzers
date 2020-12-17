@@ -43,9 +43,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                 public const string DiagnosticId = "SA1202";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1202.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(OrderingResources.SA1202Title), OrderingResources.ResourceManager,
-                    typeof(OrderingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1202Title),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(OrderingResources.SA1202MessageFormat),
                                                   OrderingResources.ResourceManager,
@@ -55,24 +56,34 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                   OrderingResources.ResourceManager,
                                                   typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.OrderingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
                     ImmutableArray.Create(SyntaxKind.ClassDeclaration,
                                           SyntaxKind.StructDeclaration);
 
                 private static readonly ImmutableHashSet<SyntaxKind> MemberKinds =
-                    ImmutableHashSet.Create(
-                        SyntaxKind.DelegateDeclaration, SyntaxKind.EnumDeclaration,
-                        SyntaxKind.InterfaceDeclaration, SyntaxKind.StructDeclaration,
-                        SyntaxKind.ClassDeclaration, SyntaxKind.FieldDeclaration,
-                        SyntaxKind.ConstructorDeclaration, SyntaxKind.EventDeclaration,
-                        SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration,
-                        SyntaxKind.MethodDeclaration, SyntaxKind.ConversionOperatorDeclaration,
-                        SyntaxKind.OperatorDeclaration);
+                    ImmutableHashSet.Create(SyntaxKind.DelegateDeclaration,
+                                            SyntaxKind.EnumDeclaration,
+                                            SyntaxKind.InterfaceDeclaration,
+                                            SyntaxKind.StructDeclaration,
+                                            SyntaxKind.ClassDeclaration,
+                                            SyntaxKind.FieldDeclaration,
+                                            SyntaxKind.ConstructorDeclaration,
+                                            SyntaxKind.EventDeclaration,
+                                            SyntaxKind.PropertyDeclaration,
+                                            SyntaxKind.IndexerDeclaration,
+                                            SyntaxKind.MethodDeclaration,
+                                            SyntaxKind.ConversionOperatorDeclaration,
+                                            SyntaxKind.OperatorDeclaration);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     CompilationUnitAction = HandleCompilationUnit;

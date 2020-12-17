@@ -118,9 +118,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                 public const string DiagnosticId = "SA1201";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1201.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(OrderingResources.SA1201Title), OrderingResources.ResourceManager,
-                    typeof(OrderingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1201Title),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(OrderingResources.SA1201MessageFormat),
                                                   OrderingResources.ResourceManager,
@@ -130,28 +131,41 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                   OrderingResources.ResourceManager,
                                                   typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.OrderingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 // extern alias and usings are missing here because the compiler itself is enforcing
                 // the right order.
                 private static readonly ImmutableArray<SyntaxKind> OuterOrder =
-                    ImmutableArray.Create(
-                        SyntaxKind.NamespaceDeclaration, SyntaxKind.DelegateDeclaration,
-                        SyntaxKind.EnumDeclaration, SyntaxKind.InterfaceDeclaration,
-                        SyntaxKind.StructDeclaration, SyntaxKind.ClassDeclaration);
+                    ImmutableArray.Create(SyntaxKind.NamespaceDeclaration,
+                                          SyntaxKind.DelegateDeclaration,
+                                          SyntaxKind.EnumDeclaration,
+                                          SyntaxKind.InterfaceDeclaration,
+                                          SyntaxKind.StructDeclaration,
+                                          SyntaxKind.ClassDeclaration);
 
                 private static readonly ImmutableArray<SyntaxKind> TypeMemberOrder =
-                    ImmutableArray.Create(
-                        SyntaxKind.FieldDeclaration, SyntaxKind.ConstructorDeclaration,
-                        SyntaxKind.DestructorDeclaration, SyntaxKind.DelegateDeclaration,
-                        SyntaxKind.EventDeclaration, SyntaxKind.EnumDeclaration,
-                        SyntaxKind.InterfaceDeclaration, SyntaxKind.PropertyDeclaration,
-                        SyntaxKind.IndexerDeclaration, SyntaxKind.ConversionOperatorDeclaration,
-                        SyntaxKind.OperatorDeclaration, SyntaxKind.MethodDeclaration,
-                        SyntaxKind.StructDeclaration, SyntaxKind.ClassDeclaration);
+                    ImmutableArray.Create(SyntaxKind.FieldDeclaration,
+                                          SyntaxKind.ConstructorDeclaration,
+                                          SyntaxKind.DestructorDeclaration,
+                                          SyntaxKind.DelegateDeclaration,
+                                          SyntaxKind.EventDeclaration,
+                                          SyntaxKind.EnumDeclaration,
+                                          SyntaxKind.InterfaceDeclaration,
+                                          SyntaxKind.PropertyDeclaration,
+                                          SyntaxKind.IndexerDeclaration,
+                                          SyntaxKind.ConversionOperatorDeclaration,
+                                          SyntaxKind.OperatorDeclaration,
+                                          SyntaxKind.MethodDeclaration,
+                                          SyntaxKind.StructDeclaration,
+                                          SyntaxKind.ClassDeclaration);
 
                 private static readonly Dictionary<SyntaxKind, string> MemberNames =
                     new Dictionary<SyntaxKind, string>{

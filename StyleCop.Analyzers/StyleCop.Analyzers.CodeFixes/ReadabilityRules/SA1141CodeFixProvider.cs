@@ -45,7 +45,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
@@ -110,7 +112,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static SyntaxNode TransformGenericNameToTuple(
-                    SemanticModel semanticModel, GenericNameSyntax genericName) {
+                    SemanticModel semanticModel,
+                    GenericNameSyntax genericName) {
                         var implementationType =
                             typeof(SeparatedSyntaxListWrapper<>.AutoWrapSeparatedSyntaxList<>)
                                 .MakeGenericType(typeof(TupleElementSyntaxWrapper),
@@ -135,7 +138,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static SyntaxNode TransformArgumentListToTuple(
-                    SemanticModel semanticModel, SeparatedSyntaxList<ArgumentSyntax> arguments) {
+                    SemanticModel semanticModel,
+                    SeparatedSyntaxList<ArgumentSyntax> arguments) {
                         SeparatedSyntaxList<ArgumentSyntax> processedArguments = default;
 
                         for (var i = 0; i < arguments.Count; i++) {

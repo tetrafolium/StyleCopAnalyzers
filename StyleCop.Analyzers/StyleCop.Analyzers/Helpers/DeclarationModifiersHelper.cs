@@ -99,7 +99,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// addition of a modifier of the specified <paramref name="modifierKeywords"/> at
                 /// the beginning of the list.</returns>
                 internal static SyntaxTokenList AddModifiers(
-                    SyntaxTokenList modifiers, ref SyntaxToken leadingTriviaToken,
+                    SyntaxTokenList modifiers,
+                    ref SyntaxToken leadingTriviaToken,
                     IEnumerable<SyntaxKind> modifierKeywords) {
                         foreach (var modifierKeyword in modifierKeywords.Reverse()) {
                                 modifiers =

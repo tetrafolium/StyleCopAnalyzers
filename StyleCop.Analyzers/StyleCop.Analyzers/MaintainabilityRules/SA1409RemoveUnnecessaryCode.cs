@@ -63,24 +63,32 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 public const string DiagnosticId = "SA1409";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1409.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1409Title),
-                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1409Title),
+                                                  MaintainabilityResources.ResourceManager,
+                                                  typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1409MessageFormat),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                        MaintainabilityResources.ResourceManager,
+                        typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1409Description),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                        MaintainabilityResources.ResourceManager,
+                        typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS2000  // Add analyzer diagnostic IDs to analyzer release.
-                    new DiagnosticDescriptor(
-                        DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules,
-                        DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault,
-                        Description, HelpLink, WellKnownDiagnosticTags.NotConfigurable);
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.MaintainabilityRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.DisabledByDefault,
+                                             Description,
+                                             HelpLink,
+                                             WellKnownDiagnosticTags.NotConfigurable);
 #pragma warning restore RS2000  // Add analyzer diagnostic IDs to analyzer release.
 
                 /// <inheritdoc/>

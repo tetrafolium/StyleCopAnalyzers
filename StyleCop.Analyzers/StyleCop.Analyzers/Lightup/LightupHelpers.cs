@@ -12,12 +12,14 @@ namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp;
 
         internal static class LightupHelpers {
-                private static readonly ConcurrentDictionary<
-                    Type, ConcurrentDictionary<SyntaxKind, bool>> SupportedWrappers =
-                    new ConcurrentDictionary<Type, ConcurrentDictionary<SyntaxKind, bool>>();
+                private static readonly ConcurrentDictionary<Type,
+                                                             ConcurrentDictionary<SyntaxKind, bool>>
+                    SupportedWrappers =
+                        new ConcurrentDictionary<Type, ConcurrentDictionary<SyntaxKind, bool>>();
 
                 private static readonly ConcurrentDictionary<
-                    Type, ConcurrentDictionary<OperationKind, bool>> SupportedOperationWrappers =
+                    Type,
+                    ConcurrentDictionary<OperationKind, bool>> SupportedOperationWrappers =
                     new ConcurrentDictionary<Type, ConcurrentDictionary<OperationKind, bool>>();
 
                 public static bool SupportsCSharp7 { get; }
@@ -384,7 +386,8 @@ namespace StyleCop.Analyzers.Lightup {
 
                 internal static Func<TSyntax, SeparatedSyntaxListWrapper<TProperty>, TSyntax>
                 CreateSeparatedSyntaxListWithPropertyAccessor<TSyntax, TProperty>(
-                    Type type, string propertyName) {
+                    Type type,
+                    string propertyName) {
                         TSyntax FallbackAccessor(TSyntax syntax,
                                                  SeparatedSyntaxListWrapper<TProperty> newValue) {
                                 if (syntax == null) {

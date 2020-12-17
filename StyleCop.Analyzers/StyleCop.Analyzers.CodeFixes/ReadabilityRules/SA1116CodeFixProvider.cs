@@ -51,7 +51,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken)
                                               .ConfigureAwait(false);
                         SyntaxToken originalToken =

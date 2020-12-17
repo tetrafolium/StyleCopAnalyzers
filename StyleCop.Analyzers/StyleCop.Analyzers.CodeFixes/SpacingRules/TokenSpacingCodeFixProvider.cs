@@ -72,7 +72,9 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>();
@@ -92,7 +94,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static void UpdateReplaceMap(
-                    Dictionary<SyntaxToken, SyntaxToken> replaceMap, SyntaxToken token,
+                    Dictionary<SyntaxToken, SyntaxToken> replaceMap,
+                    SyntaxToken token,
                     Diagnostic diagnostic) {
                         string location;
                         if (!diagnostic.Properties.TryGetValue(TokenSpacingProperties.LocationKey,
@@ -374,7 +377,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static void UpdateReplaceMap(
-                    Dictionary<SyntaxToken, SyntaxToken> replaceMap, SyntaxToken token,
+                    Dictionary<SyntaxToken, SyntaxToken> replaceMap,
+                    SyntaxToken token,
                     Func<SyntaxToken, SyntaxToken> action) {
                         SyntaxToken existingReplacement;
                         SyntaxToken newReplacement;
@@ -396,7 +400,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                             SpacingResources.TokenSpacingCodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

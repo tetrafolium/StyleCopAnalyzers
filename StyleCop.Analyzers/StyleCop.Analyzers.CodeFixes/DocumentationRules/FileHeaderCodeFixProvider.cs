@@ -64,14 +64,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                     Path.GetFileName(document.FilePath ?? document.Name);
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, CancellationToken cancellationToken) {
+                    Document document,
+                    CancellationToken cancellationToken) {
                         return document.WithSyntaxRoot(
                             await GetTransformedSyntaxRootAsync(document, cancellationToken)
                                 .ConfigureAwait(false));
                 }
 
                 private static async Task<SyntaxNode> GetTransformedSyntaxRootAsync(
-                    Document document, CancellationToken cancellationToken) {
+                    Document document,
+                    CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         var settings =
@@ -106,7 +108,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static SyntaxNode ReplaceWellFormedMultiLineCommentHeader(
-                    Document document, SyntaxNode root, StyleCopSettings settings, int commentIndex,
+                    Document document,
+                    SyntaxNode root,
+                    StyleCopSettings settings,
+                    int commentIndex,
                     XmlFileHeader header) {
                         SyntaxTriviaList trivia = root.GetLeadingTrivia();
                         var commentTrivia = trivia[commentIndex];
@@ -213,7 +218,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return root.WithLeadingTrivia(trivia.Replace(commentTrivia, newTrivia));
                 }
 
-                private static SyntaxNode ReplaceHeader(Document document, SyntaxNode root,
+                private static SyntaxNode ReplaceHeader(Document document,
+                                                        SyntaxNode root,
                                                         StyleCopSettings settings,
                                                         bool isMalformedHeader) {
                         // If the header is well formed Xml then we parse out the copyright
@@ -352,7 +358,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return false;
                 }
 
-                private static SyntaxNode AddHeader(Document document, SyntaxNode root, string name,
+                private static SyntaxNode AddHeader(Document document,
+                                                    SyntaxNode root,
+                                                    string name,
                                                     StyleCopSettings settings) {
                         string newLineText = document.Project.Solution.Workspace.Options.GetOption(
                             FormattingOptions.NewLine, LanguageNames.CSharp);
@@ -406,7 +414,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static string WrapInXmlComment(string prefixWithLeadingSpaces,
-                                                       string copyrightText, string fileName,
+                                                       string copyrightText,
+                                                       string fileName,
                                                        StyleCopSettings settings,
                                                        string newLineText) {
                         string encodedFilename =
@@ -433,7 +442,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static string GetCopyrightText(string prefixWithLeadingSpaces,
-                                                       string copyrightText, string newLineText) {
+                                                       string copyrightText,
+                                                       string newLineText) {
                         copyrightText = copyrightText.Replace("\r\n", "\n");
                         var lines = copyrightText.Split('\n');
                         return string.Join(newLineText, lines.Select(line => {
@@ -446,7 +456,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static SyntaxTriviaList RemoveHeaderDecorationLines(
-                    SyntaxTriviaList trivia, StyleCopSettings settings) {
+                    SyntaxTriviaList trivia,
+                    StyleCopSettings settings) {
                         if (!string.IsNullOrEmpty(settings.DocumentationRules.HeaderDecoration)) {
                                 var decorationRemovalList = new List<int>();
                                 for (int i = 0; i < trivia.Count; i++) {
@@ -483,7 +494,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                             DocumentationResources.SA1633CodeFix;
 
                         protected override Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

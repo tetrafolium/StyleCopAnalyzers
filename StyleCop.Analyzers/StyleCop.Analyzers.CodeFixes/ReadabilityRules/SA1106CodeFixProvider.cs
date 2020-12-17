@@ -46,7 +46,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -64,7 +66,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> RemoveEmptyStatementAsync(
-                    Document document, SyntaxNode root, EmptyStatementSyntax node,
+                    Document document,
+                    SyntaxNode root,
+                    EmptyStatementSyntax node,
                     CancellationToken cancellationToken) {
                         SyntaxNode newRoot;
 
@@ -99,7 +103,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> RemoveSemicolonTextAsync(
-                    Document document, SyntaxToken token, CancellationToken cancellationToken) {
+                    Document document,
+                    SyntaxToken token,
+                    CancellationToken cancellationToken) {
                         TextChange textChange;
 
                         SourceText sourceText =

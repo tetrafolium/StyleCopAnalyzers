@@ -33,25 +33,33 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public const string DiagnosticId = "SA1600";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1600.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1600Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(DocumentationResources.SA1600Title),
+                                                  DocumentationResources.ResourceManager,
+                                                  typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(DocumentationResources.SA1600MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager,
+                        typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(nameof(DocumentationResources.SA1600Description),
                                                   DocumentationResources.ResourceManager,
                                                   typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.DocumentationRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> BaseTypeDeclarationKinds =
-                    ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
+                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                          SyntaxKind.StructDeclaration,
                                           SyntaxKind.InterfaceDeclaration,
                                           SyntaxKind.EnumDeclaration);
 
@@ -81,7 +89,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 = ImmutableArray.Create(Descriptor);
 
                 public static bool NeedsComment(DocumentationSettings documentationSettings,
-                                                SyntaxKind syntaxKind, SyntaxKind parentSyntaxKind,
+                                                SyntaxKind syntaxKind,
+                                                SyntaxKind parentSyntaxKind,
                                                 Accessibility declaredAccessibility,
                                                 Accessibility effectiveAccessibility) {
                         if (documentationSettings.DocumentInterfaces &&
@@ -159,7 +168,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 private static class Analyzer {
                         public static void HandleBaseTypeDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -189,7 +199,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         public static void HandleMethodDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -215,7 +226,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         public static void HandleConstructorDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -241,7 +253,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         public static void HandleDestructorDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -267,7 +280,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         public static void HandlePropertyDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -293,7 +307,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         public static void HandleIndexerDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -351,7 +366,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         public static void HandleDelegateDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -403,7 +419,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         public static void HandleEventFieldDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
+                            SyntaxNodeAnalysisContext context,
+                            StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }

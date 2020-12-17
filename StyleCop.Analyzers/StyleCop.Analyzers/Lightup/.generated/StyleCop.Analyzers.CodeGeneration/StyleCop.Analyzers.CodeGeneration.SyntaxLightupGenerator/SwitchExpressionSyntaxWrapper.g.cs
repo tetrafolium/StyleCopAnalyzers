@@ -28,9 +28,10 @@ namespace StyleCop.Analyzers.Lightup {
                     WithSwitchKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
                     WithOpenBraceTokenAccessor;
-                private static readonly Func<
-                    ExpressionSyntax, SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>,
-                    ExpressionSyntax> WithArmsAccessor;
+                private static readonly
+                    Func<ExpressionSyntax,
+                         SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>,
+                         ExpressionSyntax> WithArmsAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
                     WithCloseBraceTokenAccessor;
 

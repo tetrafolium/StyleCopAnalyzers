@@ -49,7 +49,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static async Task<Solution> GetTransformedSolutionAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         SyntaxNode node =

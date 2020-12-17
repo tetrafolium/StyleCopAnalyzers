@@ -29,7 +29,8 @@ namespace StyleCop.Analyzers.Settings {
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                    "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+                    "Microsoft.Performance",
+                    "CA1811:AvoidUncalledPrivateCode")]
                 internal SettingsResources() {}
 
                 /// <summary>

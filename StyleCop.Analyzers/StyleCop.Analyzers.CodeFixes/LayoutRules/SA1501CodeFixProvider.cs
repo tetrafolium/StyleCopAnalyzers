@@ -51,7 +51,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -76,7 +78,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static void ReformatStatementAndSurroundings(
-                    StatementSyntax statement, IndentationSettings indentationSettings,
+                    StatementSyntax statement,
+                    IndentationSettings indentationSettings,
                     Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap) {
                         var block = statement as BlockSyntax;
 
@@ -143,7 +146,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static void ReformatBlock(
-                    IndentationSettings indentationSettings, BlockSyntax block,
+                    IndentationSettings indentationSettings,
+                    BlockSyntax block,
                     Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap) {
                         var parentIndentationLevel = IndentationHelper.GetIndentationSteps(
                             indentationSettings, GetStatementParent(block.Parent));
@@ -227,7 +231,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static void ReformatStatement(
-                    IndentationSettings indentationSettings, StatementSyntax statement,
+                    IndentationSettings indentationSettings,
+                    StatementSyntax statement,
                     Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap) {
                         var indentationLevel = DetermineIndentationLevel(
                             indentationSettings, tokenReplaceMap, statement);
@@ -261,7 +266,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static void AddToReplaceMap(
-                    Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap, SyntaxToken original,
+                    Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap,
+                    SyntaxToken original,
                     SyntaxToken replacement) {
                         SyntaxToken existingReplacement;
                         SyntaxToken reprocessedReplacement = replacement;
@@ -323,7 +329,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                             LayoutResources.SA1501CodeFixAll;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

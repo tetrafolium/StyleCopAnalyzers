@@ -15,8 +15,9 @@ namespace StyleCop.Analyzers.Lightup {
                 private static readonly Type WrappedType;
 
                 private static readonly Func<StatementSyntax, ExpressionSyntax> VariableAccessor;
-                private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>,
-                                             StatementSyntax> WithAttributeListsAccessor;
+                private static readonly
+                    Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax>
+                        WithAttributeListsAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax>
                     WithAwaitKeywordAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax>

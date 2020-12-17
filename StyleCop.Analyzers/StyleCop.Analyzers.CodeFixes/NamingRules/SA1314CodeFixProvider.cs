@@ -47,7 +47,9 @@ namespace StyleCop.Analyzers.NamingRules {
                 }
 
                 private static async Task<Solution> CreateChangedSolutionAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         var token = root.FindToken(diagnostic.Location.SourceSpan.Start);

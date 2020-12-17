@@ -45,9 +45,10 @@ namespace StyleCop.Analyzers.LayoutRules {
                 public const string DiagnosticId = "SA1506";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1506.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1506Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1506Title),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(LayoutResources.SA1506MessageFormat),
                                                   LayoutResources.ResourceManager,
@@ -57,21 +58,33 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                   LayoutResources.ResourceManager,
                                                   typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.LayoutRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds =
-                    ImmutableArray.Create(
-                        SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
-                        SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration,
-                        SyntaxKind.EnumMemberDeclaration, SyntaxKind.MethodDeclaration,
-                        SyntaxKind.ConstructorDeclaration, SyntaxKind.DestructorDeclaration,
-                        SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration,
-                        SyntaxKind.FieldDeclaration, SyntaxKind.DelegateDeclaration,
-                        SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration,
-                        SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
+                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                          SyntaxKind.StructDeclaration,
+                                          SyntaxKind.InterfaceDeclaration,
+                                          SyntaxKind.EnumDeclaration,
+                                          SyntaxKind.EnumMemberDeclaration,
+                                          SyntaxKind.MethodDeclaration,
+                                          SyntaxKind.ConstructorDeclaration,
+                                          SyntaxKind.DestructorDeclaration,
+                                          SyntaxKind.PropertyDeclaration,
+                                          SyntaxKind.IndexerDeclaration,
+                                          SyntaxKind.FieldDeclaration,
+                                          SyntaxKind.DelegateDeclaration,
+                                          SyntaxKind.EventDeclaration,
+                                          SyntaxKind.EventFieldDeclaration,
+                                          SyntaxKind.OperatorDeclaration,
+                                          SyntaxKind.ConversionOperatorDeclaration);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction =
                     HandleDeclaration;

@@ -18,8 +18,9 @@ namespace StyleCop.Analyzers.Lightup {
                     AttributeListsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxTokenList> ModifiersAccessor;
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
-                private static readonly Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>,
-                                             CSharpSyntaxNode> WithAttributeListsAccessor;
+                private static readonly
+                    Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>, CSharpSyntaxNode>
+                        WithAttributeListsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxTokenList, CSharpSyntaxNode>
                     WithModifiersAccessor;
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax, CSharpSyntaxNode>

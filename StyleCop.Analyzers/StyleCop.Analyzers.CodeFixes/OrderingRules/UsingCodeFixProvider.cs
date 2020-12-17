@@ -79,7 +79,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, SyntaxNode syntaxRoot, bool forcePreservePlacement,
+                    Document document,
+                    SyntaxNode syntaxRoot,
+                    bool forcePreservePlacement,
                     CancellationToken cancellationToken) {
                         var fileHeader = GetFileHeader(syntaxRoot);
                         var compilationUnit = (CompilationUnitSyntax) syntaxRoot;
@@ -150,7 +152,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static string DetermineIndentation(
-                    CompilationUnitSyntax compilationUnit, IndentationSettings indentationSettings,
+                    CompilationUnitSyntax compilationUnit,
+                    IndentationSettings indentationSettings,
                     UsingDirectivesPlacement usingDirectivesPlacement) {
                         string usingsIndentation;
 
@@ -170,7 +173,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static UsingDirectivesPlacement DeterminePlacement(
-                    CompilationUnitSyntax compilationUnit, StyleCopSettings settings) {
+                    CompilationUnitSyntax compilationUnit,
+                    StyleCopSettings settings) {
                         switch (settings.OrderingRules.UsingDirectivesPlacement) {
                                 case UsingDirectivesPlacement.InsideNamespace:
                                         var namespaceCount =
@@ -224,7 +228,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                 private static void BuildReplaceMapForNamespaces(
                     UsingsSorter usingsHelper,
                     Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax> replaceMap,
-                    IndentationSettings indentationSettings, bool qualifyNames) {
+                    IndentationSettings indentationSettings,
+                    bool qualifyNames) {
                         var usingsPerNamespace = usingsHelper.GetContainedUsings(TreeTextSpan.Empty)
                                                      .GroupBy(ud => ud.Parent)
                                                      .Select(gr => gr.ToList());
@@ -259,7 +264,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                 private static void BuildReplaceMapForConditionalDirectives(
                     UsingsSorter usingsHelper,
                     Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax> replaceMap,
-                    IndentationSettings indentationSettings, TreeTextSpan rootSpan) {
+                    IndentationSettings indentationSettings,
+                    TreeTextSpan rootSpan) {
                         foreach (var childSpan in rootSpan.Children) {
                                 var originalUsings = usingsHelper.GetContainedUsings(childSpan);
                                 if (originalUsings.Count > 0) {
@@ -323,7 +329,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static SyntaxNode AddUsingsToCompilationRoot(
-                    SyntaxNode newSyntaxRoot, UsingsSorter usingsHelper, string usingsIndentation,
+                    SyntaxNode newSyntaxRoot,
+                    UsingsSorter usingsHelper,
+                    string usingsIndentation,
                     bool hasConditionalDirectives) {
                         var newCompilationUnit = (CompilationUnitSyntax) newSyntaxRoot;
                         var withTrailingBlankLine =
@@ -543,7 +551,8 @@ namespace StyleCop.Analyzers.OrderingRules {
 
                         /// <inheritdoc/>
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

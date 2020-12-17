@@ -23,9 +23,10 @@ namespace StyleCop.Analyzers.SpecialRules {
                 public const string DiagnosticId = "SA0001";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0001.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpecialResources.SA0001Title), SpecialResources.ResourceManager,
-                    typeof(SpecialResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(SpecialResources.SA0001Title),
+                                                  SpecialResources.ResourceManager,
+                                                  typeof(SpecialResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(SpecialResources.SA0001MessageFormat),
                                                   SpecialResources.ResourceManager,
@@ -35,10 +36,15 @@ namespace StyleCop.Analyzers.SpecialRules {
                                                   SpecialResources.ResourceManager,
                                                   typeof(SpecialResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.SpecialRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<CompilationStartAnalysisContext>
                     CompilationStartAction = HandleCompilationStart;

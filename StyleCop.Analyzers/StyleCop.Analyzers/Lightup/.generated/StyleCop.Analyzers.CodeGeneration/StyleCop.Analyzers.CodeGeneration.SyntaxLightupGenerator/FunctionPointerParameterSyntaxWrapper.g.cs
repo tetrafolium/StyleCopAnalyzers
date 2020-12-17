@@ -13,8 +13,9 @@ namespace StyleCop.Analyzers.Lightup {
                 internal const string WrappedTypeName =
                     "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerParameterSyntax";
                 private static readonly Type WrappedType;
-                private static readonly Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>,
-                                             CSharpSyntaxNode> WithAttributeListsAccessor;
+                private static readonly
+                    Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>, CSharpSyntaxNode>
+                        WithAttributeListsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxTokenList, CSharpSyntaxNode>
                     WithModifiersAccessor;
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax, CSharpSyntaxNode>

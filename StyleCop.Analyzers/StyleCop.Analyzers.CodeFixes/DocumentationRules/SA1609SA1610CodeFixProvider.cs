@@ -79,7 +79,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var documentRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                                .ConfigureAwait(false);
                         SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan);

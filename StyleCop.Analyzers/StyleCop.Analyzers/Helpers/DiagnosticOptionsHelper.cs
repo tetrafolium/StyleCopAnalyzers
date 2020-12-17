@@ -35,7 +35,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
                 internal static bool IsAnalyzerSuppressed(
-                    this CompilationStartAnalysisContext context, DiagnosticDescriptor descriptor) {
+                    this CompilationStartAnalysisContext context,
+                    DiagnosticDescriptor descriptor) {
                         return context.Compilation.IsAnalyzerSuppressed(descriptor);
                 }
 
@@ -61,7 +62,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// name="descriptor">The diagnostic descriptor to check.</param> <returns>True if
                 /// the diagnostic is currently suppressed.</returns>
                 internal static bool IsAnalyzerSuppressed(
-                    this CompilationOptions compilationOptions, DiagnosticDescriptor descriptor) {
+                    this CompilationOptions compilationOptions,
+                    DiagnosticDescriptor descriptor) {
                         switch (descriptor.GetEffectiveSeverity(compilationOptions)) {
                                 case ReportDiagnostic.Suppress:
                                         return true;

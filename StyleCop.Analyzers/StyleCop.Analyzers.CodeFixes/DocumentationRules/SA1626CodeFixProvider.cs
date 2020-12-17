@@ -47,7 +47,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var text =
                             await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
@@ -64,7 +66,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                             DocumentationResources.SA1626CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

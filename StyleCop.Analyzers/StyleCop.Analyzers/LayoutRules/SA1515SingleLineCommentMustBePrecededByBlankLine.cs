@@ -83,9 +83,10 @@ namespace StyleCop.Analyzers.LayoutRules {
                 public const string DiagnosticId = "SA1515";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1515.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1515Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1515Title),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(LayoutResources.SA1515MessageFormat),
                                                   LayoutResources.ResourceManager,
@@ -95,10 +96,15 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                   LayoutResources.ResourceManager,
                                                   typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.LayoutRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
                     HandleSyntaxTree;
@@ -193,7 +199,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static bool IsPrecededBySingleLineCommentOrDocumentation<T>(
-                    T triviaList, int triviaIndex) where T : IReadOnlyList<SyntaxTrivia> {
+                    T triviaList,
+                    int triviaIndex) where T : IReadOnlyList<SyntaxTrivia> {
                         var eolCount = 0;
 
                         triviaIndex--;

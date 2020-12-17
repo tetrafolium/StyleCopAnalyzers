@@ -76,7 +76,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// fix project.</param> <returns>A <see cref="Task{TResult}"/> representing the
                 /// asynchronous operation.</returns>
                 public static async Task<SolutionReader> CreateAsync(
-                    string pathToSln, string analyzerProjectName = "StyleCop.Analyzers",
+                    string pathToSln,
+                    string analyzerProjectName = "StyleCop.Analyzers",
                     string codeFixProjectName = "StyleCop.Analyzers.CodeFixes") {
                         SolutionReader reader = new SolutionReader();
 
@@ -244,8 +245,10 @@ namespace StyleCop.Analyzers.Status.Generator {
                         return Assembly.LoadFile(project.OutputFilePath);
                 }
 
-                private string GetStatus(INamedTypeSymbol classSymbol, SyntaxNode root,
-                                         SemanticModel model, DiagnosticDescriptor descriptor) {
+                private string GetStatus(INamedTypeSymbol classSymbol,
+                                         SyntaxNode root,
+                                         SemanticModel model,
+                                         DiagnosticDescriptor descriptor) {
                         // Some analyzers use multiple descriptors. We analyze the first one and
                         // hope that thats enough.
                         var members = classSymbol.GetMembers()
@@ -313,7 +316,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 }
 
                 private(CodeFixStatus codeFixStatus, FixAllStatus fixAllStatus)
-                    GetCodeFixAndFixAllStatus(string diagnosticId, INamedTypeSymbol classSymbol,
+                    GetCodeFixAndFixAllStatus(string diagnosticId,
+                                              INamedTypeSymbol classSymbol,
                                               out string noCodeFixReason) {
                         CodeFixStatus codeFixStatus;
                         FixAllStatus fixAllStatus;

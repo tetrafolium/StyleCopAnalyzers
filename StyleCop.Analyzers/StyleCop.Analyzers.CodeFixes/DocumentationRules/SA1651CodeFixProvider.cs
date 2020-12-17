@@ -105,7 +105,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private async Task<Document> GetTransformedDocumentAsync(
-                    Document document, XmlElementSyntax elementSyntax,
+                    Document document,
+                    XmlElementSyntax elementSyntax,
                     CancellationToken cancellationToken) {
                         if (elementSyntax.Content.Count == 0) {
                                 return document;
@@ -126,7 +127,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         = DocumentationResources.SA1651CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 var syntaxRoot =
                                     await document

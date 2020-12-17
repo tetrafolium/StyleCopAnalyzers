@@ -54,7 +54,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 /// token associated with the fix action.</param> <returns>The transformed
                 /// document.</returns>
                 private static async Task<Document> FixEndOfFileAsync(
-                    Document document, Diagnostic diagnostic, OptionSetting newlineAtEndOfFile,
+                    Document document,
+                    Diagnostic diagnostic,
+                    OptionSetting newlineAtEndOfFile,
                     CancellationToken cancellationToken) {
                         var text =
                             await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
@@ -71,7 +73,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         protected override string CodeActionTitle => LayoutResources.SA1518CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

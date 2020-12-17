@@ -69,7 +69,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// were made to the document.</para>
                 /// </returns>
                 protected abstract Task<SyntaxNode> FixAllInDocumentAsync(
-                    FixAllContext fixAllContext, Document document,
+                    FixAllContext fixAllContext,
+                    Document document,
                     ImmutableArray<Diagnostic> diagnostics);
 
                 private async Task<Document> GetDocumentFixesAsync(FixAllContext fixAllContext) {
@@ -95,7 +96,8 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 private async Task<Solution> GetSolutionFixesAsync(
-                    FixAllContext fixAllContext, ImmutableArray<Document> documents) {
+                    FixAllContext fixAllContext,
+                    ImmutableArray<Document> documents) {
                         var documentDiagnosticsToFix =
                             await FixAllContextHelper
                                 .GetDocumentDiagnosticsToFixAsync(fixAllContext)

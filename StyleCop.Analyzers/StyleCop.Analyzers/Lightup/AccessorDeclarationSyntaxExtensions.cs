@@ -8,7 +8,8 @@ namespace StyleCop.Analyzers.Lightup {
         internal static class AccessorDeclarationSyntaxExtensions {
                 private static readonly Func<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax>
                     ExpressionBodyAccessor;
-                private static readonly Func<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax,
+                private static readonly Func<AccessorDeclarationSyntax,
+                                             ArrowExpressionClauseSyntax,
                                              AccessorDeclarationSyntax> WithExpressionBodyAccessor;
 
                 static AccessorDeclarationSyntaxExtensions() {

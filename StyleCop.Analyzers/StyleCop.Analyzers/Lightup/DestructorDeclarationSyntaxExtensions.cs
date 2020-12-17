@@ -6,9 +6,10 @@ namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal static class DestructorDeclarationSyntaxExtensions {
-                private static readonly
-                    Func<DestructorDeclarationSyntax, ArrowExpressionClauseSyntax,
-                         DestructorDeclarationSyntax> WithExpressionBodyAccessor;
+                private static readonly Func<DestructorDeclarationSyntax,
+                                             ArrowExpressionClauseSyntax,
+                                             DestructorDeclarationSyntax>
+                    WithExpressionBodyAccessor;
 
                 static DestructorDeclarationSyntaxExtensions() {
                         WithExpressionBodyAccessor =

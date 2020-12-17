@@ -45,7 +45,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                             staticImports =
                                 new Dictionary<TreeTextSpan, List<UsingDirectiveSyntax>>();
 
-                        public UsingsSorter(StyleCopSettings settings, SemanticModel semanticModel,
+                        public UsingsSorter(StyleCopSettings settings,
+                                            SemanticModel semanticModel,
                                             CompilationUnitSyntax compilationUnit,
                                             ImmutableArray<SyntaxTrivia> fileHeader) {
                                 this.separateSystemDirectives =
@@ -99,8 +100,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
 
                         public SyntaxList<UsingDirectiveSyntax> GenerateGroupedUsings(
-                            TreeTextSpan directiveSpan, string indentation,
-                            bool withTrailingBlankLine, bool qualifyNames) {
+                            TreeTextSpan directiveSpan,
+                            string indentation,
+                            bool withTrailingBlankLine,
+                            bool qualifyNames) {
                                 var usingList = new List<UsingDirectiveSyntax>();
                                 List<SyntaxTrivia> triviaToMove = new List<SyntaxTrivia>();
 
@@ -141,8 +144,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
 
                         public SyntaxList<UsingDirectiveSyntax> GenerateGroupedUsings(
-                            List<UsingDirectiveSyntax> usingsList, string indentation,
-                            bool withTrailingBlankLine, bool qualifyNames) {
+                            List<UsingDirectiveSyntax> usingsList,
+                            string indentation,
+                            bool withTrailingBlankLine,
+                            bool qualifyNames) {
                                 var usingList = new List<UsingDirectiveSyntax>();
                                 List<SyntaxTrivia> triviaToMove = new List<SyntaxTrivia>();
 
@@ -184,8 +189,10 @@ namespace StyleCop.Analyzers.OrderingRules {
 
                         private List<UsingDirectiveSyntax> GenerateUsings(
                             Dictionary<TreeTextSpan, List<UsingDirectiveSyntax>> usingsGroup,
-                            TreeTextSpan directiveSpan, string indentation,
-                            List<SyntaxTrivia> triviaToMove, bool qualifyNames) {
+                            TreeTextSpan directiveSpan,
+                            string indentation,
+                            List<SyntaxTrivia> triviaToMove,
+                            bool qualifyNames) {
                                 List<UsingDirectiveSyntax> result =
                                     new List<UsingDirectiveSyntax>();
                                 List<UsingDirectiveSyntax> usingsList;
@@ -199,8 +206,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
 
                         private List<UsingDirectiveSyntax> GenerateUsings(
-                            List<UsingDirectiveSyntax> usingsList, string indentation,
-                            List<SyntaxTrivia> triviaToMove, bool qualifyNames) {
+                            List<UsingDirectiveSyntax> usingsList,
+                            string indentation,
+                            List<SyntaxTrivia> triviaToMove,
+                            bool qualifyNames) {
                                 List<UsingDirectiveSyntax> result =
                                     new List<UsingDirectiveSyntax>();
 
@@ -611,7 +620,8 @@ namespace StyleCop.Analyzers.OrderingRules {
 
                         private void AddUsingDirective(
                             Dictionary<TreeTextSpan, List<UsingDirectiveSyntax>> container,
-                            UsingDirectiveSyntax usingDirective, TreeTextSpan containingSpan) {
+                            UsingDirectiveSyntax usingDirective,
+                            TreeTextSpan containingSpan) {
                                 List<UsingDirectiveSyntax> usingList;
 
                                 if (!container.TryGetValue(containingSpan, out usingList)) {
@@ -624,8 +634,10 @@ namespace StyleCop.Analyzers.OrderingRules {
 
                         private List<UsingDirectiveSyntax> GenerateUsings(
                             Dictionary<TreeTextSpan, List<UsingDirectiveSyntax>> usingsGroup,
-                            List<UsingDirectiveSyntax> usingsList, string indentation,
-                            List<SyntaxTrivia> triviaToMove, bool qualifyNames) {
+                            List<UsingDirectiveSyntax> usingsList,
+                            string indentation,
+                            List<SyntaxTrivia> triviaToMove,
+                            bool qualifyNames) {
                                 var filteredUsingsList =
                                     this.FilterRelevantUsings(usingsGroup, usingsList);
 

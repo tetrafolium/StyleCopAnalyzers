@@ -31,7 +31,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         private readonly TreeTextSpan regionRoot;
                         private readonly TreeTextSpan pragmaWarningRoot;
 
-                        private SourceMap(TreeTextSpan conditionalRoot, TreeTextSpan regionRoot,
+                        private SourceMap(TreeTextSpan conditionalRoot,
+                                          TreeTextSpan regionRoot,
                                           TreeTextSpan pragmaWarningRoot) {
                                 this.ConditionalRoot = conditionalRoot;
                                 this.regionRoot = regionRoot;
@@ -137,8 +138,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
 
                         private static void BuildDirectiveTriviaMaps(
-                            CompilationUnitSyntax compilationUnit, out TreeTextSpan conditionalRoot,
-                            out TreeTextSpan regionRoot, out TreeTextSpan pragmaWarningRoot) {
+                            CompilationUnitSyntax compilationUnit,
+                            out TreeTextSpan conditionalRoot,
+                            out TreeTextSpan regionRoot,
+                            out TreeTextSpan pragmaWarningRoot) {
                                 var conditionalStack = new Stack<TreeTextSpan.Builder>();
                                 var regionStack = new Stack<TreeTextSpan.Builder>();
                                 var pragmaWarningList = new List<DirectiveTriviaSyntax>();
@@ -226,7 +229,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
 
                         private static TreeTextSpan FinalizeBuilder(
-                            TreeTextSpan.Builder builder, Stack<TreeTextSpan.Builder> stack,
+                            TreeTextSpan.Builder builder,
+                            Stack<TreeTextSpan.Builder> stack,
                             int end) {
                                 // close all spans (including the root) that have not been closed
                                 // yet

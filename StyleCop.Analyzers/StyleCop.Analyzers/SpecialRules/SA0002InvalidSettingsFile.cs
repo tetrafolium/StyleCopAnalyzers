@@ -23,9 +23,10 @@ namespace StyleCop.Analyzers.SpecialRules {
                 public const string DiagnosticId = "SA0002";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0002.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpecialResources.SA0002Title), SpecialResources.ResourceManager,
-                    typeof(SpecialResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(SpecialResources.SA0002Title),
+                                                  SpecialResources.ResourceManager,
+                                                  typeof(SpecialResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(SpecialResources.SA0002MessageFormat),
                                                   SpecialResources.ResourceManager,
@@ -38,10 +39,14 @@ namespace StyleCop.Analyzers.SpecialRules {
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS1033  // Define diagnostic description correctly (Description ends with
                                 // formatted exception text)
-                    new DiagnosticDescriptor(
-                        DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules,
-                        DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                        HelpLink);
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.SpecialRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 #pragma warning restore RS1033  // Define diagnostic description correctly
 
                 private static readonly Action<CompilationAnalysisContext> CompilationAction =

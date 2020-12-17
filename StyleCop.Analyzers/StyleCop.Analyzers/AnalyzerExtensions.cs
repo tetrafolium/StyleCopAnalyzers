@@ -141,10 +141,11 @@ namespace StyleCop.Analyzers {
 
                 private static class LanguageKindArrays<TLanguageKindEnum> where TLanguageKindEnum
                     : struct {
-                        private static readonly ConcurrentDictionary<
-                            TLanguageKindEnum, ImmutableArray<TLanguageKindEnum>> Arrays =
-                            new ConcurrentDictionary<TLanguageKindEnum,
-                                                     ImmutableArray<TLanguageKindEnum>>();
+                        private static readonly
+                            ConcurrentDictionary<TLanguageKindEnum,
+                                                 ImmutableArray<TLanguageKindEnum>> Arrays =
+                                new ConcurrentDictionary<TLanguageKindEnum,
+                                                         ImmutableArray<TLanguageKindEnum>>();
 
                         private static readonly
                             Func<TLanguageKindEnum, ImmutableArray<TLanguageKindEnum>>

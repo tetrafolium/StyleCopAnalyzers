@@ -97,7 +97,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, SyntaxNode root, SyntaxToken identifierToken,
+                    Document document,
+                    SyntaxNode root,
+                    SyntaxToken identifierToken,
                     CancellationToken cancellationToken) {
                         SemanticModel semanticModel =
                             await document.GetSemanticModelAsync(cancellationToken)
@@ -135,7 +137,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static Document GetTransformedDocumentForBasePropertyDeclaration(
-                    Document document, SyntaxNode root, SemanticModel semanticModel,
+                    Document document,
+                    SyntaxNode root,
+                    SemanticModel semanticModel,
                     BasePropertyDeclarationSyntax basePropertyDeclaration,
                     CancellationToken cancellationToken) {
                         if (basePropertyDeclaration.ExplicitInterfaceSpecifier == null &&
@@ -154,7 +158,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static Document GetTransformedDocumentForMethodDeclaration(
-                    Document document, SyntaxNode root, SemanticModel semanticModel,
+                    Document document,
+                    SyntaxNode root,
+                    SemanticModel semanticModel,
                     MethodDeclarationSyntax methodDeclaration,
                     CancellationToken cancellationToken) {
                         if (methodDeclaration.ExplicitInterfaceSpecifier == null &&
@@ -173,7 +179,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static Document GetTransformedDocumentForEventFieldDeclaration(
-                    Document document, SyntaxNode root, SemanticModel semanticModel,
+                    Document document,
+                    SyntaxNode root,
+                    SemanticModel semanticModel,
                     EventFieldDeclarationSyntax eventFieldDeclaration,
                     CancellationToken cancellationToken) {
                         if (!eventFieldDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword)) {
@@ -197,7 +205,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static Document GetTransformedDocumentForIndexerDeclaration(
-                    Document document, SyntaxNode root, SemanticModel semanticModel,
+                    Document document,
+                    SyntaxNode root,
+                    SemanticModel semanticModel,
                     IndexerDeclarationSyntax indexerDeclaration,
                     CancellationToken cancellationToken) {
                         if (indexerDeclaration.ExplicitInterfaceSpecifier == null &&
@@ -216,7 +226,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static Document InsertInheritdocComment(
-                    Document document, SyntaxNode root, SyntaxNode syntaxNode,
+                    Document document,
+                    SyntaxNode root,
+                    SyntaxNode syntaxNode,
                     CancellationToken cancellationToken) {
                         // Currently unused
                         _ = cancellationToken;

@@ -46,7 +46,8 @@ namespace StyleCop.Analyzers.Helpers {
                         }
                 }
 
-                private static MethodInfo GetDeclaredMethod(this TypeInfo typeInfo, string name,
+                private static MethodInfo GetDeclaredMethod(this TypeInfo typeInfo,
+                                                            string name,
                                                             params Type[] paramTypes) {
                         return FindItem(typeInfo.GetDeclaredMethods(name), paramTypes);
                 }

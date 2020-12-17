@@ -114,7 +114,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 private static Task<Document>
                 GetConstructorOrDestructorDocumentationTransformedDocumentAsync(
-                    Document document, SyntaxNode root, BaseMethodDeclarationSyntax declaration,
+                    Document document,
+                    SyntaxNode root,
+                    BaseMethodDeclarationSyntax declaration,
                     CancellationToken cancellationToken) {
                         SyntaxTriviaList leadingTrivia = declaration.GetLeadingTrivia();
                         int insertionIndex = GetInsertionIndex(ref leadingTrivia);
@@ -160,7 +162,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static Task<Document> GetMethodDocumentationTransformedDocumentAsync(
-                    Document document, SyntaxNode root, SemanticModel semanticModel,
+                    Document document,
+                    SyntaxNode root,
+                    SemanticModel semanticModel,
                     MethodDeclarationSyntax methodDeclaration,
                     CancellationToken cancellationToken) {
                         SyntaxTriviaList leadingTrivia = methodDeclaration.GetLeadingTrivia();

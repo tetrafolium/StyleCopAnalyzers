@@ -7,8 +7,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
 
         internal class OrderingSettings {
                 private static readonly ImmutableArray<OrderingTrait> DefaultElementOrder =
-                    ImmutableArray.Create(OrderingTrait.Kind, OrderingTrait.Accessibility,
-                                          OrderingTrait.Constant, OrderingTrait.Static,
+                    ImmutableArray.Create(OrderingTrait.Kind,
+                                          OrderingTrait.Accessibility,
+                                          OrderingTrait.Constant,
+                                          OrderingTrait.Static,
                                           OrderingTrait.Readonly);
 
                 /// <summary>

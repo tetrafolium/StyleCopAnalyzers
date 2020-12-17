@@ -41,7 +41,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -89,7 +91,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static NameSyntax GetReplacementGenericName(
-                    TypeSyntax symbolNameSyntax, GenericNameSyntax genericNameSyntax) {
+                    TypeSyntax symbolNameSyntax,
+                    GenericNameSyntax genericNameSyntax) {
                         var symbolQualifiedNameSyntax = symbolNameSyntax as QualifiedNameSyntax;
                         var symbolGenericNameSyntax = (GenericNameSyntax)(
                             symbolQualifiedNameSyntax?.Right ?? symbolNameSyntax);
@@ -135,7 +138,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static NameSyntax GetReplacementQualifiedName(
-                    QualifiedNameSyntax symbolNameSyntax, QualifiedNameSyntax nameSyntax) {
+                    QualifiedNameSyntax symbolNameSyntax,
+                    QualifiedNameSyntax nameSyntax) {
                         if (nameSyntax.Right.IsKind(SyntaxKind.GenericName)) {
                                 return GetReplacementGenericName(
                                     symbolNameSyntax, (GenericNameSyntax) nameSyntax.Right);
@@ -152,7 +156,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             ReadabilityResources.SA1135CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

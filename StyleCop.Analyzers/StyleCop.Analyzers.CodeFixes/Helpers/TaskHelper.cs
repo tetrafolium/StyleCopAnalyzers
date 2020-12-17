@@ -10,7 +10,8 @@ namespace StyleCop.Analyzers.Helpers {
 
         internal static class TaskHelper {
                 public static bool IsTaskReturningMethod(
-                    SemanticModel semanticModel, MethodDeclarationSyntax methodDeclarationSyntax,
+                    SemanticModel semanticModel,
+                    MethodDeclarationSyntax methodDeclarationSyntax,
                     CancellationToken cancellationToken) {
                         return IsTaskType(semanticModel, methodDeclarationSyntax.ReturnType,
                                           cancellationToken);
@@ -24,7 +25,8 @@ namespace StyleCop.Analyzers.Helpers {
                                           cancellationToken);
                 }
 
-                public static bool IsTaskType(SemanticModel semanticModel, TypeSyntax typeSyntax,
+                public static bool IsTaskType(SemanticModel semanticModel,
+                                              TypeSyntax typeSyntax,
                                               CancellationToken cancellationToken) {
                         SymbolInfo symbolInfo =
                             semanticModel.GetSymbolInfo(typeSyntax, cancellationToken);

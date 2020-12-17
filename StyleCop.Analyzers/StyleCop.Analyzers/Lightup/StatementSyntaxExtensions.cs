@@ -9,8 +9,9 @@ namespace StyleCop.Analyzers.Lightup {
         internal static class StatementSyntaxExtensions {
                 private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>>
                     AttributeListsAccessor;
-                private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>,
-                                             StatementSyntax> WithAttributeListsAccessor;
+                private static readonly
+                    Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax>
+                        WithAttributeListsAccessor;
 
                 static StatementSyntaxExtensions() {
                         AttributeListsAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
@@ -28,12 +29,14 @@ namespace StyleCop.Analyzers.Lightup {
                 }
 
                 public static StatementSyntax WithAttributeLists(
-                    this StatementSyntax syntax, SyntaxList<AttributeListSyntax> attributeLists) {
+                    this StatementSyntax syntax,
+                    SyntaxList<AttributeListSyntax> attributeLists) {
                         return WithAttributeListsAccessor(syntax, attributeLists);
                 }
 
                 public static StatementSyntax AddAttributeLists(
-                    this StatementSyntax syntax, params AttributeListSyntax[] items) {
+                    this StatementSyntax syntax,
+                    params AttributeListSyntax[] items) {
                         return syntax.WithAttributeLists(syntax.AttributeLists().AddRange(items));
                 }
         }

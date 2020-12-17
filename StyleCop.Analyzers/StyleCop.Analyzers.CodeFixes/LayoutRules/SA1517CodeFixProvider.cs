@@ -42,7 +42,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, CancellationToken token) {
+                    Document document,
+                    CancellationToken token) {
                         var newSyntaxRoot = await GetTransformedSyntaxRootAsync(document, token)
                                                 .ConfigureAwait(false);
 
@@ -50,7 +51,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static async Task<SyntaxNode> GetTransformedSyntaxRootAsync(
-                    Document document, CancellationToken token) {
+                    Document document,
+                    CancellationToken token) {
                         var syntaxRoot =
                             await document.GetSyntaxRootAsync(token).ConfigureAwait(false);
 
@@ -80,7 +82,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         protected override string CodeActionTitle => LayoutResources.SA1517CodeFix;
 
                         protected override Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

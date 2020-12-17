@@ -27,11 +27,13 @@ namespace StyleCop.Analyzers.OrderingRules {
                 private static readonly ImmutableArray<SyntaxKind> ProtectedAccessibilityKeywords =
                     ImmutableArray.Create(SyntaxKind.ProtectedKeyword);
                 private static readonly ImmutableArray<SyntaxKind>
-                    ProtectedOrInternalAccessibilityKeywords = ImmutableArray.Create(
-                        SyntaxKind.ProtectedKeyword, SyntaxKind.InternalKeyword);
+                    ProtectedOrInternalAccessibilityKeywords =
+                        ImmutableArray.Create(SyntaxKind.ProtectedKeyword,
+                                              SyntaxKind.InternalKeyword);
                 private static readonly ImmutableArray<SyntaxKind>
-                    ProtectedAndInternalAccessibilityKeywords = ImmutableArray.Create(
-                        SyntaxKind.PrivateKeyword, SyntaxKind.ProtectedKeyword);
+                    ProtectedAndInternalAccessibilityKeywords =
+                        ImmutableArray.Create(SyntaxKind.PrivateKeyword,
+                                              SyntaxKind.ProtectedKeyword);
                 private static readonly ImmutableArray<SyntaxKind> PrivateAccessibilityKeywords =
                     ImmutableArray.Create(SyntaxKind.PrivateKeyword);
                 private static readonly ImmutableArray<SyntaxKind> UnexpectedAccessibilityKeywords =
@@ -62,7 +64,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)

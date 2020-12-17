@@ -47,9 +47,10 @@ namespace StyleCop.Analyzers.LayoutRules {
                 public const string DiagnosticId = "SA1510";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1510.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1510Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1510Title),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(LayoutResources.SA1510MessageFormat),
                                                   LayoutResources.ResourceManager,
@@ -59,10 +60,15 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                   LayoutResources.ResourceManager,
                                                   typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.LayoutRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> ElseStatementAction =
                     HandleElseStatement;

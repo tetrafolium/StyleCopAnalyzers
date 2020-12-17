@@ -33,9 +33,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                 public const string DiagnosticId = "SA1207";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1207.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(OrderingResources.SA1207Title), OrderingResources.ResourceManager,
-                    typeof(OrderingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(OrderingResources.SA1207Title),
+                                                  OrderingResources.ResourceManager,
+                                                  typeof(OrderingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(OrderingResources.SA1207MessageFormat),
                                                   OrderingResources.ResourceManager,
@@ -45,18 +46,27 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                   OrderingResources.ResourceManager,
                                                   typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.OrderingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds =
-                    ImmutableArray.Create(
-                        SyntaxKind.ClassDeclaration, SyntaxKind.DelegateDeclaration,
-                        SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration,
-                        SyntaxKind.FieldDeclaration, SyntaxKind.IndexerDeclaration,
-                        SyntaxKind.InterfaceDeclaration, SyntaxKind.MethodDeclaration,
-                        SyntaxKind.PropertyDeclaration, SyntaxKind.StructDeclaration);
+                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                          SyntaxKind.DelegateDeclaration,
+                                          SyntaxKind.EventDeclaration,
+                                          SyntaxKind.EventFieldDeclaration,
+                                          SyntaxKind.FieldDeclaration,
+                                          SyntaxKind.IndexerDeclaration,
+                                          SyntaxKind.InterfaceDeclaration,
+                                          SyntaxKind.MethodDeclaration,
+                                          SyntaxKind.PropertyDeclaration,
+                                          SyntaxKind.StructDeclaration);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction =
                     HandleDeclaration;

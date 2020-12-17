@@ -32,9 +32,10 @@ namespace StyleCop.Analyzers.LayoutRules {
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1518.md";
 
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1518Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1518Title),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
 
                 private static readonly LocalizableString MessageFormatAllow =
                     new LocalizableResourceString(nameof(LayoutResources.SA1518MessageFormatAllow),
@@ -47,7 +48,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 private static readonly LocalizableString MessageFormatRequire =
                     new LocalizableResourceString(
                         nameof(LayoutResources.SA1518MessageFormatRequire),
-                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                        LayoutResources.ResourceManager,
+                        typeof(LayoutResources));
                 private static readonly LocalizableString DescriptionRequire =
                     new LocalizableResourceString(nameof(LayoutResources.SA1518DescriptionRequire),
                                                   LayoutResources.ResourceManager,
@@ -63,22 +65,34 @@ namespace StyleCop.Analyzers.LayoutRules {
 
 #pragma warning disable SA1202  // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor DescriptorAllow =
-                    new DiagnosticDescriptor(
-                        DiagnosticId, Title, MessageFormatAllow, AnalyzerCategory.LayoutRules,
-                        DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault,
-                        DescriptionAllow, HelpLink);
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormatAllow,
+                                             AnalyzerCategory.LayoutRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             DescriptionAllow,
+                                             HelpLink);
 
                 internal static readonly DiagnosticDescriptor DescriptorRequire =
-                    new DiagnosticDescriptor(
-                        DiagnosticId, Title, MessageFormatRequire, AnalyzerCategory.LayoutRules,
-                        DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault,
-                        DescriptionRequire, HelpLink);
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormatRequire,
+                                             AnalyzerCategory.LayoutRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             DescriptionRequire,
+                                             HelpLink);
 
                 internal static readonly DiagnosticDescriptor DescriptorOmit =
-                    new DiagnosticDescriptor(
-                        DiagnosticId, Title, MessageFormatOmit, AnalyzerCategory.LayoutRules,
-                        DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault,
-                        DescriptionOmit, HelpLink);
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormatOmit,
+                                             AnalyzerCategory.LayoutRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             DescriptionOmit,
+                                             HelpLink);
 #pragma warning restore SA1202  // Elements should be ordered by access
 
                 private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings>

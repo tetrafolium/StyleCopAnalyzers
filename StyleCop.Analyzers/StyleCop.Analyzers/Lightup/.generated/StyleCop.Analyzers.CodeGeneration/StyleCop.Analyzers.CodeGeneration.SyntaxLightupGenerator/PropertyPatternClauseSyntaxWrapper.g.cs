@@ -21,9 +21,9 @@ namespace StyleCop.Analyzers.Lightup {
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> CloseBraceTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
                     WithOpenBraceTokenAccessor;
-                private static readonly
-                    Func<CSharpSyntaxNode, SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
-                         CSharpSyntaxNode> WithSubpatternsAccessor;
+                private static readonly Func<CSharpSyntaxNode,
+                                             SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>,
+                                             CSharpSyntaxNode> WithSubpatternsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
                     WithCloseBraceTokenAccessor;
 

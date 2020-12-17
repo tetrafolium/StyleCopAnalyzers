@@ -64,7 +64,8 @@ namespace StyleCop.Analyzers.Helpers {
                         return result;
                 }
 
-                private static void BuildName(NameSyntax nameSyntax, StringBuilder builder,
+                private static void BuildName(NameSyntax nameSyntax,
+                                              StringBuilder builder,
                                               bool includeAlias) {
                         if (nameSyntax.IsKind(SyntaxKind.IdentifierName)) {
                                 var identifierNameSyntax = (IdentifierNameSyntax) nameSyntax;

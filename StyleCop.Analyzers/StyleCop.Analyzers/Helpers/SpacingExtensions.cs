@@ -12,7 +12,8 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 public static SyntaxToken WithoutLeadingWhitespace(
-                    this SyntaxToken token, bool removeEndOfLineTrivia = false) {
+                    this SyntaxToken token,
+                    bool removeEndOfLineTrivia = false) {
                         if (!token.HasLeadingTrivia) {
                                 return token;
                         }
@@ -22,7 +23,8 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 public static SyntaxTriviaList WithoutWhitespace(
-                    this SyntaxTriviaList syntaxTriviaList, bool removeEndOfLineTrivia = false) {
+                    this SyntaxTriviaList syntaxTriviaList,
+                    bool removeEndOfLineTrivia = false) {
                         if (syntaxTriviaList.Count == 0) {
                                 return syntaxTriviaList;
                         }

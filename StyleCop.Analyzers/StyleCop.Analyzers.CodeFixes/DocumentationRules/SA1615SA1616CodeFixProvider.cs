@@ -55,7 +55,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var documentRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                                .ConfigureAwait(false);
                         SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan);
@@ -173,7 +175,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static bool IsAsynchronousTestMethod(
-                    SemanticModel semanticModel, MethodDeclarationSyntax methodDeclarationSyntax,
+                    SemanticModel semanticModel,
+                    MethodDeclarationSyntax methodDeclarationSyntax,
                     CancellationToken cancellationToken) {
                         foreach (AttributeListSyntax attributeList in methodDeclarationSyntax
                                      .AttributeLists) {

@@ -57,8 +57,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static async Task<Solution> FixDocumentAsync(
-                    Solution solution, DocumentId documentId,
-                    ImmutableArray<Diagnostic> diagnostics, string codeActionEquivalenceKey,
+                    Solution solution,
+                    DocumentId documentId,
+                    ImmutableArray<Diagnostic> diagnostics,
+                    string codeActionEquivalenceKey,
                     CancellationToken cancellationToken) {
                         if (diagnostics.IsEmpty) {
                                 return solution;
@@ -97,7 +99,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static async Task<Solution> GetSolutionFixesAsync(
-                    FixAllContext fixAllContext, ImmutableArray<Document> documents) {
+                    FixAllContext fixAllContext,
+                    ImmutableArray<Document> documents) {
                         var documentDiagnosticsToFix =
                             await FixAllContextHelper
                                 .GetDocumentDiagnosticsToFixAsync(fixAllContext)

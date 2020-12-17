@@ -55,9 +55,10 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1501.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1501Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(LayoutResources.SA1501Title),
+                                                  LayoutResources.ResourceManager,
+                                                  typeof(LayoutResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(LayoutResources.SA1501MessageFormat),
                                                   LayoutResources.ResourceManager,
@@ -67,14 +68,20 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                   LayoutResources.ResourceManager,
                                                   typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.LayoutRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableDictionary<string, string>
-                    SuppressCodeFixProperties = ImmutableDictionary<string, string>.Empty.Add(
-                        SuppressCodeFixKey, SuppressCodeFixValue);
+                    SuppressCodeFixProperties =
+                        ImmutableDictionary<string, string>.Empty.Add(SuppressCodeFixKey,
+                                                                      SuppressCodeFixValue);
 
                 private static readonly Action<CompilationStartAnalysisContext>
                     CompilationStartAction = HandleCompilationStart;

@@ -49,27 +49,37 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 public const string DiagnosticId = "SA1407";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1407.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1407Title),
-                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Title),
+                                                  MaintainabilityResources.ResourceManager,
+                                                  typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1407MessageFormat),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                        MaintainabilityResources.ResourceManager,
+                        typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
                     new LocalizableResourceString(
                         nameof(MaintainabilityResources.SA1407Description),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                        MaintainabilityResources.ResourceManager,
+                        typeof(MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.MaintainabilityRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> HandledBinaryExpressionKinds =
-                    ImmutableArray.Create(SyntaxKind.AddExpression, SyntaxKind.SubtractExpression,
+                    ImmutableArray.Create(SyntaxKind.AddExpression,
+                                          SyntaxKind.SubtractExpression,
                                           SyntaxKind.MultiplyExpression,
-                                          SyntaxKind.DivideExpression, SyntaxKind.ModuloExpression,
+                                          SyntaxKind.DivideExpression,
+                                          SyntaxKind.ModuloExpression,
                                           SyntaxKind.LeftShiftExpression,
                                           SyntaxKind.RightShiftExpression);
 

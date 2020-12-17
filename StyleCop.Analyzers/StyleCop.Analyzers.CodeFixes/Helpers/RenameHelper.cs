@@ -15,8 +15,11 @@ namespace StyleCop.Analyzers.Helpers {
 
         internal static class RenameHelper {
                 public static async Task<Solution> RenameSymbolAsync(
-                    Document document, SyntaxNode root, SyntaxToken declarationToken,
-                    string newName, CancellationToken cancellationToken) {
+                    Document document,
+                    SyntaxNode root,
+                    SyntaxToken declarationToken,
+                    string newName,
+                    CancellationToken cancellationToken) {
                         var annotatedRoot = root.ReplaceToken(
                             declarationToken,
                             declarationToken.WithAdditionalAnnotations(RenameAnnotation.Create()));
@@ -46,7 +49,9 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 public static async Task<bool> IsValidNewMemberNameAsync(
-                    SemanticModel semanticModel, ISymbol symbol, string name,
+                    SemanticModel semanticModel,
+                    ISymbol symbol,
+                    string name,
                     CancellationToken cancellationToken) {
                         if (symbol.Kind == SymbolKind.NamedType) {
                                 TypeKind typeKind = ((INamedTypeSymbol) symbol).TypeKind;

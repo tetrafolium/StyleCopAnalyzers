@@ -265,8 +265,12 @@ internal static class Program {
         }
 
         private static async Task<DocumentAnalyzerPerformance> TestDocumentPerformanceAsync(
-            ImmutableArray<DiagnosticAnalyzer> analyzers, Project project, DocumentId documentId,
-            int iterations, bool force, CancellationToken cancellationToken) {
+            ImmutableArray<DiagnosticAnalyzer> analyzers,
+            Project project,
+            DocumentId documentId,
+            int iterations,
+            bool force,
+            CancellationToken cancellationToken) {
                 var supportedDiagnosticsSpecificOptions =
                     new Dictionary<string, ReportDiagnostic>();
                 if (force) {
@@ -320,7 +324,8 @@ internal static class Program {
         }
 
         private static void WriteDiagnosticResults(
-            ImmutableArray<Tuple<ProjectId, Diagnostic>> diagnostics, string fileName) {
+            ImmutableArray<Tuple<ProjectId, Diagnostic>> diagnostics,
+            string fileName) {
                 var orderedDiagnostics = diagnostics.OrderBy(i => i.Item2.Id)
                                              .ThenBy(i => i.Item2.Location.SourceTree?.FilePath,
                                                      StringComparer.OrdinalIgnoreCase)
@@ -350,9 +355,11 @@ internal static class Program {
         }
 
         private static async Task
-        TestFixAllAsync(Stopwatch stopwatch, Solution solution,
+        TestFixAllAsync(Stopwatch stopwatch,
+                        Solution solution,
                         ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> diagnostics,
-                        bool applyChanges, CancellationToken cancellationToken) {
+                        bool applyChanges,
+                        CancellationToken cancellationToken) {
                 Console.WriteLine("Calculating fixes");
 
                 var codeFixers = GetAllCodeFixers().SelectMany(x => x.Value).Distinct();
@@ -416,7 +423,8 @@ internal static class Program {
                 Console.ResetColor();
         }
 
-        private static async Task TestCodeFixesAsync(Stopwatch stopwatch, Solution solution,
+        private static async Task TestCodeFixesAsync(Stopwatch stopwatch,
+                                                     Solution solution,
                                                      ImmutableArray<Diagnostic> diagnostics,
                                                      CancellationToken cancellationToken) {
                 Console.WriteLine("Calculating fixes");
@@ -460,7 +468,9 @@ internal static class Program {
         }
 
         private static async Task<IEnumerable<CodeAction>> GetFixesAsync(
-            Solution solution, CodeFixProvider codeFixProvider, Diagnostic diagnostic,
+            Solution solution,
+            CodeFixProvider codeFixProvider,
+            Diagnostic diagnostic,
             CancellationToken cancellationToken) {
                 List<CodeAction> codeActions = new List<CodeAction>();
 
@@ -474,7 +484,8 @@ internal static class Program {
         }
 
         private static Task<Statistic> GetAnalyzerStatisticsAsync(
-            IEnumerable<Project> projects, CancellationToken cancellationToken) {
+            IEnumerable<Project> projects,
+            CancellationToken cancellationToken) {
                 ConcurrentBag<Statistic> sums = new ConcurrentBag<Statistic>();
 
                 Parallel.ForEach(projects.SelectMany(i => i.Documents), document => {
@@ -492,7 +503,8 @@ internal static class Program {
         }
 
         private static async Task<Statistic> GetAnalyzerStatisticsAsync(
-            Document document, CancellationToken cancellationToken) {
+            Document document,
+            CancellationToken cancellationToken) {
                 SyntaxTree tree =
                     await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
 
@@ -508,7 +520,8 @@ internal static class Program {
         }
 
         private static IEnumerable<DiagnosticAnalyzer> FilterAnalyzers(
-            IEnumerable<DiagnosticAnalyzer> analyzers, string[] args) {
+            IEnumerable<DiagnosticAnalyzer> analyzers,
+            string[] args) {
                 bool useAll = args.Contains("/all");
 
                 HashSet<string> ids = new HashSet<string>(
@@ -571,8 +584,10 @@ internal static class Program {
         }
 
         private static async Task<ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>>>
-        GetAnalyzerDiagnosticsAsync(Solution solution, ImmutableArray<DiagnosticAnalyzer> analyzers,
-                                    bool force, CancellationToken cancellationToken) {
+        GetAnalyzerDiagnosticsAsync(Solution solution,
+                                    ImmutableArray<DiagnosticAnalyzer> analyzers,
+                                    bool force,
+                                    CancellationToken cancellationToken) {
                 List<KeyValuePair<ProjectId, Task<ImmutableArray<Diagnostic>>>>
                     projectDiagnosticTasks =
                         new List<KeyValuePair<ProjectId, Task<ImmutableArray<Diagnostic>>>>();
@@ -612,7 +627,9 @@ internal static class Program {
         /// token that the task will observe.</param> <returns>A list of diagnostics inside the
         /// project.</returns>
         private static async Task<ImmutableArray<Diagnostic>> GetProjectAnalyzerDiagnosticsAsync(
-            ImmutableArray<DiagnosticAnalyzer> analyzers, Project project, bool force,
+            ImmutableArray<DiagnosticAnalyzer> analyzers,
+            Project project,
+            bool force,
             CancellationToken cancellationToken) {
                 var supportedDiagnosticsSpecificOptions =
                     new Dictionary<string, ReportDiagnostic>();

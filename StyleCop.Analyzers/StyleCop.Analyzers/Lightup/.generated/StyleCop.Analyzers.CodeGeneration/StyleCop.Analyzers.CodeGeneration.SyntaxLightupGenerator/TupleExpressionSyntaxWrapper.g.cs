@@ -20,8 +20,9 @@ namespace StyleCop.Analyzers.Lightup {
                 private static readonly Func<ExpressionSyntax, SyntaxToken> CloseParenTokenAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
                     WithOpenParenTokenAccessor;
-                private static readonly Func<ExpressionSyntax, SeparatedSyntaxList<ArgumentSyntax>,
-                                             ExpressionSyntax> WithArgumentsAccessor;
+                private static readonly
+                    Func<ExpressionSyntax, SeparatedSyntaxList<ArgumentSyntax>, ExpressionSyntax>
+                        WithArgumentsAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
                     WithCloseParenTokenAccessor;
 

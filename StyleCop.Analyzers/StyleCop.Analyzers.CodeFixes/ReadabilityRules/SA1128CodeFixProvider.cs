@@ -48,7 +48,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -71,7 +73,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private static ConstructorDeclarationSyntax ReformatConstructorDeclaration(
                     ConstructorDeclarationSyntax constructorDeclaration,
-                    IndentationSettings indentationSettings, SyntaxTrivia newLine) {
+                    IndentationSettings indentationSettings,
+                    SyntaxTrivia newLine) {
                         var constructorInitializer = constructorDeclaration.Initializer;
 
                         var newParameterList =
@@ -111,7 +114,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         = ReadabilityResources.SA1128CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

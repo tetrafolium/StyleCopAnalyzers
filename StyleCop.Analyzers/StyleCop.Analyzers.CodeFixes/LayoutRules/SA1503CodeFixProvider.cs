@@ -65,7 +65,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static Task<Document> GetTransformedDocumentAsync(
-                    Document document, SyntaxNode root, StatementSyntax node,
+                    Document document,
+                    SyntaxNode root,
+                    StatementSyntax node,
                     CancellationToken cancellationToken) {
                         // Currently unused
                         _ = cancellationToken;
@@ -97,7 +99,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         protected override string CodeActionTitle => LayoutResources.SA1503CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

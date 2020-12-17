@@ -54,7 +54,9 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// <param name="cancellationToken">The cancellation token associated with the fix
                 /// action.</param> <returns>The transformed document.</returns>
                 private static async Task<Document> RemoveWhitespaceAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var text =
                             await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         return document.WithText(text.WithChanges(
@@ -68,7 +70,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                         protected override string CodeActionTitle => SpacingResources.SA1028CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

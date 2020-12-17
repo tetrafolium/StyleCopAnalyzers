@@ -49,7 +49,7 @@ namespace StyleCop.Analyzers.Lightup {
                                         .GetTypeInfo()
                                         .GetDeclaredMethods("op_Explicit")
                                         .Single(m => m.ReturnType ==
-                                                     typeof(TNode) &&m.GetParameters()[0]
+                                                     typeof(TNode)&& m.GetParameters()[0]
                                                          .ParameterType == typeof(SyntaxNode));
                                 var syntaxParameter =
                                     Expression.Parameter(typeof(SyntaxNode), "syntax");

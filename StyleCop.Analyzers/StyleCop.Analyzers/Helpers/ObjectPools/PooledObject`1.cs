@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                 private readonly ObjectPool<T> pool;
                 private T pooledObject;
 
-                public PooledObject(ObjectPool<T> pool, Func<ObjectPool<T>, T> allocator,
+                public PooledObject(ObjectPool<T> pool,
+                                    Func<ObjectPool<T>, T> allocator,
                                     Action<ObjectPool<T>, T> releaser)
                     : this() {
                         this.pool = pool;
@@ -106,7 +107,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                 }
 
                 private static void Releaser<TKey, TValue>(
-                    ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> obj) {
+                    ObjectPool<Dictionary<TKey, TValue>> pool,
+                    Dictionary<TKey, TValue> obj) {
                         pool.ClearAndFree(obj);
                 }
 

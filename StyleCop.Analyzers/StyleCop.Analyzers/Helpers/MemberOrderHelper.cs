@@ -14,15 +14,21 @@ namespace StyleCop.Analyzers.Helpers {
         /// </summary>
         internal struct MemberOrderHelper {
                 private static readonly ImmutableArray<SyntaxKind> TypeMemberOrder =
-                    ImmutableArray.Create(
-                        SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
-                        SyntaxKind.MethodDeclaration, SyntaxKind.OperatorDeclaration,
-                        SyntaxKind.ConversionOperatorDeclaration, SyntaxKind.IndexerDeclaration,
-                        SyntaxKind.PropertyDeclaration, SyntaxKind.InterfaceDeclaration,
-                        SyntaxKind.EnumDeclaration, SyntaxKind.EventDeclaration,
-                        SyntaxKind.DelegateDeclaration, SyntaxKind.DestructorDeclaration,
-                        SyntaxKind.ConstructorDeclaration, SyntaxKind.FieldDeclaration,
-                        SyntaxKind.NamespaceDeclaration);
+                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                          SyntaxKind.StructDeclaration,
+                                          SyntaxKind.MethodDeclaration,
+                                          SyntaxKind.OperatorDeclaration,
+                                          SyntaxKind.ConversionOperatorDeclaration,
+                                          SyntaxKind.IndexerDeclaration,
+                                          SyntaxKind.PropertyDeclaration,
+                                          SyntaxKind.InterfaceDeclaration,
+                                          SyntaxKind.EnumDeclaration,
+                                          SyntaxKind.EventDeclaration,
+                                          SyntaxKind.DelegateDeclaration,
+                                          SyntaxKind.DestructorDeclaration,
+                                          SyntaxKind.ConstructorDeclaration,
+                                          SyntaxKind.FieldDeclaration,
+                                          SyntaxKind.NamespaceDeclaration);
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="MemberOrderHelper"/> struct.

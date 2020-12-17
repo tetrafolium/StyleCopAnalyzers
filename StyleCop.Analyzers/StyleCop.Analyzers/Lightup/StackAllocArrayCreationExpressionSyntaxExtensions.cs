@@ -8,9 +8,10 @@ namespace StyleCop.Analyzers.Lightup {
         internal static class StackAllocArrayCreationExpressionSyntaxExtensions {
                 private static readonly Func<StackAllocArrayCreationExpressionSyntax,
                                              InitializerExpressionSyntax> InitializerAccessor;
-                private static readonly
-                    Func<StackAllocArrayCreationExpressionSyntax, InitializerExpressionSyntax,
-                         StackAllocArrayCreationExpressionSyntax> WithInitializerAccessor;
+                private static readonly Func<StackAllocArrayCreationExpressionSyntax,
+                                             InitializerExpressionSyntax,
+                                             StackAllocArrayCreationExpressionSyntax>
+                    WithInitializerAccessor;
 
                 static StackAllocArrayCreationExpressionSyntaxExtensions() {
                         InitializerAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<

@@ -45,7 +45,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
+                    Document document,
+                    Diagnostic diagnostic,
+                    CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -68,7 +70,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static SyntaxTriviaList FixTriviaList(
-                    SyntaxTriviaList triviaList, IEnumerable<SyntaxTrivia> commentTrivias) {
+                    SyntaxTriviaList triviaList,
+                    IEnumerable<SyntaxTrivia> commentTrivias) {
                         foreach (var singleLineComment in commentTrivias) {
                                 var index = triviaList.IndexOf(singleLineComment);
                                 if (index == -1) {
@@ -115,7 +118,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         protected override string CodeActionTitle => LayoutResources.SA1515CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
+                            FixAllContext fixAllContext,
+                            Document document,
                             ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;

@@ -34,9 +34,10 @@ namespace StyleCop.Analyzers.NamingRules {
                 public const string DiagnosticId = "SA1307";
                 private const string HelpLink =
                     "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1307.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(NamingResources.SA1307Title), NamingResources.ResourceManager,
-                    typeof(NamingResources));
+                private static readonly LocalizableString Title =
+                    new LocalizableResourceString(nameof(NamingResources.SA1307Title),
+                                                  NamingResources.ResourceManager,
+                                                  typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
                     new LocalizableResourceString(nameof(NamingResources.SA1307MessageFormat),
                                                   NamingResources.ResourceManager,
@@ -47,10 +48,15 @@ namespace StyleCop.Analyzers.NamingRules {
                                                   typeof(NamingResources));
 
 #pragma warning disable SA1202  // Elements should be ordered by access
-                internal static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
-                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
-                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
-                    HelpLink);
+                internal static readonly DiagnosticDescriptor Descriptor =
+                    new DiagnosticDescriptor(DiagnosticId,
+                                             Title,
+                                             MessageFormat,
+                                             AnalyzerCategory.NamingRules,
+                                             DiagnosticSeverity.Warning,
+                                             AnalyzerConstants.EnabledByDefault,
+                                             Description,
+                                             HelpLink);
 #pragma warning restore SA1202  // Elements should be ordered by access
 
                 private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction =

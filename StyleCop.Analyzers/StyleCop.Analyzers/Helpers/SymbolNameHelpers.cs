@@ -71,7 +71,8 @@ namespace StyleCop.Analyzers.Helpers {
                         }
                 }
 
-                private static bool AppendQualifiedSymbolName(StringBuilder builder, ISymbol symbol,
+                private static bool AppendQualifiedSymbolName(StringBuilder builder,
+                                                              ISymbol symbol,
                                                               TypeSyntax type) {
                         switch (symbol.Kind) {
                                 case SymbolKind.ArrayType:

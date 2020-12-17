@@ -50,7 +50,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic) {
+                    Document document,
+                    Diagnostic diagnostic) {
                         var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
                         var node =
                             syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia

@@ -61,7 +61,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// name="diagnosticLocation">The location where diagnostics, if any, should be
                 /// reported.</param>
                 protected abstract void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         bool needsComment, XmlNodeSyntax syntax,
+                                                         bool needsComment,
+                                                         XmlNodeSyntax syntax,
                                                          XElement completeDocumentation,
                                                          Location diagnosticLocation);
 
@@ -83,8 +84,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                node.Identifier.GetLocation());
                 }
 
-                private void HandleDeclaration(SyntaxNodeAnalysisContext context, bool needsComment,
-                                               SyntaxNode node, Location location) {
+                private void HandleDeclaration(SyntaxNodeAnalysisContext context,
+                                               bool needsComment,
+                                               SyntaxNode node,
+                                               Location location) {
                         var documentation = node.GetDocumentationCommentTriviaSyntax();
                         if (documentation == null) {
                                 // missing documentation is reported by SA1600, SA1601, and SA1602

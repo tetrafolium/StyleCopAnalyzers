@@ -81,8 +81,10 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 public async virtual Task AddDocumentFixesAsync(
-                    Document document, ImmutableArray<Diagnostic> diagnostics,
-                    Action<CodeAction> addFix, FixAllContext fixAllContext) {
+                    Document document,
+                    ImmutableArray<Diagnostic> diagnostics,
+                    Action<CodeAction> addFix,
+                    FixAllContext fixAllContext) {
                         Debug.Assert(!diagnostics.IsDefault, "!diagnostics.IsDefault");
                         var cancellationToken = fixAllContext.CancellationToken;
                         var fixerTasks = new Task[diagnostics.Length];
@@ -166,8 +168,10 @@ public virtual async Task<CodeAction> GetFixAsync(
         return null;
 }
 
-public virtual Task AddProjectFixesAsync(Project project, IEnumerable<Diagnostic> diagnostics,
-                                         Action<CodeAction> addFix, FixAllContext fixAllContext) {
+public virtual Task AddProjectFixesAsync(Project project,
+                                         IEnumerable<Diagnostic> diagnostics,
+                                         Action<CodeAction> addFix,
+                                         FixAllContext fixAllContext) {
         throw new NotImplementedException();
 }
 
@@ -370,7 +374,9 @@ public virtual async Task<Solution> TryMergeFixesAsync(Solution oldSolution,
 /// newDocument changes are being merged.</param> <param name="cancellationToken">Cancellation
 /// token.</param> <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
 private static async Task<List<TextChange>> TryAddDocumentMergeChangesAsync(
-    Document oldDocument, Document newDocument, List<TextChange> cumulativeChanges,
+    Document oldDocument,
+    Document newDocument,
+    List<TextChange> cumulativeChanges,
     CancellationToken cancellationToken) {
         var successfullyMergedChanges = new List<TextChange>();
 

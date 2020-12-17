@@ -9,8 +9,9 @@ namespace StyleCop.Analyzers.Lightup {
         internal static class ForEachStatementSyntaxExtensions {
                 private static readonly Func<ForEachStatementSyntax, SyntaxToken>
                     AwaitKeywordAccessor;
-                private static readonly Func<ForEachStatementSyntax, SyntaxToken,
-                                             ForEachStatementSyntax> WithAwaitKeywordAccessor;
+                private static readonly
+                    Func<ForEachStatementSyntax, SyntaxToken, ForEachStatementSyntax>
+                        WithAwaitKeywordAccessor;
 
                 static ForEachStatementSyntaxExtensions() {
                         AwaitKeywordAccessor =
@@ -28,7 +29,8 @@ namespace StyleCop.Analyzers.Lightup {
                 }
 
                 public static ForEachStatementSyntax WithAwaitKeyword(
-                    this ForEachStatementSyntax syntax, SyntaxToken awaitKeyword) {
+                    this ForEachStatementSyntax syntax,
+                    SyntaxToken awaitKeyword) {
                         return WithAwaitKeywordAccessor(syntax, awaitKeyword);
                 }
         }
