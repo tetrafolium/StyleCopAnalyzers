@@ -43,8 +43,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation Guard => GuardAccessor(this.WrappedOperation);
                 public IOperation Value => ValueAccessor(this.WrappedOperation);
                 public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor(this.WrappedOperation);
-                public static ISwitchExpressionArmOperationWrapper
-                FromOperation(IOperation operation) {
+                public static ISwitchExpressionArmOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

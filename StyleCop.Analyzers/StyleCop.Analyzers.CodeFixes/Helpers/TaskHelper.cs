@@ -9,18 +9,17 @@ namespace StyleCop.Analyzers.Helpers {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal static class TaskHelper {
-                public static bool
-                IsTaskReturningMethod(SemanticModel semanticModel,
-                                      MethodDeclarationSyntax methodDeclarationSyntax,
-                                      CancellationToken cancellationToken) {
+                public static bool IsTaskReturningMethod(
+                    SemanticModel semanticModel, MethodDeclarationSyntax methodDeclarationSyntax,
+                    CancellationToken cancellationToken) {
                         return IsTaskType(semanticModel, methodDeclarationSyntax.ReturnType,
                                           cancellationToken);
                 }
 
-                public static bool
-                IsTaskReturningMethod(SemanticModel semanticModel,
-                                      DelegateDeclarationSyntax delegateDeclarationSyntax,
-                                      CancellationToken cancellationToken) {
+                public static bool IsTaskReturningMethod(
+                    SemanticModel semanticModel,
+                    DelegateDeclarationSyntax delegateDeclarationSyntax,
+                    CancellationToken cancellationToken) {
                         return IsTaskType(semanticModel, delegateDeclarationSyntax.ReturnType,
                                           cancellationToken);
                 }

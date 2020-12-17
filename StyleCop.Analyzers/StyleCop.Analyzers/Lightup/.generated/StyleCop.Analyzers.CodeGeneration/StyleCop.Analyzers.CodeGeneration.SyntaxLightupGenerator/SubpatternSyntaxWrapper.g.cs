@@ -34,10 +34,14 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
                                     WrappedType, nameof(Pattern));
-                        WithNameColonAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, NameColonSyntax>(WrappedType, nameof(NameColon));
-                        WithPatternAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Pattern));
+                        WithNameColonAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            NameColonSyntax>(
+                                WrappedType, nameof(NameColon));
+                        WithPatternAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(Pattern));
                 }
 
                 private SubpatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }

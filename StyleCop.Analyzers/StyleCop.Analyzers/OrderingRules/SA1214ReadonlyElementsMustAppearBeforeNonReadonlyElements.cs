@@ -104,35 +104,38 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 bool compareReadonly = true;
                                 for (int j = 0; compareReadonly && j < readonlyIndex; j++) {
                                         switch (elementOrder[j]) {
-                                        case OrderingTrait.Kind:
-                                                // This analyzer only ever looks at sequences of
-                                                // fields.
-                                                continue;
+                                                case OrderingTrait.Kind:
+                                                        // This analyzer only ever looks at
+                                                        // sequences of fields.
+                                                        continue;
 
-                                        case OrderingTrait.Accessibility:
-                                                if (previousAccessLevel != currentAccessLevel) {
-                                                        compareReadonly = false;
-                                                }
+                                                case OrderingTrait.Accessibility:
+                                                        if (previousAccessLevel !=
+                                                            currentAccessLevel) {
+                                                                compareReadonly = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Constant:
-                                                if (previousFieldConst != currentFieldConst) {
-                                                        compareReadonly = false;
-                                                }
+                                                case OrderingTrait.Constant:
+                                                        if (previousFieldConst !=
+                                                            currentFieldConst) {
+                                                                compareReadonly = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Static:
-                                                if (previousFieldStatic != currentFieldStatic) {
-                                                        compareReadonly = false;
-                                                }
+                                                case OrderingTrait.Static:
+                                                        if (previousFieldStatic !=
+                                                            currentFieldStatic) {
+                                                                compareReadonly = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Readonly:
-                                        default:
-                                                continue;
+                                                case OrderingTrait.Readonly:
+                                                default:
+                                                        continue;
                                         }
                                 }
 

@@ -44,9 +44,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
@@ -69,13 +68,13 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         newNode = separatorRewriter.Visit(newNode);
 
                         switch (node.Parent.Kind()) {
-                        case SyntaxKind.MethodDeclaration:
-                        case SyntaxKind.Parameter:
-                        case SyntaxKind.PropertyDeclaration:
-                        case SyntaxKind.IndexerDeclaration:
-                        case SyntaxKind.DelegateDeclaration:
-                                newNode = newNode.WithTrailingTrivia(SyntaxFactory.Space);
-                                break;
+                                case SyntaxKind.MethodDeclaration:
+                                case SyntaxKind.Parameter:
+                                case SyntaxKind.PropertyDeclaration:
+                                case SyntaxKind.IndexerDeclaration:
+                                case SyntaxKind.DelegateDeclaration:
+                                        newNode = newNode.WithTrailingTrivia(SyntaxFactory.Space);
+                                        break;
                         }
 
                         var newSyntaxRoot = syntaxRoot.ReplaceNode(node, newNode)
@@ -86,31 +85,32 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 private static SyntaxNode GetReplacementNode(SemanticModel semanticModel,
                                                              SyntaxNode node) {
                         switch (node) {
-                        case QualifiedNameSyntax qualifiedNameSyntax:
-                                return TransformGenericNameToTuple(
-                                    semanticModel, (GenericNameSyntax) qualifiedNameSyntax.Right);
+                                case QualifiedNameSyntax qualifiedNameSyntax:
+                                        return TransformGenericNameToTuple(
+                                            semanticModel,
+                                            (GenericNameSyntax) qualifiedNameSyntax.Right);
 
-                        case GenericNameSyntax genericNameSyntax:
-                                return TransformGenericNameToTuple(semanticModel,
-                                                                   genericNameSyntax);
+                                case GenericNameSyntax genericNameSyntax:
+                                        return TransformGenericNameToTuple(semanticModel,
+                                                                           genericNameSyntax);
 
-                        case ObjectCreationExpressionSyntax objectCreationExpression:
-                                return TransformArgumentListToTuple(
-                                    semanticModel, objectCreationExpression.ArgumentList.Arguments);
+                                case ObjectCreationExpressionSyntax objectCreationExpression:
+                                        return TransformArgumentListToTuple(
+                                            semanticModel,
+                                            objectCreationExpression.ArgumentList.Arguments);
 
-                        case InvocationExpressionSyntax invocationExpressionSyntax:
-                                return TransformArgumentListToTuple(
-                                    semanticModel,
-                                    invocationExpressionSyntax.ArgumentList.Arguments);
+                                case InvocationExpressionSyntax invocationExpressionSyntax:
+                                        return TransformArgumentListToTuple(
+                                            semanticModel,
+                                            invocationExpressionSyntax.ArgumentList.Arguments);
 
-                        default:
-                                return node;
+                                default:
+                                        return node;
                         }
                 }
 
-                private static SyntaxNode
-                TransformGenericNameToTuple(SemanticModel semanticModel,
-                                            GenericNameSyntax genericName) {
+                private static SyntaxNode TransformGenericNameToTuple(
+                    SemanticModel semanticModel, GenericNameSyntax genericName) {
                         var implementationType =
                             typeof(SeparatedSyntaxListWrapper<>.AutoWrapSeparatedSyntaxList<>)
                                 .MakeGenericType(typeof(TupleElementSyntaxWrapper),
@@ -134,9 +134,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SyntaxFactoryEx.TupleType(tupleElements);
                 }
 
-                private static SyntaxNode
-                TransformArgumentListToTuple(SemanticModel semanticModel,
-                                             SeparatedSyntaxList<ArgumentSyntax> arguments) {
+                private static SyntaxNode TransformArgumentListToTuple(
+                    SemanticModel semanticModel, SeparatedSyntaxList<ArgumentSyntax> arguments) {
                         SeparatedSyntaxList<ArgumentSyntax> processedArguments = default;
 
                         for (var i = 0; i < arguments.Count; i++) {

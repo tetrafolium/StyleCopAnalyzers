@@ -50,9 +50,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var baseFieldDeclaration = (BaseFieldDeclarationSyntax) syntaxRoot.FindNode(
@@ -73,9 +72,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return document;
                 }
 
-                private static List<BaseFieldDeclarationSyntax>
-                SplitDeclaration(Document document,
-                                 BaseFieldDeclarationSyntax baseFieldDeclaration) {
+                private static List<BaseFieldDeclarationSyntax> SplitDeclaration(
+                    Document document, BaseFieldDeclarationSyntax baseFieldDeclaration) {
                         if (baseFieldDeclaration is FieldDeclarationSyntax fieldDeclaration) {
                                 return DeclarationSplitter(
                                     document, fieldDeclaration.Declaration,
@@ -138,12 +136,15 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                         switch (triviaList
                                                                 [nonWhitespaceTriviaIndex]
                                                                     .Kind()) {
-                                                        case SyntaxKind.SingleLineCommentTrivia:
-                                                        case SyntaxKind.MultiLineCommentTrivia:
-                                                                triviaList = triviaList.Insert(
-                                                                    0, SyntaxFactory
-                                                                           .CarriageReturnLineFeed);
-                                                                break;
+                                                                case SyntaxKind
+                                                                    .SingleLineCommentTrivia:
+                                                                case SyntaxKind
+                                                                    .MultiLineCommentTrivia:
+                                                                        triviaList = triviaList.Insert(
+                                                                            0,
+                                                                            SyntaxFactory
+                                                                                .CarriageReturnLineFeed);
+                                                                        break;
                                                         }
                                                 }
 

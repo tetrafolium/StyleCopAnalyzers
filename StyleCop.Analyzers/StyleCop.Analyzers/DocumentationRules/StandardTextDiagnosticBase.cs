@@ -66,10 +66,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// violations, or <see langword="null"/> to not report violations.</param>
                 /// <returns>A <see cref="MatchResult"/> describing the result of the
                 /// analysis.</returns>
-                protected static MatchResult
-                HandleDeclaration(SyntaxNodeAnalysisContext context, string firstTextPart,
-                                  string secondTextPart,
-                                  DiagnosticDescriptor diagnosticDescriptor) {
+                protected static MatchResult HandleDeclaration(
+                    SyntaxNodeAnalysisContext context, string firstTextPart, string secondTextPart,
+                    DiagnosticDescriptor diagnosticDescriptor) {
                         var declarationSyntax = (BaseMethodDeclarationSyntax) context.Node;
                         var documentationStructure =
                             declarationSyntax.GetDocumentationCommentTriviaSyntax();
@@ -169,10 +168,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return MatchResult.None;
                 }
 
-                private static bool
-                SeeTagIsCorrect(SyntaxNodeAnalysisContext context,
-                                XmlEmptyElementSyntax classReferencePart,
-                                BaseMethodDeclarationSyntax constructorDeclarationSyntax) {
+                private static bool SeeTagIsCorrect(
+                    SyntaxNodeAnalysisContext context, XmlEmptyElementSyntax classReferencePart,
+                    BaseMethodDeclarationSyntax constructorDeclarationSyntax) {
                         XmlCrefAttributeSyntax crefAttribute =
                             XmlCommentHelper.GetFirstAttributeOrDefault<XmlCrefAttributeSyntax>(
                                 classReferencePart);
@@ -193,9 +191,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return Equals(actualSymbol.OriginalDefinition, expectedSymbol);
                 }
 
-                private static bool
-                SeeTagIsCorrect(SyntaxNodeAnalysisContext context, XElement classReferencePart,
-                                BaseMethodDeclarationSyntax constructorDeclarationSyntax) {
+                private static bool SeeTagIsCorrect(
+                    SyntaxNodeAnalysisContext context, XElement classReferencePart,
+                    BaseMethodDeclarationSyntax constructorDeclarationSyntax) {
                         var crefAttribute =
                             classReferencePart.Attribute(XmlCommentHelper.CrefArgumentName);
                         if (crefAttribute == null) {

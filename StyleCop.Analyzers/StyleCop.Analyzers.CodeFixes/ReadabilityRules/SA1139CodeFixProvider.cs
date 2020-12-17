@@ -41,12 +41,11 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 /// <inheritdoc/>
-                public override
-                    FixAllProvider GetFixAllProvider() => CustomFixAllProviders.BatchFixer;
+                public override FixAllProvider GetFixAllProvider() =>
+                    CustomFixAllProviders.BatchFixer;
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 

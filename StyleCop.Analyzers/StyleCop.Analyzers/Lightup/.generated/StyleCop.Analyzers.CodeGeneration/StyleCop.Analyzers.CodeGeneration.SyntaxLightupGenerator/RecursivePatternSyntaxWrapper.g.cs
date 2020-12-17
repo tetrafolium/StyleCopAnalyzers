@@ -63,8 +63,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
                                                                             CSharpSyntaxNode>(
                                 WrappedType, nameof(PropertyPatternClause));
-                        WithDesignationAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Designation));
+                        WithDesignationAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(Designation));
                 }
 
                 private RecursivePatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
@@ -96,13 +98,13 @@ namespace StyleCop.Analyzers.Lightup {
                         }
                 }
 
-                public static explicit
-                operator RecursivePatternSyntaxWrapper(PatternSyntaxWrapper node) {
+                public static explicit operator RecursivePatternSyntaxWrapper(
+                    PatternSyntaxWrapper node) {
                         return (RecursivePatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator RecursivePatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node) {
+                public static explicit operator RecursivePatternSyntaxWrapper(
+                    ExpressionOrPatternSyntaxWrapper node) {
                         return (RecursivePatternSyntaxWrapper) node.SyntaxNode;
                 }
 
@@ -119,18 +121,18 @@ namespace StyleCop.Analyzers.Lightup {
                         return new RecursivePatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator PatternSyntaxWrapper(RecursivePatternSyntaxWrapper wrapper) {
+                public static implicit operator PatternSyntaxWrapper(
+                    RecursivePatternSyntaxWrapper wrapper) {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator ExpressionOrPatternSyntaxWrapper(RecursivePatternSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionOrPatternSyntaxWrapper(
+                    RecursivePatternSyntaxWrapper wrapper) {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(RecursivePatternSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    RecursivePatternSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -156,8 +158,8 @@ namespace StyleCop.Analyzers.Lightup {
                             this.SyntaxNode, propertyPatternClause));
                 }
 
-                public RecursivePatternSyntaxWrapper
-                WithDesignation(VariableDesignationSyntaxWrapper designation) {
+                public RecursivePatternSyntaxWrapper WithDesignation(
+                    VariableDesignationSyntaxWrapper designation) {
                         return new RecursivePatternSyntaxWrapper(
                             WithDesignationAccessor(this.SyntaxNode, designation));
                 }

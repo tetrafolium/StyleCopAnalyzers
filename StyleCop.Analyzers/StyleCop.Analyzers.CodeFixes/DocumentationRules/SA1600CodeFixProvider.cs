@@ -49,46 +49,48 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
 
                                 switch (identifierToken.Parent.Kind()) {
-                                case SyntaxKind.ConstructorDeclaration:
-                                case SyntaxKind.DestructorDeclaration:
-                                        context.RegisterCodeFix(
-                                            CodeAction.Create(
-                                                DocumentationResources
-                                                    .ConstructorDocumentationCodeFix,
-                                                cancellationToken =>
-                                                    GetConstructorOrDestructorDocumentationTransformedDocumentAsync(
-                                                        context.Document, root,
-                                                        (BaseMethodDeclarationSyntax)
-                                                            identifierToken.Parent,
-                                                        cancellationToken),
-                                                nameof(SA1600CodeFixProvider)),
-                                            diagnostic);
-                                        break;
-
-                                case SyntaxKind.MethodDeclaration:
-                                        MethodDeclarationSyntax methodDeclaration =
-                                            (MethodDeclarationSyntax) identifierToken.Parent;
-                                        if (TaskHelper.IsTaskReturningMethod(
-                                                semanticModel, methodDeclaration,
-                                                context.CancellationToken) &&
-                                            !IsCoveredByInheritDoc(semanticModel, methodDeclaration,
-                                                                   context.CancellationToken)) {
+                                        case SyntaxKind.ConstructorDeclaration:
+                                        case SyntaxKind.DestructorDeclaration:
                                                 context.RegisterCodeFix(
                                                     CodeAction.Create(
                                                         DocumentationResources
-                                                            .MethodDocumentationCodeFix,
+                                                            .ConstructorDocumentationCodeFix,
                                                         cancellationToken =>
-                                                            GetMethodDocumentationTransformedDocumentAsync(
+                                                            GetConstructorOrDestructorDocumentationTransformedDocumentAsync(
                                                                 context.Document, root,
-                                                                semanticModel,
-                                                                (MethodDeclarationSyntax)
+                                                                (BaseMethodDeclarationSyntax)
                                                                     identifierToken.Parent,
                                                                 cancellationToken),
                                                         nameof(SA1600CodeFixProvider)),
                                                     diagnostic);
-                                        }
+                                                break;
 
-                                        break;
+                                        case SyntaxKind.MethodDeclaration:
+                                                MethodDeclarationSyntax methodDeclaration =
+                                                    (MethodDeclarationSyntax)
+                                                        identifierToken.Parent;
+                                                if (TaskHelper.IsTaskReturningMethod(
+                                                        semanticModel, methodDeclaration,
+                                                        context.CancellationToken) &&
+                                                    !IsCoveredByInheritDoc(
+                                                        semanticModel, methodDeclaration,
+                                                        context.CancellationToken)) {
+                                                        context.RegisterCodeFix(
+                                                            CodeAction.Create(
+                                                                DocumentationResources
+                                                                    .MethodDocumentationCodeFix,
+                                                                cancellationToken =>
+                                                                    GetMethodDocumentationTransformedDocumentAsync(
+                                                                        context.Document, root,
+                                                                        semanticModel,
+                                                                        (MethodDeclarationSyntax)
+                                                                            identifierToken.Parent,
+                                                                        cancellationToken),
+                                                                nameof(SA1600CodeFixProvider)),
+                                                            diagnostic);
+                                                }
+
+                                                break;
                                 }
                         }
                 }

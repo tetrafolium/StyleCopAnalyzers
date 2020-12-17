@@ -242,44 +242,44 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 private static void HandleQueryClause(QueryClauseSyntax queryClause,
                                                       List<SyntaxToken> tokensToCheck) {
                         switch (queryClause.Kind()) {
-                        case SyntaxKind.FromClause:
-                                var fromClause = (FromClauseSyntax) queryClause;
-                                tokensToCheck.Add(fromClause.FromKeyword);
-                                break;
-                        case SyntaxKind.LetClause:
-                                var letClause = (LetClauseSyntax) queryClause;
-                                tokensToCheck.Add(letClause.LetKeyword);
-                                break;
-                        case SyntaxKind.WhereClause:
-                                var whereClause = (WhereClauseSyntax) queryClause;
-                                tokensToCheck.Add(whereClause.WhereKeyword);
-                                break;
-                        case SyntaxKind.JoinClause:
-                        case SyntaxKind.JoinIntoClause:
-                                var joinClause = (JoinClauseSyntax) queryClause;
-                                tokensToCheck.Add(joinClause.JoinKeyword);
-                                break;
-                        case SyntaxKind.OrderByClause:
-                                var orderByClause = (OrderByClauseSyntax) queryClause;
-                                tokensToCheck.Add(orderByClause.OrderByKeyword);
-                                break;
+                                case SyntaxKind.FromClause:
+                                        var fromClause = (FromClauseSyntax) queryClause;
+                                        tokensToCheck.Add(fromClause.FromKeyword);
+                                        break;
+                                case SyntaxKind.LetClause:
+                                        var letClause = (LetClauseSyntax) queryClause;
+                                        tokensToCheck.Add(letClause.LetKeyword);
+                                        break;
+                                case SyntaxKind.WhereClause:
+                                        var whereClause = (WhereClauseSyntax) queryClause;
+                                        tokensToCheck.Add(whereClause.WhereKeyword);
+                                        break;
+                                case SyntaxKind.JoinClause:
+                                case SyntaxKind.JoinIntoClause:
+                                        var joinClause = (JoinClauseSyntax) queryClause;
+                                        tokensToCheck.Add(joinClause.JoinKeyword);
+                                        break;
+                                case SyntaxKind.OrderByClause:
+                                        var orderByClause = (OrderByClauseSyntax) queryClause;
+                                        tokensToCheck.Add(orderByClause.OrderByKeyword);
+                                        break;
                         }
                 }
 
                 private static void HandleSelectOrGroup(SelectOrGroupClauseSyntax selectOrGroup,
                                                         List<SyntaxToken> tokensToCheck) {
                         switch (selectOrGroup.Kind()) {
-                        case SyntaxKind.SelectClause:
-                                var selectClause = (SelectClauseSyntax) selectOrGroup;
-                                if (!selectClause.IsMissing) {
-                                        tokensToCheck.Add(selectClause.SelectKeyword);
-                                }
+                                case SyntaxKind.SelectClause:
+                                        var selectClause = (SelectClauseSyntax) selectOrGroup;
+                                        if (!selectClause.IsMissing) {
+                                                tokensToCheck.Add(selectClause.SelectKeyword);
+                                        }
 
-                                break;
-                        case SyntaxKind.GroupClause:
-                                var groupClause = (GroupClauseSyntax) selectOrGroup;
-                                tokensToCheck.Add(groupClause.GroupKeyword);
-                                break;
+                                        break;
+                                case SyntaxKind.GroupClause:
+                                        var groupClause = (GroupClauseSyntax) selectOrGroup;
+                                        tokensToCheck.Add(groupClause.GroupKeyword);
+                                        break;
                         }
                 }
 

@@ -301,8 +301,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         var compilation = context.Compilation;
 
                         // Disabling SA1633 will disable all other header related diagnostics.
@@ -384,10 +384,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        private static void
-                        CheckCopyrightHeader(SyntaxTreeAnalysisContext context,
-                                             DocumentationSettings documentationSettings,
-                                             Compilation compilation, XmlFileHeader fileHeader) {
+                        private static void CheckCopyrightHeader(
+                            SyntaxTreeAnalysisContext context,
+                            DocumentationSettings documentationSettings, Compilation compilation,
+                            XmlFileHeader fileHeader) {
                                 var copyrightElement = fileHeader.GetElement("copyright");
                                 if (copyrightElement == null) {
                                         context.ReportDiagnostic(Diagnostic.Create(
@@ -439,11 +439,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        private static void
-                        CheckCopyrightText(SyntaxTreeAnalysisContext context,
-                                           DocumentationSettings documentationSettings,
-                                           Compilation compilation, XmlFileHeader fileHeader,
-                                           XElement copyrightElement) {
+                        private static void CheckCopyrightText(
+                            SyntaxTreeAnalysisContext context,
+                            DocumentationSettings documentationSettings, Compilation compilation,
+                            XmlFileHeader fileHeader, XElement copyrightElement) {
                                 var copyrightText = copyrightElement.Value;
                                 if (string.IsNullOrWhiteSpace(copyrightText)) {
                                         var location = fileHeader.GetElementLocation(
@@ -480,11 +479,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        private static void
-                        CheckCompanyName(SyntaxTreeAnalysisContext context,
-                                         DocumentationSettings documentationSettings,
-                                         Compilation compilation, XmlFileHeader fileHeader,
-                                         XElement copyrightElement) {
+                        private static void CheckCompanyName(
+                            SyntaxTreeAnalysisContext context,
+                            DocumentationSettings documentationSettings, Compilation compilation,
+                            XmlFileHeader fileHeader, XElement copyrightElement) {
                                 var companyName = copyrightElement.Attribute("company") ?.Value;
                                 if (string.IsNullOrWhiteSpace(companyName)) {
                                         var location = fileHeader.GetElementLocation(
@@ -533,10 +531,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        private static bool
-                        CompareCopyrightText(SyntaxTreeAnalysisContext context,
-                                             DocumentationSettings documentationSettings,
-                                             string copyrightText) {
+                        private static bool CompareCopyrightText(
+                            SyntaxTreeAnalysisContext context,
+                            DocumentationSettings documentationSettings, string copyrightText) {
                                 // make sure that both \n and \r\n are accepted from the settings.
                                 string fileName = Path.GetFileName(context.Tree.FilePath);
                                 var reformattedCopyrightTextParts =

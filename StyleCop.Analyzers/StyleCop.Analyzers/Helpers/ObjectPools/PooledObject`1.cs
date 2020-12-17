@@ -32,29 +32,29 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                         return new PooledObject<StringBuilder>(pool, Allocator, Releaser);
                 }
 
-                public static PooledObject<Stack<TItem>>
-                Create<TItem>(ObjectPool<Stack<TItem>> pool) {
+                public static PooledObject<Stack<TItem>> Create<TItem>(
+                    ObjectPool<Stack<TItem>> pool) {
                         return new PooledObject<Stack<TItem>>(pool, Allocator, Releaser);
                 }
 
-                public static PooledObject<Queue<TItem>>
-                Create<TItem>(ObjectPool<Queue<TItem>> pool) {
+                public static PooledObject<Queue<TItem>> Create<TItem>(
+                    ObjectPool<Queue<TItem>> pool) {
                         return new PooledObject<Queue<TItem>>(pool, Allocator, Releaser);
                 }
 
-                public static PooledObject<HashSet<TItem>>
-                Create<TItem>(ObjectPool<HashSet<TItem>> pool) {
+                public static PooledObject<HashSet<TItem>> Create<TItem>(
+                    ObjectPool<HashSet<TItem>> pool) {
                         return new PooledObject<HashSet<TItem>>(pool, Allocator, Releaser);
                 }
 
-                public static PooledObject<Dictionary<TKey, TValue>>
-                Create<TKey, TValue>(ObjectPool<Dictionary<TKey, TValue>> pool) {
+                public static PooledObject<Dictionary<TKey, TValue>> Create<TKey, TValue>(
+                    ObjectPool<Dictionary<TKey, TValue>> pool) {
                         return new PooledObject<Dictionary<TKey, TValue>>(pool, Allocator,
                                                                           Releaser);
                 }
 
-                public static PooledObject<List<TItem>>
-                Create<TItem>(ObjectPool<List<TItem>> pool) {
+                public static PooledObject<List<TItem>> Create<TItem>(
+                    ObjectPool<List<TItem>> pool) {
                         return new PooledObject<List<TItem>>(pool, Allocator, Releaser);
                 }
 
@@ -100,14 +100,13 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                         pool.ClearAndFree(obj);
                 }
 
-                private static Dictionary<TKey, TValue>
-                Allocator<TKey, TValue>(ObjectPool<Dictionary<TKey, TValue>> pool) {
+                private static Dictionary<TKey, TValue> Allocator<TKey, TValue>(
+                    ObjectPool<Dictionary<TKey, TValue>> pool) {
                         return pool.AllocateAndClear();
                 }
 
-                private static void
-                Releaser<TKey, TValue>(ObjectPool<Dictionary<TKey, TValue>> pool,
-                                       Dictionary<TKey, TValue> obj) {
+                private static void Releaser<TKey, TValue>(
+                    ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> obj) {
                         pool.ClearAndFree(obj);
                 }
 

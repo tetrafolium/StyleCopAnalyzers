@@ -36,13 +36,13 @@ namespace StyleCop.Analyzers.SpecialRules {
                                                   typeof(SpecialResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-#pragma warning disable RS1033 // Define diagnostic description correctly (Description ends with
-                               // formatted exception text)
+#pragma warning disable RS1033  // Define diagnostic description correctly (Description ends with
+                                // formatted exception text)
                     new DiagnosticDescriptor(
                         DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
-#pragma warning restore RS1033 // Define diagnostic description correctly
+#pragma warning restore RS1033  // Define diagnostic description correctly
 
                 private static readonly Action<CompilationAnalysisContext> CompilationAction =
                     HandleCompilation;

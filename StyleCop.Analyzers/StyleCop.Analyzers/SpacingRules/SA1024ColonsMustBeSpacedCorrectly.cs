@@ -96,7 +96,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
                     HandleSyntaxTree;
 
-#pragma warning disable SA1202 // Elements should be ordered by access
+#pragma warning disable SA1202  // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
                     new DiagnosticDescriptor(
                         DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules,
@@ -114,7 +114,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                         DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
-#pragma warning restore SA1202 // Elements should be ordered by access
+#pragma warning restore SA1202  // Elements should be ordered by access
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -147,31 +147,31 @@ namespace StyleCop.Analyzers.SpacingRules {
                         bool requireBefore;
                         var checkRequireAfter = true;
                         switch (token.Parent.Kind()) {
-                        case SyntaxKind.BaseList:
-                        case SyntaxKind.BaseConstructorInitializer:
-                        case SyntaxKind.ThisConstructorInitializer:
-                        case SyntaxKind.TypeParameterConstraintClause:
-                        case SyntaxKind.ConditionalExpression:
-                                requireBefore = true;
-                                break;
+                                case SyntaxKind.BaseList:
+                                case SyntaxKind.BaseConstructorInitializer:
+                                case SyntaxKind.ThisConstructorInitializer:
+                                case SyntaxKind.TypeParameterConstraintClause:
+                                case SyntaxKind.ConditionalExpression:
+                                        requireBefore = true;
+                                        break;
 
-                        case SyntaxKind.LabeledStatement:
-                        case SyntaxKind.CaseSwitchLabel:
-                        case SyntaxKind.DefaultSwitchLabel:
-                        case SyntaxKindEx.CasePatternSwitchLabel:
-                        // NameColon is not explicitly listed in the description of this warning,
-                        // but the behavior is inferred
-                        case SyntaxKind.NameColon:
-                                requireBefore = false;
-                                break;
+                                case SyntaxKind.LabeledStatement:
+                                case SyntaxKind.CaseSwitchLabel:
+                                case SyntaxKind.DefaultSwitchLabel:
+                                case SyntaxKindEx.CasePatternSwitchLabel:
+                                // NameColon is not explicitly listed in the description of this
+                                // warning, but the behavior is inferred
+                                case SyntaxKind.NameColon:
+                                        requireBefore = false;
+                                        break;
 
-                        case SyntaxKind.InterpolationFormatClause:
-                                requireBefore = false;
-                                checkRequireAfter = false;
-                                break;
+                                case SyntaxKind.InterpolationFormatClause:
+                                        requireBefore = false;
+                                        checkRequireAfter = false;
+                                        break;
 
-                        default:
-                                return;
+                                default:
+                                        return;
                         }
 
                         // check for a following space
@@ -212,12 +212,12 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                         if (missingFollowingSpace && checkRequireAfter) {
                                 // colon should{} be {followed}{} by a space
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                                 context.ReportDiagnostic(
                                     Diagnostic.Create(DescriptorFollowed, token.GetLocation(),
                                                       TokenSpacingProperties.InsertFollowing));
-#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+#pragma warning restore RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                         }
                 }
         }

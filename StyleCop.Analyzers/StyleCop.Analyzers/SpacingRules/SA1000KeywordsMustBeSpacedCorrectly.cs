@@ -106,75 +106,78 @@ namespace StyleCop.Analyzers.SpacingRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.AwaitKeyword:
-                                case SyntaxKind.CaseKeyword:
-                                case SyntaxKind.CatchKeyword:
-                                case SyntaxKind.FixedKeyword:
-                                case SyntaxKind.ForKeyword:
-                                case SyntaxKind.ForEachKeyword:
-                                case SyntaxKind.FromKeyword:
-                                case SyntaxKind.GroupKeyword:
-                                case SyntaxKind.IfKeyword:
-                                case SyntaxKind.InKeyword:
-                                case SyntaxKind.IntoKeyword:
-                                case SyntaxKind.JoinKeyword:
-                                case SyntaxKind.LetKeyword:
-                                case SyntaxKind.LockKeyword:
-                                case SyntaxKind.OrderByKeyword:
-                                case SyntaxKind.OutKeyword:
-                                case SyntaxKind.RefKeyword:
-                                case SyntaxKind.SelectKeyword:
-                                case SyntaxKind.SwitchKeyword:
-                                case SyntaxKind.UsingKeyword:
-                                case SyntaxKind.WhereKeyword:
-                                case SyntaxKind.WhileKeyword:
-                                case SyntaxKind.YieldKeyword:
-                                        HandleRequiredSpaceToken(ref context, token);
-                                        break;
-
-                                case SyntaxKind.CheckedKeyword:
-                                case SyntaxKind.UncheckedKeyword:
-                                        if (token.GetNextToken().IsKind(
-                                                SyntaxKind.OpenBraceToken)) {
+                                        case SyntaxKind.AwaitKeyword:
+                                        case SyntaxKind.CaseKeyword:
+                                        case SyntaxKind.CatchKeyword:
+                                        case SyntaxKind.FixedKeyword:
+                                        case SyntaxKind.ForKeyword:
+                                        case SyntaxKind.ForEachKeyword:
+                                        case SyntaxKind.FromKeyword:
+                                        case SyntaxKind.GroupKeyword:
+                                        case SyntaxKind.IfKeyword:
+                                        case SyntaxKind.InKeyword:
+                                        case SyntaxKind.IntoKeyword:
+                                        case SyntaxKind.JoinKeyword:
+                                        case SyntaxKind.LetKeyword:
+                                        case SyntaxKind.LockKeyword:
+                                        case SyntaxKind.OrderByKeyword:
+                                        case SyntaxKind.OutKeyword:
+                                        case SyntaxKind.RefKeyword:
+                                        case SyntaxKind.SelectKeyword:
+                                        case SyntaxKind.SwitchKeyword:
+                                        case SyntaxKind.UsingKeyword:
+                                        case SyntaxKind.WhereKeyword:
+                                        case SyntaxKind.WhileKeyword:
+                                        case SyntaxKind.YieldKeyword:
                                                 HandleRequiredSpaceToken(ref context, token);
-                                        } else {
-                                                HandleDisallowedSpaceToken(ref context, token);
-                                        }
-
-                                        break;
-
-                                case SyntaxKind.DefaultKeyword:
-                                        if (token.Parent.IsKind(
-                                                SyntaxKindEx.DefaultLiteralExpression)) {
-                                                // Ignore spacing around a default literal
-                                                // expression for now
                                                 break;
-                                        }
 
-                                        HandleDisallowedSpaceToken(ref context, token);
-                                        break;
+                                        case SyntaxKind.CheckedKeyword:
+                                        case SyntaxKind.UncheckedKeyword:
+                                                if (token.GetNextToken().IsKind(
+                                                        SyntaxKind.OpenBraceToken)) {
+                                                        HandleRequiredSpaceToken(ref context,
+                                                                                 token);
+                                                } else {
+                                                        HandleDisallowedSpaceToken(ref context,
+                                                                                   token);
+                                                }
 
-                                case SyntaxKind.NameOfKeyword:
-                                case SyntaxKind.SizeOfKeyword:
-                                case SyntaxKind.TypeOfKeyword:
-                                        HandleDisallowedSpaceToken(ref context, token);
-                                        break;
+                                                break;
 
-                                case SyntaxKind.NewKeyword:
-                                case SyntaxKind.StackAllocKeyword:
-                                        HandleNewOrStackAllocKeywordToken(ref context, token);
-                                        break;
+                                        case SyntaxKind.DefaultKeyword:
+                                                if (token.Parent.IsKind(
+                                                        SyntaxKindEx.DefaultLiteralExpression)) {
+                                                        // Ignore spacing around a default literal
+                                                        // expression for now
+                                                        break;
+                                                }
 
-                                case SyntaxKind.ReturnKeyword:
-                                        HandleReturnKeywordToken(ref context, token);
-                                        break;
+                                                HandleDisallowedSpaceToken(ref context, token);
+                                                break;
 
-                                case SyntaxKind.ThrowKeyword:
-                                        HandleThrowKeywordToken(ref context, token);
-                                        break;
+                                        case SyntaxKind.NameOfKeyword:
+                                        case SyntaxKind.SizeOfKeyword:
+                                        case SyntaxKind.TypeOfKeyword:
+                                                HandleDisallowedSpaceToken(ref context, token);
+                                                break;
 
-                                default:
-                                        break;
+                                        case SyntaxKind.NewKeyword:
+                                        case SyntaxKind.StackAllocKeyword:
+                                                HandleNewOrStackAllocKeywordToken(ref context,
+                                                                                  token);
+                                                break;
+
+                                        case SyntaxKind.ReturnKeyword:
+                                                HandleReturnKeywordToken(ref context, token);
+                                                break;
+
+                                        case SyntaxKind.ThrowKeyword:
+                                                HandleThrowKeywordToken(ref context, token);
+                                                break;
+
+                                        default:
+                                                break;
                                 }
                         }
                 }
@@ -210,25 +213,26 @@ namespace StyleCop.Analyzers.SpacingRules {
                         if (identifierNameSyntax.IsVar) {
                                 var nextToken = identifierNameSyntax.Identifier.GetNextToken();
                                 switch (nextToken.Kind()) {
-                                case SyntaxKind.IdentifierToken:
-                                case SyntaxKindEx.UnderscoreToken:
-                                        // Always check these
-                                        break;
-
-                                case SyntaxKind.OpenParenToken:
-                                        if (nextToken.Parent.IsKind(
-                                                SyntaxKindEx.ParenthesizedVariableDesignation)) {
-                                                // We have something like this:
-                                                //   var (x, i) = (a, b);
+                                        case SyntaxKind.IdentifierToken:
+                                        case SyntaxKindEx.UnderscoreToken:
+                                                // Always check these
                                                 break;
-                                        }
 
-                                        // Could be calling a function named 'var'
-                                        return;
+                                        case SyntaxKind.OpenParenToken:
+                                                if (nextToken.Parent.IsKind(
+                                                        SyntaxKindEx
+                                                            .ParenthesizedVariableDesignation)) {
+                                                        // We have something like this:
+                                                        //   var (x, i) = (a, b);
+                                                        break;
+                                                }
 
-                                default:
-                                        // Not something to check
-                                        return;
+                                                // Could be calling a function named 'var'
+                                                return;
+
+                                        default:
+                                                // Not something to check
+                                                return;
                                 }
 
                                 HandleRequiredSpaceToken(ref context,
@@ -296,9 +300,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                            token.Text, " not"));
                 }
 
-                private static void
-                HandleNewOrStackAllocKeywordToken(ref SyntaxTreeAnalysisContext context,
-                                                  SyntaxToken token) {
+                private static void HandleNewOrStackAllocKeywordToken(
+                    ref SyntaxTreeAnalysisContext context, SyntaxToken token) {
                         if (token.IsMissing) {
                                 return;
                         }
@@ -306,31 +309,33 @@ namespace StyleCop.Analyzers.SpacingRules {
                         bool needSpace;
                         SyntaxToken nextToken = token.GetNextToken();
                         switch (nextToken.Kind()) {
-                        case SyntaxKind.OpenBracketToken:
-                                if (token.Parent.IsKind(
-                                        SyntaxKind.ImplicitArrayCreationExpression) ||
-                                    token.Parent.IsKind(
-                                        SyntaxKindEx.ImplicitStackAllocArrayCreationExpression)) {
-                                        // This is handled by SA1026
-                                        return;
-                                }
+                                case SyntaxKind.OpenBracketToken:
+                                        if (token.Parent.IsKind(
+                                                SyntaxKind.ImplicitArrayCreationExpression) ||
+                                            token.Parent.IsKind(
+                                                SyntaxKindEx
+                                                    .ImplicitStackAllocArrayCreationExpression)) {
+                                                // This is handled by SA1026
+                                                return;
+                                        }
 
-                                // Disallowed, but can we hit this??
-                                needSpace = false;
-                                break;
+                                        // Disallowed, but can we hit this??
+                                        needSpace = false;
+                                        break;
 
-                        case SyntaxKind.OpenParenToken:
-                                // Disallowed for new() constraint, but otherwise allowed for tuple
-                                // types
-                                needSpace =
-                                    !token.Parent.IsKind(SyntaxKind.ConstructorConstraint) &&
-                                    !token.Parent.IsKind(
-                                        SyntaxKindEx.ImplicitObjectCreationExpression);
-                                break;
+                                case SyntaxKind.OpenParenToken:
+                                        // Disallowed for new() constraint, but otherwise allowed
+                                        // for tuple types
+                                        needSpace =
+                                            !token.Parent.IsKind(
+                                                SyntaxKind.ConstructorConstraint) &&
+                                            !token.Parent.IsKind(
+                                                SyntaxKindEx.ImplicitObjectCreationExpression);
+                                        break;
 
-                        default:
-                                needSpace = true;
-                                break;
+                                default:
+                                        needSpace = true;
+                                        break;
                         }
 
                         if (!needSpace) {

@@ -60,7 +60,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
                     HandleSyntaxTree;
 
-#pragma warning disable SA1202 // Elements should be ordered by access
+#pragma warning disable SA1202  // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
                     new DiagnosticDescriptor(
                         DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules,
@@ -78,7 +78,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                         DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
-#pragma warning restore SA1202 // Elements should be ordered by access
+#pragma warning restore SA1202  // Elements should be ordered by access
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -121,120 +121,125 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                         SyntaxToken nextToken = token.GetNextToken();
                         switch (nextToken.Kind()) {
-                        case SyntaxKind.OpenParenToken:
-                                // Allow a space between an open and a close paren when:
-                                // - they are part of an if statement
-                                // - they are on the same line
-                                // - the open paren is part of a parenthesized expression or a tuple
-                                // expression.
-                                precedesStickyCharacter = !(
-                                    token.Parent.IsKind(SyntaxKind.IfStatement) &&
-                                    (token.GetLine() == nextToken.GetLine()) &&
-                                    (nextToken.Parent.IsKind(SyntaxKind.ParenthesizedExpression) ||
-                                     nextToken.Parent.IsKind(SyntaxKindEx.TupleExpression)));
-                                break;
+                                case SyntaxKind.OpenParenToken:
+                                        // Allow a space between an open and a close paren when:
+                                        // - they are part of an if statement
+                                        // - they are on the same line
+                                        // - the open paren is part of a parenthesized expression or
+                                        // a tuple expression.
+                                        precedesStickyCharacter =
+                                            !(token.Parent.IsKind(SyntaxKind.IfStatement) &&
+                                              (token.GetLine() == nextToken.GetLine()) &&
+                                              (nextToken.Parent.IsKind(
+                                                   SyntaxKind.ParenthesizedExpression) ||
+                                               nextToken.Parent.IsKind(
+                                                   SyntaxKindEx.TupleExpression)));
+                                        break;
 
-                        case SyntaxKind.CloseParenToken:
-                        case SyntaxKind.OpenBracketToken:
-                        case SyntaxKind.CloseBracketToken:
-                        case SyntaxKind.SemicolonToken:
-                        case SyntaxKind.CommaToken:
-                        case SyntaxKind.DoubleQuoteToken:
-                        case SyntaxKindEx.DotDotToken:
-                                precedesStickyCharacter = true;
-                                break;
+                                case SyntaxKind.CloseParenToken:
+                                case SyntaxKind.OpenBracketToken:
+                                case SyntaxKind.CloseBracketToken:
+                                case SyntaxKind.SemicolonToken:
+                                case SyntaxKind.CommaToken:
+                                case SyntaxKind.DoubleQuoteToken:
+                                case SyntaxKindEx.DotDotToken:
+                                        precedesStickyCharacter = true;
+                                        break;
 
-                        case SyntaxKind.GreaterThanToken:
-                                precedesStickyCharacter =
-                                    nextToken.Parent.IsKind(SyntaxKind.TypeArgumentList);
-                                break;
+                                case SyntaxKind.GreaterThanToken:
+                                        precedesStickyCharacter =
+                                            nextToken.Parent.IsKind(SyntaxKind.TypeArgumentList);
+                                        break;
 
-                        case SyntaxKind.QuestionToken:
-                                if (nextToken.Parent.IsKind(
-                                        SyntaxKind.ConditionalAccessExpression)) {
+                                case SyntaxKind.QuestionToken:
+                                        if (nextToken.Parent.IsKind(
+                                                SyntaxKind.ConditionalAccessExpression)) {
+                                                // allow a space for this case, but only if the ')'
+                                                // character is the last on the line
+                                                allowEndOfLine = true;
+                                                precedesStickyCharacter = true;
+                                        } else {
+                                                // A space follows unless this is a nullable tuple
+                                                // type
+                                                precedesStickyCharacter = nextToken.Parent.IsKind(
+                                                    SyntaxKind.NullableType);
+                                        }
+
+                                        break;
+
+                                case SyntaxKind.PlusToken:
+                                        precedesStickyCharacter =
+                                            nextToken.Parent.IsKind(SyntaxKind.UnaryPlusExpression);
+
+                                        // this will be reported as SA1022
+                                        suppressFollowingSpaceError = precedesStickyCharacter;
+                                        break;
+
+                                case SyntaxKind.MinusToken:
+                                        precedesStickyCharacter = nextToken.Parent.IsKind(
+                                            SyntaxKind.UnaryMinusExpression);
+
+                                        // this will be reported as SA1021
+                                        suppressFollowingSpaceError = precedesStickyCharacter;
+                                        break;
+
+                                case SyntaxKind.DotToken:
                                         // allow a space for this case, but only if the ')'
                                         // character is the last on the line
                                         allowEndOfLine = true;
                                         precedesStickyCharacter = true;
-                                } else {
-                                        // A space follows unless this is a nullable tuple type
+
+                                        preserveLayout = nextToken.Parent.IsKind(
+                                            SyntaxKind.SimpleMemberAccessExpression);
+                                        break;
+
+                                case SyntaxKind.MinusGreaterThanToken:
+                                        // allow a space for this case, but only if the ')'
+                                        // character is the last on the line
+                                        allowEndOfLine = true;
+                                        precedesStickyCharacter = true;
+                                        break;
+
+                                case SyntaxKind.ColonToken:
+                                        bool requireSpace =
+                                            nextToken.Parent.IsKind(
+                                                SyntaxKind.ConditionalExpression) ||
+                                            nextToken.Parent.IsKind(
+                                                SyntaxKind.BaseConstructorInitializer) ||
+                                            nextToken.Parent.IsKind(
+                                                SyntaxKind.ThisConstructorInitializer) ||
+                                            nextToken.Parent.IsKind(SyntaxKind.BaseList);
+                                        precedesStickyCharacter = !requireSpace;
+                                        break;
+
+                                case SyntaxKind.PlusPlusToken:
+                                case SyntaxKind.MinusMinusToken:
+                                        precedesStickyCharacter = true;
+                                        suppressFollowingSpaceError = false;
+                                        break;
+
+                                case SyntaxKind.CloseBraceToken:
                                         precedesStickyCharacter =
-                                            nextToken.Parent.IsKind(SyntaxKind.NullableType);
-                                }
+                                            nextToken.Parent is InterpolationSyntax;
+                                        break;
 
-                                break;
+                                case SyntaxKind.ExclamationToken when nextToken.Parent.IsKind(
+                                    SyntaxKindEx.SuppressNullableWarningExpression):
+                                        precedesStickyCharacter = true;
+                                        break;
 
-                        case SyntaxKind.PlusToken:
-                                precedesStickyCharacter =
-                                    nextToken.Parent.IsKind(SyntaxKind.UnaryPlusExpression);
-
-                                // this will be reported as SA1022
-                                suppressFollowingSpaceError = precedesStickyCharacter;
-                                break;
-
-                        case SyntaxKind.MinusToken:
-                                precedesStickyCharacter =
-                                    nextToken.Parent.IsKind(SyntaxKind.UnaryMinusExpression);
-
-                                // this will be reported as SA1021
-                                suppressFollowingSpaceError = precedesStickyCharacter;
-                                break;
-
-                        case SyntaxKind.DotToken:
-                                // allow a space for this case, but only if the ')' character is the
-                                // last on the line
-                                allowEndOfLine = true;
-                                precedesStickyCharacter = true;
-
-                                preserveLayout = nextToken.Parent.IsKind(
-                                    SyntaxKind.SimpleMemberAccessExpression);
-                                break;
-
-                        case SyntaxKind.MinusGreaterThanToken:
-                                // allow a space for this case, but only if the ')' character is the
-                                // last on the line
-                                allowEndOfLine = true;
-                                precedesStickyCharacter = true;
-                                break;
-
-                        case SyntaxKind.ColonToken:
-                                bool requireSpace =
-                                    nextToken.Parent.IsKind(SyntaxKind.ConditionalExpression) ||
-                                    nextToken.Parent.IsKind(
-                                        SyntaxKind.BaseConstructorInitializer) ||
-                                    nextToken.Parent.IsKind(
-                                        SyntaxKind.ThisConstructorInitializer) ||
-                                    nextToken.Parent.IsKind(SyntaxKind.BaseList);
-                                precedesStickyCharacter = !requireSpace;
-                                break;
-
-                        case SyntaxKind.PlusPlusToken:
-                        case SyntaxKind.MinusMinusToken:
-                                precedesStickyCharacter = true;
-                                suppressFollowingSpaceError = false;
-                                break;
-
-                        case SyntaxKind.CloseBraceToken:
-                                precedesStickyCharacter = nextToken.Parent is InterpolationSyntax;
-                                break;
-
-                        case SyntaxKind.ExclamationToken when nextToken.Parent.IsKind(
-                            SyntaxKindEx.SuppressNullableWarningExpression):
-                                precedesStickyCharacter = true;
-                                break;
-
-                        default:
-                                precedesStickyCharacter = false;
-                                break;
+                                default:
+                                        precedesStickyCharacter = false;
+                                        break;
                         }
 
                         switch (token.Parent.Kind()) {
-                        case SyntaxKind.CastExpression:
-                                precedesStickyCharacter = true;
-                                break;
+                                case SyntaxKind.CastExpression:
+                                        precedesStickyCharacter = true;
+                                        break;
 
-                        default:
-                                break;
+                                default:
+                                        break;
                         }
 
                         foreach (var trivia in token.TrailingTrivia) {
@@ -270,22 +275,22 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 if (!precedesStickyCharacter && !followedBySpace && !lastInLine) {
                                         // Closing parenthesis should{} be {followed} by a space.
                                         var properties = TokenSpacingProperties.InsertFollowing;
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                                         context.ReportDiagnostic(Diagnostic.Create(
                                             DescriptorFollowed, token.GetLocation(), properties));
-#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+#pragma warning restore RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                 } else if (precedesStickyCharacter && followedBySpace &&
                                            (!lastInLine || !allowEndOfLine)) {
                                         // Closing parenthesis should{ not} be {followed} by a
                                         // space.
                                         var properties = TokenSpacingProperties.RemoveFollowing;
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                                         context.ReportDiagnostic(
                                             Diagnostic.Create(DescriptorNotFollowed,
                                                               token.GetLocation(), properties));
-#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+#pragma warning restore RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                 }
                         }
                 }

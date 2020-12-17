@@ -113,8 +113,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         context.RegisterSyntaxTreeAction(
                             c => HandleSyntaxTreeAnalysis(c, context.Compilation));
                 }
@@ -165,14 +165,15 @@ namespace StyleCop.Analyzers.LayoutRules {
                                         if (triviaIndex < triviaList.Count) {
                                                 switch (triviaList [triviaIndex]
                                                             .Kind()) {
-                                                case SyntaxKind.SingleLineCommentTrivia:
-                                                case SyntaxKind
-                                                    .SingleLineDocumentationCommentTrivia:
-                                                case SyntaxKind.MultiLineCommentTrivia:
-                                                case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                                                        // ignore a single blank line in between two
-                                                        // comments.
-                                                        continue;
+                                                        case SyntaxKind.SingleLineCommentTrivia:
+                                                        case SyntaxKind
+                                                            .SingleLineDocumentationCommentTrivia:
+                                                        case SyntaxKind.MultiLineCommentTrivia:
+                                                        case SyntaxKind
+                                                            .MultiLineDocumentationCommentTrivia:
+                                                                // ignore a single blank line in
+                                                                // between two comments.
+                                                                continue;
                                                 }
                                         }
                                 }
@@ -209,20 +210,20 @@ namespace StyleCop.Analyzers.LayoutRules {
                         for (var i = 0; i < triviaList.Count; i++) {
                                 switch (triviaList [i]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        if (!inSingleLineComment) {
-                                                return triviaIndex < i;
-                                        }
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                if (!inSingleLineComment) {
+                                                        return triviaIndex < i;
+                                                }
 
-                                        inSingleLineComment = false;
-                                        break;
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                        inSingleLineComment = true;
-                                        break;
-                                default:
-                                        return triviaIndex < i;
+                                                inSingleLineComment = false;
+                                                break;
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                                inSingleLineComment = true;
+                                                break;
+                                        default:
+                                                return triviaIndex < i;
                                 }
                         }
 
@@ -237,17 +238,17 @@ namespace StyleCop.Analyzers.LayoutRules {
                         for (var i = triviaIndex + 1; i < triviaList.Count; i++) {
                                 switch (triviaList [i]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        // ignore whitespace
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                // ignore whitespace
+                                                break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                eolCount++;
+                                                break;
 
-                                default:
-                                        triviaIndex = i;
-                                        return Math.Max(0, eolCount - 1);
+                                        default:
+                                                triviaIndex = i;
+                                                return Math.Max(0, eolCount - 1);
                                 }
                         }
 

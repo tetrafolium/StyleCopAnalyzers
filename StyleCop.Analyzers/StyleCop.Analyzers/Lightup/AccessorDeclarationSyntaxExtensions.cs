@@ -21,14 +21,14 @@ namespace StyleCop.Analyzers.Lightup {
                                 typeof(AccessorDeclarationSyntax), nameof(ExpressionBody));
                 }
 
-                public static ArrowExpressionClauseSyntax
-                ExpressionBody(this AccessorDeclarationSyntax syntax) {
+                public static ArrowExpressionClauseSyntax ExpressionBody(
+                    this AccessorDeclarationSyntax syntax) {
                         return ExpressionBodyAccessor(syntax);
                 }
 
-                public static AccessorDeclarationSyntax
-                WithExpressionBody(this AccessorDeclarationSyntax syntax,
-                                   ArrowExpressionClauseSyntax expressionBody) {
+                public static AccessorDeclarationSyntax WithExpressionBody(
+                    this AccessorDeclarationSyntax syntax,
+                    ArrowExpressionClauseSyntax expressionBody) {
                         return WithExpressionBodyAccessor(syntax, expressionBody);
                 }
         }

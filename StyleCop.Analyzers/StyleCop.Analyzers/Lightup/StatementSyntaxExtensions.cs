@@ -22,19 +22,18 @@ namespace StyleCop.Analyzers.Lightup {
                                 typeof(StatementSyntax), nameof(AttributeLists));
                 }
 
-                public static SyntaxList<AttributeListSyntax>
-                AttributeLists(this StatementSyntax syntax) {
+                public static SyntaxList<AttributeListSyntax> AttributeLists(
+                    this StatementSyntax syntax) {
                         return AttributeListsAccessor(syntax);
                 }
 
-                public static StatementSyntax
-                WithAttributeLists(this StatementSyntax syntax,
-                                   SyntaxList<AttributeListSyntax> attributeLists) {
+                public static StatementSyntax WithAttributeLists(
+                    this StatementSyntax syntax, SyntaxList<AttributeListSyntax> attributeLists) {
                         return WithAttributeListsAccessor(syntax, attributeLists);
                 }
 
-                public static StatementSyntax
-                AddAttributeLists(this StatementSyntax syntax, params AttributeListSyntax[] items) {
+                public static StatementSyntax AddAttributeLists(
+                    this StatementSyntax syntax, params AttributeListSyntax[] items) {
                         return syntax.WithAttributeLists(syntax.AttributeLists().AddRange(items));
                 }
         }

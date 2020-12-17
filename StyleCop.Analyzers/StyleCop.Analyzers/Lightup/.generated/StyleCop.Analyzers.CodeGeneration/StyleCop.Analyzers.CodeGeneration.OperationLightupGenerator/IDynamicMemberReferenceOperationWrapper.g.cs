@@ -44,8 +44,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public ImmutableArray<ITypeSymbol> TypeArguments =>
                     TypeArgumentsAccessor(this.WrappedOperation);
                 public ITypeSymbol ContainingType => ContainingTypeAccessor(this.WrappedOperation);
-                public static IDynamicMemberReferenceOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IDynamicMemberReferenceOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

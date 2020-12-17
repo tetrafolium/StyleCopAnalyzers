@@ -64,8 +64,8 @@ namespace StyleCop.Analyzers.Lightup {
                         }
                 }
 
-                public static explicit
-                operator FunctionPointerCallingConventionSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator FunctionPointerCallingConventionSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -79,8 +79,8 @@ namespace StyleCop.Analyzers.Lightup {
                                                                                      node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(FunctionPointerCallingConventionSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    FunctionPointerCallingConventionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -88,8 +88,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public FunctionPointerCallingConventionSyntaxWrapper
-                WithManagedOrUnmanagedKeyword(SyntaxToken managedOrUnmanagedKeyword) {
+                public FunctionPointerCallingConventionSyntaxWrapper WithManagedOrUnmanagedKeyword(
+                    SyntaxToken managedOrUnmanagedKeyword) {
                         return new FunctionPointerCallingConventionSyntaxWrapper(
                             WithManagedOrUnmanagedKeywordAccessor(this.SyntaxNode,
                                                                   managedOrUnmanagedKeyword));

@@ -117,10 +117,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// documentation comment also included an <c>&lt;include&gt;</c> element.</param>
                 /// <param name="diagnosticLocations">The location(s) where diagnostics, if any,
                 /// should be reported.</param>
-                protected abstract void
-                HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment,
-                                            XElement completeDocumentation,
-                                            params Location[] diagnosticLocations);
+                protected abstract void HandleCompleteDocumentation(
+                    SyntaxNodeAnalysisContext context, bool needsComment,
+                    XElement completeDocumentation, params Location[] diagnosticLocations);
 
                 private void HandleMethodDeclaration(SyntaxNodeAnalysisContext context,
                                                      StyleCopSettings settings) {

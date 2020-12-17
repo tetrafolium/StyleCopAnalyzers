@@ -39,8 +39,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public static implicit operator ISymbolInitializerOperationWrapper(
                     IPropertyInitializerOperationWrapper wrapper) =>
                     ISymbolInitializerOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IPropertyInitializerOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IPropertyInitializerOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

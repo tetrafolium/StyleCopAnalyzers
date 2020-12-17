@@ -30,8 +30,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public ImmutableArray<IOperation> Initializers =>
                     InitializersAccessor(this.WrappedOperation);
-                public static IObjectOrCollectionInitializerOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IObjectOrCollectionInitializerOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

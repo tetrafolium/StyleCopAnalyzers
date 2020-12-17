@@ -227,8 +227,8 @@ namespace StyleCop.Analyzers.NamingRules {
                         CheckElementNameToken(context, methodDeclaration.Identifier);
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var localFunctionStatement =
                             (LocalFunctionStatementSyntaxWrapper) context.Node;
                         CheckElementNameToken(context, localFunctionStatement.Identifier);

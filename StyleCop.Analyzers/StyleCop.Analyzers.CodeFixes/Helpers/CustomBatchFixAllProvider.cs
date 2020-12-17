@@ -42,10 +42,10 @@ namespace StyleCop.Analyzers.Helpers {
                         }
                 }
 
-                public virtual async Task<CodeAction>
-                GetFixAsync(ImmutableDictionary<Document, ImmutableArray<Diagnostic>>
-                                documentsAndDiagnosticsToFixMap,
-                            FixAllContext fixAllContext) {
+                public virtual async Task<CodeAction> GetFixAsync(
+                    ImmutableDictionary<Document, ImmutableArray<Diagnostic>>
+                        documentsAndDiagnosticsToFixMap,
+                    FixAllContext fixAllContext) {
                         if (documentsAndDiagnosticsToFixMap != null &&
                             documentsAndDiagnosticsToFixMap.Any()) {
                                 fixAllContext.CancellationToken.ThrowIfCancellationRequested();
@@ -80,9 +80,9 @@ namespace StyleCop.Analyzers.Helpers {
                         return null;
                 }
 
-                public async virtual Task
-                AddDocumentFixesAsync(Document document, ImmutableArray<Diagnostic> diagnostics,
-                                      Action<CodeAction> addFix, FixAllContext fixAllContext) {
+                public async virtual Task AddDocumentFixesAsync(
+                    Document document, ImmutableArray<Diagnostic> diagnostics,
+                    Action<CodeAction> addFix, FixAllContext fixAllContext) {
                         Debug.Assert(!diagnostics.IsDefault, "!diagnostics.IsDefault");
                         var cancellationToken = fixAllContext.CancellationToken;
                         var fixerTasks = new Task[diagnostics.Length];
@@ -135,9 +135,9 @@ namespace StyleCop.Analyzers.Helpers {
         }
 }
 
-public virtual async Task<CodeAction>
-GetFixAsync(ImmutableDictionary<Project, ImmutableArray<Diagnostic>> projectsAndDiagnosticsToFixMap,
-            FixAllContext fixAllContext) {
+public virtual async Task<CodeAction> GetFixAsync(
+    ImmutableDictionary<Project, ImmutableArray<Diagnostic>> projectsAndDiagnosticsToFixMap,
+    FixAllContext fixAllContext) {
         if (projectsAndDiagnosticsToFixMap != null && projectsAndDiagnosticsToFixMap.Any()) {
                 var fixesBag = new List<CodeAction>[ projectsAndDiagnosticsToFixMap.Count ];
                 var fixOperations = new List<Task>(projectsAndDiagnosticsToFixMap.Count);
@@ -204,25 +204,26 @@ public virtual string GetFixAllTitle(FixAllContext fixAllContext) {
         }
 
         switch (fixAllContext.Scope) {
-        case FixAllScope.Custom:
-                return string.Format(HelpersResources.FixAllOccurrencesOfDiagnostic, diagnosticId);
+                case FixAllScope.Custom:
+                        return string.Format(HelpersResources.FixAllOccurrencesOfDiagnostic,
+                                             diagnosticId);
 
-        case FixAllScope.Document:
-                var document = fixAllContext.Document;
-                return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInScope,
-                                     diagnosticId, document.Name);
+                case FixAllScope.Document:
+                        var document = fixAllContext.Document;
+                        return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInScope,
+                                             diagnosticId, document.Name);
 
-        case FixAllScope.Project:
-                var project = fixAllContext.Project;
-                return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInScope,
-                                     diagnosticId, project.Name);
+                case FixAllScope.Project:
+                        var project = fixAllContext.Project;
+                        return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInScope,
+                                             diagnosticId, project.Name);
 
-        case FixAllScope.Solution:
-                return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInSolution,
-                                     diagnosticId);
+                case FixAllScope.Solution:
+                        return string.Format(
+                            HelpersResources.FixAllOccurrencesOfDiagnosticInSolution, diagnosticId);
 
-        default:
-                throw new InvalidOperationException("Not reachable");
+                default:
+                        throw new InvalidOperationException("Not reachable");
         }
 }
 
@@ -368,10 +369,9 @@ public virtual async Task<Solution> TryMergeFixesAsync(Solution oldSolution,
 /// <param name="cumulativeChanges">Existing merged changes from other batch fixes into which
 /// newDocument changes are being merged.</param> <param name="cancellationToken">Cancellation
 /// token.</param> <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-private static async Task<List<TextChange>>
-TryAddDocumentMergeChangesAsync(Document oldDocument, Document newDocument,
-                                List<TextChange> cumulativeChanges,
-                                CancellationToken cancellationToken) {
+private static async Task<List<TextChange>> TryAddDocumentMergeChangesAsync(
+    Document oldDocument, Document newDocument, List<TextChange> cumulativeChanges,
+    CancellationToken cancellationToken) {
         var successfullyMergedChanges = new List<TextChange>();
 
         int cumulativeChangeIndex = 0;

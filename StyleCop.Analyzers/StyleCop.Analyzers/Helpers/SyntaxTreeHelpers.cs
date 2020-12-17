@@ -24,8 +24,8 @@ namespace StyleCop.Analyzers.Helpers {
                     Tuple.Create(new WeakReference<Compilation>(null),
                                  default(ConcurrentDictionary<SyntaxTree, bool>));
 
-                public static ConcurrentDictionary<SyntaxTree, bool>
-                GetOrCreateUsingAliasCache(this Compilation compilation) {
+                public static ConcurrentDictionary<SyntaxTree, bool> GetOrCreateUsingAliasCache(
+                    this Compilation compilation) {
                         var cache = usingAliasCache;
 
                         Compilation cachedCompilation;
@@ -72,9 +72,8 @@ namespace StyleCop.Analyzers.Helpers {
                                    firstToken.LeadingTrivia) == -1;
                 }
 
-                internal static bool
-                ContainsUsingAlias(this SyntaxTree tree,
-                                   ConcurrentDictionary<SyntaxTree, bool> cache) {
+                internal static bool ContainsUsingAlias(
+                    this SyntaxTree tree, ConcurrentDictionary<SyntaxTree, bool> cache) {
                         if (tree == null) {
                                 return false;
                         }

@@ -85,8 +85,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// </summary>
                 /// <param name="context">The analysis context for a <see
                 /// cref="SyntaxNode"/>.</param>
-                private static void
-                HandleMemberAccessExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleMemberAccessExpression(
+                    SyntaxNodeAnalysisContext context) {
                         MemberAccessExpressionSyntax syntax =
                             (MemberAccessExpressionSyntax) context.Node;
                         IdentifierNameSyntax nameExpression =
@@ -97,66 +97,67 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 private static void HandleSimpleName(SyntaxNodeAnalysisContext context) {
             switch (context.Node?.Parent?.Kind() ?? SyntaxKind.None)
             {
-            case SyntaxKind.SimpleMemberAccessExpression:
-                    // this is handled separately
-                    return;
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                            // this is handled separately
+                            return;
 
-            case SyntaxKind.MemberBindingExpression:
-            case SyntaxKind.NameColon:
-            case SyntaxKind.PointerMemberAccessExpression:
-                    // this doesn't need to be handled
-                    return;
+                    case SyntaxKind.MemberBindingExpression:
+                    case SyntaxKind.NameColon:
+                    case SyntaxKind.PointerMemberAccessExpression:
+                            // this doesn't need to be handled
+                            return;
 
-            case SyntaxKind.QualifiedCref:
-            case SyntaxKind.NameMemberCref:
-                    // documentation comments don't use 'this.'
-                    return;
+                    case SyntaxKind.QualifiedCref:
+                    case SyntaxKind.NameMemberCref:
+                            // documentation comments don't use 'this.'
+                            return;
 
-            case SyntaxKind.SimpleAssignmentExpression:
-                    if (((AssignmentExpressionSyntax) context.Node.Parent).Left == context.Node) {
-                            if (context.Node.Parent.Parent.IsKind(
-                                    SyntaxKind.ObjectInitializerExpression)) {
-                                    /* Handle 'X' in:
-                                     *   new TypeName() { X = 3 }
-                                     */
-                                    return;
+                    case SyntaxKind.SimpleAssignmentExpression:
+                            if (((AssignmentExpressionSyntax) context.Node.Parent).Left ==
+                                context.Node) {
+                                    if (context.Node.Parent.Parent.IsKind(
+                                            SyntaxKind.ObjectInitializerExpression)) {
+                                            /* Handle 'X' in:
+                                             *   new TypeName() { X = 3 }
+                                             */
+                                            return;
+                                    }
+
+                                    if (context.Node.Parent.Parent.IsKind(
+                                            SyntaxKindEx.WithInitializerExpression)) {
+                                            /* Handle 'X' in:
+                                             *   value with { X = 3 }
+                                             */
+                                            return;
+                                    }
                             }
 
-                            if (context.Node.Parent.Parent.IsKind(
-                                    SyntaxKindEx.WithInitializerExpression)) {
-                                    /* Handle 'X' in:
-                                     *   value with { X = 3 }
-                                     */
-                                    return;
-                            }
-                    }
-
-                    break;
-
-            case SyntaxKind.NameEquals:
-                    if (((NameEqualsSyntax) context.Node.Parent).Name != context.Node) {
                             break;
-                    }
+
+                    case SyntaxKind.NameEquals:
+                            if (((NameEqualsSyntax) context.Node.Parent).Name != context.Node) {
+                                    break;
+                            }
 
                 switch (context.Node?.Parent?.Parent?.Kind() ?? SyntaxKind.None)
                 {
-                case SyntaxKind.AttributeArgument:
-                case SyntaxKind.AnonymousObjectMemberDeclarator:
-                        return;
+                        case SyntaxKind.AttributeArgument:
+                        case SyntaxKind.AnonymousObjectMemberDeclarator:
+                                return;
 
-                default:
-                        break;
+                        default:
+                                break;
                 }
 
                 break;
 
-            case SyntaxKind.Argument when IsPartOfConstructorInitializer((SimpleNameSyntax)
-                                                                             context.Node):
-                    // constructor invocations cannot contain this.
-                    return;
+                    case SyntaxKind.Argument when IsPartOfConstructorInitializer((SimpleNameSyntax)
+                                                                                     context.Node):
+                            // constructor invocations cannot contain this.
+                            return;
 
-            default:
-                    break;
+                    default:
+                            break;
             }
 
             HandleIdentifierNameImpl(context, (SimpleNameSyntax) context.Node);
@@ -201,12 +202,12 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                                 if (symbol is IMethodSymbol methodSymbol) {
                                         switch (methodSymbol.MethodKind) {
-                                        case MethodKind.Constructor:
-                                        case MethodKindEx.LocalFunction:
-                                                return;
+                                                case MethodKind.Constructor:
+                                                case MethodKindEx.LocalFunction:
+                                                        return;
 
-                                        default:
-                                                break;
+                                                default:
+                                                        break;
                                         }
                                 }
 
@@ -224,19 +225,19 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                 .Symbol;
 
                                         switch (memberAccessSymbol?.Kind) {
-                                        case null:
-                                                break;
+                                                case null:
+                                                        break;
 
-                                        case SymbolKind.Field:
-                                        case SymbolKind.Method:
-                                        case SymbolKind.Property:
-                                                if (memberAccessSymbol.IsStatic &&
-                                                    (memberAccessSymbol.ContainingType.Name ==
-                                                     symbol.Name)) {
-                                                        return;
-                                                }
+                                                case SymbolKind.Field:
+                                                case SymbolKind.Method:
+                                                case SymbolKind.Property:
+                                                        if (memberAccessSymbol.IsStatic &&
+                                                            (memberAccessSymbol.ContainingType
+                                                                 .Name == symbol.Name)) {
+                                                                return;
+                                                        }
 
-                                                break;
+                                                        break;
                                         }
                                 }
 
@@ -251,47 +252,49 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 private static bool HasThis(SyntaxNode node) {
                         for (; node != null; node = node.Parent) {
                                 switch (node.Kind()) {
-                                case SyntaxKind.ClassDeclaration:
-                                case SyntaxKind.InterfaceDeclaration:
-                                case SyntaxKind.StructDeclaration:
-                                case SyntaxKind.DelegateDeclaration:
-                                case SyntaxKind.EnumDeclaration:
-                                case SyntaxKind.NamespaceDeclaration:
-                                        return false;
+                                        case SyntaxKind.ClassDeclaration:
+                                        case SyntaxKind.InterfaceDeclaration:
+                                        case SyntaxKind.StructDeclaration:
+                                        case SyntaxKind.DelegateDeclaration:
+                                        case SyntaxKind.EnumDeclaration:
+                                        case SyntaxKind.NamespaceDeclaration:
+                                                return false;
 
-                                case SyntaxKind.FieldDeclaration:
-                                case SyntaxKind.EventFieldDeclaration:
-                                        return false;
+                                        case SyntaxKind.FieldDeclaration:
+                                        case SyntaxKind.EventFieldDeclaration:
+                                                return false;
 
-                                case SyntaxKind.EventDeclaration:
-                                case SyntaxKind.IndexerDeclaration:
-                                        var basePropertySyntax =
-                                            (BasePropertyDeclarationSyntax) node;
-                                        return !basePropertySyntax.Modifiers.Any(
-                                            SyntaxKind.StaticKeyword);
+                                        case SyntaxKind.EventDeclaration:
+                                        case SyntaxKind.IndexerDeclaration:
+                                                var basePropertySyntax =
+                                                    (BasePropertyDeclarationSyntax) node;
+                                                return !basePropertySyntax.Modifiers.Any(
+                                                    SyntaxKind.StaticKeyword);
 
-                                case SyntaxKind.PropertyDeclaration:
-                                        var propertySyntax = (PropertyDeclarationSyntax) node;
-                                        return !propertySyntax.Modifiers.Any(
-                                                   SyntaxKind.StaticKeyword) &&
-                                               propertySyntax.Initializer == null;
+                                        case SyntaxKind.PropertyDeclaration:
+                                                var propertySyntax =
+                                                    (PropertyDeclarationSyntax) node;
+                                                return !propertySyntax.Modifiers.Any(
+                                                           SyntaxKind.StaticKeyword) &&
+                                                       propertySyntax.Initializer == null;
 
-                                case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                                case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                                        return false;
+                                        case SyntaxKind.MultiLineDocumentationCommentTrivia:
+                                        case SyntaxKind.SingleLineDocumentationCommentTrivia:
+                                                return false;
 
-                                case SyntaxKind.ConstructorDeclaration:
-                                case SyntaxKind.DestructorDeclaration:
-                                case SyntaxKind.MethodDeclaration:
-                                        var baseMethodSyntax = (BaseMethodDeclarationSyntax) node;
-                                        return !baseMethodSyntax.Modifiers.Any(
-                                            SyntaxKind.StaticKeyword);
+                                        case SyntaxKind.ConstructorDeclaration:
+                                        case SyntaxKind.DestructorDeclaration:
+                                        case SyntaxKind.MethodDeclaration:
+                                                var baseMethodSyntax =
+                                                    (BaseMethodDeclarationSyntax) node;
+                                                return !baseMethodSyntax.Modifiers.Any(
+                                                    SyntaxKind.StaticKeyword);
 
-                                case SyntaxKind.Attribute:
-                                        return false;
+                                        case SyntaxKind.Attribute:
+                                                return false;
 
-                                default:
-                                        continue;
+                                        default:
+                                                continue;
                                 }
                         }
 
@@ -301,9 +304,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 private static bool IsPartOfConstructorInitializer(SyntaxNode node) {
                         for (; node != null; node = node.Parent) {
                                 switch (node.Kind()) {
-                                case SyntaxKind.ThisConstructorInitializer:
-                                case SyntaxKind.BaseConstructorInitializer:
-                                        return true;
+                                        case SyntaxKind.ThisConstructorInitializer:
+                                        case SyntaxKind.BaseConstructorInitializer:
+                                                return true;
                                 }
                         }
 

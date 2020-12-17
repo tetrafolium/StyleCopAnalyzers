@@ -9,8 +9,8 @@ namespace StyleCop.Analyzers.Lightup {
                 internal const string FallbackWrappedTypeName =
                     "Microsoft.CodeAnalysis.CSharp.Syntax.ForEachStatementSyntax";
 
-                public static implicit
-                operator CommonForEachStatementSyntaxWrapper(ForEachStatementSyntax node) {
+                public static implicit operator CommonForEachStatementSyntaxWrapper(
+                    ForEachStatementSyntax node) {
                         return new CommonForEachStatementSyntaxWrapper(node);
                 }
         }

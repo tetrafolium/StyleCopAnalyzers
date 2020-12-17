@@ -36,8 +36,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
                 public static explicit operator IRangeCaseClauseOperationWrapper(
                     ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit
-                operator ICaseClauseOperationWrapper(IRangeCaseClauseOperationWrapper wrapper) =>
+                public static implicit operator ICaseClauseOperationWrapper(
+                    IRangeCaseClauseOperationWrapper wrapper) =>
                     ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IRangeCaseClauseOperationWrapper FromOperation(IOperation operation) {
                         if (operation == null) {

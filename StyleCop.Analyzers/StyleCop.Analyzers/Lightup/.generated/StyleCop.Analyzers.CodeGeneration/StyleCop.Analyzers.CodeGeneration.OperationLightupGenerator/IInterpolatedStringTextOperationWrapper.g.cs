@@ -33,8 +33,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public static implicit operator IInterpolatedStringContentOperationWrapper(
                     IInterpolatedStringTextOperationWrapper wrapper) =>
                     IInterpolatedStringContentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IInterpolatedStringTextOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IInterpolatedStringTextOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

@@ -43,93 +43,94 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
 
                                 switch (identifierToken.Parent.Kind()) {
-                                case SyntaxKind.PropertyDeclaration:
-                                case SyntaxKind.EventDeclaration:
-                                        if (((BasePropertyDeclarationSyntax) identifierToken.Parent)
-                                                .Modifiers.Any(SyntaxKind.StaticKeyword)) {
+                                        case SyntaxKind.PropertyDeclaration:
+                                        case SyntaxKind.EventDeclaration:
+                                                if (((BasePropertyDeclarationSyntax)
+                                                         identifierToken.Parent)
+                                                        .Modifiers.Any(SyntaxKind.StaticKeyword)) {
+                                                        continue;
+                                                }
+
+                                                break;
+
+                                        case SyntaxKind.MethodDeclaration:
+                                                if (((MethodDeclarationSyntax)
+                                                         identifierToken.Parent)
+                                                        .Modifiers.Any(SyntaxKind.StaticKeyword)) {
+                                                        continue;
+                                                }
+
+                                                break;
+
+                                        case SyntaxKind.VariableDeclarator:
+                                                if (!identifierToken.Parent.Parent.IsKind(
+                                                        SyntaxKind.VariableDeclaration) ||
+                                                    !identifierToken.Parent.Parent.Parent.IsKind(
+                                                        SyntaxKind.EventFieldDeclaration)) {
+                                                        continue;
+                                                }
+
+                                                if (((EventFieldDeclarationSyntax)
+                                                         identifierToken.Parent.Parent.Parent)
+                                                        .Modifiers.Any(SyntaxKind.StaticKeyword)) {
+                                                        continue;
+                                                }
+
+                                                break;
+
+                                        case SyntaxKind.IndexerDeclaration:
+                                                break;
+
+                                        default:
                                                 continue;
-                                        }
-
-                                        break;
-
-                                case SyntaxKind.MethodDeclaration:
-                                        if (((MethodDeclarationSyntax) identifierToken.Parent)
-                                                .Modifiers.Any(SyntaxKind.StaticKeyword)) {
-                                                continue;
-                                        }
-
-                                        break;
-
-                                case SyntaxKind.VariableDeclarator:
-                                        if (!identifierToken.Parent.Parent.IsKind(
-                                                SyntaxKind.VariableDeclaration) ||
-                                            !identifierToken.Parent.Parent.Parent.IsKind(
-                                                SyntaxKind.EventFieldDeclaration)) {
-                                                continue;
-                                        }
-
-                                        if (((EventFieldDeclarationSyntax)
-                                                 identifierToken.Parent.Parent.Parent)
-                                                .Modifiers.Any(SyntaxKind.StaticKeyword)) {
-                                                continue;
-                                        }
-
-                                        break;
-
-                                case SyntaxKind.IndexerDeclaration:
-                                        break;
-
-                                default:
-                                        continue;
                                 }
 
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(DocumentationResources.InheritdocCodeFix,
-                                                      cancellationToken =>
-                                                          GetTransformedDocumentAsync(
-                                                              context.Document, root,
-                                                              identifierToken, cancellationToken),
-                                                      nameof(InheritdocCodeFixProvider)),
+                                    CodeAction.Create(
+                                        DocumentationResources.InheritdocCodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, root, identifierToken,
+                                            cancellationToken),
+                                        nameof(InheritdocCodeFixProvider)),
                                     diagnostic);
                         }
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode root,
-                                            SyntaxToken identifierToken,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, SyntaxNode root, SyntaxToken identifierToken,
+                    CancellationToken cancellationToken) {
                         SemanticModel semanticModel =
                             await document.GetSemanticModelAsync(cancellationToken)
                                 .ConfigureAwait(false);
                         switch (identifierToken.Parent.Kind()) {
-                        case SyntaxKind.PropertyDeclaration:
-                        case SyntaxKind.EventDeclaration:
-                                return GetTransformedDocumentForBasePropertyDeclaration(
-                                    document, root, semanticModel,
-                                    (BasePropertyDeclarationSyntax) identifierToken.Parent,
-                                    cancellationToken);
+                                case SyntaxKind.PropertyDeclaration:
+                                case SyntaxKind.EventDeclaration:
+                                        return GetTransformedDocumentForBasePropertyDeclaration(
+                                            document, root, semanticModel,
+                                            (BasePropertyDeclarationSyntax) identifierToken.Parent,
+                                            cancellationToken);
 
-                        case SyntaxKind.MethodDeclaration:
-                                return GetTransformedDocumentForMethodDeclaration(
-                                    document, root, semanticModel,
-                                    (MethodDeclarationSyntax) identifierToken.Parent,
-                                    cancellationToken);
+                                case SyntaxKind.MethodDeclaration:
+                                        return GetTransformedDocumentForMethodDeclaration(
+                                            document, root, semanticModel,
+                                            (MethodDeclarationSyntax) identifierToken.Parent,
+                                            cancellationToken);
 
-                        case SyntaxKind.VariableDeclarator:
-                                return GetTransformedDocumentForEventFieldDeclaration(
-                                    document, root, semanticModel,
-                                    (EventFieldDeclarationSyntax)
-                                        identifierToken.Parent.Parent.Parent,
-                                    cancellationToken);
+                                case SyntaxKind.VariableDeclarator:
+                                        return GetTransformedDocumentForEventFieldDeclaration(
+                                            document, root, semanticModel,
+                                            (EventFieldDeclarationSyntax)
+                                                identifierToken.Parent.Parent.Parent,
+                                            cancellationToken);
 
-                        case SyntaxKind.IndexerDeclaration:
-                                return GetTransformedDocumentForIndexerDeclaration(
-                                    document, root, semanticModel,
-                                    (IndexerDeclarationSyntax) identifierToken.Parent,
-                                    cancellationToken);
+                                case SyntaxKind.IndexerDeclaration:
+                                        return GetTransformedDocumentForIndexerDeclaration(
+                                            document, root, semanticModel,
+                                            (IndexerDeclarationSyntax) identifierToken.Parent,
+                                            cancellationToken);
 
-                        default:
-                                return document;
+                                default:
+                                        return document;
                         }
                 }
 
@@ -214,9 +215,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                        cancellationToken);
                 }
 
-                private static Document
-                InsertInheritdocComment(Document document, SyntaxNode root, SyntaxNode syntaxNode,
-                                        CancellationToken cancellationToken) {
+                private static Document InsertInheritdocComment(
+                    Document document, SyntaxNode root, SyntaxNode syntaxNode,
+                    CancellationToken cancellationToken) {
                         // Currently unused
                         _ = cancellationToken;
 

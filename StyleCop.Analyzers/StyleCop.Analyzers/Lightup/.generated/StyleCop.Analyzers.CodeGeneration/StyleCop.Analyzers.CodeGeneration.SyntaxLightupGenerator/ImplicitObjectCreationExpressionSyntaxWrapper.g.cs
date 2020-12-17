@@ -70,8 +70,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return (ImplicitObjectCreationExpressionSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator ImplicitObjectCreationExpressionSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator ImplicitObjectCreationExpressionSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -90,8 +90,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return BaseObjectCreationExpressionSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(ImplicitObjectCreationExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    ImplicitObjectCreationExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -99,20 +99,20 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public ImplicitObjectCreationExpressionSyntaxWrapper
-                WithNewKeyword(SyntaxToken newKeyword) {
+                public ImplicitObjectCreationExpressionSyntaxWrapper WithNewKeyword(
+                    SyntaxToken newKeyword) {
                         return new ImplicitObjectCreationExpressionSyntaxWrapper(
                             WithNewKeywordAccessor(this.SyntaxNode, newKeyword));
                 }
 
-                public ImplicitObjectCreationExpressionSyntaxWrapper
-                WithArgumentList(ArgumentListSyntax argumentList) {
+                public ImplicitObjectCreationExpressionSyntaxWrapper WithArgumentList(
+                    ArgumentListSyntax argumentList) {
                         return new ImplicitObjectCreationExpressionSyntaxWrapper(
                             WithArgumentListAccessor(this.SyntaxNode, argumentList));
                 }
 
-                public ImplicitObjectCreationExpressionSyntaxWrapper
-                WithInitializer(InitializerExpressionSyntax initializer) {
+                public ImplicitObjectCreationExpressionSyntaxWrapper WithInitializer(
+                    InitializerExpressionSyntax initializer) {
                         return new ImplicitObjectCreationExpressionSyntaxWrapper(
                             WithInitializerAccessor(this.SyntaxNode, initializer));
                 }

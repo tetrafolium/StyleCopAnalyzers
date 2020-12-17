@@ -41,8 +41,10 @@ namespace StyleCop.Analyzers.Lightup {
                         InitializerAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
                             ExpressionSyntax, InitializerExpressionSyntax>(WrappedType,
                                                                            nameof(Initializer));
-                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
+                        WithExpressionAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(Expression));
                         WithWithKeywordAccessor =
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
@@ -81,8 +83,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new WithExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(WithExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    WithExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -100,8 +102,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithWithKeywordAccessor(this.SyntaxNode, withKeyword));
                 }
 
-                public WithExpressionSyntaxWrapper
-                WithInitializer(InitializerExpressionSyntax initializer) {
+                public WithExpressionSyntaxWrapper WithInitializer(
+                    InitializerExpressionSyntax initializer) {
                         return new WithExpressionSyntaxWrapper(
                             WithInitializerAccessor(this.SyntaxNode, initializer));
                 }

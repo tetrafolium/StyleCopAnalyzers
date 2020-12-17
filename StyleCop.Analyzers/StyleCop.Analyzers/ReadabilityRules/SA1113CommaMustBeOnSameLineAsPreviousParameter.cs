@@ -129,8 +129,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKinds.ConstructorInitializer);
                 }
 
-                private static void
-                HandleArrayCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleArrayCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var arrayCreationExpression = (ArrayCreationExpressionSyntax) context.Node;
 
                         if (arrayCreationExpression.Type == null) {
@@ -176,8 +176,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleParenthesizedLambdaExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var parenthesizedLambdaExpression =
                             (ParenthesizedLambdaExpressionSyntax) context.Node;
                         HandleBaseParameterListSyntax(context,
@@ -189,16 +189,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         HandleBaseParameterListSyntax(context, delegateDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousMethodExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var anonymousMethodExpression =
                             (AnonymousMethodExpressionSyntax) context.Node;
                         HandleBaseParameterListSyntax(context,
                                                       anonymousMethodExpression.ParameterList);
                 }
 
-                private static void
-                HandleElementAccessExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleElementAccessExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var elementAccessExpression = (ElementAccessExpressionSyntax) context.Node;
                         HandleBaseArgumentListSyntax(context, elementAccessExpression.ArgumentList);
                 }
@@ -208,8 +208,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         HandleBaseParameterListSyntax(context, indexerDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var objectCreationExpression =
                             (ObjectCreationExpressionSyntax) context.Node;
                         HandleBaseArgumentListSyntax(context,
@@ -226,23 +226,22 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         HandleBaseParameterListSyntax(context, baseMethodDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var localFunctionStatement =
                             (LocalFunctionStatementSyntaxWrapper) context.Node;
                         HandleBaseParameterListSyntax(context,
                                                       localFunctionStatement.ParameterList);
                 }
 
-                private static void
-                HandleConstructorInitializer(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorInitializer(
+                    SyntaxNodeAnalysisContext context) {
                         var constructorInitializer = (ConstructorInitializerSyntax) context.Node;
                         HandleBaseArgumentListSyntax(context, constructorInitializer.ArgumentList);
                 }
 
-                private static void
-                HandleBaseArgumentListSyntax(SyntaxNodeAnalysisContext context,
-                                             BaseArgumentListSyntax argumentList) {
+                private static void HandleBaseArgumentListSyntax(
+                    SyntaxNodeAnalysisContext context, BaseArgumentListSyntax argumentList) {
                         if (argumentList != null && !argumentList.IsMissing) {
                                 var arguments = argumentList.Arguments;
                                 if (arguments.Count > 1) {
@@ -252,9 +251,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleBaseParameterListSyntax(SyntaxNodeAnalysisContext context,
-                                              BaseParameterListSyntax parameterList) {
+                private static void HandleBaseParameterListSyntax(
+                    SyntaxNodeAnalysisContext context, BaseParameterListSyntax parameterList) {
                         if (parameterList != null && !parameterList.IsMissing) {
                                 var parameters = parameterList.Parameters;
                                 if (parameters.Count > 1) {

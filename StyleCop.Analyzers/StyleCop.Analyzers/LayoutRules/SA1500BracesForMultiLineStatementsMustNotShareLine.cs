@@ -150,8 +150,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
 
-                private static void
-                HandleAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var syntax = (AnonymousObjectCreationExpressionSyntax) context.Node;
                         CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
@@ -165,88 +165,91 @@ namespace StyleCop.Analyzers.LayoutRules {
                         if (openBraceTokenLine == closeBraceToken.GetLine()) {
                                 if (context.Node.IsKind(SyntaxKind.ArrayInitializerExpression)) {
                                         switch (context.Node.Parent.Kind()) {
-                                        case SyntaxKind.EqualsValueClause:
-                                                if (((EqualsValueClauseSyntax) context.Node.Parent)
-                                                        .EqualsToken.GetLine() ==
-                                                    openBraceTokenLine) {
-                                                        return;
-                                                }
+                                                case SyntaxKind.EqualsValueClause:
+                                                        if (((EqualsValueClauseSyntax)
+                                                                 context.Node.Parent)
+                                                                .EqualsToken.GetLine() ==
+                                                            openBraceTokenLine) {
+                                                                return;
+                                                        }
 
-                                                break;
+                                                        break;
 
-                                        case SyntaxKind.ArrayCreationExpression:
-                                                if (((ArrayCreationExpressionSyntax)
-                                                         context.Node.Parent)
-                                                        .NewKeyword.GetLine() ==
-                                                    openBraceTokenLine) {
-                                                        return;
-                                                }
+                                                case SyntaxKind.ArrayCreationExpression:
+                                                        if (((ArrayCreationExpressionSyntax)
+                                                                 context.Node.Parent)
+                                                                .NewKeyword.GetLine() ==
+                                                            openBraceTokenLine) {
+                                                                return;
+                                                        }
 
-                                                break;
+                                                        break;
 
-                                        case SyntaxKind.ImplicitArrayCreationExpression:
-                                                if (((ImplicitArrayCreationExpressionSyntax)
-                                                         context.Node.Parent)
-                                                        .NewKeyword.GetLine() ==
-                                                    openBraceTokenLine) {
-                                                        return;
-                                                }
+                                                case SyntaxKind.ImplicitArrayCreationExpression:
+                                                        if (((ImplicitArrayCreationExpressionSyntax)
+                                                                 context.Node.Parent)
+                                                                .NewKeyword.GetLine() ==
+                                                            openBraceTokenLine) {
+                                                                return;
+                                                        }
 
-                                                break;
+                                                        break;
 
-                                        case SyntaxKind.StackAllocArrayCreationExpression:
-                                                if (((StackAllocArrayCreationExpressionSyntax)
-                                                         context.Node.Parent)
-                                                        .StackAllocKeyword.GetLine() ==
-                                                    openBraceTokenLine) {
-                                                        return;
-                                                }
+                                                case SyntaxKind.StackAllocArrayCreationExpression:
+                                                        if (((StackAllocArrayCreationExpressionSyntax)
+                                                                 context.Node.Parent)
+                                                                .StackAllocKeyword.GetLine() ==
+                                                            openBraceTokenLine) {
+                                                                return;
+                                                        }
 
-                                                break;
+                                                        break;
 
-                                        case SyntaxKindEx.ImplicitStackAllocArrayCreationExpression:
-                                                if (((ImplicitStackAllocArrayCreationExpressionSyntaxWrapper)
-                                                         context.Node.Parent)
-                                                        .StackAllocKeyword.GetLine() ==
-                                                    openBraceTokenLine) {
-                                                        return;
-                                                }
+                                                case SyntaxKindEx
+                                                    .ImplicitStackAllocArrayCreationExpression:
+                                                        if (((ImplicitStackAllocArrayCreationExpressionSyntaxWrapper)
+                                                                 context.Node.Parent)
+                                                                .StackAllocKeyword.GetLine() ==
+                                                            openBraceTokenLine) {
+                                                                return;
+                                                        }
 
-                                                break;
+                                                        break;
 
-                                        case SyntaxKind.ArrayInitializerExpression:
-                                                if (!InitializerExpressionSharesLine(
-                                                        (InitializerExpressionSyntax)
-                                                            context.Node)) {
-                                                        return;
-                                                }
+                                                case SyntaxKind.ArrayInitializerExpression:
+                                                        if (!InitializerExpressionSharesLine(
+                                                                (InitializerExpressionSyntax)
+                                                                    context.Node)) {
+                                                                return;
+                                                        }
 
-                                                checkCloseBrace = false;
-                                                break;
+                                                        checkCloseBrace = false;
+                                                        break;
 
-                                        default:
-                                                break;
+                                                default:
+                                                        break;
                                         }
                                 } else {
                                         switch (context.Node.Parent.Kind()) {
-                                        case SyntaxKind.GetAccessorDeclaration:
-                                        case SyntaxKind.SetAccessorDeclaration:
-                                        case SyntaxKind.AddAccessorDeclaration:
-                                        case SyntaxKind.RemoveAccessorDeclaration:
-                                        case SyntaxKind.UnknownAccessorDeclaration:
-                                                if (((AccessorDeclarationSyntax)
-                                                         context.Node.Parent)
-                                                        .Keyword.GetLine() == openBraceTokenLine) {
-                                                        // reported as SA1504, if at all
+                                                case SyntaxKind.GetAccessorDeclaration:
+                                                case SyntaxKind.SetAccessorDeclaration:
+                                                case SyntaxKind.AddAccessorDeclaration:
+                                                case SyntaxKind.RemoveAccessorDeclaration:
+                                                case SyntaxKind.UnknownAccessorDeclaration:
+                                                        if (((AccessorDeclarationSyntax)
+                                                                 context.Node.Parent)
+                                                                .Keyword.GetLine() ==
+                                                            openBraceTokenLine) {
+                                                                // reported as SA1504, if at all
+                                                                return;
+                                                        }
+
+                                                        checkCloseBrace = false;
+                                                        break;
+
+                                                default:
+                                                        // reported by SA1501 or SA1502
                                                         return;
-                                                }
-
-                                                checkCloseBrace = false;
-                                                break;
-
-                                        default:
-                                                // reported by SA1501 or SA1502
-                                                return;
                                         }
                                 }
                         }
@@ -257,8 +260,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         }
                 }
 
-                private static bool
-                InitializerExpressionSharesLine(InitializerExpressionSyntax node) {
+                private static bool InitializerExpressionSharesLine(
+                    InitializerExpressionSyntax node) {
                         var parent = (InitializerExpressionSyntax) node.Parent;
                         var index = parent.Expressions.IndexOf(node);
 
@@ -291,19 +294,19 @@ namespace StyleCop.Analyzers.LayoutRules {
                         SyntaxToken nextToken = token.GetNextToken(includeZeroWidth : true);
                         if (!nextToken.IsMissing) {
                                 switch (nextToken.Kind()) {
-                                case SyntaxKind.CloseParenToken:
-                                case SyntaxKind.CommaToken:
-                                case SyntaxKind.SemicolonToken:
-                                case SyntaxKind.DotToken:
-                                        // these are allowed to appear on the same line
-                                        return;
+                                        case SyntaxKind.CloseParenToken:
+                                        case SyntaxKind.CommaToken:
+                                        case SyntaxKind.SemicolonToken:
+                                        case SyntaxKind.DotToken:
+                                                // these are allowed to appear on the same line
+                                                return;
 
-                                case SyntaxKind.EndOfFileToken:
-                                        // last token of this file
-                                        return;
+                                        case SyntaxKind.EndOfFileToken:
+                                                // last token of this file
+                                                return;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
 
                                 if (nextToken.GetLineSpan().StartLinePosition.Line == line) {

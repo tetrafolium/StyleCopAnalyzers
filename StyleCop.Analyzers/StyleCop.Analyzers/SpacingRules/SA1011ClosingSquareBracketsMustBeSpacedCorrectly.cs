@@ -103,58 +103,59 @@ namespace StyleCop.Analyzers.SpacingRules {
                         if (!lastInLine) {
                                 SyntaxToken nextToken = token.GetNextToken();
                                 switch (nextToken.Kind()) {
-                                case SyntaxKind.CloseBracketToken:
-                                case SyntaxKind.OpenParenToken:
-                                case SyntaxKind.CommaToken:
-                                case SyntaxKind.SemicolonToken:
-                                // TODO: "certain types of operator symbols"
-                                case SyntaxKind.DotToken:
-                                case SyntaxKind.OpenBracketToken:
-                                case SyntaxKind.CloseParenToken:
-                                case SyntaxKind.MinusGreaterThanToken:
-                                        precedesSpecialCharacter = true;
-                                        break;
+                                        case SyntaxKind.CloseBracketToken:
+                                        case SyntaxKind.OpenParenToken:
+                                        case SyntaxKind.CommaToken:
+                                        case SyntaxKind.SemicolonToken:
+                                        // TODO: "certain types of operator symbols"
+                                        case SyntaxKind.DotToken:
+                                        case SyntaxKind.OpenBracketToken:
+                                        case SyntaxKind.CloseParenToken:
+                                        case SyntaxKind.MinusGreaterThanToken:
+                                                precedesSpecialCharacter = true;
+                                                break;
 
-                                case SyntaxKind.ExclamationToken:
-                                case SyntaxKind.PlusPlusToken:
-                                case SyntaxKind.MinusMinusToken:
-                                        precedesSpecialCharacter = true;
-                                        suppressFollowingSpaceError = false;
-                                        break;
+                                        case SyntaxKind.ExclamationToken:
+                                        case SyntaxKind.PlusPlusToken:
+                                        case SyntaxKind.MinusMinusToken:
+                                                precedesSpecialCharacter = true;
+                                                suppressFollowingSpaceError = false;
+                                                break;
 
-                                case SyntaxKind.LessThanToken:
-                                        precedesSpecialCharacter = token.Parent.IsKind(
-                                            SyntaxKindEx
-                                                .FunctionPointerUnmanagedCallingConventionList);
-                                        suppressFollowingSpaceError = false;
-                                        break;
+                                        case SyntaxKind.LessThanToken:
+                                                precedesSpecialCharacter = token.Parent.IsKind(
+                                                    SyntaxKindEx
+                                                        .FunctionPointerUnmanagedCallingConventionList);
+                                                suppressFollowingSpaceError = false;
+                                                break;
 
-                                case SyntaxKind.GreaterThanToken:
-                                        precedesSpecialCharacter =
-                                            nextToken.Parent.IsKind(SyntaxKind.TypeArgumentList);
-                                        break;
+                                        case SyntaxKind.GreaterThanToken:
+                                                precedesSpecialCharacter = nextToken.Parent.IsKind(
+                                                    SyntaxKind.TypeArgumentList);
+                                                break;
 
-                                case SyntaxKind.QuestionToken:
-                                        precedesSpecialCharacter =
-                                            nextToken.Parent.IsKind(
-                                                SyntaxKind.ConditionalAccessExpression) ||
-                                            nextToken.Parent.IsKind(SyntaxKind.NullableType);
-                                        break;
+                                        case SyntaxKind.QuestionToken:
+                                                precedesSpecialCharacter =
+                                                    nextToken.Parent.IsKind(
+                                                        SyntaxKind.ConditionalAccessExpression) ||
+                                                    nextToken.Parent.IsKind(
+                                                        SyntaxKind.NullableType);
+                                                break;
 
-                                case SyntaxKind.CloseBraceToken:
-                                        precedesSpecialCharacter =
-                                            nextToken.Parent is InterpolationSyntax;
-                                        break;
+                                        case SyntaxKind.CloseBraceToken:
+                                                precedesSpecialCharacter =
+                                                    nextToken.Parent is InterpolationSyntax;
+                                                break;
 
-                                case SyntaxKind.ColonToken:
-                                        precedesSpecialCharacter = nextToken.Parent.IsKind(
-                                            SyntaxKind.InterpolationFormatClause);
-                                        suppressFollowingSpaceError = false;
-                                        break;
+                                        case SyntaxKind.ColonToken:
+                                                precedesSpecialCharacter = nextToken.Parent.IsKind(
+                                                    SyntaxKind.InterpolationFormatClause);
+                                                suppressFollowingSpaceError = false;
+                                                break;
 
-                                default:
-                                        precedesSpecialCharacter = false;
-                                        break;
+                                        default:
+                                                precedesSpecialCharacter = false;
+                                                break;
                                 }
                         } else {
                                 precedesSpecialCharacter = false;

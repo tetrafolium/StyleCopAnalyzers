@@ -265,8 +265,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                          SyntaxKind.ArrowExpressionClause);
                 }
 
-                private static void
-                HandleConstructorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var constructorDeclaration = (ConstructorDeclarationSyntax) context.Node;
                         if (constructorDeclaration.Initializer == null) {
                                 return;
@@ -283,8 +283,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                         CheckToken(context, conditionalExpression.ColonToken, true, true, true);
                 }
 
-                private static void
-                HandleTypeParameterConstraintClause(SyntaxNodeAnalysisContext context) {
+                private static void HandleTypeParameterConstraintClause(
+                    SyntaxNodeAnalysisContext context) {
                         var typeParameterConstraint =
                             (TypeParameterConstraintClauseSyntax) context.Node;
 
@@ -321,17 +321,17 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                         bool analyze;
                         switch (unaryExpression.OperatorToken.Kind()) {
-                        case SyntaxKind.PlusToken:
-                        case SyntaxKind.MinusToken:
-                        case SyntaxKind.PlusPlusToken:
-                        case SyntaxKind.MinusMinusToken:
-                                // These expressions are handled by SA1020, SA1021, SA1022
-                                analyze = false;
-                                break;
+                                case SyntaxKind.PlusToken:
+                                case SyntaxKind.MinusToken:
+                                case SyntaxKind.PlusPlusToken:
+                                case SyntaxKind.MinusMinusToken:
+                                        // These expressions are handled by SA1020, SA1021, SA1022
+                                        analyze = false;
+                                        break;
 
-                        default:
-                                analyze = true;
-                                break;
+                                default:
+                                        analyze = true;
+                                        break;
                         }
 
                         if (analyze) {
@@ -348,40 +348,42 @@ namespace StyleCop.Analyzers.SpacingRules {
                         }
                 }
 
-                private static void
-                HandlePostfixUnaryExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandlePostfixUnaryExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var unaryExpression = (PostfixUnaryExpressionSyntax) context.Node;
                         var followingToken = unaryExpression.OperatorToken.GetNextToken();
 
                         bool mustHaveTrailingWhitespace;
                         switch (followingToken.Kind()) {
-                        case SyntaxKind.CloseParenToken:
-                        case SyntaxKind.CloseBracketToken:
-                        case SyntaxKind.SemicolonToken:
-                        case SyntaxKind.CommaToken:
-                        case SyntaxKind.DotToken:
-                        case SyntaxKind.MinusGreaterThanToken:
-                                mustHaveTrailingWhitespace = false;
-                                break;
+                                case SyntaxKind.CloseParenToken:
+                                case SyntaxKind.CloseBracketToken:
+                                case SyntaxKind.SemicolonToken:
+                                case SyntaxKind.CommaToken:
+                                case SyntaxKind.DotToken:
+                                case SyntaxKind.MinusGreaterThanToken:
+                                        mustHaveTrailingWhitespace = false;
+                                        break;
 
-                        case SyntaxKind.QuestionToken:
-                                mustHaveTrailingWhitespace =
-                                    !(followingToken.Parent is ConditionalAccessExpressionSyntax);
-                                break;
+                                case SyntaxKind.QuestionToken:
+                                        mustHaveTrailingWhitespace =
+                                            !(followingToken.Parent is
+                                                  ConditionalAccessExpressionSyntax);
+                                        break;
 
-                        case SyntaxKind.CloseBraceToken:
-                                mustHaveTrailingWhitespace =
-                                    !(followingToken.Parent is InterpolationSyntax);
-                                break;
+                                case SyntaxKind.CloseBraceToken:
+                                        mustHaveTrailingWhitespace =
+                                            !(followingToken.Parent is InterpolationSyntax);
+                                        break;
 
-                        case SyntaxKind.ColonToken:
-                                mustHaveTrailingWhitespace =
-                                    !(followingToken.Parent is InterpolationFormatClauseSyntax);
-                                break;
+                                case SyntaxKind.ColonToken:
+                                        mustHaveTrailingWhitespace =
+                                            !(followingToken.Parent is
+                                                  InterpolationFormatClauseSyntax);
+                                        break;
 
-                        default:
-                                mustHaveTrailingWhitespace = true;
-                                break;
+                                default:
+                                        mustHaveTrailingWhitespace = true;
+                                        break;
                         }
 
                         // If the next token is a close brace token we are in an anonymous object

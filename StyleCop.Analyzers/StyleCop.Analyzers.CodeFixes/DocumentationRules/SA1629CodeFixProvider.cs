@@ -33,12 +33,12 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 if (!diagnostic.Properties.ContainsKey(
                                         SA1629DocumentationTextMustEndWithAPeriod.NoCodeFixKey)) {
                                         context.RegisterCodeFix(
-                                            CodeAction.Create(DocumentationResources.SA1629CodeFix,
-                                                              cancellationToken =>
-                                                                  GetTransformedDocumentAsync(
-                                                                      context.Document, diagnostic,
-                                                                      cancellationToken),
-                                                              nameof(SA1629CodeFixProvider)),
+                                            CodeAction.Create(
+                                                DocumentationResources.SA1629CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync(
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof(SA1629CodeFixProvider)),
                                             diagnostic);
                                 }
                         }
@@ -46,9 +46,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var text =
                             await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         bool replaceChar = diagnostic.Properties.ContainsKey(

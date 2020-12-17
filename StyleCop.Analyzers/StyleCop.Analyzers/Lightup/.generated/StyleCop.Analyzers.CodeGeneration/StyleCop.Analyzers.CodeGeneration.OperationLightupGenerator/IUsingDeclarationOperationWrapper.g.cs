@@ -34,8 +34,8 @@ namespace StyleCop.Analyzers.Lightup {
                     IVariableDeclarationGroupOperationWrapper.FromOperation(
                         DeclarationGroupAccessor(this.WrappedOperation));
                 public bool IsAsynchronous => IsAsynchronousAccessor(this.WrappedOperation);
-                public static IUsingDeclarationOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IUsingDeclarationOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

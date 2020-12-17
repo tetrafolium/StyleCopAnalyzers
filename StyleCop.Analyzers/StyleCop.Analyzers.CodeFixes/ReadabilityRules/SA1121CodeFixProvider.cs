@@ -74,9 +74,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return newNode.WithTriviaFrom(node).WithoutFormatting();
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
@@ -102,9 +101,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         protected override string CodeActionTitle =>
                             ReadabilityResources.SA1121CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

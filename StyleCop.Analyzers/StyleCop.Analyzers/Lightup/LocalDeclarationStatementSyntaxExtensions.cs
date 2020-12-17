@@ -35,25 +35,23 @@ namespace StyleCop.Analyzers.Lightup {
                             typeof(LocalDeclarationStatementSyntax), nameof(UsingKeyword));
                 }
 
-                public static SyntaxToken
-                AwaitKeyword(this LocalDeclarationStatementSyntax syntax) {
+                public static SyntaxToken AwaitKeyword(
+                    this LocalDeclarationStatementSyntax syntax) {
                         return AwaitKeywordAccessor(syntax);
                 }
 
-                public static SyntaxToken
-                UsingKeyword(this LocalDeclarationStatementSyntax syntax) {
+                public static SyntaxToken UsingKeyword(
+                    this LocalDeclarationStatementSyntax syntax) {
                         return UsingKeywordAccessor(syntax);
                 }
 
-                public static LocalDeclarationStatementSyntax
-                WithAwaitKeyword(this LocalDeclarationStatementSyntax syntax,
-                                 SyntaxToken awaitKeyword) {
+                public static LocalDeclarationStatementSyntax WithAwaitKeyword(
+                    this LocalDeclarationStatementSyntax syntax, SyntaxToken awaitKeyword) {
                         return WithAwaitKeywordAccessor(syntax, awaitKeyword);
                 }
 
-                public static LocalDeclarationStatementSyntax
-                WithUsingKeyword(this LocalDeclarationStatementSyntax syntax,
-                                 SyntaxToken usingKeyword) {
+                public static LocalDeclarationStatementSyntax WithUsingKeyword(
+                    this LocalDeclarationStatementSyntax syntax, SyntaxToken usingKeyword) {
                         return WithUsingKeywordAccessor(syntax, usingKeyword);
                 }
         }

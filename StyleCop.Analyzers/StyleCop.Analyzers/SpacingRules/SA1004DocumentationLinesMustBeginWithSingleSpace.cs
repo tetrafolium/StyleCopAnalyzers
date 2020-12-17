@@ -87,53 +87,91 @@ namespace StyleCop.Analyzers.SpacingRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var trivia in root.DescendantTrivia(descendIntoTrivia : true)) {
                                 switch (trivia.Kind()) {
-                                case SyntaxKind.DocumentationCommentExteriorTrivia:
-                                        HandleDocumentationCommentExteriorTrivia(context, trivia);
-                                        break;
+                                        case SyntaxKind.DocumentationCommentExteriorTrivia:
+                                                HandleDocumentationCommentExteriorTrivia(context,
+                                                                                         trivia);
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }
 
-                private static void
-                HandleDocumentationCommentExteriorTrivia(SyntaxTreeAnalysisContext context,
-                                                         SyntaxTrivia trivia) {
+                private static void HandleDocumentationCommentExteriorTrivia(
+                    SyntaxTreeAnalysisContext context, SyntaxTrivia trivia) {
                         SyntaxToken token = trivia.Token;
                         if (token.IsMissing) {
                                 return;
                         }
 
                         switch (token.Kind()) {
-                        case SyntaxKind.EqualsToken:
-                        case SyntaxKind.DoubleQuoteToken:
-                        case SyntaxKind.SingleQuoteToken:
-                        case SyntaxKind.IdentifierToken:
-                        case SyntaxKind.GreaterThanToken:
-                        case SyntaxKind.SlashGreaterThanToken:
-                        case SyntaxKind.LessThanToken:
-                        case SyntaxKind.LessThanSlashToken:
-                        case SyntaxKind.XmlCommentStartToken:
-                        case SyntaxKind.XmlCommentEndToken:
-                        case SyntaxKind.XmlCDataStartToken:
-                        case SyntaxKind.XmlCDataEndToken:
-                                if (!token.HasLeadingTrivia) {
-                                        break;
-                                }
+                                case SyntaxKind.EqualsToken:
+                                case SyntaxKind.DoubleQuoteToken:
+                                case SyntaxKind.SingleQuoteToken:
+                                case SyntaxKind.IdentifierToken:
+                                case SyntaxKind.GreaterThanToken:
+                                case SyntaxKind.SlashGreaterThanToken:
+                                case SyntaxKind.LessThanToken:
+                                case SyntaxKind.LessThanSlashToken:
+                                case SyntaxKind.XmlCommentStartToken:
+                                case SyntaxKind.XmlCommentEndToken:
+                                case SyntaxKind.XmlCDataStartToken:
+                                case SyntaxKind.XmlCDataEndToken:
+                                        if (!token.HasLeadingTrivia) {
+                                                break;
+                                        }
 
-                                SyntaxTrivia lastLeadingTrivia = token.LeadingTrivia.Last();
-                                switch (lastLeadingTrivia.Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        if (lastLeadingTrivia.ToFullString().StartsWith(
-                                                " ", StringComparison.Ordinal)) {
-                                                return;
+                                        SyntaxTrivia lastLeadingTrivia = token.LeadingTrivia.Last();
+                                        switch (lastLeadingTrivia.Kind()) {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        if (lastLeadingTrivia.ToFullString()
+                                                                .StartsWith(
+                                                                    " ",
+                                                                    StringComparison.Ordinal)) {
+                                                                return;
+                                                        }
+
+                                                        break;
+
+                                                case SyntaxKind.DocumentationCommentExteriorTrivia:
+                                                        if (lastLeadingTrivia.ToFullString()
+                                                                .EndsWith(" ")) {
+                                                                return;
+                                                        }
+
+                                                        break;
+
+                                                default:
+                                                        break;
                                         }
 
                                         break;
 
-                                case SyntaxKind.DocumentationCommentExteriorTrivia:
-                                        if (lastLeadingTrivia.ToFullString().EndsWith(" ")) {
+                                case SyntaxKind.EndOfDocumentationCommentToken:
+                                case SyntaxKind.XmlTextLiteralNewLineToken:
+                                        return;
+
+                                case SyntaxKind.XmlTextLiteralToken:
+                                        if (token.Text.StartsWith("  ", StringComparison.Ordinal)) {
+                                                SyntaxKind grandparentKind =
+                                                    token.Parent?.Parent?.Kind() ?? SyntaxKind.None;
+                                                if (grandparentKind !=
+                                                        SyntaxKind
+                                                            .SingleLineDocumentationCommentTrivia &&
+                                                    grandparentKind !=
+                                                        SyntaxKind
+                                                            .MultiLineDocumentationCommentTrivia) {
+                                                        // Allow extra indentation for nested text
+                                                        // and elements.
+                                                        return;
+                                                }
+                                        } else if (token.Text.StartsWith(
+                                                       " ", StringComparison.Ordinal)) {
+                                                return;
+                                        } else if (trivia.ToFullString().EndsWith(" ")) {
+                                                // javadoc-style documentation comments without a
+                                                // leading * on one of the lines.
                                                 return;
                                         }
 
@@ -141,38 +179,6 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                                 default:
                                         break;
-                                }
-
-                                break;
-
-                        case SyntaxKind.EndOfDocumentationCommentToken:
-                        case SyntaxKind.XmlTextLiteralNewLineToken:
-                                return;
-
-                        case SyntaxKind.XmlTextLiteralToken:
-                                if (token.Text.StartsWith("  ", StringComparison.Ordinal)) {
-                                        SyntaxKind grandparentKind =
-                                            token.Parent?.Parent?.Kind() ?? SyntaxKind.None;
-                                        if (grandparentKind !=
-                                                SyntaxKind.SingleLineDocumentationCommentTrivia &&
-                                            grandparentKind !=
-                                                SyntaxKind.MultiLineDocumentationCommentTrivia) {
-                                                // Allow extra indentation for nested text and
-                                                // elements.
-                                                return;
-                                        }
-                                } else if (token.Text.StartsWith(" ", StringComparison.Ordinal)) {
-                                        return;
-                                } else if (trivia.ToFullString().EndsWith(" ")) {
-                                        // javadoc-style documentation comments without a leading *
-                                        // on one of the lines.
-                                        return;
-                                }
-
-                                break;
-
-                        default:
-                                break;
                         }
 
                         // Documentation line should begin with a space.

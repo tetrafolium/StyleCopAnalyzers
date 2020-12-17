@@ -64,10 +64,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                         }
                 }
 
-                private static Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode root,
-                                            StatementSyntax node,
-                                            CancellationToken cancellationToken) {
+                private static Task<Document> GetTransformedDocumentAsync(
+                    Document document, SyntaxNode root, StatementSyntax node,
+                    CancellationToken cancellationToken) {
                         // Currently unused
                         _ = cancellationToken;
 
@@ -80,11 +79,11 @@ namespace StyleCop.Analyzers.LayoutRules {
                              currentDirective != null && node.Contains(currentDirective);
                              currentDirective = currentDirective.GetNextDirective()) {
                                 switch (currentDirective.Kind()) {
-                                case SyntaxKind.IfDirectiveTrivia:
-                                case SyntaxKind.ElseDirectiveTrivia:
-                                case SyntaxKind.ElifDirectiveTrivia:
-                                case SyntaxKind.EndIfDirectiveTrivia:
-                                        return true;
+                                        case SyntaxKind.IfDirectiveTrivia:
+                                        case SyntaxKind.ElseDirectiveTrivia:
+                                        case SyntaxKind.ElifDirectiveTrivia:
+                                        case SyntaxKind.EndIfDirectiveTrivia:
+                                                return true;
                                 }
                         }
 
@@ -97,9 +96,9 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         protected override string CodeActionTitle => LayoutResources.SA1503CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

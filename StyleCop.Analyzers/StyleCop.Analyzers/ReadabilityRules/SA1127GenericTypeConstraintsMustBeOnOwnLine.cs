@@ -59,8 +59,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.TypeParameterConstraintClause);
                 }
 
-                private static void
-                HandleTypeParameterConstraintClause(SyntaxNodeAnalysisContext context) {
+                private static void HandleTypeParameterConstraintClause(
+                    SyntaxNodeAnalysisContext context) {
                         var syntax = (TypeParameterConstraintClauseSyntax) context.Node;
                         if (!syntax.WhereKeyword.IsFirstInLine()) {
                                 context.ReportDiagnostic(

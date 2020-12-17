@@ -27,8 +27,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
                                     WrappedType, nameof(Expression));
-                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Expression));
+                        WithExpressionAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(Expression));
                 }
 
                 private ConstantPatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
@@ -39,13 +41,13 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return ExpressionAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator ConstantPatternSyntaxWrapper(PatternSyntaxWrapper node) {
+                public static explicit operator ConstantPatternSyntaxWrapper(
+                    PatternSyntaxWrapper node) {
                         return (ConstantPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator ConstantPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node) {
+                public static explicit operator ConstantPatternSyntaxWrapper(
+                    ExpressionOrPatternSyntaxWrapper node) {
                         return (ConstantPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
@@ -62,18 +64,18 @@ namespace StyleCop.Analyzers.Lightup {
                         return new ConstantPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator PatternSyntaxWrapper(ConstantPatternSyntaxWrapper wrapper) {
+                public static implicit operator PatternSyntaxWrapper(
+                    ConstantPatternSyntaxWrapper wrapper) {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator ExpressionOrPatternSyntaxWrapper(ConstantPatternSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionOrPatternSyntaxWrapper(
+                    ConstantPatternSyntaxWrapper wrapper) {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(ConstantPatternSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    ConstantPatternSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 

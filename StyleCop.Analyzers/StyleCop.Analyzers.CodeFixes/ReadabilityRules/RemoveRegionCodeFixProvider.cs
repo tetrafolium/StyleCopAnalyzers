@@ -38,19 +38,19 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 public override Task RegisterCodeFixesAsync(CodeFixContext context) {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.RemoveRegionCodeFix,
-                                                      cancellationToken =>
-                                                          GetTransformedDocumentAsync(
-                                                              context.Document, diagnostic),
-                                                      nameof(RemoveRegionCodeFixProvider)),
+                                    CodeAction.Create(
+                                        ReadabilityResources.RemoveRegionCodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic),
+                                        nameof(RemoveRegionCodeFixProvider)),
                                     diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic) {
                         var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
                         var node =
                             syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia

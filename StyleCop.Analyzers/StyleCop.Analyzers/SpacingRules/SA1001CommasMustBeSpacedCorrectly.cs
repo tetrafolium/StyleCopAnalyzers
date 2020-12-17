@@ -67,12 +67,12 @@ namespace StyleCop.Analyzers.SpacingRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.CommaToken:
-                                        HandleCommaToken(context, token);
-                                        break;
+                                        case SyntaxKind.CommaToken:
+                                                HandleCommaToken(context, token);
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

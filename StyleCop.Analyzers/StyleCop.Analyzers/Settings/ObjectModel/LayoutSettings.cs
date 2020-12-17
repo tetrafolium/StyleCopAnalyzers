@@ -31,16 +31,17 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 protected internal LayoutSettings(JsonObject layoutSettingsObject) : this() {
                         foreach (var kvp in layoutSettingsObject) {
                                 switch (kvp.Key) {
-                                case "newlineAtEndOfFile":
-                                        this.newlineAtEndOfFile = kvp.ToEnumValue<OptionSetting>();
-                                        break;
+                                        case "newlineAtEndOfFile":
+                                                this.newlineAtEndOfFile =
+                                                    kvp.ToEnumValue<OptionSetting>();
+                                                break;
 
-                                case "allowConsecutiveUsings":
-                                        this.allowConsecutiveUsings = kvp.ToBooleanValue();
-                                        break;
+                                        case "allowConsecutiveUsings":
+                                                this.allowConsecutiveUsings = kvp.ToBooleanValue();
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

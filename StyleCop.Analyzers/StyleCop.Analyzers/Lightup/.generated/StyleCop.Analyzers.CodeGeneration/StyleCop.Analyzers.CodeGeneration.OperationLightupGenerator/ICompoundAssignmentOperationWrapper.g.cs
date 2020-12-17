@@ -49,11 +49,11 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation Value =>((IAssignmentOperationWrapper) this).Value;
                 public static explicit operator ICompoundAssignmentOperationWrapper(
                     IAssignmentOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit
-                operator IAssignmentOperationWrapper(ICompoundAssignmentOperationWrapper wrapper) =>
+                public static implicit operator IAssignmentOperationWrapper(
+                    ICompoundAssignmentOperationWrapper wrapper) =>
                     IAssignmentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static ICompoundAssignmentOperationWrapper
-                FromOperation(IOperation operation) {
+                public static ICompoundAssignmentOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

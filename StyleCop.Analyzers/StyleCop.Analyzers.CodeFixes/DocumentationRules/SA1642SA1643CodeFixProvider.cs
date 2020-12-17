@@ -80,11 +80,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
                 }
 
-                internal static ImmutableArray<string>
-                GenerateStandardText(Document document,
-                                     BaseMethodDeclarationSyntax methodDeclaration,
-                                     BaseTypeDeclarationSyntax typeDeclaration,
-                                     CancellationToken cancellationToken) {
+                internal static ImmutableArray<string> GenerateStandardText(
+                    Document document, BaseMethodDeclarationSyntax methodDeclaration,
+                    BaseTypeDeclarationSyntax typeDeclaration,
+                    CancellationToken cancellationToken) {
                         bool isStruct = typeDeclaration.IsKind(SyntaxKind.StructDeclaration);
                         var settings =
                             document.Project.AnalyzerOptions.GetStyleCopSettings(cancellationToken);
@@ -149,9 +148,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
                 }
 
-                internal static SyntaxList<XmlNodeSyntax>
-                BuildStandardTextSyntaxList(BaseTypeDeclarationSyntax typeDeclaration,
-                                            string preText, string postText) {
+                internal static SyntaxList<XmlNodeSyntax> BuildStandardTextSyntaxList(
+                    BaseTypeDeclarationSyntax typeDeclaration, string preText, string postText) {
                         TypeParameterListSyntax typeParameterList =
                             GetTypeParameterList(typeDeclaration);
 
@@ -162,9 +160,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                                          : (postText + ".")));
                 }
 
-                internal static SyntaxList<XmlNodeSyntax>
-                BuildStandardTextSyntaxList(BaseTypeDeclarationSyntax typeDeclaration,
-                                            string newLineText, string preText, string postText) {
+                internal static SyntaxList<XmlNodeSyntax> BuildStandardTextSyntaxList(
+                    BaseTypeDeclarationSyntax typeDeclaration, string newLineText, string preText,
+                    string postText) {
                         TypeParameterListSyntax typeParameterList =
                             GetTypeParameterList(typeDeclaration);
 
@@ -175,8 +173,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                                          : (postText + ".")));
                 }
 
-                private static TypeParameterListSyntax
-                GetTypeParameterList(BaseTypeDeclarationSyntax typeDeclaration) {
+                private static TypeParameterListSyntax GetTypeParameterList(
+                    BaseTypeDeclarationSyntax typeDeclaration) {
                         if (typeDeclaration is ClassDeclarationSyntax classDeclaration) {
                                 return classDeclaration.TypeParameterList;
                         }
@@ -184,10 +182,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return (typeDeclaration as StructDeclarationSyntax) ?.TypeParameterList;
                 }
 
-                private static Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode root,
-                                            XmlElementSyntax node,
-                                            CancellationToken cancellationToken) {
+                private static Task<Document> GetTransformedDocumentAsync(
+                    Document document, SyntaxNode root, XmlElementSyntax node,
+                    CancellationToken cancellationToken) {
                         var typeDeclaration = node.FirstAncestorOrSelf<BaseTypeDeclarationSyntax>();
                         var declarationSyntax =
                             node.FirstAncestorOrSelf<BaseMethodDeclarationSyntax>();
@@ -239,9 +236,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return lineSpan.StartLinePosition.Line != lineSpan.EndLinePosition.Line;
                 }
 
-                private static Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode root,
-                                            XmlEmptyElementSyntax node) {
+                private static Task<Document> GetTransformedDocumentAsync(
+                    Document document, SyntaxNode root, XmlEmptyElementSyntax node) {
                         var typeDeclaration = node.FirstAncestorOrSelf<BaseTypeDeclarationSyntax>();
 
                         TypeParameterListSyntax typeParameterList;
@@ -260,9 +256,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return Task.FromResult(newDocument);
                 }
 
-                private static SyntaxList<XmlNodeSyntax>
-                RemoveMalformattedStandardText(SyntaxList<XmlNodeSyntax> content, string preText,
-                                               string postText, ref string trailingString) {
+                private static SyntaxList<XmlNodeSyntax> RemoveMalformattedStandardText(
+                    SyntaxList<XmlNodeSyntax> content, string preText, string postText,
+                    ref string trailingString) {
                         var regex = new Regex(@"^\s*" + Regex.Escape(preText) + "[^ ]+" +
                                               Regex.Escape(postText));
                         var item = content.OfType<XmlTextSyntax>().FirstOrDefault();
@@ -319,8 +315,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return content;
                 }
 
-                private static XmlEmptyElementSyntax
-                BuildSeeElement(SyntaxToken identifier, TypeParameterListSyntax typeParameters) {
+                private static XmlEmptyElementSyntax BuildSeeElement(
+                    SyntaxToken identifier, TypeParameterListSyntax typeParameters) {
                         TypeSyntax identifierName;
 
                         // Get a TypeSyntax representing the class name with its type parameters
@@ -336,8 +332,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return XmlSyntaxFactory.SeeElement(SyntaxFactory.TypeCref(identifierName));
                 }
 
-                private static TypeArgumentListSyntax
-                ParameterToArgumentListSyntax(TypeParameterListSyntax typeParameters) {
+                private static TypeArgumentListSyntax ParameterToArgumentListSyntax(
+                    TypeParameterListSyntax typeParameters) {
                         var list = SyntaxFactory.SeparatedList<TypeSyntax>();
                         list = list.AddRange(typeParameters.Parameters.Select(
                             p => SyntaxFactory.ParseName(p.ToString()).WithTriviaFrom(p)));
@@ -352,8 +348,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return SyntaxFactory.TypeArgumentList(list);
                 }
 
-                private static SyntaxList<XmlNodeSyntax>
-                RemoveTrailingEmptyLines(SyntaxList<XmlNodeSyntax> content) {
+                private static SyntaxList<XmlNodeSyntax> RemoveTrailingEmptyLines(
+                    SyntaxList<XmlNodeSyntax> content) {
                         if (!(content[content.Count - 1] is XmlTextSyntax xmlText)) {
                                 return content;
                         }

@@ -45,8 +45,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
                                     WrappedType, nameof(OpenParenToken));
-                        WithPatternAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Pattern));
+                        WithPatternAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(Pattern));
                         WithCloseParenTokenAccessor =
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
@@ -71,13 +73,13 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return CloseParenTokenAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator ParenthesizedPatternSyntaxWrapper(PatternSyntaxWrapper node) {
+                public static explicit operator ParenthesizedPatternSyntaxWrapper(
+                    PatternSyntaxWrapper node) {
                         return (ParenthesizedPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator ParenthesizedPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node) {
+                public static explicit operator ParenthesizedPatternSyntaxWrapper(
+                    ExpressionOrPatternSyntaxWrapper node) {
                         return (ParenthesizedPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
@@ -94,8 +96,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new ParenthesizedPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator PatternSyntaxWrapper(ParenthesizedPatternSyntaxWrapper wrapper) {
+                public static implicit operator PatternSyntaxWrapper(
+                    ParenthesizedPatternSyntaxWrapper wrapper) {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
@@ -104,8 +106,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(ParenthesizedPatternSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    ParenthesizedPatternSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -113,8 +115,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public ParenthesizedPatternSyntaxWrapper
-                WithOpenParenToken(SyntaxToken openParenToken) {
+                public ParenthesizedPatternSyntaxWrapper WithOpenParenToken(
+                    SyntaxToken openParenToken) {
                         return new ParenthesizedPatternSyntaxWrapper(
                             WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
                 }
@@ -124,8 +126,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithPatternAccessor(this.SyntaxNode, pattern));
                 }
 
-                public ParenthesizedPatternSyntaxWrapper
-                WithCloseParenToken(SyntaxToken closeParenToken) {
+                public ParenthesizedPatternSyntaxWrapper WithCloseParenToken(
+                    SyntaxToken closeParenToken) {
                         return new ParenthesizedPatternSyntaxWrapper(
                             WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
                 }

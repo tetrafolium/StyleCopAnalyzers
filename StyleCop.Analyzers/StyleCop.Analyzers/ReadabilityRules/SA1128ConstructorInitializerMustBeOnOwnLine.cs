@@ -57,8 +57,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.ConstructorDeclaration);
                 }
 
-                private static void
-                HandleConstructorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var constructor = (ConstructorDeclarationSyntax) context.Node;
                         if (constructor.Initializer != null) {
                                 Analyze(context, constructor);

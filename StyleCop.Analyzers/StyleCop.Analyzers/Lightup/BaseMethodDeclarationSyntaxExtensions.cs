@@ -16,24 +16,27 @@ namespace StyleCop.Analyzers.Lightup {
                             typeof(BaseMethodDeclarationSyntax), nameof(ExpressionBody));
                 }
 
-                public static ArrowExpressionClauseSyntax
-                ExpressionBody(this BaseMethodDeclarationSyntax syntax) {
+                public static ArrowExpressionClauseSyntax ExpressionBody(
+                    this BaseMethodDeclarationSyntax syntax) {
                         if (!LightupHelpers.SupportsCSharp7) {
                                 // Prior to C# 7, the ExpressionBody properties did not override a
                                 // base method.
                                 switch (syntax.Kind()) {
-                                case SyntaxKind.MethodDeclaration:
-                                        return ((MethodDeclarationSyntax) syntax).ExpressionBody;
+                                        case SyntaxKind.MethodDeclaration:
+                                                return ((MethodDeclarationSyntax) syntax)
+                                                    .ExpressionBody;
 
-                                case SyntaxKind.OperatorDeclaration:
-                                        return ((OperatorDeclarationSyntax) syntax).ExpressionBody;
+                                        case SyntaxKind.OperatorDeclaration:
+                                                return ((OperatorDeclarationSyntax) syntax)
+                                                    .ExpressionBody;
 
-                                case SyntaxKind.ConversionOperatorDeclaration:
-                                        return ((ConversionOperatorDeclarationSyntax) syntax)
-                                            .ExpressionBody;
+                                        case SyntaxKind.ConversionOperatorDeclaration:
+                                                return ((ConversionOperatorDeclarationSyntax)
+                                                            syntax)
+                                                    .ExpressionBody;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
 

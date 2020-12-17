@@ -58,8 +58,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         context.RegisterSyntaxNodeAction(CastExpressionAction,
                                                          SyntaxKind.CastExpression);
                 }

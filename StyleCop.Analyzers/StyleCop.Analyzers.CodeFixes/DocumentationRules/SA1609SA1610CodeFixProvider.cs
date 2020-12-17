@@ -59,28 +59,27 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 private static bool IsContentElement(XmlNodeSyntax syntax) {
                         switch (syntax.Kind()) {
-                        case SyntaxKind.XmlCDataSection:
-                        case SyntaxKind.XmlElement:
-                        case SyntaxKind.XmlEmptyElement:
-                        case SyntaxKind.XmlText:
-                                return true;
+                                case SyntaxKind.XmlCDataSection:
+                                case SyntaxKind.XmlElement:
+                                case SyntaxKind.XmlEmptyElement:
+                                case SyntaxKind.XmlText:
+                                        return true;
 
-                        default:
-                                return false;
+                                default:
+                                        return false;
                         }
                 }
 
-                private static SyntaxTrivia
-                GetLastDocumentationCommentExteriorTrivia(SyntaxNode node) {
+                private static SyntaxTrivia GetLastDocumentationCommentExteriorTrivia(
+                    SyntaxNode node) {
                         return node.DescendantTrivia(descendIntoTrivia
                                                      : true)
                             .LastOrDefault(trivia => trivia.IsKind(
                                                SyntaxKind.DocumentationCommentExteriorTrivia));
                 }
 
-                private async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var documentRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                                .ConfigureAwait(false);
                         SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan);

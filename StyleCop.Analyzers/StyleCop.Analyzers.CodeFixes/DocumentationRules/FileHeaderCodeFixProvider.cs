@@ -49,11 +49,11 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public override Task RegisterCodeFixesAsync(CodeFixContext context) {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(DocumentationResources.SA1633CodeFix,
-                                                      cancellationToken =>
-                                                          GetTransformedDocumentAsync(
-                                                              context.Document, cancellationToken),
-                                                      nameof(FileHeaderCodeFixProvider)),
+                                    CodeAction.Create(
+                                        DocumentationResources.SA1633CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, cancellationToken),
+                                        nameof(FileHeaderCodeFixProvider)),
                                     diagnostic);
                         }
 
@@ -63,17 +63,15 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static string GetFileName(Document document) =>
                     Path.GetFileName(document.FilePath ?? document.Name);
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, CancellationToken cancellationToken) {
                         return document.WithSyntaxRoot(
                             await GetTransformedSyntaxRootAsync(document, cancellationToken)
                                 .ConfigureAwait(false));
                 }
 
-                private static async Task<SyntaxNode>
-                GetTransformedSyntaxRootAsync(Document document,
-                                              CancellationToken cancellationToken) {
+                private static async Task<SyntaxNode> GetTransformedSyntaxRootAsync(
+                    Document document, CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         var settings =
@@ -107,10 +105,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return newSyntaxRoot;
                 }
 
-                private static SyntaxNode
-                ReplaceWellFormedMultiLineCommentHeader(Document document, SyntaxNode root,
-                                                        StyleCopSettings settings, int commentIndex,
-                                                        XmlFileHeader header) {
+                private static SyntaxNode ReplaceWellFormedMultiLineCommentHeader(
+                    Document document, SyntaxNode root, StyleCopSettings settings, int commentIndex,
+                    XmlFileHeader header) {
                         SyntaxTriviaList trivia = root.GetLeadingTrivia();
                         var commentTrivia = trivia[commentIndex];
 
@@ -238,61 +235,63 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 var triviaLine = trivia[i];
                                 bool done = false;
                                 switch (triviaLine.Kind()) {
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                        if (possibleLeadingSpaces != string.Empty) {
-                                                leadingSpaces = possibleLeadingSpaces;
-                                        }
-
-                                        if (!isMalformedHeader) {
-                                                var openingTag = triviaLine.ToFullString().Contains(
-                                                    "<copyright ");
-                                                var closingTag =
-                                                    triviaLine.ToFullString().Contains(
-                                                        "</copyright>") ||
-                                                    (openingTag &&
-                                                     triviaLine.ToFullString().Trim().EndsWith(
-                                                         "/>"));
-                                                if (openingTag) {
-                                                        inCopyright = !closingTag;
-                                                        copyrightTriviaIndex = i;
-                                                } else if (inCopyright) {
-                                                        removalList.Add(i);
-                                                        inCopyright = !closingTag;
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                                if (possibleLeadingSpaces != string.Empty) {
+                                                        leadingSpaces = possibleLeadingSpaces;
                                                 }
-                                        } else {
-                                                removalList.Add(i);
-                                        }
 
-                                        onBlankLine = false;
-                                        break;
+                                                if (!isMalformedHeader) {
+                                                        var openingTag =
+                                                            triviaLine.ToFullString().Contains(
+                                                                "<copyright ");
+                                                        var closingTag =
+                                                            triviaLine.ToFullString().Contains(
+                                                                "</copyright>") ||
+                                                            (openingTag && triviaLine.ToFullString()
+                                                                               .Trim()
+                                                                               .EndsWith("/>"));
+                                                        if (openingTag) {
+                                                                inCopyright = !closingTag;
+                                                                copyrightTriviaIndex = i;
+                                                        } else if (inCopyright) {
+                                                                removalList.Add(i);
+                                                                inCopyright = !closingTag;
+                                                        }
+                                                } else {
+                                                        removalList.Add(i);
+                                                }
 
-                                case SyntaxKind.WhitespaceTrivia:
-                                        if (leadingSpaces == string.Empty) {
-                                                possibleLeadingSpaces = triviaLine.ToFullString();
-                                        }
+                                                onBlankLine = false;
+                                                break;
 
-                                        if (inCopyright) {
-                                                removalList.Add(i);
-                                        }
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                if (leadingSpaces == string.Empty) {
+                                                        possibleLeadingSpaces =
+                                                            triviaLine.ToFullString();
+                                                }
 
-                                        break;
+                                                if (inCopyright) {
+                                                        removalList.Add(i);
+                                                }
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        if (inCopyright) {
-                                                removalList.Add(i);
-                                        }
+                                                break;
 
-                                        if (onBlankLine) {
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                if (inCopyright) {
+                                                        removalList.Add(i);
+                                                }
+
+                                                if (onBlankLine) {
+                                                        done = true;
+                                                } else {
+                                                        onBlankLine = true;
+                                                }
+
+                                                break;
+
+                                        default:
                                                 done = true;
-                                        } else {
-                                                onBlankLine = true;
-                                        }
-
-                                        break;
-
-                                default:
-                                        done = true;
-                                        break;
+                                                break;
                                 }
 
                                 if (done) {
@@ -370,16 +369,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 bool done = false;
                                 switch (leadingTrivia [i]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        skipCount = i + 1;
-                                        break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                skipCount = i + 1;
+                                                break;
 
-                                default:
-                                        done = true;
-                                        break;
+                                        default:
+                                                done = true;
+                                                break;
                                 }
 
                                 if (done) {
@@ -446,8 +445,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }));
                 }
 
-                private static SyntaxTriviaList
-                RemoveHeaderDecorationLines(SyntaxTriviaList trivia, StyleCopSettings settings) {
+                private static SyntaxTriviaList RemoveHeaderDecorationLines(
+                    SyntaxTriviaList trivia, StyleCopSettings settings) {
                         if (!string.IsNullOrEmpty(settings.DocumentationRules.HeaderDecoration)) {
                                 var decorationRemovalList = new List<int>();
                                 for (int i = 0; i < trivia.Count; i++) {
@@ -483,9 +482,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         protected override string CodeActionTitle =>
                             DocumentationResources.SA1633CodeFix;
 
-                        protected override Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

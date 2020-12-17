@@ -41,13 +41,13 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return UnderscoreTokenAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator DiscardPatternSyntaxWrapper(PatternSyntaxWrapper node) {
+                public static explicit operator DiscardPatternSyntaxWrapper(
+                    PatternSyntaxWrapper node) {
                         return (DiscardPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator DiscardPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node) {
+                public static explicit operator DiscardPatternSyntaxWrapper(
+                    ExpressionOrPatternSyntaxWrapper node) {
                         return (DiscardPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
@@ -64,18 +64,18 @@ namespace StyleCop.Analyzers.Lightup {
                         return new DiscardPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator PatternSyntaxWrapper(DiscardPatternSyntaxWrapper wrapper) {
+                public static implicit operator PatternSyntaxWrapper(
+                    DiscardPatternSyntaxWrapper wrapper) {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator ExpressionOrPatternSyntaxWrapper(DiscardPatternSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionOrPatternSyntaxWrapper(
+                    DiscardPatternSyntaxWrapper wrapper) {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(DiscardPatternSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    DiscardPatternSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -83,8 +83,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public DiscardPatternSyntaxWrapper
-                WithUnderscoreToken(SyntaxToken underscoreToken) {
+                public DiscardPatternSyntaxWrapper WithUnderscoreToken(
+                    SyntaxToken underscoreToken) {
                         return new DiscardPatternSyntaxWrapper(
                             WithUnderscoreTokenAccessor(this.SyntaxNode, underscoreToken));
                 }

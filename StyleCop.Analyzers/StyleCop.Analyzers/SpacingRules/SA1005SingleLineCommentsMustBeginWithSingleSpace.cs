@@ -96,28 +96,28 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                         foreach (var trivia in root.DescendantTrivia()) {
                                 switch (trivia.Kind()) {
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                        HandleSingleLineCommentTrivia(context, trivia,
-                                                                      isFirstSingleLineTrivia);
-                                        isFirstSingleLineTrivia = false;
-                                        newLineCount = 0;
-                                        break;
-
-                                case SyntaxKind.EndOfLineTrivia:
-                                        newLineCount++;
-                                        if (newLineCount == 2) {
-                                                isFirstSingleLineTrivia = true;
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                                HandleSingleLineCommentTrivia(
+                                                    context, trivia, isFirstSingleLineTrivia);
+                                                isFirstSingleLineTrivia = false;
                                                 newLineCount = 0;
-                                        }
+                                                break;
 
-                                        break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                newLineCount++;
+                                                if (newLineCount == 2) {
+                                                        isFirstSingleLineTrivia = true;
+                                                        newLineCount = 0;
+                                                }
 
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
+                                                break;
 
-                                default:
-                                        isFirstSingleLineTrivia = true;
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
+
+                                        default:
+                                                isFirstSingleLineTrivia = true;
+                                                break;
                                 }
                         }
                 }

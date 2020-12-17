@@ -63,13 +63,13 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var node in root.DescendantTrivia(descendIntoTrivia : true)) {
                                 switch (node.Kind()) {
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                        HandleSingleLineComment(context, node);
-                                        break;
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                                HandleSingleLineComment(context, node);
+                                                break;
 
-                                case SyntaxKind.MultiLineCommentTrivia:
-                                        HandleMultiLineComment(context, node);
-                                        break;
+                                        case SyntaxKind.MultiLineCommentTrivia:
+                                                HandleMultiLineComment(context, node);
+                                                break;
                                 }
                         }
                 }

@@ -43,8 +43,8 @@ namespace StyleCop.Analyzers.Lightup {
                         InitializerAccessor(this.WrappedOperation));
                 public ImmutableArray<IOperation> IgnoredDimensions =>
                     IgnoredDimensionsAccessor(this.WrappedOperation);
-                public static IVariableDeclarationOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IVariableDeclarationOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

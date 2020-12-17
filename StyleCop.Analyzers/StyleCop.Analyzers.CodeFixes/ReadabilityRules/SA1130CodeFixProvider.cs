@@ -69,9 +69,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return newNode != null;
                 }
 
-                private static SyntaxNode
-                ReplaceWithLambda(SemanticModel semanticModel,
-                                  AnonymousMethodExpressionSyntax anonymousMethod) {
+                private static SyntaxNode ReplaceWithLambda(
+                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod) {
                         var parameterList = anonymousMethod.ParameterList;
                         SyntaxNode lambdaExpression;
                         SyntaxToken arrowToken;
@@ -80,37 +79,37 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 ImmutableArray<string> argumentList = ImmutableArray<string>.Empty;
 
                                 switch (anonymousMethod.Parent.Kind()) {
-                                case SyntaxKind.Argument:
-                                        argumentList = GetMethodInvocationArgumentList(
-                                            semanticModel, anonymousMethod);
-                                        break;
+                                        case SyntaxKind.Argument:
+                                                argumentList = GetMethodInvocationArgumentList(
+                                                    semanticModel, anonymousMethod);
+                                                break;
 
-                                case SyntaxKind.EqualsValueClause:
-                                        argumentList =
-                                            GetEqualsArgumentList(semanticModel, anonymousMethod);
-                                        break;
+                                        case SyntaxKind.EqualsValueClause:
+                                                argumentList = GetEqualsArgumentList(
+                                                    semanticModel, anonymousMethod);
+                                                break;
 
-                                case SyntaxKind.AddAssignmentExpression:
-                                case SyntaxKind.SubtractAssignmentExpression:
-                                        var list = GetAssignmentArgumentList(semanticModel,
-                                                                             anonymousMethod);
+                                        case SyntaxKind.AddAssignmentExpression:
+                                        case SyntaxKind.SubtractAssignmentExpression:
+                                                var list = GetAssignmentArgumentList(
+                                                    semanticModel, anonymousMethod);
 
-                                        if (list == null) {
-                                                return null;
-                                        }
+                                                if (list == null) {
+                                                        return null;
+                                                }
 
-                                        argumentList = list.Value;
-                                        break;
+                                                argumentList = list.Value;
+                                                break;
 
-                                case SyntaxKind.ArrowExpressionClause:
-                                case SyntaxKind.ReturnStatement:
-                                        argumentList = GetMemberReturnTypeArgumentList(
-                                            semanticModel, anonymousMethod);
-                                        if (argumentList.IsEmpty) {
-                                                return null;
-                                        }
+                                        case SyntaxKind.ArrowExpressionClause:
+                                        case SyntaxKind.ReturnStatement:
+                                                argumentList = GetMemberReturnTypeArgumentList(
+                                                    semanticModel, anonymousMethod);
+                                                if (argumentList.IsEmpty) {
+                                                        return null;
+                                                }
 
-                                        break;
+                                                break;
                                 }
 
                                 List<ParameterSyntax> parameters = GenerateUniqueParameterNames(
@@ -179,9 +178,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return lambdaExpression.WithAdditionalAnnotations(Formatter.Annotation);
                 }
 
-                private static ImmutableArray<string>
-                GetMethodInvocationArgumentList(SemanticModel semanticModel,
-                                                AnonymousMethodExpressionSyntax anonymousMethod) {
+                private static ImmutableArray<string> GetMethodInvocationArgumentList(
+                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod) {
                         var argumentSyntax = (ArgumentSyntax) anonymousMethod.Parent;
                         var argumentListSyntax = (BaseArgumentListSyntax) argumentSyntax.Parent;
                         var originalInvocableExpression = argumentListSyntax.Parent;
@@ -195,9 +193,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             .ToImmutableArray();
                 }
 
-                private static ImmutableArray<string>
-                GetEqualsArgumentList(SemanticModel semanticModel,
-                                      AnonymousMethodExpressionSyntax anonymousMethod) {
+                private static ImmutableArray<string> GetEqualsArgumentList(
+                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod) {
                         var equalsValueClauseSyntax =
                             (EqualsValueClauseSyntax) anonymousMethod.Parent;
                         var variableDeclaration =
@@ -227,9 +224,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             .ToImmutableArray();
                 }
 
-                private static ImmutableArray<string>
-                GetMemberReturnTypeArgumentList(SemanticModel semanticModel,
-                                                AnonymousMethodExpressionSyntax anonymousMethod) {
+                private static ImmutableArray<string> GetMemberReturnTypeArgumentList(
+                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod) {
                         var enclosingSymbol =
                             semanticModel.GetEnclosingSymbol(anonymousMethod.Parent.SpanStart);
                         return !(((IMethodSymbol) enclosingSymbol)
@@ -240,10 +236,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                          .ToImmutableArray();
                 }
 
-                private static List<ParameterSyntax>
-                GenerateUniqueParameterNames(SemanticModel semanticModel,
-                                             AnonymousMethodExpressionSyntax anonymousMethod,
-                                             ImmutableArray<string> argumentNames) {
+                private static List<ParameterSyntax> GenerateUniqueParameterNames(
+                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod,
+                    ImmutableArray<string> argumentNames) {
                         var parameters = new List<ParameterSyntax>();
 
                         foreach (var argumentName in argumentNames) {
@@ -298,9 +293,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                !parameterSyntax.Identifier.IsKind(SyntaxKind.ArgListKeyword);
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
@@ -326,9 +320,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         protected override string CodeActionTitle =>
                             ReadabilityResources.SA1130CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 var syntaxRoot =
                                     await document
                                         .GetSyntaxRootAsync(fixAllContext.CancellationToken)

@@ -455,15 +455,14 @@ namespace StyleCop.Analyzers.Lightup {
                         return (TupleElementSyntaxWrapper) TupleElementAccessor2(type, identifier);
                 }
 
-                public static TupleExpressionSyntaxWrapper
-                TupleExpression(SeparatedSyntaxList<ArgumentSyntax> arguments = default) {
+                public static TupleExpressionSyntaxWrapper TupleExpression(
+                    SeparatedSyntaxList<ArgumentSyntax> arguments = default) {
                         return (TupleExpressionSyntaxWrapper) TupleExpressionAccessor1(arguments);
                 }
 
-                public static TupleExpressionSyntaxWrapper
-                TupleExpression(SyntaxToken openParenToken,
-                                SeparatedSyntaxList<ArgumentSyntax> arguments,
-                                SyntaxToken closeParenToken) {
+                public static TupleExpressionSyntaxWrapper TupleExpression(
+                    SyntaxToken openParenToken, SeparatedSyntaxList<ArgumentSyntax> arguments,
+                    SyntaxToken closeParenToken) {
                         return (TupleExpressionSyntaxWrapper)
                             TupleExpressionAccessor2(openParenToken, arguments, closeParenToken);
                 }
@@ -473,22 +472,22 @@ namespace StyleCop.Analyzers.Lightup {
                         return (TupleTypeSyntaxWrapper) TupleTypeAccessor1(elements);
                 }
 
-                public static TupleTypeSyntaxWrapper
-                TupleType(SyntaxToken openParenToken,
-                          SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper> elements,
-                          SyntaxToken closeParenToken) {
+                public static TupleTypeSyntaxWrapper TupleType(
+                    SyntaxToken openParenToken,
+                    SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper> elements,
+                    SyntaxToken closeParenToken) {
                         return (TupleTypeSyntaxWrapper)
                             TupleTypeAccessor2(openParenToken, elements, closeParenToken);
                 }
 
-                private static Func<T, TResult>
-                ThrowNotSupportedOnFallback<T, TResult>(string typeName, string methodName) {
+                private static Func<T, TResult> ThrowNotSupportedOnFallback<T, TResult>(
+                    string typeName, string methodName) {
                         return _ => throw new NotSupportedException(
                                    $"{typeName}.{methodName} is not supported in this version");
                 }
 
-                private static Func<T1, T2, TResult>
-                ThrowNotSupportedOnFallback<T1, T2, TResult>(string typeName, string methodName) {
+                private static Func<T1, T2, TResult> ThrowNotSupportedOnFallback<T1, T2, TResult>(
+                    string typeName, string methodName) {
                         return (_, __) => throw new NotSupportedException(
                                    $"{typeName}.{methodName} is not supported in this version");
                 }

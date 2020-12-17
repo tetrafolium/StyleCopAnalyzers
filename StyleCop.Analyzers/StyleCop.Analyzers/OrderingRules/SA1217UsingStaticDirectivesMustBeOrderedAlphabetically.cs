@@ -82,10 +82,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                namespaceDirective.Usings);
                 }
 
-                private static void
-                CheckUsingDeclarations(SyntaxNodeAnalysisContext context,
-                                       OrderingSettings orderingSettings,
-                                       SyntaxList<UsingDirectiveSyntax> usingDirectives) {
+                private static void CheckUsingDeclarations(
+                    SyntaxNodeAnalysisContext context, OrderingSettings orderingSettings,
+                    SyntaxList<UsingDirectiveSyntax> usingDirectives) {
                         UsingDirectiveSyntax lastStaticUsingDirective = null;
                         UsingDirectiveSyntax lastSystemStaticUsingDirective = null;
                         UsingDirectiveSyntax firstNonSystemUsing = null;

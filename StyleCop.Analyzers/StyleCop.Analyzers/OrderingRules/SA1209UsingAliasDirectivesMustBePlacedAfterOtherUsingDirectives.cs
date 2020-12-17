@@ -81,9 +81,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         ProcessUsingsAndReportDiagnostic(namespaceDeclaration.Usings, context);
                 }
 
-                private static void
-                ProcessUsingsAndReportDiagnostic(SyntaxList<UsingDirectiveSyntax> usings,
-                                                 SyntaxNodeAnalysisContext context) {
+                private static void ProcessUsingsAndReportDiagnostic(
+                    SyntaxList<UsingDirectiveSyntax> usings, SyntaxNodeAnalysisContext context) {
                         for (int i = 0; i < usings.Count; i++) {
                                 var usingDirective = usings[i];
                                 var notLastUsingDirective = i + 1 < usings.Count;

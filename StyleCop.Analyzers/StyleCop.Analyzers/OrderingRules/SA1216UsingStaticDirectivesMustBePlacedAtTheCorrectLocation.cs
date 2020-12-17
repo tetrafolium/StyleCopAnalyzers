@@ -78,9 +78,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         CheckUsingDeclarations(context, namespaceDirective.Usings);
                 }
 
-                private static void
-                CheckUsingDeclarations(SyntaxNodeAnalysisContext context,
-                                       SyntaxList<UsingDirectiveSyntax> usingDirectives) {
+                private static void CheckUsingDeclarations(
+                    SyntaxNodeAnalysisContext context,
+                    SyntaxList<UsingDirectiveSyntax> usingDirectives) {
                         UsingDirectiveSyntax lastStaticUsingDirective = null;
                         UsingDirectiveSyntax lastAliasUsingDirective = null;
 

@@ -161,8 +161,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         Analyzer analyzer =
                             new Analyzer(context.Compilation.GetOrCreateUsingAliasCache());
                         context.RegisterSyntaxNodeAction(analyzer.HandleIdentifierNameSyntax,
@@ -189,25 +189,25 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 }
 
                                 switch (identifierNameSyntax.Identifier.ValueText) {
-                                case "bool":
-                                case "byte":
-                                case "char":
-                                case "decimal":
-                                case "double":
-                                case "short":
-                                case "int":
-                                case "long":
-                                case "object":
-                                case "sbyte":
-                                case "float":
-                                case "string":
-                                case "ushort":
-                                case "uint":
-                                case "ulong":
-                                        return;
+                                        case "bool":
+                                        case "byte":
+                                        case "char":
+                                        case "decimal":
+                                        case "double":
+                                        case "short":
+                                        case "int":
+                                        case "long":
+                                        case "object":
+                                        case "sbyte":
+                                        case "float":
+                                        case "string":
+                                        case "ushort":
+                                        case "uint":
+                                        case "ulong":
+                                                return;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
 
                                 if (identifierNameSyntax
@@ -225,25 +225,25 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                     !identifierNameSyntax.SyntaxTree.ContainsUsingAlias(
                                         this.usingAliasCache)) {
                                         switch (identifierNameSyntax.Identifier.ValueText) {
-                                        case nameof(Boolean):
-                                        case nameof(Byte):
-                                        case nameof(Char):
-                                        case nameof(Decimal):
-                                        case nameof(Double):
-                                        case nameof(Int16):
-                                        case nameof(Int32):
-                                        case nameof(Int64):
-                                        case nameof(Object):
-                                        case nameof(SByte):
-                                        case nameof(Single):
-                                        case nameof(String):
-                                        case nameof(UInt16):
-                                        case nameof(UInt32):
-                                        case nameof(UInt64):
-                                                break;
+                                                case nameof(Boolean):
+                                                case nameof(Byte):
+                                                case nameof(Char):
+                                                case nameof(Decimal):
+                                                case nameof(Double):
+                                                case nameof(Int16):
+                                                case nameof(Int32):
+                                                case nameof(Int64):
+                                                case nameof(Object):
+                                                case nameof(SByte):
+                                                case nameof(Single):
+                                                case nameof(String):
+                                                case nameof(UInt16):
+                                                case nameof(UInt32):
+                                                case nameof(UInt64):
+                                                        break;
 
-                                        default:
-                                                return;
+                                                default:
+                                                        return;
                                         }
                                 }
 
@@ -268,25 +268,25 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                         .Symbol as INamedTypeSymbol;
 
                                 switch (symbol?.SpecialType) {
-                                case SpecialType.System_Boolean:
-                                case SpecialType.System_Byte:
-                                case SpecialType.System_Char:
-                                case SpecialType.System_Decimal:
-                                case SpecialType.System_Double:
-                                case SpecialType.System_Int16:
-                                case SpecialType.System_Int32:
-                                case SpecialType.System_Int64:
-                                case SpecialType.System_Object:
-                                case SpecialType.System_SByte:
-                                case SpecialType.System_Single:
-                                case SpecialType.System_String:
-                                case SpecialType.System_UInt16:
-                                case SpecialType.System_UInt32:
-                                case SpecialType.System_UInt64:
-                                        break;
+                                        case SpecialType.System_Boolean:
+                                        case SpecialType.System_Byte:
+                                        case SpecialType.System_Char:
+                                        case SpecialType.System_Decimal:
+                                        case SpecialType.System_Double:
+                                        case SpecialType.System_Int16:
+                                        case SpecialType.System_Int32:
+                                        case SpecialType.System_Int64:
+                                        case SpecialType.System_Object:
+                                        case SpecialType.System_SByte:
+                                        case SpecialType.System_Single:
+                                        case SpecialType.System_String:
+                                        case SpecialType.System_UInt16:
+                                        case SpecialType.System_UInt32:
+                                        case SpecialType.System_UInt64:
+                                                break;
 
-                                default:
-                                        return;
+                                        default:
+                                                return;
                                 }
 
                                 SyntaxNode locationNode = identifierNameSyntax;
@@ -312,8 +312,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, locationNode.GetLocation()));
                         }
 
-                        private static bool
-                        IsNameInNameOfExpression(IdentifierNameSyntax identifierNameSyntax) {
+                        private static bool IsNameInNameOfExpression(
+                            IdentifierNameSyntax identifierNameSyntax) {
                                 // The only time a type name can appear as an argument is for the
                                 // invocation expression created for the nameof keyword. This
                                 // assumption is the foundation of the following simple analysis

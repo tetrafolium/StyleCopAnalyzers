@@ -61,7 +61,7 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                   LayoutResources.ResourceManager,
                                                   typeof(LayoutResources));
 
-#pragma warning disable SA1202 // Elements should be ordered by access
+#pragma warning disable SA1202  // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor DescriptorAllow =
                     new DiagnosticDescriptor(
                         DiagnosticId, Title, MessageFormatAllow, AnalyzerCategory.LayoutRules,
@@ -79,7 +79,7 @@ namespace StyleCop.Analyzers.LayoutRules {
                         DiagnosticId, Title, MessageFormatOmit, AnalyzerCategory.LayoutRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault,
                         DescriptionOmit, HelpLink);
-#pragma warning restore SA1202 // Elements should be ordered by access
+#pragma warning restore SA1202  // Elements should be ordered by access
 
                 private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings>
                     SyntaxTreeAction = HandleSyntaxTree;
@@ -184,44 +184,44 @@ namespace StyleCop.Analyzers.LayoutRules {
                         SourceText sourceText = context.Tree.GetText(context.CancellationToken);
                         string trailingWhitespaceText = sourceText.ToString(reportedSpan);
                         int firstNewline = trailingWhitespaceText.IndexOf('\n');
-                        int secondNewline =
-                            firstNewline >= 0
-                                ? trailingWhitespaceText.IndexOf('\n', firstNewline + 1)
-                                : -1;
+                        int secondNewline = firstNewline >= 0 ? trailingWhitespaceText.IndexOf(
+                                                                    '\n', firstNewline + 1)
+                                                              : -1;
 
                         DiagnosticDescriptor descriptorToReport;
                         switch (settings.LayoutRules.NewlineAtEndOfFile) {
-                        case OptionSetting.Omit:
-                                if (firstNewline < 0) {
-                                        return;
-                                }
+                                case OptionSetting.Omit:
+                                        if (firstNewline < 0) {
+                                                return;
+                                        }
 
-                                descriptorToReport = DescriptorOmit;
-                                break;
+                                        descriptorToReport = DescriptorOmit;
+                                        break;
 
-                        case OptionSetting.Require:
-                                if (firstNewline >= 0 &&
-                                    firstNewline == trailingWhitespaceText.Length - 1) {
-                                        return;
-                                }
-
-                                descriptorToReport = DescriptorRequire;
-                                break;
-
-                        case OptionSetting.Allow:
-                        default:
-                                if (secondNewline < 0) {
-                                        // 1. A newline is allowed but not required
-                                        // 2. If a newline is included, it cannot be followed by
-                                        // whitespace
-                                        if (firstNewline < 0 ||
+                                case OptionSetting.Require:
+                                        if (firstNewline >= 0 &&
                                             firstNewline == trailingWhitespaceText.Length - 1) {
                                                 return;
                                         }
-                                }
 
-                                descriptorToReport = DescriptorAllow;
-                                break;
+                                        descriptorToReport = DescriptorRequire;
+                                        break;
+
+                                case OptionSetting.Allow:
+                                default:
+                                        if (secondNewline < 0) {
+                                                // 1. A newline is allowed but not required
+                                                // 2. If a newline is included, it cannot be
+                                                // followed by whitespace
+                                                if (firstNewline < 0 ||
+                                                    firstNewline ==
+                                                        trailingWhitespaceText.Length - 1) {
+                                                        return;
+                                                }
+                                        }
+
+                                        descriptorToReport = DescriptorAllow;
+                                        break;
                         }
 
                         context.ReportDiagnostic(Diagnostic.Create(

@@ -178,8 +178,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         CheckAccessModifiers(context, syntax.ThisKeyword, syntax.Modifiers);
                 }
 
-                private static void
-                HandleConstructorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var syntax = (ConstructorDeclarationSyntax) context.Node;
                         CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
                 }
@@ -194,26 +194,26 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
 
                         foreach (SyntaxToken token in modifiers) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.PublicKeyword:
-                                case SyntaxKind.ProtectedKeyword:
-                                case SyntaxKind.InternalKeyword:
-                                case SyntaxKind.PrivateKeyword:
-                                        return;
-
-                                case SyntaxKind.StaticKeyword:
-                                        if (context.Node is ConstructorDeclarationSyntax) {
+                                        case SyntaxKind.PublicKeyword:
+                                        case SyntaxKind.ProtectedKeyword:
+                                        case SyntaxKind.InternalKeyword:
+                                        case SyntaxKind.PrivateKeyword:
                                                 return;
-                                        }
 
-                                        break;
+                                        case SyntaxKind.StaticKeyword:
+                                                if (context.Node is ConstructorDeclarationSyntax) {
+                                                        return;
+                                                }
 
-                                case SyntaxKind.PartialKeyword:
-                                        // the access modifier might be declared on another part,
-                                        // which isn't handled at this time
-                                        return;
+                                                break;
 
-                                default:
-                                        break;
+                                        case SyntaxKind.PartialKeyword:
+                                                // the access modifier might be declared on another
+                                                // part, which isn't handled at this time
+                                                return;
+
+                                        default:
+                                                break;
                                 }
                         }
 

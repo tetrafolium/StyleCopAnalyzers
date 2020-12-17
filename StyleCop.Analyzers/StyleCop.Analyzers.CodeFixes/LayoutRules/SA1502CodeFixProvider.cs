@@ -46,9 +46,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -66,83 +65,83 @@ namespace StyleCop.Analyzers.LayoutRules {
                         var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
 
                         switch (node.Kind()) {
-                        case SyntaxKind.ClassDeclaration:
-                        case SyntaxKind.InterfaceDeclaration:
-                        case SyntaxKind.StructDeclaration:
-                        case SyntaxKindEx.RecordDeclaration:
-                        case SyntaxKind.EnumDeclaration:
-                                newSyntaxRoot = this.RegisterBaseTypeDeclarationCodeFix(
-                                    syntaxRoot, (BaseTypeDeclarationSyntax) node,
-                                    indentationSettings);
-                                break;
-
-                        case SyntaxKind.AccessorList:
-                                newSyntaxRoot = this.RegisterPropertyLikeDeclarationCodeFix(
-                                    syntaxRoot, (BasePropertyDeclarationSyntax) node.Parent,
-                                    indentationSettings);
-                                break;
-
-                        case SyntaxKind.Block:
-                                if (node.Parent.IsKind(SyntaxKindEx.LocalFunctionStatement)) {
-                                        newSyntaxRoot = this.RegisterLocalFunctionStatementCodeFix(
-                                            syntaxRoot,
-                                            (LocalFunctionStatementSyntaxWrapper) node.Parent,
+                                case SyntaxKind.ClassDeclaration:
+                                case SyntaxKind.InterfaceDeclaration:
+                                case SyntaxKind.StructDeclaration:
+                                case SyntaxKindEx.RecordDeclaration:
+                                case SyntaxKind.EnumDeclaration:
+                                        newSyntaxRoot = this.RegisterBaseTypeDeclarationCodeFix(
+                                            syntaxRoot, (BaseTypeDeclarationSyntax) node,
                                             indentationSettings);
-                                } else {
-                                        newSyntaxRoot = this.RegisterMethodLikeDeclarationCodeFix(
-                                            syntaxRoot, (BaseMethodDeclarationSyntax) node.Parent,
+                                        break;
+
+                                case SyntaxKind.AccessorList:
+                                        newSyntaxRoot = this.RegisterPropertyLikeDeclarationCodeFix(
+                                            syntaxRoot, (BasePropertyDeclarationSyntax) node.Parent,
                                             indentationSettings);
-                                }
+                                        break;
 
-                                break;
+                                case SyntaxKind.Block:
+                                        if (node.Parent.IsKind(
+                                                SyntaxKindEx.LocalFunctionStatement)) {
+                                                newSyntaxRoot =
+                                                    this.RegisterLocalFunctionStatementCodeFix(
+                                                        syntaxRoot,
+                                                        (LocalFunctionStatementSyntaxWrapper)
+                                                            node.Parent,
+                                                        indentationSettings);
+                                        } else {
+                                                newSyntaxRoot =
+                                                    this.RegisterMethodLikeDeclarationCodeFix(
+                                                        syntaxRoot,
+                                                        (BaseMethodDeclarationSyntax) node.Parent,
+                                                        indentationSettings);
+                                        }
 
-                        case SyntaxKind.NamespaceDeclaration:
-                                newSyntaxRoot = this.RegisterNamespaceDeclarationCodeFix(
-                                    syntaxRoot, (NamespaceDeclarationSyntax) node,
-                                    indentationSettings);
-                                break;
+                                        break;
+
+                                case SyntaxKind.NamespaceDeclaration:
+                                        newSyntaxRoot = this.RegisterNamespaceDeclarationCodeFix(
+                                            syntaxRoot, (NamespaceDeclarationSyntax) node,
+                                            indentationSettings);
+                                        break;
                         }
 
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private SyntaxNode
-                RegisterBaseTypeDeclarationCodeFix(SyntaxNode syntaxRoot,
-                                                   BaseTypeDeclarationSyntax node,
-                                                   IndentationSettings indentationSettings) {
+                private SyntaxNode RegisterBaseTypeDeclarationCodeFix(
+                    SyntaxNode syntaxRoot, BaseTypeDeclarationSyntax node,
+                    IndentationSettings indentationSettings) {
                         return this.ReformatElement(syntaxRoot, node, node.OpenBraceToken,
                                                     node.CloseBraceToken, indentationSettings);
                 }
 
-                private SyntaxNode
-                RegisterPropertyLikeDeclarationCodeFix(SyntaxNode syntaxRoot,
-                                                       BasePropertyDeclarationSyntax node,
-                                                       IndentationSettings indentationSettings) {
+                private SyntaxNode RegisterPropertyLikeDeclarationCodeFix(
+                    SyntaxNode syntaxRoot, BasePropertyDeclarationSyntax node,
+                    IndentationSettings indentationSettings) {
                         return this.ReformatElement(
                             syntaxRoot, node, node.AccessorList.OpenBraceToken,
                             node.AccessorList.CloseBraceToken, indentationSettings);
                 }
 
-                private SyntaxNode
-                RegisterMethodLikeDeclarationCodeFix(SyntaxNode syntaxRoot,
-                                                     BaseMethodDeclarationSyntax node,
-                                                     IndentationSettings indentationSettings) {
+                private SyntaxNode RegisterMethodLikeDeclarationCodeFix(
+                    SyntaxNode syntaxRoot, BaseMethodDeclarationSyntax node,
+                    IndentationSettings indentationSettings) {
                         return this.ReformatElement(syntaxRoot, node, node.Body.OpenBraceToken,
                                                     node.Body.CloseBraceToken, indentationSettings);
                 }
 
-                private SyntaxNode
-                RegisterLocalFunctionStatementCodeFix(SyntaxNode syntaxRoot,
-                                                      LocalFunctionStatementSyntaxWrapper node,
-                                                      IndentationSettings indentationSettings) {
+                private SyntaxNode RegisterLocalFunctionStatementCodeFix(
+                    SyntaxNode syntaxRoot, LocalFunctionStatementSyntaxWrapper node,
+                    IndentationSettings indentationSettings) {
                         return this.ReformatElement(syntaxRoot, node, node.Body.OpenBraceToken,
                                                     node.Body.CloseBraceToken, indentationSettings);
                 }
 
-                private SyntaxNode
-                RegisterNamespaceDeclarationCodeFix(SyntaxNode syntaxRoot,
-                                                    NamespaceDeclarationSyntax node,
-                                                    IndentationSettings indentationSettings) {
+                private SyntaxNode RegisterNamespaceDeclarationCodeFix(
+                    SyntaxNode syntaxRoot, NamespaceDeclarationSyntax node,
+                    IndentationSettings indentationSettings) {
                         return this.ReformatElement(syntaxRoot, node, node.OpenBraceToken,
                                                     node.CloseBraceToken, indentationSettings);
                 }

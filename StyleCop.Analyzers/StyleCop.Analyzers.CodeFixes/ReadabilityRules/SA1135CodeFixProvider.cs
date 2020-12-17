@@ -40,9 +40,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -75,23 +74,22 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 private static TypeSyntax GetReplacementName(TypeSyntax symbolNameSyntax,
                                                              TypeSyntax nameSyntax) {
                         switch (nameSyntax.Kind()) {
-                        case SyntaxKind.GenericName:
-                                return GetReplacementGenericName(symbolNameSyntax,
-                                                                 (GenericNameSyntax) nameSyntax);
+                                case SyntaxKind.GenericName:
+                                        return GetReplacementGenericName(
+                                            symbolNameSyntax, (GenericNameSyntax) nameSyntax);
 
-                        case SyntaxKind.QualifiedName:
-                                return GetReplacementQualifiedName(
-                                    (QualifiedNameSyntax) symbolNameSyntax,
-                                    (QualifiedNameSyntax) nameSyntax);
+                                case SyntaxKind.QualifiedName:
+                                        return GetReplacementQualifiedName(
+                                            (QualifiedNameSyntax) symbolNameSyntax,
+                                            (QualifiedNameSyntax) nameSyntax);
 
-                        default:
-                                return symbolNameSyntax;
+                                default:
+                                        return symbolNameSyntax;
                         }
                 }
 
-                private static NameSyntax
-                GetReplacementGenericName(TypeSyntax symbolNameSyntax,
-                                          GenericNameSyntax genericNameSyntax) {
+                private static NameSyntax GetReplacementGenericName(
+                    TypeSyntax symbolNameSyntax, GenericNameSyntax genericNameSyntax) {
                         var symbolQualifiedNameSyntax = symbolNameSyntax as QualifiedNameSyntax;
                         var symbolGenericNameSyntax = (GenericNameSyntax)(
                             symbolQualifiedNameSyntax?.Right ?? symbolNameSyntax);
@@ -109,9 +107,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return genericNameSyntax.WithTypeArgumentList(newTypeArgumentList);
                 }
 
-                private static TypeArgumentListSyntax
-                GetReplacementTypeArgumentList(GenericNameSyntax symbolGenericNameSyntax,
-                                               GenericNameSyntax genericNameSyntax) {
+                private static TypeArgumentListSyntax GetReplacementTypeArgumentList(
+                    GenericNameSyntax symbolGenericNameSyntax,
+                    GenericNameSyntax genericNameSyntax) {
                         var replacements = new Dictionary<TypeSyntax, TypeSyntax>();
                         for (var i = 0; i < genericNameSyntax.TypeArgumentList.Arguments.Count;
                              i++) {
@@ -136,9 +134,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return newTypeArgumentList;
                 }
 
-                private static NameSyntax
-                GetReplacementQualifiedName(QualifiedNameSyntax symbolNameSyntax,
-                                            QualifiedNameSyntax nameSyntax) {
+                private static NameSyntax GetReplacementQualifiedName(
+                    QualifiedNameSyntax symbolNameSyntax, QualifiedNameSyntax nameSyntax) {
                         if (nameSyntax.Right.IsKind(SyntaxKind.GenericName)) {
                                 return GetReplacementGenericName(
                                     symbolNameSyntax, (GenericNameSyntax) nameSyntax.Right);
@@ -154,9 +151,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         protected override string CodeActionTitle =>
                             ReadabilityResources.SA1135CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

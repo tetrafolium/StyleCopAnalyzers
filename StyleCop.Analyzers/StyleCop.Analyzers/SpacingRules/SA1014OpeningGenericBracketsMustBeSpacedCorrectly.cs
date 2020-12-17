@@ -77,13 +77,13 @@ namespace StyleCop.Analyzers.SpacingRules {
                         }
 
                         switch (token.Parent.Kind()) {
-                        case SyntaxKind.TypeArgumentList:
-                        case SyntaxKind.TypeParameterList:
-                                break;
+                                case SyntaxKind.TypeArgumentList:
+                                case SyntaxKind.TypeParameterList:
+                                        break;
 
-                        default:
-                                // not a generic bracket
-                                return;
+                                default:
+                                        // not a generic bracket
+                                        return;
                         }
 
                         bool firstInLine = token.IsFirstInLine();

@@ -87,17 +87,17 @@ namespace LightJson.Serialization {
 
                 private static string GetDefaultMessage(ErrorType type) {
                         switch (type) {
-                        case ErrorType.IncompleteMessage:
-                                return "The string ended before a value could be parsed.";
+                                case ErrorType.IncompleteMessage:
+                                        return "The string ended before a value could be parsed.";
 
-                        case ErrorType.InvalidOrUnexpectedCharacter:
-                                return "The parser encountered an invalid or unexpected character.";
+                                case ErrorType.InvalidOrUnexpectedCharacter:
+                                        return "The parser encountered an invalid or unexpected character.";
 
-                        case ErrorType.DuplicateObjectKeys:
-                                return "The parser encountered a JsonObject with duplicate keys.";
+                                case ErrorType.DuplicateObjectKeys:
+                                        return "The parser encountered a JsonObject with duplicate keys.";
 
-                        default:
-                                return "An error occurred while parsing the JSON message.";
+                                default:
+                                        return "An error occurred while parsing the JSON message.";
                         }
                 }
         }

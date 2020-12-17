@@ -126,12 +126,11 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
                 }
 
-                private static void
-                AnalyzeSummaryElement(SyntaxNodeAnalysisContext context, XmlNodeSyntax syntax,
-                                      Location diagnosticLocation,
-                                      PropertyDeclarationSyntax propertyDeclaration,
-                                      string startingTextGets, string startingTextSets,
-                                      string startingTextGetsOrSets, string startingTextReturns) {
+                private static void AnalyzeSummaryElement(
+                    SyntaxNodeAnalysisContext context, XmlNodeSyntax syntax,
+                    Location diagnosticLocation, PropertyDeclarationSyntax propertyDeclaration,
+                    string startingTextGets, string startingTextSets, string startingTextGetsOrSets,
+                    string startingTextReturns) {
                         var diagnosticProperties =
                             ImmutableDictionary.CreateBuilder<string, string>();
                         ArrowExpressionClauseSyntax expressionBody =
@@ -143,13 +142,13 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 foreach (var accessor in propertyDeclaration.AccessorList
                                              .Accessors) {
                                         switch (accessor.Keyword.Kind()) {
-                                        case SyntaxKind.GetKeyword:
-                                                getter = accessor;
-                                                break;
+                                                case SyntaxKind.GetKeyword:
+                                                        getter = accessor;
+                                                        break;
 
-                                        case SyntaxKind.SetKeyword:
-                                                setter = accessor;
-                                                break;
+                                                case SyntaxKind.SetKeyword:
+                                                        setter = accessor;
+                                                        break;
                                         }
                                 }
                         }
@@ -219,37 +218,39 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                         context.CancellationToken);
 
                                                 switch (getterAccessibility) {
-                                                case Accessibility.Public:
-                                                case Accessibility.ProtectedOrInternal:
-                                                case Accessibility.Protected:
-                                                        getterVisible = true;
-                                                        break;
+                                                        case Accessibility.Public:
+                                                        case Accessibility.ProtectedOrInternal:
+                                                        case Accessibility.Protected:
+                                                                getterVisible = true;
+                                                                break;
 
-                                                case Accessibility.Internal:
-                                                case Accessibility.ProtectedAndInternal:
-                                                case Accessibility.Private:
-                                                default:
-                                                        // The property is externally accessible, so
-                                                        // the setter must be more accessible.
-                                                        getterVisible = false;
-                                                        break;
+                                                        case Accessibility.Internal:
+                                                        case Accessibility.ProtectedAndInternal:
+                                                        case Accessibility.Private:
+                                                        default:
+                                                                // The property is externally
+                                                                // accessible, so the setter must be
+                                                                // more accessible.
+                                                                getterVisible = false;
+                                                                break;
                                                 }
 
                                                 switch (setterAccessibility) {
-                                                case Accessibility.Public:
-                                                case Accessibility.ProtectedOrInternal:
-                                                case Accessibility.Protected:
-                                                        setterVisible = true;
-                                                        break;
+                                                        case Accessibility.Public:
+                                                        case Accessibility.ProtectedOrInternal:
+                                                        case Accessibility.Protected:
+                                                                setterVisible = true;
+                                                                break;
 
-                                                case Accessibility.Internal:
-                                                case Accessibility.ProtectedAndInternal:
-                                                case Accessibility.Private:
-                                                default:
-                                                        // The property is externally accessible, so
-                                                        // the getter must be more accessible.
-                                                        setterVisible = false;
-                                                        break;
+                                                        case Accessibility.Internal:
+                                                        case Accessibility.ProtectedAndInternal:
+                                                        case Accessibility.Private:
+                                                        default:
+                                                                // The property is externally
+                                                                // accessible, so the getter must be
+                                                                // more accessible.
+                                                                setterVisible = false;
+                                                                break;
                                                 }
                                         }
                                 }
@@ -348,12 +349,11 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
                 }
 
-                private static void
-                ReportSA1623(SyntaxNodeAnalysisContext context, Location diagnosticLocation,
-                             ImmutableDictionary<string, string>.Builder diagnosticProperties,
-                             string text, string expectedStartingText,
-                             string unexpectedStartingText1, string unexpectedStartingText2 = null,
-                             string unexpectedStartingText3 = null) {
+                private static void ReportSA1623(
+                    SyntaxNodeAnalysisContext context, Location diagnosticLocation,
+                    ImmutableDictionary<string, string>.Builder diagnosticProperties, string text,
+                    string expectedStartingText, string unexpectedStartingText1,
+                    string unexpectedStartingText2 = null, string unexpectedStartingText3 = null) {
                         diagnosticProperties.Add(ExpectedTextKey, expectedStartingText);
 
                         if (text.StartsWith(unexpectedStartingText1,
@@ -380,11 +380,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                             diagnosticProperties.ToImmutable(), expectedStartingText));
                 }
 
-                private static void
-                ReportSA1624(SyntaxNodeAnalysisContext context, Location diagnosticLocation,
-                             ImmutableDictionary<string, string>.Builder diagnosticProperties,
-                             string accessor, string expectedStartingText,
-                             string startingTextToRemove) {
+                private static void ReportSA1624(
+                    SyntaxNodeAnalysisContext context, Location diagnosticLocation,
+                    ImmutableDictionary<string, string>.Builder diagnosticProperties,
+                    string accessor, string expectedStartingText, string startingTextToRemove) {
                         diagnosticProperties.Add(ExpectedTextKey, expectedStartingText);
                         diagnosticProperties.Add(TextToRemoveKey, startingTextToRemove);
                         context.ReportDiagnostic(Diagnostic.Create(

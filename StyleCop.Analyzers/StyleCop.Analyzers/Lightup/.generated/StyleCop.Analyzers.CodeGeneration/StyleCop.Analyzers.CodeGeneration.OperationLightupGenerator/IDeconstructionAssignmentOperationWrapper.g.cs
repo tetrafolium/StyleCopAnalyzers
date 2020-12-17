@@ -29,8 +29,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public static implicit operator IAssignmentOperationWrapper(
                     IDeconstructionAssignmentOperationWrapper wrapper) =>
                     IAssignmentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IDeconstructionAssignmentOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IDeconstructionAssignmentOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

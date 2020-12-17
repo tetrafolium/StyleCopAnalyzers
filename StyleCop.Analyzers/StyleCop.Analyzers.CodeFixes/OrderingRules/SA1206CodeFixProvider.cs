@@ -43,9 +43,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -69,9 +68,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return document.WithSyntaxRoot(syntaxRoot);
                 }
 
-                private static SyntaxNode
-                UpdateSyntaxRoot(MemberDeclarationSyntax memberDeclaration,
-                                 SyntaxTokenList newModifiers, SyntaxNode syntaxRoot) {
+                private static SyntaxNode UpdateSyntaxRoot(
+                    MemberDeclarationSyntax memberDeclaration, SyntaxTokenList newModifiers,
+                    SyntaxNode syntaxRoot) {
                         var newDeclaration = memberDeclaration.WithModifiers(newModifiers);
 
                         return syntaxRoot.ReplaceNode(memberDeclaration, newDeclaration);
@@ -161,9 +160,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         protected override string CodeActionTitle =>
                             OrderingResources.ModifierOrderCodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

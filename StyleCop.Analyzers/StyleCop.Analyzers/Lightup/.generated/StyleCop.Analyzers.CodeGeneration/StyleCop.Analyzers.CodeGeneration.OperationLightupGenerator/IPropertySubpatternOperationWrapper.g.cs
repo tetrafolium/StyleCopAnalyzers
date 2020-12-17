@@ -33,8 +33,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation Member => MemberAccessor(this.WrappedOperation);
                 public IPatternOperationWrapper Pattern =>
                     IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
-                public static IPropertySubpatternOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IPropertySubpatternOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

@@ -184,10 +184,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                               completeDocumentation, locations);
                 }
 
-                private string
-                ExpandDocumentation(Compilation compilation,
-                                    DocumentationCommentTriviaSyntax documentCommentTrivia,
-                                    XmlNodeSyntax includeTag) {
+                private string ExpandDocumentation(
+                    Compilation compilation, DocumentationCommentTriviaSyntax documentCommentTrivia,
+                    XmlNodeSyntax includeTag) {
                         var sb = new StringBuilder();
 
                         sb.AppendLine("<member>");

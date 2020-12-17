@@ -39,8 +39,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, TypeSyntax>(
                                     WrappedType, nameof(Type));
-                        WithDesignationAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, CSharpSyntaxNode>(WrappedType, nameof(Designation));
+                        WithDesignationAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(Designation));
                 }
 
                 private DeclarationExpressionSyntaxWrapper(ExpressionSyntax node) {
@@ -60,8 +62,8 @@ namespace StyleCop.Analyzers.Lightup {
                         }
                 }
 
-                public static explicit
-                operator DeclarationExpressionSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator DeclarationExpressionSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -74,8 +76,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new DeclarationExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(DeclarationExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    DeclarationExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -88,8 +90,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithTypeAccessor(this.SyntaxNode, type));
                 }
 
-                public DeclarationExpressionSyntaxWrapper
-                WithDesignation(VariableDesignationSyntaxWrapper designation) {
+                public DeclarationExpressionSyntaxWrapper WithDesignation(
+                    VariableDesignationSyntaxWrapper designation) {
                         return new DeclarationExpressionSyntaxWrapper(
                             WithDesignationAccessor(this.SyntaxNode, designation));
                 }

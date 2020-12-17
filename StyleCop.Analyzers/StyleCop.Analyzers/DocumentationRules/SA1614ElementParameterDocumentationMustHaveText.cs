@@ -77,10 +77,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 /// <inheritdoc/>
-                protected override void
-                HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment,
-                                            XElement completeDocumentation,
-                                            params Location[] diagnosticLocations) {
+                protected override void HandleCompleteDocumentation(
+                    SyntaxNodeAnalysisContext context, bool needsComment,
+                    XElement completeDocumentation, params Location[] diagnosticLocations) {
                         var xmlParamTags = completeDocumentation.Nodes().OfType<XElement>().Where(
                             e => e.Name == XmlCommentHelper.ParamXmlTag);
 

@@ -884,9 +884,9 @@ namespace StyleCop.Analyzers.CodeGeneration {
                             SourceText.From(wrapperNamespace.ToFullString(), Encoding.UTF8));
                 }
 
-                private void
-                GenerateOperationWrapperHelper(in GeneratorExecutionContext context,
-                                               ImmutableArray<InterfaceData> wrapperTypes) {
+                private void GenerateOperationWrapperHelper(
+                    in GeneratorExecutionContext context,
+                    ImmutableArray<InterfaceData> wrapperTypes) {
                         // private static readonly ImmutableDictionary<Type, Type> WrappedTypes;
                         var wrappedTypes = SyntaxFactory.FieldDeclaration(
                             attributeLists
@@ -1363,8 +1363,8 @@ namespace StyleCop.Analyzers.CodeGeneration {
                     }
 
                     var nodeName = node.Attribute("Name").Value;
-                    var kindName = nodeName.Substring("I".Length, nodeName.Length - "I".Length -
-                                                                      "Operation".Length);
+                    var kindName = nodeName.Substring(
+                        "I".Length, nodeName.Length - "I".Length - "Operation".Length);
                     builder.Add(nodeName,
                                 ImmutableArray.Create((kindName, operationKind, (string?) null)));
                                 }
@@ -1372,8 +1372,8 @@ namespace StyleCop.Analyzers.CodeGeneration {
                                 return builder.ToImmutable();
                         }
 
-                        private static ImmutableHashSet<int>
-                        GetSkippedOperationKinds(XDocument document) {
+                        private static ImmutableHashSet<int> GetSkippedOperationKinds(
+                            XDocument document) {
                                 var builder = ImmutableHashSet.CreateBuilder<int>();
                                 foreach (var skippedKind in document.XPathSelectElements(
                                              "/Tree/UnusedOperationKinds/Entry")) {

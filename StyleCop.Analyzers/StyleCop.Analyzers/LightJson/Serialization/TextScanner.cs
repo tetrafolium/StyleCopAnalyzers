@@ -120,18 +120,18 @@ namespace LightJson.Serialization {
                         // First character is the first slash
                         this.Read();
                         switch (this.Peek()) {
-                        case '/':
-                                this.SkipLineComment();
-                                return;
+                                case '/':
+                                        this.SkipLineComment();
+                                        return;
 
-                        case '*':
-                                this.SkipBlockComment();
-                                return;
+                                case '*':
+                                        this.SkipBlockComment();
+                                        return;
 
-                        default:
-                                throw new JsonParseException(
-                                    string.Format("Parser expected '{0}'", this.Peek()),
-                                    ErrorType.InvalidOrUnexpectedCharacter, this.position);
+                                default:
+                                        throw new JsonParseException(
+                                            string.Format("Parser expected '{0}'", this.Peek()),
+                                            ErrorType.InvalidOrUnexpectedCharacter, this.position);
                         }
                 }
 
@@ -141,18 +141,18 @@ namespace LightJson.Serialization {
 
                         while (true) {
                                 switch (this.reader.Peek()) {
-                                case '\n':
-                                        // Reached the end of the line
-                                        this.Read();
-                                        return;
+                                        case '\n':
+                                                // Reached the end of the line
+                                                this.Read();
+                                                return;
 
-                                case -1:
-                                        // Reached the end of the file
-                                        return;
+                                        case -1:
+                                                // Reached the end of the file
+                                                return;
 
-                                default:
-                                        this.Read();
-                                        continue;
+                                        default:
+                                                this.Read();
+                                                continue;
                                 }
                         }
                 }
@@ -164,28 +164,28 @@ namespace LightJson.Serialization {
                         bool foundStar = false;
                         while (true) {
                                 switch (this.reader.Peek()) {
-                                case '*':
-                                        this.Read();
-                                        foundStar = true;
-                                        continue;
+                                        case '*':
+                                                this.Read();
+                                                foundStar = true;
+                                                continue;
 
-                                case '/':
-                                        this.Read();
-                                        if (foundStar) {
+                                        case '/':
+                                                this.Read();
+                                                if (foundStar) {
+                                                        return;
+                                                } else {
+                                                        foundStar = false;
+                                                        continue;
+                                                }
+
+                                        case -1:
+                                                // Reached the end of the file
                                                 return;
-                                        } else {
+
+                                        default:
+                                                this.Read();
                                                 foundStar = false;
                                                 continue;
-                                        }
-
-                                case -1:
-                                        // Reached the end of the file
-                                        return;
-
-                                default:
-                                        this.Read();
-                                        foundStar = false;
-                                        continue;
                                 }
                         }
                 }

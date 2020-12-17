@@ -29,8 +29,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public ILocalSymbol Local => LocalAccessor(this.WrappedOperation);
-                public static IStaticLocalInitializationSemaphoreOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IStaticLocalInitializationSemaphoreOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

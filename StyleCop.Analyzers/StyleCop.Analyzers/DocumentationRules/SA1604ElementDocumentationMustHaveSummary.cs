@@ -50,11 +50,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                protected override void
-                HandleXmlElement(SyntaxNodeAnalysisContext context, bool needsComment,
-                                 DocumentationCommentTriviaSyntax documentation,
-                                 XmlNodeSyntax syntax, XElement completeDocumentation,
-                                 Location[] diagnosticLocations) {
+                protected override void HandleXmlElement(
+                    SyntaxNodeAnalysisContext context, bool needsComment,
+                    DocumentationCommentTriviaSyntax documentation, XmlNodeSyntax syntax,
+                    XElement completeDocumentation, Location[] diagnosticLocations) {
                         if (!needsComment) {
                                 // A missing summary is allowed for this element.
                                 return;

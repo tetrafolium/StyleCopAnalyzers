@@ -81,8 +81,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return (ParenthesizedVariableDesignationSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator ParenthesizedVariableDesignationSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator ParenthesizedVariableDesignationSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -101,8 +101,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return VariableDesignationSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(ParenthesizedVariableDesignationSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    ParenthesizedVariableDesignationSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -110,8 +110,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public ParenthesizedVariableDesignationSyntaxWrapper
-                WithOpenParenToken(SyntaxToken openParenToken) {
+                public ParenthesizedVariableDesignationSyntaxWrapper WithOpenParenToken(
+                    SyntaxToken openParenToken) {
                         return new ParenthesizedVariableDesignationSyntaxWrapper(
                             WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
                 }
@@ -122,8 +122,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithVariablesAccessor(this.SyntaxNode, variables));
                 }
 
-                public ParenthesizedVariableDesignationSyntaxWrapper
-                WithCloseParenToken(SyntaxToken closeParenToken) {
+                public ParenthesizedVariableDesignationSyntaxWrapper WithCloseParenToken(
+                    SyntaxToken closeParenToken) {
                         return new ParenthesizedVariableDesignationSyntaxWrapper(
                             WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
                 }

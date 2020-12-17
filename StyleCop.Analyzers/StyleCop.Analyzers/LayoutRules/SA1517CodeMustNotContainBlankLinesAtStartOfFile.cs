@@ -76,24 +76,27 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 var firstNonBlankLineTriviaIndex =
                                     TriviaHelper.IndexOfFirstNonBlankLineTrivia(leadingTrivia);
                                 switch (firstNonBlankLineTriviaIndex) {
-                                case 0:
-                                        // no blank lines
-                                        break;
+                                        case 0:
+                                                // no blank lines
+                                                break;
 
-                                case -1:
-                                        // only blank lines
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor,
-                                            Location.Create(context.Tree, leadingTrivia.Span)));
-                                        break;
+                                        case -1:
+                                                // only blank lines
+                                                context.ReportDiagnostic(Diagnostic.Create(
+                                                    Descriptor,
+                                                    Location.Create(context.Tree,
+                                                                    leadingTrivia.Span)));
+                                                break;
 
-                                default:
-                                        var textSpan = TextSpan.FromBounds(
-                                            leadingTrivia[0].Span.Start,
-                                            leadingTrivia[firstNonBlankLineTriviaIndex].Span.Start);
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, Location.Create(context.Tree, textSpan)));
-                                        break;
+                                        default:
+                                                var textSpan = TextSpan.FromBounds(
+                                                    leadingTrivia[0].Span.Start,
+                                                    leadingTrivia[firstNonBlankLineTriviaIndex]
+                                                        .Span.Start);
+                                                context.ReportDiagnostic(Diagnostic.Create(
+                                                    Descriptor,
+                                                    Location.Create(context.Tree, textSpan)));
+                                                break;
                                 }
                         }
                 }

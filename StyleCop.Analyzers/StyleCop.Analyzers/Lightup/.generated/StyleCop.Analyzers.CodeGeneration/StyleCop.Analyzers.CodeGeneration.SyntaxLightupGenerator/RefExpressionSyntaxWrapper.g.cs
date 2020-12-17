@@ -38,8 +38,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
                                     WrappedType, nameof(RefKeyword));
-                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
+                        WithExpressionAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(Expression));
                 }
 
                 private RefExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
@@ -67,8 +69,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new RefExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(RefExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    RefExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 

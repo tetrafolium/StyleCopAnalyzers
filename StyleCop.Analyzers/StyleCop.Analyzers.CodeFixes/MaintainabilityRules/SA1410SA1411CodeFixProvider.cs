@@ -63,8 +63,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         }
                 }
 
-                private static Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode root, SyntaxNode node) {
+                private static Task<Document> GetTransformedDocumentAsync(Document document,
+                                                                          SyntaxNode root,
+                                                                          SyntaxNode node) {
                         // The first token is the open parenthesis token. This token has all the
                         // inner trivia
                         var firstToken = node.GetFirstToken();

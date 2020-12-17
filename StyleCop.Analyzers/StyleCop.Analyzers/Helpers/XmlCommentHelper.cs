@@ -57,8 +57,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="xmlComment">The XML comment that should be checked.</param>
                 /// <returns>true, if the comment should be considered empty, false
                 /// otherwise.</returns>
-                internal static bool
-                IsConsideredEmpty(DocumentationCommentTriviaSyntax xmlComment) {
+                internal static bool IsConsideredEmpty(
+                    DocumentationCommentTriviaSyntax xmlComment) {
                         if (xmlComment == null) {
                                 return true;
                         }
@@ -154,8 +154,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="node">The XML content to search.</param>
                 /// <returns>The first <see cref="XmlTextSyntax"/> which is not simply empty or
                 /// whitespace, or <see langword="null"/> if no such element exists.</returns>
-                internal static XmlTextSyntax
-                TryGetFirstTextElementWithContent(XmlNodeSyntax node) {
+                internal static XmlTextSyntax TryGetFirstTextElementWithContent(
+                    XmlNodeSyntax node) {
                         if (node is XmlEmptyElementSyntax) {
                                 return null;
                         } else if (node is XmlTextSyntax xmlText) {
@@ -295,27 +295,27 @@ namespace StyleCop.Analyzers.Helpers {
 
                 private static bool IsInlineElement(string localName) {
                         switch (localName) {
-                        case CXmlTag:
-                        case ParamRefXmlTag:
-                        case SeeXmlTag:
-                        case TypeParamRefXmlTag:
-                                return true;
+                                case CXmlTag:
+                                case ParamRefXmlTag:
+                                case SeeXmlTag:
+                                case TypeParamRefXmlTag:
+                                        return true;
 
-                        default:
-                                return false;
+                                default:
+                                        return false;
                         }
                 }
 
                 private static bool IsBlockElement(string localName) {
                         switch (localName) {
-                        case CodeXmlTag:
-                        case ListXmlTag:
-                        case NoteXmlTag:
-                        case ParaXmlTag:
-                                return true;
+                                case CodeXmlTag:
+                                case ListXmlTag:
+                                case NoteXmlTag:
+                                case ParaXmlTag:
+                                        return true;
 
-                        default:
-                                return false;
+                                default:
+                                        return false;
                         }
                 }
         }

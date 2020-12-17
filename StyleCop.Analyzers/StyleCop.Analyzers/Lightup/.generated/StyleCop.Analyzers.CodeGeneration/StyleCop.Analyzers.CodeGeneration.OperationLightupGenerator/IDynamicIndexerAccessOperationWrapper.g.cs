@@ -33,8 +33,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation Operation => OperationAccessor(this.WrappedOperation);
                 public ImmutableArray<IOperation> Arguments =>
                     ArgumentsAccessor(this.WrappedOperation);
-                public static IDynamicIndexerAccessOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IDynamicIndexerAccessOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

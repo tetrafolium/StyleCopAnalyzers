@@ -29,8 +29,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public ImmutableArray<IOperation> ElementValues =>
                     ElementValuesAccessor(this.WrappedOperation);
-                public static IArrayInitializerOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IArrayInitializerOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

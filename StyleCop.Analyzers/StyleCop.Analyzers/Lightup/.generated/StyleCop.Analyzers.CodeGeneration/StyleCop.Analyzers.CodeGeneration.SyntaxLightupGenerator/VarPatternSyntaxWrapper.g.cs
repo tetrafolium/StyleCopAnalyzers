@@ -39,8 +39,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
                                     WrappedType, nameof(VarKeyword));
-                        WithDesignationAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Designation));
+                        WithDesignationAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(Designation));
                 }
 
                 private VarPatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
@@ -62,8 +64,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return (VarPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator VarPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node) {
+                public static explicit operator VarPatternSyntaxWrapper(
+                    ExpressionOrPatternSyntaxWrapper node) {
                         return (VarPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
@@ -80,13 +82,13 @@ namespace StyleCop.Analyzers.Lightup {
                         return new VarPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator PatternSyntaxWrapper(VarPatternSyntaxWrapper wrapper) {
+                public static implicit operator PatternSyntaxWrapper(
+                    VarPatternSyntaxWrapper wrapper) {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator ExpressionOrPatternSyntaxWrapper(VarPatternSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionOrPatternSyntaxWrapper(
+                    VarPatternSyntaxWrapper wrapper) {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
@@ -103,8 +105,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithVarKeywordAccessor(this.SyntaxNode, varKeyword));
                 }
 
-                public VarPatternSyntaxWrapper
-                WithDesignation(VariableDesignationSyntaxWrapper designation) {
+                public VarPatternSyntaxWrapper WithDesignation(
+                    VariableDesignationSyntaxWrapper designation) {
                         return new VarPatternSyntaxWrapper(
                             WithDesignationAccessor(this.SyntaxNode, designation));
                 }

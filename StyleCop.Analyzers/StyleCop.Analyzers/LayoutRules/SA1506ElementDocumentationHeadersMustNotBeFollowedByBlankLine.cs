@@ -95,26 +95,26 @@ namespace StyleCop.Analyzers.LayoutRules {
                         for (var i = triviaList.Count - 1; i >= 0; i--) {
                                 switch (triviaList [i]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        break;
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                case SyntaxKind.MultiLineCommentTrivia:
-                                        eolCount--;
-                                        break;
-                                case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                                        if (eolCount > 0) {
-                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                    Descriptor, triviaList [i + 1]
-                                                                    .GetLocation()));
-                                        }
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                eolCount++;
+                                                break;
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                        case SyntaxKind.MultiLineCommentTrivia:
+                                                eolCount--;
+                                                break;
+                                        case SyntaxKind.SingleLineDocumentationCommentTrivia:
+                                                if (eolCount > 0) {
+                                                        context.ReportDiagnostic(Diagnostic.Create(
+                                                            Descriptor, triviaList [i + 1]
+                                                                            .GetLocation()));
+                                                }
 
-                                        return;
-                                default:
-                                        // no documentation found
-                                        return;
+                                                return;
+                                        default:
+                                                // no documentation found
+                                                return;
                                 }
                         }
                 }

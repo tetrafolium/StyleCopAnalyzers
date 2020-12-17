@@ -122,8 +122,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.ConversionOperatorDeclaration);
                 }
 
-                private static void
-                HandleConversionOperatorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConversionOperatorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var conversionOperator = (ConversionOperatorDeclarationSyntax) context.Node;
 
                         var identifierName = conversionOperator.ChildNodes()
@@ -160,8 +160,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleArrayCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleArrayCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var array = (ArrayCreationExpressionSyntax) context.Node;
 
                         if (array.Type.IsMissing || array.Type.ElementType == null ||
@@ -178,8 +178,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousMethodExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
 
                         if (anonymousMethod.DelegateKeyword.IsMissing ||
@@ -233,8 +233,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleElementAccessExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleElementAccessExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var elementAccess = (ElementAccessExpressionSyntax) context.Node;
 
                         if (elementAccess.Expression == null ||
@@ -263,8 +263,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
                         var identifier = GetIdentifier(objectCreation);
 
@@ -281,27 +281,31 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static SyntaxToken?
-                GetIdentifier(ObjectCreationExpressionSyntax objectCreationExpressionSyntax) {
+                private static SyntaxToken? GetIdentifier(
+                    ObjectCreationExpressionSyntax objectCreationExpressionSyntax) {
                         switch (objectCreationExpressionSyntax.Type.Kind()) {
-                        case SyntaxKind.QualifiedName:
-                                var qualifiedNameSyntax =
-                                    (QualifiedNameSyntax) objectCreationExpressionSyntax.Type;
-                                var identifierNameSyntax = qualifiedNameSyntax.DescendantNodes()
-                                                               .OfType<IdentifierNameSyntax>()
-                                                               .LastOrDefault();
-                                return identifierNameSyntax?.Identifier;
+                                case SyntaxKind.QualifiedName:
+                                        var qualifiedNameSyntax =
+                                            (QualifiedNameSyntax)
+                                                objectCreationExpressionSyntax.Type;
+                                        var identifierNameSyntax =
+                                            qualifiedNameSyntax.DescendantNodes()
+                                                .OfType<IdentifierNameSyntax>()
+                                                .LastOrDefault();
+                                        return identifierNameSyntax?.Identifier;
 
-                        case SyntaxKind.IdentifierName:
-                                return ((IdentifierNameSyntax) objectCreationExpressionSyntax.Type)
-                                    .Identifier;
+                                case SyntaxKind.IdentifierName:
+                                        return ((IdentifierNameSyntax)
+                                                    objectCreationExpressionSyntax.Type)
+                                            .Identifier;
 
-                        case SyntaxKind.GenericName:
-                                return ((GenericNameSyntax) objectCreationExpressionSyntax.Type)
-                                    .Identifier;
+                                case SyntaxKind.GenericName:
+                                        return ((GenericNameSyntax)
+                                                    objectCreationExpressionSyntax.Type)
+                                            .Identifier;
 
-                        default:
-                                return null;
+                                default:
+                                        return null;
                         }
                 }
 
@@ -329,8 +333,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleConstructorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var constructotDeclarationSyntax =
                             (ConstructorDeclarationSyntax) context.Node;
                         if (constructotDeclarationSyntax.ParameterList != null &&
@@ -358,8 +362,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var localFunctionStatement =
                             (LocalFunctionStatementSyntaxWrapper) context.Node;
                         if (localFunctionStatement.ParameterList != null &&

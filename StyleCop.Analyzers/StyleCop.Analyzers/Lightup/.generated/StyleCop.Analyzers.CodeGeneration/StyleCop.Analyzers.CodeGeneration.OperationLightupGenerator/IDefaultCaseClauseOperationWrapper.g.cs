@@ -26,11 +26,11 @@ namespace StyleCop.Analyzers.Lightup {
                 public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
                 public static explicit operator IDefaultCaseClauseOperationWrapper(
                     ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit
-                operator ICaseClauseOperationWrapper(IDefaultCaseClauseOperationWrapper wrapper) =>
+                public static implicit operator ICaseClauseOperationWrapper(
+                    IDefaultCaseClauseOperationWrapper wrapper) =>
                     ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IDefaultCaseClauseOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IDefaultCaseClauseOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

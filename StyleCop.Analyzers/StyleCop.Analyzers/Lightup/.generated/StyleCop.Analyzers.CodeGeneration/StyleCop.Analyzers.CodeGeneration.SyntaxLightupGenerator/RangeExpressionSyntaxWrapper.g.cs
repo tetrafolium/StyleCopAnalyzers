@@ -43,14 +43,18 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
                                     WrappedType, nameof(RightOperand));
-                        WithLeftOperandAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(LeftOperand));
+                        WithLeftOperandAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(LeftOperand));
                         WithOperatorTokenAccessor =
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
                                     WrappedType, nameof(OperatorToken));
-                        WithRightOperandAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(RightOperand));
+                        WithRightOperandAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(RightOperand));
                 }
 
                 private RangeExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
@@ -82,8 +86,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new RangeExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(RangeExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    RangeExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -101,8 +105,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithOperatorTokenAccessor(this.SyntaxNode, operatorToken));
                 }
 
-                public RangeExpressionSyntaxWrapper
-                WithRightOperand(ExpressionSyntax rightOperand) {
+                public RangeExpressionSyntaxWrapper WithRightOperand(
+                    ExpressionSyntax rightOperand) {
                         return new RangeExpressionSyntaxWrapper(
                             WithRightOperandAccessor(this.SyntaxNode, rightOperand));
                 }

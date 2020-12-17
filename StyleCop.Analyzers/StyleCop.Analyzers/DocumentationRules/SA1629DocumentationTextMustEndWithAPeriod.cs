@@ -102,10 +102,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 /// <inheritdoc/>
-                protected override void
-                HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment,
-                                            XElement completeDocumentation,
-                                            params Location[] diagnosticLocations) {
+                protected override void HandleCompleteDocumentation(
+                    SyntaxNodeAnalysisContext context, bool needsComment,
+                    XElement completeDocumentation, params Location[] diagnosticLocations) {
                         foreach (var node in completeDocumentation.Nodes().OfType<XElement>()) {
                                 var textWithoutTrailingWhitespace =
                                     node.Value.TrimEnd(' ', '\r', '\n');
@@ -229,16 +228,17 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                childXmlElement) {
                                         switch (
                                             childXmlElement.StartTag?.Name?.LocalName.ValueText) {
-                                        case XmlCommentHelper.NoteXmlTag:
-                                        case XmlCommentHelper.ParaXmlTag:
-                                                // Recursively handle <note> and <para> elements
-                                                HandleSectionOrBlockXmlElement(
-                                                    context, settings, childXmlElement,
-                                                    startingWithFinalParagraph);
-                                                break;
+                                                case XmlCommentHelper.NoteXmlTag:
+                                                case XmlCommentHelper.ParaXmlTag:
+                                                        // Recursively handle <note> and <para>
+                                                        // elements
+                                                        HandleSectionOrBlockXmlElement(
+                                                            context, settings, childXmlElement,
+                                                            startingWithFinalParagraph);
+                                                        break;
 
-                                        default:
-                                                break;
+                                                default:
+                                                        break;
                                         }
 
                                         if (childXmlElement.IsBlockElement()) {

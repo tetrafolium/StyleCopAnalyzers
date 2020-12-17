@@ -66,12 +66,12 @@ namespace StyleCop.Analyzers.SpacingRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.SemicolonToken:
-                                        HandleSemicolonToken(context, token);
-                                        break;
+                                        case SyntaxKind.SemicolonToken:
+                                                HandleSemicolonToken(context, token);
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }
@@ -95,27 +95,28 @@ namespace StyleCop.Analyzers.SpacingRules {
                         } else {
                                 SyntaxToken nextToken = token.GetNextToken();
                                 switch (nextToken.Kind()) {
-                                case SyntaxKind.CloseParenToken:
-                                        // Special handling for the following case:
-                                        // for (; ;)
-                                        missingFollowingSpace = false;
-                                        break;
-
-                                case SyntaxKind.SemicolonToken:
-                                        // Special handling for the following case:
-                                        // Statement();;
-                                        if (nextToken.Parent.IsKind(SyntaxKind.EmptyStatement)) {
+                                        case SyntaxKind.CloseParenToken:
+                                                // Special handling for the following case:
+                                                // for (; ;)
                                                 missingFollowingSpace = false;
-                                        }
+                                                break;
 
-                                        break;
+                                        case SyntaxKind.SemicolonToken:
+                                                // Special handling for the following case:
+                                                // Statement();;
+                                                if (nextToken.Parent.IsKind(
+                                                        SyntaxKind.EmptyStatement)) {
+                                                        missingFollowingSpace = false;
+                                                }
 
-                                case SyntaxKind.None:
-                                        // The semi colon is the last character in the file.
-                                        return;
+                                                break;
 
-                                default:
-                                        break;
+                                        case SyntaxKind.None:
+                                                // The semi colon is the last character in the file.
+                                                return;
+
+                                        default:
+                                                break;
                                 }
                         }
 

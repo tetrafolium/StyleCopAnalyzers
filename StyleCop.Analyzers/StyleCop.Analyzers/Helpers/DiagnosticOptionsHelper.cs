@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 // There are no start actions in this file. This warning should not be reported.
-#pragma warning disable RS1012 // Start action has no registered actions.
+#pragma warning disable RS1012  // Start action has no registered actions.
 
 namespace StyleCop.Analyzers.Helpers {
         using System;
@@ -34,9 +34,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// diagnostic is currently suppressed.</param> <param name="descriptor">The
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
-                internal static bool
-                IsAnalyzerSuppressed(this CompilationStartAnalysisContext context,
-                                     DiagnosticDescriptor descriptor) {
+                internal static bool IsAnalyzerSuppressed(
+                    this CompilationStartAnalysisContext context, DiagnosticDescriptor descriptor) {
                         return context.Compilation.IsAnalyzerSuppressed(descriptor);
                 }
 
@@ -61,16 +60,16 @@ namespace StyleCop.Analyzers.Helpers {
                 /// determine if the diagnostic is currently suppressed.</param> <param
                 /// name="descriptor">The diagnostic descriptor to check.</param> <returns>True if
                 /// the diagnostic is currently suppressed.</returns>
-                internal static bool
-                IsAnalyzerSuppressed(this CompilationOptions compilationOptions,
-                                     DiagnosticDescriptor descriptor) {
+                internal static bool IsAnalyzerSuppressed(
+                    this CompilationOptions compilationOptions, DiagnosticDescriptor descriptor) {
                         switch (descriptor.GetEffectiveSeverity(compilationOptions)) {
-                        case ReportDiagnostic.Suppress:
-                                return true;
-                        case ReportDiagnostic.Default:
-                                throw new InvalidOperationException("This should be unreachable.");
-                        default:
-                                return false;
+                                case ReportDiagnostic.Suppress:
+                                        return true;
+                                case ReportDiagnostic.Default:
+                                        throw new InvalidOperationException(
+                                            "This should be unreachable.");
+                                default:
+                                        return false;
                         }
                 }
 
@@ -85,8 +84,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// cref="DocumentationMode.Diagnose"/>, if the documentation mode could not be
                 /// determined.</para>
                 /// </returns>
-                internal static DocumentationMode
-                GetDocumentationMode(this SyntaxNodeAnalysisContext context) {
+                internal static DocumentationMode GetDocumentationMode(
+                    this SyntaxNodeAnalysisContext context) {
                         return context.Node.SyntaxTree?.Options
                             .DocumentationMode ?? DocumentationMode.Diagnose;
                 }

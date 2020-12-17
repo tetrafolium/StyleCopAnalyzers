@@ -38,8 +38,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
                                     WrappedType, nameof(ThrowKeyword));
-                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
+                        WithExpressionAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(Expression));
                 }
 
                 private ThrowExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
@@ -67,8 +69,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new ThrowExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(ThrowExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    ThrowExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 

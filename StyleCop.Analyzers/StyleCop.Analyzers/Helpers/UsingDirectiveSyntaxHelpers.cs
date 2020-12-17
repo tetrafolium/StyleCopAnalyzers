@@ -31,8 +31,8 @@ namespace StyleCop.Analyzers.Helpers {
         /// <param name="usingDirective">The using directive.</param>
         /// <returns>True if the <see cref="UsingDirectiveSyntax"/> is preceded by a preprocessor
         /// directive, otherwise false.</returns>
-        internal static bool
-        IsPrecededByPreprocessorDirective(this UsingDirectiveSyntax usingDirective) {
+        internal static bool IsPrecededByPreprocessorDirective(
+            this UsingDirectiveSyntax usingDirective) {
                 if (!usingDirective.HasLeadingTrivia) {
                         return false;
                 }
@@ -102,8 +102,8 @@ namespace StyleCop.Analyzers.Helpers {
         private static bool ExcludeGlobalKeyword(IdentifierNameSyntax token) =>
             !token.Identifier.IsKind(SyntaxKind.GlobalKeyword);
 
-        private static SyntaxToken?
-        GetFirstIdentifierInUsingDirective(UsingDirectiveSyntax usingDirective) {
+        private static SyntaxToken? GetFirstIdentifierInUsingDirective(
+            UsingDirectiveSyntax usingDirective) {
                 foreach (var identifier in usingDirective.DescendantNodes()) {
                         if (identifier is IdentifierNameSyntax identifierName &&
                             ExcludeGlobalKeyword(identifierName)) {

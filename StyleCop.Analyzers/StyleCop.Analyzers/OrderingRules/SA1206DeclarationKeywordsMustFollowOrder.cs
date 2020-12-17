@@ -90,9 +90,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         CheckModifiersOrderAndReportDiagnostics(context, modifiers);
                 }
 
-                private static void
-                CheckModifiersOrderAndReportDiagnostics(SyntaxNodeAnalysisContext context,
-                                                        SyntaxTokenList modifiers) {
+                private static void CheckModifiersOrderAndReportDiagnostics(
+                    SyntaxNodeAnalysisContext context, SyntaxTokenList modifiers) {
                         var previousModifierType = ModifierType.None;
                         var otherModifiersAppearEarlier = false;
                         SyntaxToken previousModifier = default;

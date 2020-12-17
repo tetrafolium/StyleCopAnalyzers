@@ -20,44 +20,46 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
 
                         CodeAction fixAction;
                         switch (fixAllContext.Scope) {
-                        case FixAllScope.Document:
-                                fixAction = CodeAction.Create(
-                                    title,
-                                    cancellationToken => GetDocumentFixesAsync(
-                                        fixAllContext.WithCancellationToken(cancellationToken)),
-                                    nameof(SA1412FixAllProvider));
-                                break;
+                                case FixAllScope.Document:
+                                        fixAction = CodeAction.Create(
+                                            title,
+                                            cancellationToken => GetDocumentFixesAsync(
+                                                fixAllContext.WithCancellationToken(
+                                                    cancellationToken)),
+                                            nameof(SA1412FixAllProvider));
+                                        break;
 
-                        case FixAllScope.Project:
-                                fixAction = CodeAction.Create(
-                                    title,
-                                    cancellationToken => GetProjectFixesAsync(
-                                        fixAllContext.WithCancellationToken(cancellationToken)),
-                                    nameof(SA1412FixAllProvider));
-                                break;
+                                case FixAllScope.Project:
+                                        fixAction = CodeAction.Create(
+                                            title,
+                                            cancellationToken => GetProjectFixesAsync(
+                                                fixAllContext.WithCancellationToken(
+                                                    cancellationToken)),
+                                            nameof(SA1412FixAllProvider));
+                                        break;
 
-                        case FixAllScope.Solution:
-                                fixAction = CodeAction.Create(
-                                    title,
-                                    cancellationToken => GetSolutionFixesAsync(
-                                        fixAllContext.WithCancellationToken(cancellationToken)),
-                                    nameof(SA1412FixAllProvider));
-                                break;
+                                case FixAllScope.Solution:
+                                        fixAction = CodeAction.Create(
+                                            title,
+                                            cancellationToken => GetSolutionFixesAsync(
+                                                fixAllContext.WithCancellationToken(
+                                                    cancellationToken)),
+                                            nameof(SA1412FixAllProvider));
+                                        break;
 
-                        case FixAllScope.Custom:
-                        default:
-                                fixAction = null;
-                                break;
+                                case FixAllScope.Custom:
+                                default:
+                                        fixAction = null;
+                                        break;
                         }
 
                         return Task.FromResult(fixAction);
                 }
 
-                private static async Task<Solution>
-                FixDocumentAsync(Solution solution, DocumentId documentId,
-                                 ImmutableArray<Diagnostic> diagnostics,
-                                 string codeActionEquivalenceKey,
-                                 CancellationToken cancellationToken) {
+                private static async Task<Solution> FixDocumentAsync(
+                    Solution solution, DocumentId documentId,
+                    ImmutableArray<Diagnostic> diagnostics, string codeActionEquivalenceKey,
+                    CancellationToken cancellationToken) {
                         if (diagnostics.IsEmpty) {
                                 return solution;
                         }
@@ -75,8 +77,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .ConfigureAwait(false);
                 }
 
-                private static async Task<Solution>
-                GetDocumentFixesAsync(FixAllContext fixAllContext) {
+                private static async Task<Solution> GetDocumentFixesAsync(
+                    FixAllContext fixAllContext) {
                         var documentDiagnosticsToFix =
                             await FixAllContextHelper
                                 .GetDocumentDiagnosticsToFixAsync(fixAllContext)
@@ -94,9 +96,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .ConfigureAwait(false);
                 }
 
-                private static async Task<Solution>
-                GetSolutionFixesAsync(FixAllContext fixAllContext,
-                                      ImmutableArray<Document> documents) {
+                private static async Task<Solution> GetSolutionFixesAsync(
+                    FixAllContext fixAllContext, ImmutableArray<Document> documents) {
                         var documentDiagnosticsToFix =
                             await FixAllContextHelper
                                 .GetDocumentDiagnosticsToFixAsync(fixAllContext)

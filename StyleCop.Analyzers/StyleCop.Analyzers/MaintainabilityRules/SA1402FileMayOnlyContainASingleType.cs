@@ -109,8 +109,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         }
                 }
 
-                private static IEnumerable<MemberDeclarationSyntax>
-                GetTopLevelTypeDeclarations(SyntaxNode root, StyleCopSettings settings) {
+                private static IEnumerable<MemberDeclarationSyntax> GetTopLevelTypeDeclarations(
+                    SyntaxNode root, StyleCopSettings settings) {
                         var allTypeDeclarations =
                             root.DescendantNodes(descendIntoChildren
                                                  : node => ContainsTopLevelTypeDeclarations(node))
@@ -131,21 +131,21 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         var isRelevant = false;
 
                         switch (node.Kind()) {
-                        case SyntaxKind.ClassDeclaration:
-                                isRelevant = topLevelTypes.Contains(TopLevelType.Class);
-                                break;
-                        case SyntaxKind.InterfaceDeclaration:
-                                isRelevant = topLevelTypes.Contains(TopLevelType.Interface);
-                                break;
-                        case SyntaxKind.StructDeclaration:
-                                isRelevant = topLevelTypes.Contains(TopLevelType.Struct);
-                                break;
-                        case SyntaxKind.EnumDeclaration:
-                                isRelevant = topLevelTypes.Contains(TopLevelType.Enum);
-                                break;
-                        case SyntaxKind.DelegateDeclaration:
-                                isRelevant = topLevelTypes.Contains(TopLevelType.Delegate);
-                                break;
+                                case SyntaxKind.ClassDeclaration:
+                                        isRelevant = topLevelTypes.Contains(TopLevelType.Class);
+                                        break;
+                                case SyntaxKind.InterfaceDeclaration:
+                                        isRelevant = topLevelTypes.Contains(TopLevelType.Interface);
+                                        break;
+                                case SyntaxKind.StructDeclaration:
+                                        isRelevant = topLevelTypes.Contains(TopLevelType.Struct);
+                                        break;
+                                case SyntaxKind.EnumDeclaration:
+                                        isRelevant = topLevelTypes.Contains(TopLevelType.Enum);
+                                        break;
+                                case SyntaxKind.DelegateDeclaration:
+                                        isRelevant = topLevelTypes.Contains(TopLevelType.Delegate);
+                                        break;
                         }
 
                         return isRelevant;

@@ -114,8 +114,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         AnalyzeCloseBrace(context, expression.CloseBraceToken);
                 }
 
-                private static void
-                HandleAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var expression = (AnonymousObjectCreationExpressionSyntax) context.Node;
                         AnalyzeCloseBrace(context, expression.CloseBraceToken);
                 }
@@ -168,14 +168,14 @@ namespace StyleCop.Analyzers.LayoutRules {
                         while (!done && index >= 0) {
                                 switch (separatingTrivia [index]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        break;
-                                default:
-                                        done = true;
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                eolCount++;
+                                                break;
+                                        default:
+                                                done = true;
+                                                break;
                                 }
 
                                 index--;

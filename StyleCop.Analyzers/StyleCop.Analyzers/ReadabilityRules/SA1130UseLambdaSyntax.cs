@@ -104,26 +104,26 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             SyntaxFactory.SeparatedList(syntaxParameters));
                 }
 
-                private static void
-                HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousMethodExpression(
+                    SyntaxNodeAnalysisContext context) {
                         bool reportDiagnostic = true;
                         var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
 
                         switch (anonymousMethod.Parent.Kind()) {
-                        case SyntaxKind.Argument:
-                                reportDiagnostic =
-                                    HandleMethodInvocation(context.SemanticModel, anonymousMethod,
-                                                           (ArgumentSyntax) anonymousMethod.Parent);
-                                break;
+                                case SyntaxKind.Argument:
+                                        reportDiagnostic = HandleMethodInvocation(
+                                            context.SemanticModel, anonymousMethod,
+                                            (ArgumentSyntax) anonymousMethod.Parent);
+                                        break;
 
-                        case SyntaxKind.EqualsValueClause:
-                                reportDiagnostic = true;
-                                break;
+                                case SyntaxKind.EqualsValueClause:
+                                        reportDiagnostic = true;
+                                        break;
 
-                        case SyntaxKind.AddAssignmentExpression:
-                        case SyntaxKind.SubtractAssignmentExpression:
-                                reportDiagnostic = true;
-                                break;
+                                case SyntaxKind.AddAssignmentExpression:
+                                case SyntaxKind.SubtractAssignmentExpression:
+                                        reportDiagnostic = true;
+                                        break;
                         }
 
                         if (reportDiagnostic) {
@@ -132,10 +132,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static bool
-                HandleMethodInvocation(SemanticModel semanticModel,
-                                       AnonymousMethodExpressionSyntax anonymousMethod,
-                                       ArgumentSyntax argumentSyntax) {
+                private static bool HandleMethodInvocation(
+                    SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod,
+                    ArgumentSyntax argumentSyntax) {
                         // invocation -> argument list -> argument -> anonymous method
                         if (argumentSyntax?.Parent is BaseArgumentListSyntax argumentListSyntax) {
                                 var originalInvocableExpression = argumentListSyntax.Parent;
@@ -201,8 +200,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return result.ToImmutable();
                 }
 
-                private static ParameterSyntax
-                GetParameterSyntaxFromParameterSymbol(IParameterSymbol symbolParameter) {
+                private static ParameterSyntax GetParameterSyntaxFromParameterSymbol(
+                    IParameterSymbol symbolParameter) {
                         return SyntaxFactory
                             .Parameter(SyntaxFactory.Identifier(symbolParameter.Name))
                             .WithType(SyntaxFactory.ParseTypeName(symbolParameter.Type.Name));

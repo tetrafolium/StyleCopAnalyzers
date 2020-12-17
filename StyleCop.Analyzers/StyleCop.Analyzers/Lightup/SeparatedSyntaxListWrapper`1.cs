@@ -67,8 +67,8 @@ namespace StyleCop.Analyzers.Lightup {
                 // Parameters:
                 //   nodes:
                 //     The nodes to add.
-                public SeparatedSyntaxListWrapper<TNode>
-                AddRange(IEnumerable<TNode> nodes) => this.InsertRange(this.Count, nodes);
+                public SeparatedSyntaxListWrapper<TNode> AddRange(IEnumerable<TNode> nodes) =>
+                    this.InsertRange(this.Count, nodes);
 
                 public abstract bool Any();
 
@@ -108,8 +108,8 @@ namespace StyleCop.Analyzers.Lightup {
 
                 public abstract SeparatedSyntaxListWrapper<TNode> Insert(int index, TNode node);
 
-                public abstract SeparatedSyntaxListWrapper<TNode>
-                InsertRange(int index, IEnumerable<TNode> nodes);
+                public abstract SeparatedSyntaxListWrapper<TNode> InsertRange(
+                    int index, IEnumerable<TNode> nodes);
 
                 public abstract TNode Last();
 
@@ -126,11 +126,11 @@ namespace StyleCop.Analyzers.Lightup {
                 public abstract SeparatedSyntaxListWrapper<TNode> Replace(TNode nodeInList,
                                                                           TNode newNode);
 
-                public abstract SeparatedSyntaxListWrapper<TNode>
-                ReplaceRange(TNode nodeInList, IEnumerable<TNode> newNodes);
+                public abstract SeparatedSyntaxListWrapper<TNode> ReplaceRange(
+                    TNode nodeInList, IEnumerable<TNode> newNodes);
 
-                public abstract SeparatedSyntaxListWrapper<TNode>
-                ReplaceSeparator(SyntaxToken separatorToken, SyntaxToken newSeparator);
+                public abstract SeparatedSyntaxListWrapper<TNode> ReplaceSeparator(
+                    SyntaxToken separatorToken, SyntaxToken newSeparator);
 
                 public abstract string ToFullString();
 
@@ -221,8 +221,8 @@ namespace StyleCop.Analyzers.Lightup {
                         public override bool Contains(TNode node) =>
                             this.syntaxList.Contains(SyntaxWrapper.Unwrap(node));
 
-                        public override
-                            TNode First() => SyntaxWrapper.Wrap(this.syntaxList.First());
+                        public override TNode First() =>
+                            SyntaxWrapper.Wrap(this.syntaxList.First());
 
                         public override TNode FirstOrDefault() =>
                             SyntaxWrapper.Wrap(this.syntaxList.FirstOrDefault());
@@ -232,8 +232,8 @@ namespace StyleCop.Analyzers.Lightup {
                         public override SyntaxToken GetSeparator(int index) =>
                             this.syntaxList.GetSeparator(index);
 
-                        public override IEnumerable<SyntaxToken>
-                        GetSeparators() => this.syntaxList.GetSeparators();
+                        public override IEnumerable<SyntaxToken> GetSeparators() =>
+                            this.syntaxList.GetSeparators();
 
                         public override SyntaxNodeOrTokenList GetWithSeparators() =>
                             this.syntaxList.GetWithSeparators();
@@ -244,12 +244,13 @@ namespace StyleCop.Analyzers.Lightup {
                         public override int IndexOf(Func<TNode, bool> predicate) =>
                             this.syntaxList.IndexOf(node => predicate(SyntaxWrapper.Wrap(node)));
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        Insert(int index, TNode node) => new AutoWrapSeparatedSyntaxList<TSyntax>(
-                            this.syntaxList.Insert(index, (TSyntax) SyntaxWrapper.Unwrap(node)));
+                        public override SeparatedSyntaxListWrapper<TNode> Insert(int index,
+                                                                                 TNode node) =>
+                            new AutoWrapSeparatedSyntaxList<TSyntax>(this.syntaxList.Insert(
+                                index, (TSyntax) SyntaxWrapper.Unwrap(node)));
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        InsertRange(int index, IEnumerable<TNode> nodes) =>
+                        public override SeparatedSyntaxListWrapper<TNode> InsertRange(
+                            int index, IEnumerable<TNode> nodes) =>
                             new AutoWrapSeparatedSyntaxList<TSyntax>(this.syntaxList.InsertRange(
                                 index, nodes.Select(node =>(TSyntax) SyntaxWrapper.Unwrap(node))));
 
@@ -258,20 +259,20 @@ namespace StyleCop.Analyzers.Lightup {
                         public override int LastIndexOf(TNode node) =>
                             this.syntaxList.LastIndexOf((TSyntax) SyntaxWrapper.Unwrap(node));
 
-                        public override int
-                        LastIndexOf(Func<TNode, bool> predicate) => this.syntaxList.LastIndexOf(
-                            node => predicate(SyntaxWrapper.Wrap(node)));
+                        public override int LastIndexOf(Func<TNode, bool> predicate) =>
+                            this.syntaxList.LastIndexOf(
+                                node => predicate(SyntaxWrapper.Wrap(node)));
 
                         public override TNode LastOrDefault() =>
                             SyntaxWrapper.Wrap(this.syntaxList.LastOrDefault());
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        Remove(TNode node) => new AutoWrapSeparatedSyntaxList<TSyntax>(
-                            this.syntaxList.Remove((TSyntax) SyntaxWrapper.Unwrap(node)));
+                        public override SeparatedSyntaxListWrapper<TNode> Remove(TNode node) =>
+                            new AutoWrapSeparatedSyntaxList<TSyntax>(
+                                this.syntaxList.Remove((TSyntax) SyntaxWrapper.Unwrap(node)));
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        RemoveAt(int index) => new AutoWrapSeparatedSyntaxList<TSyntax>(
-                            this.syntaxList.RemoveAt(index));
+                        public override SeparatedSyntaxListWrapper<TNode> RemoveAt(int index) =>
+                            new AutoWrapSeparatedSyntaxList<TSyntax>(
+                                this.syntaxList.RemoveAt(index));
 
                         public override SeparatedSyntaxListWrapper<TNode> Replace(TNode nodeInList,
                                                                                   TNode newNode) =>
@@ -279,14 +280,14 @@ namespace StyleCop.Analyzers.Lightup {
                                 this.syntaxList.Replace((TSyntax) SyntaxWrapper.Unwrap(nodeInList),
                                                         (TSyntax) SyntaxWrapper.Unwrap(newNode)));
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        ReplaceRange(TNode nodeInList, IEnumerable<TNode> newNodes) =>
+                        public override SeparatedSyntaxListWrapper<TNode> ReplaceRange(
+                            TNode nodeInList, IEnumerable<TNode> newNodes) =>
                             new AutoWrapSeparatedSyntaxList<TSyntax>(this.syntaxList.ReplaceRange(
                                 (TSyntax) SyntaxWrapper.Unwrap(nodeInList),
                                 newNodes.Select(node =>(TSyntax) SyntaxWrapper.Unwrap(node))));
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        ReplaceSeparator(SyntaxToken separatorToken, SyntaxToken newSeparator) =>
+                        public override SeparatedSyntaxListWrapper<TNode> ReplaceSeparator(
+                            SyntaxToken separatorToken, SyntaxToken newSeparator) =>
                             new AutoWrapSeparatedSyntaxList<TSyntax>(
                                 this.syntaxList.ReplaceSeparator(separatorToken, newSeparator));
 
@@ -324,17 +325,17 @@ namespace StyleCop.Analyzers.Lightup {
 
                         public override int GetHashCode() => SyntaxList.GetHashCode();
 
-                        public override
-                            SyntaxToken GetSeparator(int index) => SyntaxList.GetSeparator(index);
+                        public override SyntaxToken GetSeparator(int index) =>
+                            SyntaxList.GetSeparator(index);
 
-                        public override IEnumerable<SyntaxToken>
-                        GetSeparators() => SyntaxList.GetSeparators();
+                        public override IEnumerable<SyntaxToken> GetSeparators() =>
+                            SyntaxList.GetSeparators();
 
                         public override SyntaxNodeOrTokenList GetWithSeparators() =>
                             SyntaxList.GetWithSeparators();
 
-                        public override int
-                        IndexOf(TNode node) => SyntaxList.IndexOf(SyntaxWrapper.Unwrap(node));
+                        public override int IndexOf(TNode node) =>
+                            SyntaxList.IndexOf(SyntaxWrapper.Unwrap(node));
 
                         public override int IndexOf(Func<TNode, bool> predicate) =>
                             SyntaxList.IndexOf(node => predicate(SyntaxWrapper.Wrap(node)));
@@ -344,8 +345,8 @@ namespace StyleCop.Analyzers.Lightup {
                                 throw new NotSupportedException();
                         }
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        InsertRange(int index, IEnumerable<TNode> nodes) {
+                        public override SeparatedSyntaxListWrapper<TNode> InsertRange(
+                            int index, IEnumerable<TNode> nodes) {
                                 throw new NotSupportedException();
                         }
 
@@ -372,13 +373,13 @@ namespace StyleCop.Analyzers.Lightup {
                                 throw new NotSupportedException();
                         }
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        ReplaceRange(TNode nodeInList, IEnumerable<TNode> newNodes) {
+                        public override SeparatedSyntaxListWrapper<TNode> ReplaceRange(
+                            TNode nodeInList, IEnumerable<TNode> newNodes) {
                                 throw new NotSupportedException();
                         }
 
-                        public override SeparatedSyntaxListWrapper<TNode>
-                        ReplaceSeparator(SyntaxToken separatorToken, SyntaxToken newSeparator) {
+                        public override SeparatedSyntaxListWrapper<TNode> ReplaceSeparator(
+                            SyntaxToken separatorToken, SyntaxToken newSeparator) {
                                 throw new NotSupportedException();
                         }
 

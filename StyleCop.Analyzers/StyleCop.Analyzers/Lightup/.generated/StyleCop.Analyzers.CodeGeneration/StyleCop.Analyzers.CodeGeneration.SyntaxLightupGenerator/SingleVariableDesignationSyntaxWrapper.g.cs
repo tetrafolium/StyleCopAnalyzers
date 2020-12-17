@@ -48,8 +48,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return (SingleVariableDesignationSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator SingleVariableDesignationSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator SingleVariableDesignationSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -67,8 +67,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return VariableDesignationSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(SingleVariableDesignationSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    SingleVariableDesignationSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -76,8 +76,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public SingleVariableDesignationSyntaxWrapper
-                WithIdentifier(SyntaxToken identifier) {
+                public SingleVariableDesignationSyntaxWrapper WithIdentifier(
+                    SyntaxToken identifier) {
                         return new SingleVariableDesignationSyntaxWrapper(
                             WithIdentifierAccessor(this.SyntaxNode, identifier));
                 }

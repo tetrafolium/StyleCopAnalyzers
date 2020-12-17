@@ -48,9 +48,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var whereToken = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -109,8 +108,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// </summary>
                 /// <param name="token">Token to remove trivia from.</param>
                 /// <returns>Token with whitespace and end-of-line trivia removed.</returns>
-                private static SyntaxTriviaList
-                RemoveUnnecessaryWhitespaceTrivia(SyntaxToken token) {
+                private static SyntaxTriviaList RemoveUnnecessaryWhitespaceTrivia(
+                    SyntaxToken token) {
                         if (!token.HasTrailingTrivia) {
                                 return SyntaxFactory.TriviaList();
                         }

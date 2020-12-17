@@ -27,8 +27,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return AwaitKeywordAccessor(syntax);
                 }
 
-                public static UsingStatementSyntax
-                WithAwaitKeyword(this UsingStatementSyntax syntax, SyntaxToken awaitKeyword) {
+                public static UsingStatementSyntax WithAwaitKeyword(
+                    this UsingStatementSyntax syntax, SyntaxToken awaitKeyword) {
                         return WithAwaitKeywordAccessor(syntax, awaitKeyword);
                 }
         }

@@ -40,46 +40,47 @@ namespace StyleCop.Analyzers.Helpers {
                         this.Priority = 0;
                         foreach (OrderingTrait trait in elementOrder) {
                                 switch (trait) {
-                                case OrderingTrait.Kind:
-                                        // 4 bits are required to store this.
-                                        this.Priority <<= 4;
-                                        this.Priority |= TypeMemberOrder.IndexOf(type) & 0x0F;
-                                        break;
+                                        case OrderingTrait.Kind:
+                                                // 4 bits are required to store this.
+                                                this.Priority <<= 4;
+                                                this.Priority |=
+                                                    TypeMemberOrder.IndexOf(type) & 0x0F;
+                                                break;
 
-                                case OrderingTrait.Accessibility:
-                                        // 3 bits are required to store this.
-                                        this.Priority <<= 3;
-                                        this.Priority |=
-                                            (int) GetAccessLevelForOrdering(member, modifiers) &
-                                            0x07;
-                                        break;
+                                        case OrderingTrait.Accessibility:
+                                                // 3 bits are required to store this.
+                                                this.Priority <<= 3;
+                                                this.Priority |= (int) GetAccessLevelForOrdering(
+                                                                     member, modifiers) &
+                                                                 0x07;
+                                                break;
 
-                                case OrderingTrait.Constant:
-                                        this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.ConstKeyword)) {
-                                                this.Priority |= 1;
-                                        }
+                                        case OrderingTrait.Constant:
+                                                this.Priority <<= 1;
+                                                if (modifiers.Any(SyntaxKind.ConstKeyword)) {
+                                                        this.Priority |= 1;
+                                                }
 
-                                        break;
+                                                break;
 
-                                case OrderingTrait.Static:
-                                        this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.StaticKeyword)) {
-                                                this.Priority |= 1;
-                                        }
+                                        case OrderingTrait.Static:
+                                                this.Priority <<= 1;
+                                                if (modifiers.Any(SyntaxKind.StaticKeyword)) {
+                                                        this.Priority |= 1;
+                                                }
 
-                                        break;
+                                                break;
 
-                                case OrderingTrait.Readonly:
-                                        this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.ReadOnlyKeyword)) {
-                                                this.Priority |= 1;
-                                        }
+                                        case OrderingTrait.Readonly:
+                                                this.Priority <<= 1;
+                                                if (modifiers.Any(SyntaxKind.ReadOnlyKeyword)) {
+                                                        this.Priority |= 1;
+                                                }
 
-                                        break;
+                                                break;
 
-                                default:
-                                        continue;
+                                        default:
+                                                continue;
                                 }
                         }
                 }

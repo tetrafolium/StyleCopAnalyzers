@@ -138,21 +138,21 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 }
 
                                 switch (trivia.Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                eolCount++;
+                                                break;
 
-                                case SyntaxKind.EndIfDirectiveTrivia:
-                                case SyntaxKind.RegionDirectiveTrivia:
-                                case SyntaxKind.EndRegionDirectiveTrivia:
-                                        eolCount++;
-                                        done = true;
-                                        break;
-                                default:
-                                        done = true;
-                                        break;
+                                        case SyntaxKind.EndIfDirectiveTrivia:
+                                        case SyntaxKind.RegionDirectiveTrivia:
+                                        case SyntaxKind.EndRegionDirectiveTrivia:
+                                                eolCount++;
+                                                done = true;
+                                                break;
+                                        default:
+                                                done = true;
+                                                break;
                                 }
                         }
 

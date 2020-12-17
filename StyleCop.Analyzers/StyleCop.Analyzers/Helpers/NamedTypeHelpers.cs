@@ -68,21 +68,21 @@ namespace StyleCop.Analyzers.Helpers {
 
                 internal static string GetNameOrIdentifier(MemberDeclarationSyntax member) {
                         switch (member.Kind()) {
-                        case SyntaxKind.ClassDeclaration:
-                        case SyntaxKind.InterfaceDeclaration:
-                        case SyntaxKind.StructDeclaration:
-                        case SyntaxKindEx.RecordDeclaration:
-                                return ((TypeDeclarationSyntax) member).Identifier.Text;
+                                case SyntaxKind.ClassDeclaration:
+                                case SyntaxKind.InterfaceDeclaration:
+                                case SyntaxKind.StructDeclaration:
+                                case SyntaxKindEx.RecordDeclaration:
+                                        return ((TypeDeclarationSyntax) member).Identifier.Text;
 
-                        case SyntaxKind.EnumDeclaration:
-                                return ((EnumDeclarationSyntax) member).Identifier.Text;
+                                case SyntaxKind.EnumDeclaration:
+                                        return ((EnumDeclarationSyntax) member).Identifier.Text;
 
-                        case SyntaxKind.DelegateDeclaration:
-                                return ((DelegateDeclarationSyntax) member).Identifier.Text;
+                                case SyntaxKind.DelegateDeclaration:
+                                        return ((DelegateDeclarationSyntax) member).Identifier.Text;
 
-                        default:
-                                throw new ArgumentException("Unhandled declaration kind: " +
-                                                            member.Kind());
+                                default:
+                                        throw new ArgumentException("Unhandled declaration kind: " +
+                                                                    member.Kind());
                         }
                 }
 

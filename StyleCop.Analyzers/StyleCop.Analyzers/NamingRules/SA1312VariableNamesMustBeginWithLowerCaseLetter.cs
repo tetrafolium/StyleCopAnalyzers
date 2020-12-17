@@ -152,8 +152,8 @@ namespace StyleCop.Analyzers.NamingRules {
                                         ((ForEachStatementSyntax) context.Node).Identifier);
                 }
 
-                private static void
-                HandleSingleVariableDesignation(SyntaxNodeAnalysisContext context) {
+                private static void HandleSingleVariableDesignation(
+                    SyntaxNodeAnalysisContext context) {
                         CheckIdentifier(
                             context,
                             ((SingleVariableDesignationSyntaxWrapper) context.Node).Identifier);

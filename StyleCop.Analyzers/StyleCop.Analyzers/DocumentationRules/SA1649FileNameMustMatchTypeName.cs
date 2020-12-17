@@ -114,8 +114,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        private static MemberDeclarationSyntax
-                        GetFirstTypeDeclaration(SyntaxNode root) {
+                        private static MemberDeclarationSyntax GetFirstTypeDeclaration(
+                            SyntaxNode root) {
                                 // Prefer to find the first type which is a true
                                 // TypeDeclarationSyntax
                                 MemberDeclarationSyntax firstTypeDeclaration =

@@ -92,9 +92,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                     : SyntaxFactory.TriviaList(SyntaxFactory.ElasticMarker));
                 }
 
-                private static Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode root,
-                                            ParenthesizedExpressionSyntax syntax) {
+                private static Task<Document> GetTransformedDocumentAsync(
+                    Document document, SyntaxNode root, ParenthesizedExpressionSyntax syntax) {
                         var newSyntaxRoot = root.ReplaceNode(syntax, GetReplacement(syntax));
 
                         var changedDocument = document.WithSyntaxRoot(newSyntaxRoot);
@@ -109,9 +108,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         protected override string CodeActionTitle =>
                             MaintainabilityResources.SA1119CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

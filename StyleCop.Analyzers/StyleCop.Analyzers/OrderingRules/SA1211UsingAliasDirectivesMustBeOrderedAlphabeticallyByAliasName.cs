@@ -79,9 +79,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         HandleUsingDirectives(context, namespaceDeclaration.Usings);
                 }
 
-                private static void
-                HandleUsingDirectives(SyntaxNodeAnalysisContext context,
-                                      SyntaxList<UsingDirectiveSyntax> usingDirectives) {
+                private static void HandleUsingDirectives(
+                    SyntaxNodeAnalysisContext context,
+                    SyntaxList<UsingDirectiveSyntax> usingDirectives) {
                         if (usingDirectives.Count == 0) {
                                 return;
                         }

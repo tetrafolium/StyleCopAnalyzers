@@ -55,8 +55,8 @@ namespace StyleCop.Analyzers.SpecialRules {
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         Analyzer analyzer = new Analyzer();
                         context.RegisterSyntaxTreeAction(analyzer.HandleSyntaxTree);
                         context.RegisterCompilationEndAction(analyzer.HandleCompilation);

@@ -139,12 +139,12 @@ namespace StyleCop.Analyzers.Helpers {
                         for (var i = precedingTriviaList.Count - 1; i >= 0; i--) {
                                 switch (precedingTriviaList [i]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        return true;
-                                default:
-                                        return false;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                return true;
+                                        default:
+                                                return false;
                                 }
                         }
 

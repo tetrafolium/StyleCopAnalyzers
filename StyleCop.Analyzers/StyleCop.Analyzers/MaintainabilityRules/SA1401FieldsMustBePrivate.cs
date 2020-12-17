@@ -62,8 +62,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static class Analyzer {
-                        public static void
-                        AnalyzeField(SymbolAnalysisContext symbolAnalysisContext) {
+                        public static void AnalyzeField(
+                            SymbolAnalysisContext symbolAnalysisContext) {
                                 var fieldDeclarationSyntax =
                                     (IFieldSymbol) symbolAnalysisContext.Symbol;
                                 if (!IsFieldPrivate(fieldDeclarationSyntax) &&

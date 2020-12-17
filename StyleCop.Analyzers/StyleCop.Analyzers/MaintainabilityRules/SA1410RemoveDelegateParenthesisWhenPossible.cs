@@ -72,8 +72,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                                          SyntaxKind.AnonymousMethodExpression);
                 }
 
-                private static void
-                HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousMethodExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var syntax = (AnonymousMethodExpressionSyntax) context.Node;
 
                         // ignore if no parameter list exists
@@ -93,14 +93,15 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                 var argumentListSyntax = (ArgumentListSyntax) argumentSyntax.Parent;
 
                                 switch (argumentListSyntax.Parent.Kind()) {
-                                case SyntaxKind.ObjectCreationExpression:
-                                case SyntaxKind.InvocationExpression:
-                                        if (HasAmbiguousOverload(context, syntax,
-                                                                 argumentListSyntax.Parent)) {
-                                                return;
-                                        }
+                                        case SyntaxKind.ObjectCreationExpression:
+                                        case SyntaxKind.InvocationExpression:
+                                                if (HasAmbiguousOverload(
+                                                        context, syntax,
+                                                        argumentListSyntax.Parent)) {
+                                                        return;
+                                                }
 
-                                        break;
+                                                break;
                                 }
                         }
 
@@ -109,10 +110,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             Diagnostic.Create(Descriptor, syntax.ParameterList.GetLocation()));
                 }
 
-                private static bool
-                HasAmbiguousOverload(SyntaxNodeAnalysisContext context,
-                                     AnonymousMethodExpressionSyntax anonymousMethodExpression,
-                                     SyntaxNode methodCallSyntax) {
+                private static bool HasAmbiguousOverload(
+                    SyntaxNodeAnalysisContext context,
+                    AnonymousMethodExpressionSyntax anonymousMethodExpression,
+                    SyntaxNode methodCallSyntax) {
                         var nodeForSpeculation = methodCallSyntax.ReplaceNode(
                             anonymousMethodExpression,
                             anonymousMethodExpression.WithParameterList(null));

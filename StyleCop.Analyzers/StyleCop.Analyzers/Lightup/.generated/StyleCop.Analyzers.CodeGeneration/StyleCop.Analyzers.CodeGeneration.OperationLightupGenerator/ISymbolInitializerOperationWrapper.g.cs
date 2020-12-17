@@ -32,8 +32,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor(this.WrappedOperation);
                 public IOperation Value => ValueAccessor(this.WrappedOperation);
-                public static ISymbolInitializerOperationWrapper
-                FromOperation(IOperation operation) {
+                public static ISymbolInitializerOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }
@@ -51,8 +51,8 @@ namespace StyleCop.Analyzers.Lightup {
                                LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
 
-                internal static ISymbolInitializerOperationWrapper
-                FromUpcast(IOperation operation) {
+                internal static ISymbolInitializerOperationWrapper FromUpcast(
+                    IOperation operation) {
                         return new ISymbolInitializerOperationWrapper(operation);
                 }
         }

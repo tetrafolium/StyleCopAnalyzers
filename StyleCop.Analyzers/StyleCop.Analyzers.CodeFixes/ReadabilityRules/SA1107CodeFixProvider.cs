@@ -47,18 +47,19 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                                 if (node?.Parent as BlockSyntax != null) {
                                         context.RegisterCodeFix(
-                                            CodeAction.Create(ReadabilityResources.SA1107CodeFix,
-                                                              cancellationToken =>
-                                                                  GetTransformedDocumentAsync(
-                                                                      context.Document, root, node),
-                                                              nameof(SA1107CodeFixProvider)),
+                                            CodeAction.Create(
+                                                ReadabilityResources.SA1107CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync(
+                                                    context.Document, root, node),
+                                                nameof(SA1107CodeFixProvider)),
                                             diagnostic);
                                 }
                         }
                 }
 
-                private static Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode root, SyntaxNode node) {
+                private static Task<Document> GetTransformedDocumentAsync(Document document,
+                                                                          SyntaxNode root,
+                                                                          SyntaxNode node) {
                         SyntaxNode newSyntaxRoot = root;
                         Debug.Assert(!node.HasLeadingTrivia,
                                      "The trivia should be trailing trivia of the previous node");

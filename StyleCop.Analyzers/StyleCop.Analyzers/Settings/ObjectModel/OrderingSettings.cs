@@ -52,31 +52,33 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 protected internal OrderingSettings(JsonObject orderingSettingsObject) : this() {
                         foreach (var kvp in orderingSettingsObject) {
                                 switch (kvp.Key) {
-                                case "elementOrder":
-                                        kvp.AssertIsArray();
-                                        foreach (var value in kvp.Value.AsJsonArray) {
-                                                this.elementOrder.Add(
-                                                    value.ToEnumValue<OrderingTrait>(kvp.Key));
-                                        }
+                                        case "elementOrder":
+                                                kvp.AssertIsArray();
+                                                foreach (var value in kvp.Value.AsJsonArray) {
+                                                        this.elementOrder.Add(
+                                                            value.ToEnumValue<OrderingTrait>(
+                                                                kvp.Key));
+                                                }
 
-                                        break;
+                                                break;
 
-                                case "systemUsingDirectivesFirst":
-                                        this.systemUsingDirectivesFirst = kvp.ToBooleanValue();
-                                        break;
+                                        case "systemUsingDirectivesFirst":
+                                                this.systemUsingDirectivesFirst =
+                                                    kvp.ToBooleanValue();
+                                                break;
 
-                                case "usingDirectivesPlacement":
-                                        this.usingDirectivesPlacement =
-                                            kvp.ToEnumValue<UsingDirectivesPlacement>();
-                                        break;
+                                        case "usingDirectivesPlacement":
+                                                this.usingDirectivesPlacement =
+                                                    kvp.ToEnumValue<UsingDirectivesPlacement>();
+                                                break;
 
-                                case "blankLinesBetweenUsingGroups":
-                                        this.blankLinesBetweenUsingGroups =
-                                            kvp.ToEnumValue<OptionSetting>();
-                                        break;
+                                        case "blankLinesBetweenUsingGroups":
+                                                this.blankLinesBetweenUsingGroups =
+                                                    kvp.ToEnumValue<OptionSetting>();
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

@@ -41,20 +41,19 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 if (syntaxRoot.FindNode(diagnostic.Location.SourceSpan)
                                         is AttributeListSyntax) {
                                         context.RegisterCodeFix(
-                                            CodeAction.Create(ReadabilityResources.SA1134CodeFix,
-                                                              cancellationToken =>
-                                                                  GetTransformedDocumentAsync(
-                                                                      context.Document, diagnostic,
-                                                                      cancellationToken),
-                                                              nameof(SA1134CodeFixProvider)),
+                                            CodeAction.Create(
+                                                ReadabilityResources.SA1134CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync(
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof(SA1134CodeFixProvider)),
                                             diagnostic);
                                 }
                         }
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -105,9 +104,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                     nextToken.WithLeadingTrivia(newLeadingTrivia);
                         }
 
-                        var newSyntaxRoot = syntaxRoot.ReplaceTokens(tokensToReplace.Keys,
-                                                                     (original, rewritten) =>
-                                                                         tokensToReplace[original]);
+                        var newSyntaxRoot = syntaxRoot.ReplaceTokens(
+                            tokensToReplace.Keys,
+                            (original, rewritten) => tokensToReplace[original]);
                         var newDocument =
                             document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
 

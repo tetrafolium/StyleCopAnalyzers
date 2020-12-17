@@ -61,89 +61,91 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         }
                 }
 
-                private static Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode root,
-                                            SyntaxNode declarationNode) {
+                private static Task<Document> GetTransformedDocumentAsync(
+                    Document document, SyntaxNode root, SyntaxNode declarationNode) {
                         SyntaxNode updatedDeclarationNode;
                         switch (declarationNode.Kind()) {
-                        case SyntaxKind.ClassDeclaration:
-                                updatedDeclarationNode = HandleClassDeclaration(
-                                    (ClassDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.ClassDeclaration:
+                                        updatedDeclarationNode = HandleClassDeclaration(
+                                            (ClassDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.InterfaceDeclaration:
-                                updatedDeclarationNode = HandleInterfaceDeclaration(
-                                    (InterfaceDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.InterfaceDeclaration:
+                                        updatedDeclarationNode = HandleInterfaceDeclaration(
+                                            (InterfaceDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.EnumDeclaration:
-                                updatedDeclarationNode =
-                                    HandleEnumDeclaration((EnumDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.EnumDeclaration:
+                                        updatedDeclarationNode = HandleEnumDeclaration(
+                                            (EnumDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.StructDeclaration:
-                                updatedDeclarationNode = HandleStructDeclaration(
-                                    (StructDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.StructDeclaration:
+                                        updatedDeclarationNode = HandleStructDeclaration(
+                                            (StructDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKindEx.RecordDeclaration:
-                                updatedDeclarationNode = HandleRecordDeclaration(
-                                    (RecordDeclarationSyntaxWrapper) declarationNode);
-                                break;
+                                case SyntaxKindEx.RecordDeclaration:
+                                        updatedDeclarationNode = HandleRecordDeclaration(
+                                            (RecordDeclarationSyntaxWrapper) declarationNode);
+                                        break;
 
-                        case SyntaxKind.DelegateDeclaration:
-                                updatedDeclarationNode = HandleDelegateDeclaration(
-                                    (DelegateDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.DelegateDeclaration:
+                                        updatedDeclarationNode = HandleDelegateDeclaration(
+                                            (DelegateDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.EventDeclaration:
-                                updatedDeclarationNode = HandleEventDeclaration(
-                                    (EventDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.EventDeclaration:
+                                        updatedDeclarationNode = HandleEventDeclaration(
+                                            (EventDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.EventFieldDeclaration:
-                                updatedDeclarationNode = HandleEventFieldDeclaration(
-                                    (EventFieldDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.EventFieldDeclaration:
+                                        updatedDeclarationNode = HandleEventFieldDeclaration(
+                                            (EventFieldDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.MethodDeclaration:
-                                updatedDeclarationNode = HandleMethodDeclaration(
-                                    (MethodDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.MethodDeclaration:
+                                        updatedDeclarationNode = HandleMethodDeclaration(
+                                            (MethodDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.PropertyDeclaration:
-                                updatedDeclarationNode = HandlePropertyDeclaration(
-                                    (PropertyDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.PropertyDeclaration:
+                                        updatedDeclarationNode = HandlePropertyDeclaration(
+                                            (PropertyDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.FieldDeclaration:
-                                updatedDeclarationNode = HandleFieldDeclaration(
-                                    (FieldDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.FieldDeclaration:
+                                        updatedDeclarationNode = HandleFieldDeclaration(
+                                            (FieldDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.OperatorDeclaration:
-                                updatedDeclarationNode = HandleOperatorDeclaration(
-                                    (OperatorDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.OperatorDeclaration:
+                                        updatedDeclarationNode = HandleOperatorDeclaration(
+                                            (OperatorDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.ConversionOperatorDeclaration:
-                                updatedDeclarationNode = HandleConversionOperatorDeclaration(
-                                    (ConversionOperatorDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.ConversionOperatorDeclaration:
+                                        updatedDeclarationNode =
+                                            HandleConversionOperatorDeclaration(
+                                                (ConversionOperatorDeclarationSyntax)
+                                                    declarationNode);
+                                        break;
 
-                        case SyntaxKind.IndexerDeclaration:
-                                updatedDeclarationNode = HandleIndexerDeclaration(
-                                    (IndexerDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.IndexerDeclaration:
+                                        updatedDeclarationNode = HandleIndexerDeclaration(
+                                            (IndexerDeclarationSyntax) declarationNode);
+                                        break;
 
-                        case SyntaxKind.ConstructorDeclaration:
-                                updatedDeclarationNode = HandleConstructorDeclaration(
-                                    (ConstructorDeclarationSyntax) declarationNode);
-                                break;
+                                case SyntaxKind.ConstructorDeclaration:
+                                        updatedDeclarationNode = HandleConstructorDeclaration(
+                                            (ConstructorDeclarationSyntax) declarationNode);
+                                        break;
 
-                        default:
-                                throw new InvalidOperationException("Unhandled declaration kind: " +
-                                                                    declarationNode.Kind());
+                                default:
+                                        throw new InvalidOperationException(
+                                            "Unhandled declaration kind: " +
+                                            declarationNode.Kind());
                         }
 
                         var newSyntaxRoot =
@@ -167,8 +169,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .WithoutFormatting();
                 }
 
-                private static SyntaxNode
-                HandleInterfaceDeclaration(InterfaceDeclarationSyntax node) {
+                private static SyntaxNode HandleInterfaceDeclaration(
+                    InterfaceDeclarationSyntax node) {
                         SyntaxToken triviaToken = node.Keyword;
                         if (triviaToken.IsMissing) {
                                 return null;
@@ -216,8 +218,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .WithoutFormatting();
                 }
 
-                private static SyntaxNode
-                HandleRecordDeclaration(RecordDeclarationSyntaxWrapper node) {
+                private static SyntaxNode HandleRecordDeclaration(
+                    RecordDeclarationSyntaxWrapper node) {
                         SyntaxToken triviaToken = node.Keyword;
                         if (triviaToken.IsMissing) {
                                 return null;
@@ -233,8 +235,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .SyntaxNode.WithoutFormatting();
                 }
 
-                private static SyntaxNode
-                HandleDelegateDeclaration(DelegateDeclarationSyntax node) {
+                private static SyntaxNode HandleDelegateDeclaration(
+                    DelegateDeclarationSyntax node) {
                         SyntaxToken triviaToken = node.DelegateKeyword;
                         if (triviaToken.IsMissing) {
                                 return null;
@@ -263,8 +265,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .WithoutFormatting();
                 }
 
-                private static SyntaxNode
-                HandleEventFieldDeclaration(EventFieldDeclarationSyntax node) {
+                private static SyntaxNode HandleEventFieldDeclaration(
+                    EventFieldDeclarationSyntax node) {
                         SyntaxToken triviaToken = node.EventKeyword;
                         if (triviaToken.IsMissing) {
                                 return null;
@@ -290,8 +292,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .WithoutFormatting();
                 }
 
-                private static SyntaxNode
-                HandlePropertyDeclaration(PropertyDeclarationSyntax node) {
+                private static SyntaxNode HandlePropertyDeclaration(
+                    PropertyDeclarationSyntax node) {
                         TypeSyntax type = node.Type;
                         if (type == null || type.IsMissing) {
                                 return null;
@@ -315,8 +317,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .WithoutFormatting();
                 }
 
-                private static SyntaxNode
-                HandleOperatorDeclaration(OperatorDeclarationSyntax node) {
+                private static SyntaxNode HandleOperatorDeclaration(
+                    OperatorDeclarationSyntax node) {
                         TypeSyntax type = node.ReturnType;
                         if (type == null || type.IsMissing) {
                                 return null;
@@ -329,8 +331,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                             .WithoutFormatting();
                 }
 
-                private static SyntaxNode
-                HandleConversionOperatorDeclaration(ConversionOperatorDeclarationSyntax node) {
+                private static SyntaxNode HandleConversionOperatorDeclaration(
+                    ConversionOperatorDeclarationSyntax node) {
                         SyntaxToken triviaToken = node.ImplicitOrExplicitKeyword;
                         if (triviaToken.IsMissing) {
                                 return null;
@@ -354,8 +356,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         return node.WithType(type).WithModifiers(modifiers).WithoutFormatting();
                 }
 
-                private static SyntaxNode
-                HandleConstructorDeclaration(ConstructorDeclarationSyntax node) {
+                private static SyntaxNode HandleConstructorDeclaration(
+                    ConstructorDeclarationSyntax node) {
                         SyntaxToken triviaToken = node.Identifier;
                         if (triviaToken.IsMissing) {
                                 return null;
@@ -371,26 +373,26 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 private static SyntaxNode FindParentDeclarationNode(SyntaxNode node) {
                         while (node != null) {
                                 switch (node.Kind()) {
-                                case SyntaxKind.ClassDeclaration:
-                                case SyntaxKind.InterfaceDeclaration:
-                                case SyntaxKind.EnumDeclaration:
-                                case SyntaxKind.StructDeclaration:
-                                case SyntaxKindEx.RecordDeclaration:
-                                case SyntaxKind.DelegateDeclaration:
-                                case SyntaxKind.EventDeclaration:
-                                case SyntaxKind.EventFieldDeclaration:
-                                case SyntaxKind.MethodDeclaration:
-                                case SyntaxKind.PropertyDeclaration:
-                                case SyntaxKind.FieldDeclaration:
-                                case SyntaxKind.OperatorDeclaration:
-                                case SyntaxKind.ConversionOperatorDeclaration:
-                                case SyntaxKind.IndexerDeclaration:
-                                case SyntaxKind.ConstructorDeclaration:
-                                        return node;
+                                        case SyntaxKind.ClassDeclaration:
+                                        case SyntaxKind.InterfaceDeclaration:
+                                        case SyntaxKind.EnumDeclaration:
+                                        case SyntaxKind.StructDeclaration:
+                                        case SyntaxKindEx.RecordDeclaration:
+                                        case SyntaxKind.DelegateDeclaration:
+                                        case SyntaxKind.EventDeclaration:
+                                        case SyntaxKind.EventFieldDeclaration:
+                                        case SyntaxKind.MethodDeclaration:
+                                        case SyntaxKind.PropertyDeclaration:
+                                        case SyntaxKind.FieldDeclaration:
+                                        case SyntaxKind.OperatorDeclaration:
+                                        case SyntaxKind.ConversionOperatorDeclaration:
+                                        case SyntaxKind.IndexerDeclaration:
+                                        case SyntaxKind.ConstructorDeclaration:
+                                                return node;
 
-                                default:
-                                        node = node.Parent;
-                                        break;
+                                        default:
+                                                node = node.Parent;
+                                                break;
                                 }
                         }
 

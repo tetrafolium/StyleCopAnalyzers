@@ -95,9 +95,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         AnalyzeProperty(context, propertyDeclaration);
                 }
 
-                private static void
-                AnalyzeProperty(SyntaxNodeAnalysisContext context,
-                                BasePropertyDeclarationSyntax propertyDeclaration) {
+                private static void AnalyzeProperty(
+                    SyntaxNodeAnalysisContext context,
+                    BasePropertyDeclarationSyntax propertyDeclaration) {
                         if (propertyDeclaration?.AccessorList == null) {
                                 return;
                         }

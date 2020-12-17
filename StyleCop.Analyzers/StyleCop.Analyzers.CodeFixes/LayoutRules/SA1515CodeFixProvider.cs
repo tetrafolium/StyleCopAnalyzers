@@ -44,9 +44,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -68,9 +67,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private static SyntaxTriviaList
-                FixTriviaList(SyntaxTriviaList triviaList,
-                              IEnumerable<SyntaxTrivia> commentTrivias) {
+                private static SyntaxTriviaList FixTriviaList(
+                    SyntaxTriviaList triviaList, IEnumerable<SyntaxTrivia> commentTrivias) {
                         foreach (var singleLineComment in commentTrivias) {
                                 var index = triviaList.IndexOf(singleLineComment);
                                 if (index == -1) {
@@ -81,20 +79,21 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 while (index >= 0) {
                                         switch (triviaList [index]
                                                     .Kind()) {
-                                        case SyntaxKind.WhitespaceTrivia:
-                                                index--;
-                                                break;
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        index--;
+                                                        break;
 
-                                        default:
-                                                triviaList = triviaList.ReplaceRange(
-                                                    triviaList[index],
-                                                    new[]{triviaList[index],
-                                                          SyntaxFactory.CarriageReturnLineFeed});
+                                                default:
+                                                        triviaList = triviaList.ReplaceRange(
+                                                            triviaList[index],
+                                                            new[]{triviaList[index],
+                                                                  SyntaxFactory
+                                                                      .CarriageReturnLineFeed});
 
-                                                // We found the trivia so we don't have to loop any
-                                                // longer
-                                                index = -2;
-                                                break;
+                                                        // We found the trivia so we don't have to
+                                                        // loop any longer
+                                                        index = -2;
+                                                        break;
                                         }
                                 }
 
@@ -115,9 +114,9 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         protected override string CodeActionTitle => LayoutResources.SA1515CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
@@ -149,9 +148,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                        .WithTrailingTrivia(newTrailingTrivia));
                                 }
 
-                                return syntaxRoot.ReplaceTokens(replacements.Keys,
-                                                                (oldToken, newToken) =>
-                                                                    replacements[oldToken]);
+                                return syntaxRoot.ReplaceTokens(
+                                    replacements.Keys,
+                                    (oldToken, newToken) => replacements[oldToken]);
                         }
                 }
         }

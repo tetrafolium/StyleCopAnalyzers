@@ -26,11 +26,11 @@ namespace StyleCop.Analyzers.Lightup {
                     ((IMethodBodyBaseOperationWrapper) this).BlockBody;
                 public IBlockOperationWrapper ExpressionBody =>
                     ((IMethodBodyBaseOperationWrapper) this).ExpressionBody;
-                public static explicit
-                operator IMethodBodyOperationWrapper(IMethodBodyBaseOperationWrapper wrapper) =>
+                public static explicit operator IMethodBodyOperationWrapper(
+                    IMethodBodyBaseOperationWrapper wrapper) =>
                     FromOperation(wrapper.WrappedOperation);
-                public static implicit
-                operator IMethodBodyBaseOperationWrapper(IMethodBodyOperationWrapper wrapper) =>
+                public static implicit operator IMethodBodyBaseOperationWrapper(
+                    IMethodBodyOperationWrapper wrapper) =>
                     IMethodBodyBaseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IMethodBodyOperationWrapper FromOperation(IOperation operation) {
                         if (operation == null) {

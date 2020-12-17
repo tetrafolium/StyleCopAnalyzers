@@ -215,21 +215,21 @@ internal struct JsonValue {
         public bool AsBoolean {
                 get {
                         switch (this.Type) {
-                        case JsonValueType.Boolean:
-                                return this.value == 1;
+                                case JsonValueType.Boolean:
+                                        return this.value == 1;
 
-                        case JsonValueType.Number:
-                                return this.value != 0;
+                                case JsonValueType.Number:
+                                        return this.value != 0;
 
-                        case JsonValueType.String:
-                                return (string) this.reference != string.Empty;
+                                case JsonValueType.String:
+                                        return (string) this.reference != string.Empty;
 
-                        case JsonValueType.Object:
-                        case JsonValueType.Array:
-                                return true;
+                                case JsonValueType.Object:
+                                case JsonValueType.Array:
+                                        return true;
 
-                        default:
-                                return false;
+                                default:
+                                        return false;
                         }
                 }
         }
@@ -262,23 +262,24 @@ internal struct JsonValue {
         public double AsNumber {
                 get {
                         switch (this.Type) {
-                        case JsonValueType.Boolean:
-                                return (this.value == 1) ? 1 : 0;
+                                case JsonValueType.Boolean:
+                                        return (this.value == 1) ? 1 : 0;
 
-                        case JsonValueType.Number:
-                                return this.value;
+                                case JsonValueType.Number:
+                                        return this.value;
 
-                        case JsonValueType.String:
-                                double number;
-                                if (double.TryParse((string) this.reference, NumberStyles.Float,
-                                                    CultureInfo.InvariantCulture, out number)) {
-                                        return number;
-                                } else {
-                                        goto default;
-                                }
+                                case JsonValueType.String:
+                                        double number;
+                                        if (double.TryParse(
+                                                (string) this.reference, NumberStyles.Float,
+                                                CultureInfo.InvariantCulture, out number)) {
+                                                return number;
+                                        } else {
+                                                goto default;
+                                        }
 
-                        default:
-                                return 0;
+                                default:
+                                        return 0;
                         }
                 }
         }
@@ -290,17 +291,17 @@ internal struct JsonValue {
         public string AsString {
                 get {
                         switch (this.Type) {
-                        case JsonValueType.Boolean:
-                                return (this.value == 1) ? "true" : "false";
+                                case JsonValueType.Boolean:
+                                        return (this.value == 1) ? "true" : "false";
 
-                        case JsonValueType.Number:
-                                return this.value.ToString(CultureInfo.InvariantCulture);
+                                case JsonValueType.Number:
+                                        return this.value.ToString(CultureInfo.InvariantCulture);
 
-                        case JsonValueType.String:
-                                return (string) this.reference;
+                                case JsonValueType.String:
+                                        return (string) this.reference;
 
-                        default:
-                                return null;
+                                default:
+                                        return null;
                         }
                 }
         }
@@ -347,17 +348,17 @@ internal struct JsonValue {
         public object AsObject {
                 get {
                         switch (this.Type) {
-                        case JsonValueType.Boolean:
-                        case JsonValueType.Number:
-                                return this.value;
+                                case JsonValueType.Boolean:
+                                case JsonValueType.Number:
+                                        return this.value;
 
-                        case JsonValueType.String:
-                        case JsonValueType.Object:
-                        case JsonValueType.Array:
-                                return this.reference;
+                                case JsonValueType.String:
+                                case JsonValueType.Object:
+                                case JsonValueType.Array:
+                                        return this.reference;
 
-                        default:
-                                return null;
+                                default:
+                                        return null;
                         }
                 }
         }
@@ -488,9 +489,9 @@ internal struct JsonValue {
         /// Throws System.InvalidCastException when the inner value type of the
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
-#pragma warning disable IDE0055 // Fix formatting
+#pragma warning disable IDE0055  // Fix formatting
         public static explicit operator int ? (JsonValue jsonValue)
-#pragma warning restore IDE0055 // Fix formatting
+#pragma warning restore IDE0055  // Fix formatting
         {
                 if (jsonValue.IsNull) {
                         return null;
@@ -519,9 +520,9 @@ internal struct JsonValue {
         /// Throws System.InvalidCastException when the inner value type of the
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
-#pragma warning disable IDE0055 // Fix formatting
+#pragma warning disable IDE0055  // Fix formatting
         public static explicit operator bool ? (JsonValue jsonValue)
-#pragma warning restore IDE0055 // Fix formatting
+#pragma warning restore IDE0055  // Fix formatting
         {
                 if (jsonValue.IsNull) {
                         return null;
@@ -550,9 +551,9 @@ internal struct JsonValue {
         /// Throws System.InvalidCastException when the inner value type of the
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
-#pragma warning disable IDE0055 // Fix formatting
+#pragma warning disable IDE0055  // Fix formatting
         public static explicit operator double ? (JsonValue jsonValue)
-#pragma warning restore IDE0055 // Fix formatting
+#pragma warning restore IDE0055  // Fix formatting
         {
                 if (jsonValue.IsNull) {
                         return null;
@@ -615,9 +616,9 @@ internal struct JsonValue {
         /// Converts the given JsonValue into a nullable DateTime.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-#pragma warning disable IDE0055 // Fix formatting
+#pragma warning disable IDE0055  // Fix formatting
         public static explicit operator DateTime?(JsonValue jsonValue)
-#pragma warning restore IDE0055 // Fix formatting
+#pragma warning restore IDE0055  // Fix formatting
         {
                 if (jsonValue.IsDateTime || jsonValue.IsNull) {
                         return jsonValue.AsDateTime;

@@ -177,8 +177,8 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return SemicolonTokenAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator LocalFunctionStatementSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator LocalFunctionStatementSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -191,8 +191,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new LocalFunctionStatementSyntaxWrapper((StatementSyntax) node);
                 }
 
-                public static implicit
-                operator StatementSyntax(LocalFunctionStatementSyntaxWrapper wrapper) {
+                public static implicit operator StatementSyntax(
+                    LocalFunctionStatementSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -200,14 +200,14 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public LocalFunctionStatementSyntaxWrapper
-                WithAttributeLists(SyntaxList<AttributeListSyntax> attributeLists) {
+                public LocalFunctionStatementSyntaxWrapper WithAttributeLists(
+                    SyntaxList<AttributeListSyntax> attributeLists) {
                         return new LocalFunctionStatementSyntaxWrapper(
                             WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper
-                WithModifiers(SyntaxTokenList modifiers) {
+                public LocalFunctionStatementSyntaxWrapper WithModifiers(
+                    SyntaxTokenList modifiers) {
                         return new LocalFunctionStatementSyntaxWrapper(
                             WithModifiersAccessor(this.SyntaxNode, modifiers));
                 }
@@ -222,14 +222,14 @@ namespace StyleCop.Analyzers.Lightup {
                             WithIdentifierAccessor(this.SyntaxNode, identifier));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper
-                WithTypeParameterList(TypeParameterListSyntax typeParameterList) {
+                public LocalFunctionStatementSyntaxWrapper WithTypeParameterList(
+                    TypeParameterListSyntax typeParameterList) {
                         return new LocalFunctionStatementSyntaxWrapper(
                             WithTypeParameterListAccessor(this.SyntaxNode, typeParameterList));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper
-                WithParameterList(ParameterListSyntax parameterList) {
+                public LocalFunctionStatementSyntaxWrapper WithParameterList(
+                    ParameterListSyntax parameterList) {
                         return new LocalFunctionStatementSyntaxWrapper(
                             WithParameterListAccessor(this.SyntaxNode, parameterList));
                 }
@@ -245,14 +245,14 @@ namespace StyleCop.Analyzers.Lightup {
                             WithBodyAccessor(this.SyntaxNode, body));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper
-                WithExpressionBody(ArrowExpressionClauseSyntax expressionBody) {
+                public LocalFunctionStatementSyntaxWrapper WithExpressionBody(
+                    ArrowExpressionClauseSyntax expressionBody) {
                         return new LocalFunctionStatementSyntaxWrapper(
                             WithExpressionBodyAccessor(this.SyntaxNode, expressionBody));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper
-                WithSemicolonToken(SyntaxToken semicolonToken) {
+                public LocalFunctionStatementSyntaxWrapper WithSemicolonToken(
+                    SyntaxToken semicolonToken) {
                         return new LocalFunctionStatementSyntaxWrapper(
                             WithSemicolonTokenAccessor(this.SyntaxNode, semicolonToken));
                 }

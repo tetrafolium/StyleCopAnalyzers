@@ -9,8 +9,8 @@ namespace StyleCop.Analyzers.Helpers {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal static class XmlSyntaxFactory {
-                public static DocumentationCommentTriviaSyntax
-                DocumentationComment(string newLineText, params XmlNodeSyntax[] content) {
+                public static DocumentationCommentTriviaSyntax DocumentationComment(
+                    string newLineText, params XmlNodeSyntax[] content) {
                         return SyntaxFactory
                             .DocumentationCommentTrivia(
                                 SyntaxKind.SingleLineDocumentationCommentTrivia, List(content))
@@ -89,15 +89,16 @@ namespace StyleCop.Analyzers.Helpers {
                         return TextAttribute(name, TextLiteral(value, true));
                 }
 
-                public static XmlTextAttributeSyntax
-                TextAttribute(string name, params SyntaxToken[] textTokens) {
+                public static XmlTextAttributeSyntax TextAttribute(
+                    string name, params SyntaxToken[] textTokens) {
                         return TextAttribute(SyntaxFactory.XmlName(name),
                                              SyntaxKind.DoubleQuoteToken,
                                              SyntaxFactory.TokenList(textTokens));
                 }
 
-                public static XmlTextAttributeSyntax
-                TextAttribute(string name, SyntaxKind quoteKind, SyntaxTokenList textTokens) {
+                public static XmlTextAttributeSyntax TextAttribute(string name,
+                                                                   SyntaxKind quoteKind,
+                                                                   SyntaxTokenList textTokens) {
                         return TextAttribute(SyntaxFactory.XmlName(name), quoteKind, textTokens);
                 }
 
@@ -279,8 +280,8 @@ namespace StyleCop.Analyzers.Helpers {
                         return PlaceholderElement(List(content));
                 }
 
-                public static XmlElementSyntax
-                PlaceholderElement(SyntaxList<XmlNodeSyntax> content) {
+                public static XmlElementSyntax PlaceholderElement(
+                    SyntaxList<XmlNodeSyntax> content) {
                         return Element(XmlCommentHelper.PlaceholderTag, content);
                 }
 

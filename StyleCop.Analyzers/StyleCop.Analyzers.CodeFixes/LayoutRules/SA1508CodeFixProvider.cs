@@ -45,9 +45,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -72,14 +71,14 @@ namespace StyleCop.Analyzers.LayoutRules {
                         while (!done && index >= 0) {
                                 switch (triviaList [index]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        lastEndOfLineIndex = index;
-                                        break;
-                                default:
-                                        done = true;
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                lastEndOfLineIndex = index;
+                                                break;
+                                        default:
+                                                done = true;
+                                                break;
                                 }
 
                                 index--;

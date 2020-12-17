@@ -40,8 +40,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new VariableDesignationSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(VariableDesignationSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    VariableDesignationSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 

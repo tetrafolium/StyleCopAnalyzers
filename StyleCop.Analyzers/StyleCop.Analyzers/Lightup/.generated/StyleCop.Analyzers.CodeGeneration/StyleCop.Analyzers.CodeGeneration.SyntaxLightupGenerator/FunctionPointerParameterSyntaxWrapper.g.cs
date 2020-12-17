@@ -29,8 +29,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers.CreateSyntaxWithPropertyAccessor<
                                 CSharpSyntaxNode, SyntaxList<AttributeListSyntax>>(
                                 WrappedType, nameof(AttributeLists));
-                        WithModifiersAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, SyntaxTokenList>(WrappedType, nameof(Modifiers));
+                        WithModifiersAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            SyntaxTokenList>(
+                                WrappedType, nameof(Modifiers));
                         WithTypeAccessor =
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
@@ -55,13 +57,13 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return ((BaseParameterSyntaxWrapper) this).Type; }
                 }
 
-                public static explicit
-                operator FunctionPointerParameterSyntaxWrapper(BaseParameterSyntaxWrapper node) {
+                public static explicit operator FunctionPointerParameterSyntaxWrapper(
+                    BaseParameterSyntaxWrapper node) {
                         return (FunctionPointerParameterSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator FunctionPointerParameterSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator FunctionPointerParameterSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -74,13 +76,13 @@ namespace StyleCop.Analyzers.Lightup {
                         return new FunctionPointerParameterSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator BaseParameterSyntaxWrapper(FunctionPointerParameterSyntaxWrapper wrapper) {
+                public static implicit operator BaseParameterSyntaxWrapper(
+                    FunctionPointerParameterSyntaxWrapper wrapper) {
                         return BaseParameterSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(FunctionPointerParameterSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    FunctionPointerParameterSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -88,14 +90,14 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public FunctionPointerParameterSyntaxWrapper
-                WithAttributeLists(SyntaxList<AttributeListSyntax> attributeLists) {
+                public FunctionPointerParameterSyntaxWrapper WithAttributeLists(
+                    SyntaxList<AttributeListSyntax> attributeLists) {
                         return new FunctionPointerParameterSyntaxWrapper(
                             WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
                 }
 
-                public FunctionPointerParameterSyntaxWrapper
-                WithModifiers(SyntaxTokenList modifiers) {
+                public FunctionPointerParameterSyntaxWrapper WithModifiers(
+                    SyntaxTokenList modifiers) {
                         return new FunctionPointerParameterSyntaxWrapper(
                             WithModifiersAccessor(this.SyntaxNode, modifiers));
                 }

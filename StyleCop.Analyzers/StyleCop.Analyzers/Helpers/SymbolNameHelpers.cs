@@ -40,8 +40,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </summary>
                 /// <param name="tupleSymbol">The tuple symbol.</param>
                 /// <returns>The generated fully qualified display string.</returns>
-                public static string
-                ToFullyQualifiedValueTupleDisplayString(this INamedTypeSymbol tupleSymbol) {
+                public static string ToFullyQualifiedValueTupleDisplayString(
+                    this INamedTypeSymbol tupleSymbol) {
                         var tupleElements = tupleSymbol.TupleElements();
                         if (tupleElements.IsDefault) {
                                 // If the tuple elements API is not available, the default
@@ -74,62 +74,68 @@ namespace StyleCop.Analyzers.Helpers {
                 private static bool AppendQualifiedSymbolName(StringBuilder builder, ISymbol symbol,
                                                               TypeSyntax type) {
                         switch (symbol.Kind) {
-                        case SymbolKind.ArrayType:
-                                var arraySymbol = (IArrayTypeSymbol) symbol;
-                                AppendQualifiedSymbolName(builder, arraySymbol.ElementType,
-                                                          GetElementSyntax(type));
-                                builder.Append("[").Append(',', arraySymbol.Rank - 1).Append("]");
+                                case SymbolKind.ArrayType:
+                                        var arraySymbol = (IArrayTypeSymbol) symbol;
+                                        AppendQualifiedSymbolName(builder, arraySymbol.ElementType,
+                                                                  GetElementSyntax(type));
+                                        builder.Append("[")
+                                            .Append(',', arraySymbol.Rank - 1)
+                                            .Append("]");
 
-                                AppendNullableSuffixIfNeeded(builder, type);
-                                return true;
-
-                        case SymbolKind.Namespace:
-                                var namespaceSymbol = (INamespaceSymbol) symbol;
-                                if (namespaceSymbol.IsGlobalNamespace) {
-                                        return false;
-                                }
-
-                                builder.Append(namespaceSymbol.ToDisplayString());
-                                return true;
-
-                        case SymbolKind.NamedType:
-                                var namedTypeSymbol = (INamedTypeSymbol) symbol;
-
-                                if (SpecialTypeHelper.TryGetPredefinedType(
-                                        namedTypeSymbol.SpecialType, out var specialTypeSyntax) &&
-                                    (type?.IsKind(SyntaxKind.PredefinedType) == true ||
-                                     (type is NullableTypeSyntax nullable &&
-                                      nullable.ElementType.IsKind(SyntaxKind.PredefinedType)))) {
-                                        // This handles these cases: int, int?, object, object?
-                                        // But not these cases: System.Int32, System.Int32?,
-                                        // System.Object, System.Object?
-                                        builder.Append(specialTypeSyntax.ToFullString());
                                         AppendNullableSuffixIfNeeded(builder, type);
                                         return true;
-                                } else if (namedTypeSymbol.IsTupleType()) {
-                                        return AppendTupleType(builder, namedTypeSymbol, type);
-                                } else if (namedTypeSymbol.OriginalDefinition.SpecialType ==
-                                               SpecialType.System_Nullable_T &&
-                                           type?.IsKind(SyntaxKind.NullableType) == true) {
-                                        // This handles the case '(int, int)?' but not
-                                        // 'System.Nullable<(int, int)>'
-                                        AppendQualifiedSymbolName(builder,
-                                                                  namedTypeSymbol.TypeArguments [0]
-                                                                  ,
-                                                                  GetElementSyntax(type));
-                                        builder.Append("?");
-                                        return true;
-                                } else {
-                                        return AppendNamedType(builder, namedTypeSymbol, type);
-                                }
 
-                        default:
-                                if (symbol != null) {
-                                        builder.Append(symbol.Name);
-                                        return true;
-                                }
+                                case SymbolKind.Namespace:
+                                        var namespaceSymbol = (INamespaceSymbol) symbol;
+                                        if (namespaceSymbol.IsGlobalNamespace) {
+                                                return false;
+                                        }
 
-                                return false;
+                                        builder.Append(namespaceSymbol.ToDisplayString());
+                                        return true;
+
+                                case SymbolKind.NamedType:
+                                        var namedTypeSymbol = (INamedTypeSymbol) symbol;
+
+                                        if (SpecialTypeHelper.TryGetPredefinedType(
+                                                namedTypeSymbol.SpecialType,
+                                                out var specialTypeSyntax) &&
+                                            (type?.IsKind(SyntaxKind.PredefinedType) == true ||
+                                             (type is NullableTypeSyntax nullable &&
+                                              nullable.ElementType.IsKind(
+                                                  SyntaxKind.PredefinedType)))) {
+                                                // This handles these cases: int, int?, object,
+                                                // object? But not these cases: System.Int32,
+                                                // System.Int32?, System.Object, System.Object?
+                                                builder.Append(specialTypeSyntax.ToFullString());
+                                                AppendNullableSuffixIfNeeded(builder, type);
+                                                return true;
+                                        } else if (namedTypeSymbol.IsTupleType()) {
+                                                return AppendTupleType(builder, namedTypeSymbol,
+                                                                       type);
+                                        } else if (namedTypeSymbol.OriginalDefinition.SpecialType ==
+                                                       SpecialType.System_Nullable_T &&
+                                                   type?.IsKind(SyntaxKind.NullableType) == true) {
+                                                // This handles the case '(int, int)?' but not
+                                                // 'System.Nullable<(int, int)>'
+                                                AppendQualifiedSymbolName(
+                                                    builder, namedTypeSymbol.TypeArguments [0]
+                                                             ,
+                                                    GetElementSyntax(type));
+                                                builder.Append("?");
+                                                return true;
+                                        } else {
+                                                return AppendNamedType(builder, namedTypeSymbol,
+                                                                       type);
+                                        }
+
+                                default:
+                                        if (symbol != null) {
+                                                builder.Append(symbol.Name);
+                                                return true;
+                                        }
+
+                                        return false;
                         }
                 }
 

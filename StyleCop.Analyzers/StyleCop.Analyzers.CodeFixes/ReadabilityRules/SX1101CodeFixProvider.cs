@@ -38,9 +38,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -67,9 +66,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         protected override string CodeActionTitle =>
                             ReadabilityResources.SX1101CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
@@ -93,9 +92,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                         = GenerateReplacementNode(node);
                                 }
 
-                                return syntaxRoot.ReplaceNodes(replaceMap.Keys,
-                                                               (originalNode, rewrittenNode) =>
-                                                                   replaceMap[originalNode]);
+                                return syntaxRoot.ReplaceNodes(
+                                    replaceMap.Keys,
+                                    (originalNode, rewrittenNode) => replaceMap[originalNode]);
                         }
                 }
         }

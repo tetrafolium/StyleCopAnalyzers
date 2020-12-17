@@ -63,8 +63,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleFieldReferenceOperation(OperationAnalysisContext context) {
+                private static void HandleFieldReferenceOperation(
+                    OperationAnalysisContext context) {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -84,8 +84,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleSimpleMemberAccessExpression(
+                    SyntaxNodeAnalysisContext context) {
                         if (!context.SupportsTuples()) {
                                 return;
                         }

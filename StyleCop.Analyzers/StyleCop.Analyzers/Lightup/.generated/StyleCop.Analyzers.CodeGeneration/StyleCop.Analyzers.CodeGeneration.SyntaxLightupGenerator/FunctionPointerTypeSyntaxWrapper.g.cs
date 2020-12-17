@@ -104,8 +104,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new FunctionPointerTypeSyntaxWrapper((TypeSyntax) node);
                 }
 
-                public static implicit
-                operator TypeSyntax(FunctionPointerTypeSyntaxWrapper wrapper) {
+                public static implicit operator TypeSyntax(
+                    FunctionPointerTypeSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -113,14 +113,14 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public FunctionPointerTypeSyntaxWrapper
-                WithDelegateKeyword(SyntaxToken delegateKeyword) {
+                public FunctionPointerTypeSyntaxWrapper WithDelegateKeyword(
+                    SyntaxToken delegateKeyword) {
                         return new FunctionPointerTypeSyntaxWrapper(
                             WithDelegateKeywordAccessor(this.SyntaxNode, delegateKeyword));
                 }
 
-                public FunctionPointerTypeSyntaxWrapper
-                WithAsteriskToken(SyntaxToken asteriskToken) {
+                public FunctionPointerTypeSyntaxWrapper WithAsteriskToken(
+                    SyntaxToken asteriskToken) {
                         return new FunctionPointerTypeSyntaxWrapper(
                             WithAsteriskTokenAccessor(this.SyntaxNode, asteriskToken));
                 }
@@ -131,8 +131,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithCallingConventionAccessor(this.SyntaxNode, callingConvention));
                 }
 
-                public FunctionPointerTypeSyntaxWrapper
-                WithParameterList(FunctionPointerParameterListSyntaxWrapper parameterList) {
+                public FunctionPointerTypeSyntaxWrapper WithParameterList(
+                    FunctionPointerParameterListSyntaxWrapper parameterList) {
                         return new FunctionPointerTypeSyntaxWrapper(
                             WithParameterListAccessor(this.SyntaxNode, parameterList));
                 }

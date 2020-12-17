@@ -141,8 +141,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         HandleParameterListSyntax(context, declaration.ParameterList);
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var statement = (LocalFunctionStatementSyntaxWrapper) context.Node;
                         HandleParameterListSyntax(context, statement.ParameterList);
                 }
@@ -152,8 +152,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         HandleArgumentListSyntax(context, invocation.ArgumentList);
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
                         HandleArgumentListSyntax(context, objectCreation.ArgumentList);
                 }
@@ -168,14 +168,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         Analyze(context, arguments);
                 }
 
-                private static void
-                HandleElementAccessExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleElementAccessExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var elementAccess = (ElementAccessExpressionSyntax) context.Node;
                         HandleBracketedArgumentListSyntax(context, elementAccess.ArgumentList);
                 }
 
-                private static void
-                HandleArrayCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleArrayCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var arrayCreation = (ArrayCreationExpressionSyntax) context.Node;
 
                         foreach (var rankSpecifier in arrayCreation.Type.RankSpecifiers) {
@@ -196,14 +196,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         Analyze(context, arguments);
                 }
 
-                private static void
-                HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousMethodExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
                         HandleParameterListSyntax(context, anonymousMethod.ParameterList);
                 }
 
-                private static void
-                HandleParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleParenthesizedLambdaExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var parenthesizedLambda =
                             (ParenthesizedLambdaExpressionSyntax) context.Node;
                         HandleParameterListSyntax(context, parenthesizedLambda.ParameterList);
@@ -214,14 +214,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         HandleParameterListSyntax(context, delegateDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleConstructorInitializer(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorInitializer(
+                    SyntaxNodeAnalysisContext context) {
                         var constructorInitializer = (ConstructorInitializerSyntax) context.Node;
                         HandleArgumentListSyntax(context, constructorInitializer.ArgumentList);
                 }
 
-                private static void
-                HandleElementBindingExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleElementBindingExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var elementBinding = (ElementBindingExpressionSyntax) context.Node;
                         HandleBracketedArgumentListSyntax(context, elementBinding.ArgumentList);
                 }

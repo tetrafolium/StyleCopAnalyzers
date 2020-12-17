@@ -42,11 +42,11 @@ namespace StyleCop.Analyzers.Lightup {
                 public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
                 public static explicit operator IPatternCaseClauseOperationWrapper(
                     ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit
-                operator ICaseClauseOperationWrapper(IPatternCaseClauseOperationWrapper wrapper) =>
+                public static implicit operator ICaseClauseOperationWrapper(
+                    IPatternCaseClauseOperationWrapper wrapper) =>
                     ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IPatternCaseClauseOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IPatternCaseClauseOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

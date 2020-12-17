@@ -26,9 +26,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 /// <param name="parameterIndex">The index, the string parameter that should be
                 /// checked, is at.</param> <param name="descriptor">The descriptor of the
                 /// diagnostic that should be added.</param>
-                protected internal static void
-                HandleInvocationExpression(SyntaxNodeAnalysisContext context, string methodName,
-                                           int parameterIndex, DiagnosticDescriptor descriptor) {
+                protected internal static void HandleInvocationExpression(
+                    SyntaxNodeAnalysisContext context, string methodName, int parameterIndex,
+                    DiagnosticDescriptor descriptor) {
                         var invocationExpressionSyntax = (InvocationExpressionSyntax) context.Node;
                         var memberAccessExpressionSyntax =
                             invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax;

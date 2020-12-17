@@ -38,12 +38,12 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 if (!diagnostic.Properties.ContainsKey(
                                         SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey)) {
                                         context.RegisterCodeFix(
-                                            CodeAction.Create(DocumentationResources.SA1617CodeFix,
-                                                              cancellationToken =>
-                                                                  GetTransformedDocumentAsync(
-                                                                      context.Document, diagnostic,
-                                                                      cancellationToken),
-                                                              nameof(SA1617CodeFixProvider)),
+                                            CodeAction.Create(
+                                                DocumentationResources.SA1617CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync(
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof(SA1617CodeFixProvider)),
                                             diagnostic);
                                 }
                         }
@@ -51,9 +51,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         var node = root.FindNode(diagnostic.Location.SourceSpan);

@@ -101,35 +101,38 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 bool compareConst = true;
                                 for (int j = 0; compareConst && j < constantIndex; j++) {
                                         switch (elementOrder[j]) {
-                                        case OrderingTrait.Accessibility:
-                                                if (currentAccessLevel != previousAccessLevel) {
-                                                        compareConst = false;
-                                                }
+                                                case OrderingTrait.Accessibility:
+                                                        if (currentAccessLevel !=
+                                                            previousAccessLevel) {
+                                                                compareConst = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Readonly:
-                                                if (currentFieldReadonly != previousFieldReadonly) {
-                                                        compareConst = false;
-                                                }
+                                                case OrderingTrait.Readonly:
+                                                        if (currentFieldReadonly !=
+                                                            previousFieldReadonly) {
+                                                                compareConst = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Static:
-                                                if (currentFieldStatic != previousFieldStatic) {
-                                                        compareConst = false;
-                                                }
+                                                case OrderingTrait.Static:
+                                                        if (currentFieldStatic !=
+                                                            previousFieldStatic) {
+                                                                compareConst = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Kind:
-                                                // Only fields may be marked const, and all fields
-                                                // have the same kind.
-                                                continue;
+                                                case OrderingTrait.Kind:
+                                                        // Only fields may be marked const, and all
+                                                        // fields have the same kind.
+                                                        continue;
 
-                                        case OrderingTrait.Constant:
-                                        default:
-                                                continue;
+                                                case OrderingTrait.Constant:
+                                                default:
+                                                        continue;
                                         }
                                 }
 

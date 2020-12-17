@@ -25,12 +25,12 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                     : this() {
                         foreach (var kvp in readabilitySettingsObject) {
                                 switch (kvp.Key) {
-                                case "allowBuiltInTypeAliases":
-                                        this.allowBuiltInTypeAliases = kvp.ToBooleanValue();
-                                        break;
+                                        case "allowBuiltInTypeAliases":
+                                                this.allowBuiltInTypeAliases = kvp.ToBooleanValue();
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

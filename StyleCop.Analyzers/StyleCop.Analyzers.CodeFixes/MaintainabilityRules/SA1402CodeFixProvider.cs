@@ -48,9 +48,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Solution>
-                GetTransformedSolutionAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Solution> GetTransformedSolutionAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         SyntaxNode node =
@@ -82,17 +81,17 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                         }
 
                                         switch (child.Kind()) {
-                                        case SyntaxKind.NamespaceDeclaration:
-                                        case SyntaxKind.ClassDeclaration:
-                                        case SyntaxKind.StructDeclaration:
-                                        case SyntaxKind.InterfaceDeclaration:
-                                        case SyntaxKind.EnumDeclaration:
-                                        case SyntaxKind.DelegateDeclaration:
-                                                nodesToRemoveFromExtracted.Add(child);
-                                                break;
+                                                case SyntaxKind.NamespaceDeclaration:
+                                                case SyntaxKind.ClassDeclaration:
+                                                case SyntaxKind.StructDeclaration:
+                                                case SyntaxKind.InterfaceDeclaration:
+                                                case SyntaxKind.EnumDeclaration:
+                                                case SyntaxKind.DelegateDeclaration:
+                                                        nodesToRemoveFromExtracted.Add(child);
+                                                        break;
 
-                                        default:
-                                                break;
+                                                default:
+                                                        break;
                                         }
                                 }
                         }

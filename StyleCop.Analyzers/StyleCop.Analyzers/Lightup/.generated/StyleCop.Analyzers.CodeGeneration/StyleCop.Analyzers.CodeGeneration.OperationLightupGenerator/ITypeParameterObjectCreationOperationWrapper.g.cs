@@ -29,8 +29,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IObjectOrCollectionInitializerOperationWrapper Initializer =>
                     IObjectOrCollectionInitializerOperationWrapper.FromOperation(
                         InitializerAccessor(this.WrappedOperation));
-                public static ITypeParameterObjectCreationOperationWrapper
-                FromOperation(IOperation operation) {
+                public static ITypeParameterObjectCreationOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

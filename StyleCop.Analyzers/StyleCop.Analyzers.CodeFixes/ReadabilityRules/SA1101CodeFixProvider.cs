@@ -47,11 +47,11 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 }
 
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(ReadabilityResources.SA1101CodeFix,
-                                                      cancellationToken =>
-                                                          GetTransformedDocumentAsync(
-                                                              context.Document, root, node),
-                                                      nameof(SA1101CodeFixProvider)),
+                                    CodeAction.Create(
+                                        ReadabilityResources.SA1101CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, root, node),
+                                        nameof(SA1101CodeFixProvider)),
                                     diagnostic);
                         }
                 }
@@ -79,9 +79,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         protected override string CodeActionTitle =>
                             ReadabilityResources.SA1101CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

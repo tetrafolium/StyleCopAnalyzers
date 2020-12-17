@@ -10,8 +10,8 @@ namespace StyleCop.Analyzers.Helpers {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal static class DocumentationCommentExtensions {
-                public static DocumentationCommentTriviaSyntax
-                GetDocumentationCommentTriviaSyntax(this SyntaxNode node) {
+                public static DocumentationCommentTriviaSyntax GetDocumentationCommentTriviaSyntax(
+                    this SyntaxNode node) {
                         if (node == null) {
                                 return null;
                         }
@@ -26,13 +26,13 @@ namespace StyleCop.Analyzers.Helpers {
                         return null;
                 }
 
-                public static XmlNodeSyntax
-                GetFirstXmlElement(this SyntaxList<XmlNodeSyntax> content, string elementName) {
+                public static XmlNodeSyntax GetFirstXmlElement(
+                    this SyntaxList<XmlNodeSyntax> content, string elementName) {
                         return content.GetXmlElements(elementName).FirstOrDefault();
                 }
 
-                public static IEnumerable<XmlNodeSyntax>
-                GetXmlElements(this SyntaxList<XmlNodeSyntax> content, string elementName) {
+                public static IEnumerable<XmlNodeSyntax> GetXmlElements(
+                    this SyntaxList<XmlNodeSyntax> content, string elementName) {
                         foreach (XmlNodeSyntax syntax in content) {
                                 if (syntax is XmlEmptyElementSyntax emptyElement) {
                                         if (string.Equals(elementName, emptyElement.Name.ToString(),
@@ -70,8 +70,8 @@ namespace StyleCop.Analyzers.Helpers {
                                 SelectExteriorTrivia(rewrittenTrivia, trivia, triviaWithSpace));
                 }
 
-                public static SyntaxList<XmlNodeSyntax>
-                WithoutFirstAndLastNewlines(this SyntaxList<XmlNodeSyntax> summaryContent) {
+                public static SyntaxList<XmlNodeSyntax> WithoutFirstAndLastNewlines(
+                    this SyntaxList<XmlNodeSyntax> summaryContent) {
                         if (summaryContent.Count == 0) {
                                 return summaryContent;
                         }
@@ -224,9 +224,9 @@ namespace StyleCop.Analyzers.Helpers {
                                                                          pair.Key.TrailingTrivia));
                         }
 
-                        return node.ReplaceTokens(replacements.Keys,
-                                                  (originalToken, rewrittenToken) =>
-                                                      replacements[originalToken]);
+                        return node.ReplaceTokens(
+                            replacements.Keys,
+                            (originalToken, rewrittenToken) => replacements[originalToken]);
                 }
 
                 public static XmlNameSyntax GetName(this XmlNodeSyntax element) {

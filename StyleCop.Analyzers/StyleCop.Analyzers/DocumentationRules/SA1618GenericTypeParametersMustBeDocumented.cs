@@ -136,10 +136,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                 delegateDeclaration.TypeParameterList);
                 }
 
-                private static void
-                HandleMemberDeclaration(SyntaxNodeAnalysisContext context, bool needsComment,
-                                        SyntaxNode node,
-                                        TypeParameterListSyntax typeParameterList) {
+                private static void HandleMemberDeclaration(
+                    SyntaxNodeAnalysisContext context, bool needsComment, SyntaxNode node,
+                    TypeParameterListSyntax typeParameterList) {
                         if (!needsComment) {
                                 // Documentation is not required for this element.
                                 return;

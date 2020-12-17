@@ -132,9 +132,8 @@ namespace StyleCop.Analyzers.NamingRules {
                 }
 
                 private static class Analyzer {
-                        public static void
-                        HandleVariableDeclaration(SyntaxNodeAnalysisContext context,
-                                                  StyleCopSettings settings) {
+                        public static void HandleVariableDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 var syntax = (VariableDeclarationSyntax) context.Node;
 
                                 if (syntax.Parent.IsKind(SyntaxKind.EventFieldDeclaration)) {
@@ -159,9 +158,8 @@ namespace StyleCop.Analyzers.NamingRules {
                                 }
                         }
 
-                        public static void
-                        HandleParameterDeclaration(SyntaxNodeAnalysisContext context,
-                                                   StyleCopSettings settings) {
+                        public static void HandleParameterDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 var parameter = (ParameterSyntax) context.Node;
 
                                 if (NamedTypeHelpers.IsContainedInNativeMethodsClass(parameter)) {
@@ -195,9 +193,8 @@ namespace StyleCop.Analyzers.NamingRules {
                                                 settings);
                         }
 
-                        public static void
-                        HandleQueryContinuation(SyntaxNodeAnalysisContext context,
-                                                StyleCopSettings settings) {
+                        public static void HandleQueryContinuation(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 CheckIdentifier(context,
                                                 ((QueryContinuationSyntax) context.Node).Identifier,
                                                 settings);
@@ -237,9 +234,8 @@ namespace StyleCop.Analyzers.NamingRules {
                                                 settings);
                         }
 
-                        public static void
-                        HandleSingleVariableDesignation(SyntaxNodeAnalysisContext context,
-                                                        StyleCopSettings settings) {
+                        public static void HandleSingleVariableDesignation(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 CheckIdentifier(
                                     context,
                                     ((SingleVariableDesignationSyntaxWrapper) context.Node)

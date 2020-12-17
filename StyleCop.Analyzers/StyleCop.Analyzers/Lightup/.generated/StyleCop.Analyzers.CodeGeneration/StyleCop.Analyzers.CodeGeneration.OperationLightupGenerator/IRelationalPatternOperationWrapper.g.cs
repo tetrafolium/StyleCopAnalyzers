@@ -33,11 +33,11 @@ namespace StyleCop.Analyzers.Lightup {
                 public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
                 public static explicit operator IRelationalPatternOperationWrapper(
                     IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit
-                operator IPatternOperationWrapper(IRelationalPatternOperationWrapper wrapper) =>
+                public static implicit operator IPatternOperationWrapper(
+                    IRelationalPatternOperationWrapper wrapper) =>
                     IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IRelationalPatternOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IRelationalPatternOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

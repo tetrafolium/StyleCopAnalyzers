@@ -54,9 +54,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var documentRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                                .ConfigureAwait(false);
                         SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan);
@@ -173,10 +172,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
             return document.WithSyntaxRoot(newRoot);
                 }
 
-                private static bool
-                IsAsynchronousTestMethod(SemanticModel semanticModel,
-                                         MethodDeclarationSyntax methodDeclarationSyntax,
-                                         CancellationToken cancellationToken) {
+                private static bool IsAsynchronousTestMethod(
+                    SemanticModel semanticModel, MethodDeclarationSyntax methodDeclarationSyntax,
+                    CancellationToken cancellationToken) {
                         foreach (AttributeListSyntax attributeList in methodDeclarationSyntax
                                      .AttributeLists) {
                                 if (attributeList.Target != null) {
@@ -210,8 +208,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return false;
                 }
 
-                private static SyntaxTrivia
-                GetLastDocumentationCommentExteriorTrivia(SyntaxNode node) {
+                private static SyntaxTrivia GetLastDocumentationCommentExteriorTrivia(
+                    SyntaxNode node) {
                         return node.DescendantTrivia(descendIntoTrivia
                                                      : true)
                             .LastOrDefault(trivia => trivia.IsKind(

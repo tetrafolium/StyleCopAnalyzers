@@ -91,30 +91,31 @@ namespace StyleCop.Analyzers.NamingRules {
                                 }
 
                                 switch (identifier.ValueText.IndexOf('_')) {
-                                case -1:
-                                        // no _ character
-                                        continue;
-
-                                case 0:
-                                        // leading underscore -> report as SA1309
-                                        continue;
-
-                                case 1:
-                                        switch (identifier.ValueText[0]) {
-                                        case 'm':
-                                        case 's':
-                                        case 't':
-                                                // m_, s_, and t_ prefixes are reported as SA1308
+                                        case -1:
+                                                // no _ character
                                                 continue;
+
+                                        case 0:
+                                                // leading underscore -> report as SA1309
+                                                continue;
+
+                                        case 1:
+                                                switch (identifier.ValueText[0]) {
+                                                        case 'm':
+                                                        case 's':
+                                                        case 't':
+                                                                // m_, s_, and t_ prefixes are
+                                                                // reported as SA1308
+                                                                continue;
+
+                                                        default:
+                                                                break;
+                                                }
+
+                                                break;
 
                                         default:
                                                 break;
-                                        }
-
-                                        break;
-
-                                default:
-                                        break;
                                 }
 
                                 // Field '{name}' should not contain an underscore

@@ -38,8 +38,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public static implicit operator ISymbolInitializerOperationWrapper(
                     IFieldInitializerOperationWrapper wrapper) =>
                     ISymbolInitializerOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IFieldInitializerOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IFieldInitializerOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

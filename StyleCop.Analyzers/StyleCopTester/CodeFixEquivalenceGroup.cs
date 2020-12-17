@@ -53,10 +53,10 @@ internal class CodeFixEquivalenceGroup {
 
         internal int NumberOfDiagnostics { get; }
 
-        internal static async Task<ImmutableArray<CodeFixEquivalenceGroup>>
-        CreateAsync(CodeFixProvider codeFixProvider,
-                    ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> allDiagnostics,
-                    Solution solution, CancellationToken cancellationToken) {
+        internal static async Task<ImmutableArray<CodeFixEquivalenceGroup>> CreateAsync(
+            CodeFixProvider codeFixProvider,
+            ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> allDiagnostics,
+            Solution solution, CancellationToken cancellationToken) {
                 var fixAllProvider = codeFixProvider.GetFixAllProvider();
                 if (fixAllProvider == null) {
                         return ImmutableArray.Create<CodeFixEquivalenceGroup>();
@@ -144,8 +144,8 @@ internal class CodeFixEquivalenceGroup {
                 return groups.ToImmutableArray();
         }
 
-        internal async Task<ImmutableArray<CodeActionOperation>>
-        GetOperationsAsync(CancellationToken cancellationToken) {
+        internal async Task<ImmutableArray<CodeActionOperation>> GetOperationsAsync(
+            CancellationToken cancellationToken) {
                 Diagnostic diagnostic =
                     this.DocumentDiagnosticsToFix.Values.SelectMany(i => i.Values)
                         .Concat(this.ProjectDiagnosticsToFix.Values)
@@ -171,9 +171,9 @@ internal class CodeFixEquivalenceGroup {
                 return await action.GetOperationsAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task<IEnumerable<CodeAction>>
-        GetFixesAsync(Solution solution, CodeFixProvider codeFixProvider, Diagnostic diagnostic,
-                      CancellationToken cancellationToken) {
+        private static async Task<IEnumerable<CodeAction>> GetFixesAsync(
+            Solution solution, CodeFixProvider codeFixProvider, Diagnostic diagnostic,
+            CancellationToken cancellationToken) {
                 List<CodeAction> codeActions = new List<CodeAction>();
 
                 await codeFixProvider

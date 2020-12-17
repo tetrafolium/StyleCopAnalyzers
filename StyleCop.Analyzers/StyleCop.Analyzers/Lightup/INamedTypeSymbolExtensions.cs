@@ -30,8 +30,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return TupleUnderlyingTypeAccessor(symbol);
                 }
 
-                public static ImmutableArray<IFieldSymbol>
-                TupleElements(this INamedTypeSymbol symbol) {
+                public static ImmutableArray<IFieldSymbol> TupleElements(
+                    this INamedTypeSymbol symbol) {
                         return TupleElementsAccessor(symbol);
                 }
 

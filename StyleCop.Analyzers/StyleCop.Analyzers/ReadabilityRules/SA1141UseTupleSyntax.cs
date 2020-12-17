@@ -117,8 +117,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         CheckParameterList(context, conversionOperatorDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleBasePropertyDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleBasePropertyDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -127,8 +127,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         CheckType(context, propertyDeclaration.Type);
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -210,20 +210,20 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                               TypeSyntax typeSyntax,
                                               Location reportLocation = null) {
                         switch (typeSyntax.Kind()) {
-                        case SyntaxKindEx.TupleType:
-                                CheckTupleType(context, (TupleTypeSyntaxWrapper) typeSyntax,
-                                               reportLocation);
-                                break;
+                                case SyntaxKindEx.TupleType:
+                                        CheckTupleType(context, (TupleTypeSyntaxWrapper) typeSyntax,
+                                                       reportLocation);
+                                        break;
 
-                        case SyntaxKind.QualifiedName:
-                                CheckType(context, ((QualifiedNameSyntax) typeSyntax).Right,
-                                          reportLocation ?? typeSyntax.GetLocation());
-                                break;
+                                case SyntaxKind.QualifiedName:
+                                        CheckType(context, ((QualifiedNameSyntax) typeSyntax).Right,
+                                                  reportLocation ?? typeSyntax.GetLocation());
+                                        break;
 
-                        case SyntaxKind.GenericName:
-                                CheckGenericName(context, (GenericNameSyntax) typeSyntax,
-                                                 reportLocation);
-                                break;
+                                case SyntaxKind.GenericName:
+                                        CheckGenericName(context, (GenericNameSyntax) typeSyntax,
+                                                         reportLocation);
+                                        break;
                         }
                 }
 
@@ -251,9 +251,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static bool
-                IsValueTupleWithLanguageRepresentation(SyntaxNodeAnalysisContext context,
-                                                       ExpressionSyntax syntax) {
+                private static bool IsValueTupleWithLanguageRepresentation(
+                    SyntaxNodeAnalysisContext context, ExpressionSyntax syntax) {
                         var symbolInfo =
                             context.SemanticModel.GetSymbolInfo(syntax, context.CancellationToken);
                         return symbolInfo.Symbol is INamedTypeSymbol typeSymbol &&

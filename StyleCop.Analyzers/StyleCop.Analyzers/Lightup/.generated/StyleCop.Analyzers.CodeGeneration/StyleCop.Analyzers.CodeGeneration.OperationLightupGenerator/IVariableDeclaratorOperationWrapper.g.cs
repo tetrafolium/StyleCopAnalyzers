@@ -42,8 +42,8 @@ namespace StyleCop.Analyzers.Lightup {
                         InitializerAccessor(this.WrappedOperation));
                 public ImmutableArray<IOperation> IgnoredArguments =>
                     IgnoredArgumentsAccessor(this.WrappedOperation);
-                public static IVariableDeclaratorOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IVariableDeclaratorOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

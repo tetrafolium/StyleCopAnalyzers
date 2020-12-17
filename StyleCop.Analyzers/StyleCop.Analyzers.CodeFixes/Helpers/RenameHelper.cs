@@ -14,9 +14,9 @@ namespace StyleCop.Analyzers.Helpers {
         using StyleCop.Analyzers.Lightup;
 
         internal static class RenameHelper {
-                public static async Task<Solution>
-                RenameSymbolAsync(Document document, SyntaxNode root, SyntaxToken declarationToken,
-                                  string newName, CancellationToken cancellationToken) {
+                public static async Task<Solution> RenameSymbolAsync(
+                    Document document, SyntaxNode root, SyntaxToken declarationToken,
+                    string newName, CancellationToken cancellationToken) {
                         var annotatedRoot = root.ReplaceToken(
                             declarationToken,
                             declarationToken.WithAdditionalAnnotations(RenameAnnotation.Create()));
@@ -45,9 +45,9 @@ namespace StyleCop.Analyzers.Helpers {
                         return newSolution;
                 }
 
-                public static async Task<bool>
-                IsValidNewMemberNameAsync(SemanticModel semanticModel, ISymbol symbol, string name,
-                                          CancellationToken cancellationToken) {
+                public static async Task<bool> IsValidNewMemberNameAsync(
+                    SemanticModel semanticModel, ISymbol symbol, string name,
+                    CancellationToken cancellationToken) {
                         if (symbol.Kind == SymbolKind.NamedType) {
                                 TypeKind typeKind = ((INamedTypeSymbol) symbol).TypeKind;
 
@@ -151,30 +151,31 @@ namespace StyleCop.Analyzers.Helpers {
 
                         while (parent != null) {
                                 switch (parent.Kind()) {
-                                case SyntaxKind.VariableDeclarator:
-                                case SyntaxKind.Parameter:
-                                case SyntaxKind.TypeParameter:
-                                case SyntaxKind.CatchDeclaration:
-                                case SyntaxKind.ExternAliasDirective:
-                                case SyntaxKind.QueryContinuation:
-                                case SyntaxKind.FromClause:
-                                case SyntaxKind.LetClause:
-                                case SyntaxKind.JoinClause:
-                                case SyntaxKind.JoinIntoClause:
-                                case SyntaxKind.ForEachStatement:
-                                case SyntaxKind.UsingDirective:
-                                case SyntaxKind.LabeledStatement:
-                                case SyntaxKind.AnonymousObjectMemberDeclarator:
-                                case SyntaxKindEx.LocalFunctionStatement:
-                                case SyntaxKindEx.SingleVariableDesignation:
-                                        return parent;
+                                        case SyntaxKind.VariableDeclarator:
+                                        case SyntaxKind.Parameter:
+                                        case SyntaxKind.TypeParameter:
+                                        case SyntaxKind.CatchDeclaration:
+                                        case SyntaxKind.ExternAliasDirective:
+                                        case SyntaxKind.QueryContinuation:
+                                        case SyntaxKind.FromClause:
+                                        case SyntaxKind.LetClause:
+                                        case SyntaxKind.JoinClause:
+                                        case SyntaxKind.JoinIntoClause:
+                                        case SyntaxKind.ForEachStatement:
+                                        case SyntaxKind.UsingDirective:
+                                        case SyntaxKind.LabeledStatement:
+                                        case SyntaxKind.AnonymousObjectMemberDeclarator:
+                                        case SyntaxKindEx.LocalFunctionStatement:
+                                        case SyntaxKindEx.SingleVariableDesignation:
+                                                return parent;
 
-                                default:
-                                        if (parent is MemberDeclarationSyntax declarationParent) {
-                                                return declarationParent;
-                                        }
+                                        default:
+                                                if (parent is MemberDeclarationSyntax
+                                                        declarationParent) {
+                                                        return declarationParent;
+                                                }
 
-                                        break;
+                                                break;
                                 }
 
                                 parent = parent.Parent;
@@ -195,26 +196,27 @@ namespace StyleCop.Analyzers.Helpers {
 
                         public override void Visit(SyntaxNode node) {
                                 switch (node.Kind()) {
-                                case SyntaxKindEx.LocalFunctionStatement:
-                                        this.Found |= ((LocalFunctionStatementSyntaxWrapper) node)
-                                                          .Identifier.ValueText == this.name;
-                                        break;
+                                        case SyntaxKindEx.LocalFunctionStatement:
+                                                this.Found |=
+                                                    ((LocalFunctionStatementSyntaxWrapper) node)
+                                                        .Identifier.ValueText == this.name;
+                                                break;
 
-                                case SyntaxKindEx.SingleVariableDesignation:
-                                        this.Found |=
-                                            ((SingleVariableDesignationSyntaxWrapper) node)
-                                                .Identifier.ValueText == this.name;
-                                        break;
+                                        case SyntaxKindEx.SingleVariableDesignation:
+                                                this.Found |=
+                                                    ((SingleVariableDesignationSyntaxWrapper) node)
+                                                        .Identifier.ValueText == this.name;
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
 
                                 base.Visit(node);
                         }
 
-                        public override void
-                        VisitVariableDeclarator(VariableDeclaratorSyntax node) {
+                        public override void VisitVariableDeclarator(
+                            VariableDeclaratorSyntax node) {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitVariableDeclarator(node);
                         }

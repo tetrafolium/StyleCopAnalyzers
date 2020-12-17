@@ -92,8 +92,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         // If SA1503 is suppressed, we need to handle compound blocks as well.
                         if (context.IsAnalyzerSuppressed(SA1503BracesMustNotBeOmitted.Descriptor)) {
                                 context.RegisterSyntaxNodeAction(HandleIfStatement,
@@ -142,19 +142,21 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                                 if (openBraceLineNumber == closeBraceLineNumber) {
                                         switch (block.Parent.Kind()) {
-                                        case SyntaxKind.AnonymousMethodExpression:
-                                        case SyntaxKind.SimpleLambdaExpression:
-                                        case SyntaxKind.ParenthesizedLambdaExpression:
-                                                var containingExpression =
-                                                    GetContainingExpression(block.Parent);
-                                                if (IsSingleLineExpression(containingExpression)) {
-                                                        // Single line lambda expressions and
-                                                        // anonymous method declarations are allowed
-                                                        // for single line expressions.
-                                                        return;
-                                                }
+                                                case SyntaxKind.AnonymousMethodExpression:
+                                                case SyntaxKind.SimpleLambdaExpression:
+                                                case SyntaxKind.ParenthesizedLambdaExpression:
+                                                        var containingExpression =
+                                                            GetContainingExpression(block.Parent);
+                                                        if (IsSingleLineExpression(
+                                                                containingExpression)) {
+                                                                // Single line lambda expressions
+                                                                // and anonymous method declarations
+                                                                // are allowed for single line
+                                                                // expressions.
+                                                                return;
+                                                        }
 
-                                                break;
+                                                        break;
                                         }
 
                                         ReportDiagnostic(context,

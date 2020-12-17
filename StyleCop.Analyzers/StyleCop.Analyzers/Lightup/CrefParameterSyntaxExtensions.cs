@@ -27,8 +27,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return RefKindKeywordAccessor(syntax);
                 }
 
-                public static CrefParameterSyntax
-                WithRefKindKeyword(this CrefParameterSyntax syntax, SyntaxToken refKindKeyword) {
+                public static CrefParameterSyntax WithRefKindKeyword(
+                    this CrefParameterSyntax syntax, SyntaxToken refKindKeyword) {
                         return WithRefKindKeywordAccessor(syntax, refKindKeyword);
                 }
         }

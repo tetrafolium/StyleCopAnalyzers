@@ -76,8 +76,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                             SyntaxKindEx.ImplicitStackAllocArrayCreationExpression);
                 }
 
-                private static void
-                HandleImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleImplicitArrayCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var arrayCreation = (ImplicitArrayCreationExpressionSyntax) context.Node;
                         var newKeywordToken = arrayCreation.NewKeyword;
 
@@ -89,8 +89,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                         }
                 }
 
-                private static void
-                HandleImplicitStackAllocArrayCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleImplicitStackAllocArrayCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var arrayCreation =
                             (ImplicitStackAllocArrayCreationExpressionSyntaxWrapper) context.Node;
                         var stackAllocKeywordToken = arrayCreation.StackAllocKeyword;

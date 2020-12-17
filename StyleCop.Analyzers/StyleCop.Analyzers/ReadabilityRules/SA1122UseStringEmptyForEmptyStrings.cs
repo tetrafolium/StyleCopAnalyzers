@@ -71,8 +71,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.StringLiteralExpression);
                 }
 
-                private static void
-                HandleStringLiteralExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleStringLiteralExpression(
+                    SyntaxNodeAnalysisContext context) {
                         LiteralExpressionSyntax literalExpression =
                             (LiteralExpressionSyntax) context.Node;
 

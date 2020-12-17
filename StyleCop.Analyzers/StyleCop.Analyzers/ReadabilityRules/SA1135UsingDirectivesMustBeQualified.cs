@@ -71,8 +71,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         context.RegisterCompilationStartAction(HandleCompilationStart);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         context.RegisterSyntaxNodeAction(HandleUsingDeclaration,
                                                          SyntaxKind.UsingDirective);
                 }
@@ -114,30 +114,32 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             !usingDirective.StartsWithAlias(context.SemanticModel,
                                                             context.CancellationToken)) {
                                 switch (symbol.Kind) {
-                                case SymbolKind.Namespace:
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            DescriptorNamespace, usingDirective.GetLocation(),
-                                            symbolString));
-                                        break;
-
-                                case SymbolKind.NamedType:
-                                        var containingNamespace =
-                                            ((NamespaceDeclarationSyntax) usingDirective.Parent)
-                                                .Name.ToString();
-                                        if (containingNamespace !=
-                                            symbol.ContainingNamespace.ToString()) {
+                                        case SymbolKind.Namespace:
                                                 context.ReportDiagnostic(Diagnostic.Create(
-                                                    DescriptorType, usingDirective.GetLocation(),
-                                                    symbolString));
-                                        }
+                                                    DescriptorNamespace,
+                                                    usingDirective.GetLocation(), symbolString));
+                                                break;
 
-                                        break;
+                                        case SymbolKind.NamedType:
+                                                var containingNamespace =
+                                                    ((NamespaceDeclarationSyntax)
+                                                         usingDirective.Parent)
+                                                        .Name.ToString();
+                                                if (containingNamespace !=
+                                                    symbol.ContainingNamespace.ToString()) {
+                                                        context.ReportDiagnostic(Diagnostic.Create(
+                                                            DescriptorType,
+                                                            usingDirective.GetLocation(),
+                                                            symbolString));
+                                                }
+
+                                                break;
                                 }
                         }
                 }
 
-                private static string
-                UsingDirectiveSyntaxToCanonicalString(UsingDirectiveSyntax usingDirective) {
+                private static string UsingDirectiveSyntaxToCanonicalString(
+                    UsingDirectiveSyntax usingDirective) {
                         var builder = StringBuilderPool.Allocate();
                         AppendCanonicalString(builder, usingDirective.Name);
                         return StringBuilderPool.ReturnAndFree(builder);
@@ -145,86 +147,87 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private static bool AppendCanonicalString(StringBuilder builder, TypeSyntax type) {
                         switch (type) {
-                        case AliasQualifiedNameSyntax aliasQualifiedName:
-                                AppendCanonicalString(builder, aliasQualifiedName.Alias);
-                                builder.Append("::");
-                                AppendCanonicalString(builder, aliasQualifiedName.Name);
-                                return true;
+                                case AliasQualifiedNameSyntax aliasQualifiedName:
+                                        AppendCanonicalString(builder, aliasQualifiedName.Alias);
+                                        builder.Append("::");
+                                        AppendCanonicalString(builder, aliasQualifiedName.Name);
+                                        return true;
 
-                        case IdentifierNameSyntax identifierName:
-                                builder.Append(identifierName.Identifier.Text);
-                                return true;
+                                case IdentifierNameSyntax identifierName:
+                                        builder.Append(identifierName.Identifier.Text);
+                                        return true;
 
-                        case GenericNameSyntax genericName:
-                                builder.Append(genericName.Identifier.Text);
-                                builder.Append("<");
+                                case GenericNameSyntax genericName:
+                                        builder.Append(genericName.Identifier.Text);
+                                        builder.Append("<");
 
-                                var typeArgumentList = genericName.TypeArgumentList;
-                                for (int i = 0; i < typeArgumentList.Arguments.Count; i++) {
-                                        if (i > 0) {
-                                                builder.Append(", ");
-                                        }
-
-                                        AppendCanonicalString(builder,
-                                                              typeArgumentList.Arguments[i]);
-                                }
-
-                                builder.Append(">");
-                                return true;
-
-                        case QualifiedNameSyntax qualifiedName:
-                                AppendCanonicalString(builder, qualifiedName.Left);
-                                builder.Append(".");
-                                AppendCanonicalString(builder, qualifiedName.Right);
-                                return true;
-
-                        case PredefinedTypeSyntax predefinedType:
-                                builder.Append(predefinedType.Keyword.Text);
-                                return true;
-
-                        case ArrayTypeSyntax arrayType:
-                                AppendCanonicalString(builder, arrayType.ElementType);
-                                foreach (var rankSpecifier in arrayType.RankSpecifiers) {
-                                        builder.Append("[");
-                                        builder.Append(',', rankSpecifier.Rank - 1);
-                                        builder.Append("]");
-                                }
-
-                                return true;
-
-                        case NullableTypeSyntax nullableType:
-                                AppendCanonicalString(builder, nullableType.ElementType);
-                                builder.Append("?");
-                                return true;
-
-                        case OmittedTypeArgumentSyntax _:
-                                return false;
-
-                        default:
-                                if (TupleTypeSyntaxWrapper.IsInstance(type)) {
-                                        var tupleType = (TupleTypeSyntaxWrapper) type;
-
-                                        builder.Append("(");
-
-                                        var elements = tupleType.Elements;
-                                        for (int i = 0; i < elements.Count; i++) {
+                                        var typeArgumentList = genericName.TypeArgumentList;
+                                        for (int i = 0; i < typeArgumentList.Arguments.Count; i++) {
                                                 if (i > 0) {
                                                         builder.Append(", ");
                                                 }
 
-                                                AppendCanonicalString(builder, elements[i].Type);
-                                                if (!elements[i].Identifier.IsKind(
-                                                        SyntaxKind.None)) {
-                                                        builder.Append(" ").Append(
-                                                            elements[i].Identifier.Text);
-                                                }
+                                                AppendCanonicalString(
+                                                    builder, typeArgumentList.Arguments[i]);
                                         }
 
-                                        builder.Append(")");
+                                        builder.Append(">");
                                         return true;
-                                } else {
+
+                                case QualifiedNameSyntax qualifiedName:
+                                        AppendCanonicalString(builder, qualifiedName.Left);
+                                        builder.Append(".");
+                                        AppendCanonicalString(builder, qualifiedName.Right);
+                                        return true;
+
+                                case PredefinedTypeSyntax predefinedType:
+                                        builder.Append(predefinedType.Keyword.Text);
+                                        return true;
+
+                                case ArrayTypeSyntax arrayType:
+                                        AppendCanonicalString(builder, arrayType.ElementType);
+                                        foreach (var rankSpecifier in arrayType.RankSpecifiers) {
+                                                builder.Append("[");
+                                                builder.Append(',', rankSpecifier.Rank - 1);
+                                                builder.Append("]");
+                                        }
+
+                                        return true;
+
+                                case NullableTypeSyntax nullableType:
+                                        AppendCanonicalString(builder, nullableType.ElementType);
+                                        builder.Append("?");
+                                        return true;
+
+                                case OmittedTypeArgumentSyntax _:
                                         return false;
-                                }
+
+                                default:
+                                        if (TupleTypeSyntaxWrapper.IsInstance(type)) {
+                                                var tupleType = (TupleTypeSyntaxWrapper) type;
+
+                                                builder.Append("(");
+
+                                                var elements = tupleType.Elements;
+                                                for (int i = 0; i < elements.Count; i++) {
+                                                        if (i > 0) {
+                                                                builder.Append(", ");
+                                                        }
+
+                                                        AppendCanonicalString(builder,
+                                                                              elements[i].Type);
+                                                        if (!elements[i].Identifier.IsKind(
+                                                                SyntaxKind.None)) {
+                                                                builder.Append(" ").Append(
+                                                                    elements[i].Identifier.Text);
+                                                        }
+                                                }
+
+                                                builder.Append(")");
+                                                return true;
+                                        } else {
+                                                return false;
+                                        }
                         }
                 }
         }

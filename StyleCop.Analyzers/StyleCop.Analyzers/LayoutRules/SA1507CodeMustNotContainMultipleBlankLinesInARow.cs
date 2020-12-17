@@ -60,12 +60,12 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                   LayoutResources.ResourceManager,
                                                   typeof(LayoutResources));
 
-#pragma warning disable SA1202 // Elements should be ordered by access
+#pragma warning disable SA1202  // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
-#pragma warning restore SA1202 // Elements should be ordered by access
+#pragma warning restore SA1202  // Elements should be ordered by access
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
                     HandleSyntaxTree;
@@ -104,21 +104,21 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 for (int i = 0; i < leadingTrivia.Count; i++) {
                                         switch (leadingTrivia [i]
                                                     .Kind()) {
-                                        case SyntaxKind.WhitespaceTrivia:
-                                                break;
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        break;
 
-                                        case SyntaxKind.EndOfLineTrivia:
-                                                blankLineEndIndex = i;
-                                                blankLineCount++;
-                                                break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        blankLineEndIndex = i;
+                                                        blankLineCount++;
+                                                        break;
 
-                                        default:
-                                                ReportDiagnosticIfNecessary(
-                                                    context, leadingTrivia, blankLineIndex,
-                                                    blankLineEndIndex, blankLineCount);
-                                                blankLineIndex = i + 1;
-                                                blankLineCount = 0;
-                                                break;
+                                                default:
+                                                        ReportDiagnosticIfNecessary(
+                                                            context, leadingTrivia, blankLineIndex,
+                                                            blankLineEndIndex, blankLineCount);
+                                                        blankLineIndex = i + 1;
+                                                        blankLineCount = 0;
+                                                        break;
                                         }
                                 }
 

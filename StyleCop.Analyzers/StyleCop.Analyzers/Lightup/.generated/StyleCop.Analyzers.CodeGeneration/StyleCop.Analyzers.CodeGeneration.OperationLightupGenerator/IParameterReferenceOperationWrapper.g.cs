@@ -28,8 +28,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IParameterSymbol Parameter => ParameterAccessor(this.WrappedOperation);
-                public static IParameterReferenceOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IParameterReferenceOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

@@ -90,11 +90,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// included an <c>&lt;include&gt;</c> element.</param> <param
                 /// name="diagnosticLocations">The location(s) where diagnostics, if any, should be
                 /// reported.</param>
-                protected abstract void
-                HandleXmlElement(SyntaxNodeAnalysisContext context, bool needsComment,
-                                 DocumentationCommentTriviaSyntax documentation,
-                                 XmlNodeSyntax syntax, XElement completeDocumentation,
-                                 params Location[] diagnosticLocations);
+                protected abstract void HandleXmlElement(
+                    SyntaxNodeAnalysisContext context, bool needsComment,
+                    DocumentationCommentTriviaSyntax documentation, XmlNodeSyntax syntax,
+                    XElement completeDocumentation, params Location[] diagnosticLocations);
 
                 private void HandleTypeDeclaration(SyntaxNodeAnalysisContext context,
                                                    StyleCopSettings settings) {

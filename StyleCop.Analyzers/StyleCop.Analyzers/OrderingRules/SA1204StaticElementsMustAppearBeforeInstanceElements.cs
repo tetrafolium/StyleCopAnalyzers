@@ -146,39 +146,41 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 bool compareStatic = true;
                                 for (int j = 0; compareStatic && j < staticIndex; j++) {
                                         switch (elementOrder[j]) {
-                                        case OrderingTrait.Accessibility:
-                                                if (currentAccessLevel != previousAccessLevel) {
-                                                        compareStatic = false;
-                                                }
+                                                case OrderingTrait.Accessibility:
+                                                        if (currentAccessLevel !=
+                                                            previousAccessLevel) {
+                                                                compareStatic = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Readonly:
-                                                if (currentMemberReadonly !=
-                                                    previousMemberReadonly) {
-                                                        compareStatic = false;
-                                                }
+                                                case OrderingTrait.Readonly:
+                                                        if (currentMemberReadonly !=
+                                                            previousMemberReadonly) {
+                                                                compareStatic = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Constant:
-                                                if (currentMemberConstant !=
-                                                    previousMemberConstant) {
-                                                        compareStatic = false;
-                                                }
+                                                case OrderingTrait.Constant:
+                                                        if (currentMemberConstant !=
+                                                            previousMemberConstant) {
+                                                                compareStatic = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Kind:
-                                                if (previousSyntaxKind != currentSyntaxKind) {
-                                                        compareStatic = false;
-                                                }
+                                                case OrderingTrait.Kind:
+                                                        if (previousSyntaxKind !=
+                                                            currentSyntaxKind) {
+                                                                compareStatic = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Static:
-                                        default:
-                                                continue;
+                                                case OrderingTrait.Static:
+                                                default:
+                                                        continue;
                                         }
                                 }
 

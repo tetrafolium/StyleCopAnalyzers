@@ -43,10 +43,14 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, SyntaxToken>(
                                     WrappedType, nameof(Keyword));
-                        WithPatternAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            SwitchLabelSyntax, CSharpSyntaxNode>(WrappedType, nameof(Pattern));
-                        WithWhenClauseAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            SwitchLabelSyntax, CSharpSyntaxNode>(WrappedType, nameof(WhenClause));
+                        WithPatternAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(Pattern));
+                        WithWhenClauseAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(WhenClause));
                         WithColonTokenAccessor =
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, SyntaxToken>(
@@ -78,8 +82,8 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return this.SyntaxNode.ColonToken; }
                 }
 
-                public static explicit
-                operator CasePatternSwitchLabelSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator CasePatternSwitchLabelSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -92,8 +96,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new CasePatternSwitchLabelSyntaxWrapper((SwitchLabelSyntax) node);
                 }
 
-                public static implicit
-                operator SwitchLabelSyntax(CasePatternSwitchLabelSyntaxWrapper wrapper) {
+                public static implicit operator SwitchLabelSyntax(
+                    CasePatternSwitchLabelSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -106,14 +110,14 @@ namespace StyleCop.Analyzers.Lightup {
                             WithKeywordAccessor(this.SyntaxNode, keyword));
                 }
 
-                public CasePatternSwitchLabelSyntaxWrapper
-                WithPattern(PatternSyntaxWrapper pattern) {
+                public CasePatternSwitchLabelSyntaxWrapper WithPattern(
+                    PatternSyntaxWrapper pattern) {
                         return new CasePatternSwitchLabelSyntaxWrapper(
                             WithPatternAccessor(this.SyntaxNode, pattern));
                 }
 
-                public CasePatternSwitchLabelSyntaxWrapper
-                WithWhenClause(WhenClauseSyntaxWrapper whenClause) {
+                public CasePatternSwitchLabelSyntaxWrapper WithWhenClause(
+                    WhenClauseSyntaxWrapper whenClause) {
                         return new CasePatternSwitchLabelSyntaxWrapper(
                             WithWhenClauseAccessor(this.SyntaxNode, whenClause));
                 }

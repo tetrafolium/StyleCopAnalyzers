@@ -129,8 +129,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         }
                 }
 
-                private static void
-                HandleAnonymousObjectInitializer(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousObjectInitializer(
+                    SyntaxNodeAnalysisContext context) {
                         var initializer = (AnonymousObjectCreationExpressionSyntax) context.Node;
                         if (initializer == null || !initializer.SpansMultipleLines()) {
                                 return;

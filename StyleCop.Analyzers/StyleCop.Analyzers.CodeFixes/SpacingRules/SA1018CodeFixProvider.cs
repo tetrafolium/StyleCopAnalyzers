@@ -72,19 +72,18 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                 private static bool UnsupportedTriviaKind(SyntaxTrivia trivia) {
                         switch (trivia.Kind()) {
-                        case SyntaxKind.WhitespaceTrivia:
-                        case SyntaxKind.EndOfLineTrivia:
-                        case SyntaxKind.MultiLineCommentTrivia:
-                                return false;
+                                case SyntaxKind.WhitespaceTrivia:
+                                case SyntaxKind.EndOfLineTrivia:
+                                case SyntaxKind.MultiLineCommentTrivia:
+                                        return false;
 
-                        default:
-                                return true;
+                                default:
+                                        return true;
                         }
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 

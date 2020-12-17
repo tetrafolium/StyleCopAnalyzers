@@ -27,8 +27,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IOperation Target => TargetAccessor(this.WrappedOperation);
-                public static IDelegateCreationOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IDelegateCreationOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

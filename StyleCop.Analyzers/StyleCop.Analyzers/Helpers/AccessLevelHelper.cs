@@ -34,34 +34,34 @@ namespace StyleCop.Analyzers.Helpers {
                         bool isInternal = false;
                         foreach (var modifier in modifiers) {
                                 switch (modifier.Kind()) {
-                                case SyntaxKind.PublicKeyword:
-                                        return AccessLevel.Public;
-                                case SyntaxKind.PrivateKeyword:
-                                        if (isProtected) {
-                                                return AccessLevel.PrivateProtected;
-                                        } else {
-                                                isPrivate = true;
-                                        }
+                                        case SyntaxKind.PublicKeyword:
+                                                return AccessLevel.Public;
+                                        case SyntaxKind.PrivateKeyword:
+                                                if (isProtected) {
+                                                        return AccessLevel.PrivateProtected;
+                                                } else {
+                                                        isPrivate = true;
+                                                }
 
-                                        break;
-                                case SyntaxKind.InternalKeyword:
-                                        if (isProtected) {
-                                                return AccessLevel.ProtectedInternal;
-                                        } else {
-                                                isInternal = true;
-                                        }
+                                                break;
+                                        case SyntaxKind.InternalKeyword:
+                                                if (isProtected) {
+                                                        return AccessLevel.ProtectedInternal;
+                                                } else {
+                                                        isInternal = true;
+                                                }
 
-                                        break;
-                                case SyntaxKind.ProtectedKeyword:
-                                        if (isInternal) {
-                                                return AccessLevel.ProtectedInternal;
-                                        } else if (isPrivate) {
-                                                return AccessLevel.PrivateProtected;
-                                        } else {
-                                                isProtected = true;
-                                        }
+                                                break;
+                                        case SyntaxKind.ProtectedKeyword:
+                                                if (isInternal) {
+                                                        return AccessLevel.ProtectedInternal;
+                                                } else if (isPrivate) {
+                                                        return AccessLevel.PrivateProtected;
+                                                } else {
+                                                        isProtected = true;
+                                                }
 
-                                        break;
+                                                break;
                                 }
                         }
 
@@ -98,35 +98,34 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </exception>
                 internal static Accessibility ToAccessibility(this AccessLevel accessLevel) {
                         switch (accessLevel) {
-                        case AccessLevel.Public:
-                                return Accessibility.Public;
+                                case AccessLevel.Public:
+                                        return Accessibility.Public;
 
-                        case AccessLevel.Internal:
-                                return Accessibility.Internal;
+                                case AccessLevel.Internal:
+                                        return Accessibility.Internal;
 
-                        case AccessLevel.ProtectedInternal:
-                                return Accessibility.ProtectedOrInternal;
+                                case AccessLevel.ProtectedInternal:
+                                        return Accessibility.ProtectedOrInternal;
 
-                        case AccessLevel.Protected:
-                                return Accessibility.Protected;
+                                case AccessLevel.Protected:
+                                        return Accessibility.Protected;
 
-                        case AccessLevel.PrivateProtected:
-                                return Accessibility.ProtectedAndInternal;
+                                case AccessLevel.PrivateProtected:
+                                        return Accessibility.ProtectedAndInternal;
 
-                        case AccessLevel.Private:
-                                return Accessibility.Private;
+                                case AccessLevel.Private:
+                                        return Accessibility.Private;
 
-                        case AccessLevel.NotSpecified:
-                        default:
-                                throw new ArgumentException(
-                                    $"'AccessLevel.{accessLevel}' does not have a corresponding 'Accessibility' value.");
+                                case AccessLevel.NotSpecified:
+                                default:
+                                        throw new ArgumentException(
+                                            $"'AccessLevel.{accessLevel}' does not have a corresponding 'Accessibility' value.");
                         }
                 }
 
-                internal static Accessibility
-                GetDeclaredAccessibility(this BaseTypeDeclarationSyntax syntax,
-                                         SemanticModel semanticModel,
-                                         CancellationToken cancellationToken) {
+                internal static Accessibility GetDeclaredAccessibility(
+                    this BaseTypeDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -146,10 +145,9 @@ namespace StyleCop.Analyzers.Helpers {
                         return declaredSymbol?.DeclaredAccessibility ?? Accessibility.NotApplicable;
                 }
 
-                internal static Accessibility
-                GetDeclaredAccessibility(this BaseMethodDeclarationSyntax syntax,
-                                         SemanticModel semanticModel,
-                                         CancellationToken cancellationToken) {
+                internal static Accessibility GetDeclaredAccessibility(
+                    this BaseMethodDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -179,10 +177,9 @@ namespace StyleCop.Analyzers.Helpers {
                         return declaredSymbol?.DeclaredAccessibility ?? Accessibility.NotApplicable;
                 }
 
-                internal static Accessibility
-                GetDeclaredAccessibility(this BasePropertyDeclarationSyntax syntax,
-                                         SemanticModel semanticModel,
-                                         CancellationToken cancellationToken) {
+                internal static Accessibility GetDeclaredAccessibility(
+                    this BasePropertyDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -220,10 +217,9 @@ namespace StyleCop.Analyzers.Helpers {
                         return declaredSymbol?.DeclaredAccessibility ?? Accessibility.NotApplicable;
                 }
 
-                internal static Accessibility
-                GetDeclaredAccessibility(this AccessorDeclarationSyntax syntax,
-                                         SemanticModel semanticModel,
-                                         CancellationToken cancellationToken) {
+                internal static Accessibility GetDeclaredAccessibility(
+                    this AccessorDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -237,10 +233,9 @@ namespace StyleCop.Analyzers.Helpers {
                         return declaredSymbol?.DeclaredAccessibility ?? Accessibility.NotApplicable;
                 }
 
-                internal static Accessibility
-                GetDeclaredAccessibility(this BaseFieldDeclarationSyntax syntax,
-                                         SemanticModel semanticModel,
-                                         CancellationToken cancellationToken) {
+                internal static Accessibility GetDeclaredAccessibility(
+                    this BaseFieldDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -265,18 +260,17 @@ namespace StyleCop.Analyzers.Helpers {
                         return declaredSymbol?.DeclaredAccessibility ?? Accessibility.NotApplicable;
                 }
 
-                internal static Accessibility
-                GetDeclaredAccessibility(this EnumMemberDeclarationSyntax syntax) {
+                internal static Accessibility GetDeclaredAccessibility(
+                    this EnumMemberDeclarationSyntax syntax) {
                         // Intentionally unused
                         _ = syntax;
 
                         return Accessibility.Public;
                 }
 
-                internal static Accessibility
-                GetDeclaredAccessibility(this DelegateDeclarationSyntax syntax,
-                                         SemanticModel semanticModel,
-                                         CancellationToken cancellationToken) {
+                internal static Accessibility GetDeclaredAccessibility(
+                    this DelegateDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         // Currently unused
                         _ = cancellationToken;
 
@@ -293,10 +287,9 @@ namespace StyleCop.Analyzers.Helpers {
                                    : Accessibility.Private;
                 }
 
-                internal static Accessibility
-                GetEffectiveAccessibility(this BaseTypeDeclarationSyntax syntax,
-                                          SemanticModel semanticModel,
-                                          CancellationToken cancellationToken) {
+                internal static Accessibility GetEffectiveAccessibility(
+                    this BaseTypeDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -317,10 +310,9 @@ namespace StyleCop.Analyzers.Helpers {
                                                              enclosingAccessibility);
                 }
 
-                internal static Accessibility
-                GetEffectiveAccessibility(this BaseMethodDeclarationSyntax syntax,
-                                          SemanticModel semanticModel,
-                                          CancellationToken cancellationToken) {
+                internal static Accessibility GetEffectiveAccessibility(
+                    this BaseMethodDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -341,10 +333,9 @@ namespace StyleCop.Analyzers.Helpers {
                                                              enclosingAccessibility);
                 }
 
-                internal static Accessibility
-                GetEffectiveAccessibility(this BasePropertyDeclarationSyntax syntax,
-                                          SemanticModel semanticModel,
-                                          CancellationToken cancellationToken) {
+                internal static Accessibility GetEffectiveAccessibility(
+                    this BasePropertyDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -365,10 +356,9 @@ namespace StyleCop.Analyzers.Helpers {
                                                              enclosingAccessibility);
                 }
 
-                internal static Accessibility
-                GetEffectiveAccessibility(this AccessorDeclarationSyntax syntax,
-                                          SemanticModel semanticModel,
-                                          CancellationToken cancellationToken) {
+                internal static Accessibility GetEffectiveAccessibility(
+                    this AccessorDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -390,10 +380,9 @@ namespace StyleCop.Analyzers.Helpers {
                                                              enclosingAccessibility);
                 }
 
-                internal static Accessibility
-                GetEffectiveAccessibility(this BaseFieldDeclarationSyntax syntax,
-                                          SemanticModel semanticModel,
-                                          CancellationToken cancellationToken) {
+                internal static Accessibility GetEffectiveAccessibility(
+                    this BaseFieldDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -414,10 +403,9 @@ namespace StyleCop.Analyzers.Helpers {
                                                              enclosingAccessibility);
                 }
 
-                internal static Accessibility
-                GetEffectiveAccessibility(this EnumMemberDeclarationSyntax syntax,
-                                          SemanticModel semanticModel,
-                                          CancellationToken cancellationToken) {
+                internal static Accessibility GetEffectiveAccessibility(
+                    this EnumMemberDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -432,10 +420,9 @@ namespace StyleCop.Analyzers.Helpers {
                                                              enclosingAccessibility);
                 }
 
-                internal static Accessibility
-                GetEffectiveAccessibility(this DelegateDeclarationSyntax syntax,
-                                          SemanticModel semanticModel,
-                                          CancellationToken cancellationToken) {
+                internal static Accessibility GetEffectiveAccessibility(
+                    this DelegateDeclarationSyntax syntax, SemanticModel semanticModel,
+                    CancellationToken cancellationToken) {
                         Requires.NotNull(syntax, nameof(syntax));
                         Requires.NotNull(semanticModel, nameof(semanticModel));
 
@@ -456,81 +443,80 @@ namespace StyleCop.Analyzers.Helpers {
                                                              enclosingAccessibility);
                 }
 
-                internal static Accessibility
-                CombineEffectiveAccessibility(Accessibility declaredAccessibility,
-                                              Accessibility enclosingAccessibility) {
+                internal static Accessibility CombineEffectiveAccessibility(
+                    Accessibility declaredAccessibility, Accessibility enclosingAccessibility) {
                         switch (enclosingAccessibility) {
-                        case Accessibility.NotApplicable:
-                        case Accessibility.Private:
-                                return enclosingAccessibility;
-
-                        case Accessibility.ProtectedAndInternal:
-                                switch (declaredAccessibility) {
                                 case Accessibility.NotApplicable:
                                 case Accessibility.Private:
-                                        return declaredAccessibility;
+                                        return enclosingAccessibility;
 
                                 case Accessibility.ProtectedAndInternal:
-                                case Accessibility.Internal:
+                                        switch (declaredAccessibility) {
+                                                case Accessibility.NotApplicable:
+                                                case Accessibility.Private:
+                                                        return declaredAccessibility;
+
+                                                case Accessibility.ProtectedAndInternal:
+                                                case Accessibility.Internal:
+                                                case Accessibility.Protected:
+                                                case Accessibility.ProtectedOrInternal:
+                                                case Accessibility.Public:
+                                                default:
+                                                        return Accessibility.ProtectedAndInternal;
+                                        }
+
                                 case Accessibility.Protected:
+                                        switch (declaredAccessibility) {
+                                                case Accessibility.NotApplicable:
+                                                case Accessibility.Private:
+                                                        return declaredAccessibility;
+
+                                                case Accessibility.ProtectedAndInternal:
+                                                case Accessibility.Internal:
+                                                        return Accessibility.ProtectedAndInternal;
+
+                                                case Accessibility.Protected:
+                                                case Accessibility.ProtectedOrInternal:
+                                                case Accessibility.Public:
+                                                default:
+                                                        return Accessibility.Protected;
+                                        }
+
+                                case Accessibility.Internal:
+                                        switch (declaredAccessibility) {
+                                                case Accessibility.NotApplicable:
+                                                case Accessibility.Private:
+                                                        return declaredAccessibility;
+
+                                                case Accessibility.ProtectedAndInternal:
+                                                case Accessibility.Protected:
+                                                        return Accessibility.ProtectedAndInternal;
+
+                                                case Accessibility.Internal:
+                                                case Accessibility.ProtectedOrInternal:
+                                                case Accessibility.Public:
+                                                default:
+                                                        return Accessibility.Internal;
+                                        }
+
                                 case Accessibility.ProtectedOrInternal:
+                                        switch (declaredAccessibility) {
+                                                case Accessibility.NotApplicable:
+                                                case Accessibility.Private:
+                                                case Accessibility.ProtectedAndInternal:
+                                                case Accessibility.Protected:
+                                                case Accessibility.Internal:
+                                                case Accessibility.ProtectedOrInternal:
+                                                        return declaredAccessibility;
+
+                                                case Accessibility.Public:
+                                                default:
+                                                        return Accessibility.ProtectedOrInternal;
+                                        }
+
                                 case Accessibility.Public:
                                 default:
-                                        return Accessibility.ProtectedAndInternal;
-                                }
-
-                        case Accessibility.Protected:
-                                switch (declaredAccessibility) {
-                                case Accessibility.NotApplicable:
-                                case Accessibility.Private:
                                         return declaredAccessibility;
-
-                                case Accessibility.ProtectedAndInternal:
-                                case Accessibility.Internal:
-                                        return Accessibility.ProtectedAndInternal;
-
-                                case Accessibility.Protected:
-                                case Accessibility.ProtectedOrInternal:
-                                case Accessibility.Public:
-                                default:
-                                        return Accessibility.Protected;
-                                }
-
-                        case Accessibility.Internal:
-                                switch (declaredAccessibility) {
-                                case Accessibility.NotApplicable:
-                                case Accessibility.Private:
-                                        return declaredAccessibility;
-
-                                case Accessibility.ProtectedAndInternal:
-                                case Accessibility.Protected:
-                                        return Accessibility.ProtectedAndInternal;
-
-                                case Accessibility.Internal:
-                                case Accessibility.ProtectedOrInternal:
-                                case Accessibility.Public:
-                                default:
-                                        return Accessibility.Internal;
-                                }
-
-                        case Accessibility.ProtectedOrInternal:
-                                switch (declaredAccessibility) {
-                                case Accessibility.NotApplicable:
-                                case Accessibility.Private:
-                                case Accessibility.ProtectedAndInternal:
-                                case Accessibility.Protected:
-                                case Accessibility.Internal:
-                                case Accessibility.ProtectedOrInternal:
-                                        return declaredAccessibility;
-
-                                case Accessibility.Public:
-                                default:
-                                        return Accessibility.ProtectedOrInternal;
-                                }
-
-                        case Accessibility.Public:
-                        default:
-                                return declaredAccessibility;
                         }
                 }
         }

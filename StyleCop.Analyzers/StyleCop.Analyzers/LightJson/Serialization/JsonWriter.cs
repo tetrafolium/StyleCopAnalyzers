@@ -129,23 +129,24 @@ namespace LightJson.Serialization {
 
                 private void WriteEncodedJsonValue(JsonValue value) {
                         switch (value.Type) {
-                        case JsonValueType.Null:
-                                this.Write("null");
-                                break;
+                                case JsonValueType.Null:
+                                        this.Write("null");
+                                        break;
 
-                        case JsonValueType.Boolean:
-                                this.Write(value.AsString);
-                                break;
+                                case JsonValueType.Boolean:
+                                        this.Write(value.AsString);
+                                        break;
 
-                        case JsonValueType.Number:
-                                this.Write(((double) value).ToString(CultureInfo.InvariantCulture));
-                                break;
+                                case JsonValueType.Number:
+                                        this.Write(((double) value)
+                                                       .ToString(CultureInfo.InvariantCulture));
+                                        break;
 
-                        default:
-                                Debug.Assert(value.Type == JsonValueType.String,
-                                             "value.Type == JsonValueType.String");
-                                this.WriteEncodedString((string) value);
-                                break;
+                                default:
+                                        Debug.Assert(value.Type == JsonValueType.String,
+                                                     "value.Type == JsonValueType.String");
+                                        this.WriteEncodedString((string) value);
+                                        break;
                         }
                 }
 
@@ -157,41 +158,41 @@ namespace LightJson.Serialization {
 
                                 // Encoding special characters.
                                 switch (currentChar) {
-                                case '\\':
-                                        this.writer.Write("\\\\");
-                                        break;
+                                        case '\\':
+                                                this.writer.Write("\\\\");
+                                                break;
 
-                                case '\"':
-                                        this.writer.Write("\\\"");
-                                        break;
+                                        case '\"':
+                                                this.writer.Write("\\\"");
+                                                break;
 
-                                case '/':
-                                        this.writer.Write("\\/");
-                                        break;
+                                        case '/':
+                                                this.writer.Write("\\/");
+                                                break;
 
-                                case '\b':
-                                        this.writer.Write("\\b");
-                                        break;
+                                        case '\b':
+                                                this.writer.Write("\\b");
+                                                break;
 
-                                case '\f':
-                                        this.writer.Write("\\f");
-                                        break;
+                                        case '\f':
+                                                this.writer.Write("\\f");
+                                                break;
 
-                                case '\n':
-                                        this.writer.Write("\\n");
-                                        break;
+                                        case '\n':
+                                                this.writer.Write("\\n");
+                                                break;
 
-                                case '\r':
-                                        this.writer.Write("\\r");
-                                        break;
+                                        case '\r':
+                                                this.writer.Write("\\r");
+                                                break;
 
-                                case '\t':
-                                        this.writer.Write("\\t");
-                                        break;
+                                        case '\t':
+                                                this.writer.Write("\\t");
+                                                break;
 
-                                default:
-                                        this.writer.Write(currentChar);
-                                        break;
+                                        default:
+                                                this.writer.Write(currentChar);
+                                                break;
                                 }
                         }
 
@@ -228,23 +229,24 @@ namespace LightJson.Serialization {
 
                 private void Render(JsonValue value) {
                         switch (value.Type) {
-                        case JsonValueType.Null:
-                        case JsonValueType.Boolean:
-                        case JsonValueType.Number:
-                        case JsonValueType.String:
-                                this.WriteEncodedJsonValue(value);
-                                break;
+                                case JsonValueType.Null:
+                                case JsonValueType.Boolean:
+                                case JsonValueType.Number:
+                                case JsonValueType.String:
+                                        this.WriteEncodedJsonValue(value);
+                                        break;
 
-                        case JsonValueType.Object:
-                                this.Render((JsonObject) value);
-                                break;
+                                case JsonValueType.Object:
+                                        this.Render((JsonObject) value);
+                                        break;
 
-                        case JsonValueType.Array:
-                                this.Render((JsonArray) value);
-                                break;
+                                case JsonValueType.Array:
+                                        this.Render((JsonArray) value);
+                                        break;
 
-                        default:
-                                throw new JsonSerializationException(ErrorType.InvalidValueType);
+                                default:
+                                        throw new JsonSerializationException(
+                                            ErrorType.InvalidValueType);
                         }
                 }
 
@@ -319,8 +321,8 @@ namespace LightJson.Serialization {
                 /// <param name="jsonObject">The JsonObject for which to get an enumerator.</param>
                 /// <returns>An enumerator for the properties in a <see
                 /// cref="JsonObject"/>.</returns>
-                private IEnumerator<KeyValuePair<string, JsonValue>>
-                GetJsonObjectEnumerator(JsonObject jsonObject) {
+                private IEnumerator<KeyValuePair<string, JsonValue>> GetJsonObjectEnumerator(
+                    JsonObject jsonObject) {
                         if (this.SortObjects) {
                                 var sortedDictionary =
                                     new SortedDictionary<string, JsonValue>(StringComparer.Ordinal);

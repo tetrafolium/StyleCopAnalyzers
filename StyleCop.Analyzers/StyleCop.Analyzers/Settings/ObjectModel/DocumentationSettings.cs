@@ -137,79 +137,82 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                     : this() {
                         foreach (var kvp in documentationSettingsObject) {
                                 switch (kvp.Key) {
-                                case "documentExposedElements":
-                                        this.documentExposedElements = kvp.ToBooleanValue();
-                                        break;
+                                        case "documentExposedElements":
+                                                this.documentExposedElements = kvp.ToBooleanValue();
+                                                break;
 
-                                case "documentInternalElements":
-                                        this.documentInternalElements = kvp.ToBooleanValue();
-                                        break;
+                                        case "documentInternalElements":
+                                                this.documentInternalElements =
+                                                    kvp.ToBooleanValue();
+                                                break;
 
-                                case "documentPrivateElements":
-                                        this.documentPrivateElements = kvp.ToBooleanValue();
-                                        break;
+                                        case "documentPrivateElements":
+                                                this.documentPrivateElements = kvp.ToBooleanValue();
+                                                break;
 
-                                case "documentInterfaces":
-                                        this.documentInterfaces = kvp.ToBooleanValue();
-                                        break;
+                                        case "documentInterfaces":
+                                                this.documentInterfaces = kvp.ToBooleanValue();
+                                                break;
 
-                                case "documentPrivateFields":
-                                        this.documentPrivateFields = kvp.ToBooleanValue();
-                                        break;
+                                        case "documentPrivateFields":
+                                                this.documentPrivateFields = kvp.ToBooleanValue();
+                                                break;
 
-                                case "companyName":
-                                        this.companyName = kvp.ToStringValue();
-                                        break;
-                                case "copyrightText":
-                                        this.copyrightText = kvp.ToStringValue();
-                                        break;
+                                        case "companyName":
+                                                this.companyName = kvp.ToStringValue();
+                                                break;
+                                        case "copyrightText":
+                                                this.copyrightText = kvp.ToStringValue();
+                                                break;
 
-                                case "headerDecoration":
-                                        this.headerDecoration = kvp.ToStringValue();
-                                        break;
+                                        case "headerDecoration":
+                                                this.headerDecoration = kvp.ToStringValue();
+                                                break;
 
-                                case "variables":
-                                        kvp.AssertIsObject();
-                                        foreach (var child in kvp.Value.AsJsonObject) {
-                                                string name = child.Key;
+                                        case "variables":
+                                                kvp.AssertIsObject();
+                                                foreach (var child in kvp.Value.AsJsonObject) {
+                                                        string name = child.Key;
 
-                                                if (!Regex.IsMatch(name, "^[a-zA-Z0-9]+$")) {
-                                                        continue;
+                                                        if (!Regex.IsMatch(name,
+                                                                           "^[a-zA-Z0-9]+$")) {
+                                                                continue;
+                                                        }
+
+                                                        string value = child.ToStringValue();
+
+                                                        this.variables.Add(name, value);
                                                 }
 
-                                                string value = child.ToStringValue();
+                                                break;
 
-                                                this.variables.Add(name, value);
-                                        }
+                                        case "xmlHeader":
+                                                this.xmlHeader = kvp.ToBooleanValue();
+                                                break;
 
-                                        break;
+                                        case "fileNamingConvention":
+                                                this.fileNamingConvention =
+                                                    kvp.ToEnumValue<FileNamingConvention>();
+                                                break;
 
-                                case "xmlHeader":
-                                        this.xmlHeader = kvp.ToBooleanValue();
-                                        break;
+                                        case "documentationCulture":
+                                                this.documentationCulture = kvp.ToStringValue();
+                                                break;
 
-                                case "fileNamingConvention":
-                                        this.fileNamingConvention =
-                                            kvp.ToEnumValue<FileNamingConvention>();
-                                        break;
+                                        case "excludeFromPunctuationCheck":
+                                                kvp.AssertIsArray();
+                                                var excludedTags =
+                                                    ImmutableArray.CreateBuilder<string>();
+                                                foreach (var value in kvp.Value.AsJsonArray) {
+                                                        excludedTags.Add(value.AsString);
+                                                }
 
-                                case "documentationCulture":
-                                        this.documentationCulture = kvp.ToStringValue();
-                                        break;
+                                                this.excludeFromPunctuationCheck =
+                                                    excludedTags.ToImmutable();
+                                                break;
 
-                                case "excludeFromPunctuationCheck":
-                                        kvp.AssertIsArray();
-                                        var excludedTags = ImmutableArray.CreateBuilder<string>();
-                                        foreach (var value in kvp.Value.AsJsonArray) {
-                                                excludedTags.Add(value.AsString);
-                                        }
-
-                                        this.excludeFromPunctuationCheck =
-                                            excludedTags.ToImmutable();
-                                        break;
-
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }
@@ -270,27 +273,28 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                         string Evaluator(Match match) {
                                 string key = match.Groups["Property"].Value;
                                 switch (key) {
-                                case "companyName":
-                                        return this.CompanyName;
+                                        case "companyName":
+                                                return this.CompanyName;
 
-                                case "copyrightText":
-                                        return "[CircularReference]";
+                                        case "copyrightText":
+                                                return "[CircularReference]";
 
-                                default:
-                                        string value;
-                                        if (this.Variables.TryGetValue(key, out value)) {
-                                                return value;
-                                        }
+                                        default:
+                                                string value;
+                                                if (this.Variables.TryGetValue(key, out value)) {
+                                                        return value;
+                                                }
 
-                                        if (key == "fileName") {
-                                                // The 'fileName' built-in variable is only applied
-                                                // when the user did not include an explicit value
-                                                // for a custom 'fileName' variable.
-                                                canCache = false;
-                                                return fileName;
-                                        }
+                                                if (key == "fileName") {
+                                                        // The 'fileName' built-in variable is only
+                                                        // applied when the user did not include an
+                                                        // explicit value for a custom 'fileName'
+                                                        // variable.
+                                                        canCache = false;
+                                                        return fileName;
+                                                }
 
-                                        break;
+                                                break;
                                 }
 
                                 return "[InvalidReference]";

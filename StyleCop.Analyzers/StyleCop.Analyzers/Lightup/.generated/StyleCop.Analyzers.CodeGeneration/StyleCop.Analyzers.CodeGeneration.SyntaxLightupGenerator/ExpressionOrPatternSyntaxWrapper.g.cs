@@ -40,8 +40,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new ExpressionOrPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(ExpressionOrPatternSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    ExpressionOrPatternSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 

@@ -45,9 +45,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
                         var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -64,44 +63,43 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             .ConfigureAwait(false);
                 }
 
-                private static async Task<Document>
-                RemoveEmptyStatementAsync(Document document, SyntaxNode root,
-                                          EmptyStatementSyntax node,
-                                          CancellationToken cancellationToken) {
+                private static async Task<Document> RemoveEmptyStatementAsync(
+                    Document document, SyntaxNode root, EmptyStatementSyntax node,
+                    CancellationToken cancellationToken) {
                         SyntaxNode newRoot;
 
                         switch (node.Parent.Kind()) {
-                        case SyntaxKind.Block:
-                        case SyntaxKind.SwitchSection:
-                                // empty statements in a block or switch section can be removed
-                                return await RemoveSemicolonTextAsync(document, node.SemicolonToken,
-                                                                      cancellationToken)
-                                    .ConfigureAwait(false);
+                                case SyntaxKind.Block:
+                                case SyntaxKind.SwitchSection:
+                                        // empty statements in a block or switch section can be
+                                        // removed
+                                        return await RemoveSemicolonTextAsync(
+                                                   document, node.SemicolonToken, cancellationToken)
+                                            .ConfigureAwait(false);
 
-                        case SyntaxKind.IfStatement:
-                        case SyntaxKind.ElseClause:
-                        case SyntaxKind.ForStatement:
-                        case SyntaxKind.WhileStatement:
-                        case SyntaxKind.DoStatement:
-                                // these cases are always replaced with an empty block
-                                newRoot = root.ReplaceNode(
-                                    node, SyntaxFactory.Block().WithTriviaFrom(node));
-                                return document.WithSyntaxRoot(newRoot);
+                                case SyntaxKind.IfStatement:
+                                case SyntaxKind.ElseClause:
+                                case SyntaxKind.ForStatement:
+                                case SyntaxKind.WhileStatement:
+                                case SyntaxKind.DoStatement:
+                                        // these cases are always replaced with an empty block
+                                        newRoot = root.ReplaceNode(
+                                            node, SyntaxFactory.Block().WithTriviaFrom(node));
+                                        return document.WithSyntaxRoot(newRoot);
 
-                        case SyntaxKind.LabeledStatement:
-                                // handle this case as a text manipulation for simplicity
-                                return await RemoveSemicolonTextAsync(document, node.SemicolonToken,
-                                                                      cancellationToken)
-                                    .ConfigureAwait(false);
+                                case SyntaxKind.LabeledStatement:
+                                        // handle this case as a text manipulation for simplicity
+                                        return await RemoveSemicolonTextAsync(
+                                                   document, node.SemicolonToken, cancellationToken)
+                                            .ConfigureAwait(false);
 
-                        default:
-                                return document;
+                                default:
+                                        return document;
                         }
                 }
 
-                private static async Task<Document>
-                RemoveSemicolonTextAsync(Document document, SyntaxToken token,
-                                         CancellationToken cancellationToken) {
+                private static async Task<Document> RemoveSemicolonTextAsync(
+                    Document document, SyntaxToken token, CancellationToken cancellationToken) {
                         TextChange textChange;
 
                         SourceText sourceText =

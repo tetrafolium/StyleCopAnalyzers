@@ -97,9 +97,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         ProcessUsingsAndReportDiagnostic(usings, context);
                 }
 
-                private static void
-                ProcessUsingsAndReportDiagnostic(SyntaxList<UsingDirectiveSyntax> usings,
-                                                 SyntaxNodeAnalysisContext context) {
+                private static void ProcessUsingsAndReportDiagnostic(
+                    SyntaxList<UsingDirectiveSyntax> usings, SyntaxNodeAnalysisContext context) {
                         string systemUsingDirectivesShouldBeBeforeThisName = null;
                         for (var i = 1; i < usings.Count; i++) {
                                 var usingDirective = usings[i];

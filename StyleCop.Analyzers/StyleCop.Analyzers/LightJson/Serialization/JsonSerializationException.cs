@@ -73,17 +73,17 @@ namespace LightJson.Serialization {
 
                 private static string GetDefaultMessage(ErrorType type) {
                         switch (type) {
-                        case ErrorType.InvalidNumber:
-                                return "The value been serialized contains an invalid number value (NAN, infinity).";
+                                case ErrorType.InvalidNumber:
+                                        return "The value been serialized contains an invalid number value (NAN, infinity).";
 
-                        case ErrorType.InvalidValueType:
-                                return "The value been serialized contains (or is) an invalid JSON type.";
+                                case ErrorType.InvalidValueType:
+                                        return "The value been serialized contains (or is) an invalid JSON type.";
 
-                        case ErrorType.CircularReference:
-                                return "The value been serialized contains circular references.";
+                                case ErrorType.CircularReference:
+                                        return "The value been serialized contains circular references.";
 
-                        default:
-                                return "An error occurred during serialization.";
+                                default:
+                                        return "An error occurred during serialization.";
                         }
                 }
         }

@@ -36,8 +36,8 @@ namespace StyleCop.Analyzers.Lightup {
                                 typeof(MemberDeclarationSyntax), nameof(Modifiers));
                 }
 
-                public static SyntaxList<AttributeListSyntax>
-                AttributeLists(this MemberDeclarationSyntax syntax) {
+                public static SyntaxList<AttributeListSyntax> AttributeLists(
+                    this MemberDeclarationSyntax syntax) {
                         return AttributeListsAccessor(syntax);
                 }
 
@@ -45,25 +45,24 @@ namespace StyleCop.Analyzers.Lightup {
                         return ModifiersAccessor(syntax);
                 }
 
-                public static MemberDeclarationSyntax
-                WithAttributeLists(this MemberDeclarationSyntax syntax,
-                                   SyntaxList<AttributeListSyntax> attributeLists) {
+                public static MemberDeclarationSyntax WithAttributeLists(
+                    this MemberDeclarationSyntax syntax,
+                    SyntaxList<AttributeListSyntax> attributeLists) {
                         return WithAttributeListsAccessor(syntax, attributeLists);
                 }
 
-                public static MemberDeclarationSyntax
-                WithModifiers(this MemberDeclarationSyntax syntax, SyntaxTokenList modifiers) {
+                public static MemberDeclarationSyntax WithModifiers(
+                    this MemberDeclarationSyntax syntax, SyntaxTokenList modifiers) {
                         return WithModifiersAccessor(syntax, modifiers);
                 }
 
-                public static MemberDeclarationSyntax
-                AddAttributeLists(this MemberDeclarationSyntax syntax,
-                                  params AttributeListSyntax[] items) {
+                public static MemberDeclarationSyntax AddAttributeLists(
+                    this MemberDeclarationSyntax syntax, params AttributeListSyntax[] items) {
                         return syntax.WithAttributeLists(syntax.AttributeLists().AddRange(items));
                 }
 
-                public static MemberDeclarationSyntax
-                AddModifiers(this MemberDeclarationSyntax syntax, params SyntaxToken[] items) {
+                public static MemberDeclarationSyntax AddModifiers(
+                    this MemberDeclarationSyntax syntax, params SyntaxToken[] items) {
                         return syntax.WithModifiers(syntax.Modifiers().AddRange(items));
                 }
         }

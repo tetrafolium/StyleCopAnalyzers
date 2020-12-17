@@ -1717,9 +1717,8 @@ namespace StyleCop.Analyzers.CodeGeneration {
                                 throw new NotSupportedException("Unable to find declaring node.");
                         }
 
-                        public bool
-                        IsWrappedSeparatedSyntaxList(SyntaxData syntaxData,
-                                                     [ NotNullWhen(true) ] out NodeData? element) {
+                        public bool IsWrappedSeparatedSyntaxList(
+                            SyntaxData syntaxData, [ NotNullWhen(true) ] out NodeData? element) {
                                 if (this.Type.StartsWith("SeparatedSyntaxList<") &&
                                     this.Type.EndsWith(">")) {
                                         var elementTypeName = this.Type.Substring(

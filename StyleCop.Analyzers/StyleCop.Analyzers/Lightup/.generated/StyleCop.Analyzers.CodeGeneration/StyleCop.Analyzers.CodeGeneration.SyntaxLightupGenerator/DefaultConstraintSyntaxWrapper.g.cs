@@ -58,8 +58,8 @@ namespace StyleCop.Analyzers.Lightup {
                                                                       node);
                 }
 
-                public static implicit
-                operator TypeParameterConstraintSyntax(DefaultConstraintSyntaxWrapper wrapper) {
+                public static implicit operator TypeParameterConstraintSyntax(
+                    DefaultConstraintSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -67,8 +67,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public DefaultConstraintSyntaxWrapper
-                WithDefaultKeyword(SyntaxToken defaultKeyword) {
+                public DefaultConstraintSyntaxWrapper WithDefaultKeyword(
+                    SyntaxToken defaultKeyword) {
                         return new DefaultConstraintSyntaxWrapper(
                             WithDefaultKeywordAccessor(this.SyntaxNode, defaultKeyword));
                 }

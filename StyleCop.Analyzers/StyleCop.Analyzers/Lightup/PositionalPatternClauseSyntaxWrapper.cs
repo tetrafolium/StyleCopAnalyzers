@@ -6,8 +6,8 @@ namespace StyleCop.Analyzers.Lightup {
 
         internal partial struct PositionalPatternClauseSyntaxWrapper
             : ISyntaxWrapper<CSharpSyntaxNode> {
-                public PositionalPatternClauseSyntaxWrapper
-                AddSubpatterns(params SubpatternSyntaxWrapper[] items) {
+                public PositionalPatternClauseSyntaxWrapper AddSubpatterns(
+                    params SubpatternSyntaxWrapper[] items) {
                         return new PositionalPatternClauseSyntaxWrapper(
                             this.WithSubpatterns(this.Subpatterns.AddRange(items)));
                 }

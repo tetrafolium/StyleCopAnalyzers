@@ -49,9 +49,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var settings = SettingsHelper.GetStyleCopSettings(
                             document.Project.AnalyzerOptions, cancellationToken);
                         var elementOrder = settings.OrderingRules.ElementOrder;
@@ -70,10 +69,10 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return document.WithSyntaxRoot(syntaxRoot);
                 }
 
-                private static SyntaxNode
-                UpdateSyntaxRoot(MemberDeclarationSyntax memberDeclaration,
-                                 ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
-                                 IndentationSettings indentationSettings) {
+                private static SyntaxNode UpdateSyntaxRoot(
+                    MemberDeclarationSyntax memberDeclaration,
+                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
+                    IndentationSettings indentationSettings) {
                         var parentDeclaration = memberDeclaration.Parent;
                         var memberToMove = new MemberOrderHelper(memberDeclaration, elementOrder);
 
@@ -206,31 +205,31 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 bool done = false;
                                 switch (newLeadingTrivia [i]
                                             .Kind()) {
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                case SyntaxKind.MultiLineCommentTrivia:
-                                        fileHeader.Add(newLeadingTrivia[i]);
-                                        onBlankLine = false;
-                                        hasHeader = true;
-                                        break;
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                        case SyntaxKind.MultiLineCommentTrivia:
+                                                fileHeader.Add(newLeadingTrivia[i]);
+                                                onBlankLine = false;
+                                                hasHeader = true;
+                                                break;
 
-                                case SyntaxKind.WhitespaceTrivia:
-                                        fileHeader.Add(newLeadingTrivia[i]);
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                fileHeader.Add(newLeadingTrivia[i]);
+                                                break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        fileHeader.Add(newLeadingTrivia[i]);
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                fileHeader.Add(newLeadingTrivia[i]);
 
-                                        if (onBlankLine) {
+                                                if (onBlankLine) {
+                                                        done = true;
+                                                } else {
+                                                        onBlankLine = true;
+                                                }
+
+                                                break;
+
+                                        default:
                                                 done = true;
-                                        } else {
-                                                onBlankLine = true;
-                                        }
-
-                                        break;
-
-                                default:
-                                        done = true;
-                                        break;
+                                                break;
                                 }
 
                                 if (done) {
@@ -249,8 +248,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return firstTriviaIgnoringWhitespace.IsKind(SyntaxKind.EndOfLineTrivia);
                 }
 
-                private static SyntaxTriviaList
-                GetLeadingTriviaWithoutLeadingBlankLines(SyntaxNode node) {
+                private static SyntaxTriviaList GetLeadingTriviaWithoutLeadingBlankLines(
+                    SyntaxNode node) {
                         var leadingTrivia = node.GetLeadingTrivia();
 
                         var skipIndex = 0;
@@ -279,9 +278,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         protected override string CodeActionTitle =>
                             OrderingResources.ElementOrderCodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

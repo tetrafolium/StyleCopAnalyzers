@@ -138,8 +138,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
                 }
 
-                private static bool
-                IsAliasOrStaticUsingDirective(UsingDirectiveSyntax usingDirective) =>
+                private static bool IsAliasOrStaticUsingDirective(
+                    UsingDirectiveSyntax usingDirective) =>
                     usingDirective.Alias != null
                     || usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword);
         }

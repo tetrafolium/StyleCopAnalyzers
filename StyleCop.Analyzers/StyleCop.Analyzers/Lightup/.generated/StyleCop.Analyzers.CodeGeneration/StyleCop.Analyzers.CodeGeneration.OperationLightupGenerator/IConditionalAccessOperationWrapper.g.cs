@@ -32,8 +32,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IOperation Operation => OperationAccessor(this.WrappedOperation);
                 public IOperation WhenNotNull => WhenNotNullAccessor(this.WrappedOperation);
-                public static IConditionalAccessOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IConditionalAccessOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

@@ -75,9 +75,9 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// project.</param> <param name="codeFixProjectName">The project name of the code
                 /// fix project.</param> <returns>A <see cref="Task{TResult}"/> representing the
                 /// asynchronous operation.</returns>
-                public static async Task<SolutionReader>
-                CreateAsync(string pathToSln, string analyzerProjectName = "StyleCop.Analyzers",
-                            string codeFixProjectName = "StyleCop.Analyzers.CodeFixes") {
+                public static async Task<SolutionReader> CreateAsync(
+                    string pathToSln, string analyzerProjectName = "StyleCop.Analyzers",
+                    string codeFixProjectName = "StyleCop.Analyzers.CodeFixes") {
                         SolutionReader reader = new SolutionReader();
 
                         reader.SlnPath = pathToSln;
@@ -303,8 +303,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                         return "Unknown";
                 }
 
-                private IEnumerable<DiagnosticDescriptor>
-                GetDescriptor(INamedTypeSymbol classSymbol) {
+                private IEnumerable<DiagnosticDescriptor> GetDescriptor(
+                    INamedTypeSymbol classSymbol) {
                         var analyzer = (DiagnosticAnalyzer) Activator.CreateInstance(
                             this.analyzerAssembly.GetType(classSymbol.ToString()));
 

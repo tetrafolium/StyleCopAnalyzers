@@ -75,8 +75,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         AnalyzerInstance instance =
                             new AnalyzerInstance(context.Compilation.GetOrCreateUsingAliasCache());
                         context.RegisterSyntaxNodeAction(instance.HandleAttributeNode,

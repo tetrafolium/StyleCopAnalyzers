@@ -73,8 +73,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// langword="false"/>.</returns> <exception cref="ArgumentNullException"> If
                 /// <paramref name="regionSyntax"/> is <see langword="null"/>.
                 /// </exception>
-                internal static bool
-                IsCompletelyContainedInBody(RegionDirectiveTriviaSyntax regionSyntax) {
+                internal static bool IsCompletelyContainedInBody(
+                    RegionDirectiveTriviaSyntax regionSyntax) {
                         if (regionSyntax == null) {
                                 throw new ArgumentNullException(nameof(regionSyntax));
                         }

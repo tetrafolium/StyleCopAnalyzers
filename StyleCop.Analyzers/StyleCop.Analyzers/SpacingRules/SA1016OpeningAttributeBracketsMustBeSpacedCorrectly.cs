@@ -65,12 +65,12 @@ namespace StyleCop.Analyzers.SpacingRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.OpenBracketToken:
-                                        HandleOpenBracketToken(context, token);
-                                        break;
+                                        case SyntaxKind.OpenBracketToken:
+                                                HandleOpenBracketToken(context, token);
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

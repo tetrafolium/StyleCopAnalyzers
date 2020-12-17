@@ -200,21 +200,21 @@ namespace StyleCop.Analyzers.LayoutRules {
                         while ((eolCount < 2) && (triviaIndex >= 0)) {
                                 var currentTrivia = triviaList[triviaIndex];
                                 switch (currentTrivia.Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        triviaIndex--;
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                triviaIndex--;
+                                                break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        triviaIndex--;
-                                        break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                eolCount++;
+                                                triviaIndex--;
+                                                break;
 
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                                        return true;
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                        case SyntaxKind.SingleLineDocumentationCommentTrivia:
+                                                return true;
 
-                                default:
-                                        return false;
+                                        default:
+                                                return false;
                                 }
                         }
 
@@ -235,17 +235,17 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                                 switch (triviaList [index]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        index--;
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                index--;
+                                                break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        index--;
-                                        break;
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                eolCount++;
+                                                index--;
+                                                break;
 
-                                default:
-                                        return false;
+                                        default:
+                                                return false;
                                 }
                         }
 
@@ -274,17 +274,17 @@ namespace StyleCop.Analyzers.LayoutRules {
                         while (triviaIndex >= 0) {
                                 switch (triviaList [triviaIndex]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        triviaIndex--;
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                triviaIndex--;
+                                                break;
 
-                                case SyntaxKind.IfDirectiveTrivia:
-                                case SyntaxKind.ElifDirectiveTrivia:
-                                case SyntaxKind.ElseDirectiveTrivia:
-                                        return true;
+                                        case SyntaxKind.IfDirectiveTrivia:
+                                        case SyntaxKind.ElifDirectiveTrivia:
+                                        case SyntaxKind.ElseDirectiveTrivia:
+                                                return true;
 
-                                default:
-                                        return false;
+                                        default:
+                                                return false;
                                 }
                         }
 

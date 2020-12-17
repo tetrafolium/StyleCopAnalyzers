@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#pragma warning disable SA1310 // Field names should not contain underscore - Following roslyn
-                               // naming conventions
+#pragma warning disable SA1310  // Field names should not contain underscore - Following roslyn
+                                // naming conventions
 
 namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp;
@@ -21,4 +21,4 @@ namespace StyleCop.Analyzers.Lightup {
         }
 }
 
-#pragma warning restore SA1310 // Field names should not contain underscore
+#pragma warning restore SA1310  // Field names should not contain underscore

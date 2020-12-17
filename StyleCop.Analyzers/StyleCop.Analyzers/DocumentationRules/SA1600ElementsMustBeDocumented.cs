@@ -110,23 +110,23 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         switch (effectiveAccessibility) {
-                        case Accessibility.Public:
-                        case Accessibility.Protected:
-                        case Accessibility.ProtectedOrInternal:
-                                // These items are part of the exposed API surface => document if
-                                // configured
-                                return documentationSettings.DocumentExposedElements;
+                                case Accessibility.Public:
+                                case Accessibility.Protected:
+                                case Accessibility.ProtectedOrInternal:
+                                        // These items are part of the exposed API surface =>
+                                        // document if configured
+                                        return documentationSettings.DocumentExposedElements;
 
-                        case Accessibility.ProtectedAndInternal:
-                        case Accessibility.Internal:
-                                // These items are part of the internal API surface => document if
-                                // configured
-                                return documentationSettings.DocumentInternalElements;
+                                case Accessibility.ProtectedAndInternal:
+                                case Accessibility.Internal:
+                                        // These items are part of the internal API surface =>
+                                        // document if configured
+                                        return documentationSettings.DocumentInternalElements;
 
-                        case Accessibility.NotApplicable:
-                        case Accessibility.Private:
-                        default:
-                                return false;
+                                case Accessibility.NotApplicable:
+                                case Accessibility.Private:
+                                default:
+                                        return false;
                         }
                 }
 
@@ -158,9 +158,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static class Analyzer {
-                        public static void
-                        HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context,
-                                                  StyleCopSettings settings) {
+                        public static void HandleBaseTypeDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -189,9 +188,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        public static void
-                        HandleMethodDeclaration(SyntaxNodeAnalysisContext context,
-                                                StyleCopSettings settings) {
+                        public static void HandleMethodDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -216,9 +214,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        public static void
-                        HandleConstructorDeclaration(SyntaxNodeAnalysisContext context,
-                                                     StyleCopSettings settings) {
+                        public static void HandleConstructorDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -243,9 +240,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        public static void
-                        HandleDestructorDeclaration(SyntaxNodeAnalysisContext context,
-                                                    StyleCopSettings settings) {
+                        public static void HandleDestructorDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -270,9 +266,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        public static void
-                        HandlePropertyDeclaration(SyntaxNodeAnalysisContext context,
-                                                  StyleCopSettings settings) {
+                        public static void HandlePropertyDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -297,9 +292,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        public static void
-                        HandleIndexerDeclaration(SyntaxNodeAnalysisContext context,
-                                                 StyleCopSettings settings) {
+                        public static void HandleIndexerDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -356,9 +350,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        public static void
-                        HandleDelegateDeclaration(SyntaxNodeAnalysisContext context,
-                                                  StyleCopSettings settings) {
+                        public static void HandleDelegateDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
@@ -409,9 +402,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        public static void
-                        HandleEventFieldDeclaration(SyntaxNodeAnalysisContext context,
-                                                    StyleCopSettings settings) {
+                        public static void HandleEventFieldDeclaration(
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings) {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }

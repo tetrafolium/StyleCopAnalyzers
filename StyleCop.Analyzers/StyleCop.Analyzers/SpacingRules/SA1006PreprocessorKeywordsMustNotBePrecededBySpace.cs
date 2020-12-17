@@ -73,12 +73,12 @@ namespace StyleCop.Analyzers.SpacingRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens(descendIntoTrivia : true)) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.HashToken:
-                                        HandleHashToken(context, token);
-                                        break;
+                                        case SyntaxKind.HashToken:
+                                                HandleHashToken(context, token);
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

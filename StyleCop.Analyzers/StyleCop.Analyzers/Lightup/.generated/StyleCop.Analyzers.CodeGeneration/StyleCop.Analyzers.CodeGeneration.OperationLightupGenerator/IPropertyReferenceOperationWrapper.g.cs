@@ -43,8 +43,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public static implicit operator IMemberReferenceOperationWrapper(
                     IPropertyReferenceOperationWrapper wrapper) =>
                     IMemberReferenceOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IPropertyReferenceOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IPropertyReferenceOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

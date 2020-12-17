@@ -38,8 +38,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
                                     WrappedType, nameof(WhenKeyword));
-                        WithConditionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Condition));
+                        WithConditionAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(Condition));
                 }
 
                 private WhenClauseSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }

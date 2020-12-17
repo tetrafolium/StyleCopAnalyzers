@@ -24,7 +24,6 @@ namespace StyleCop.Analyzers.DocumentationRules {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         internal class DocumentationResources {
-
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;

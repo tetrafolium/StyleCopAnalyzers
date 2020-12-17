@@ -22,8 +22,8 @@ namespace StyleCop.Analyzers.Lightup {
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public static IInterpolatedStringContentOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IInterpolatedStringContentOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }
@@ -41,8 +41,8 @@ namespace StyleCop.Analyzers.Lightup {
                                LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
 
-                internal static IInterpolatedStringContentOperationWrapper
-                FromUpcast(IOperation operation) {
+                internal static IInterpolatedStringContentOperationWrapper FromUpcast(
+                    IOperation operation) {
                         return new IInterpolatedStringContentOperationWrapper(operation);
                 }
         }

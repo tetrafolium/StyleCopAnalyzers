@@ -32,8 +32,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IOperation Value => ValueAccessor(this.WrappedOperation);
                 public ImmutableArray<IOperation> Arms => ArmsAccessor(this.WrappedOperation);
-                public static ISwitchExpressionOperationWrapper
-                FromOperation(IOperation operation) {
+                public static ISwitchExpressionOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

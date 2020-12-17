@@ -40,43 +40,47 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 protected internal NamingSettings(JsonObject namingSettingsObject) : this() {
                         foreach (var kvp in namingSettingsObject) {
                                 switch (kvp.Key) {
-                                case "allowCommonHungarianPrefixes":
-                                        this.AllowCommonHungarianPrefixes = kvp.ToBooleanValue();
-                                        break;
+                                        case "allowCommonHungarianPrefixes":
+                                                this.AllowCommonHungarianPrefixes =
+                                                    kvp.ToBooleanValue();
+                                                break;
 
-                                case "allowedHungarianPrefixes":
-                                        kvp.AssertIsArray();
-                                        foreach (var prefixJsonValue in kvp.Value.AsJsonArray) {
-                                                var prefix = prefixJsonValue.ToStringValue(kvp.Key);
+                                        case "allowedHungarianPrefixes":
+                                                kvp.AssertIsArray();
+                                                foreach (var prefixJsonValue in kvp.Value
+                                                             .AsJsonArray) {
+                                                        var prefix =
+                                                            prefixJsonValue.ToStringValue(kvp.Key);
 
-                                                if (!Regex.IsMatch(prefix, "^[a-z]{1,2}$")) {
-                                                        continue;
+                                                        if (!Regex.IsMatch(prefix,
+                                                                           "^[a-z]{1,2}$")) {
+                                                                continue;
+                                                        }
+
+                                                        this.allowedHungarianPrefixes.Add(prefix);
                                                 }
 
-                                                this.allowedHungarianPrefixes.Add(prefix);
-                                        }
+                                                break;
 
-                                        break;
+                                        case "allowedNamespaceComponents":
+                                                kvp.AssertIsArray();
+                                                this.allowedNamespaceComponents.AddRange(
+                                                    kvp.Value.AsJsonArray.Select(
+                                                        x => x.ToStringValue(kvp.Key)));
+                                                break;
 
-                                case "allowedNamespaceComponents":
-                                        kvp.AssertIsArray();
-                                        this.allowedNamespaceComponents.AddRange(
-                                            kvp.Value.AsJsonArray.Select(
-                                                x => x.ToStringValue(kvp.Key)));
-                                        break;
+                                        case "includeInferredTupleElementNames":
+                                                this.IncludeInferredTupleElementNames =
+                                                    kvp.ToBooleanValue();
+                                                break;
 
-                                case "includeInferredTupleElementNames":
-                                        this.IncludeInferredTupleElementNames =
-                                            kvp.ToBooleanValue();
-                                        break;
+                                        case "tupleElementNameCasing":
+                                                this.TupleElementNameCasing =
+                                                    kvp.ToEnumValue<TupleElementNameCase>();
+                                                break;
 
-                                case "tupleElementNameCasing":
-                                        this.TupleElementNameCasing =
-                                            kvp.ToEnumValue<TupleElementNameCase>();
-                                        break;
-
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

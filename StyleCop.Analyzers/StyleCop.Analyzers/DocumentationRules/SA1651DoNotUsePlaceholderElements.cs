@@ -115,8 +115,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
                 }
 
-                private static bool
-                IncludedDocumentationContainsPlaceHolderTags(SyntaxNodeAnalysisContext context) {
+                private static bool IncludedDocumentationContainsPlaceHolderTags(
+                    SyntaxNodeAnalysisContext context) {
                         var memberDeclaration =
                             context.Node.FirstAncestorOrSelf<MemberDeclarationSyntax>();
                         if (memberDeclaration == null) {

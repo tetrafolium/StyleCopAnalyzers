@@ -27,8 +27,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return AwaitKeywordAccessor(syntax);
                 }
 
-                public static ForEachStatementSyntax
-                WithAwaitKeyword(this ForEachStatementSyntax syntax, SyntaxToken awaitKeyword) {
+                public static ForEachStatementSyntax WithAwaitKeyword(
+                    this ForEachStatementSyntax syntax, SyntaxToken awaitKeyword) {
                         return WithAwaitKeywordAccessor(syntax, awaitKeyword);
                 }
         }

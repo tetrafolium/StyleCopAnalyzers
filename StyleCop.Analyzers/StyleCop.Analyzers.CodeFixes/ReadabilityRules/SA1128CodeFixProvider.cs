@@ -47,9 +47,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -70,10 +69,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private static ConstructorDeclarationSyntax
-                ReformatConstructorDeclaration(ConstructorDeclarationSyntax constructorDeclaration,
-                                               IndentationSettings indentationSettings,
-                                               SyntaxTrivia newLine) {
+                private static ConstructorDeclarationSyntax ReformatConstructorDeclaration(
+                    ConstructorDeclarationSyntax constructorDeclaration,
+                    IndentationSettings indentationSettings, SyntaxTrivia newLine) {
                         var constructorInitializer = constructorDeclaration.Initializer;
 
                         var newParameterList =
@@ -112,9 +110,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         protected override string CodeActionTitle { get; }
                         = ReadabilityResources.SA1128CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

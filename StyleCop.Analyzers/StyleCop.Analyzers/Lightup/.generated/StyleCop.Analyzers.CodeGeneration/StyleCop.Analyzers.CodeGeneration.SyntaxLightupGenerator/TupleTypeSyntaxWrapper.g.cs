@@ -95,8 +95,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
                 }
 
-                public TupleTypeSyntaxWrapper
-                WithElements(SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper> elements) {
+                public TupleTypeSyntaxWrapper WithElements(
+                    SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper> elements) {
                         return new TupleTypeSyntaxWrapper(
                             WithElementsAccessor(this.SyntaxNode, elements));
                 }

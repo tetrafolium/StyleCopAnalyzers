@@ -44,8 +44,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="nodeOrToken">The trivia to use.</param>
                 /// <returns>The location in terms of path, line and column for a given node or
                 /// token.</returns>
-                internal static FileLinePositionSpan
-                GetLineSpan(this SyntaxNodeOrToken nodeOrToken) {
+                internal static FileLinePositionSpan GetLineSpan(
+                    this SyntaxNodeOrToken nodeOrToken) {
                         return nodeOrToken.SyntaxTree.GetLineSpan(nodeOrToken.Span);
                 }
 

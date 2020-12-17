@@ -53,8 +53,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         /// trivia.</param> <returns>A new <see cref="SourceMap"/> object containing
                         /// the directive trivia information from the passed <paramref
                         /// name="compilationUnit"/>.</returns>
-                        internal static SourceMap
-                        FromCompilationUnit(CompilationUnitSyntax compilationUnit) {
+                        internal static SourceMap FromCompilationUnit(
+                            CompilationUnitSyntax compilationUnit) {
                                 TreeTextSpan conditionalRoot;
                                 TreeTextSpan regionRoot;
                                 TreeTextSpan pragmaWarningRoot;
@@ -122,9 +122,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                         ImmutableArray<TreeTextSpan>.Empty);
                         }
 
-                        private static void
-                        ProcessNodeMembers(TreeTextSpan.Builder builder,
-                                           SyntaxList<MemberDeclarationSyntax> members) {
+                        private static void ProcessNodeMembers(
+                            TreeTextSpan.Builder builder,
+                            SyntaxList<MemberDeclarationSyntax> members) {
                                 foreach (var namespaceDeclaration in members
                                              .OfType<NamespaceDeclarationSyntax>()) {
                                         var childBuilder =
@@ -151,42 +151,43 @@ namespace StyleCop.Analyzers.OrderingRules {
                                      directiveTrivia != null;
                                      directiveTrivia = directiveTrivia.GetNextDirective()) {
                                         switch (directiveTrivia.Kind()) {
-                                        case SyntaxKind.IfDirectiveTrivia:
-                                                AddNewDirectiveTriviaSpan(conditionalStack,
-                                                                          directiveTrivia);
-                                                break;
+                                                case SyntaxKind.IfDirectiveTrivia:
+                                                        AddNewDirectiveTriviaSpan(conditionalStack,
+                                                                                  directiveTrivia);
+                                                        break;
 
-                                        case SyntaxKind.ElifDirectiveTrivia:
-                                        case SyntaxKind.ElseDirectiveTrivia:
-                                                var previousSpan = conditionalStack.Pop();
-                                                previousSpan.SetEnd(directiveTrivia.FullSpan.Start);
+                                                case SyntaxKind.ElifDirectiveTrivia:
+                                                case SyntaxKind.ElseDirectiveTrivia:
+                                                        var previousSpan = conditionalStack.Pop();
+                                                        previousSpan.SetEnd(
+                                                            directiveTrivia.FullSpan.Start);
 
-                                                AddNewDirectiveTriviaSpan(conditionalStack,
-                                                                          directiveTrivia);
-                                                break;
+                                                        AddNewDirectiveTriviaSpan(conditionalStack,
+                                                                                  directiveTrivia);
+                                                        break;
 
-                                        case SyntaxKind.EndIfDirectiveTrivia:
-                                                CloseDirectiveTriviaSpan(conditionalStack,
-                                                                         directiveTrivia);
-                                                break;
+                                                case SyntaxKind.EndIfDirectiveTrivia:
+                                                        CloseDirectiveTriviaSpan(conditionalStack,
+                                                                                 directiveTrivia);
+                                                        break;
 
-                                        case SyntaxKind.RegionDirectiveTrivia:
-                                                AddNewDirectiveTriviaSpan(regionStack,
-                                                                          directiveTrivia);
-                                                break;
+                                                case SyntaxKind.RegionDirectiveTrivia:
+                                                        AddNewDirectiveTriviaSpan(regionStack,
+                                                                                  directiveTrivia);
+                                                        break;
 
-                                        case SyntaxKind.EndRegionDirectiveTrivia:
-                                                CloseDirectiveTriviaSpan(regionStack,
-                                                                         directiveTrivia);
-                                                break;
+                                                case SyntaxKind.EndRegionDirectiveTrivia:
+                                                        CloseDirectiveTriviaSpan(regionStack,
+                                                                                 directiveTrivia);
+                                                        break;
 
-                                        case SyntaxKind.PragmaWarningDirectiveTrivia:
-                                                pragmaWarningList.Add(directiveTrivia);
-                                                break;
+                                                case SyntaxKind.PragmaWarningDirectiveTrivia:
+                                                        pragmaWarningList.Add(directiveTrivia);
+                                                        break;
 
-                                        default:
-                                                // ignore all other directive trivia
-                                                break;
+                                                default:
+                                                        // ignore all other directive trivia
+                                                        break;
                                         }
                                 }
 
@@ -198,9 +199,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                                     BuildPragmaWarningSpans(pragmaWarningList, compilationUnit);
                         }
 
-                        private static TreeTextSpan.Builder
-                        SetupBuilder(CompilationUnitSyntax compilationUnit,
-                                     Stack<TreeTextSpan.Builder> stack) {
+                        private static TreeTextSpan.Builder SetupBuilder(
+                            CompilationUnitSyntax compilationUnit,
+                            Stack<TreeTextSpan.Builder> stack) {
                                 var rootBuilder =
                                     TreeTextSpan.CreateBuilder(compilationUnit.SpanStart);
                                 stack.Push(rootBuilder);
@@ -208,25 +209,25 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 return rootBuilder;
                         }
 
-                        private static void
-                        AddNewDirectiveTriviaSpan(Stack<TreeTextSpan.Builder> spanStack,
-                                                  DirectiveTriviaSyntax directiveTrivia) {
+                        private static void AddNewDirectiveTriviaSpan(
+                            Stack<TreeTextSpan.Builder> spanStack,
+                            DirectiveTriviaSyntax directiveTrivia) {
                                 var parent = spanStack.Peek();
                                 var newDirectiveSpan =
                                     parent.AddChild(directiveTrivia.FullSpan.Start);
                                 spanStack.Push(newDirectiveSpan);
                         }
 
-                        private static void
-                        CloseDirectiveTriviaSpan(Stack<TreeTextSpan.Builder> spanStack,
-                                                 DirectiveTriviaSyntax directiveTrivia) {
+                        private static void CloseDirectiveTriviaSpan(
+                            Stack<TreeTextSpan.Builder> spanStack,
+                            DirectiveTriviaSyntax directiveTrivia) {
                                 var previousSpan = spanStack.Pop();
                                 previousSpan.SetEnd(directiveTrivia.FullSpan.End);
                         }
 
-                        private static TreeTextSpan
-                        FinalizeBuilder(TreeTextSpan.Builder builder,
-                                        Stack<TreeTextSpan.Builder> stack, int end) {
+                        private static TreeTextSpan FinalizeBuilder(
+                            TreeTextSpan.Builder builder, Stack<TreeTextSpan.Builder> stack,
+                            int end) {
                                 // close all spans (including the root) that have not been closed
                                 // yet
                                 while (stack.Count > 0) {
@@ -241,9 +242,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 return builder.ToSpan();
                         }
 
-                        private static TreeTextSpan
-                        BuildPragmaWarningSpans(List<DirectiveTriviaSyntax> pragmaWarningList,
-                                                CompilationUnitSyntax compilationUnit) {
+                        private static TreeTextSpan BuildPragmaWarningSpans(
+                            List<DirectiveTriviaSyntax> pragmaWarningList,
+                            CompilationUnitSyntax compilationUnit) {
                                 var map =
                                     new Dictionary<string, PragmaWarningDirectiveTriviaSyntax>();
                                 var builder = TreeTextSpan.CreateBuilder(compilationUnit.SpanStart);
@@ -253,34 +254,40 @@ namespace StyleCop.Analyzers.OrderingRules {
                                         var errorCodes = GetErrorCodes(pragmaWarning);
 
                                         switch (pragmaWarning.DisableOrRestoreKeyword.Kind()) {
-                                        case SyntaxKind.DisableKeyword:
-                                                foreach (var errorCode in errorCodes) {
-                                                        if (!map.ContainsKey(errorCode)) {
-                                                                // only add it if the warning isn't
-                                                                // disabled already
-                                                                map[errorCode] = pragmaWarning;
+                                                case SyntaxKind.DisableKeyword:
+                                                        foreach (var errorCode in errorCodes) {
+                                                                if (!map.ContainsKey(errorCode)) {
+                                                                        // only add it if the
+                                                                        // warning isn't disabled
+                                                                        // already
+                                                                        map[errorCode] =
+                                                                            pragmaWarning;
+                                                                }
                                                         }
-                                                }
 
-                                                break;
+                                                        break;
 
-                                        case SyntaxKind.RestoreKeyword:
-                                                foreach (var errorCode in errorCodes) {
-                                                        PragmaWarningDirectiveTriviaSyntax
-                                                            startOfSpan;
+                                                case SyntaxKind.RestoreKeyword:
+                                                        foreach (var errorCode in errorCodes) {
+                                                                PragmaWarningDirectiveTriviaSyntax
+                                                                    startOfSpan;
 
-                                                        if (map.TryGetValue(errorCode,
-                                                                            out startOfSpan)) {
-                                                                map.Remove(errorCode);
+                                                                if (map.TryGetValue(
+                                                                        errorCode,
+                                                                        out startOfSpan)) {
+                                                                        map.Remove(errorCode);
 
-                                                                var childSpan = builder.AddChild(
-                                                                    startOfSpan.FullSpan.Start);
-                                                                childSpan.SetEnd(
-                                                                    pragmaWarning.FullSpan.End);
+                                                                        var childSpan =
+                                                                            builder.AddChild(
+                                                                                startOfSpan.FullSpan
+                                                                                    .Start);
+                                                                        childSpan.SetEnd(
+                                                                            pragmaWarning.FullSpan
+                                                                                .End);
+                                                                }
                                                         }
-                                                }
 
-                                                break;
+                                                        break;
                                         }
                                 }
 

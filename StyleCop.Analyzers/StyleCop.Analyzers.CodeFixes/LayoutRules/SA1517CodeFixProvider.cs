@@ -30,27 +30,27 @@ namespace StyleCop.Analyzers.LayoutRules {
                 public override Task RegisterCodeFixesAsync(CodeFixContext context) {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(LayoutResources.SA1517CodeFix,
-                                                      cancellationToken =>
-                                                          GetTransformedDocumentAsync(
-                                                              context.Document, cancellationToken),
-                                                      nameof(SA1517CodeFixProvider)),
+                                    CodeAction.Create(
+                                        LayoutResources.SA1517CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, cancellationToken),
+                                        nameof(SA1517CodeFixProvider)),
                                     diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, CancellationToken token) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, CancellationToken token) {
                         var newSyntaxRoot = await GetTransformedSyntaxRootAsync(document, token)
                                                 .ConfigureAwait(false);
 
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private static async Task<SyntaxNode>
-                GetTransformedSyntaxRootAsync(Document document, CancellationToken token) {
+                private static async Task<SyntaxNode> GetTransformedSyntaxRootAsync(
+                    Document document, CancellationToken token) {
                         var syntaxRoot =
                             await document.GetSyntaxRootAsync(token).ConfigureAwait(false);
 
@@ -79,9 +79,9 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         protected override string CodeActionTitle => LayoutResources.SA1517CodeFix;
 
-                        protected override Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

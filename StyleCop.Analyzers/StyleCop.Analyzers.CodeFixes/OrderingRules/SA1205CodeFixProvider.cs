@@ -61,9 +61,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
@@ -90,24 +89,24 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private static ImmutableArray<SyntaxKind>
-                GetMissingAccessModifiers(Accessibility accessibility) {
+                private static ImmutableArray<SyntaxKind> GetMissingAccessModifiers(
+                    Accessibility accessibility) {
                         switch (accessibility) {
-                        case Accessibility.Public:
-                                return PublicAccessibilityKeywords;
-                        case Accessibility.Internal:
-                                return InternalAccessibilityKeywords;
-                        case Accessibility.Protected:
-                                return ProtectedAccessibilityKeywords;
-                        case Accessibility.ProtectedOrInternal:
-                                return ProtectedOrInternalAccessibilityKeywords;
-                        case Accessibility.ProtectedAndInternal:
-                                return ProtectedAndInternalAccessibilityKeywords;
-                        case Accessibility.Private:
-                                return PrivateAccessibilityKeywords;
-                        default:
-                                // This should not happen!
-                                return UnexpectedAccessibilityKeywords;
+                                case Accessibility.Public:
+                                        return PublicAccessibilityKeywords;
+                                case Accessibility.Internal:
+                                        return InternalAccessibilityKeywords;
+                                case Accessibility.Protected:
+                                        return ProtectedAccessibilityKeywords;
+                                case Accessibility.ProtectedOrInternal:
+                                        return ProtectedOrInternalAccessibilityKeywords;
+                                case Accessibility.ProtectedAndInternal:
+                                        return ProtectedAndInternalAccessibilityKeywords;
+                                case Accessibility.Private:
+                                        return PrivateAccessibilityKeywords;
+                                default:
+                                        // This should not happen!
+                                        return UnexpectedAccessibilityKeywords;
                         }
                 }
 
@@ -117,15 +116,18 @@ namespace StyleCop.Analyzers.OrderingRules {
                 private static TypeDeclarationSyntax ReplaceModifiers(TypeDeclarationSyntax node,
                                                                       SyntaxTokenList modifiers) {
                         switch (node.Kind()) {
-                        case SyntaxKind.ClassDeclaration:
-                                return ((ClassDeclarationSyntax) node).WithModifiers(modifiers);
-                        case SyntaxKind.InterfaceDeclaration:
-                                return ((InterfaceDeclarationSyntax) node).WithModifiers(modifiers);
-                        case SyntaxKind.StructDeclaration:
-                                return ((StructDeclarationSyntax) node).WithModifiers(modifiers);
-                        case SyntaxKindEx.RecordDeclaration:
-                                return ((RecordDeclarationSyntaxWrapper) node)
-                                    .WithModifiers(modifiers);
+                                case SyntaxKind.ClassDeclaration:
+                                        return ((ClassDeclarationSyntax) node)
+                                            .WithModifiers(modifiers);
+                                case SyntaxKind.InterfaceDeclaration:
+                                        return ((InterfaceDeclarationSyntax) node)
+                                            .WithModifiers(modifiers);
+                                case SyntaxKind.StructDeclaration:
+                                        return ((StructDeclarationSyntax) node)
+                                            .WithModifiers(modifiers);
+                                case SyntaxKindEx.RecordDeclaration:
+                                        return ((RecordDeclarationSyntaxWrapper) node)
+                                            .WithModifiers(modifiers);
                         }
 
                         return node;
@@ -137,14 +139,17 @@ namespace StyleCop.Analyzers.OrderingRules {
                 private static TypeDeclarationSyntax ReplaceKeyword(TypeDeclarationSyntax node,
                                                                     SyntaxToken keyword) {
                         switch (node.Kind()) {
-                        case SyntaxKind.ClassDeclaration:
-                                return ((ClassDeclarationSyntax) node).WithKeyword(keyword);
-                        case SyntaxKind.InterfaceDeclaration:
-                                return ((InterfaceDeclarationSyntax) node).WithKeyword(keyword);
-                        case SyntaxKind.StructDeclaration:
-                                return ((StructDeclarationSyntax) node).WithKeyword(keyword);
-                        case SyntaxKindEx.RecordDeclaration:
-                                return ((RecordDeclarationSyntaxWrapper) node).WithKeyword(keyword);
+                                case SyntaxKind.ClassDeclaration:
+                                        return ((ClassDeclarationSyntax) node).WithKeyword(keyword);
+                                case SyntaxKind.InterfaceDeclaration:
+                                        return ((InterfaceDeclarationSyntax) node)
+                                            .WithKeyword(keyword);
+                                case SyntaxKind.StructDeclaration:
+                                        return ((StructDeclarationSyntax) node)
+                                            .WithKeyword(keyword);
+                                case SyntaxKindEx.RecordDeclaration:
+                                        return ((RecordDeclarationSyntaxWrapper) node)
+                                            .WithKeyword(keyword);
                         }
 
                         return node;

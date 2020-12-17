@@ -69,8 +69,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleObjectCreationOperation(OperationAnalysisContext context) {
+                private static void HandleObjectCreationOperation(
+                    OperationAnalysisContext context) {
                         var objectCreation =
                             IObjectCreationOperationWrapper.FromOperation(context.Operation);
 
@@ -93,8 +93,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             Descriptor, objectCreation.WrappedOperation.Syntax.GetLocation()));
                 }
 
-                private static void
-                HandleTypeParameterObjectCreationOperation(OperationAnalysisContext context) {
+                private static void HandleTypeParameterObjectCreationOperation(
+                    OperationAnalysisContext context) {
                         var objectCreation =
                             ITypeParameterObjectCreationOperationWrapper.FromOperation(
                                 context.Operation);
@@ -113,8 +113,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             Descriptor, objectCreation.WrappedOperation.Syntax.GetLocation()));
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         ObjectCreationExpressionSyntax newExpression =
                             (ObjectCreationExpressionSyntax) context.Node;
 

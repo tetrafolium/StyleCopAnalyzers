@@ -48,9 +48,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var nodeInSourceSpan = syntaxRoot.FindNode(diagnostic.Location.SourceSpan,
@@ -77,9 +76,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return newDocument;
                 }
 
-                private static List<AttributeListSyntax>
-                GetNewAttributeList(AttributeListSyntax attributeList,
-                                    SyntaxTrivia indentationTrivia) {
+                private static List<AttributeListSyntax> GetNewAttributeList(
+                    AttributeListSyntax attributeList, SyntaxTrivia indentationTrivia) {
                         var newAttributeLists = new List<AttributeListSyntax>();
 
                         for (var i = 0; i < attributeList.Attributes.Count; i++) {
@@ -118,9 +116,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         protected override string CodeActionTitle =>
                             ReadabilityResources.SA1133CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

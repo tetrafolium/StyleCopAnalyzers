@@ -83,8 +83,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new TupleExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(TupleExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    TupleExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -97,14 +97,14 @@ namespace StyleCop.Analyzers.Lightup {
                             WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
                 }
 
-                public TupleExpressionSyntaxWrapper
-                WithArguments(SeparatedSyntaxList<ArgumentSyntax> arguments) {
+                public TupleExpressionSyntaxWrapper WithArguments(
+                    SeparatedSyntaxList<ArgumentSyntax> arguments) {
                         return new TupleExpressionSyntaxWrapper(
                             WithArgumentsAccessor(this.SyntaxNode, arguments));
                 }
 
-                public TupleExpressionSyntaxWrapper
-                WithCloseParenToken(SyntaxToken closeParenToken) {
+                public TupleExpressionSyntaxWrapper WithCloseParenToken(
+                    SyntaxToken closeParenToken) {
                         return new TupleExpressionSyntaxWrapper(
                             WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
                 }

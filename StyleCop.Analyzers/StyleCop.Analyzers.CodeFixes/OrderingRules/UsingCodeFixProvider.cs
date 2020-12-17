@@ -68,20 +68,19 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 }
 
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(OrderingResources.UsingCodeFix,
-                                                      cancellationToken =>
-                                                          GetTransformedDocumentAsync(
-                                                              context.Document, syntaxRoot,
-                                                              !isSA1200, cancellationToken),
-                                                      nameof(UsingCodeFixProvider)),
+                                    CodeAction.Create(
+                                        OrderingResources.UsingCodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, syntaxRoot, !isSA1200,
+                                            cancellationToken),
+                                        nameof(UsingCodeFixProvider)),
                                     diagnostic);
                         }
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode syntaxRoot,
-                                            bool forcePreservePlacement,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, SyntaxNode syntaxRoot, bool forcePreservePlacement,
+                    CancellationToken cancellationToken) {
                         var fileHeader = GetFileHeader(syntaxRoot);
                         var compilationUnit = (CompilationUnitSyntax) syntaxRoot;
 
@@ -150,10 +149,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return newDocument;
                 }
 
-                private static string
-                DetermineIndentation(CompilationUnitSyntax compilationUnit,
-                                     IndentationSettings indentationSettings,
-                                     UsingDirectivesPlacement usingDirectivesPlacement) {
+                private static string DetermineIndentation(
+                    CompilationUnitSyntax compilationUnit, IndentationSettings indentationSettings,
+                    UsingDirectivesPlacement usingDirectivesPlacement) {
                         string usingsIndentation;
 
                         if (usingDirectivesPlacement == UsingDirectivesPlacement.InsideNamespace) {
@@ -171,36 +169,39 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return usingsIndentation;
                 }
 
-                private static UsingDirectivesPlacement
-                DeterminePlacement(CompilationUnitSyntax compilationUnit,
-                                   StyleCopSettings settings) {
+                private static UsingDirectivesPlacement DeterminePlacement(
+                    CompilationUnitSyntax compilationUnit, StyleCopSettings settings) {
                         switch (settings.OrderingRules.UsingDirectivesPlacement) {
-                        case UsingDirectivesPlacement.InsideNamespace:
-                                var namespaceCount = CountNamespaces(compilationUnit.Members);
+                                case UsingDirectivesPlacement.InsideNamespace:
+                                        var namespaceCount =
+                                            CountNamespaces(compilationUnit.Members);
 
-                                // Only move using declarations inside the namespace when
-                                // - There are no global attributes
-                                // - There is only a single namespace declared at the top level
-                                // - OrderingSettings.UsingDirectivesPlacement is set to
-                                // InsideNamespace
-                                if (compilationUnit.AttributeLists.Any() ||
-                                    compilationUnit.Members.Count > 1 || namespaceCount > 1) {
-                                        // Override the user's setting with a more conservative one
-                                        return UsingDirectivesPlacement.Preserve;
-                                }
+                                        // Only move using declarations inside the namespace when
+                                        // - There are no global attributes
+                                        // - There is only a single namespace declared at the top
+                                        // level
+                                        // - OrderingSettings.UsingDirectivesPlacement is set to
+                                        // InsideNamespace
+                                        if (compilationUnit.AttributeLists.Any() ||
+                                            compilationUnit.Members.Count > 1 ||
+                                            namespaceCount > 1) {
+                                                // Override the user's setting with a more
+                                                // conservative one
+                                                return UsingDirectivesPlacement.Preserve;
+                                        }
 
-                                if (namespaceCount == 0) {
+                                        if (namespaceCount == 0) {
+                                                return UsingDirectivesPlacement.OutsideNamespace;
+                                        }
+
+                                        return UsingDirectivesPlacement.InsideNamespace;
+
+                                case UsingDirectivesPlacement.OutsideNamespace:
                                         return UsingDirectivesPlacement.OutsideNamespace;
-                                }
 
-                                return UsingDirectivesPlacement.InsideNamespace;
-
-                        case UsingDirectivesPlacement.OutsideNamespace:
-                                return UsingDirectivesPlacement.OutsideNamespace;
-
-                        case UsingDirectivesPlacement.Preserve:
-                        default:
-                                return UsingDirectivesPlacement.Preserve;
+                                case UsingDirectivesPlacement.Preserve:
+                                default:
+                                        return UsingDirectivesPlacement.Preserve;
                         }
                 }
 
@@ -215,8 +216,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return result;
                 }
 
-                private static List<UsingDirectiveSyntax>
-                BuildStripList(UsingsSorter usingsHelper) {
+                private static List<UsingDirectiveSyntax> BuildStripList(
+                    UsingsSorter usingsHelper) {
                         return usingsHelper.GetContainedUsings(TreeTextSpan.Empty).ToList();
                 }
 
@@ -321,10 +322,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return newSyntaxRoot;
                 }
 
-                private static SyntaxNode
-                AddUsingsToCompilationRoot(SyntaxNode newSyntaxRoot, UsingsSorter usingsHelper,
-                                           string usingsIndentation,
-                                           bool hasConditionalDirectives) {
+                private static SyntaxNode AddUsingsToCompilationRoot(
+                    SyntaxNode newSyntaxRoot, UsingsSorter usingsHelper, string usingsIndentation,
+                    bool hasConditionalDirectives) {
                         var newCompilationUnit = (CompilationUnitSyntax) newSyntaxRoot;
                         var withTrailingBlankLine =
                             hasConditionalDirectives || newCompilationUnit.AttributeLists.Any() ||
@@ -415,31 +415,31 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 bool done = false;
                                 switch (firstTokenLeadingTrivia [i]
                                             .Kind()) {
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                case SyntaxKind.MultiLineCommentTrivia:
-                                        fileHeaderBuilder.Add(firstTokenLeadingTrivia[i]);
-                                        onBlankLine = false;
-                                        break;
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                        case SyntaxKind.MultiLineCommentTrivia:
+                                                fileHeaderBuilder.Add(firstTokenLeadingTrivia[i]);
+                                                onBlankLine = false;
+                                                break;
 
-                                case SyntaxKind.WhitespaceTrivia:
-                                        fileHeaderBuilder.Add(firstTokenLeadingTrivia[i]);
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                fileHeaderBuilder.Add(firstTokenLeadingTrivia[i]);
+                                                break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        hasHeader = true;
-                                        fileHeaderBuilder.Add(firstTokenLeadingTrivia[i]);
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                hasHeader = true;
+                                                fileHeaderBuilder.Add(firstTokenLeadingTrivia[i]);
 
-                                        if (onBlankLine) {
+                                                if (onBlankLine) {
+                                                        done = true;
+                                                } else {
+                                                        onBlankLine = true;
+                                                }
+
+                                                break;
+
+                                        default:
                                                 done = true;
-                                        } else {
-                                                onBlankLine = true;
-                                        }
-
-                                        break;
-
-                                default:
-                                        done = true;
-                                        break;
+                                                break;
                                 }
 
                                 if (done) {
@@ -542,9 +542,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                         protected override string CodeActionTitle => OrderingResources.UsingCodeFix;
 
                         /// <inheritdoc/>
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

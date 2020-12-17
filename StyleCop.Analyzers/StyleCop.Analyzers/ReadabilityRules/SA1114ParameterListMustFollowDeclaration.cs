@@ -127,14 +127,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.ParenthesizedLambdaExpression);
                 }
 
-                private static void
-                HandleParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleParenthesizedLambdaExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var lambdaExpression = (ParenthesizedLambdaExpressionSyntax) context.Node;
                         AnalyzeParametersList(context, lambdaExpression.ParameterList);
                 }
 
-                private static void
-                HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousMethodExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
                         AnalyzeParametersList(context, anonymousMethod.ParameterList);
                 }
@@ -155,14 +155,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         AnalyzeArgumentList(context, attribute.ArgumentList);
                 }
 
-                private static void
-                HandleElementAccessExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleElementAccessExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var elementAccess = (ElementAccessExpressionSyntax) context.Node;
                         AnalyzeArgumentList(context, elementAccess.ArgumentList);
                 }
 
-                private static void
-                HandleArrayCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleArrayCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var arrayCreation = (ArrayCreationExpressionSyntax) context.Node;
                         if (arrayCreation.Type == null) {
                                 return;
@@ -176,8 +176,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         AnalyzeBracketParametersList(context, indexerDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
                         if (objectCreation?.ArgumentList != null) {
                                 AnalyzeArgumentList(context, objectCreation.ArgumentList);
@@ -195,17 +195,17 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         AnalyzeParametersList(context, methodDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var localFunctionStatement =
                             (LocalFunctionStatementSyntaxWrapper) context.Node;
 
                         AnalyzeParametersList(context, localFunctionStatement.ParameterList);
                 }
 
-                private static void
-                AnalyzeRankSpecifiers(SyntaxNodeAnalysisContext context,
-                                      ArrayCreationExpressionSyntax arrayCreation) {
+                private static void AnalyzeRankSpecifiers(
+                    SyntaxNodeAnalysisContext context,
+                    ArrayCreationExpressionSyntax arrayCreation) {
                         if (!arrayCreation.Type.RankSpecifiers.Any()) {
                                 return;
                         }
@@ -270,9 +270,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                AnalyzeArgumentList(SyntaxNodeAnalysisContext context,
-                                    BracketedArgumentListSyntax argumentListSyntax) {
+                private static void AnalyzeArgumentList(
+                    SyntaxNodeAnalysisContext context,
+                    BracketedArgumentListSyntax argumentListSyntax) {
                         var openBracketToken = argumentListSyntax.OpenBracketToken;
                         if (openBracketToken.IsMissing || argumentListSyntax.IsMissing ||
                             !argumentListSyntax.Arguments.Any()) {
@@ -304,9 +304,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                AnalyzeArgumentList(SyntaxNodeAnalysisContext context,
-                                    AttributeArgumentListSyntax argumentListSyntax) {
+                private static void AnalyzeArgumentList(
+                    SyntaxNodeAnalysisContext context,
+                    AttributeArgumentListSyntax argumentListSyntax) {
                         if (argumentListSyntax == null ||
                             argumentListSyntax.OpenParenToken.IsMissing ||
                             argumentListSyntax.IsMissing || !argumentListSyntax.Arguments.Any()) {
@@ -371,9 +371,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                AnalyzeBracketParametersList(SyntaxNodeAnalysisContext context,
-                                             BracketedParameterListSyntax parameterListSyntax) {
+                private static void AnalyzeBracketParametersList(
+                    SyntaxNodeAnalysisContext context,
+                    BracketedParameterListSyntax parameterListSyntax) {
                         var openBracketToken = parameterListSyntax.OpenBracketToken;
                         if (openBracketToken.IsMissing || parameterListSyntax.IsMissing ||
                             !parameterListSyntax.Parameters.Any()) {
@@ -435,16 +435,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private static bool IsValidTrivia(SyntaxTrivia trivia) {
                         switch (trivia.Kind()) {
-                        case SyntaxKind.IfDirectiveTrivia:
-                        case SyntaxKind.ElseDirectiveTrivia:
-                        case SyntaxKind.ElifDirectiveTrivia:
-                        case SyntaxKind.EndIfDirectiveTrivia:
-                        case SyntaxKind.DisabledTextTrivia:
-                        case SyntaxKind.WhitespaceTrivia:
-                                return true;
+                                case SyntaxKind.IfDirectiveTrivia:
+                                case SyntaxKind.ElseDirectiveTrivia:
+                                case SyntaxKind.ElifDirectiveTrivia:
+                                case SyntaxKind.EndIfDirectiveTrivia:
+                                case SyntaxKind.DisabledTextTrivia:
+                                case SyntaxKind.WhitespaceTrivia:
+                                        return true;
 
-                        default:
-                                return false;
+                                default:
+                                        return false;
                         }
                 }
         }

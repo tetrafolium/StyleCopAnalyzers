@@ -81,10 +81,9 @@ namespace StyleCop.Analyzers.SpacingRules {
                         ReportIncorrectTabUsage(context, settings.Indentation, excludedSpans);
                 }
 
-                private static void
-                ReportIncorrectTabUsage(SyntaxTreeAnalysisContext context,
-                                        IndentationSettings indentationSettings,
-                                        ImmutableArray<TextSpan> excludedSpans) {
+                private static void ReportIncorrectTabUsage(
+                    SyntaxTreeAnalysisContext context, IndentationSettings indentationSettings,
+                    ImmutableArray<TextSpan> excludedSpans) {
                         SyntaxTree syntaxTree = context.Tree;
                         SourceText sourceText = syntaxTree.GetText(context.CancellationToken);
 
@@ -115,24 +114,24 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 bool containsSpaces = false;
                                 bool tabAfterSpace = false;
                                 switch (completeText[startIndex]) {
-                                case ' ':
-                                        containsSpaces = true;
-                                        break;
+                                        case ' ':
+                                                containsSpaces = true;
+                                                break;
 
-                                case '\t':
-                                        tabCount++;
-                                        break;
+                                        case '\t':
+                                                tabCount++;
+                                                break;
 
-                                case '\r':
-                                case '\n':
-                                        // Handle newlines. We can ignore CR/LF/CRLF issues because
-                                        // we are only tracking column position in a line, and not
-                                        // the line numbers themselves.
-                                        lastLineStart = startIndex + 1;
-                                        continue;
+                                        case '\r':
+                                        case '\n':
+                                                // Handle newlines. We can ignore CR/LF/CRLF issues
+                                                // because we are only tracking column position in a
+                                                // line, and not the line numbers themselves.
+                                                lastLineStart = startIndex + 1;
+                                                continue;
 
-                                default:
-                                        continue;
+                                        default:
+                                                continue;
                                 }
 
                                 int endIndex;
@@ -180,8 +179,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                         }
                 }
 
-                private static bool
-                LocateExcludedSpans(SyntaxNode root, out ImmutableArray<TextSpan> excludedSpans) {
+                private static bool LocateExcludedSpans(
+                    SyntaxNode root, out ImmutableArray<TextSpan> excludedSpans) {
                         ImmutableArray<TextSpan>.Builder builder =
                             ImmutableArray.CreateBuilder<TextSpan>();
 
@@ -203,21 +202,22 @@ namespace StyleCop.Analyzers.SpacingRules {
                         // Locate string literals
                         foreach (var token in root.DescendantTokens(descendIntoTrivia : true)) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.XmlTextLiteralToken:
-                                        if (token.Parent.IsKind(SyntaxKind.XmlCDataSection)) {
+                                        case SyntaxKind.XmlTextLiteralToken:
+                                                if (token.Parent.IsKind(
+                                                        SyntaxKind.XmlCDataSection)) {
+                                                        builder.Add(token.Span);
+                                                }
+
+                                                break;
+
+                                        case SyntaxKind.CharacterLiteralToken:
+                                        case SyntaxKind.StringLiteralToken:
+                                        case SyntaxKind.InterpolatedStringTextToken:
                                                 builder.Add(token.Span);
-                                        }
+                                                break;
 
-                                        break;
-
-                                case SyntaxKind.CharacterLiteralToken:
-                                case SyntaxKind.StringLiteralToken:
-                                case SyntaxKind.InterpolatedStringTextToken:
-                                        builder.Add(token.Span);
-                                        break;
-
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
 
@@ -231,8 +231,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                         return true;
                 }
 
-                private static void
-                ReduceTextSpans(ImmutableArray<TextSpan>.Builder sortedTextSpans) {
+                private static void ReduceTextSpans(
+                    ImmutableArray<TextSpan>.Builder sortedTextSpans) {
                         if (sortedTextSpans.Count == 0) {
                                 return;
                         }

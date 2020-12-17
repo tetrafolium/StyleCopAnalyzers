@@ -100,8 +100,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                                        typeDeclaration.CloseBraceToken);
                 }
 
-                private static void
-                HandleBasePropertyDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleBasePropertyDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var basePropertyDeclaration = (BasePropertyDeclarationSyntax) context.Node;
 
                         // The AccessorList will be null when an expression body is present.
@@ -128,8 +128,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         }
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var localFunctionStatement =
                             (LocalFunctionStatementSyntaxWrapper) context.Node;
 

@@ -76,14 +76,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                     HelpLink);
 
                 private static readonly DiagnosticDescriptor ParenthesisDescriptor =
-#pragma warning disable RS2000 // Add analyzer diagnostic IDs to analyzer release.
+#pragma warning disable RS2000  // Add analyzer diagnostic IDs to analyzer release.
                     new DiagnosticDescriptor(
                         ParenthesesDiagnosticId, Title, MessageFormat,
                         AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Hidden,
                         AnalyzerConstants.EnabledByDefault, Description, HelpLink, customTags
                         : new[]{WellKnownDiagnosticTags.Unnecessary,
                                 WellKnownDiagnosticTags.NotConfigurable});
-#pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
+#pragma warning restore RS2000  // Add analyzer diagnostic IDs to analyzer release.
 
                 private static readonly Action<CompilationStartAnalysisContext>
                     CompilationStartAction = HandleCompilationStart;
@@ -102,8 +102,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void
-                HandleCompilationStart(CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(
+                    CompilationStartAnalysisContext context) {
                         // Only register the syntax node action if the diagnostic is enabled. This
                         // is important because otherwise the diagnostic for fading out the
                         // parenthesis is still active, even if the main diagnostic is disabled
@@ -114,8 +114,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         }
                 }
 
-                private static void
-                HandleParenthesizedExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleParenthesizedExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var node = (ParenthesizedExpressionSyntax) context.Node;
 
                         if (node.Expression != null) {
@@ -218,8 +218,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         return false;
                 }
 
-                private static bool
-                IsSwitchOrWithExpressionPrecededByTypeCast(ParenthesizedExpressionSyntax node) {
+                private static bool IsSwitchOrWithExpressionPrecededByTypeCast(
+                    ParenthesizedExpressionSyntax node) {
                         if (!node.Expression.IsKind(SyntaxKindEx.SwitchExpression) &&
                             !node.Expression.IsKind(SyntaxKindEx.WithExpression)) {
                                 return false;

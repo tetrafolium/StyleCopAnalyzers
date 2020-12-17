@@ -45,9 +45,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -93,16 +92,15 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return firstTriviaIgnoringWhitespace.IsKind(SyntaxKind.EndOfLineTrivia);
                 }
 
-                private static bool
-                AccessorsAreOnTheSameLine(AccessorDeclarationSyntax firstAccesor,
-                                          AccessorDeclarationSyntax secondAccessor) {
+                private static bool AccessorsAreOnTheSameLine(
+                    AccessorDeclarationSyntax firstAccesor,
+                    AccessorDeclarationSyntax secondAccessor) {
                         return firstAccesor.GetEndLine() == secondAccessor.GetEndLine();
                 }
 
-                private static AccessorDeclarationSyntax
-                GetNewAccessor(AccessorListSyntax accessorList,
-                               AccessorDeclarationSyntax firstAccessor,
-                               AccessorDeclarationSyntax secondAccessor) {
+                private static AccessorDeclarationSyntax GetNewAccessor(
+                    AccessorListSyntax accessorList, AccessorDeclarationSyntax firstAccessor,
+                    AccessorDeclarationSyntax secondAccessor) {
                         var newLeadingTrivia =
                             GetLeadingTriviaWithoutLeadingBlankLines(secondAccessor);
                         if (AccessorsAreOnTheSameLine(firstAccessor, secondAccessor)) {
@@ -122,8 +120,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         return newAccessor;
                 }
 
-                private static SyntaxTriviaList
-                GetLeadingTriviaWithoutLeadingBlankLines(SyntaxNode secondAccessor) {
+                private static SyntaxTriviaList GetLeadingTriviaWithoutLeadingBlankLines(
+                    SyntaxNode secondAccessor) {
                         var leadingTrivia = secondAccessor.GetLeadingTrivia();
 
                         var skipIndex = 0;

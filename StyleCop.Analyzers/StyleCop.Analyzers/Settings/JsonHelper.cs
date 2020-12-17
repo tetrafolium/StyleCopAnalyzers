@@ -15,8 +15,8 @@ namespace StyleCop.Analyzers {
                 /// </summary>
                 /// <param name="jsonValue">The key value pair identifying the JSON value.</param>
                 /// <returns>The boolean value contained within the JSON value.</returns>
-                internal static bool
-                ToBooleanValue(this KeyValuePair<string, JsonValue> jsonValue) {
+                internal static bool ToBooleanValue(
+                    this KeyValuePair<string, JsonValue> jsonValue) {
                         if (!jsonValue.Value.IsBoolean) {
                                 throw new InvalidSettingsException(
                                     $"{jsonValue.Key} must contain a boolean value");
@@ -44,8 +44,8 @@ namespace StyleCop.Analyzers {
                 /// </summary>
                 /// <param name="jsonValue">The key value pair identifying the JSON value.</param>
                 /// <returns>The string value contained within the JSON value.</returns>
-                internal static string
-                ToStringValue(this KeyValuePair<string, JsonValue> jsonValue) {
+                internal static string ToStringValue(
+                    this KeyValuePair<string, JsonValue> jsonValue) {
                         if (!jsonValue.Value.IsString) {
                                 throw new InvalidSettingsException(
                                     $"{jsonValue.Key} must contain a string value");
@@ -75,9 +75,8 @@ namespace StyleCop.Analyzers {
                 /// <typeparam name="TEnum">The type of enum to convert to.</typeparam>
                 /// <param name="jsonValue">The key value pair identifying the JSON value.</param>
                 /// <returns>The enum value contained within the JSON value.</returns>
-                internal static TEnum
-                ToEnumValue<TEnum>(this KeyValuePair<string, JsonValue> jsonValue) where TEnum
-                    : struct {
+                internal static TEnum ToEnumValue<TEnum>(
+                    this KeyValuePair<string, JsonValue> jsonValue) where TEnum : struct {
                         if (!jsonValue.Value.IsString) {
                                 throw new InvalidSettingsException(
                                     $"{jsonValue.Key} must contain an enum (string) value");
@@ -132,8 +131,8 @@ namespace StyleCop.Analyzers {
                 /// not.
                 /// </summary>
                 /// <param name="jsonValue">The key value pair identifying the JSON value.</param>
-                internal static void
-                AssertIsObject(this KeyValuePair<string, JsonValue> jsonValue) {
+                internal static void AssertIsObject(
+                    this KeyValuePair<string, JsonValue> jsonValue) {
                         if (!jsonValue.Value.IsJsonObject) {
                                 throw new InvalidSettingsException(
                                     $"{jsonValue.Key} must contain an object");

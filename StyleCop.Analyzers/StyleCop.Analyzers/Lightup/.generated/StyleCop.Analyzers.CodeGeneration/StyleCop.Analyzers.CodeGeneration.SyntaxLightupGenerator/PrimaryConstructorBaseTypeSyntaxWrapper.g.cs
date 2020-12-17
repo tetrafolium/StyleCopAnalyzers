@@ -34,8 +34,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<BaseTypeSyntax, TypeSyntax>(
                                     WrappedType, nameof(Type));
-                        WithArgumentListAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            BaseTypeSyntax, ArgumentListSyntax>(WrappedType, nameof(ArgumentList));
+                        WithArgumentListAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<BaseTypeSyntax,
+                                                                            ArgumentListSyntax>(
+                                WrappedType, nameof(ArgumentList));
                 }
 
                 private PrimaryConstructorBaseTypeSyntaxWrapper(BaseTypeSyntax node) {
@@ -52,8 +54,8 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return ArgumentListAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator PrimaryConstructorBaseTypeSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator PrimaryConstructorBaseTypeSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -66,8 +68,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new PrimaryConstructorBaseTypeSyntaxWrapper((BaseTypeSyntax) node);
                 }
 
-                public static implicit
-                operator BaseTypeSyntax(PrimaryConstructorBaseTypeSyntaxWrapper wrapper) {
+                public static implicit operator BaseTypeSyntax(
+                    PrimaryConstructorBaseTypeSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -80,8 +82,8 @@ namespace StyleCop.Analyzers.Lightup {
                             WithTypeAccessor(this.SyntaxNode, type));
                 }
 
-                public PrimaryConstructorBaseTypeSyntaxWrapper
-                WithArgumentList(ArgumentListSyntax argumentList) {
+                public PrimaryConstructorBaseTypeSyntaxWrapper WithArgumentList(
+                    ArgumentListSyntax argumentList) {
                         return new PrimaryConstructorBaseTypeSyntaxWrapper(
                             WithArgumentListAccessor(this.SyntaxNode, argumentList));
                 }

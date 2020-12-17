@@ -29,19 +29,19 @@ namespace StyleCop.Analyzers.Helpers {
                                 }
 
                                 switch (convention) {
-                                case FileNamingConvention.Metadata:
-                                        return GetMetadataFileName(typeDeclaration);
+                                        case FileNamingConvention.Metadata:
+                                                return GetMetadataFileName(typeDeclaration);
 
-                                default:
-                                        return GetStyleCopFileName(typeDeclaration);
+                                        default:
+                                                return GetStyleCopFileName(typeDeclaration);
                                 }
                         }
 
                         return GetSimpleFileName(declaration);
                 }
 
-                internal static string
-                GetSimpleFileName(MemberDeclarationSyntax memberDeclaration) {
+                internal static string GetSimpleFileName(
+                    MemberDeclarationSyntax memberDeclaration) {
                         var nameOrIdentifier =
                             NamedTypeHelpers.GetNameOrIdentifier(memberDeclaration);
                         return nameOrIdentifier;

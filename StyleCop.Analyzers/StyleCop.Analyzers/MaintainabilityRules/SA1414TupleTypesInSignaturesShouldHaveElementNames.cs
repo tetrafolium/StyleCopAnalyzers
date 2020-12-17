@@ -86,8 +86,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         CheckParameterList(context, methodDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleConstructorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -117,8 +117,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         CheckType(context, indexerDeclaration.Type);
                 }
 
-                private static void
-                HandleConversionOperatorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConversionOperatorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -151,17 +151,19 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 private static void CheckType(SyntaxNodeAnalysisContext context,
                                               TypeSyntax typeSyntax) {
                         switch (typeSyntax.Kind()) {
-                        case SyntaxKindEx.TupleType:
-                                CheckTupleType(context, (TupleTypeSyntaxWrapper) typeSyntax);
-                                break;
+                                case SyntaxKindEx.TupleType:
+                                        CheckTupleType(context,
+                                                       (TupleTypeSyntaxWrapper) typeSyntax);
+                                        break;
 
-                        case SyntaxKind.QualifiedName:
-                                CheckType(context, ((QualifiedNameSyntax) typeSyntax).Right);
-                                break;
+                                case SyntaxKind.QualifiedName:
+                                        CheckType(context,
+                                                  ((QualifiedNameSyntax) typeSyntax).Right);
+                                        break;
 
-                        case SyntaxKind.GenericName:
-                                CheckGenericName(context, (GenericNameSyntax) typeSyntax);
-                                break;
+                                case SyntaxKind.GenericName:
+                                        CheckGenericName(context, (GenericNameSyntax) typeSyntax);
+                                        break;
                         }
                 }
 

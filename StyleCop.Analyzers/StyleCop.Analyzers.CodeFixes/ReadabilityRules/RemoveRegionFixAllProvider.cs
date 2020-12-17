@@ -13,9 +13,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         internal sealed class RemoveRegionFixAllProvider : DocumentBasedFixAllProvider {
                 protected override string CodeActionTitle => "Remove region";
 
-                protected override async Task<SyntaxNode>
-                FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                      ImmutableArray<Diagnostic> diagnostics) {
+                protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                    FixAllContext fixAllContext, Document document,
+                    ImmutableArray<Diagnostic> diagnostics) {
                         if (diagnostics.IsEmpty) {
                                 return null;
                         }

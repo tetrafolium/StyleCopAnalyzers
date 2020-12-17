@@ -175,8 +175,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                          SyntaxKinds.BasePropertyDeclaration);
                 }
 
-                private static void
-                HandleBasePropertyDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleBasePropertyDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var propertyDeclaration = (BasePropertyDeclarationSyntax) context.Node;
 
                         if (propertyDeclaration.AccessorList?.Accessors != null) {

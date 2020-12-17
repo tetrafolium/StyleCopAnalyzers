@@ -263,42 +263,47 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 bool compareKind = true;
                                 for (int j = 0; compareKind && j < kindIndex; j++) {
                                         switch (elementOrder[j]) {
-                                        case OrderingTrait.Accessibility:
-                                                if (MemberOrderHelper.GetAccessLevelForOrdering(
-                                                        members[i + 1], members [i + 1]
-                                                                            .GetModifiers()) !=
-                                                    MemberOrderHelper.GetAccessLevelForOrdering(
-                                                        members[i], members [i]
+                                                case OrderingTrait.Accessibility:
+                                                        if (MemberOrderHelper
+                                                                .GetAccessLevelForOrdering(
+                                                                    members[i + 1],
+                                                                    members [i + 1]
+                                                                        .GetModifiers()) !=
+                                                            MemberOrderHelper
+                                                                .GetAccessLevelForOrdering(
+                                                                    members[i],
+                                                                    members [i]
                                                                         .GetModifiers())) {
-                                                        compareKind = false;
-                                                }
+                                                                compareKind = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Constant:
-                                        case OrderingTrait.Readonly:
-                                                // Only fields may be marked const or readonly, and
-                                                // all fields have the same kind.
-                                                continue;
+                                                case OrderingTrait.Constant:
+                                                case OrderingTrait.Readonly:
+                                                        // Only fields may be marked const or
+                                                        // readonly, and all fields have the same
+                                                        // kind.
+                                                        continue;
 
-                                        case OrderingTrait.Static:
-                                                bool currentIsStatic =
-                                                    members [i]
-                                                        .GetModifiers()
-                                                        .Any(SyntaxKind.StaticKeyword);
-                                                bool nextIsStatic =
-                                                    members [i + 1]
-                                                        .GetModifiers()
-                                                        .Any(SyntaxKind.StaticKeyword);
-                                                if (currentIsStatic != nextIsStatic) {
-                                                        compareKind = false;
-                                                }
+                                                case OrderingTrait.Static:
+                                                        bool currentIsStatic =
+                                                            members [i]
+                                                                .GetModifiers()
+                                                                .Any(SyntaxKind.StaticKeyword);
+                                                        bool nextIsStatic =
+                                                            members [i + 1]
+                                                                .GetModifiers()
+                                                                .Any(SyntaxKind.StaticKeyword);
+                                                        if (currentIsStatic != nextIsStatic) {
+                                                                compareKind = false;
+                                                        }
 
-                                                continue;
+                                                        continue;
 
-                                        case OrderingTrait.Kind:
-                                        default:
-                                                continue;
+                                                case OrderingTrait.Kind:
+                                                default:
+                                                        continue;
                                         }
                                 }
 

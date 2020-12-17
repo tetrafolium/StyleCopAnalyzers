@@ -134,8 +134,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          SyntaxKind.ConstructorDeclaration);
                 }
 
-                private static void
-                HandleConstructorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var constructorDeclarationSyntax =
                             (ConstructorDeclarationSyntax) context.Node;
 

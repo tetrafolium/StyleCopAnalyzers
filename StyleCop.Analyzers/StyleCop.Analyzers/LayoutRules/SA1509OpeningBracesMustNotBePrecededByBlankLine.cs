@@ -103,19 +103,19 @@ namespace StyleCop.Analyzers.LayoutRules {
                         for (var i = triviaList.Count - 1; !done && (i >= 0); i--) {
                                 switch (triviaList [i]
                                             .Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        break;
-                                default:
-                                        if (triviaList[i].IsDirective) {
-                                                // These have a built-in end of line
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
+                                        case SyntaxKind.EndOfLineTrivia:
                                                 eolCount++;
-                                        }
+                                                break;
+                                        default:
+                                                if (triviaList[i].IsDirective) {
+                                                        // These have a built-in end of line
+                                                        eolCount++;
+                                                }
 
-                                        done = true;
-                                        break;
+                                                done = true;
+                                                break;
                                 }
                         }
 

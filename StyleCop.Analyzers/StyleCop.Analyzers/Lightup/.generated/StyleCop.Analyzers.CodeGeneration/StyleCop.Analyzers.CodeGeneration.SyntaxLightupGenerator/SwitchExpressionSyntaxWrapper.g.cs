@@ -117,8 +117,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new SwitchExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(SwitchExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    SwitchExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -126,8 +126,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public SwitchExpressionSyntaxWrapper
-                WithGoverningExpression(ExpressionSyntax governingExpression) {
+                public SwitchExpressionSyntaxWrapper WithGoverningExpression(
+                    ExpressionSyntax governingExpression) {
                         return new SwitchExpressionSyntaxWrapper(
                             WithGoverningExpressionAccessor(this.SyntaxNode, governingExpression));
                 }
@@ -137,20 +137,20 @@ namespace StyleCop.Analyzers.Lightup {
                             WithSwitchKeywordAccessor(this.SyntaxNode, switchKeyword));
                 }
 
-                public SwitchExpressionSyntaxWrapper
-                WithOpenBraceToken(SyntaxToken openBraceToken) {
+                public SwitchExpressionSyntaxWrapper WithOpenBraceToken(
+                    SyntaxToken openBraceToken) {
                         return new SwitchExpressionSyntaxWrapper(
                             WithOpenBraceTokenAccessor(this.SyntaxNode, openBraceToken));
                 }
 
-                public SwitchExpressionSyntaxWrapper
-                WithArms(SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper> arms) {
+                public SwitchExpressionSyntaxWrapper WithArms(
+                    SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper> arms) {
                         return new SwitchExpressionSyntaxWrapper(
                             WithArmsAccessor(this.SyntaxNode, arms));
                 }
 
-                public SwitchExpressionSyntaxWrapper
-                WithCloseBraceToken(SyntaxToken closeBraceToken) {
+                public SwitchExpressionSyntaxWrapper WithCloseBraceToken(
+                    SyntaxToken closeBraceToken) {
                         return new SwitchExpressionSyntaxWrapper(
                             WithCloseBraceTokenAccessor(this.SyntaxNode, closeBraceToken));
                 }

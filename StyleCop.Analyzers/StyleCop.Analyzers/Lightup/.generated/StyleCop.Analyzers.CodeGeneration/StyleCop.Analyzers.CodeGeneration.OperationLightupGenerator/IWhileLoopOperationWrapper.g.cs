@@ -50,8 +50,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public ILabelSymbol ExitLabel =>((ILoopOperationWrapper) this).ExitLabel;
                 public static explicit operator IWhileLoopOperationWrapper(
                     ILoopOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit
-                operator ILoopOperationWrapper(IWhileLoopOperationWrapper wrapper) =>
+                public static implicit operator ILoopOperationWrapper(
+                    IWhileLoopOperationWrapper wrapper) =>
                     ILoopOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IWhileLoopOperationWrapper FromOperation(IOperation operation) {
                         if (operation == null) {

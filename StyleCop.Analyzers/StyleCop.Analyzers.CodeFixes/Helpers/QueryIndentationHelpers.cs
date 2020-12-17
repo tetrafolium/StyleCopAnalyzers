@@ -19,9 +19,9 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="queryExpression">The query expression to determine indentation
                 /// from.</param> <returns>A whitespace trivia containing the proper amount of
                 /// indentation.</returns>
-                internal static SyntaxTrivia
-                GetQueryIndentationTrivia(IndentationSettings indentationSettings,
-                                          QueryExpressionSyntax queryExpression) {
+                internal static SyntaxTrivia GetQueryIndentationTrivia(
+                    IndentationSettings indentationSettings,
+                    QueryExpressionSyntax queryExpression) {
                         var firstTokenOnTextLine = IndentationHelper.GetFirstTokenOnTextLine(
                             queryExpression.FromClause.FromKeyword);
                         var indentationSteps = IndentationHelper.GetIndentationSteps(
@@ -46,9 +46,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="token">A token within a query expression.</param>
                 /// <returns>A whitespace trivia containing the proper amount of
                 /// indentation.</returns>
-                internal static SyntaxTrivia
-                GetQueryIndentationTrivia(IndentationSettings indentationSettings,
-                                          SyntaxToken token) {
+                internal static SyntaxTrivia GetQueryIndentationTrivia(
+                    IndentationSettings indentationSettings, SyntaxToken token) {
                         var currentNode = token.Parent;
                         while (!currentNode.IsKind(SyntaxKind.QueryExpression)) {
                                 currentNode = currentNode.Parent;

@@ -34,8 +34,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IMethodSymbol Symbol => SymbolAccessor(this.WrappedOperation);
                 public IBlockOperationWrapper Body =>
                     IBlockOperationWrapper.FromOperation(BodyAccessor(this.WrappedOperation));
-                public static IAnonymousFunctionOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IAnonymousFunctionOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

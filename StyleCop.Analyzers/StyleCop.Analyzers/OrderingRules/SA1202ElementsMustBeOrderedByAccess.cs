@@ -175,39 +175,41 @@ namespace StyleCop.Analyzers.OrderingRules {
                                         for (int j = 0;
                                              compareAccessLevel && j < accessibilityIndex; j++) {
                                                 switch (elementOrder[j]) {
-                                                case OrderingTrait.Kind:
-                                                        if (previousSyntaxKind !=
-                                                            currentSyntaxKind) {
-                                                                compareAccessLevel = false;
-                                                        }
+                                                        case OrderingTrait.Kind:
+                                                                if (previousSyntaxKind !=
+                                                                    currentSyntaxKind) {
+                                                                        compareAccessLevel = false;
+                                                                }
 
-                                                        continue;
+                                                                continue;
 
-                                                case OrderingTrait.Constant:
-                                                        if (previousIsConst != currentIsConst) {
-                                                                compareAccessLevel = false;
-                                                        }
+                                                        case OrderingTrait.Constant:
+                                                                if (previousIsConst !=
+                                                                    currentIsConst) {
+                                                                        compareAccessLevel = false;
+                                                                }
 
-                                                        continue;
+                                                                continue;
 
-                                                case OrderingTrait.Readonly:
-                                                        if (previousIsReadonly !=
-                                                            currentIsReadonly) {
-                                                                compareAccessLevel = false;
-                                                        }
+                                                        case OrderingTrait.Readonly:
+                                                                if (previousIsReadonly !=
+                                                                    currentIsReadonly) {
+                                                                        compareAccessLevel = false;
+                                                                }
 
-                                                        continue;
+                                                                continue;
 
-                                                case OrderingTrait.Static:
-                                                        if (previousIsStatic != currentIsStatic) {
-                                                                compareAccessLevel = false;
-                                                        }
+                                                        case OrderingTrait.Static:
+                                                                if (previousIsStatic !=
+                                                                    currentIsStatic) {
+                                                                        compareAccessLevel = false;
+                                                                }
 
-                                                        continue;
+                                                                continue;
 
-                                                case OrderingTrait.Accessibility:
-                                                default:
-                                                        continue;
+                                                        case OrderingTrait.Accessibility:
+                                                        default:
+                                                                continue;
                                                 }
                                         }
 

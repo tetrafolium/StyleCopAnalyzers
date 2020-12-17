@@ -73,8 +73,8 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return InitializerAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator BaseObjectCreationExpressionSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator BaseObjectCreationExpressionSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -88,8 +88,8 @@ namespace StyleCop.Analyzers.Lightup {
                                                                                  node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(BaseObjectCreationExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    BaseObjectCreationExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -97,26 +97,26 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public BaseObjectCreationExpressionSyntaxWrapper
-                WithNewKeyword(SyntaxToken newKeyword) {
+                public BaseObjectCreationExpressionSyntaxWrapper WithNewKeyword(
+                    SyntaxToken newKeyword) {
                         return new BaseObjectCreationExpressionSyntaxWrapper(
                             WithNewKeywordAccessor(this.SyntaxNode, newKeyword));
                 }
 
-                public BaseObjectCreationExpressionSyntaxWrapper
-                WithArgumentList(ArgumentListSyntax argumentList) {
+                public BaseObjectCreationExpressionSyntaxWrapper WithArgumentList(
+                    ArgumentListSyntax argumentList) {
                         return new BaseObjectCreationExpressionSyntaxWrapper(
                             WithArgumentListAccessor(this.SyntaxNode, argumentList));
                 }
 
-                public BaseObjectCreationExpressionSyntaxWrapper
-                WithInitializer(InitializerExpressionSyntax initializer) {
+                public BaseObjectCreationExpressionSyntaxWrapper WithInitializer(
+                    InitializerExpressionSyntax initializer) {
                         return new BaseObjectCreationExpressionSyntaxWrapper(
                             WithInitializerAccessor(this.SyntaxNode, initializer));
                 }
 
-                internal static BaseObjectCreationExpressionSyntaxWrapper
-                FromUpcast(ExpressionSyntax node) {
+                internal static BaseObjectCreationExpressionSyntaxWrapper FromUpcast(
+                    ExpressionSyntax node) {
                         return new BaseObjectCreationExpressionSyntaxWrapper(node);
                 }
         }

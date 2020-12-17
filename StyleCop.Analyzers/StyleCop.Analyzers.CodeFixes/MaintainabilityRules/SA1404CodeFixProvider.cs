@@ -67,17 +67,15 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         }
                 }
 
-                private static Task<Document>
-                UpdateValueOfArgumentAsync(Document document, SyntaxNode root,
-                                           AttributeArgumentSyntax argument) {
+                private static Task<Document> UpdateValueOfArgumentAsync(
+                    Document document, SyntaxNode root, AttributeArgumentSyntax argument) {
                         var newArgument = argument.WithExpression(GetNewAttributeValue());
                         return Task.FromResult(
                             document.WithSyntaxRoot(root.ReplaceNode(argument, newArgument)));
                 }
 
-                private static Task<Document>
-                AddJustificationToAttributeAsync(Document document, SyntaxNode syntaxRoot,
-                                                 AttributeSyntax attribute) {
+                private static Task<Document> AddJustificationToAttributeAsync(
+                    Document document, SyntaxNode syntaxRoot, AttributeSyntax attribute) {
                         var attributeName = SyntaxFactory.IdentifierName(
                             nameof(SuppressMessageAttribute.Justification));
                         var newArgument = SyntaxFactory.AttributeArgument(

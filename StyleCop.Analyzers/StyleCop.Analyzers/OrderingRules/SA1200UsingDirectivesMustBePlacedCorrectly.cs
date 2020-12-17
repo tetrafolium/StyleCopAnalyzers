@@ -191,7 +191,7 @@ namespace StyleCop.Analyzers.OrderingRules {
                         nameof(OrderingResources.SA1200DescriptionOutside),
                         OrderingResources.ResourceManager, typeof(OrderingResources));
 
-#pragma warning disable SA1202 // Elements should be ordered by access
+#pragma warning disable SA1202  // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor DescriptorInside =
                     new DiagnosticDescriptor(
                         DiagnosticId, Title, MessageFormatInside, AnalyzerCategory.OrderingRules,
@@ -203,7 +203,7 @@ namespace StyleCop.Analyzers.OrderingRules {
                         DiagnosticId, Title, MessageFormatOutside, AnalyzerCategory.OrderingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault,
                         DescriptionOutside, HelpLink);
-#pragma warning restore SA1202 // Elements should be ordered by access
+#pragma warning restore SA1202  // Elements should be ordered by access
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     CompilationUnitAction = HandleCompilationUnit;
@@ -245,32 +245,33 @@ namespace StyleCop.Analyzers.OrderingRules {
                         List<SyntaxNode> usingDirectives = new List<SyntaxNode>();
                         foreach (SyntaxNode child in syntax.ChildNodes()) {
                                 switch (child.Kind()) {
-                                case SyntaxKind.ClassDeclaration:
-                                case SyntaxKind.InterfaceDeclaration:
-                                case SyntaxKind.EnumDeclaration:
-                                case SyntaxKind.StructDeclaration:
-                                case SyntaxKind.DelegateDeclaration:
-                                        // Suppress SA1200 if file contains a type in the global
-                                        // namespace
-                                        return;
+                                        case SyntaxKind.ClassDeclaration:
+                                        case SyntaxKind.InterfaceDeclaration:
+                                        case SyntaxKind.EnumDeclaration:
+                                        case SyntaxKind.StructDeclaration:
+                                        case SyntaxKind.DelegateDeclaration:
+                                                // Suppress SA1200 if file contains a type in the
+                                                // global namespace
+                                                return;
 
-                                case SyntaxKind.AttributeList:
-                                        // Suppress SA1200 if file contains an attribute in the
-                                        // global namespace
-                                        return;
+                                        case SyntaxKind.AttributeList:
+                                                // Suppress SA1200 if file contains an attribute in
+                                                // the global namespace
+                                                return;
 
-                                case SyntaxKind.GlobalStatement:
-                                        // Suppress SA1200 if file contains top-level statements
-                                        return;
+                                        case SyntaxKind.GlobalStatement:
+                                                // Suppress SA1200 if file contains top-level
+                                                // statements
+                                                return;
 
-                                case SyntaxKind.UsingDirective:
-                                        usingDirectives.Add(child);
-                                        continue;
+                                        case SyntaxKind.UsingDirective:
+                                                usingDirectives.Add(child);
+                                                continue;
 
-                                case SyntaxKind.ExternAliasDirective:
-                                case SyntaxKind.NamespaceDeclaration:
-                                default:
-                                        continue;
+                                        case SyntaxKind.ExternAliasDirective:
+                                        case SyntaxKind.NamespaceDeclaration:
+                                        default:
+                                                continue;
                                 }
                         }
 
@@ -300,11 +301,11 @@ namespace StyleCop.Analyzers.OrderingRules {
                             (NamespaceDeclarationSyntax) context.Node;
                         foreach (UsingDirectiveSyntax directive in syntax.Usings) {
                                 // Using directive should appear outside a namespace declaration
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                                 context.ReportDiagnostic(
                                     Diagnostic.Create(DescriptorOutside, directive.GetLocation()));
-#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+#pragma warning restore RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                         }
                 }
         }

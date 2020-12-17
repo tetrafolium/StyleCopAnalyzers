@@ -78,8 +78,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
                 }
 
-                private static IEnumerable<XmlNodeSyntax>
-                RemovePlaceHolder(XmlElementSyntax elementSyntax) {
+                private static IEnumerable<XmlNodeSyntax> RemovePlaceHolder(
+                    XmlElementSyntax elementSyntax) {
                         SyntaxList<XmlNodeSyntax> content = elementSyntax.Content;
 
                         var leadingTrivia = elementSyntax.StartTag.GetLeadingTrivia();
@@ -104,9 +104,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return content;
                 }
 
-                private async Task<Document>
-                GetTransformedDocumentAsync(Document document, XmlElementSyntax elementSyntax,
-                                            CancellationToken cancellationToken) {
+                private async Task<Document> GetTransformedDocumentAsync(
+                    Document document, XmlElementSyntax elementSyntax,
+                    CancellationToken cancellationToken) {
                         if (elementSyntax.Content.Count == 0) {
                                 return document;
                         }
@@ -125,9 +125,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         protected override string CodeActionTitle { get; }
                         = DocumentationResources.SA1651CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 var syntaxRoot =
                                     await document
                                         .GetSyntaxRootAsync(fixAllContext.CancellationToken)

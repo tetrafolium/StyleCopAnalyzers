@@ -67,23 +67,22 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private static bool AcceptableSingleLineTrivia(SyntaxTrivia trivia) {
                         switch (trivia.Kind()) {
-                        case SyntaxKind.WhitespaceTrivia:
-                        case SyntaxKind.EndOfLineTrivia:
-                                return true;
+                                case SyntaxKind.WhitespaceTrivia:
+                                case SyntaxKind.EndOfLineTrivia:
+                                        return true;
 
-                        case SyntaxKind.MultiLineCommentTrivia:
-                                var lineSpan = trivia.GetLineSpan();
-                                return lineSpan.StartLinePosition.Line ==
-                                       lineSpan.EndLinePosition.Line;
+                                case SyntaxKind.MultiLineCommentTrivia:
+                                        var lineSpan = trivia.GetLineSpan();
+                                        return lineSpan.StartLinePosition.Line ==
+                                               lineSpan.EndLinePosition.Line;
 
-                        default:
-                                return false;
+                                default:
+                                        return false;
                         }
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentFromSingleLineAsync(Document document, Diagnostic diagnostic,
-                                                          CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentFromSingleLineAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var queryExpression = (QueryExpressionSyntax) syntaxRoot
@@ -164,8 +163,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private static ImmutableArray<SyntaxNode>
-                CreateQueryNodeList(QueryExpressionSyntax queryExpression) {
+                private static ImmutableArray<SyntaxNode> CreateQueryNodeList(
+                    QueryExpressionSyntax queryExpression) {
                         var queryNodes = new List<SyntaxNode>();
 
                         queryNodes.Add(queryExpression.FromClause);

@@ -74,19 +74,19 @@ namespace StyleCop.Analyzers.NamingRules {
                         FieldDeclarationSyntax syntax = (FieldDeclarationSyntax) context.Node;
                         foreach (SyntaxToken token in syntax.Modifiers) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.StaticKeyword:
-                                case SyntaxKind.ConstKeyword:
-                                        // This analyzer only looks at instance fields.
-                                        return;
+                                        case SyntaxKind.StaticKeyword:
+                                        case SyntaxKind.ConstKeyword:
+                                                // This analyzer only looks at instance fields.
+                                                return;
 
-                                case SyntaxKind.InternalKeyword:
-                                case SyntaxKind.ProtectedKeyword:
-                                case SyntaxKind.PublicKeyword:
-                                        // This analyzer only looks at private fields.
-                                        return;
+                                        case SyntaxKind.InternalKeyword:
+                                        case SyntaxKind.ProtectedKeyword:
+                                        case SyntaxKind.PublicKeyword:
+                                                // This analyzer only looks at private fields.
+                                                return;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
 

@@ -87,10 +87,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 /// <inheritdoc/>
-                protected override void
-                HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment,
-                                            XElement completeDocumentation,
-                                            params Location[] diagnosticLocations) {
+                protected override void HandleCompleteDocumentation(
+                    SyntaxNodeAnalysisContext context, bool needsComment,
+                    XElement completeDocumentation, params Location[] diagnosticLocations) {
                         if (!needsComment) {
                                 // Omitting documentation for a parameter is allowed for this
                                 // element.
@@ -124,10 +123,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                             ?.ParameterList?.Parameters;
                 }
 
-                private static void
-                ReportMissingParameters(SyntaxNodeAnalysisContext context,
-                                        IEnumerable<ParameterSyntax> parameterList,
-                                        IEnumerable<string> documentationParameterNames) {
+                private static void ReportMissingParameters(
+                    SyntaxNodeAnalysisContext context, IEnumerable<ParameterSyntax> parameterList,
+                    IEnumerable<string> documentationParameterNames) {
                         foreach (var parameter in parameterList) {
                                 if (!documentationParameterNames.Any(
                                         x => x == parameter.Identifier.ValueText)) {

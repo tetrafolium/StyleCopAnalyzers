@@ -56,7 +56,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
                     HandleSyntaxTree;
 
-#pragma warning disable SA1202 // Elements should be ordered by access
+#pragma warning disable SA1202  // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
                     new DiagnosticDescriptor(
                         DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules,
@@ -74,7 +74,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                         DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
-#pragma warning restore SA1202 // Elements should be ordered by access
+#pragma warning restore SA1202  // Elements should be ordered by access
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -105,13 +105,13 @@ namespace StyleCop.Analyzers.SpacingRules {
                         }
 
                         switch (token.Parent.Kind()) {
-                        case SyntaxKind.TypeArgumentList:
-                        case SyntaxKind.TypeParameterList:
-                                break;
+                                case SyntaxKind.TypeArgumentList:
+                                case SyntaxKind.TypeParameterList:
+                                        break;
 
-                        default:
-                                // not a generic bracket
-                                return;
+                                default:
+                                        // not a generic bracket
+                                        return;
                         }
 
                         bool firstInLine = token.IsFirstInLine();
@@ -125,41 +125,41 @@ namespace StyleCop.Analyzers.SpacingRules {
                         if (!lastInLine) {
                                 SyntaxToken nextToken = token.GetNextToken();
                                 switch (nextToken.Kind()) {
-                                case SyntaxKind.OpenParenToken:
-                                // DotToken isn't listed above, but it's required for reasonable
-                                // member access formatting
-                                case SyntaxKind.DotToken:
-                                // CommaToken isn't listed above, but it's required for reasonable
-                                // nested generic type arguments formatting
-                                case SyntaxKind.CommaToken:
-                                // OpenBracketToken isn't listed above, but it's required for
-                                // reasonable array type formatting
-                                case SyntaxKind.OpenBracketToken:
-                                // SemicolonToken isn't listed above, but it's required for
-                                // reasonable using alias declaration formatting
-                                case SyntaxKind.SemicolonToken:
-                                case SyntaxKind.ColonToken when nextToken.Parent.IsKind(
-                                    SyntaxKindEx.CasePatternSwitchLabel):
-                                        allowTrailingNoSpace = true;
-                                        allowTrailingSpace = false;
-                                        break;
+                                        case SyntaxKind.OpenParenToken:
+                                        // DotToken isn't listed above, but it's required for
+                                        // reasonable member access formatting
+                                        case SyntaxKind.DotToken:
+                                        // CommaToken isn't listed above, but it's required for
+                                        // reasonable nested generic type arguments formatting
+                                        case SyntaxKind.CommaToken:
+                                        // OpenBracketToken isn't listed above, but it's required
+                                        // for reasonable array type formatting
+                                        case SyntaxKind.OpenBracketToken:
+                                        // SemicolonToken isn't listed above, but it's required for
+                                        // reasonable using alias declaration formatting
+                                        case SyntaxKind.SemicolonToken:
+                                        case SyntaxKind.ColonToken when nextToken.Parent.IsKind(
+                                            SyntaxKindEx.CasePatternSwitchLabel):
+                                                allowTrailingNoSpace = true;
+                                                allowTrailingSpace = false;
+                                                break;
 
-                                case SyntaxKind.CloseParenToken:
-                                case SyntaxKind.GreaterThanToken:
-                                        allowTrailingNoSpace = true;
-                                        allowTrailingSpace = true;
-                                        break;
+                                        case SyntaxKind.CloseParenToken:
+                                        case SyntaxKind.GreaterThanToken:
+                                                allowTrailingNoSpace = true;
+                                                allowTrailingSpace = true;
+                                                break;
 
-                                case SyntaxKind.QuestionToken:
-                                        allowTrailingNoSpace =
-                                            nextToken.Parent.IsKind(SyntaxKind.NullableType);
-                                        allowTrailingSpace = true;
-                                        break;
+                                        case SyntaxKind.QuestionToken:
+                                                allowTrailingNoSpace = nextToken.Parent.IsKind(
+                                                    SyntaxKind.NullableType);
+                                                allowTrailingSpace = true;
+                                                break;
 
-                                default:
-                                        allowTrailingNoSpace = false;
-                                        allowTrailingSpace = true;
-                                        break;
+                                        default:
+                                                allowTrailingNoSpace = false;
+                                                allowTrailingSpace = true;
+                                                break;
                                 }
                         } else {
                                 allowTrailingNoSpace = true;
@@ -178,21 +178,21 @@ namespace StyleCop.Analyzers.SpacingRules {
                                         // Closing generic bracket should{} be {followed} by a
                                         // space.
                                         var properties = TokenSpacingProperties.InsertFollowing;
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                                         context.ReportDiagnostic(Diagnostic.Create(
                                             DescriptorFollowed, token.GetLocation(), properties));
-#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+#pragma warning restore RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                 } else if (!allowTrailingSpace && followedBySpace) {
                                         // Closing generic bracket should{ not} be {followed} by a
                                         // space.
                                         var properties = TokenSpacingProperties.RemoveFollowing;
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                                         context.ReportDiagnostic(
                                             Diagnostic.Create(DescriptorNotFollowed,
                                                               token.GetLocation(), properties));
-#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+#pragma warning restore RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                 }
                         }
                 }

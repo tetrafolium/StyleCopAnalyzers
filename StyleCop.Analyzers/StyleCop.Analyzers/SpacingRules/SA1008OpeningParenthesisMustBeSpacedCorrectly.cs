@@ -128,43 +128,43 @@ namespace StyleCop.Analyzers.SpacingRules {
                         // handled by SA1000
                         bool precededByKeyword;
                         switch (prevToken.Kind()) {
-                        case SyntaxKind.AwaitKeyword:
-                        case SyntaxKind.CaseKeyword:
-                        case SyntaxKind.CatchKeyword:
-                        case SyntaxKind.CheckedKeyword:
-                        case SyntaxKind.DefaultKeyword:
-                        case SyntaxKind.FixedKeyword:
-                        case SyntaxKind.ForKeyword:
-                        case SyntaxKind.ForEachKeyword:
-                        case SyntaxKind.FromKeyword:
-                        case SyntaxKind.GroupKeyword:
-                        case SyntaxKind.IfKeyword:
-                        case SyntaxKind.InKeyword:
-                        case SyntaxKind.IntoKeyword:
-                        case SyntaxKind.JoinKeyword:
-                        case SyntaxKind.LetKeyword:
-                        case SyntaxKind.LockKeyword:
-                        case SyntaxKind.NameOfKeyword:
-                        case SyntaxKind.NewKeyword:
-                        case SyntaxKind.OrderByKeyword:
-                        case SyntaxKind.ReturnKeyword:
-                        case SyntaxKind.SelectKeyword:
-                        case SyntaxKind.SizeOfKeyword:
-                        case SyntaxKind.StackAllocKeyword:
-                        case SyntaxKind.SwitchKeyword:
-                        case SyntaxKind.ThrowKeyword:
-                        case SyntaxKind.TypeOfKeyword:
-                        case SyntaxKind.UncheckedKeyword:
-                        case SyntaxKind.UsingKeyword:
-                        case SyntaxKind.WhereKeyword:
-                        case SyntaxKind.WhileKeyword:
-                        case SyntaxKind.YieldKeyword:
-                                precededByKeyword = true;
-                                break;
+                                case SyntaxKind.AwaitKeyword:
+                                case SyntaxKind.CaseKeyword:
+                                case SyntaxKind.CatchKeyword:
+                                case SyntaxKind.CheckedKeyword:
+                                case SyntaxKind.DefaultKeyword:
+                                case SyntaxKind.FixedKeyword:
+                                case SyntaxKind.ForKeyword:
+                                case SyntaxKind.ForEachKeyword:
+                                case SyntaxKind.FromKeyword:
+                                case SyntaxKind.GroupKeyword:
+                                case SyntaxKind.IfKeyword:
+                                case SyntaxKind.InKeyword:
+                                case SyntaxKind.IntoKeyword:
+                                case SyntaxKind.JoinKeyword:
+                                case SyntaxKind.LetKeyword:
+                                case SyntaxKind.LockKeyword:
+                                case SyntaxKind.NameOfKeyword:
+                                case SyntaxKind.NewKeyword:
+                                case SyntaxKind.OrderByKeyword:
+                                case SyntaxKind.ReturnKeyword:
+                                case SyntaxKind.SelectKeyword:
+                                case SyntaxKind.SizeOfKeyword:
+                                case SyntaxKind.StackAllocKeyword:
+                                case SyntaxKind.SwitchKeyword:
+                                case SyntaxKind.ThrowKeyword:
+                                case SyntaxKind.TypeOfKeyword:
+                                case SyntaxKind.UncheckedKeyword:
+                                case SyntaxKind.UsingKeyword:
+                                case SyntaxKind.WhereKeyword:
+                                case SyntaxKind.WhileKeyword:
+                                case SyntaxKind.YieldKeyword:
+                                        precededByKeyword = true;
+                                        break;
 
-                        default:
-                                precededByKeyword = false;
-                                break;
+                                default:
+                                        precededByKeyword = false;
+                                        break;
                         }
 
                         var leadingTriviaList = TriviaHelper.MergeTriviaLists(
@@ -177,17 +177,17 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 for (var i = leadingTriviaList.Count - 1; !done && (i >= 0); i--) {
                                         switch (leadingTriviaList [i]
                                                     .Kind()) {
-                                        case SyntaxKind.WhitespaceTrivia:
-                                                break;
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        break;
 
-                                        case SyntaxKind.EndOfLineTrivia:
-                                                isFirstOnLine = true;
-                                                done = true;
-                                                break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        isFirstOnLine = true;
+                                                        done = true;
+                                                        break;
 
-                                        default:
-                                                done = true;
-                                                break;
+                                                default:
+                                                        done = true;
+                                                        break;
                                         }
                                 }
                         }
@@ -199,102 +199,106 @@ namespace StyleCop.Analyzers.SpacingRules {
                         var prevTokenIsOpenParen = prevToken.IsKind(SyntaxKind.OpenParenToken);
 
                         switch (token.Parent.Kind()) {
-                        case SyntaxKind.IfStatement:
-                        case SyntaxKind.DoStatement:
-                        case SyntaxKind.WhileStatement:
-                        case SyntaxKind.ForStatement:
-                        case SyntaxKind.ForEachStatement:
-                        case SyntaxKind.SwitchStatement:
-                        case SyntaxKind.FixedStatement:
-                        case SyntaxKind.LockStatement:
-                        case SyntaxKind.UsingStatement:
-                        case SyntaxKind.CatchDeclaration:
-                        case SyntaxKind.CatchFilterClause:
-                                haveLeadingSpace = true;
-                                break;
+                                case SyntaxKind.IfStatement:
+                                case SyntaxKind.DoStatement:
+                                case SyntaxKind.WhileStatement:
+                                case SyntaxKind.ForStatement:
+                                case SyntaxKind.ForEachStatement:
+                                case SyntaxKind.SwitchStatement:
+                                case SyntaxKind.FixedStatement:
+                                case SyntaxKind.LockStatement:
+                                case SyntaxKind.UsingStatement:
+                                case SyntaxKind.CatchDeclaration:
+                                case SyntaxKind.CatchFilterClause:
+                                        haveLeadingSpace = true;
+                                        break;
 
-                        case SyntaxKindEx.PositionalPatternClause:
-                                haveLeadingSpace = prevToken.IsKind(SyntaxKind.IsKeyword) ||
-                                                   prevToken.IsKind(SyntaxKind.CommaToken);
-                                break;
+                                case SyntaxKindEx.PositionalPatternClause:
+                                        haveLeadingSpace = prevToken.IsKind(SyntaxKind.IsKeyword) ||
+                                                           prevToken.IsKind(SyntaxKind.CommaToken);
+                                        break;
 
-                        case SyntaxKindEx.ParenthesizedPattern:
-                                var partOfCastExpression =
-                                    prevToken.IsKind(SyntaxKind.CloseParenToken) &&
-                                    prevToken.Parent.IsKind(SyntaxKind.CastExpression);
-                                haveLeadingSpace = !partOfCastExpression;
-                                break;
+                                case SyntaxKindEx.ParenthesizedPattern:
+                                        var partOfCastExpression =
+                                            prevToken.IsKind(SyntaxKind.CloseParenToken) &&
+                                            prevToken.Parent.IsKind(SyntaxKind.CastExpression);
+                                        haveLeadingSpace = !partOfCastExpression;
+                                        break;
 
-                        case SyntaxKind.ArgumentList:
-                        case SyntaxKind.AttributeArgumentList:
-                        case SyntaxKind.CheckedExpression:
-                        case SyntaxKind.UncheckedExpression:
-                        case SyntaxKind.ConstructorConstraint:
-                        case SyntaxKind.DefaultExpression:
-                        case SyntaxKind.SizeOfExpression:
-                        case SyntaxKind.TypeOfExpression:
-                        default:
-                                haveLeadingSpace = false;
-                                break;
-
-                        case SyntaxKindEx.ParenthesizedVariableDesignation:
-                                haveLeadingSpace = true;
-                                break;
-
-                        case SyntaxKind.ParenthesizedExpression:
-                        case SyntaxKindEx.TupleExpression:
-                                if (prevToken.Parent.IsKind(SyntaxKind.Interpolation) ||
-                                    token.Parent.Parent.IsKind(SyntaxKindEx.RangeExpression)) {
+                                case SyntaxKind.ArgumentList:
+                                case SyntaxKind.AttributeArgumentList:
+                                case SyntaxKind.CheckedExpression:
+                                case SyntaxKind.UncheckedExpression:
+                                case SyntaxKind.ConstructorConstraint:
+                                case SyntaxKind.DefaultExpression:
+                                case SyntaxKind.SizeOfExpression:
+                                case SyntaxKind.TypeOfExpression:
+                                default:
                                         haveLeadingSpace = false;
                                         break;
-                                }
 
-                                partOfUnaryExpression =
-                                    prevToken.Parent is PrefixUnaryExpressionSyntax;
-                                startOfIndexer = prevToken.IsKind(SyntaxKind.OpenBracketToken);
-                                partOfCastExpression =
-                                    prevToken.IsKind(SyntaxKind.CloseParenToken) &&
-                                    prevToken.Parent.IsKind(SyntaxKind.CastExpression);
+                                case SyntaxKindEx.ParenthesizedVariableDesignation:
+                                        haveLeadingSpace = true;
+                                        break;
 
-                                haveLeadingSpace = !partOfUnaryExpression && !startOfIndexer &&
-                                                   !partOfCastExpression;
-                                break;
+                                case SyntaxKind.ParenthesizedExpression:
+                                case SyntaxKindEx.TupleExpression:
+                                        if (prevToken.Parent.IsKind(SyntaxKind.Interpolation) ||
+                                            token.Parent.Parent.IsKind(
+                                                SyntaxKindEx.RangeExpression)) {
+                                                haveLeadingSpace = false;
+                                                break;
+                                        }
 
-                        case SyntaxKind.CastExpression:
-                                partOfUnaryExpression =
-                                    prevToken.Parent is PrefixUnaryExpressionSyntax;
-                                startOfIndexer = prevToken.IsKind(SyntaxKind.OpenBracketToken);
-                                var consecutiveCast =
-                                    prevToken.IsKind(SyntaxKind.CloseParenToken) &&
-                                    prevToken.Parent.IsKind(SyntaxKind.CastExpression);
-                                var partOfInterpolation =
-                                    prevToken.IsKind(SyntaxKind.OpenBraceToken) &&
-                                    prevToken.Parent.IsKind(SyntaxKind.Interpolation);
+                                        partOfUnaryExpression =
+                                            prevToken.Parent is PrefixUnaryExpressionSyntax;
+                                        startOfIndexer =
+                                            prevToken.IsKind(SyntaxKind.OpenBracketToken);
+                                        partOfCastExpression =
+                                            prevToken.IsKind(SyntaxKind.CloseParenToken) &&
+                                            prevToken.Parent.IsKind(SyntaxKind.CastExpression);
 
-                                haveLeadingSpace = !partOfUnaryExpression && !startOfIndexer &&
-                                                   !consecutiveCast && !partOfInterpolation;
-                                break;
+                                        haveLeadingSpace = !partOfUnaryExpression &&
+                                                           !startOfIndexer && !partOfCastExpression;
+                                        break;
 
-                        case SyntaxKind.ParameterList:
-                                var partOfLambdaExpression = token.Parent.Parent.IsKind(
-                                    SyntaxKind.ParenthesizedLambdaExpression);
-                                haveLeadingSpace = partOfLambdaExpression;
-                                break;
+                                case SyntaxKind.CastExpression:
+                                        partOfUnaryExpression =
+                                            prevToken.Parent is PrefixUnaryExpressionSyntax;
+                                        startOfIndexer =
+                                            prevToken.IsKind(SyntaxKind.OpenBracketToken);
+                                        var consecutiveCast =
+                                            prevToken.IsKind(SyntaxKind.CloseParenToken) &&
+                                            prevToken.Parent.IsKind(SyntaxKind.CastExpression);
+                                        var partOfInterpolation =
+                                            prevToken.IsKind(SyntaxKind.OpenBraceToken) &&
+                                            prevToken.Parent.IsKind(SyntaxKind.Interpolation);
 
-                        case SyntaxKindEx.TupleType:
-                                // Comma covers tuple types in parameters and nested within other
-                                // tuple types. 'out', 'ref', 'in', 'params' parameters are covered
-                                // by IsKeywordKind. Attributes of parameters are covered by
-                                // checking the previous token's parent. Return types are handled by
-                                // a helper.
-                                haveLeadingSpace =
-                                    prevToken.IsKind(SyntaxKind.CommaToken) ||
-                                    SyntaxFacts.IsKeywordKind(prevToken.Kind()) ||
-                                    prevToken.Parent.IsKind(SyntaxKind.AttributeList) ||
-                                    ((TypeSyntax) token.Parent)
-                                        .GetContainingNotEnclosingType()
-                                        .IsReturnType();
-                                break;
+                                        haveLeadingSpace = !partOfUnaryExpression &&
+                                                           !startOfIndexer && !consecutiveCast &&
+                                                           !partOfInterpolation;
+                                        break;
+
+                                case SyntaxKind.ParameterList:
+                                        var partOfLambdaExpression = token.Parent.Parent.IsKind(
+                                            SyntaxKind.ParenthesizedLambdaExpression);
+                                        haveLeadingSpace = partOfLambdaExpression;
+                                        break;
+
+                                case SyntaxKindEx.TupleType:
+                                        // Comma covers tuple types in parameters and nested within
+                                        // other tuple types. 'out', 'ref', 'in', 'params'
+                                        // parameters are covered by IsKeywordKind. Attributes of
+                                        // parameters are covered by checking the previous token's
+                                        // parent. Return types are handled by a helper.
+                                        haveLeadingSpace =
+                                            prevToken.IsKind(SyntaxKind.CommaToken) ||
+                                            SyntaxFacts.IsKeywordKind(prevToken.Kind()) ||
+                                            prevToken.Parent.IsKind(SyntaxKind.AttributeList) ||
+                                            ((TypeSyntax) token.Parent)
+                                                .GetContainingNotEnclosingType()
+                                                .IsReturnType();
+                                        break;
                         }
 
                         // Ignore spacing before if another opening parenthesis is before this.

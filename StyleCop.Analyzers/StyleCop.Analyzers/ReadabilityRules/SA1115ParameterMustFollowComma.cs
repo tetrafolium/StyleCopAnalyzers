@@ -149,14 +149,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleElementBindingExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleElementBindingExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var elementBinding = (ElementBindingExpressionSyntax) context.Node;
                         AnalyzeSyntaxList(context, elementBinding.ArgumentList.Arguments);
                 }
 
-                private static void
-                HandleConstructorInitializer(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorInitializer(
+                    SyntaxNodeAnalysisContext context) {
                         var constructorInitializer = (ConstructorInitializerSyntax) context.Node;
                         AnalyzeSyntaxList(context, constructorInitializer.ArgumentList.Arguments);
                 }
@@ -166,14 +166,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         AnalyzeSyntaxList(context, delegateDeclaration.ParameterList.Parameters);
                 }
 
-                private static void
-                HandleParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleParenthesizedLambdaExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var lambda = (ParenthesizedLambdaExpressionSyntax) context.Node;
                         AnalyzeSyntaxList(context, lambda.ParameterList.Parameters);
                 }
 
-                private static void
-                HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousMethodExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
                         AnalyzeSyntaxList(context,
                                           anonymousMethod.ParameterList?.Parameters ?? default);
@@ -189,8 +189,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         AnalyzeSyntaxList(context, attribute.ArgumentList?.Arguments ?? default);
                 }
 
-                private static void
-                HandleArrayCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleArrayCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var arrayCreation = (ArrayCreationExpressionSyntax) context.Node;
                         if (arrayCreation.Type == null) {
                                 return;
@@ -201,8 +201,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleElementAccessExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleElementAccessExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var elementAccess = (ElementAccessExpressionSyntax) context.Node;
 
                         if (elementAccess.ArgumentList != null) {
@@ -219,8 +219,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
 
                         if (objectCreation.ArgumentList != null) {
@@ -245,8 +245,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var localFunctionStatement =
                             (LocalFunctionStatementSyntaxWrapper) context.Node;
 
@@ -256,10 +256,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                AnalyzeSyntaxList<TNode>(SyntaxNodeAnalysisContext context,
-                                         SeparatedSyntaxList<TNode> syntaxList) where TNode
-                    : SyntaxNode {
+                private static void AnalyzeSyntaxList<TNode>(
+                    SyntaxNodeAnalysisContext context,
+                    SeparatedSyntaxList<TNode> syntaxList) where TNode : SyntaxNode {
                         if (syntaxList.Count < 2) {
                                 return;
                         }
@@ -303,25 +302,25 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 }
 
                                 switch (trivia.Kind()) {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        if (inBlankLine) {
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                if (inBlankLine) {
+                                                        return false;
+                                                }
+
+                                                inBlankLine = true;
+                                                break;
+
+                                        case SyntaxKind.DisabledTextTrivia:
+                                        case SyntaxKind.SingleLineCommentTrivia:
+                                        case SyntaxKind.MultiLineCommentTrivia:
+                                                inBlankLine = false;
+                                                break;
+
+                                        default:
                                                 return false;
-                                        }
-
-                                        inBlankLine = true;
-                                        break;
-
-                                case SyntaxKind.DisabledTextTrivia:
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                case SyntaxKind.MultiLineCommentTrivia:
-                                        inBlankLine = false;
-                                        break;
-
-                                default:
-                                        return false;
                                 }
                         }
 

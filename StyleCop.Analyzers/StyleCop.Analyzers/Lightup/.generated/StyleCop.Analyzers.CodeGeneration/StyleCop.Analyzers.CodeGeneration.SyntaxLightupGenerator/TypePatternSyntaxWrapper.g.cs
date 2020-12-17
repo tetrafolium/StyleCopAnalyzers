@@ -41,13 +41,13 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return TypeAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator TypePatternSyntaxWrapper(PatternSyntaxWrapper node) {
+                public static explicit operator TypePatternSyntaxWrapper(
+                    PatternSyntaxWrapper node) {
                         return (TypePatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit
-                operator TypePatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node) {
+                public static explicit operator TypePatternSyntaxWrapper(
+                    ExpressionOrPatternSyntaxWrapper node) {
                         return (TypePatternSyntaxWrapper) node.SyntaxNode;
                 }
 
@@ -64,13 +64,13 @@ namespace StyleCop.Analyzers.Lightup {
                         return new TypePatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator PatternSyntaxWrapper(TypePatternSyntaxWrapper wrapper) {
+                public static implicit operator PatternSyntaxWrapper(
+                    TypePatternSyntaxWrapper wrapper) {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator ExpressionOrPatternSyntaxWrapper(TypePatternSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionOrPatternSyntaxWrapper(
+                    TypePatternSyntaxWrapper wrapper) {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 

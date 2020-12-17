@@ -69,9 +69,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="indentationSteps">The number of indentation steps.</param>
                 /// <returns>A string containing the amount of whitespace needed for the given
                 /// indentation steps.</returns>
-                public static string
-                GenerateIndentationString(IndentationSettings indentationSettings,
-                                          int indentationSteps) {
+                public static string GenerateIndentationString(
+                    IndentationSettings indentationSettings, int indentationSteps) {
                         string result;
                         var indentationCount =
                             indentationSteps * indentationSettings.IndentationSize;
@@ -93,9 +92,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="indentationSteps">The amount of indentation steps.</param>
                 /// <returns>A <see cref="SyntaxTrivia"/> containing the indentation
                 /// whitespace.</returns>
-                public static SyntaxTrivia
-                GenerateWhitespaceTrivia(IndentationSettings indentationSettings,
-                                         int indentationSteps) {
+                public static SyntaxTrivia GenerateWhitespaceTrivia(
+                    IndentationSettings indentationSettings, int indentationSteps) {
                         return SyntaxFactory.Whitespace(
                             GenerateIndentationString(indentationSettings, indentationSteps));
                 }
@@ -115,9 +113,8 @@ namespace StyleCop.Analyzers.Helpers {
                         return GetIndentationStepsUnchecked(indentationSettings, leadingTrivia);
                 }
 
-                private static int
-                GetIndentationStepsUnchecked(IndentationSettings indentationSettings,
-                                             SyntaxTriviaList leadingTrivia) {
+                private static int GetIndentationStepsUnchecked(
+                    IndentationSettings indentationSettings, SyntaxTriviaList leadingTrivia) {
                         var builder = StringBuilderPool.Allocate();
 
                         foreach (SyntaxTrivia trivia in leadingTrivia.Reverse()) {

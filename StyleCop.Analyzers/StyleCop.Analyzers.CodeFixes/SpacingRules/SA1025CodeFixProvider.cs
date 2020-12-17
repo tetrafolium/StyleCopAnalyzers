@@ -47,9 +47,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
                                        .ConfigureAwait(false);
 
@@ -69,9 +68,9 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                         protected override string CodeActionTitle => SpacingResources.SA1025CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
@@ -89,9 +88,9 @@ namespace StyleCop.Analyzers.SpacingRules {
                                         }
                                 }
 
-                                return syntaxRoot.ReplaceTrivia(tokensToFix,
-                                                                (originalTrivia, rewrittenTrivia) =>
-                                                                    SyntaxFactory.Space);
+                                return syntaxRoot.ReplaceTrivia(
+                                    tokensToFix,
+                                    (originalTrivia, rewrittenTrivia) => SyntaxFactory.Space);
                         }
                 }
         }

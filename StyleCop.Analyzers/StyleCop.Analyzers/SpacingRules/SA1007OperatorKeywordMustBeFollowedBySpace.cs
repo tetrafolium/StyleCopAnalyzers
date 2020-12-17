@@ -69,12 +69,12 @@ namespace StyleCop.Analyzers.SpacingRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.OperatorKeyword:
-                                        HandleRequiredSpaceToken(context, token);
-                                        break;
+                                        case SyntaxKind.OperatorKeyword:
+                                                HandleRequiredSpaceToken(context, token);
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

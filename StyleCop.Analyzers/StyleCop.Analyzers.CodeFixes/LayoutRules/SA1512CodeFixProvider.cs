@@ -44,9 +44,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -68,9 +67,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private static SyntaxTriviaList
-                FixTriviaList(SyntaxTriviaList triviaList,
-                              IEnumerable<SyntaxTrivia> commentTrivias) {
+                private static SyntaxTriviaList FixTriviaList(
+                    SyntaxTriviaList triviaList, IEnumerable<SyntaxTrivia> commentTrivias) {
                         foreach (var singleLineComment in commentTrivias) {
                                 int commentLocation = triviaList.IndexOf(singleLineComment);
                                 if (commentLocation == -1) {
@@ -83,26 +81,29 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 while (index < triviaList.Count && index > 0) {
                                         switch (triviaList [index]
                                                     .Kind()) {
-                                        case SyntaxKind.EndOfLineTrivia:
-                                        case SyntaxKind.WhitespaceTrivia:
-                                                index++;
-                                                break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        index++;
+                                                        break;
 
-                                        default:
+                                                default:
 
-                                                if (triviaList [index - 1]
-                                                        .IsKind(SyntaxKind.WhitespaceTrivia)) {
-                                                        index--;
-                                                }
+                                                        if (triviaList [index - 1]
+                                                                .IsKind(
+                                                                    SyntaxKind.WhitespaceTrivia)) {
+                                                                index--;
+                                                        }
 
-                                                triviaList = SyntaxTriviaList.Empty.AddRange(
-                                                    triviaList.Take(commentLocation + 2)
-                                                        .Concat(triviaList.Skip(index)));
+                                                        triviaList =
+                                                            SyntaxTriviaList.Empty.AddRange(
+                                                                triviaList.Take(commentLocation + 2)
+                                                                    .Concat(
+                                                                        triviaList.Skip(index)));
 
-                                                // We found the trivia so we don't have to loop any
-                                                // longer
-                                                index = -1;
-                                                break;
+                                                        // We found the trivia so we don't have to
+                                                        // loop any longer
+                                                        index = -1;
+                                                        break;
                                         }
                                 }
 
@@ -127,9 +128,9 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         protected override string CodeActionTitle => LayoutResources.SA1512CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
@@ -161,9 +162,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                        .WithTrailingTrivia(newTrailingTrivia));
                                 }
 
-                                return syntaxRoot.ReplaceTokens(replacements.Keys,
-                                                                (oldToken, newToken) =>
-                                                                    replacements[oldToken]);
+                                return syntaxRoot.ReplaceTokens(
+                                    replacements.Keys,
+                                    (oldToken, newToken) => replacements[oldToken]);
                         }
                 }
         }

@@ -87,8 +87,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.ObjectCreationExpression);
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
                         if (objectCreation.ArgumentList == null ||
                             objectCreation.ArgumentList.IsMissing ||
@@ -120,8 +120,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleConstructorDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         var constructotDeclarationSyntax =
                             (ConstructorDeclarationSyntax) context.Node;
                         HandleParameterList(context, constructotDeclarationSyntax.ParameterList);
@@ -132,8 +132,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         HandleParameterList(context, methodDeclaration.ParameterList);
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var localFunctionStatement =
                             (LocalFunctionStatementSyntaxWrapper) context.Node;
                         HandleParameterList(context, localFunctionStatement.ParameterList);
@@ -151,10 +151,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                CheckIfLocationOfOpenAndCloseTokensAreTheSame(SyntaxNodeAnalysisContext context,
-                                                              SyntaxToken openToken,
-                                                              SyntaxToken closeToken) {
+                private static void CheckIfLocationOfOpenAndCloseTokensAreTheSame(
+                    SyntaxNodeAnalysisContext context, SyntaxToken openToken,
+                    SyntaxToken closeToken) {
                         var closeParenLine = closeToken.GetLineSpan();
                         var openParenLine = openToken.GetLineSpan();
                         if (closeParenLine.IsValid && openParenLine.IsValid &&

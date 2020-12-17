@@ -78,8 +78,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          MemberDeclarationKinds);
                 }
 
-                private static void
-                HandleBaseTypeLikeDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleBaseTypeLikeDeclaration(
+                    SyntaxNodeAnalysisContext context) {
                         BaseTypeDeclarationSyntax baseType =
                             context.Node as BaseTypeDeclarationSyntax;
 

@@ -41,11 +41,11 @@ namespace StyleCop.Analyzers.Lightup {
                 public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
                 public static explicit operator IDeclarationPatternOperationWrapper(
                     IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit
-                operator IPatternOperationWrapper(IDeclarationPatternOperationWrapper wrapper) =>
+                public static implicit operator IPatternOperationWrapper(
+                    IDeclarationPatternOperationWrapper wrapper) =>
                     IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IDeclarationPatternOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IDeclarationPatternOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

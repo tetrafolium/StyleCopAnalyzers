@@ -28,8 +28,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IMethodSymbol Symbol => SymbolAccessor(this.WrappedOperation);
-                public static IFlowAnonymousFunctionOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IFlowAnonymousFunctionOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

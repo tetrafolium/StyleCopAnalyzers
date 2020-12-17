@@ -91,8 +91,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                             SyntaxKind.SingleLineDocumentationCommentTrivia);
                 }
 
-                private static void
-                HandleSingleLineDocumentationTrivia(SyntaxNodeAnalysisContext context) {
+                private static void HandleSingleLineDocumentationTrivia(
+                    SyntaxNodeAnalysisContext context) {
                         var node = (DocumentationCommentTriviaSyntax) context.Node;
 
                         // Check if the comment is not multi line

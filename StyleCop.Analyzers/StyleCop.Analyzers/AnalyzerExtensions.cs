@@ -150,13 +150,13 @@ namespace StyleCop.Analyzers {
                             Func<TLanguageKindEnum, ImmutableArray<TLanguageKindEnum>>
                                 CreateValueFactory = CreateValue;
 
-                        public static ImmutableArray<TLanguageKindEnum>
-                        GetOrCreateArray(TLanguageKindEnum syntaxKind) {
+                        public static ImmutableArray<TLanguageKindEnum> GetOrCreateArray(
+                            TLanguageKindEnum syntaxKind) {
                                 return Arrays.GetOrAdd(syntaxKind, CreateValueFactory);
                         }
 
-                        private static ImmutableArray<TLanguageKindEnum>
-                        CreateValue(TLanguageKindEnum syntaxKind) {
+                        private static ImmutableArray<TLanguageKindEnum> CreateValue(
+                            TLanguageKindEnum syntaxKind) {
                                 return ImmutableArray.Create(syntaxKind);
                         }
                 }

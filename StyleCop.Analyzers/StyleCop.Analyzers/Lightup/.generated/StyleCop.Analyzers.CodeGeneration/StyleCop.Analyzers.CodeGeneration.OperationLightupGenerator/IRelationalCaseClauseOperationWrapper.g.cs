@@ -36,8 +36,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public static implicit operator ICaseClauseOperationWrapper(
                     IRelationalCaseClauseOperationWrapper wrapper) =>
                     ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IRelationalCaseClauseOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IRelationalCaseClauseOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

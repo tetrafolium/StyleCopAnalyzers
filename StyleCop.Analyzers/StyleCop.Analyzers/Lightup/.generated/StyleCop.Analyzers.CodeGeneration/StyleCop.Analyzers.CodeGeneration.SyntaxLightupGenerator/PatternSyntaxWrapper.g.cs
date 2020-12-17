@@ -24,8 +24,8 @@ namespace StyleCop.Analyzers.Lightup {
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
-                public static explicit
-                operator PatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node) {
+                public static explicit operator PatternSyntaxWrapper(
+                    ExpressionOrPatternSyntaxWrapper node) {
                         return (PatternSyntaxWrapper) node.SyntaxNode;
                 }
 
@@ -42,8 +42,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new PatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator ExpressionOrPatternSyntaxWrapper(PatternSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionOrPatternSyntaxWrapper(
+                    PatternSyntaxWrapper wrapper) {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 

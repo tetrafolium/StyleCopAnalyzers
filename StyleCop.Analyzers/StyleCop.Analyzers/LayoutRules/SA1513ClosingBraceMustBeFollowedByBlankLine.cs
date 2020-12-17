@@ -110,15 +110,15 @@ namespace StyleCop.Analyzers.LayoutRules {
                         private static bool HasLeadingBlankLine(SyntaxTriviaList triviaList) {
                                 foreach (var trivia in triviaList) {
                                         switch (trivia.Kind()) {
-                                        case SyntaxKind.WhitespaceTrivia:
-                                                // ignore
-                                                break;
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        // ignore
+                                                        break;
 
-                                        case SyntaxKind.EndOfLineTrivia:
-                                                return true;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        return true;
 
-                                        default:
-                                                return false;
+                                                default:
+                                                        return false;
                                         }
                                 }
 
@@ -128,16 +128,16 @@ namespace StyleCop.Analyzers.LayoutRules {
                         private static bool StartsWithSpecialComment(SyntaxTriviaList triviaList) {
                                 foreach (var trivia in triviaList) {
                                         switch (trivia.Kind()) {
-                                        case SyntaxKind.WhitespaceTrivia:
-                                                // ignore
-                                                break;
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        // ignore
+                                                        break;
 
-                                        case SyntaxKind.SingleLineCommentTrivia:
-                                                return trivia.ToFullString().StartsWith(
-                                                    "////", StringComparison.Ordinal);
+                                                case SyntaxKind.SingleLineCommentTrivia:
+                                                        return trivia.ToFullString().StartsWith(
+                                                            "////", StringComparison.Ordinal);
 
-                                        default:
-                                                return false;
+                                                default:
+                                                        return false;
                                         }
                                 }
 
@@ -147,12 +147,12 @@ namespace StyleCop.Analyzers.LayoutRules {
                         private static bool StartsWithDirectiveTrivia(SyntaxTriviaList triviaList) {
                                 foreach (var trivia in triviaList) {
                                         switch (trivia.Kind()) {
-                                        case SyntaxKind.WhitespaceTrivia:
-                                                // ignore
-                                                break;
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        // ignore
+                                                        break;
 
-                                        default:
-                                                return trivia.IsDirective;
+                                                default:
+                                                        return trivia.IsDirective;
                                         }
                                 }
 

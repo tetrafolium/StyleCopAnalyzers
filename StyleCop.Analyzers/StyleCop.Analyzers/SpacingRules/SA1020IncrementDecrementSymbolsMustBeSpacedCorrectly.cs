@@ -64,13 +64,13 @@ namespace StyleCop.Analyzers.SpacingRules {
                             context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.MinusMinusToken:
-                                case SyntaxKind.PlusPlusToken:
-                                        HandleIncrementDecrementToken(context, token);
-                                        break;
+                                        case SyntaxKind.MinusMinusToken:
+                                        case SyntaxKind.PlusPlusToken:
+                                                HandleIncrementDecrementToken(context, token);
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }
@@ -82,49 +82,52 @@ namespace StyleCop.Analyzers.SpacingRules {
                         }
 
                         switch (token.Parent.Kind()) {
-                        case SyntaxKind.PreIncrementExpression:
-                        case SyntaxKind.PreDecrementExpression:
-                                if (token.HasTrailingTrivia) {
-                                        string symbolName;
-                                        if (token.IsKind(SyntaxKind.MinusMinusToken)) {
-                                                symbolName = "Decrement";
-                                        } else {
-                                                symbolName = "Increment";
+                                case SyntaxKind.PreIncrementExpression:
+                                case SyntaxKind.PreDecrementExpression:
+                                        if (token.HasTrailingTrivia) {
+                                                string symbolName;
+                                                if (token.IsKind(SyntaxKind.MinusMinusToken)) {
+                                                        symbolName = "Decrement";
+                                                } else {
+                                                        symbolName = "Increment";
+                                                }
+
+                                                // {Increment|Decrement} symbol '{++|--}' should not
+                                                // be {followed} by a space.
+                                                var properties =
+                                                    TokenSpacingProperties.RemoveFollowing;
+                                                context.ReportDiagnostic(Diagnostic.Create(
+                                                    Descriptor, token.GetLocation(), properties,
+                                                    symbolName, token.Text, "followed"));
                                         }
 
-                                        // {Increment|Decrement} symbol '{++|--}' should not be
-                                        // {followed} by a space.
-                                        var properties = TokenSpacingProperties.RemoveFollowing;
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, token.GetLocation(), properties, symbolName,
-                                            token.Text, "followed"));
-                                }
+                                        break;
 
-                                break;
+                                case SyntaxKind.PostIncrementExpression:
+                                case SyntaxKind.PostDecrementExpression:
+                                        SyntaxToken previousToken = token.GetPreviousToken();
+                                        if (!previousToken.IsMissing &&
+                                            previousToken.HasTrailingTrivia) {
+                                                string symbolName;
+                                                if (token.IsKind(SyntaxKind.MinusMinusToken)) {
+                                                        symbolName = "Decrement";
+                                                } else {
+                                                        symbolName = "Increment";
+                                                }
 
-                        case SyntaxKind.PostIncrementExpression:
-                        case SyntaxKind.PostDecrementExpression:
-                                SyntaxToken previousToken = token.GetPreviousToken();
-                                if (!previousToken.IsMissing && previousToken.HasTrailingTrivia) {
-                                        string symbolName;
-                                        if (token.IsKind(SyntaxKind.MinusMinusToken)) {
-                                                symbolName = "Decrement";
-                                        } else {
-                                                symbolName = "Increment";
+                                                // {Increment|Decrement} symbol '{++|--}' should not
+                                                // be {preceded} by a space.
+                                                var properties =
+                                                    TokenSpacingProperties.RemovePreceding;
+                                                context.ReportDiagnostic(Diagnostic.Create(
+                                                    Descriptor, token.GetLocation(), properties,
+                                                    symbolName, token.Text, "preceded"));
                                         }
 
-                                        // {Increment|Decrement} symbol '{++|--}' should not be
-                                        // {preceded} by a space.
-                                        var properties = TokenSpacingProperties.RemovePreceding;
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, token.GetLocation(), properties, symbolName,
-                                            token.Text, "preceded"));
-                                }
+                                        break;
 
-                                break;
-
-                        default:
-                                return;
+                                default:
+                                        return;
                         }
                 }
         }

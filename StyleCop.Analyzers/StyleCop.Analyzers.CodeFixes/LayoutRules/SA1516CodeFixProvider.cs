@@ -61,21 +61,20 @@ namespace StyleCop.Analyzers.LayoutRules {
                         }
 
                         switch (codeFixAction) {
-                        case SA1516ElementsMustBeSeparatedByBlankLine.InsertBlankLineValue:
-                                return true;
+                                case SA1516ElementsMustBeSeparatedByBlankLine.InsertBlankLineValue:
+                                        return true;
 
-                        case SA1516ElementsMustBeSeparatedByBlankLine.RemoveBlankLinesValue:
-                                return false;
+                                case SA1516ElementsMustBeSeparatedByBlankLine.RemoveBlankLinesValue:
+                                        return false;
 
-                        default:
-                                return null;
+                                default:
+                                        return null;
                         }
                 }
 
-                private static Task<Document>
-                GetTransformedDocumentAsync(Document document, SyntaxNode syntaxRoot,
-                                            Diagnostic diagnostic, bool insertBlankLine,
-                                            CancellationToken cancellationToken) {
+                private static Task<Document> GetTransformedDocumentAsync(
+                    Document document, SyntaxNode syntaxRoot, Diagnostic diagnostic,
+                    bool insertBlankLine, CancellationToken cancellationToken) {
                         // Currently unused
                         _ = cancellationToken;
 
@@ -151,9 +150,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                         protected override string CodeActionTitle =>
                             LayoutResources.SA1516CodeFixAll;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

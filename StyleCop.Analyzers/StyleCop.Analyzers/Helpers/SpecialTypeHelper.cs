@@ -52,9 +52,8 @@ namespace StyleCop.Analyzers.Helpers {
                         return PredefinedSpecialTypes.ContainsKey(specialType);
                 }
 
-                public static bool
-                TryGetPredefinedType(SpecialType specialType,
-                                     out PredefinedTypeSyntax predefinedTypeSyntax) {
+                public static bool TryGetPredefinedType(
+                    SpecialType specialType, out PredefinedTypeSyntax predefinedTypeSyntax) {
                         return PredefinedSpecialTypes.TryGetValue(specialType,
                                                                   out predefinedTypeSyntax);
                 }

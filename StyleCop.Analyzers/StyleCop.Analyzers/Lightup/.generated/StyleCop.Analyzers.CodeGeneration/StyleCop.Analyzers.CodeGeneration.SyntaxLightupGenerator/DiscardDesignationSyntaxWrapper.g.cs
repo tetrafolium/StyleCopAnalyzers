@@ -41,8 +41,8 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return UnderscoreTokenAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator DiscardDesignationSyntaxWrapper(VariableDesignationSyntaxWrapper node) {
+                public static explicit operator DiscardDesignationSyntaxWrapper(
+                    VariableDesignationSyntaxWrapper node) {
                         return (DiscardDesignationSyntaxWrapper) node.SyntaxNode;
                 }
 
@@ -59,13 +59,13 @@ namespace StyleCop.Analyzers.Lightup {
                         return new DiscardDesignationSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator VariableDesignationSyntaxWrapper(DiscardDesignationSyntaxWrapper wrapper) {
+                public static implicit operator VariableDesignationSyntaxWrapper(
+                    DiscardDesignationSyntaxWrapper wrapper) {
                         return VariableDesignationSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(DiscardDesignationSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    DiscardDesignationSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -73,8 +73,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public DiscardDesignationSyntaxWrapper
-                WithUnderscoreToken(SyntaxToken underscoreToken) {
+                public DiscardDesignationSyntaxWrapper WithUnderscoreToken(
+                    SyntaxToken underscoreToken) {
                         return new DiscardDesignationSyntaxWrapper(
                             WithUnderscoreTokenAccessor(this.SyntaxNode, underscoreToken));
                 }

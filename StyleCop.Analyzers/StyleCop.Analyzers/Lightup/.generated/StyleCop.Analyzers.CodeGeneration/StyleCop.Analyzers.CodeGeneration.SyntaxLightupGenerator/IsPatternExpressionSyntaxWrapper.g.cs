@@ -41,14 +41,18 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxPropertyAccessor<ExpressionSyntax, CSharpSyntaxNode>(
                                     WrappedType, nameof(Pattern));
-                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
+                        WithExpressionAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(Expression));
                         WithIsKeywordAccessor =
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
                                     WrappedType, nameof(IsKeyword));
-                        WithPatternAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, CSharpSyntaxNode>(WrappedType, nameof(Pattern));
+                        WithPatternAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                                            CSharpSyntaxNode>(
+                                WrappedType, nameof(Pattern));
                 }
 
                 private IsPatternExpressionSyntaxWrapper(ExpressionSyntax node) {
@@ -82,8 +86,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new IsPatternExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
-                public static implicit
-                operator ExpressionSyntax(IsPatternExpressionSyntaxWrapper wrapper) {
+                public static implicit operator ExpressionSyntax(
+                    IsPatternExpressionSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -91,8 +95,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public IsPatternExpressionSyntaxWrapper
-                WithExpression(ExpressionSyntax expression) {
+                public IsPatternExpressionSyntaxWrapper WithExpression(
+                    ExpressionSyntax expression) {
                         return new IsPatternExpressionSyntaxWrapper(
                             WithExpressionAccessor(this.SyntaxNode, expression));
                 }

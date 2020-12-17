@@ -89,10 +89,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 /// <inheritdoc/>
-                protected override void
-                HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment,
-                                            XElement completeDocumentation,
-                                            params Location[] diagnosticLocations) {
+                protected override void HandleCompleteDocumentation(
+                    SyntaxNodeAnalysisContext context, bool needsComment,
+                    XElement completeDocumentation, params Location[] diagnosticLocations) {
                         // We are working with an <include> element
                         var includedSummaryElement =
                             completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(

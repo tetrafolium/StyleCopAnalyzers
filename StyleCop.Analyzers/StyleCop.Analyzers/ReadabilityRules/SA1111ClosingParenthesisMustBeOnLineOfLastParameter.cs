@@ -120,8 +120,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.ArrayCreationExpression);
                 }
 
-                private static void
-                HandleArrayCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleArrayCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var arrayCreation = (ArrayCreationExpressionSyntax) context.Node;
 
                         if (arrayCreation.Type == null) {
@@ -144,8 +144,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleParenthesizedLambdaExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var lambdaExpressionSyntax =
                             (ParenthesizedLambdaExpressionSyntax) context.Node;
 
@@ -164,8 +164,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousMethodExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
 
                         if (anonymousMethod.ParameterList == null ||
@@ -217,8 +217,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleElementAccessExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleElementAccessExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var elementAccess = (ElementAccessExpressionSyntax) context.Node;
 
                         if (elementAccess.ArgumentList == null ||
@@ -256,8 +256,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
 
                         if (objectCreation.ArgumentList == null ||
@@ -314,8 +314,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static void
-                HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(
+                    SyntaxNodeAnalysisContext context) {
                         var localFunctionStatementSyntax =
                             (LocalFunctionStatementSyntaxWrapper) context.Node;
 

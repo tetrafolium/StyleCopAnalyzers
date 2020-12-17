@@ -30,8 +30,8 @@ namespace StyleCop.Analyzers.Settings {
                     // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
 
                     "" $schema "" : "" https
-                    : // raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json"",
-                      "" settings "" : {
+                    :  // raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json"",
+                       "" settings "" : {
                         "" documentationRules "" : {
                                 "" companyName ""
                                     : "" " + DocumentationSettings.DefaultCompanyName + @" ""

@@ -45,8 +45,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers.CreateSyntaxWithPropertyAccessor<
                                 CSharpSyntaxNode, SyntaxList<AttributeListSyntax>>(
                                 WrappedType, nameof(AttributeLists));
-                        WithModifiersAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, SyntaxTokenList>(WrappedType, nameof(Modifiers));
+                        WithModifiersAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                                            SyntaxTokenList>(
+                                WrappedType, nameof(Modifiers));
                         WithTypeAccessor =
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
@@ -82,8 +84,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new BaseParameterSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
-                public static implicit
-                operator CSharpSyntaxNode(BaseParameterSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(
+                    BaseParameterSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -91,8 +93,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public BaseParameterSyntaxWrapper
-                WithAttributeLists(SyntaxList<AttributeListSyntax> attributeLists) {
+                public BaseParameterSyntaxWrapper WithAttributeLists(
+                    SyntaxList<AttributeListSyntax> attributeLists) {
                         return new BaseParameterSyntaxWrapper(
                             WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
                 }

@@ -75,24 +75,24 @@ namespace StyleCop.Analyzers.NamingRules {
                         bool isStatic = false;
                         foreach (SyntaxToken token in syntax.Modifiers) {
                                 switch (token.Kind()) {
-                                case SyntaxKind.StaticKeyword:
-                                        isStatic = true;
-                                        break;
+                                        case SyntaxKind.StaticKeyword:
+                                                isStatic = true;
+                                                break;
 
-                                case SyntaxKind.ReadOnlyKeyword:
-                                case SyntaxKind.ConstKeyword:
-                                        // This analyzer only looks at static, non-const,
-                                        // non-readonly fields.
-                                        return;
+                                        case SyntaxKind.ReadOnlyKeyword:
+                                        case SyntaxKind.ConstKeyword:
+                                                // This analyzer only looks at static, non-const,
+                                                // non-readonly fields.
+                                                return;
 
-                                case SyntaxKind.InternalKeyword:
-                                case SyntaxKind.ProtectedKeyword:
-                                case SyntaxKind.PublicKeyword:
-                                        // This analyzer only looks at private fields.
-                                        return;
+                                        case SyntaxKind.InternalKeyword:
+                                        case SyntaxKind.ProtectedKeyword:
+                                        case SyntaxKind.PublicKeyword:
+                                                // This analyzer only looks at private fields.
+                                                return;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
 

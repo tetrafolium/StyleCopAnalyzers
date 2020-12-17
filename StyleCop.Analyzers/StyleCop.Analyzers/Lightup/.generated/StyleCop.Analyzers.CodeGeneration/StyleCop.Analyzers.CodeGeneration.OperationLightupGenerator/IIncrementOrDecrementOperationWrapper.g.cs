@@ -49,8 +49,8 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation Target => TargetAccessor(this.WrappedOperation);
                 public IMethodSymbol OperatorMethod =>
                     OperatorMethodAccessor(this.WrappedOperation);
-                public static IIncrementOrDecrementOperationWrapper
-                FromOperation(IOperation operation) {
+                public static IIncrementOrDecrementOperationWrapper FromOperation(
+                    IOperation operation) {
                         if (operation == null) {
                                 return default;
                         }

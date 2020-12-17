@@ -18,9 +18,9 @@ namespace StyleCop.Analyzers.Lightup {
                                 nameof(BaseMethodDeclarationSyntaxExtensions.ExpressionBody));
                 }
 
-                public static DestructorDeclarationSyntax
-                WithExpressionBody(this DestructorDeclarationSyntax syntax,
-                                   ArrowExpressionClauseSyntax expressionBody) {
+                public static DestructorDeclarationSyntax WithExpressionBody(
+                    this DestructorDeclarationSyntax syntax,
+                    ArrowExpressionClauseSyntax expressionBody) {
                         return WithExpressionBodyAccessor(syntax, expressionBody);
                 }
         }

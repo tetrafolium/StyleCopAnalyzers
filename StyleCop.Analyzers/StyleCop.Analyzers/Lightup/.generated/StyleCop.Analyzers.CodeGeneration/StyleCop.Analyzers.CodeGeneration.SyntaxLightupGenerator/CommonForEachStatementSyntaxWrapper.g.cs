@@ -85,8 +85,10 @@ namespace StyleCop.Analyzers.Lightup {
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
                                     WrappedType, nameof(InKeyword));
-                        WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            StatementSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
+                        WithExpressionAccessor =
+                            LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax,
+                                                                            ExpressionSyntax>(
+                                WrappedType, nameof(Expression));
                         WithCloseParenTokenAccessor =
                             LightupHelpers
                                 .CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
@@ -131,8 +133,8 @@ namespace StyleCop.Analyzers.Lightup {
                         get { return StatementAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit
-                operator CommonForEachStatementSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator CommonForEachStatementSyntaxWrapper(
+                    SyntaxNode node) {
                         if (node == null) {
                                 return default;
                         }
@@ -145,8 +147,8 @@ namespace StyleCop.Analyzers.Lightup {
                         return new CommonForEachStatementSyntaxWrapper((StatementSyntax) node);
                 }
 
-                public static implicit
-                operator StatementSyntax(CommonForEachStatementSyntaxWrapper wrapper) {
+                public static implicit operator StatementSyntax(
+                    CommonForEachStatementSyntaxWrapper wrapper) {
                         return wrapper.node;
                 }
 
@@ -154,20 +156,20 @@ namespace StyleCop.Analyzers.Lightup {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public CommonForEachStatementSyntaxWrapper
-                WithAwaitKeyword(SyntaxToken awaitKeyword) {
+                public CommonForEachStatementSyntaxWrapper WithAwaitKeyword(
+                    SyntaxToken awaitKeyword) {
                         return new CommonForEachStatementSyntaxWrapper(
                             WithAwaitKeywordAccessor(this.SyntaxNode, awaitKeyword));
                 }
 
-                public CommonForEachStatementSyntaxWrapper
-                WithForEachKeyword(SyntaxToken forEachKeyword) {
+                public CommonForEachStatementSyntaxWrapper WithForEachKeyword(
+                    SyntaxToken forEachKeyword) {
                         return new CommonForEachStatementSyntaxWrapper(
                             WithForEachKeywordAccessor(this.SyntaxNode, forEachKeyword));
                 }
 
-                public CommonForEachStatementSyntaxWrapper
-                WithOpenParenToken(SyntaxToken openParenToken) {
+                public CommonForEachStatementSyntaxWrapper WithOpenParenToken(
+                    SyntaxToken openParenToken) {
                         return new CommonForEachStatementSyntaxWrapper(
                             WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
                 }
@@ -177,26 +179,26 @@ namespace StyleCop.Analyzers.Lightup {
                             WithInKeywordAccessor(this.SyntaxNode, inKeyword));
                 }
 
-                public CommonForEachStatementSyntaxWrapper
-                WithExpression(ExpressionSyntax expression) {
+                public CommonForEachStatementSyntaxWrapper WithExpression(
+                    ExpressionSyntax expression) {
                         return new CommonForEachStatementSyntaxWrapper(
                             WithExpressionAccessor(this.SyntaxNode, expression));
                 }
 
-                public CommonForEachStatementSyntaxWrapper
-                WithCloseParenToken(SyntaxToken closeParenToken) {
+                public CommonForEachStatementSyntaxWrapper WithCloseParenToken(
+                    SyntaxToken closeParenToken) {
                         return new CommonForEachStatementSyntaxWrapper(
                             WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
                 }
 
-                public CommonForEachStatementSyntaxWrapper
-                WithStatement(StatementSyntax statement) {
+                public CommonForEachStatementSyntaxWrapper WithStatement(
+                    StatementSyntax statement) {
                         return new CommonForEachStatementSyntaxWrapper(
                             WithStatementAccessor(this.SyntaxNode, statement));
                 }
 
-                internal static CommonForEachStatementSyntaxWrapper
-                FromUpcast(StatementSyntax node) {
+                internal static CommonForEachStatementSyntaxWrapper FromUpcast(
+                    StatementSyntax node) {
                         return new CommonForEachStatementSyntaxWrapper(node);
                 }
         }

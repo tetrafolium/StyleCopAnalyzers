@@ -21,14 +21,14 @@ namespace StyleCop.Analyzers.Lightup {
                             typeof(StackAllocArrayCreationExpressionSyntax), nameof(Initializer));
                 }
 
-                public static InitializerExpressionSyntax
-                Initializer(this StackAllocArrayCreationExpressionSyntax syntax) {
+                public static InitializerExpressionSyntax Initializer(
+                    this StackAllocArrayCreationExpressionSyntax syntax) {
                         return InitializerAccessor(syntax);
                 }
 
-                public static StackAllocArrayCreationExpressionSyntax
-                WithInitializer(this StackAllocArrayCreationExpressionSyntax syntax,
-                                InitializerExpressionSyntax initializer) {
+                public static StackAllocArrayCreationExpressionSyntax WithInitializer(
+                    this StackAllocArrayCreationExpressionSyntax syntax,
+                    InitializerExpressionSyntax initializer) {
                         return WithInitializerAccessor(syntax, initializer);
                 }
         }

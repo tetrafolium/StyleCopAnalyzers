@@ -33,18 +33,19 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                     : this() {
                         foreach (var kvp in maintainabilitySettingsObject) {
                                 switch (kvp.Key) {
-                                case "topLevelTypes":
-                                        kvp.AssertIsArray();
-                                        foreach (var value in kvp.Value.AsJsonArray) {
-                                                var typeKind =
-                                                    value.ToEnumValue<TopLevelType>(kvp.Key);
-                                                this.topLevelTypes.Add(typeKind);
-                                        }
+                                        case "topLevelTypes":
+                                                kvp.AssertIsArray();
+                                                foreach (var value in kvp.Value.AsJsonArray) {
+                                                        var typeKind =
+                                                            value.ToEnumValue<TopLevelType>(
+                                                                kvp.Key);
+                                                        this.topLevelTypes.Add(typeKind);
+                                                }
 
-                                        break;
+                                                break;
 
-                                default:
-                                        break;
+                                        default:
+                                                break;
                                 }
                         }
                 }

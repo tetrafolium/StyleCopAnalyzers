@@ -44,9 +44,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -62,32 +61,32 @@ namespace StyleCop.Analyzers.LayoutRules {
                              currentIndex++) {
                                 switch (triviaList [currentIndex]
                                             .Kind()) {
-                                case SyntaxKind.EndOfLineTrivia:
-                                        if (onBlankLine) {
-                                                triviaList = triviaList.RemoveRange(
-                                                    currentLineStart,
-                                                    currentIndex - currentLineStart + 1);
-                                                currentIndex = currentLineStart - 1;
-                                                continue;
-                                        } else {
-                                                currentLineStart = currentIndex + 1;
-                                                onBlankLine = true;
-                                                break;
-                                        }
+                                        case SyntaxKind.EndOfLineTrivia:
+                                                if (onBlankLine) {
+                                                        triviaList = triviaList.RemoveRange(
+                                                            currentLineStart,
+                                                            currentIndex - currentLineStart + 1);
+                                                        currentIndex = currentLineStart - 1;
+                                                        continue;
+                                                } else {
+                                                        currentLineStart = currentIndex + 1;
+                                                        onBlankLine = true;
+                                                        break;
+                                                }
 
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                break;
 
-                                default:
-                                        if (triviaList [currentIndex]
-                                                .HasBuiltinEndLine()) {
-                                                currentLineStart = currentIndex + 1;
-                                                onBlankLine = true;
-                                                break;
-                                        } else {
-                                                onBlankLine = false;
-                                                break;
-                                        }
+                                        default:
+                                                if (triviaList [currentIndex]
+                                                        .HasBuiltinEndLine()) {
+                                                        currentLineStart = currentIndex + 1;
+                                                        onBlankLine = true;
+                                                        break;
+                                                } else {
+                                                        onBlankLine = false;
+                                                        break;
+                                                }
                                 }
                         }
 

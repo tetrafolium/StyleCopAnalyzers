@@ -47,9 +47,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -65,9 +64,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private static Dictionary<SyntaxToken, SyntaxToken>
-                GenerateBraceFixes(IndentationSettings indentationSettings,
-                                   ImmutableArray<SyntaxToken> braceTokens) {
+                private static Dictionary<SyntaxToken, SyntaxToken> GenerateBraceFixes(
+                    IndentationSettings indentationSettings,
+                    ImmutableArray<SyntaxToken> braceTokens) {
                         var tokenReplacements = new Dictionary<SyntaxToken, SyntaxToken>();
 
                         foreach (var braceToken in braceTokens) {
@@ -192,14 +191,14 @@ namespace StyleCop.Analyzers.LayoutRules {
                         }
 
                         switch (previousToken.Kind()) {
-                        case SyntaxKind.GetKeyword:
-                        case SyntaxKind.SetKeyword:
-                        case SyntaxKind.AddKeyword:
-                        case SyntaxKind.RemoveKeyword:
-                                break;
+                                case SyntaxKind.GetKeyword:
+                                case SyntaxKind.SetKeyword:
+                                case SyntaxKind.AddKeyword:
+                                case SyntaxKind.RemoveKeyword:
+                                        break;
 
-                        default:
-                                return false;
+                                default:
+                                        return false;
                         }
 
                         var token = braceToken;
@@ -208,13 +207,13 @@ namespace StyleCop.Analyzers.LayoutRules {
                         while (depth > 0) {
                                 token = token.GetNextToken();
                                 switch (token.Kind()) {
-                                case SyntaxKind.CloseBraceToken:
-                                        depth--;
-                                        break;
+                                        case SyntaxKind.CloseBraceToken:
+                                                depth--;
+                                                break;
 
-                                case SyntaxKind.OpenBraceToken:
-                                        depth++;
-                                        break;
+                                        case SyntaxKind.OpenBraceToken:
+                                                depth++;
+                                                break;
                                 }
                         }
 
@@ -224,19 +223,18 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                 private static bool IsValidFollowingToken(SyntaxToken nextToken) {
                         switch (nextToken.Kind()) {
-                        case SyntaxKind.SemicolonToken:
-                        case SyntaxKind.CloseParenToken:
-                        case SyntaxKind.CommaToken:
-                                return true;
+                                case SyntaxKind.SemicolonToken:
+                                case SyntaxKind.CloseParenToken:
+                                case SyntaxKind.CommaToken:
+                                        return true;
 
-                        default:
-                                return false;
+                                default:
+                                        return false;
                         }
                 }
 
-                private static int
-                DetermineIndentationSteps(IndentationSettings indentationSettings,
-                                          SyntaxToken token) {
+                private static int DetermineIndentationSteps(
+                    IndentationSettings indentationSettings, SyntaxToken token) {
                         // For a closing brace use the indentation of the corresponding opening
                         // brace
                         if (token.IsKind(SyntaxKind.CloseBraceToken)) {
@@ -245,13 +243,13 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 while (depth > 0) {
                                         token = token.GetPreviousToken();
                                         switch (token.Kind()) {
-                                        case SyntaxKind.CloseBraceToken:
-                                                depth++;
-                                                break;
+                                                case SyntaxKind.CloseBraceToken:
+                                                        depth++;
+                                                        break;
 
-                                        case SyntaxKind.OpenBraceToken:
-                                                depth--;
-                                                break;
+                                                case SyntaxKind.OpenBraceToken:
+                                                        depth--;
+                                                        break;
                                         }
                                 }
                         }
@@ -276,9 +274,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return token.SyntaxTree.GetLineSpan(token.FullSpan).StartLinePosition;
                 }
 
-                private static void
-                AddReplacement(Dictionary<SyntaxToken, SyntaxToken> tokenReplacements,
-                               SyntaxToken originalToken, SyntaxToken replacementToken) {
+                private static void AddReplacement(
+                    Dictionary<SyntaxToken, SyntaxToken> tokenReplacements,
+                    SyntaxToken originalToken, SyntaxToken replacementToken) {
                         if (tokenReplacements.ContainsKey(originalToken)) {
                                 // This will only happen when a single keyword (like else) has
                                 // invalid brace tokens before and after it.
@@ -296,9 +294,9 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         protected override string CodeActionTitle => LayoutResources.SA1500CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

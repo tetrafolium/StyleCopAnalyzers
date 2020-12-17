@@ -50,9 +50,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
@@ -68,9 +67,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                         ReformatStatementAndSurroundings(statement, settings.Indentation,
                                                          tokenReplaceMap);
 
-                        var newSyntaxRoot = syntaxRoot.ReplaceTokens(tokenReplaceMap.Keys,
-                                                                     (original, rewritten) =>
-                                                                         tokenReplaceMap[original]);
+                        var newSyntaxRoot = syntaxRoot.ReplaceTokens(
+                            tokenReplaceMap.Keys,
+                            (original, rewritten) => tokenReplaceMap[original]);
                         var newDocument =
                             document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
                         return newDocument;
@@ -121,10 +120,10 @@ namespace StyleCop.Analyzers.LayoutRules {
                         }
                 }
 
-                private static int
-                DetermineIndentationLevel(IndentationSettings indentationSettings,
-                                          Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap,
-                                          StatementSyntax statement) {
+                private static int DetermineIndentationLevel(
+                    IndentationSettings indentationSettings,
+                    Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap,
+                    StatementSyntax statement) {
                         var parent = GetStatementParent(statement.Parent);
                         int parentIndentationLevel;
 
@@ -143,19 +142,19 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return parentIndentationLevel;
                 }
 
-                private static void
-                ReformatBlock(IndentationSettings indentationSettings, BlockSyntax block,
-                              Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap) {
+                private static void ReformatBlock(
+                    IndentationSettings indentationSettings, BlockSyntax block,
+                    Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap) {
                         var parentIndentationLevel = IndentationHelper.GetIndentationSteps(
                             indentationSettings, GetStatementParent(block.Parent));
 
                         // use one additional step of indentation for lambdas / anonymous methods
                         switch (block.Parent.Kind()) {
-                        case SyntaxKind.AnonymousMethodExpression:
-                        case SyntaxKind.SimpleLambdaExpression:
-                        case SyntaxKind.ParenthesizedLambdaExpression:
-                                parentIndentationLevel++;
-                                break;
+                                case SyntaxKind.AnonymousMethodExpression:
+                                case SyntaxKind.SimpleLambdaExpression:
+                                case SyntaxKind.ParenthesizedLambdaExpression:
+                                        parentIndentationLevel++;
+                                        break;
                         }
 
                         var indentationString = IndentationHelper.GenerateIndentationString(
@@ -181,17 +180,17 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         bool addNewLineAfterCloseBrace;
                         switch (block.CloseBraceToken.GetNextToken().Kind()) {
-                        case SyntaxKind.CloseParenToken:
-                        case SyntaxKind.CommaToken:
-                        case SyntaxKind.SemicolonToken:
-                                addNewLineAfterCloseBrace = false;
-                                break;
-                        default:
-                                addNewLineAfterCloseBrace =
-                                    (newCloseBraceTrailingTrivia.Count == 0) ||
-                                    !newCloseBraceTrailingTrivia.Last().IsKind(
-                                        SyntaxKind.EndOfLineTrivia);
-                                break;
+                                case SyntaxKind.CloseParenToken:
+                                case SyntaxKind.CommaToken:
+                                case SyntaxKind.SemicolonToken:
+                                        addNewLineAfterCloseBrace = false;
+                                        break;
+                                default:
+                                        addNewLineAfterCloseBrace =
+                                            (newCloseBraceTrailingTrivia.Count == 0) ||
+                                            !newCloseBraceTrailingTrivia.Last().IsKind(
+                                                SyntaxKind.EndOfLineTrivia);
+                                        break;
                         }
 
                         if (addNewLineAfterCloseBrace) {
@@ -227,20 +226,19 @@ namespace StyleCop.Analyzers.LayoutRules {
                         }
                 }
 
-                private static void
-                ReformatStatement(IndentationSettings indentationSettings,
-                                  StatementSyntax statement,
-                                  Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap) {
+                private static void ReformatStatement(
+                    IndentationSettings indentationSettings, StatementSyntax statement,
+                    Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap) {
                         var indentationLevel = DetermineIndentationLevel(
                             indentationSettings, tokenReplaceMap, statement);
 
                         // use one additional step of indentation for lambdas / anonymous methods
                         switch (statement.Parent.Kind()) {
-                        case SyntaxKind.AnonymousMethodExpression:
-                        case SyntaxKind.SimpleLambdaExpression:
-                        case SyntaxKind.ParenthesizedLambdaExpression:
-                                indentationLevel++;
-                                break;
+                                case SyntaxKind.AnonymousMethodExpression:
+                                case SyntaxKind.SimpleLambdaExpression:
+                                case SyntaxKind.ParenthesizedLambdaExpression:
+                                        indentationLevel++;
+                                        break;
                         }
 
                         var statementIndentationTrivia = IndentationHelper.GenerateWhitespaceTrivia(
@@ -262,9 +260,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                                             newLastTokenTrailingTrivia));
                 }
 
-                private static void
-                AddToReplaceMap(Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap,
-                                SyntaxToken original, SyntaxToken replacement) {
+                private static void AddToReplaceMap(
+                    Dictionary<SyntaxToken, SyntaxToken> tokenReplaceMap, SyntaxToken original,
+                    SyntaxToken replacement) {
                         SyntaxToken existingReplacement;
                         SyntaxToken reprocessedReplacement = replacement;
 
@@ -324,9 +322,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                         protected override string CodeActionTitle =>
                             LayoutResources.SA1501CodeFixAll;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

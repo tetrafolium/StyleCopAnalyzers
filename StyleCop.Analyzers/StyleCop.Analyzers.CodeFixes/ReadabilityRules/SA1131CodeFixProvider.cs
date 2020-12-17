@@ -45,9 +45,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document>
-                GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
-                                            CancellationToken cancellationToken) {
+                private static async Task<Document> GetTransformedDocumentAsync(
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken) {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
                                              .ConfigureAwait(false);
 
@@ -61,8 +60,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                             syntaxRoot.ReplaceNode(binaryExpression, newBinaryExpression));
                 }
 
-                private static BinaryExpressionSyntax
-                TransformExpression(BinaryExpressionSyntax binaryExpression) {
+                private static BinaryExpressionSyntax TransformExpression(
+                    BinaryExpressionSyntax binaryExpression) {
                         var newLeft = binaryExpression.Right.WithTriviaFrom(binaryExpression.Left);
                         var newRight = binaryExpression.Left.WithTriviaFrom(binaryExpression.Right);
                         return binaryExpression.WithLeft(newLeft)
@@ -73,32 +72,33 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private static SyntaxToken GetCorrectOperatorToken(SyntaxToken operatorToken) {
                         switch (operatorToken.Kind()) {
-                        case SyntaxKind.EqualsEqualsToken:
-                        case SyntaxKind.ExclamationEqualsToken:
-                                return operatorToken;
+                                case SyntaxKind.EqualsEqualsToken:
+                                case SyntaxKind.ExclamationEqualsToken:
+                                        return operatorToken;
 
-                        case SyntaxKind.GreaterThanToken:
-                                return SyntaxFactory.Token(operatorToken.LeadingTrivia,
-                                                           SyntaxKind.LessThanToken,
-                                                           operatorToken.TrailingTrivia);
+                                case SyntaxKind.GreaterThanToken:
+                                        return SyntaxFactory.Token(operatorToken.LeadingTrivia,
+                                                                   SyntaxKind.LessThanToken,
+                                                                   operatorToken.TrailingTrivia);
 
-                        case SyntaxKind.GreaterThanEqualsToken:
-                                return SyntaxFactory.Token(operatorToken.LeadingTrivia,
-                                                           SyntaxKind.LessThanEqualsToken,
-                                                           operatorToken.TrailingTrivia);
+                                case SyntaxKind.GreaterThanEqualsToken:
+                                        return SyntaxFactory.Token(operatorToken.LeadingTrivia,
+                                                                   SyntaxKind.LessThanEqualsToken,
+                                                                   operatorToken.TrailingTrivia);
 
-                        case SyntaxKind.LessThanToken:
-                                return SyntaxFactory.Token(operatorToken.LeadingTrivia,
-                                                           SyntaxKind.GreaterThanToken,
-                                                           operatorToken.TrailingTrivia);
+                                case SyntaxKind.LessThanToken:
+                                        return SyntaxFactory.Token(operatorToken.LeadingTrivia,
+                                                                   SyntaxKind.GreaterThanToken,
+                                                                   operatorToken.TrailingTrivia);
 
-                        case SyntaxKind.LessThanEqualsToken:
-                                return SyntaxFactory.Token(operatorToken.LeadingTrivia,
-                                                           SyntaxKind.GreaterThanEqualsToken,
-                                                           operatorToken.TrailingTrivia);
+                                case SyntaxKind.LessThanEqualsToken:
+                                        return SyntaxFactory.Token(
+                                            operatorToken.LeadingTrivia,
+                                            SyntaxKind.GreaterThanEqualsToken,
+                                            operatorToken.TrailingTrivia);
 
-                        default:
-                                return SyntaxFactory.Token(SyntaxKind.None);
+                                default:
+                                        return SyntaxFactory.Token(SyntaxKind.None);
                         }
                 }
 
@@ -109,9 +109,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         protected override string CodeActionTitle =>
                             ReadabilityResources.SA1131CodeFix;
 
-                        protected override async Task<SyntaxNode>
-                        FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
-                                              ImmutableArray<Diagnostic> diagnostics) {
+                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics) {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }

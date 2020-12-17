@@ -22,52 +22,54 @@ namespace StyleCop.Analyzers.Helpers {
                         var project = fixAllContext.Project;
 
                         switch (fixAllContext.Scope) {
-                        case FixAllScope.Document:
-                                if (document != null) {
-                                        var documentDiagnostics =
-                                            await fixAllContext
-                                                .GetDocumentDiagnosticsAsync(document)
-                                                .ConfigureAwait(false);
-                                        return ImmutableDictionary<Document, ImmutableArray<Diagnostic>>.Empty.SetItem(document, documentDiagnostics);
-                                }
-
-                                break;
-
-                        case FixAllScope.Project:
-                                projectsToFix = ImmutableArray.Create(project);
-                                allDiagnostics =
-                                    await GetAllDiagnosticsAsync(fixAllContext, project)
-                                        .ConfigureAwait(false);
-                                break;
-
-                        case FixAllScope.Solution:
-                                projectsToFix = project.Solution.Projects
-                                                    .Where(p => p.Language == project.Language)
-                                                    .ToImmutableArray();
-
-                                var diagnostics =
-                                    new ConcurrentDictionary<ProjectId,
-                                                             ImmutableArray<Diagnostic>>();
-                                var tasks = new Task[projectsToFix.Length];
-                                for (int i = 0; i < projectsToFix.Length; i++) {
-                                        fixAllContext.CancellationToken
-                                            .ThrowIfCancellationRequested();
-                                        var projectToFix = projectsToFix[i];
-                                        tasks[i] = Task.Run(async() => {
-                                                var projectDiagnostics =
-                                                    await GetAllDiagnosticsAsync(fixAllContext,
-                                                                                 projectToFix)
+                                case FixAllScope.Document:
+                                        if (document != null) {
+                                                var documentDiagnostics =
+                                                    await fixAllContext
+                                                        .GetDocumentDiagnosticsAsync(document)
                                                         .ConfigureAwait(false);
-                                                diagnostics.TryAdd(projectToFix.Id,
-                                                                   projectDiagnostics);
-                                        }, fixAllContext.CancellationToken);
-                                }
+                                                return ImmutableDictionary<Document, ImmutableArray<Diagnostic>>.Empty.SetItem(document, documentDiagnostics);
+                                        }
 
-                                await Task.WhenAll(tasks).ConfigureAwait(false);
-                                allDiagnostics = allDiagnostics.AddRange(diagnostics.SelectMany(
-                                    i => i.Value.Where(
-                                        x => fixAllContext.DiagnosticIds.Contains(x.Id))));
-                                break;
+                                        break;
+
+                                case FixAllScope.Project:
+                                        projectsToFix = ImmutableArray.Create(project);
+                                        allDiagnostics =
+                                            await GetAllDiagnosticsAsync(fixAllContext, project)
+                                                .ConfigureAwait(false);
+                                        break;
+
+                                case FixAllScope.Solution:
+                                        projectsToFix =
+                                            project.Solution.Projects
+                                                .Where(p => p.Language == project.Language)
+                                                .ToImmutableArray();
+
+                                        var diagnostics =
+                                            new ConcurrentDictionary<ProjectId,
+                                                                     ImmutableArray<Diagnostic>>();
+                                        var tasks = new Task[projectsToFix.Length];
+                                        for (int i = 0; i < projectsToFix.Length; i++) {
+                                                fixAllContext.CancellationToken
+                                                    .ThrowIfCancellationRequested();
+                                                var projectToFix = projectsToFix[i];
+                                                tasks[i] = Task.Run(async() => {
+                                                        var projectDiagnostics =
+                                                            await GetAllDiagnosticsAsync(
+                                                                fixAllContext, projectToFix)
+                                                                .ConfigureAwait(false);
+                                                        diagnostics.TryAdd(projectToFix.Id,
+                                                                           projectDiagnostics);
+                                                }, fixAllContext.CancellationToken);
+                                        }
+
+                                        await Task.WhenAll(tasks).ConfigureAwait(false);
+                                        allDiagnostics =
+                                            allDiagnostics.AddRange(diagnostics.SelectMany(
+                                                i => i.Value.Where(x => fixAllContext.DiagnosticIds
+                                                                            .Contains(x.Id))));
+                                        break;
                         }
 
                         if (allDiagnostics.IsEmpty) {
@@ -84,45 +86,47 @@ namespace StyleCop.Analyzers.Helpers {
                         var project = fixAllContext.Project;
                         if (project != null) {
                                 switch (fixAllContext.Scope) {
-                                case FixAllScope.Project:
-                                        var diagnostics =
-                                            await fixAllContext.GetProjectDiagnosticsAsync(project)
-                                                .ConfigureAwait(false);
-                                        return ImmutableDictionary<Project, ImmutableArray<Diagnostic>>.Empty.SetItem(project, diagnostics);
-
-                                case FixAllScope.Solution:
-                                        var projectsAndDiagnostics =
-                                            new ConcurrentDictionary<Project,
-                                                                     ImmutableArray<Diagnostic>>();
-                                        var tasks =
-                                            new List<Task>(project.Solution.ProjectIds.Count);
-                                        Func<Project, Task> projectAction = async proj => {
-                                                if (fixAllContext.CancellationToken
-                                                        .IsCancellationRequested) {
-                                                        return;
-                                                }
-
-                                                var projectDiagnostics =
+                                        case FixAllScope.Project:
+                                                var diagnostics =
                                                     await fixAllContext
-                                                        .GetProjectDiagnosticsAsync(proj)
+                                                        .GetProjectDiagnosticsAsync(project)
                                                         .ConfigureAwait(false);
-                                                if (projectDiagnostics.Any()) {
-                                                        projectsAndDiagnostics.TryAdd(
-                                                            proj, projectDiagnostics);
+                                                return ImmutableDictionary<Project, ImmutableArray<Diagnostic>>.Empty.SetItem(project, diagnostics);
+
+                                        case FixAllScope.Solution:
+                                                var projectsAndDiagnostics =
+                                                    new ConcurrentDictionary<
+                                                        Project, ImmutableArray<Diagnostic>>();
+                                                var tasks = new List<Task>(
+                                                    project.Solution.ProjectIds.Count);
+                                                Func<Project, Task> projectAction = async proj => {
+                                                        if (fixAllContext.CancellationToken
+                                                                .IsCancellationRequested) {
+                                                                return;
+                                                        }
+
+                                                        var projectDiagnostics =
+                                                            await fixAllContext
+                                                                .GetProjectDiagnosticsAsync(proj)
+                                                                .ConfigureAwait(false);
+                                                        if (projectDiagnostics.Any()) {
+                                                                projectsAndDiagnostics.TryAdd(
+                                                                    proj, projectDiagnostics);
+                                                        }
+                                                };
+
+                                                foreach (var proj in project.Solution.Projects) {
+                                                        if (fixAllContext.CancellationToken
+                                                                .IsCancellationRequested) {
+                                                                break;
+                                                        }
+
+                                                        tasks.Add(projectAction(proj));
                                                 }
-                                        };
 
-                                        foreach (var proj in project.Solution.Projects) {
-                                                if (fixAllContext.CancellationToken
-                                                        .IsCancellationRequested) {
-                                                        break;
-                                                }
-
-                                                tasks.Add(projectAction(proj));
-                                        }
-
-                                        await Task.WhenAll(tasks).ConfigureAwait(false);
-                                        return projectsAndDiagnostics.ToImmutableDictionary();
+                                                await Task.WhenAll(tasks).ConfigureAwait(false);
+                                                return projectsAndDiagnostics
+                                                    .ToImmutableDictionary();
                                 }
                         }
 
@@ -138,8 +142,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation.
                 /// When the task completes successfully, the <see cref="Task{TResult}.Result"/>
                 /// will contain the requested diagnostics.</returns>
-                private static async Task<ImmutableArray<Diagnostic>>
-                GetAllDiagnosticsAsync(FixAllContext fixAllContext, Project project) {
+                private static async Task<ImmutableArray<Diagnostic>> GetAllDiagnosticsAsync(
+                    FixAllContext fixAllContext, Project project) {
                         return await fixAllContext.GetAllDiagnosticsAsync(project).ConfigureAwait(
                             false);
                 }
@@ -184,9 +188,9 @@ namespace StyleCop.Analyzers.Helpers {
                         return builder.ToImmutable();
                 }
 
-                private static Document
-                GetReportedDocument(Diagnostic diagnostic,
-                                    ImmutableDictionary<SyntaxTree, Document> treeToDocumentsMap) {
+                private static Document GetReportedDocument(
+                    Diagnostic diagnostic,
+                    ImmutableDictionary<SyntaxTree, Document> treeToDocumentsMap) {
                         var tree = diagnostic.Location.SourceTree;
                         if (tree != null) {
                                 Document document;

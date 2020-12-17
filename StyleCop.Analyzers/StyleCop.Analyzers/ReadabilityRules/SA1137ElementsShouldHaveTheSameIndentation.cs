@@ -292,8 +292,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         CheckElements(context, initializerExpression.Expressions);
                 }
 
-                private static void
-                HandleAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAnonymousObjectCreationExpression(
+                    SyntaxNodeAnalysisContext context) {
                         var anonymousObjectCreationExpression =
                             (AnonymousObjectCreationExpressionSyntax) context.Node;
 
@@ -314,76 +314,77 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         CheckElements(context, tupleExpression.Arguments);
                 }
 
-                private static void
-                AddMembersAndAttributes<T>(ImmutableList<SyntaxNode>.Builder elements,
-                                           SeparatedSyntaxList<T> members) where T : SyntaxNode {
+                private static void AddMembersAndAttributes<T>(
+                    ImmutableList<SyntaxNode>.Builder elements,
+                    SeparatedSyntaxList<T> members) where T : SyntaxNode {
                         foreach (SyntaxNode member in members) {
                                 AddMemberAndAttributes(elements, member);
                         }
                 }
 
-                private static void
-                AddMembersAndAttributes<T>(ImmutableList<SyntaxNode>.Builder elements,
-                                           SyntaxList<T> members) where T : SyntaxNode {
+                private static void AddMembersAndAttributes<T>(
+                    ImmutableList<SyntaxNode>.Builder elements, SyntaxList<T> members) where T
+                    : SyntaxNode {
                         foreach (SyntaxNode member in members) {
                                 AddMemberAndAttributes(elements, member);
                         }
                 }
 
-                private static void
-                AddMemberAndAttributes(ImmutableList<SyntaxNode>.Builder elements,
-                                       SyntaxNode member) {
+                private static void AddMemberAndAttributes(
+                    ImmutableList<SyntaxNode>.Builder elements, SyntaxNode member) {
                         switch (member.Kind()) {
-                        case SyntaxKind.ClassDeclaration:
-                        case SyntaxKind.StructDeclaration:
-                        case SyntaxKind.InterfaceDeclaration:
-                        case SyntaxKind.EnumDeclaration:
-                        case SyntaxKindEx.RecordDeclaration:
-                                elements.AddRange(
-                                    ((BaseTypeDeclarationSyntax) member).AttributeLists);
-                                break;
+                                case SyntaxKind.ClassDeclaration:
+                                case SyntaxKind.StructDeclaration:
+                                case SyntaxKind.InterfaceDeclaration:
+                                case SyntaxKind.EnumDeclaration:
+                                case SyntaxKindEx.RecordDeclaration:
+                                        elements.AddRange(
+                                            ((BaseTypeDeclarationSyntax) member).AttributeLists);
+                                        break;
 
-                        case SyntaxKind.FieldDeclaration:
-                        case SyntaxKind.EventFieldDeclaration:
-                                elements.AddRange(
-                                    ((BaseFieldDeclarationSyntax) member).AttributeLists);
-                                break;
+                                case SyntaxKind.FieldDeclaration:
+                                case SyntaxKind.EventFieldDeclaration:
+                                        elements.AddRange(
+                                            ((BaseFieldDeclarationSyntax) member).AttributeLists);
+                                        break;
 
-                        case SyntaxKind.PropertyDeclaration:
-                        case SyntaxKind.EventDeclaration:
-                        case SyntaxKind.IndexerDeclaration:
-                                elements.AddRange(
-                                    ((BasePropertyDeclarationSyntax) member).AttributeLists);
-                                break;
+                                case SyntaxKind.PropertyDeclaration:
+                                case SyntaxKind.EventDeclaration:
+                                case SyntaxKind.IndexerDeclaration:
+                                        elements.AddRange(((BasePropertyDeclarationSyntax) member)
+                                                              .AttributeLists);
+                                        break;
 
-                        case SyntaxKind.MethodDeclaration:
-                        case SyntaxKind.ConstructorDeclaration:
-                        case SyntaxKind.DestructorDeclaration:
-                        case SyntaxKind.OperatorDeclaration:
-                        case SyntaxKind.ConversionOperatorDeclaration:
-                                elements.AddRange(
-                                    ((BaseMethodDeclarationSyntax) member).AttributeLists);
-                                break;
+                                case SyntaxKind.MethodDeclaration:
+                                case SyntaxKind.ConstructorDeclaration:
+                                case SyntaxKind.DestructorDeclaration:
+                                case SyntaxKind.OperatorDeclaration:
+                                case SyntaxKind.ConversionOperatorDeclaration:
+                                        elements.AddRange(
+                                            ((BaseMethodDeclarationSyntax) member).AttributeLists);
+                                        break;
 
-                        case SyntaxKind.GetAccessorDeclaration:
-                        case SyntaxKind.SetAccessorDeclaration:
-                        case SyntaxKind.AddAccessorDeclaration:
-                        case SyntaxKind.RemoveAccessorDeclaration:
-                        case SyntaxKind.UnknownAccessorDeclaration:
-                                elements.AddRange(
-                                    ((AccessorDeclarationSyntax) member).AttributeLists);
-                                break;
+                                case SyntaxKind.GetAccessorDeclaration:
+                                case SyntaxKind.SetAccessorDeclaration:
+                                case SyntaxKind.AddAccessorDeclaration:
+                                case SyntaxKind.RemoveAccessorDeclaration:
+                                case SyntaxKind.UnknownAccessorDeclaration:
+                                        elements.AddRange(
+                                            ((AccessorDeclarationSyntax) member).AttributeLists);
+                                        break;
 
-                        case SyntaxKind.TypeParameter:
-                                elements.AddRange(((TypeParameterSyntax) member).AttributeLists);
-                                break;
+                                case SyntaxKind.TypeParameter:
+                                        elements.AddRange(
+                                            ((TypeParameterSyntax) member).AttributeLists);
+                                        break;
 
-                        case SyntaxKind.Parameter:
-                                elements.AddRange(((ParameterSyntax) member).AttributeLists);
-                                break;
+                                case SyntaxKind.Parameter:
+                                        elements.AddRange(
+                                            ((ParameterSyntax) member).AttributeLists);
+                                        break;
 
-                        default:
-                                break;
+                                default:
+                                        break;
                         }
 
                         elements.Add(member);
@@ -521,8 +522,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
                 }
 
-                private static ImmutableList<T>
-                CleanupElementsList<T>(ImmutableList<T> elements) where T : SyntaxNode {
+                private static ImmutableList<T> CleanupElementsList<T>(
+                    ImmutableList<T> elements) where T : SyntaxNode {
                         return elements.RemoveAll(element => {
                                 SyntaxToken firstToken = GetFirstTokenForAnalysis(element);
                                 return firstToken.IsMissingOrDefault() ||
