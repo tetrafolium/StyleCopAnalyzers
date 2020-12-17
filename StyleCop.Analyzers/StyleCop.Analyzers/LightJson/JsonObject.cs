@@ -11,10 +11,8 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(JsonObjectDebugView))]
-internal sealed class JsonObject
-  : IEnumerable<KeyValuePair<string, JsonValue>>
-  , IEnumerable<JsonValue>
-{
+internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
+                                   IEnumerable<JsonValue> {
         private readonly IDictionary<string, JsonValue> properties;
 
         /// <summary>
@@ -163,8 +161,7 @@ internal sealed class JsonObject
         }
 
         [ExcludeFromCodeCoverage]
-        private class JsonObjectDebugView
-        {
+        private class JsonObjectDebugView {
                 private readonly JsonObject jsonObject;
 
                 public JsonObjectDebugView(JsonObject jsonObject) { this.jsonObject = jsonObject; }
@@ -186,11 +183,9 @@ internal sealed class JsonObject
                         }
                 }
 
-                [DebuggerDisplay("{value.ToString(),nq}",
-                                 Name = "{key}",
-                                 Type = "JsonValue({Type})")]
-                public class KeyValuePair
-                {
+                [DebuggerDisplay(
+                    "{value.ToString(),nq}", Name = "{key}", Type = "JsonValue({Type})")]
+                public class KeyValuePair {
 #pragma warning disable IDE0052 // Remove unread private members
                         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
                         private readonly string key;

@@ -6,13 +6,12 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         using System.Collections.Immutable;
         using LightJson;
 
-        internal class MaintainabilitySettings
-        {
+        internal class MaintainabilitySettings {
                 /// <summary>
                 /// The default value for the <see cref="TopLevelTypes"/> property.
                 /// </summary>
-                private static readonly ImmutableArray<TopLevelType> DefaultTopLevelTypes =
-                  ImmutableArray.Create(TopLevelType.Class);
+                private static readonly ImmutableArray<TopLevelType> DefaultTopLevelTypes
+                    = ImmutableArray.Create(TopLevelType.Class);
 
                 /// <summary>
                 /// This is the backing field for the <see cref="TopLevelTypes"/> property.
@@ -33,22 +32,22 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <param name="maintainabilitySettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal MaintainabilitySettings(JsonObject maintainabilitySettingsObject)
-                  : this()
+                    : this()
                 {
                         foreach (var kvp in maintainabilitySettingsObject) {
                                 switch (kvp.Key) {
-                                        case "topLevelTypes":
-                                                kvp.AssertIsArray();
-                                                foreach (var value in kvp.Value.AsJsonArray) {
-                                                        var typeKind =
-                                                          value.ToEnumValue<TopLevelType>(kvp.Key);
-                                                        this.topLevelTypes.Add(typeKind);
-                                                }
+                                case "topLevelTypes":
+                                        kvp.AssertIsArray();
+                                        foreach (var value in kvp.Value.AsJsonArray) {
+                                                var typeKind
+                                                    = value.ToEnumValue<TopLevelType>(kvp.Key);
+                                                this.topLevelTypes.Add(typeKind);
+                                        }
 
-                                                break;
+                                        break;
 
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
                         }
                 }
@@ -58,8 +57,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                         get
                         {
                                 return this.topLevelTypes.Count > 0
-                                         ? this.topLevelTypes.ToImmutable()
-                                         : DefaultTopLevelTypes;
+                                    ? this.topLevelTypes.ToImmutable()
+                                    : DefaultTopLevelTypes;
                         }
                 }
         }

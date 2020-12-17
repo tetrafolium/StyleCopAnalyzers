@@ -7,16 +7,15 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ICaughtExceptionOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.ICaughtExceptionOperation";
+        internal readonly struct ICaughtExceptionOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.ICaughtExceptionOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
                 static ICaughtExceptionOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(ICaughtExceptionOperationWrapper));
+                            typeof(ICaughtExceptionOperationWrapper));
                 }
 
                 private ICaughtExceptionOperationWrapper(IOperation operation)
@@ -34,7 +33,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new ICaughtExceptionOperationWrapper(operation);
@@ -42,8 +41,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

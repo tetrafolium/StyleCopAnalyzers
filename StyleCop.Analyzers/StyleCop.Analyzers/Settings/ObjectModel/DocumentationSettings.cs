@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         using System.Text.RegularExpressions;
         using LightJson;
 
-        internal class DocumentationSettings
-        {
+        internal class DocumentationSettings {
                 /// <summary>
                 /// The default value for the <see cref="CompanyName"/> property.
                 /// </summary>
@@ -18,8 +17,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <summary>
                 /// The default value for the <see cref="GetCopyrightText(string)"/> method.
                 /// </summary>
-                internal const string DefaultCopyrightText =
-                  "Copyright (c) {companyName}. All rights reserved.";
+                internal const string DefaultCopyrightText
+                    = "Copyright (c) {companyName}. All rights reserved.";
 
                 /// <summary>
                 /// The default value for the <see cref="DocumentationCulture"/> property.
@@ -29,8 +28,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <summary>
                 /// The default value for the <see cref="ExcludeFromPunctuationCheck"/> property.
                 /// </summary>
-                internal static readonly ImmutableArray<string> DefaultExcludeFromPunctuationCheck =
-                  ImmutableArray.Create("seealso");
+                internal static readonly ImmutableArray<string> DefaultExcludeFromPunctuationCheck
+                    = ImmutableArray.Create("seealso");
 
                 /// <summary>
                 /// This is the backing field for the <see cref="CompanyName"/> property.
@@ -137,86 +136,83 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <param name="documentationSettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal DocumentationSettings(JsonObject documentationSettingsObject)
-                  : this()
+                    : this()
                 {
                         foreach (var kvp in documentationSettingsObject) {
                                 switch (kvp.Key) {
-                                        case "documentExposedElements":
-                                                this.documentExposedElements = kvp.ToBooleanValue();
-                                                break;
+                                case "documentExposedElements":
+                                        this.documentExposedElements = kvp.ToBooleanValue();
+                                        break;
 
-                                        case "documentInternalElements":
-                                                this.documentInternalElements =
-                                                  kvp.ToBooleanValue();
-                                                break;
+                                case "documentInternalElements":
+                                        this.documentInternalElements = kvp.ToBooleanValue();
+                                        break;
 
-                                        case "documentPrivateElements":
-                                                this.documentPrivateElements = kvp.ToBooleanValue();
-                                                break;
+                                case "documentPrivateElements":
+                                        this.documentPrivateElements = kvp.ToBooleanValue();
+                                        break;
 
-                                        case "documentInterfaces":
-                                                this.documentInterfaces = kvp.ToBooleanValue();
-                                                break;
+                                case "documentInterfaces":
+                                        this.documentInterfaces = kvp.ToBooleanValue();
+                                        break;
 
-                                        case "documentPrivateFields":
-                                                this.documentPrivateFields = kvp.ToBooleanValue();
-                                                break;
+                                case "documentPrivateFields":
+                                        this.documentPrivateFields = kvp.ToBooleanValue();
+                                        break;
 
-                                        case "companyName":
-                                                this.companyName = kvp.ToStringValue();
-                                                break;
-                                        case "copyrightText":
-                                                this.copyrightText = kvp.ToStringValue();
-                                                break;
+                                case "companyName":
+                                        this.companyName = kvp.ToStringValue();
+                                        break;
+                                case "copyrightText":
+                                        this.copyrightText = kvp.ToStringValue();
+                                        break;
 
-                                        case "headerDecoration":
-                                                this.headerDecoration = kvp.ToStringValue();
-                                                break;
+                                case "headerDecoration":
+                                        this.headerDecoration = kvp.ToStringValue();
+                                        break;
 
-                                        case "variables":
-                                                kvp.AssertIsObject();
-                                                foreach (var child in kvp.Value.AsJsonObject) {
-                                                        string name = child.Key;
+                                case "variables":
+                                        kvp.AssertIsObject();
+                                        foreach (var child in kvp.Value.AsJsonObject) {
+                                                string name = child.Key;
 
-                                                        if (!Regex.IsMatch(name,
-                                                                           "^[a-zA-Z0-9]+$")) {
-                                                                continue;
-                                                        }
-
-                                                        string value = child.ToStringValue();
-
-                                                        this.variables.Add(name, value);
+                                                if (!Regex.IsMatch(name, "^[a-zA-Z0-9]+$")) {
+                                                        continue;
                                                 }
 
-                                                break;
+                                                string value = child.ToStringValue();
 
-                                        case "xmlHeader":
-                                                this.xmlHeader = kvp.ToBooleanValue();
-                                                break;
+                                                this.variables.Add(name, value);
+                                        }
 
-                                        case "fileNamingConvention":
-                                                this.fileNamingConvention =
-                                                  kvp.ToEnumValue<FileNamingConvention>();
-                                                break;
+                                        break;
 
-                                        case "documentationCulture":
-                                                this.documentationCulture = kvp.ToStringValue();
-                                                break;
+                                case "xmlHeader":
+                                        this.xmlHeader = kvp.ToBooleanValue();
+                                        break;
 
-                                        case "excludeFromPunctuationCheck":
-                                                kvp.AssertIsArray();
-                                                var excludedTags =
-                                                  ImmutableArray.CreateBuilder<string>();
-                                                foreach (var value in kvp.Value.AsJsonArray) {
-                                                        excludedTags.Add(value.AsString);
-                                                }
+                                case "fileNamingConvention":
+                                        this.fileNamingConvention
+                                            = kvp.ToEnumValue<FileNamingConvention>();
+                                        break;
 
-                                                this.excludeFromPunctuationCheck =
-                                                  excludedTags.ToImmutable();
-                                                break;
+                                case "documentationCulture":
+                                        this.documentationCulture = kvp.ToStringValue();
+                                        break;
 
-                                        default:
-                                                break;
+                                case "excludeFromPunctuationCheck":
+                                        kvp.AssertIsArray();
+                                        var excludedTags = ImmutableArray.CreateBuilder<string>();
+                                        foreach (var value in kvp.Value.AsJsonArray) {
+                                                excludedTags.Add(value.AsString);
+                                        }
+
+                                        this.excludeFromPunctuationCheck
+                                            = excludedTags.ToImmutable();
+                                        break;
+
+                                default:
+                                        break;
                                 }
                         }
                 }
@@ -255,8 +251,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 
                 public string DocumentationCulture => this.documentationCulture;
 
-                public ImmutableArray<string> ExcludeFromPunctuationCheck =>
-                  this.excludeFromPunctuationCheck;
+                public ImmutableArray<string>
+                    ExcludeFromPunctuationCheck => this.excludeFromPunctuationCheck;
 
                 public string GetCopyrightText(string fileName)
                 {
@@ -284,35 +280,35 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                         {
                                 string key = match.Groups["Property"].Value;
                                 switch (key) {
-                                        case "companyName":
-                                                return this.CompanyName;
+                                case "companyName":
+                                        return this.CompanyName;
 
-                                        case "copyrightText":
-                                                return "[CircularReference]";
+                                case "copyrightText":
+                                        return "[CircularReference]";
 
-                                        default:
-                                                string value;
-                                                if (this.Variables.TryGetValue(key, out value)) {
-                                                        return value;
-                                                }
+                                default:
+                                        string value;
+                                        if (this.Variables.TryGetValue(key, out value)) {
+                                                return value;
+                                        }
 
-                                                if (key == "fileName") {
-                                                        // The 'fileName' built-in variable is only
-                                                        // applied when the user did not include an
-                                                        // explicit value for a custom 'fileName'
-                                                        // variable.
-                                                        canCache = false;
-                                                        return fileName;
-                                                }
+                                        if (key == "fileName") {
+                                                // The 'fileName' built-in variable is only
+                                                // applied when the user did not include an
+                                                // explicit value for a custom 'fileName'
+                                                // variable.
+                                                canCache = false;
+                                                return fileName;
+                                        }
 
-                                                break;
+                                        break;
                                 }
 
                                 return "[InvalidReference]";
                         }
 
-                        string pattern =
-                          Regex.Escape("{") + "(?<Property>[a-zA-Z0-9]+)" + Regex.Escape("}");
+                        string pattern
+                            = Regex.Escape("{") + "(?<Property>[a-zA-Z0-9]+)" + Regex.Escape("}");
                         string expanded = Regex.Replace(this.copyrightText, pattern, Evaluator);
                         return new KeyValuePair<string, bool>(expanded, canCache);
                 }

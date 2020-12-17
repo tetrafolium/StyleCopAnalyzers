@@ -31,40 +31,32 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1122UseStringEmptyForEmptyStrings : DiagnosticAnalyzer
-        {
+        internal class SA1122UseStringEmptyForEmptyStrings : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1122UseStringEmptyForEmptyStrings"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1122";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1122.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1122Title),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1122MessageFormat),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1122Description),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1122.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1122Title),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(ReadabilityResources.SA1122MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1122Description),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.ReadabilityRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                  StringLiteralExpressionAction = HandleStringLiteralExpression;
+                    StringLiteralExpressionAction = HandleStringLiteralExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -76,14 +68,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(StringLiteralExpressionAction,
-                                                         SyntaxKind.StringLiteralExpression);
+                        context.RegisterSyntaxNodeAction(
+                            StringLiteralExpressionAction, SyntaxKind.StringLiteralExpression);
                 }
 
                 private static void HandleStringLiteralExpression(SyntaxNodeAnalysisContext context)
                 {
-                        LiteralExpressionSyntax literalExpression =
-                          (LiteralExpressionSyntax) context.Node;
+                        LiteralExpressionSyntax literalExpression
+                            = (LiteralExpressionSyntax) context.Node;
 
                         var token = literalExpression.Token;
                         if (token.IsKind(SyntaxKind.StringLiteralToken)) {
@@ -93,46 +85,47 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                                 if (token.ValueText == string.Empty) {
                                         context.ReportDiagnostic(Diagnostic.Create(
-                                          Descriptor, literalExpression.GetLocation()));
+                                            Descriptor, literalExpression.GetLocation()));
                                 }
                         }
                 }
 
                 private static bool HasToBeConstant(LiteralExpressionSyntax literalExpression)
                 {
-                        ExpressionSyntax outermostExpression =
-                          FindOutermostExpression(literalExpression);
+                        ExpressionSyntax outermostExpression
+                            = FindOutermostExpression(literalExpression);
 
-                        if (outermostExpression.Parent.IsKind(SyntaxKind.AttributeArgument) ||
-                            outermostExpression.Parent.IsKind(SyntaxKind.CaseSwitchLabel) ||
-                            outermostExpression.Parent.IsKind(SyntaxKindEx.ConstantPattern)) {
+                        if (outermostExpression.Parent.IsKind(SyntaxKind.AttributeArgument)
+                            || outermostExpression.Parent.IsKind(SyntaxKind.CaseSwitchLabel)
+                            || outermostExpression.Parent.IsKind(SyntaxKindEx.ConstantPattern)) {
                                 return true;
                         }
 
                         if (outermostExpression.Parent is EqualsValueClauseSyntax
-                              equalsValueClause) {
+                                equalsValueClause) {
                                 if (equalsValueClause.Parent is ParameterSyntax) {
                                         return true;
                                 }
 
                                 if (!(equalsValueClause.Parent is VariableDeclaratorSyntax
-                                        variableDeclaratorSyntax) ||
-                                    !(variableDeclaratorSyntax?.Parent is VariableDeclarationSyntax
-                                        variableDeclarationSyntax)) {
+                                            variableDeclaratorSyntax)
+                                    || !(variableDeclaratorSyntax?.Parent is
+                                             VariableDeclarationSyntax variableDeclarationSyntax)) {
                                         return false;
                                 }
 
                                 if (variableDeclarationSyntax.Parent is FieldDeclarationSyntax
-                                      fieldDeclarationSyntax &&
-                                    fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.ConstKeyword)) {
+                                        fieldDeclarationSyntax
+                                    && fieldDeclarationSyntax.Modifiers.Any(
+                                        SyntaxKind.ConstKeyword)) {
                                         return true;
                                 }
 
                                 if (variableDeclarationSyntax.Parent is
-                                      LocalDeclarationStatementSyntax
-                                        localDeclarationStatementSyntax &&
-                                    localDeclarationStatementSyntax.Modifiers.Any(
-                                      SyntaxKind.ConstKeyword)) {
+                                        LocalDeclarationStatementSyntax
+                                            localDeclarationStatementSyntax
+                                    && localDeclarationStatementSyntax.Modifiers.Any(
+                                        SyntaxKind.ConstKeyword)) {
                                         return true;
                                 }
                         }

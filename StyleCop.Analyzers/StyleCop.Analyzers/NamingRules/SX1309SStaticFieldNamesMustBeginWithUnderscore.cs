@@ -30,40 +30,31 @@ namespace StyleCop.Analyzers.NamingRules
         /// is placed within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SX1309SStaticFieldNamesMustBeginWithUnderscore : DiagnosticAnalyzer
-        {
+        internal class SX1309SStaticFieldNamesMustBeginWithUnderscore : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SX1309SStaticFieldNamesMustBeginWithUnderscore"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SX1309S";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1309S.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(NamingResources.SX1309STitle),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(NamingResources.SX1309SMessageFormat),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(NamingResources.SX1309SDescription),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1309S.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(NamingResources.SX1309STitle),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(NamingResources.SX1309SMessageFormat),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(NamingResources.SX1309SDescription),
+                        NamingResources.ResourceManager, typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.NamingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.DisabledAlternative,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.DisabledAlternative, Description, HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction =
-                  HandleFieldDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction
+                    = HandleFieldDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -75,8 +66,8 @@ namespace StyleCop.Analyzers.NamingRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(FieldDeclarationAction,
-                                                         SyntaxKind.FieldDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            FieldDeclarationAction, SyntaxKind.FieldDeclaration);
                 }
 
                 private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
@@ -85,24 +76,24 @@ namespace StyleCop.Analyzers.NamingRules
                         bool isStatic = false;
                         foreach (SyntaxToken token in syntax.Modifiers) {
                                 switch (token.Kind()) {
-                                        case SyntaxKind.StaticKeyword:
-                                                isStatic = true;
-                                                break;
+                                case SyntaxKind.StaticKeyword:
+                                        isStatic = true;
+                                        break;
 
-                                        case SyntaxKind.ReadOnlyKeyword:
-                                        case SyntaxKind.ConstKeyword:
-                                                // This analyzer only looks at static, non-const,
-                                                // non-readonly fields.
-                                                return;
+                                case SyntaxKind.ReadOnlyKeyword:
+                                case SyntaxKind.ConstKeyword:
+                                        // This analyzer only looks at static, non-const,
+                                        // non-readonly fields.
+                                        return;
 
-                                        case SyntaxKind.InternalKeyword:
-                                        case SyntaxKind.ProtectedKeyword:
-                                        case SyntaxKind.PublicKeyword:
-                                                // This analyzer only looks at private fields.
-                                                return;
+                                case SyntaxKind.InternalKeyword:
+                                case SyntaxKind.ProtectedKeyword:
+                                case SyntaxKind.PublicKeyword:
+                                        // This analyzer only looks at private fields.
+                                        return;
 
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
                         }
 
@@ -129,15 +120,15 @@ namespace StyleCop.Analyzers.NamingRules
                                         continue;
                                 }
 
-                                if (identifier.ValueText.StartsWith("_",
-                                                                    StringComparison.Ordinal)) {
+                                if (identifier.ValueText.StartsWith(
+                                        "_", StringComparison.Ordinal)) {
                                         continue;
                                 }
 
                                 // Static field '{name}' should begin with an underscore
                                 string name = identifier.ValueText;
                                 context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
+                                    Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
                         }
                 }
         }

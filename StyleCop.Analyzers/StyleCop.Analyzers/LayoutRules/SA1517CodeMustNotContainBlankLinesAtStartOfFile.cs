@@ -21,40 +21,31 @@ namespace StyleCop.Analyzers.LayoutRules
         /// the file.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1517CodeMustNotContainBlankLinesAtStartOfFile : DiagnosticAnalyzer
-        {
+        internal class SA1517CodeMustNotContainBlankLinesAtStartOfFile : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1517CodeMustNotContainBlankLinesAtStartOfFile"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1517";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1517.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1517Title),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1517MessageFormat),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1517Description),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1517.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1517Title),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1517MessageFormat),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1517Description),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.LayoutRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                  HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -83,30 +74,26 @@ namespace StyleCop.Analyzers.LayoutRules
                         if (firstToken.HasLeadingTrivia) {
                                 var leadingTrivia = firstToken.LeadingTrivia;
 
-                                var firstNonBlankLineTriviaIndex =
-                                  TriviaHelper.IndexOfFirstNonBlankLineTrivia(leadingTrivia);
+                                var firstNonBlankLineTriviaIndex
+                                    = TriviaHelper.IndexOfFirstNonBlankLineTrivia(leadingTrivia);
                                 switch (firstNonBlankLineTriviaIndex) {
-                                        case 0:
-                                                // no blank lines
-                                                break;
+                                case 0:
+                                        // no blank lines
+                                        break;
 
-                                        case -1:
-                                                // only blank lines
-                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                  Descriptor,
-                                                  Location.Create(context.Tree,
-                                                                  leadingTrivia.Span)));
-                                                break;
+                                case -1:
+                                        // only blank lines
+                                        context.ReportDiagnostic(Diagnostic.Create(Descriptor,
+                                            Location.Create(context.Tree, leadingTrivia.Span)));
+                                        break;
 
-                                        default:
-                                                var textSpan = TextSpan.FromBounds(
-                                                  leadingTrivia[0].Span.Start,
-                                                  leadingTrivia[firstNonBlankLineTriviaIndex]
-                                                    .Span.Start);
-                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                  Descriptor,
-                                                  Location.Create(context.Tree, textSpan)));
-                                                break;
+                                default:
+                                        var textSpan = TextSpan.FromBounds(
+                                            leadingTrivia[0].Span.Start,
+                                            leadingTrivia[firstNonBlankLineTriviaIndex].Span.Start);
+                                        context.ReportDiagnostic(Diagnostic.Create(
+                                            Descriptor, Location.Create(context.Tree, textSpan)));
+                                        break;
                                 }
                         }
                 }

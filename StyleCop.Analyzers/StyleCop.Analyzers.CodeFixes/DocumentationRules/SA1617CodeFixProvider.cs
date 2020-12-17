@@ -23,8 +23,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1617CodeFixProvider))]
         [Shared]
-        internal class SA1617CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1617CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
@@ -40,14 +39,14 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 if (!diagnostic.Properties.ContainsKey(
-                                      SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey)) {
+                                        SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey)) {
                                         context.RegisterCodeFix(
-                                          CodeAction.Create(
-                                            DocumentationResources.SA1617CodeFix,
-                                            cancellationToken => GetTransformedDocumentAsync(
-                                              context.Document, diagnostic, cancellationToken),
-                                            nameof(SA1617CodeFixProvider)),
-                                          diagnostic);
+                                            CodeAction.Create(DocumentationResources.SA1617CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync(
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof(SA1617CodeFixProvider)),
+                                            diagnostic);
                                 }
                         }
 
@@ -55,18 +54,16 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
-                                     .ConfigureAwait(false);
+                                       .ConfigureAwait(false);
                         var node = root.FindNode(diagnostic.Location.SourceSpan);
                         var documentation = node.GetDocumentationCommentTriviaSyntax();
 
                         // Check if the return value is documented
-                        var returnsElement =
-                          documentation.Content.GetFirstXmlElement(XmlCommentHelper.ReturnsXmlTag);
+                        var returnsElement = documentation.Content.GetFirstXmlElement(
+                            XmlCommentHelper.ReturnsXmlTag);
 
                         if (returnsElement == null) {
                                 return document;
@@ -87,13 +84,13 @@ namespace StyleCop.Analyzers.DocumentationRules
                         List<SyntaxNode> nodesToFix = new List<SyntaxNode>();
                         nodesToFix.Add(returnsElement);
 
-                        if (previous is XmlTextSyntax previousAsTextSyntax &&
-                            XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax)) {
+                        if (previous is XmlTextSyntax previousAsTextSyntax
+                            && XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax)) {
                                 nodesToFix.Add(previous);
                         }
 
-                        var newSyntaxRoot =
-                          root.RemoveNodes(nodesToFix, SyntaxRemoveOptions.KeepLeadingTrivia);
+                        var newSyntaxRoot
+                            = root.RemoveNodes(nodesToFix, SyntaxRemoveOptions.KeepLeadingTrivia);
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
         using LightJson;
 
-        internal class ReadabilitySettings
-        {
+        internal class ReadabilitySettings {
                 /// <summary>
                 /// This is the backing field for the <see cref="AllowBuiltInTypeAliases"/>
                 /// property.
@@ -24,16 +23,16 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <param name="readabilitySettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal ReadabilitySettings(JsonObject readabilitySettingsObject)
-                  : this()
+                    : this()
                 {
                         foreach (var kvp in readabilitySettingsObject) {
                                 switch (kvp.Key) {
-                                        case "allowBuiltInTypeAliases":
-                                                this.allowBuiltInTypeAliases = kvp.ToBooleanValue();
-                                                break;
+                                case "allowBuiltInTypeAliases":
+                                        this.allowBuiltInTypeAliases = kvp.ToBooleanValue();
+                                        break;
 
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
                         }
                 }

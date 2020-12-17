@@ -7,16 +7,15 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IVariableInitializerOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IVariableInitializerOperation";
+        internal readonly struct IVariableInitializerOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IVariableInitializerOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
                 static IVariableInitializerOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IVariableInitializerOperationWrapper));
+                            typeof(IVariableInitializerOperationWrapper));
                 }
 
                 private IVariableInitializerOperationWrapper(IOperation operation)
@@ -26,17 +25,18 @@ namespace StyleCop.Analyzers.Lightup
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public ImmutableArray<ILocalSymbol> Locals =>
-                  ((ISymbolInitializerOperationWrapper) this).Locals;
+                public ImmutableArray<ILocalSymbol>
+                    Locals =>((ISymbolInitializerOperationWrapper) this).Locals;
                 public IOperation Value =>((ISymbolInitializerOperationWrapper) this).Value;
                 public static explicit operator IVariableInitializerOperationWrapper(
-                  ISymbolInitializerOperationWrapper wrapper) =>
-                  FromOperation(wrapper.WrappedOperation);
+                    ISymbolInitializerOperationWrapper
+                        wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator ISymbolInitializerOperationWrapper(
-                  IVariableInitializerOperationWrapper wrapper) =>
-                  ISymbolInitializerOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+                    IVariableInitializerOperationWrapper
+                        wrapper) => ISymbolInitializerOperationWrapper
+                                        .FromUpcast(wrapper.WrappedOperation);
                 public static IVariableInitializerOperationWrapper FromOperation(
-                  IOperation operation)
+                    IOperation operation)
                 {
                         if (operation == null) {
                                 return default;
@@ -44,7 +44,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IVariableInitializerOperationWrapper(operation);
@@ -52,8 +52,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

@@ -11,16 +11,15 @@ namespace StyleCop.Analyzers.Helpers
 
         using StyleCop.Analyzers.Lightup;
 
-        internal static class NamedTypeHelpers
-        {
+        internal static class NamedTypeHelpers {
                 internal static bool IsNativeMethodsClass(INamedTypeSymbol type)
                 {
                         if (type == null || type.TypeKind != TypeKind.Class) {
                                 return false;
                         }
 
-                        if (type.Name != null &&
-                            type.Name.EndsWith("NativeMethods", StringComparison.Ordinal)) {
+                        if (type.Name != null
+                            && type.Name.EndsWith("NativeMethods", StringComparison.Ordinal)) {
                                 return true;
                         }
 
@@ -60,8 +59,8 @@ namespace StyleCop.Analyzers.Helpers
                 internal static bool IsContainedInNativeMethodsClass(SyntaxNode syntax)
                 {
                         while (syntax != null) {
-                                ClassDeclarationSyntax classDeclarationSyntax =
-                                  syntax.FirstAncestorOrSelf<ClassDeclarationSyntax>();
+                                ClassDeclarationSyntax classDeclarationSyntax
+                                    = syntax.FirstAncestorOrSelf<ClassDeclarationSyntax>();
                                 if (IsNativeMethodsClass(classDeclarationSyntax)) {
                                         return true;
                                 }
@@ -75,21 +74,21 @@ namespace StyleCop.Analyzers.Helpers
                 internal static string GetNameOrIdentifier(MemberDeclarationSyntax member)
                 {
                         switch (member.Kind()) {
-                                case SyntaxKind.ClassDeclaration:
-                                case SyntaxKind.InterfaceDeclaration:
-                                case SyntaxKind.StructDeclaration:
-                                case SyntaxKindEx.RecordDeclaration:
-                                        return ((TypeDeclarationSyntax) member).Identifier.Text;
+                        case SyntaxKind.ClassDeclaration:
+                        case SyntaxKind.InterfaceDeclaration:
+                        case SyntaxKind.StructDeclaration:
+                        case SyntaxKindEx.RecordDeclaration:
+                                return ((TypeDeclarationSyntax) member).Identifier.Text;
 
-                                case SyntaxKind.EnumDeclaration:
-                                        return ((EnumDeclarationSyntax) member).Identifier.Text;
+                        case SyntaxKind.EnumDeclaration:
+                                return ((EnumDeclarationSyntax) member).Identifier.Text;
 
-                                case SyntaxKind.DelegateDeclaration:
-                                        return ((DelegateDeclarationSyntax) member).Identifier.Text;
+                        case SyntaxKind.DelegateDeclaration:
+                                return ((DelegateDeclarationSyntax) member).Identifier.Text;
 
-                                default:
-                                        throw new ArgumentException("Unhandled declaration kind: " +
-                                                                    member.Kind());
+                        default:
+                                throw new ArgumentException(
+                                    "Unhandled declaration kind: " + member.Kind());
                         }
                 }
 
@@ -97,31 +96,31 @@ namespace StyleCop.Analyzers.Helpers
                 {
                         Location location = null;
                         location = location ??(member as PropertyDeclarationSyntax)
-                          ?.Identifier.GetLocation();
+                            ?.Identifier.GetLocation();
                         location = location ??(member as FieldDeclarationSyntax)
-                          ?.Declaration?.Variables.FirstOrDefault()
-                          ?.Identifier.GetLocation();
-                        location =
-                          location ??(member as MethodDeclarationSyntax) ?.Identifier.GetLocation();
+                            ?.Declaration?.Variables.FirstOrDefault()
+                            ?.Identifier.GetLocation();
+                        location = location ??(member as MethodDeclarationSyntax)
+                            ?.Identifier.GetLocation();
                         location = location ??(member as ConstructorDeclarationSyntax)
-                          ?.Identifier.GetLocation();
+                            ?.Identifier.GetLocation();
                         location = location ??(member as DestructorDeclarationSyntax)
-                          ?.Identifier.GetLocation();
+                            ?.Identifier.GetLocation();
                         location = location ??(member as BaseTypeDeclarationSyntax)
-                          ?.Identifier.GetLocation();
-                        location =
-                          location ??(member as NamespaceDeclarationSyntax) ?.Name.GetLocation();
+                            ?.Identifier.GetLocation();
+                        location
+                            = location ??(member as NamespaceDeclarationSyntax) ?.Name.GetLocation();
                         location = location ??(member as UsingDirectiveSyntax) ?.Name.GetLocation();
                         location = location ??(member as ExternAliasDirectiveSyntax)
-                          ?.Identifier.GetLocation();
-                        location =
-                          location ??(member as AccessorDeclarationSyntax) ?.Keyword.GetLocation();
+                            ?.Identifier.GetLocation();
+                        location = location ??(member as AccessorDeclarationSyntax)
+                            ?.Keyword.GetLocation();
                         location = location ??(member as DelegateDeclarationSyntax)
-                          ?.Identifier.GetLocation();
-                        location =
-                          location ??(member as EventDeclarationSyntax) ?.Identifier.GetLocation();
+                            ?.Identifier.GetLocation();
+                        location = location ??(member as EventDeclarationSyntax)
+                            ?.Identifier.GetLocation();
                         location = location ??(member as IndexerDeclarationSyntax)
-                          ?.ThisKeyword.GetLocation();
+                            ?.ThisKeyword.GetLocation();
                         location = location ?? member.GetLocation();
                         return location;
                 }
@@ -157,16 +156,16 @@ namespace StyleCop.Analyzers.Helpers
                         // Only methods, properties and events can implement an interface member
                         if (memberSymbol is IMethodSymbol methodSymbol) {
                                 // Check if the member is implementing an interface explicitly
-                                isImplementingExplicitly =
-                                  methodSymbol.ExplicitInterfaceImplementations.Any();
+                                isImplementingExplicitly
+                                    = methodSymbol.ExplicitInterfaceImplementations.Any();
                         } else if (memberSymbol is IPropertySymbol propertySymbol) {
                                 // Check if the member is implementing an interface explicitly
-                                isImplementingExplicitly =
-                                  propertySymbol.ExplicitInterfaceImplementations.Any();
+                                isImplementingExplicitly
+                                    = propertySymbol.ExplicitInterfaceImplementations.Any();
                         } else if (memberSymbol is IEventSymbol eventSymbol) {
                                 // Check if the member is implementing an interface explicitly
-                                isImplementingExplicitly =
-                                  eventSymbol.ExplicitInterfaceImplementations.Any();
+                                isImplementingExplicitly
+                                    = eventSymbol.ExplicitInterfaceImplementations.Any();
                         } else {
                                 return false;
                         }
@@ -177,15 +176,15 @@ namespace StyleCop.Analyzers.Helpers
 
                         var typeSymbol = memberSymbol.ContainingType;
 
-                        return typeSymbol != null &&
-                               typeSymbol.AllInterfaces
-                                 .SelectMany(m => m.GetMembers(memberSymbol.Name))
-                                 .Select(typeSymbol.FindImplementationForInterfaceMember)
-                                 .Any(x => memberSymbol.Equals(x));
+                        return typeSymbol != null
+                            && typeSymbol.AllInterfaces
+                                   .SelectMany(m => m.GetMembers(memberSymbol.Name))
+                                   .Select(typeSymbol.FindImplementationForInterfaceMember)
+                                   .Any(x => memberSymbol.Equals(x));
                 }
 
                 internal static INamedTypeSymbol TupleUnderlyingTypeOrSelf(
-                  this INamedTypeSymbol tupleSymbol) => tupleSymbol.TupleUnderlyingType()
-                  ?? tupleSymbol;
+                    this INamedTypeSymbol tupleSymbol) => tupleSymbol.TupleUnderlyingType()
+                    ?? tupleSymbol;
         }
 }

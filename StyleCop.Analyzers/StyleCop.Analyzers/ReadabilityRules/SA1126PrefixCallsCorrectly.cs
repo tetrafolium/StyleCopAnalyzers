@@ -24,40 +24,32 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoDiagnostic(
-          "Roslyn provides the ability to create well-defined rules for specific use cases, removing the need for this vaguely-worded diagnostic.")]
-        internal class SA1126PrefixCallsCorrectly : DiagnosticAnalyzer
-        {
+            "Roslyn provides the ability to create well-defined rules for specific use cases, removing the need for this vaguely-worded diagnostic.")]
+        internal class SA1126PrefixCallsCorrectly : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see cref="SA1126PrefixCallsCorrectly"/>
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1126";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1126.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1126Title),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1126MessageFormat),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1126Description),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1126.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1126Title),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(ReadabilityResources.SA1126MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1126Description),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS2000 // Add analyzer diagnostic IDs to analyzer release.
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.ReadabilityRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.DisabledByDefault,
-                                           Description,
-                                           HelpLink,
-                                           WellKnownDiagnosticTags.NotConfigurable);
+                    new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.DisabledByDefault, Description, HelpLink,
+                        WellKnownDiagnosticTags.NotConfigurable);
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
                 /// <inheritdoc/>
@@ -68,8 +60,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 [ExcludeFromCodeCoverage]
 #pragma warning disable RS1025 // Configure generated code analysis
 #pragma warning disable RS1026 // Enable concurrent execution
-                public override void
-                Initialize(AnalysisContext context)
+                public override void Initialize(AnalysisContext context)
 #pragma warning restore RS1026 // Enable concurrent execution
 #pragma warning restore RS1025 // Configure generated code analysis
                 {

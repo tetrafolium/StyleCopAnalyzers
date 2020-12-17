@@ -7,27 +7,24 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IArrayElementReferenceOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IArrayElementReferenceOperation";
+        internal readonly struct IArrayElementReferenceOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IArrayElementReferenceOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ArrayReferenceAccessor;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
-                  IndicesAccessor;
+                    IndicesAccessor;
                 private readonly IOperation operation;
                 static IArrayElementReferenceOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IArrayElementReferenceOperationWrapper));
-                        ArrayReferenceAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(ArrayReference));
-                        IndicesAccessor =
-                          LightupHelpers
-                            .CreateOperationPropertyAccessor<IOperation,
-                                                             ImmutableArray<IOperation>>(
-                              WrappedType, nameof(Indices));
+                            typeof(IArrayElementReferenceOperationWrapper));
+                        ArrayReferenceAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(ArrayReference));
+                        IndicesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            ImmutableArray<IOperation>>(WrappedType, nameof(Indices));
                 }
 
                 private IArrayElementReferenceOperationWrapper(IOperation operation)
@@ -40,7 +37,7 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation ArrayReference => ArrayReferenceAccessor(this.WrappedOperation);
                 public ImmutableArray<IOperation> Indices => IndicesAccessor(this.WrappedOperation);
                 public static IArrayElementReferenceOperationWrapper FromOperation(
-                  IOperation operation)
+                    IOperation operation)
                 {
                         if (operation == null) {
                                 return default;
@@ -48,7 +45,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IArrayElementReferenceOperationWrapper(operation);
@@ -56,8 +53,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

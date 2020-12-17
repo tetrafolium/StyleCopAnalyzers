@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class LanguageVersionEx
-        {
+        internal static class LanguageVersionEx {
                 public const LanguageVersion Default = 0;
                 public const LanguageVersion CSharp7 = (LanguageVersion) 7;
                 public const LanguageVersion CSharp7_1 = (LanguageVersion) 701;

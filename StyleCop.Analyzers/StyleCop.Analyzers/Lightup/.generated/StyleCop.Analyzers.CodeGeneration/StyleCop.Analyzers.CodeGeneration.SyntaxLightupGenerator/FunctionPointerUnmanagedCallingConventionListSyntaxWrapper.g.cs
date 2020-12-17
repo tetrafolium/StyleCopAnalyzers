@@ -10,67 +10,64 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct FunctionPointerUnmanagedCallingConventionListSyntaxWrapper
-          : ISyntaxWrapper<CSharpSyntaxNode>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerUnmanagedCallingConventionListSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerUnmanagedCallingConventionListSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken>
-                  OpenBracketTokenAccessor;
-                private static readonly
-                  Func<CSharpSyntaxNode,
-                       SeparatedSyntaxListWrapper<
-                         FunctionPointerUnmanagedCallingConventionSyntaxWrapper>>
+                    OpenBracketTokenAccessor;
+                private static readonly Func<CSharpSyntaxNode,
+                    SeparatedSyntaxListWrapper<
+                        FunctionPointerUnmanagedCallingConventionSyntaxWrapper>>
                     CallingConventionsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken>
-                  CloseBracketTokenAccessor;
+                    CloseBracketTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
-                  WithOpenBracketTokenAccessor;
-                private static readonly
-                  Func<CSharpSyntaxNode,
-                       SeparatedSyntaxListWrapper<
-                         FunctionPointerUnmanagedCallingConventionSyntaxWrapper>,
-                       CSharpSyntaxNode> WithCallingConventionsAccessor;
+                    WithOpenBracketTokenAccessor;
+                private static readonly Func<CSharpSyntaxNode,
+                    SeparatedSyntaxListWrapper<
+                        FunctionPointerUnmanagedCallingConventionSyntaxWrapper>,
+                    CSharpSyntaxNode> WithCallingConventionsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
-                  WithCloseBracketTokenAccessor;
+                    WithCloseBracketTokenAccessor;
 
                 private readonly CSharpSyntaxNode node;
 
                 static FunctionPointerUnmanagedCallingConventionListSyntaxWrapper()
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                          typeof(FunctionPointerUnmanagedCallingConventionListSyntaxWrapper));
-                        OpenBracketTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                              WrappedType, nameof(OpenBracketToken));
-                        CallingConventionsAccessor =
-                          LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<
-                            CSharpSyntaxNode,
-                            FunctionPointerUnmanagedCallingConventionSyntaxWrapper>(
-                            WrappedType, nameof(CallingConventions));
-                        CloseBracketTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                              WrappedType, nameof(CloseBracketToken));
-                        WithOpenBracketTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                              WrappedType, nameof(OpenBracketToken));
-                        WithCallingConventionsAccessor =
-                          LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
-                            CSharpSyntaxNode,
-                            FunctionPointerUnmanagedCallingConventionSyntaxWrapper>(
-                            WrappedType, nameof(CallingConventions));
-                        WithCloseBracketTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                              WrappedType, nameof(CloseBracketToken));
+                            typeof(FunctionPointerUnmanagedCallingConventionListSyntaxWrapper));
+                        OpenBracketTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                      WrappedType, nameof(OpenBracketToken));
+                        CallingConventionsAccessor
+                            = LightupHelpers
+                                  .CreateSeparatedSyntaxListPropertyAccessor<CSharpSyntaxNode,
+                                      FunctionPointerUnmanagedCallingConventionSyntaxWrapper>(
+                                      WrappedType, nameof(CallingConventions));
+                        CloseBracketTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                      WrappedType, nameof(CloseBracketToken));
+                        WithOpenBracketTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                      WrappedType, nameof(OpenBracketToken));
+                        WithCallingConventionsAccessor
+                            = LightupHelpers
+                                  .CreateSeparatedSyntaxListWithPropertyAccessor<CSharpSyntaxNode,
+                                      FunctionPointerUnmanagedCallingConventionSyntaxWrapper>(
+                                      WrappedType, nameof(CallingConventions));
+                        WithCloseBracketTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                      WrappedType, nameof(CloseBracketToken));
                 }
 
                 private FunctionPointerUnmanagedCallingConventionListSyntaxWrapper(
-                  CSharpSyntaxNode node)
+                    CSharpSyntaxNode node)
                 {
                         this.node = node;
                 }
@@ -83,7 +80,7 @@ namespace StyleCop.Analyzers.Lightup
                 }
 
                 public SeparatedSyntaxListWrapper<
-                  FunctionPointerUnmanagedCallingConventionSyntaxWrapper> CallingConventions
+                    FunctionPointerUnmanagedCallingConventionSyntaxWrapper> CallingConventions
                 {
                         get { return CallingConventionsAccessor(this.SyntaxNode); }
                 }
@@ -102,15 +99,15 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new FunctionPointerUnmanagedCallingConventionListSyntaxWrapper(
-                          (CSharpSyntaxNode) node);
+                            (CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator CSharpSyntaxNode(
-                  FunctionPointerUnmanagedCallingConventionListSyntaxWrapper wrapper)
+                    FunctionPointerUnmanagedCallingConventionListSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
@@ -124,23 +121,22 @@ namespace StyleCop.Analyzers.Lightup
                 WithOpenBracketToken(SyntaxToken openBracketToken)
                 {
                         return new FunctionPointerUnmanagedCallingConventionListSyntaxWrapper(
-                          WithOpenBracketTokenAccessor(this.SyntaxNode, openBracketToken));
+                            WithOpenBracketTokenAccessor(this.SyntaxNode, openBracketToken));
                 }
 
                 public FunctionPointerUnmanagedCallingConventionListSyntaxWrapper
-                WithCallingConventions(
-                  SeparatedSyntaxListWrapper<FunctionPointerUnmanagedCallingConventionSyntaxWrapper>
-                    callingConventions)
+                WithCallingConventions(SeparatedSyntaxListWrapper<
+                    FunctionPointerUnmanagedCallingConventionSyntaxWrapper> callingConventions)
                 {
                         return new FunctionPointerUnmanagedCallingConventionListSyntaxWrapper(
-                          WithCallingConventionsAccessor(this.SyntaxNode, callingConventions));
+                            WithCallingConventionsAccessor(this.SyntaxNode, callingConventions));
                 }
 
                 public FunctionPointerUnmanagedCallingConventionListSyntaxWrapper
                 WithCloseBracketToken(SyntaxToken closeBracketToken)
                 {
                         return new FunctionPointerUnmanagedCallingConventionListSyntaxWrapper(
-                          WithCloseBracketTokenAccessor(this.SyntaxNode, closeBracketToken));
+                            WithCloseBracketTokenAccessor(this.SyntaxNode, closeBracketToken));
                 }
         }
 }

@@ -7,16 +7,15 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ILiteralOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.ILiteralOperation";
+        internal readonly struct ILiteralOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.ILiteralOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
                 static ILiteralOperationWrapper()
                 {
-                        WrappedType =
-                          OperationWrapperHelper.GetWrappedType(typeof(ILiteralOperationWrapper));
+                        WrappedType = OperationWrapperHelper.GetWrappedType(
+                            typeof(ILiteralOperationWrapper));
                 }
 
                 private ILiteralOperationWrapper(IOperation operation)
@@ -34,7 +33,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new ILiteralOperationWrapper(operation);
@@ -42,8 +41,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

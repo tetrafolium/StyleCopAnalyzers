@@ -30,41 +30,33 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// same file.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1402FileMayOnlyContainASingleType : DiagnosticAnalyzer
-        {
+        internal class SA1402FileMayOnlyContainASingleType : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1402FileMayOnlyContainASingleType"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1402";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1402.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1402Title),
-                                                MaintainabilityResources.ResourceManager,
-                                                typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1402MessageFormat),
-                    MaintainabilityResources.ResourceManager,
-                    typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1402Description),
-                                                MaintainabilityResources.ResourceManager,
-                                                typeof(MaintainabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1402.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(MaintainabilityResources.SA1402Title),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(MaintainabilityResources.SA1402MessageFormat),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(
+                        nameof(MaintainabilityResources.SA1402Description),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.MaintainabilityRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings>
-                  SyntaxTreeAction = HandleSyntaxTree;
+                    SyntaxTreeAction = HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -79,65 +71,64 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context,
-                                                     StyleCopSettings settings)
+                private static void HandleSyntaxTree(
+                    SyntaxTreeAnalysisContext context, StyleCopSettings settings)
                 {
                         var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
 
                         var typeNodes = GetTopLevelTypeDeclarations(syntaxRoot, settings);
 
                         string suffix;
-                        var fileName =
-                          FileNameHelpers.GetFileNameAndSuffix(context.Tree.FilePath, out suffix);
+                        var fileName = FileNameHelpers.GetFileNameAndSuffix(
+                            context.Tree.FilePath, out suffix);
                         var preferredTypeNode = typeNodes.FirstOrDefault(
-                          n => FileNameHelpers.GetConventionalFileName(
-                                 n, settings.DocumentationRules.FileNamingConvention) == fileName)
-                          ?? typeNodes.FirstOrDefault();
+                            n => FileNameHelpers.GetConventionalFileName(
+                                     n, settings.DocumentationRules.FileNamingConvention)
+                                == fileName)
+                            ?? typeNodes.FirstOrDefault();
 
                         if (preferredTypeNode == null) {
                                 return;
                         }
 
                         var foundTypeName = NamedTypeHelpers.GetNameOrIdentifier(preferredTypeNode);
-                        var isPartialType =
-                          NamedTypeHelpers.IsPartialDeclaration(preferredTypeNode);
+                        var isPartialType
+                            = NamedTypeHelpers.IsPartialDeclaration(preferredTypeNode);
 
                         foreach (var typeNode in typeNodes) {
-                                if (typeNode == preferredTypeNode ||
-                                    (isPartialType &&
-                                     foundTypeName ==
-                                       NamedTypeHelpers.GetNameOrIdentifier(typeNode))) {
+                                if (typeNode == preferredTypeNode
+                                    || (isPartialType
+                                        && foundTypeName
+                                            == NamedTypeHelpers.GetNameOrIdentifier(typeNode))) {
                                         continue;
                                 }
 
-                                var location =
-                                  NamedTypeHelpers.GetNameOrIdentifierLocation(typeNode);
+                                var location
+                                    = NamedTypeHelpers.GetNameOrIdentifierLocation(typeNode);
                                 if (location != null) {
                                         context.ReportDiagnostic(
-                                          Diagnostic.Create(Descriptor, location));
+                                            Diagnostic.Create(Descriptor, location));
                                 }
                         }
                 }
 
                 private static IEnumerable<MemberDeclarationSyntax> GetTopLevelTypeDeclarations(
-                  SyntaxNode root,
-                  StyleCopSettings settings)
+                    SyntaxNode root, StyleCopSettings settings)
                 {
-                        var allTypeDeclarations =
-                          root
-                            .DescendantNodes(descendIntoChildren
-                                             : node => ContainsTopLevelTypeDeclarations(node))
-                            .OfType<MemberDeclarationSyntax>()
-                            .ToList();
-                        var relevantTypeDeclarations =
-                          allTypeDeclarations.Where(x => IsRelevantType(x, settings)).ToList();
+                        var allTypeDeclarations
+                            = root.DescendantNodes(descendIntoChildren
+                                                   : node => ContainsTopLevelTypeDeclarations(node))
+                                  .OfType<MemberDeclarationSyntax>()
+                                  .ToList();
+                        var relevantTypeDeclarations
+                            = allTypeDeclarations.Where(x => IsRelevantType(x, settings)).ToList();
                         return relevantTypeDeclarations;
                 }
 
                 private static bool ContainsTopLevelTypeDeclarations(SyntaxNode node)
                 {
-                        return node.IsKind(SyntaxKind.CompilationUnit) ||
-                               node.IsKind(SyntaxKind.NamespaceDeclaration);
+                        return node.IsKind(SyntaxKind.CompilationUnit)
+                            || node.IsKind(SyntaxKind.NamespaceDeclaration);
                 }
 
                 private static bool IsRelevantType(SyntaxNode node, StyleCopSettings settings)
@@ -146,21 +137,21 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         var isRelevant = false;
 
                         switch (node.Kind()) {
-                                case SyntaxKind.ClassDeclaration:
-                                        isRelevant = topLevelTypes.Contains(TopLevelType.Class);
-                                        break;
-                                case SyntaxKind.InterfaceDeclaration:
-                                        isRelevant = topLevelTypes.Contains(TopLevelType.Interface);
-                                        break;
-                                case SyntaxKind.StructDeclaration:
-                                        isRelevant = topLevelTypes.Contains(TopLevelType.Struct);
-                                        break;
-                                case SyntaxKind.EnumDeclaration:
-                                        isRelevant = topLevelTypes.Contains(TopLevelType.Enum);
-                                        break;
-                                case SyntaxKind.DelegateDeclaration:
-                                        isRelevant = topLevelTypes.Contains(TopLevelType.Delegate);
-                                        break;
+                        case SyntaxKind.ClassDeclaration:
+                                isRelevant = topLevelTypes.Contains(TopLevelType.Class);
+                                break;
+                        case SyntaxKind.InterfaceDeclaration:
+                                isRelevant = topLevelTypes.Contains(TopLevelType.Interface);
+                                break;
+                        case SyntaxKind.StructDeclaration:
+                                isRelevant = topLevelTypes.Contains(TopLevelType.Struct);
+                                break;
+                        case SyntaxKind.EnumDeclaration:
+                                isRelevant = topLevelTypes.Contains(TopLevelType.Enum);
+                                break;
+                        case SyntaxKind.DelegateDeclaration:
+                                isRelevant = topLevelTypes.Contains(TopLevelType.Delegate);
+                                break;
                         }
 
                         return isRelevant;

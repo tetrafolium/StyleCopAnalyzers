@@ -22,12 +22,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRegionCodeFixProvider))]
         [Shared]
-        internal class RemoveRegionCodeFixProvider : CodeFixProvider
-        {
+        internal class RemoveRegionCodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1123DoNotPlaceRegionsWithinElements.DiagnosticId,
-                                        SA1124DoNotUseRegions.DiagnosticId);
+                    SA1124DoNotUseRegions.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -42,32 +41,30 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    ReadabilityResources.RemoveRegionCodeFix,
-                                    cancellationToken =>
-                                      GetTransformedDocumentAsync(context.Document, diagnostic),
-                                    nameof(RemoveRegionCodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(ReadabilityResources.RemoveRegionCodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic),
+                                        nameof(RemoveRegionCodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic)
+                    Document document, Diagnostic diagnostic)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
-                        var node =
-                          syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
-                                               : true, getInnermostNodeForTie
-                                               : true);
+                        var node
+                            = syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                                   : true, getInnermostNodeForTie
+                                                   : true);
                         if (node != null && node.IsKind(SyntaxKind.RegionDirectiveTrivia)) {
                                 var regionDirective = node as RegionDirectiveTriviaSyntax;
 
-                                var newSyntaxRoot =
-                                  syntaxRoot.RemoveNodes(regionDirective.GetRelatedDirectives(),
-                                                         SyntaxRemoveOptions.AddElasticMarker);
+                                var newSyntaxRoot
+                                    = syntaxRoot.RemoveNodes(regionDirective.GetRelatedDirectives(),
+                                        SyntaxRemoveOptions.AddElasticMarker);
 
                                 return document.WithSyntaxRoot(newSyntaxRoot);
                         }

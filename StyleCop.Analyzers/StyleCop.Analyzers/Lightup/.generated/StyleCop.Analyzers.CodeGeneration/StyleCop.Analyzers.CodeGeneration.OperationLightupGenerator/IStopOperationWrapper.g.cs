@@ -7,16 +7,15 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IStopOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IStopOperation";
+        internal readonly struct IStopOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IStopOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
                 static IStopOperationWrapper()
                 {
-                        WrappedType =
-                          OperationWrapperHelper.GetWrappedType(typeof(IStopOperationWrapper));
+                        WrappedType
+                            = OperationWrapperHelper.GetWrappedType(typeof(IStopOperationWrapper));
                 }
 
                 private IStopOperationWrapper(IOperation operation) { this.operation = operation; }
@@ -31,7 +30,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IStopOperationWrapper(operation);
@@ -39,8 +38,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

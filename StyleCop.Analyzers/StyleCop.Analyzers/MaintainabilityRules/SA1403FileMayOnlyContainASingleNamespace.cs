@@ -19,41 +19,33 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// one namespace.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1403FileMayOnlyContainASingleNamespace : DiagnosticAnalyzer
-        {
+        internal class SA1403FileMayOnlyContainASingleNamespace : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1403FileMayOnlyContainASingleNamespace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1403";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1403.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1403Title),
-                                                MaintainabilityResources.ResourceManager,
-                                                typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1403MessageFormat),
-                    MaintainabilityResources.ResourceManager,
-                    typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1403Description),
-                                                MaintainabilityResources.ResourceManager,
-                                                typeof(MaintainabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1403.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(MaintainabilityResources.SA1403Title),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(MaintainabilityResources.SA1403MessageFormat),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(
+                        nameof(MaintainabilityResources.SA1403Description),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.MaintainabilityRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                  HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -73,20 +65,20 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
 
                         var descentNodes = syntaxRoot.DescendantNodes(
-                          descendIntoChildren
-                          : node => node != null && !node.IsKind(SyntaxKind.ClassDeclaration));
+                            descendIntoChildren
+                            : node => node != null && !node.IsKind(SyntaxKind.ClassDeclaration));
 
                         bool foundNode = false;
 
                         foreach (var node in descentNodes) {
                                 if (node.IsKind(SyntaxKind.NamespaceDeclaration)) {
                                         if (foundNode) {
-                                                var location =
-                                                  NamedTypeHelpers.GetNameOrIdentifierLocation(
-                                                    node);
+                                                var location
+                                                    = NamedTypeHelpers.GetNameOrIdentifierLocation(
+                                                        node);
                                                 if (location != null) {
-                                                        context.ReportDiagnostic(
-                                                          Diagnostic.Create(Descriptor, location));
+                                                        context.ReportDiagnostic(Diagnostic.Create(
+                                                            Descriptor, location));
                                                 }
                                         } else {
                                                 foundNode = true;

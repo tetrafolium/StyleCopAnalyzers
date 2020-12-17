@@ -19,15 +19,14 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// cref="SA1643DestructorSummaryDocumentationMustBeginWithStandardText"/> to share common
         /// code.
         /// </summary>
-        internal abstract class StandardTextDiagnosticBase : DiagnosticAnalyzer
-        {
+        internal abstract class StandardTextDiagnosticBase : DiagnosticAnalyzer {
                 /// <summary>
                 /// The key used for signalling that no codefix should be offered.
                 /// </summary>
                 internal const string NoCodeFixKey = "NoCodeFix";
 
-                private static readonly ImmutableDictionary<string, string> NoCodeFixProperties =
-                  ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
+                private static readonly ImmutableDictionary<string, string> NoCodeFixProperties
+                    = ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
 
                 /// <summary>
                 /// Describes the result of matching a summary element to a specific desired
@@ -68,15 +67,13 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// violations, or <see langword="null"/> to not report violations.</param>
                 /// <returns>A <see cref="MatchResult"/> describing the result of the
                 /// analysis.</returns>
-                protected static MatchResult HandleDeclaration(
-                  SyntaxNodeAnalysisContext context,
-                  string firstTextPart,
-                  string secondTextPart,
-                  DiagnosticDescriptor diagnosticDescriptor)
+                protected static MatchResult HandleDeclaration(SyntaxNodeAnalysisContext context,
+                    string firstTextPart, string secondTextPart,
+                    DiagnosticDescriptor diagnosticDescriptor)
                 {
                         var declarationSyntax = (BaseMethodDeclarationSyntax) context.Node;
-                        var documentationStructure =
-                          declarationSyntax.GetDocumentationCommentTriviaSyntax();
+                        var documentationStructure
+                            = declarationSyntax.GetDocumentationCommentTriviaSyntax();
                         if (documentationStructure == null) {
                                 return MatchResult.Unknown;
                         }
@@ -85,43 +82,42 @@ namespace StyleCop.Analyzers.DocumentationRules
                         ImmutableDictionary<string, string> diagnosticProperties;
 
                         if (documentationStructure.Content.GetFirstXmlElement(
-                              XmlCommentHelper.IncludeXmlTag)
-                              is XmlEmptyElementSyntax includeElement) {
+                                XmlCommentHelper.IncludeXmlTag)
+                                is XmlEmptyElementSyntax includeElement) {
                                 diagnosticLocation = includeElement.GetLocation();
                                 diagnosticProperties = NoCodeFixProperties;
 
                                 var declaration = context.SemanticModel.GetDeclaredSymbol(
-                                  declarationSyntax, context.CancellationToken);
+                                    declarationSyntax, context.CancellationToken);
                                 if (declaration == null) {
                                         return MatchResult.Unknown;
                                 }
 
                                 var rawDocumentation = declaration.GetDocumentationCommentXml(
-                                  expandIncludes
-                                  : true, cancellationToken
-                                  : context.CancellationToken);
-                                var completeDocumentation =
-                                  XElement.Parse(rawDocumentation, LoadOptions.None);
+                                    expandIncludes
+                                    : true, cancellationToken
+                                    : context.CancellationToken);
+                                var completeDocumentation
+                                    = XElement.Parse(rawDocumentation, LoadOptions.None);
 
-                                var summaryElement =
-                                  completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
-                                    element => element.Name == XmlCommentHelper.SummaryXmlTag);
+                                var summaryElement = completeDocumentation.Nodes()
+                                                         .OfType<XElement>()
+                                                         .FirstOrDefault(element => element.Name
+                                                                 == XmlCommentHelper.SummaryXmlTag);
                                 if (summaryElement == null) {
                                         return MatchResult.Unknown;
                                 }
 
                                 var summaryNodes = summaryElement.Nodes().ToList();
                                 if (summaryNodes.Count >= 3) {
-                                        if (summaryNodes[0] is XText firstTextPartNode &&
-                                            summaryNodes[1] is XElement classReferencePart &&
-                                            summaryNodes[2] is XText secondTextPartNode) {
-                                                if (TextPartsMatch(firstTextPart,
-                                                                   secondTextPart,
-                                                                   firstTextPartNode,
-                                                                   secondTextPartNode)) {
+                                        if (summaryNodes[0] is XText firstTextPartNode
+                                            && summaryNodes[1] is XElement classReferencePart
+                                            && summaryNodes[2] is XText secondTextPartNode) {
+                                                if (TextPartsMatch(firstTextPart, secondTextPart,
+                                                        firstTextPartNode, secondTextPartNode)) {
                                                         if (SeeTagIsCorrect(context,
-                                                                            classReferencePart,
-                                                                            declarationSyntax)) {
+                                                                classReferencePart,
+                                                                declarationSyntax)) {
                                                                 // We found a correct standard text
                                                                 return MatchResult.FoundMatch;
                                                         }
@@ -130,8 +126,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                                 }
                         } else {
                                 if (!(documentationStructure.Content.GetFirstXmlElement(
-                                      XmlCommentHelper.SummaryXmlTag)
-                                        is XmlElementSyntax summaryElement)) {
+                                        XmlCommentHelper.SummaryXmlTag)
+                                            is XmlElementSyntax summaryElement)) {
                                         return MatchResult.Unknown;
                                 }
 
@@ -142,46 +138,44 @@ namespace StyleCop.Analyzers.DocumentationRules
                                 if (summaryElement.Content.Count >= 3) {
                                         // Standard text has the form <part1><see><part2>
                                         if (summaryElement.Content[0] is XmlTextSyntax
-                                              firstTextPartSyntax &&
-                                            summaryElement.Content[1] is XmlEmptyElementSyntax
-                                              classReferencePart &&
-                                            summaryElement.Content[2] is XmlTextSyntax
-                                              secondTextPartSyntax) {
-                                                if (TextPartsMatch(firstTextPart,
-                                                                   secondTextPart,
-                                                                   firstTextPartSyntax,
-                                                                   secondTextPartSyntax)) {
+                                                firstTextPartSyntax
+                                            && summaryElement.Content[1] is XmlEmptyElementSyntax
+                                                   classReferencePart
+                                            && summaryElement.Content[2] is XmlTextSyntax
+                                                   secondTextPartSyntax) {
+                                                if (TextPartsMatch(firstTextPart, secondTextPart,
+                                                        firstTextPartSyntax,
+                                                        secondTextPartSyntax)) {
                                                         if (SeeTagIsCorrect(context,
-                                                                            classReferencePart,
-                                                                            declarationSyntax)) {
+                                                                classReferencePart,
+                                                                declarationSyntax)) {
                                                                 // We found a correct standard text
                                                                 return MatchResult.FoundMatch;
                                                         }
 
-                                                        diagnosticLocation =
-                                                          classReferencePart.GetLocation();
+                                                        diagnosticLocation
+                                                            = classReferencePart.GetLocation();
                                                 }
                                         }
                                 }
                         }
 
                         if (diagnosticDescriptor != null) {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                  diagnosticDescriptor, diagnosticLocation, diagnosticProperties));
+                                context.ReportDiagnostic(Diagnostic.Create(diagnosticDescriptor,
+                                    diagnosticLocation, diagnosticProperties));
                         }
 
                         // TODO: be more specific about the type of error when possible
                         return MatchResult.None;
                 }
 
-                private static bool SeeTagIsCorrect(
-                  SyntaxNodeAnalysisContext context,
-                  XmlEmptyElementSyntax classReferencePart,
-                  BaseMethodDeclarationSyntax constructorDeclarationSyntax)
+                private static bool SeeTagIsCorrect(SyntaxNodeAnalysisContext context,
+                    XmlEmptyElementSyntax classReferencePart,
+                    BaseMethodDeclarationSyntax constructorDeclarationSyntax)
                 {
-                        XmlCrefAttributeSyntax crefAttribute =
-                          XmlCommentHelper.GetFirstAttributeOrDefault<XmlCrefAttributeSyntax>(
-                            classReferencePart);
+                        XmlCrefAttributeSyntax crefAttribute
+                            = XmlCommentHelper.GetFirstAttributeOrDefault<XmlCrefAttributeSyntax>(
+                                classReferencePart);
                         CrefSyntax crefSyntax = crefAttribute?.Cref;
                         if (crefAttribute == null) {
                                 return false;
@@ -189,23 +183,22 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                         SemanticModel semanticModel = context.SemanticModel;
                         if (!(semanticModel.GetSymbolInfo(crefSyntax, context.CancellationToken)
-                                .Symbol is INamedTypeSymbol actualSymbol)) {
+                                    .Symbol is INamedTypeSymbol actualSymbol)) {
                                 return false;
                         }
 
                         INamedTypeSymbol expectedSymbol = semanticModel.GetDeclaredSymbol(
-                          constructorDeclarationSyntax.Parent, context.CancellationToken)
-                                                            as INamedTypeSymbol;
+                            constructorDeclarationSyntax.Parent, context.CancellationToken)
+                                                              as INamedTypeSymbol;
                         return Equals(actualSymbol.OriginalDefinition, expectedSymbol);
                 }
 
-                private static bool SeeTagIsCorrect(
-                  SyntaxNodeAnalysisContext context,
-                  XElement classReferencePart,
-                  BaseMethodDeclarationSyntax constructorDeclarationSyntax)
+                private static bool SeeTagIsCorrect(SyntaxNodeAnalysisContext context,
+                    XElement classReferencePart,
+                    BaseMethodDeclarationSyntax constructorDeclarationSyntax)
                 {
-                        var crefAttribute =
-                          classReferencePart.Attribute(XmlCommentHelper.CrefArgumentName);
+                        var crefAttribute
+                            = classReferencePart.Attribute(XmlCommentHelper.CrefArgumentName);
                         if (crefAttribute == null) {
                                 return false;
                         }
@@ -214,8 +207,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                         SemanticModel semanticModel = context.SemanticModel;
                         var foundSymbols = semanticModel.LookupNamespacesAndTypes(
-                          constructorDeclarationSyntax.SpanStart, name
-                          : typeName);
+                            constructorDeclarationSyntax.SpanStart, name
+                            : typeName);
                         if (foundSymbols.Length != 1) {
                                 return false;
                         }
@@ -225,37 +218,33 @@ namespace StyleCop.Analyzers.DocumentationRules
                         }
 
                         INamedTypeSymbol expectedSymbol = semanticModel.GetDeclaredSymbol(
-                          constructorDeclarationSyntax.Parent, context.CancellationToken)
-                                                            as INamedTypeSymbol;
+                            constructorDeclarationSyntax.Parent, context.CancellationToken)
+                                                              as INamedTypeSymbol;
                         return Equals(actualSymbol.OriginalDefinition, expectedSymbol);
                 }
 
-                private static bool TextPartsMatch(string firstText,
-                                                   string secondText,
-                                                   XmlTextSyntax firstTextPart,
-                                                   XmlTextSyntax secondTextPart)
+                private static bool TextPartsMatch(string firstText, string secondText,
+                    XmlTextSyntax firstTextPart, XmlTextSyntax secondTextPart)
                 {
-                        string firstTextPartText =
-                          XmlCommentHelper.GetText(firstTextPart, normalizeWhitespace
-                                                   : true);
+                        string firstTextPartText
+                            = XmlCommentHelper.GetText(firstTextPart, normalizeWhitespace
+                                                       : true);
                         if (firstText != firstTextPartText.TrimStart()) {
                                 return false;
                         }
 
-                        string secondTextPartText =
-                          XmlCommentHelper.GetText(secondTextPart, normalizeWhitespace
-                                                   : true);
+                        string secondTextPartText
+                            = XmlCommentHelper.GetText(secondTextPart, normalizeWhitespace
+                                                       : true);
                         return secondTextPartText.StartsWith(secondText, StringComparison.Ordinal);
                 }
 
-                private static bool TextPartsMatch(string firstText,
-                                                   string secondText,
-                                                   XText firstTextPart,
-                                                   XText secondTextPart)
+                private static bool TextPartsMatch(
+                    string firstText, string secondText, XText firstTextPart, XText secondTextPart)
                 {
                         string firstTextPartText = firstTextPart.Value.TrimStart();
                         if (!string.Equals(
-                              firstText, firstTextPartText, StringComparison.Ordinal)) {
+                                firstText, firstTextPartText, StringComparison.Ordinal)) {
                                 return false;
                         }
 

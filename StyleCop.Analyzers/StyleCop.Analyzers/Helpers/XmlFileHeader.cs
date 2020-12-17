@@ -12,8 +12,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Class containing the parsed file header information.
         /// </summary>
-        internal class XmlFileHeader
-        {
+        internal class XmlFileHeader {
                 private readonly XElement headerXml;
                 private readonly int fileHeaderStart;
                 private readonly int fileHeaderEnd;
@@ -36,7 +35,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// Prevents a default instance of the <see cref="XmlFileHeader"/> class from being
                 /// created.
                 /// </summary>
-                private XmlFileHeader() {}
+                private XmlFileHeader() { }
 
                 /// <summary>
                 /// Gets a <see cref="XmlFileHeader"/> instance representing a missing file header.
@@ -93,7 +92,7 @@ namespace StyleCop.Analyzers.Helpers
                 internal XElement GetElement(string tagName)
                 {
                         return this.headerXml.Descendants().FirstOrDefault(
-                          e => e.Name.LocalName.Equals(tagName, StringComparison.Ordinal));
+                            e => e.Name.LocalName.Equals(tagName, StringComparison.Ordinal));
                 }
 
                 /// <summary>
@@ -108,9 +107,8 @@ namespace StyleCop.Analyzers.Helpers
                                 return Location.Create(syntaxTree, new TextSpan(0, 0));
                         }
 
-                        return Location.Create(
-                          syntaxTree,
-                          TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderStart + 2));
+                        return Location.Create(syntaxTree,
+                            TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderStart + 2));
                 }
 
                 /// <summary>
@@ -124,16 +122,15 @@ namespace StyleCop.Analyzers.Helpers
                 internal Location GetElementLocation(SyntaxTree syntaxTree, XElement element)
                 {
                         var headerSourceText = syntaxTree.GetText()
-                                                 .GetSubText(TextSpan.FromBounds(
-                                                   this.fileHeaderStart, this.fileHeaderEnd))
-                                                 .ToString();
+                                                   .GetSubText(TextSpan.FromBounds(
+                                                       this.fileHeaderStart, this.fileHeaderEnd))
+                                                   .ToString();
 
                         var tagStart = "<" + element.Name.LocalName;
                         var index = headerSourceText.IndexOf(tagStart);
 
-                        var textSpan =
-                          TextSpan.FromBounds(this.fileHeaderStart + index,
-                                              this.fileHeaderStart + index + tagStart.Length);
+                        var textSpan = TextSpan.FromBounds(this.fileHeaderStart + index,
+                            this.fileHeaderStart + index + tagStart.Length);
                         return Location.Create(syntaxTree, textSpan);
                 }
         }

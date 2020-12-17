@@ -12,8 +12,7 @@ namespace LightJson.Serialization
         /// <summary>
         /// Represents a reader that can read JsonValues.
         /// </summary>
-        internal sealed class JsonReader
-        {
+        internal sealed class JsonReader {
                 private readonly TextScanner scanner;
 
                 private JsonReader(TextReader reader) { this.scanner = new TextScanner(reader); }
@@ -59,29 +58,28 @@ namespace LightJson.Serialization
                         }
 
                         switch (next) {
-                                case '{':
-                                        return this.ReadObject();
+                        case '{':
+                                return this.ReadObject();
 
-                                case '[':
-                                        return this.ReadArray();
+                        case '[':
+                                return this.ReadArray();
 
-                                case '"':
-                                        return this.ReadString();
+                        case '"':
+                                return this.ReadString();
 
-                                case '-':
-                                        return this.ReadNumber();
+                        case '-':
+                                return this.ReadNumber();
 
-                                case 't':
-                                case 'f':
-                                        return this.ReadBoolean();
+                        case 't':
+                        case 'f':
+                                return this.ReadBoolean();
 
-                                case 'n':
-                                        return this.ReadNull();
+                        case 'n':
+                                return this.ReadNull();
 
-                                default:
-                                        throw new JsonParseException(
-                                          ErrorType.InvalidOrUnexpectedCharacter,
-                                          this.scanner.Position);
+                        default:
+                                throw new JsonParseException(
+                                    ErrorType.InvalidOrUnexpectedCharacter, this.scanner.Position);
                         }
                 }
 
@@ -94,13 +92,13 @@ namespace LightJson.Serialization
                 private JsonValue ReadBoolean()
                 {
                         switch (this.scanner.Peek()) {
-                                case 't':
-                                        this.scanner.Assert("true");
-                                        return true;
+                        case 't':
+                                this.scanner.Assert("true");
+                                return true;
 
-                                default:
-                                        this.scanner.Assert("false");
-                                        return false;
+                        default:
+                                this.scanner.Assert("false");
+                                return false;
                         }
                 }
 
@@ -136,18 +134,20 @@ namespace LightJson.Serialization
                         }
 
                         if (this.scanner.Peek(throwAtEndOfFile
-                                              : false) == 'e' ||
-                            this.scanner.Peek(throwAtEndOfFile
-                                              : false) == 'E') {
+                                              : false)
+                                == 'e'
+                            || this.scanner.Peek(throwAtEndOfFile
+                                                 : false)
+                                == 'E') {
                                 builder.Append(this.scanner.Read());
 
                                 var next = this.scanner.Peek();
 
                                 switch (next) {
-                                        case '+':
-                                        case '-':
-                                                builder.Append(this.scanner.Read());
-                                                break;
+                                case '+':
+                                case '-':
+                                        builder.Append(this.scanner.Read());
+                                        break;
                                 }
 
                                 this.ReadDigits(builder);
@@ -171,41 +171,41 @@ namespace LightJson.Serialization
                                         c = this.scanner.Read();
 
                                         switch (char.ToLower(c)) {
-                                                case '"':
-                                                case '\\':
-                                                case '/':
-                                                        builder.Append(c);
-                                                        break;
-                                                case 'b':
-                                                        builder.Append('\b');
-                                                        break;
-                                                case 'f':
-                                                        builder.Append('\f');
-                                                        break;
-                                                case 'n':
-                                                        builder.Append('\n');
-                                                        break;
-                                                case 'r':
-                                                        builder.Append('\r');
-                                                        break;
-                                                case 't':
-                                                        builder.Append('\t');
-                                                        break;
-                                                case 'u':
-                                                        builder.Append(this.ReadUnicodeLiteral());
-                                                        break;
-                                                default:
-                                                        throw new JsonParseException(
-                                                          ErrorType.InvalidOrUnexpectedCharacter,
-                                                          errorPosition);
+                                        case '"':
+                                        case '\\':
+                                        case '/':
+                                                builder.Append(c);
+                                                break;
+                                        case 'b':
+                                                builder.Append('\b');
+                                                break;
+                                        case 'f':
+                                                builder.Append('\f');
+                                                break;
+                                        case 'n':
+                                                builder.Append('\n');
+                                                break;
+                                        case 'r':
+                                                builder.Append('\r');
+                                                break;
+                                        case 't':
+                                                builder.Append('\t');
+                                                break;
+                                        case 'u':
+                                                builder.Append(this.ReadUnicodeLiteral());
+                                                break;
+                                        default:
+                                                throw new JsonParseException(
+                                                    ErrorType.InvalidOrUnexpectedCharacter,
+                                                    errorPosition);
                                         }
                                 } else if (c == '"') {
                                         break;
                                 } else {
                                         if (char.IsControl(c)) {
                                                 throw new JsonParseException(
-                                                  ErrorType.InvalidOrUnexpectedCharacter,
-                                                  errorPosition);
+                                                    ErrorType.InvalidOrUnexpectedCharacter,
+                                                    errorPosition);
                                         } else {
                                                 builder.Append(c);
                                         }
@@ -219,57 +219,57 @@ namespace LightJson.Serialization
                 {
                         var errorPosition = this.scanner.Position;
                         switch (char.ToUpper(this.scanner.Read())) {
-                                case '0':
-                                        return 0;
+                        case '0':
+                                return 0;
 
-                                case '1':
-                                        return 1;
+                        case '1':
+                                return 1;
 
-                                case '2':
-                                        return 2;
+                        case '2':
+                                return 2;
 
-                                case '3':
-                                        return 3;
+                        case '3':
+                                return 3;
 
-                                case '4':
-                                        return 4;
+                        case '4':
+                                return 4;
 
-                                case '5':
-                                        return 5;
+                        case '5':
+                                return 5;
 
-                                case '6':
-                                        return 6;
+                        case '6':
+                                return 6;
 
-                                case '7':
-                                        return 7;
+                        case '7':
+                                return 7;
 
-                                case '8':
-                                        return 8;
+                        case '8':
+                                return 8;
 
-                                case '9':
-                                        return 9;
+                        case '9':
+                                return 9;
 
-                                case 'A':
-                                        return 10;
+                        case 'A':
+                                return 10;
 
-                                case 'B':
-                                        return 11;
+                        case 'B':
+                                return 11;
 
-                                case 'C':
-                                        return 12;
+                        case 'C':
+                                return 12;
 
-                                case 'D':
-                                        return 13;
+                        case 'D':
+                                return 13;
 
-                                case 'E':
-                                        return 14;
+                        case 'E':
+                                return 14;
 
-                                case 'F':
-                                        return 15;
+                        case 'F':
+                                return 15;
 
-                                default:
-                                        throw new JsonParseException(
-                                          ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
+                        default:
+                                throw new JsonParseException(
+                                    ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
                         }
                 }
 
@@ -278,9 +278,9 @@ namespace LightJson.Serialization
                         int value = 0;
 
                         value += this.ReadHexDigit() * 4096; // 16^3
-                        value += this.ReadHexDigit() * 256;  // 16^2
-                        value += this.ReadHexDigit() * 16;   // 16^1
-                        value += this.ReadHexDigit();        // 16^0
+                        value += this.ReadHexDigit() * 256; // 16^2
+                        value += this.ReadHexDigit() * 16; // 16^1
+                        value += this.ReadHexDigit(); // 16^0
 
                         return (char) value;
                 }
@@ -304,7 +304,7 @@ namespace LightJson.Serialization
 
                                         if (jsonObject.ContainsKey(key)) {
                                                 throw new JsonParseException(
-                                                  ErrorType.DuplicateObjectKeys, errorPosition);
+                                                    ErrorType.DuplicateObjectKeys, errorPosition);
                                         }
 
                                         this.scanner.SkipWhitespace();
@@ -335,8 +335,8 @@ namespace LightJson.Serialization
                                                 continue;
                                         } else {
                                                 throw new JsonParseException(
-                                                  ErrorType.InvalidOrUnexpectedCharacter,
-                                                  errorPosition);
+                                                    ErrorType.InvalidOrUnexpectedCharacter,
+                                                    errorPosition);
                                         }
                                 }
                         }
@@ -380,8 +380,8 @@ namespace LightJson.Serialization
                                                 continue;
                                         } else {
                                                 throw new JsonParseException(
-                                                  ErrorType.InvalidOrUnexpectedCharacter,
-                                                  errorPosition);
+                                                    ErrorType.InvalidOrUnexpectedCharacter,
+                                                    errorPosition);
                                         }
                                 }
                         }

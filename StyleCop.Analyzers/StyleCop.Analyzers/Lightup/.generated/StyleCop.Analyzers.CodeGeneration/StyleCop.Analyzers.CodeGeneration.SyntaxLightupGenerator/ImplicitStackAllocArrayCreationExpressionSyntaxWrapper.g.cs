@@ -10,73 +10,68 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct ImplicitStackAllocArrayCreationExpressionSyntaxWrapper
-          : ISyntaxWrapper<ExpressionSyntax>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.ImplicitStackAllocArrayCreationExpressionSyntax";
+            : ISyntaxWrapper<ExpressionSyntax> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.ImplicitStackAllocArrayCreationExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, SyntaxToken>
-                  StackAllocKeywordAccessor;
+                    StackAllocKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken>
-                  OpenBracketTokenAccessor;
+                    OpenBracketTokenAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken>
-                  CloseBracketTokenAccessor;
+                    CloseBracketTokenAccessor;
                 private static readonly Func<ExpressionSyntax, InitializerExpressionSyntax>
-                  InitializerAccessor;
+                    InitializerAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                  WithStackAllocKeywordAccessor;
+                    WithStackAllocKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                  WithOpenBracketTokenAccessor;
+                    WithOpenBracketTokenAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                  WithCloseBracketTokenAccessor;
-                private static readonly
-                  Func<ExpressionSyntax, InitializerExpressionSyntax, ExpressionSyntax>
-                    WithInitializerAccessor;
+                    WithCloseBracketTokenAccessor;
+                private static readonly Func<ExpressionSyntax, InitializerExpressionSyntax,
+                    ExpressionSyntax> WithInitializerAccessor;
 
                 private readonly ExpressionSyntax node;
 
                 static ImplicitStackAllocArrayCreationExpressionSyntaxWrapper()
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                          typeof(ImplicitStackAllocArrayCreationExpressionSyntaxWrapper));
-                        StackAllocKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(StackAllocKeyword));
-                        OpenBracketTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(OpenBracketToken));
-                        CloseBracketTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(CloseBracketToken));
-                        InitializerAccessor =
-                          LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax,
-                                                                      InitializerExpressionSyntax>(
-                            WrappedType, nameof(Initializer));
-                        WithStackAllocKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(StackAllocKeyword));
-                        WithOpenBracketTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(OpenBracketToken));
-                        WithCloseBracketTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(CloseBracketToken));
-                        WithInitializerAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                                              InitializerExpressionSyntax>(
-                              WrappedType, nameof(Initializer));
+                            typeof(ImplicitStackAllocArrayCreationExpressionSyntaxWrapper));
+                        StackAllocKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(StackAllocKeyword));
+                        OpenBracketTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(OpenBracketToken));
+                        CloseBracketTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(CloseBracketToken));
+                        InitializerAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax,
+                                InitializerExpressionSyntax>(WrappedType, nameof(Initializer));
+                        WithStackAllocKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(StackAllocKeyword));
+                        WithOpenBracketTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(OpenBracketToken));
+                        WithCloseBracketTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(CloseBracketToken));
+                        WithInitializerAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                InitializerExpressionSyntax>(WrappedType, nameof(Initializer));
                 }
 
                 private ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(
-                  ExpressionSyntax node)
+                    ExpressionSyntax node)
                 {
                         this.node = node;
                 }
@@ -112,15 +107,15 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(
-                          (ExpressionSyntax) node);
+                            (ExpressionSyntax) node);
                 }
 
                 public static implicit operator ExpressionSyntax(
-                  ImplicitStackAllocArrayCreationExpressionSyntaxWrapper wrapper)
+                    ImplicitStackAllocArrayCreationExpressionSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
@@ -131,31 +126,31 @@ namespace StyleCop.Analyzers.Lightup
                 }
 
                 public ImplicitStackAllocArrayCreationExpressionSyntaxWrapper WithStackAllocKeyword(
-                  SyntaxToken stackAllocKeyword)
+                    SyntaxToken stackAllocKeyword)
                 {
                         return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(
-                          WithStackAllocKeywordAccessor(this.SyntaxNode, stackAllocKeyword));
+                            WithStackAllocKeywordAccessor(this.SyntaxNode, stackAllocKeyword));
                 }
 
                 public ImplicitStackAllocArrayCreationExpressionSyntaxWrapper WithOpenBracketToken(
-                  SyntaxToken openBracketToken)
+                    SyntaxToken openBracketToken)
                 {
                         return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(
-                          WithOpenBracketTokenAccessor(this.SyntaxNode, openBracketToken));
+                            WithOpenBracketTokenAccessor(this.SyntaxNode, openBracketToken));
                 }
 
                 public ImplicitStackAllocArrayCreationExpressionSyntaxWrapper WithCloseBracketToken(
-                  SyntaxToken closeBracketToken)
+                    SyntaxToken closeBracketToken)
                 {
                         return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(
-                          WithCloseBracketTokenAccessor(this.SyntaxNode, closeBracketToken));
+                            WithCloseBracketTokenAccessor(this.SyntaxNode, closeBracketToken));
                 }
 
                 public ImplicitStackAllocArrayCreationExpressionSyntaxWrapper WithInitializer(
-                  InitializerExpressionSyntax initializer)
+                    InitializerExpressionSyntax initializer)
                 {
                         return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(
-                          WithInitializerAccessor(this.SyntaxNode, initializer));
+                            WithInitializerAccessor(this.SyntaxNode, initializer));
                 }
         }
 }

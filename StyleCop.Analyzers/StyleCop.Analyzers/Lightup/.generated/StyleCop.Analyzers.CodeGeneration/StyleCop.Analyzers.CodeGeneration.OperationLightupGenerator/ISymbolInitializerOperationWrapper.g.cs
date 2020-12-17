@@ -7,27 +7,22 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ISymbolInitializerOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.ISymbolInitializerOperation";
+        internal readonly struct ISymbolInitializerOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.ISymbolInitializerOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ImmutableArray<ILocalSymbol>>
-                  LocalsAccessor;
+                    LocalsAccessor;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
                 private readonly IOperation operation;
                 static ISymbolInitializerOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(ISymbolInitializerOperationWrapper));
-                        LocalsAccessor =
-                          LightupHelpers
-                            .CreateOperationPropertyAccessor<IOperation,
-                                                             ImmutableArray<ILocalSymbol>>(
-                              WrappedType, nameof(Locals));
-                        ValueAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(Value));
+                            typeof(ISymbolInitializerOperationWrapper));
+                        LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
+                        ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            IOperation>(WrappedType, nameof(Value));
                 }
 
                 private ISymbolInitializerOperationWrapper(IOperation operation)
@@ -47,7 +42,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new ISymbolInitializerOperationWrapper(operation);
@@ -55,8 +50,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
 
                 internal static ISymbolInitializerOperationWrapper FromUpcast(IOperation operation)

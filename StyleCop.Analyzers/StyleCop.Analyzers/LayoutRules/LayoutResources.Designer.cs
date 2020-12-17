@@ -21,36 +21,34 @@ namespace StyleCop.Analyzers.LayoutRules
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
-          "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+            "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class LayoutResources
-        {
+        internal class LayoutResources {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                  "Microsoft.Performance",
-                  "CA1811:AvoidUncalledPrivateCode")]
-                internal
-                LayoutResources()
-                {}
+                    "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+                internal LayoutResources()
+                {
+                }
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Resources.ResourceManager ResourceManager
                 {
                         get
                         {
                                 if (object.ReferenceEquals(resourceMan, null)) {
-                                        global::System.Resources.ResourceManager temp =
-                                          new global::System.Resources.ResourceManager(
-                                            "StyleCop.Analyzers.LayoutRules.LayoutResources",
-                                            typeof(LayoutResources).GetTypeInfo().Assembly);
+                                        global::System.Resources.ResourceManager temp
+                                            = new global::System.Resources.ResourceManager(
+                                                "StyleCop.Analyzers.LayoutRules.LayoutResources",
+                                                typeof(LayoutResources).GetTypeInfo().Assembly);
                                         resourceMan = temp;
                                 }
                                 return resourceMan;
@@ -62,7 +60,7 @@ namespace StyleCop.Analyzers.LayoutRules
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Globalization.CultureInfo Culture
                 {
                         get { return resourceCulture; }
@@ -85,8 +83,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1500Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1500Description", resourceCulture);
                         }
                 }
 
@@ -98,8 +96,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1500MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1500MessageFormat", resourceCulture);
                         }
                 }
 
@@ -127,8 +125,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1501CodeFixAll",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1501CodeFixAll", resourceCulture);
                         }
                 }
 
@@ -140,8 +138,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1501Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1501Description", resourceCulture);
                         }
                 }
 
@@ -153,8 +151,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1501MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1501MessageFormat", resourceCulture);
                         }
                 }
 
@@ -183,8 +181,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1502Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1502Description", resourceCulture);
                         }
                 }
 
@@ -195,8 +193,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1502MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1502MessageFormat", resourceCulture);
                         }
                 }
 
@@ -224,8 +222,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1503Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1503Description", resourceCulture);
                         }
                 }
 
@@ -236,8 +234,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1503MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1503MessageFormat", resourceCulture);
                         }
                 }
 
@@ -257,8 +255,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1504CodeFixMultipleLines",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1504CodeFixMultipleLines", resourceCulture);
                         }
                 }
 
@@ -270,8 +268,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1504CodeFixSingleLine",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1504CodeFixSingleLine", resourceCulture);
                         }
                 }
 
@@ -284,8 +282,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1504Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1504Description", resourceCulture);
                         }
                 }
 
@@ -297,8 +295,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1504MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1504MessageFormat", resourceCulture);
                         }
                 }
 
@@ -328,8 +326,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1505Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1505Description", resourceCulture);
                         }
                 }
 
@@ -341,8 +339,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1505MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1505MessageFormat", resourceCulture);
                         }
                 }
 
@@ -372,8 +370,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1506Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1506Description", resourceCulture);
                         }
                 }
 
@@ -385,8 +383,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1506MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1506MessageFormat", resourceCulture);
                         }
                 }
 
@@ -415,8 +413,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1507Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1507Description", resourceCulture);
                         }
                 }
 
@@ -428,8 +426,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1507MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1507MessageFormat", resourceCulture);
                         }
                 }
 
@@ -459,8 +457,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1508Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1508Description", resourceCulture);
                         }
                 }
 
@@ -472,8 +470,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1508MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1508MessageFormat", resourceCulture);
                         }
                 }
 
@@ -503,8 +501,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1509Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1509Description", resourceCulture);
                         }
                 }
 
@@ -516,8 +514,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1509MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1509MessageFormat", resourceCulture);
                         }
                 }
 
@@ -547,8 +545,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1510Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1510Description", resourceCulture);
                         }
                 }
 
@@ -560,8 +558,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1510MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1510MessageFormat", resourceCulture);
                         }
                 }
 
@@ -590,8 +588,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1511Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1511Description", resourceCulture);
                         }
                 }
 
@@ -603,8 +601,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1511MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1511MessageFormat", resourceCulture);
                         }
                 }
 
@@ -633,8 +631,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1512Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1512Description", resourceCulture);
                         }
                 }
 
@@ -646,8 +644,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1512MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1512MessageFormat", resourceCulture);
                         }
                 }
 
@@ -676,8 +674,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1513Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1513Description", resourceCulture);
                         }
                 }
 
@@ -689,8 +687,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1513MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1513MessageFormat", resourceCulture);
                         }
                 }
 
@@ -720,8 +718,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1514Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1514Description", resourceCulture);
                         }
                 }
 
@@ -733,8 +731,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1514MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1514MessageFormat", resourceCulture);
                         }
                 }
 
@@ -763,8 +761,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1515Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1515Description", resourceCulture);
                         }
                 }
 
@@ -776,8 +774,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1515MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1515MessageFormat", resourceCulture);
                         }
                 }
 
@@ -797,8 +795,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516CodeFixAll",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516CodeFixAll", resourceCulture);
                         }
                 }
 
@@ -809,8 +807,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516CodeFixInsert",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516CodeFixInsert", resourceCulture);
                         }
                 }
 
@@ -821,8 +819,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516CodeFixRemove",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516CodeFixRemove", resourceCulture);
                         }
                 }
 
@@ -834,8 +832,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516Description", resourceCulture);
                         }
                 }
 
@@ -847,8 +845,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516DescriptionOmit",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516DescriptionOmit", resourceCulture);
                         }
                 }
 
@@ -860,8 +858,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516DescriptionRequire",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516DescriptionRequire", resourceCulture);
                         }
                 }
 
@@ -873,8 +871,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516MessageFormat", resourceCulture);
                         }
                 }
 
@@ -886,8 +884,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516MessageFormatOmit",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516MessageFormatOmit", resourceCulture);
                         }
                 }
 
@@ -899,8 +897,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1516MessageFormatRequire",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1516MessageFormatRequire", resourceCulture);
                         }
                 }
 
@@ -930,8 +928,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1517Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1517Description", resourceCulture);
                         }
                 }
 
@@ -943,8 +941,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1517MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1517MessageFormat", resourceCulture);
                         }
                 }
 
@@ -973,8 +971,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1518DescriptionAllow",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1518DescriptionAllow", resourceCulture);
                         }
                 }
 
@@ -986,8 +984,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1518DescriptionOmit",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1518DescriptionOmit", resourceCulture);
                         }
                 }
 
@@ -999,8 +997,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1518DescriptionRequire",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1518DescriptionRequire", resourceCulture);
                         }
                 }
 
@@ -1012,8 +1010,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1518MessageFormatAllow",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1518MessageFormatAllow", resourceCulture);
                         }
                 }
 
@@ -1025,8 +1023,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1518MessageFormatOmit",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1518MessageFormatOmit", resourceCulture);
                         }
                 }
 
@@ -1038,8 +1036,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1518MessageFormatRequire",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1518MessageFormatRequire", resourceCulture);
                         }
                 }
 
@@ -1060,8 +1058,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1519Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1519Description", resourceCulture);
                         }
                 }
 
@@ -1073,8 +1071,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1519MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1519MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1096,8 +1094,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1520Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1520Description", resourceCulture);
                         }
                 }
 
@@ -1108,8 +1106,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1520MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1520MessageFormat", resourceCulture);
                         }
                 }
 

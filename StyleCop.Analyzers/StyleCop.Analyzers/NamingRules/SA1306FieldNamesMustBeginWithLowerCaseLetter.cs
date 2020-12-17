@@ -29,40 +29,31 @@ namespace StyleCop.Analyzers.NamingRules
         /// a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1306FieldNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer
-        {
+        internal class SA1306FieldNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1306FieldNamesMustBeginWithLowerCaseLetter"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1306";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1306.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(NamingResources.SA1306Title),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(NamingResources.SA1306MessageFormat),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(NamingResources.SA1306Description),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1306.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(NamingResources.SA1306Title),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(NamingResources.SA1306MessageFormat),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(NamingResources.SA1306Description),
+                        NamingResources.ResourceManager, typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.NamingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction =
-                  HandleFieldDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction
+                    = HandleFieldDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -74,8 +65,8 @@ namespace StyleCop.Analyzers.NamingRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(FieldDeclarationAction,
-                                                         SyntaxKind.FieldDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            FieldDeclarationAction, SyntaxKind.FieldDeclaration);
                 }
 
                 private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
@@ -90,21 +81,21 @@ namespace StyleCop.Analyzers.NamingRules
                                 return;
                         }
 
-                        if (syntax.Modifiers.Any(SyntaxKind.PublicKeyword) ||
-                            syntax.Modifiers.Any(SyntaxKind.InternalKeyword)) {
+                        if (syntax.Modifiers.Any(SyntaxKind.PublicKeyword)
+                            || syntax.Modifiers.Any(SyntaxKind.InternalKeyword)) {
                                 // this diagnostic does not apply to public or internal read only
                                 // fields
                                 return;
                         }
 
-                        if (syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword) &&
-                            syntax.Modifiers.Any(SyntaxKind.ProtectedKeyword)) {
+                        if (syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword)
+                            && syntax.Modifiers.Any(SyntaxKind.ProtectedKeyword)) {
                                 // this diagnostic does not apply to non-private read only fields
                                 return;
                         }
 
-                        if (syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword) &&
-                            syntax.Modifiers.Any(SyntaxKind.StaticKeyword)) {
+                        if (syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword)
+                            && syntax.Modifiers.Any(SyntaxKind.StaticKeyword)) {
                                 // this diagnostic does not apply to static read only fields
                                 return;
                         }
@@ -145,7 +136,7 @@ namespace StyleCop.Analyzers.NamingRules
 
                                 // Field names should begin with lower-case letter
                                 context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
+                                    Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
                         }
                 }
         }

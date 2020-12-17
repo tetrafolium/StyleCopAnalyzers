@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
         using LightJson;
 
-        internal class LayoutSettings
-        {
+        internal class LayoutSettings {
                 /// <summary>
                 /// This is the backing field for the <see cref="NewlineAtEndOfFile"/> property.
                 /// </summary>
@@ -32,21 +31,20 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <param name="layoutSettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal LayoutSettings(JsonObject layoutSettingsObject)
-                  : this()
+                    : this()
                 {
                         foreach (var kvp in layoutSettingsObject) {
                                 switch (kvp.Key) {
-                                        case "newlineAtEndOfFile":
-                                                this.newlineAtEndOfFile =
-                                                  kvp.ToEnumValue<OptionSetting>();
-                                                break;
+                                case "newlineAtEndOfFile":
+                                        this.newlineAtEndOfFile = kvp.ToEnumValue<OptionSetting>();
+                                        break;
 
-                                        case "allowConsecutiveUsings":
-                                                this.allowConsecutiveUsings = kvp.ToBooleanValue();
-                                                break;
+                                case "allowConsecutiveUsings":
+                                        this.allowConsecutiveUsings = kvp.ToBooleanValue();
+                                        break;
 
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
                         }
                 }

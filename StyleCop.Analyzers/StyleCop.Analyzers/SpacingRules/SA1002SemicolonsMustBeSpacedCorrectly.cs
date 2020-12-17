@@ -22,40 +22,31 @@ namespace StyleCop.Analyzers.SpacingRules
         /// unless it is the first character on the line.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1002SemicolonsMustBeSpacedCorrectly : DiagnosticAnalyzer
-        {
+        internal class SA1002SemicolonsMustBeSpacedCorrectly : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1002SemicolonsMustBeSpacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1002";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1002.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(SpacingResources.SA1002Title),
-                                                SpacingResources.ResourceManager,
-                                                typeof(SpacingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(SpacingResources.SA1002MessageFormat),
-                                                SpacingResources.ResourceManager,
-                                                typeof(SpacingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(SpacingResources.SA1002Description),
-                                                SpacingResources.ResourceManager,
-                                                typeof(SpacingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1002.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(SpacingResources.SA1002Title),
+                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(SpacingResources.SA1002MessageFormat),
+                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(SpacingResources.SA1002Description),
+                        SpacingResources.ResourceManager, typeof(SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.SpacingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                  HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -72,22 +63,22 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
                 {
-                        SyntaxNode root =
-                          context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                        SyntaxNode root
+                            = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 switch (token.Kind()) {
-                                        case SyntaxKind.SemicolonToken:
-                                                HandleSemicolonToken(context, token);
-                                                break;
+                                case SyntaxKind.SemicolonToken:
+                                        HandleSemicolonToken(context, token);
+                                        break;
 
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
                         }
                 }
 
-                private static void HandleSemicolonToken(SyntaxTreeAnalysisContext context,
-                                                         SyntaxToken token)
+                private static void HandleSemicolonToken(
+                    SyntaxTreeAnalysisContext context, SyntaxToken token)
                 {
                         if (token.IsMissing) {
                                 return;
@@ -97,37 +88,36 @@ namespace StyleCop.Analyzers.SpacingRules
                         bool missingFollowingSpace = true;
                         if (token.HasTrailingTrivia) {
                                 if (token.TrailingTrivia.First().IsKind(
-                                      SyntaxKind.WhitespaceTrivia)) {
+                                        SyntaxKind.WhitespaceTrivia)) {
                                         missingFollowingSpace = false;
                                 } else if (token.TrailingTrivia.First().IsKind(
-                                             SyntaxKind.EndOfLineTrivia)) {
+                                               SyntaxKind.EndOfLineTrivia)) {
                                         missingFollowingSpace = false;
                                 }
                         } else {
                                 SyntaxToken nextToken = token.GetNextToken();
                                 switch (nextToken.Kind()) {
-                                        case SyntaxKind.CloseParenToken:
-                                                // Special handling for the following case:
-                                                // for (; ;)
+                                case SyntaxKind.CloseParenToken:
+                                        // Special handling for the following case:
+                                        // for (; ;)
+                                        missingFollowingSpace = false;
+                                        break;
+
+                                case SyntaxKind.SemicolonToken:
+                                        // Special handling for the following case:
+                                        // Statement();;
+                                        if (nextToken.Parent.IsKind(SyntaxKind.EmptyStatement)) {
                                                 missingFollowingSpace = false;
-                                                break;
+                                        }
 
-                                        case SyntaxKind.SemicolonToken:
-                                                // Special handling for the following case:
-                                                // Statement();;
-                                                if (nextToken.Parent.IsKind(
-                                                      SyntaxKind.EmptyStatement)) {
-                                                        missingFollowingSpace = false;
-                                                }
+                                        break;
 
-                                                break;
+                                case SyntaxKind.None:
+                                        // The semi colon is the last character in the file.
+                                        return;
 
-                                        case SyntaxKind.None:
-                                                // The semi colon is the last character in the file.
-                                                return;
-
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
                         }
 
@@ -138,8 +128,8 @@ namespace StyleCop.Analyzers.SpacingRules
                                 // are ignored
                                 SyntaxToken precedingToken = token.GetPreviousToken();
                                 SyntaxTriviaList trailingTrivia = precedingToken.TrailingTrivia;
-                                if (trailingTrivia.Any() &&
-                                    trailingTrivia.Last().IsKind(SyntaxKind.WhitespaceTrivia)) {
+                                if (trailingTrivia.Any()
+                                    && trailingTrivia.Last().IsKind(SyntaxKind.WhitespaceTrivia)) {
                                         hasPrecedingSpace = true;
                                 }
 
@@ -152,22 +142,17 @@ namespace StyleCop.Analyzers.SpacingRules
 
                         if (missingFollowingSpace) {
                                 // semicolon should{} be {followed} by a space
-                                context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor,
-                                                    token.GetLocation(),
-                                                    TokenSpacingProperties.InsertFollowing,
-                                                    string.Empty,
-                                                    "followed"));
+                                context.ReportDiagnostic(Diagnostic.Create(Descriptor,
+                                    token.GetLocation(), TokenSpacingProperties.InsertFollowing,
+                                    string.Empty, "followed"));
                         }
 
                         if (hasPrecedingSpace && !ignorePrecedingSpace) {
                                 // semicolon should{ not} be {preceded} by a space
                                 context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor,
-                                                    token.GetLocation(),
-                                                    TokenSpacingProperties.RemoveImmediatePreceding,
-                                                    " not",
-                                                    "preceded"));
+                                    Diagnostic.Create(Descriptor, token.GetLocation(),
+                                        TokenSpacingProperties.RemoveImmediatePreceding, " not",
+                                        "preceded"));
                         }
                 }
         }

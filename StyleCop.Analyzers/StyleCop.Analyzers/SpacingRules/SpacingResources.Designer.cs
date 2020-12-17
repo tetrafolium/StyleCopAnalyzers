@@ -21,36 +21,34 @@ namespace StyleCop.Analyzers.SpacingRules
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
-          "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+            "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class SpacingResources
-        {
+        internal class SpacingResources {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                  "Microsoft.Performance",
-                  "CA1811:AvoidUncalledPrivateCode")]
-                internal
-                SpacingResources()
-                {}
+                    "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+                internal SpacingResources()
+                {
+                }
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Resources.ResourceManager ResourceManager
                 {
                         get
                         {
                                 if (object.ReferenceEquals(resourceMan, null)) {
-                                        global::System.Resources.ResourceManager temp =
-                                          new global::System.Resources.ResourceManager(
-                                            "StyleCop.Analyzers.SpacingRules.SpacingResources",
-                                            typeof(SpacingResources).GetTypeInfo().Assembly);
+                                        global::System.Resources.ResourceManager temp
+                                            = new global::System.Resources.ResourceManager(
+                                                "StyleCop.Analyzers.SpacingRules.SpacingResources",
+                                                typeof(SpacingResources).GetTypeInfo().Assembly);
                                         resourceMan = temp;
                                 }
                                 return resourceMan;
@@ -62,7 +60,7 @@ namespace StyleCop.Analyzers.SpacingRules
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Globalization.CultureInfo Culture
                 {
                         get { return resourceCulture; }
@@ -77,8 +75,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1000Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1000Description", resourceCulture);
                         }
                 }
 
@@ -90,8 +88,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1000MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1000MessageFormat", resourceCulture);
                         }
                 }
 
@@ -111,8 +109,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1001Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1001Description", resourceCulture);
                         }
                 }
 
@@ -123,8 +121,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1001MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1001MessageFormat", resourceCulture);
                         }
                 }
 
@@ -144,8 +142,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1002Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1002Description", resourceCulture);
                         }
                 }
 
@@ -156,8 +154,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1002MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1002MessageFormat", resourceCulture);
                         }
                 }
 
@@ -185,8 +183,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1003Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1003Description", resourceCulture);
                         }
                 }
 
@@ -199,7 +197,7 @@ namespace StyleCop.Analyzers.SpacingRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1003MessageFormatFollowedByWhitespace", resourceCulture);
+                                    "SA1003MessageFormatFollowedByWhitespace", resourceCulture);
                         }
                 }
 
@@ -212,7 +210,7 @@ namespace StyleCop.Analyzers.SpacingRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1003MessageFormatNotAtEndOfLine", resourceCulture);
+                                    "SA1003MessageFormatNotAtEndOfLine", resourceCulture);
                         }
                 }
 
@@ -225,7 +223,7 @@ namespace StyleCop.Analyzers.SpacingRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1003MessageFormatNotFollowedByComment", resourceCulture);
+                                    "SA1003MessageFormatNotFollowedByComment", resourceCulture);
                         }
                 }
 
@@ -238,7 +236,7 @@ namespace StyleCop.Analyzers.SpacingRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1003MessageFormatNotFollowedByWhitespace", resourceCulture);
+                                    "SA1003MessageFormatNotFollowedByWhitespace", resourceCulture);
                         }
                 }
 
@@ -251,7 +249,7 @@ namespace StyleCop.Analyzers.SpacingRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1003MessageFormatNotPrecededByWhitespace", resourceCulture);
+                                    "SA1003MessageFormatNotPrecededByWhitespace", resourceCulture);
                         }
                 }
 
@@ -264,7 +262,7 @@ namespace StyleCop.Analyzers.SpacingRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1003MessageFormatPrecededByWhitespace", resourceCulture);
+                                    "SA1003MessageFormatPrecededByWhitespace", resourceCulture);
                         }
                 }
 
@@ -292,8 +290,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1004Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1004Description", resourceCulture);
                         }
                 }
 
@@ -305,8 +303,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1004MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1004MessageFormat", resourceCulture);
                         }
                 }
 
@@ -335,8 +333,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1005Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1005Description", resourceCulture);
                         }
                 }
 
@@ -348,8 +346,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1005MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1005MessageFormat", resourceCulture);
                         }
                 }
 
@@ -370,8 +368,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1006Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1006Description", resourceCulture);
                         }
                 }
 
@@ -383,8 +381,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1006MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1006MessageFormat", resourceCulture);
                         }
                 }
 
@@ -405,8 +403,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1007Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1007Description", resourceCulture);
                         }
                 }
 
@@ -418,8 +416,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1007MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1007MessageFormat", resourceCulture);
                         }
                 }
 
@@ -448,8 +446,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1008Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1008Description", resourceCulture);
                         }
                 }
 
@@ -461,8 +459,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1008MessageNotFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1008MessageNotFollowed", resourceCulture);
                         }
                 }
 
@@ -474,8 +472,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1008MessageNotPreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1008MessageNotPreceded", resourceCulture);
                         }
                 }
 
@@ -487,8 +485,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1008MessagePreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1008MessagePreceded", resourceCulture);
                         }
                 }
 
@@ -509,8 +507,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1009Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1009Description", resourceCulture);
                         }
                 }
 
@@ -522,8 +520,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1009MessageFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1009MessageFollowed", resourceCulture);
                         }
                 }
 
@@ -535,8 +533,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1009MessageNotFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1009MessageNotFollowed", resourceCulture);
                         }
                 }
 
@@ -548,8 +546,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1009MessageNotPreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1009MessageNotPreceded", resourceCulture);
                         }
                 }
 
@@ -570,8 +568,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1010Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1010Description", resourceCulture);
                         }
                 }
 
@@ -583,8 +581,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1010MessageNotFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1010MessageNotFollowed", resourceCulture);
                         }
                 }
 
@@ -596,8 +594,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1010MessageNotPreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1010MessageNotPreceded", resourceCulture);
                         }
                 }
 
@@ -618,8 +616,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1011Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1011Description", resourceCulture);
                         }
                 }
 
@@ -631,8 +629,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1011MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1011MessageFormat", resourceCulture);
                         }
                 }
 
@@ -653,8 +651,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1012Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1012Description", resourceCulture);
                         }
                 }
 
@@ -666,8 +664,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1012MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1012MessageFormat", resourceCulture);
                         }
                 }
 
@@ -688,8 +686,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1013Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1013Description", resourceCulture);
                         }
                 }
 
@@ -701,8 +699,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1013MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1013MessageFormat", resourceCulture);
                         }
                 }
 
@@ -723,8 +721,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1014Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1014Description", resourceCulture);
                         }
                 }
 
@@ -736,8 +734,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1014MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1014MessageFormat", resourceCulture);
                         }
                 }
 
@@ -758,8 +756,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1015Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1015Description", resourceCulture);
                         }
                 }
 
@@ -771,8 +769,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1015MessageFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1015MessageFollowed", resourceCulture);
                         }
                 }
 
@@ -784,8 +782,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1015MessageNotFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1015MessageNotFollowed", resourceCulture);
                         }
                 }
 
@@ -797,8 +795,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1015MessageNotPreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1015MessageNotPreceded", resourceCulture);
                         }
                 }
 
@@ -819,8 +817,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1016Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1016Description", resourceCulture);
                         }
                 }
 
@@ -832,8 +830,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1016MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1016MessageFormat", resourceCulture);
                         }
                 }
 
@@ -854,8 +852,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1017Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1017Description", resourceCulture);
                         }
                 }
 
@@ -867,8 +865,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1017MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1017MessageFormat", resourceCulture);
                         }
                 }
 
@@ -897,8 +895,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1018Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1018Description", resourceCulture);
                         }
                 }
 
@@ -910,8 +908,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1018MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1018MessageFormat", resourceCulture);
                         }
                 }
 
@@ -932,8 +930,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1019Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1019Description", resourceCulture);
                         }
                 }
 
@@ -945,8 +943,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1019MessageNotFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1019MessageNotFollowed", resourceCulture);
                         }
                 }
 
@@ -958,8 +956,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1019MessageNotPreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1019MessageNotPreceded", resourceCulture);
                         }
                 }
 
@@ -980,8 +978,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1020Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1020Description", resourceCulture);
                         }
                 }
 
@@ -993,8 +991,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1020MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1020MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1015,8 +1013,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1021Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1021Description", resourceCulture);
                         }
                 }
 
@@ -1028,8 +1026,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1021MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1021MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1050,8 +1048,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1022Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1022Description", resourceCulture);
                         }
                 }
 
@@ -1063,8 +1061,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1022MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1022MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1085,8 +1083,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1023Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1023Description", resourceCulture);
                         }
                 }
 
@@ -1098,8 +1096,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1023MessageFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1023MessageFollowed", resourceCulture);
                         }
                 }
 
@@ -1112,7 +1110,7 @@ namespace StyleCop.Analyzers.SpacingRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1023MessageNotAtBeginningOfLine", resourceCulture);
+                                    "SA1023MessageNotAtBeginningOfLine", resourceCulture);
                         }
                 }
 
@@ -1124,8 +1122,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1023MessageNotAtEndOfLine",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1023MessageNotAtEndOfLine", resourceCulture);
                         }
                 }
 
@@ -1137,8 +1135,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1023MessageNotFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1023MessageNotFollowed", resourceCulture);
                         }
                 }
 
@@ -1150,8 +1148,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1023MessageNotPreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1023MessageNotPreceded", resourceCulture);
                         }
                 }
 
@@ -1172,8 +1170,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1024Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1024Description", resourceCulture);
                         }
                 }
 
@@ -1184,8 +1182,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1024MessageFollowed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1024MessageFollowed", resourceCulture);
                         }
                 }
 
@@ -1197,8 +1195,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1024MessageNotPreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1024MessageNotPreceded", resourceCulture);
                         }
                 }
 
@@ -1209,8 +1207,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1024MessagePreceded",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1024MessagePreceded", resourceCulture);
                         }
                 }
 
@@ -1238,8 +1236,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1025Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1025Description", resourceCulture);
                         }
                 }
 
@@ -1251,8 +1249,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1025MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1025MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1273,8 +1271,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1026Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1026Description", resourceCulture);
                         }
                 }
 
@@ -1286,8 +1284,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1026MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1026MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1316,8 +1314,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1027Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1027Description", resourceCulture);
                         }
                 }
 
@@ -1329,8 +1327,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1027MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1027MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1358,8 +1356,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1028Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1028Description", resourceCulture);
                         }
                 }
 
@@ -1371,8 +1369,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1028MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1028MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1392,8 +1390,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("TokenSpacingCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "TokenSpacingCodeFix", resourceCulture);
                         }
                 }
         }

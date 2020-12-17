@@ -18,8 +18,7 @@ namespace StyleCop.Analyzers.NamingRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1316CodeFixProvider))]
         [Shared]
-        internal class SA1316CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1316CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1316TupleElementNamesShouldUseCorrectCasing.DiagnosticId);
@@ -36,41 +35,35 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 if (diagnostic.Properties.TryGetValue(
-                                      SA1316TupleElementNamesShouldUseCorrectCasing
-                                        .ExpectedTupleElementNameKey,
-                                      out string fixedTupleElementName)) {
+                                        SA1316TupleElementNamesShouldUseCorrectCasing
+                                            .ExpectedTupleElementNameKey,
+                                        out string fixedTupleElementName)) {
                                         context.RegisterCodeFix(
-                                          CodeAction.Create(
-                                            NamingResources.SA1316CodeFix,
-                                            cancellationToken =>
-                                              GetTransformedDocumentAsync(context.Document,
-                                                                          diagnostic,
-                                                                          fixedTupleElementName,
-                                                                          cancellationToken),
-                                            nameof(SA1316CodeFixProvider)),
-                                          diagnostic);
+                                            CodeAction.Create(NamingResources.SA1316CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync(
+                                                    context.Document, diagnostic,
+                                                    fixedTupleElementName, cancellationToken),
+                                                nameof(SA1316CodeFixProvider)),
+                                            diagnostic);
                                 }
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  string fixedTupleElementName,
-                  CancellationToken cancellationToken)
+                private static async Task<Document> GetTransformedDocumentAsync(Document document,
+                    Diagnostic diagnostic, string fixedTupleElementName,
+                    CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
 
-                        var identifierToken =
-                          syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
+                        var identifierToken
+                            = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
 
-                        var newSyntaxRoot =
-                          syntaxRoot.ReplaceToken(identifierToken,
-                                                  SyntaxFactory.Identifier(fixedTupleElementName)
-                                                    .WithTriviaFrom(identifierToken));
+                        var newSyntaxRoot = syntaxRoot.ReplaceToken(identifierToken,
+                            SyntaxFactory.Identifier(fixedTupleElementName)
+                                .WithTriviaFrom(identifierToken));
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

@@ -35,40 +35,33 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1602EnumerationItemsMustBeDocumented : DiagnosticAnalyzer
-        {
+        internal class SA1602EnumerationItemsMustBeDocumented : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1602EnumerationItemsMustBeDocumented"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1602";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1602.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(DocumentationResources.SA1602Title),
-                                                DocumentationResources.ResourceManager,
-                                                typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(DocumentationResources.SA1602MessageFormat),
-                                                DocumentationResources.ResourceManager,
-                                                typeof(DocumentationResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(DocumentationResources.SA1602Description),
-                                                DocumentationResources.ResourceManager,
-                                                typeof(DocumentationResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1602.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(DocumentationResources.SA1602Title),
+                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(DocumentationResources.SA1602MessageFormat),
+                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(
+                        nameof(DocumentationResources.SA1602Description),
+                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.DocumentationRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
-                  EnumMemberDeclarationAction = Analyzer.HandleEnumMemberDeclaration;
+                    EnumMemberDeclarationAction = Analyzer.HandleEnumMemberDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -80,37 +73,33 @@ namespace StyleCop.Analyzers.DocumentationRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(EnumMemberDeclarationAction,
-                                                         SyntaxKind.EnumMemberDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            EnumMemberDeclarationAction, SyntaxKind.EnumMemberDeclaration);
                 }
 
-                private static class Analyzer
-                {
+                private static class Analyzer {
                         public static void HandleEnumMemberDeclaration(
-                          SyntaxNodeAnalysisContext context,
-                          StyleCopSettings settings)
+                            SyntaxNodeAnalysisContext context, StyleCopSettings settings)
                         {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
 
-                                EnumMemberDeclarationSyntax declaration =
-                                  (EnumMemberDeclarationSyntax) context.Node;
-                                Accessibility declaredAccessibility =
-                                  declaration.GetDeclaredAccessibility();
-                                Accessibility effectiveAccessibility =
-                                  declaration.GetEffectiveAccessibility(context.SemanticModel,
-                                                                        context.CancellationToken);
+                                EnumMemberDeclarationSyntax declaration
+                                    = (EnumMemberDeclarationSyntax) context.Node;
+                                Accessibility declaredAccessibility
+                                    = declaration.GetDeclaredAccessibility();
+                                Accessibility effectiveAccessibility
+                                    = declaration.GetEffectiveAccessibility(
+                                        context.SemanticModel, context.CancellationToken);
                                 if (SA1600ElementsMustBeDocumented.NeedsComment(
-                                      settings.DocumentationRules,
-                                      declaration.Kind(),
-                                      declaration.Parent.Kind(),
-                                      declaredAccessibility,
-                                      effectiveAccessibility)) {
+                                        settings.DocumentationRules, declaration.Kind(),
+                                        declaration.Parent.Kind(), declaredAccessibility,
+                                        effectiveAccessibility)) {
                                         if (!XmlCommentHelper.HasDocumentation(declaration)) {
-                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                  Descriptor,
-                                                  declaration.Identifier.GetLocation()));
+                                                context.ReportDiagnostic(
+                                                    Diagnostic.Create(Descriptor,
+                                                        declaration.Identifier.GetLocation()));
                                         }
                                 }
                         }

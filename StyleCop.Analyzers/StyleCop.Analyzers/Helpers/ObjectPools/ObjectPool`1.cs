@@ -28,8 +28,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         ///    If there is no intent for reusing the object, do not use pool - just use "new".
         /// </summary>
         /// <typeparam name="T">The type of the objects in this cache.</typeparam>
-        internal class ObjectPool<T> where T : class
-        {
+        internal class ObjectPool<T> where T : class {
                 private readonly Element[] items;
 
                 // factory is stored for the lifetime of the pool. We will call this only when pool
@@ -42,8 +41,9 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 private T firstItem;
 
                 internal ObjectPool(Func<T> factory)
-                  : this(factory, Environment.ProcessorCount * 2)
-                {}
+                    : this(factory, Environment.ProcessorCount * 2)
+                {
+                }
 
                 internal ObjectPool(Func<T> factory, int size)
                 {
@@ -70,8 +70,9 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                         // candidate. in a worst case we may miss some recently returned objects.
                         // Not a big deal.
                         T inst = this.firstItem;
-                        if (inst == null ||
-                            inst != Interlocked.CompareExchange(ref this.firstItem, null, inst)) {
+                        if (inst == null
+                            || inst
+                                != Interlocked.CompareExchange(ref this.firstItem, null, inst)) {
                                 inst = this.AllocateSlow();
                         }
 
@@ -118,8 +119,9 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                                 // objects. Not a big deal.
                                 T inst = items[i].Value;
                                 if (inst != null) {
-                                        if (inst == Interlocked.CompareExchange(
-                                                      ref items[i].Value, null, inst)) {
+                                        if (inst
+                                            == Interlocked.CompareExchange(
+                                                ref items[i].Value, null, inst)) {
                                                 return inst;
                                         }
                                 }
@@ -144,8 +146,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 }
 
                 [DebuggerDisplay("{Value,nq}")]
-                private struct Element
-                {
+                private struct Element {
                         internal T Value;
                 }
         }

@@ -7,20 +7,18 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IRelationalPatternOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IRelationalPatternOperation";
+        internal readonly struct IRelationalPatternOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IRelationalPatternOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
                 private readonly IOperation operation;
                 static IRelationalPatternOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IRelationalPatternOperationWrapper));
-                        ValueAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(Value));
+                            typeof(IRelationalPatternOperationWrapper));
+                        ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            IOperation>(WrappedType, nameof(Value));
                 }
 
                 private IRelationalPatternOperationWrapper(IOperation operation)
@@ -31,15 +29,15 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public object OperatorKind => throw new NotImplementedException(
-                  "Property 'IRelationalPatternOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
+                    "Property 'IRelationalPatternOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
                 public IOperation Value => ValueAccessor(this.WrappedOperation);
                 public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
                 public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
                 public static explicit operator IRelationalPatternOperationWrapper(
-                  IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
+                    IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator IPatternOperationWrapper(
-                  IRelationalPatternOperationWrapper wrapper) =>
-                  IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+                    IRelationalPatternOperationWrapper
+                        wrapper) => IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IRelationalPatternOperationWrapper FromOperation(IOperation operation)
                 {
                         if (operation == null) {
@@ -48,7 +46,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IRelationalPatternOperationWrapper(operation);
@@ -56,8 +54,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

@@ -7,24 +7,25 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IPatternOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IPatternOperation";
+        internal readonly struct IPatternOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IPatternOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ITypeSymbol> InputTypeAccessor;
                 private static readonly Func<IOperation, ITypeSymbol> NarrowedTypeAccessor;
                 private readonly IOperation operation;
                 static IPatternOperationWrapper()
                 {
-                        WrappedType =
-                          OperationWrapperHelper.GetWrappedType(typeof(IPatternOperationWrapper));
-                        InputTypeAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
-                            WrappedType, nameof(InputType));
-                        NarrowedTypeAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
-                            WrappedType, nameof(NarrowedType));
+                        WrappedType = OperationWrapperHelper.GetWrappedType(
+                            typeof(IPatternOperationWrapper));
+                        InputTypeAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                                      WrappedType, nameof(InputType));
+                        NarrowedTypeAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                                      WrappedType, nameof(NarrowedType));
                 }
 
                 private IPatternOperationWrapper(IOperation operation)
@@ -44,7 +45,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IPatternOperationWrapper(operation);
@@ -52,8 +53,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
 
                 internal static IPatternOperationWrapper FromUpcast(IOperation operation)

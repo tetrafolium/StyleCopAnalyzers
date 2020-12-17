@@ -25,8 +25,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1128CodeFixProvider))]
         [Shared]
-        internal class SA1128CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1128CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1128ConstructorInitializerMustBeOnOwnLine.DiagnosticId);
@@ -39,79 +38,75 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    ReadabilityResources.SA1128CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1128CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(ReadabilityResources.SA1128CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1128CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
                         var settings = SettingsHelper.GetStyleCopSettings(
-                          document.Project.AnalyzerOptions, cancellationToken);
+                            document.Project.AnalyzerOptions, cancellationToken);
                         var newLine = FormattingHelper.GetNewLineTrivia(document);
 
-                        var constructorInitializer =
-                          (ConstructorInitializerSyntax)
-                            syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
-                        var constructorDeclaration =
-                          (ConstructorDeclarationSyntax) constructorInitializer.Parent;
+                        var constructorInitializer
+                            = (ConstructorInitializerSyntax)
+                                  syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
+                        var constructorDeclaration
+                            = (ConstructorDeclarationSyntax) constructorInitializer.Parent;
 
                         var newConstructorDeclaration = ReformatConstructorDeclaration(
-                          constructorDeclaration, settings.Indentation, newLine);
+                            constructorDeclaration, settings.Indentation, newLine);
 
-                        var newSyntaxRoot =
-                          syntaxRoot.ReplaceNode(constructorDeclaration, newConstructorDeclaration);
+                        var newSyntaxRoot = syntaxRoot.ReplaceNode(
+                            constructorDeclaration, newConstructorDeclaration);
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
                 private static ConstructorDeclarationSyntax ReformatConstructorDeclaration(
-                  ConstructorDeclarationSyntax constructorDeclaration,
-                  IndentationSettings indentationSettings,
-                  SyntaxTrivia newLine)
+                    ConstructorDeclarationSyntax constructorDeclaration,
+                    IndentationSettings indentationSettings, SyntaxTrivia newLine)
                 {
                         var constructorInitializer = constructorDeclaration.Initializer;
 
-                        var newParameterList =
-                          constructorDeclaration.ParameterList.WithTrailingTrivia(
-                            constructorDeclaration.ParameterList.GetTrailingTrivia()
-                              .WithoutTrailingWhitespace()
-                              .Add(newLine));
+                        var newParameterList
+                            = constructorDeclaration.ParameterList.WithTrailingTrivia(
+                                constructorDeclaration.ParameterList.GetTrailingTrivia()
+                                    .WithoutTrailingWhitespace()
+                                    .Add(newLine));
 
                         var indentationSteps = IndentationHelper.GetIndentationSteps(
-                          indentationSettings, constructorDeclaration);
+                            indentationSettings, constructorDeclaration);
                         var indentation = IndentationHelper.GenerateWhitespaceTrivia(
-                          indentationSettings, indentationSteps + 1);
+                            indentationSettings, indentationSteps + 1);
 
-                        var newColonTrailingTrivia = constructorInitializer.ColonToken
-                                                       .TrailingTrivia.WithoutTrailingWhitespace();
+                        var newColonTrailingTrivia
+                            = constructorInitializer.ColonToken.TrailingTrivia
+                                  .WithoutTrailingWhitespace();
 
-                        var newColonToken =
-                          constructorInitializer.ColonToken.WithLeadingTrivia(indentation)
-                            .WithTrailingTrivia(newColonTrailingTrivia);
+                        var newColonToken
+                            = constructorInitializer.ColonToken.WithLeadingTrivia(indentation)
+                                  .WithTrailingTrivia(newColonTrailingTrivia);
 
-                        var newInitializer =
-                          constructorInitializer.WithColonToken(newColonToken)
-                            .WithThisOrBaseKeyword(
-                              constructorInitializer.ThisOrBaseKeyword.WithLeadingTrivia(
-                                SyntaxFactory.Space));
+                        var newInitializer
+                            = constructorInitializer.WithColonToken(newColonToken)
+                                  .WithThisOrBaseKeyword(
+                                      constructorInitializer.ThisOrBaseKeyword.WithLeadingTrivia(
+                                          SyntaxFactory.Space));
 
                         return constructorDeclaration.WithParameterList(newParameterList)
-                          .WithInitializer(newInitializer);
+                            .WithInitializer(newInitializer);
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider
-                {
+                private class FixAll : DocumentBasedFixAllProvider {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
@@ -119,32 +114,31 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         = ReadabilityResources.SA1128CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                          FixAllContext fixAllContext,
-                          Document document,
-                          ImmutableArray<Diagnostic> diagnostics)
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
-                                var syntaxRoot =
-                                  await document.GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                                    .ConfigureAwait(false);
+                                var syntaxRoot
+                                    = await document
+                                          .GetSyntaxRootAsync(fixAllContext.CancellationToken)
+                                          .ConfigureAwait(false);
                                 var settings = SettingsHelper.GetStyleCopSettings(
-                                  document.Project.AnalyzerOptions,
-                                  fixAllContext.CancellationToken);
+                                    document.Project.AnalyzerOptions,
+                                    fixAllContext.CancellationToken);
                                 var newLine = FormattingHelper.GetNewLineTrivia(document);
 
                                 var nodes = diagnostics.Select(
-                                  diagnostic =>
-                                    syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent);
+                                    diagnostic => syntaxRoot
+                                                      .FindNode(diagnostic.Location.SourceSpan)
+                                                      .Parent);
 
-                                return syntaxRoot.ReplaceNodes(
-                                  nodes,
-                                  (originalNode, rewrittenNode) => ReformatConstructorDeclaration(
-                                    (ConstructorDeclarationSyntax) rewrittenNode,
-                                    settings.Indentation,
-                                    newLine));
+                                return syntaxRoot.ReplaceNodes(nodes,
+                                    (originalNode, rewrittenNode) => ReformatConstructorDeclaration(
+                                        (ConstructorDeclarationSyntax) rewrittenNode,
+                                        settings.Indentation, newLine));
                         }
                 }
         }

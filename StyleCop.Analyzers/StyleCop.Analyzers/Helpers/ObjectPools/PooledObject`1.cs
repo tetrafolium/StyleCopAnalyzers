@@ -12,16 +12,14 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         /// this is RAII object to automatically release pooled object when its owning pool.
         /// </summary>
         /// <typeparam name="T">The type of the pooled object.</typeparam>
-        internal struct PooledObject<T> : IDisposable where T : class
-        {
+        internal struct PooledObject<T> : IDisposable where T : class {
                 private readonly Action<ObjectPool<T>, T> releaser;
                 private readonly ObjectPool<T> pool;
                 private T pooledObject;
 
-                public PooledObject(ObjectPool<T> pool,
-                                    Func<ObjectPool<T>, T> allocator,
-                                    Action<ObjectPool<T>, T> releaser)
-                  : this()
+                public PooledObject(ObjectPool<T> pool, Func<ObjectPool<T>, T> allocator,
+                    Action<ObjectPool<T>, T> releaser)
+                    : this()
                 {
                         this.pool = pool;
                         this.pooledObject = allocator(pool);
@@ -39,28 +37,28 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 }
 
                 public static PooledObject<Stack<TItem>> Create<TItem>(
-                  ObjectPool<Stack<TItem>> pool)
+                    ObjectPool<Stack<TItem>> pool)
                 {
                         return new PooledObject<Stack<TItem>>(pool, Allocator, Releaser);
                 }
 
                 public static PooledObject<Queue<TItem>> Create<TItem>(
-                  ObjectPool<Queue<TItem>> pool)
+                    ObjectPool<Queue<TItem>> pool)
                 {
                         return new PooledObject<Queue<TItem>>(pool, Allocator, Releaser);
                 }
 
                 public static PooledObject<HashSet<TItem>> Create<TItem>(
-                  ObjectPool<HashSet<TItem>> pool)
+                    ObjectPool<HashSet<TItem>> pool)
                 {
                         return new PooledObject<HashSet<TItem>>(pool, Allocator, Releaser);
                 }
 
                 public static PooledObject<Dictionary<TKey, TValue>> Create<TKey, TValue>(
-                  ObjectPool<Dictionary<TKey, TValue>> pool)
+                    ObjectPool<Dictionary<TKey, TValue>> pool)
                 {
                         return new PooledObject<Dictionary<TKey, TValue>>(
-                          pool, Allocator, Releaser);
+                            pool, Allocator, Releaser);
                 }
 
                 public static PooledObject<List<TItem>> Create<TItem>(ObjectPool<List<TItem>> pool)
@@ -111,21 +109,20 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                         return pool.AllocateAndClear();
                 }
 
-                private static void Releaser<TItem>(ObjectPool<HashSet<TItem>> pool,
-                                                    HashSet<TItem> obj)
+                private static void Releaser<TItem>(
+                    ObjectPool<HashSet<TItem>> pool, HashSet<TItem> obj)
                 {
                         pool.ClearAndFree(obj);
                 }
 
                 private static Dictionary<TKey, TValue> Allocator<TKey, TValue>(
-                  ObjectPool<Dictionary<TKey, TValue>> pool)
+                    ObjectPool<Dictionary<TKey, TValue>> pool)
                 {
                         return pool.AllocateAndClear();
                 }
 
                 private static void Releaser<TKey, TValue>(
-                  ObjectPool<Dictionary<TKey, TValue>> pool,
-                  Dictionary<TKey, TValue> obj)
+                    ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> obj)
                 {
                         pool.ClearAndFree(obj);
                 }

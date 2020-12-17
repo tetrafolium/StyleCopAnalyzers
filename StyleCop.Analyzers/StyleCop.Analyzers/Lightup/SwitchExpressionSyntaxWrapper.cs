@@ -5,13 +5,12 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal partial struct SwitchExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
-        {
+        internal partial struct SwitchExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax> {
                 public SwitchExpressionSyntaxWrapper AddArms(
-                  params SwitchExpressionArmSyntaxWrapper[] arms)
+                    params SwitchExpressionArmSyntaxWrapper[] arms)
                 {
                         return new SwitchExpressionSyntaxWrapper(
-                          this.WithArms(this.Arms.AddRange(arms)));
+                            this.WithArms(this.Arms.AddRange(arms)));
                 }
         }
 }

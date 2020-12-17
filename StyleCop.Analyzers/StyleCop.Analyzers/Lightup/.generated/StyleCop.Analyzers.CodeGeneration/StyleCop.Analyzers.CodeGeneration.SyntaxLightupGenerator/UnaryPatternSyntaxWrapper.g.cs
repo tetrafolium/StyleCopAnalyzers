@@ -10,41 +10,39 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct UnaryPatternSyntaxWrapper
-          : ISyntaxWrapper<CSharpSyntaxNode>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.UnaryPatternSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.UnaryPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> OperatorTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, CSharpSyntaxNode> PatternAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
-                  WithOperatorTokenAccessor;
+                    WithOperatorTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, CSharpSyntaxNode, CSharpSyntaxNode>
-                  WithPatternAccessor;
+                    WithPatternAccessor;
 
                 private readonly CSharpSyntaxNode node;
 
                 static UnaryPatternSyntaxWrapper()
                 {
-                        WrappedType =
-                          SyntaxWrapperHelper.GetWrappedType(typeof(UnaryPatternSyntaxWrapper));
-                        OperatorTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                              WrappedType, nameof(OperatorToken));
-                        PatternAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                              WrappedType, nameof(Pattern));
-                        WithOperatorTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                              WrappedType, nameof(OperatorToken));
-                        WithPatternAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                              WrappedType, nameof(Pattern));
+                        WrappedType
+                            = SyntaxWrapperHelper.GetWrappedType(typeof(UnaryPatternSyntaxWrapper));
+                        OperatorTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                      WrappedType, nameof(OperatorToken));
+                        PatternAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                                      WrappedType, nameof(Pattern));
+                        WithOperatorTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                      WrappedType, nameof(OperatorToken));
+                        WithPatternAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                CSharpSyntaxNode>(WrappedType, nameof(Pattern));
                 }
 
                 private UnaryPatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
@@ -67,7 +65,7 @@ namespace StyleCop.Analyzers.Lightup
                 }
 
                 public static explicit operator UnaryPatternSyntaxWrapper(
-                  ExpressionOrPatternSyntaxWrapper node)
+                    ExpressionOrPatternSyntaxWrapper node)
                 {
                         return (UnaryPatternSyntaxWrapper) node.SyntaxNode;
                 }
@@ -80,20 +78,20 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new UnaryPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator PatternSyntaxWrapper(
-                  UnaryPatternSyntaxWrapper wrapper)
+                    UnaryPatternSyntaxWrapper wrapper)
                 {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
                 public static implicit operator ExpressionOrPatternSyntaxWrapper(
-                  UnaryPatternSyntaxWrapper wrapper)
+                    UnaryPatternSyntaxWrapper wrapper)
                 {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
@@ -111,13 +109,13 @@ namespace StyleCop.Analyzers.Lightup
                 public UnaryPatternSyntaxWrapper WithOperatorToken(SyntaxToken operatorToken)
                 {
                         return new UnaryPatternSyntaxWrapper(
-                          WithOperatorTokenAccessor(this.SyntaxNode, operatorToken));
+                            WithOperatorTokenAccessor(this.SyntaxNode, operatorToken));
                 }
 
                 public UnaryPatternSyntaxWrapper WithPattern(PatternSyntaxWrapper pattern)
                 {
                         return new UnaryPatternSyntaxWrapper(
-                          WithPatternAccessor(this.SyntaxNode, pattern));
+                            WithPatternAccessor(this.SyntaxNode, pattern));
                 }
         }
 }

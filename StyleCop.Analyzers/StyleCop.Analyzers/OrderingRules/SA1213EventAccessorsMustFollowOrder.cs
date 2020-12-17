@@ -39,40 +39,31 @@ namespace StyleCop.Analyzers.OrderingRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1213EventAccessorsMustFollowOrder : DiagnosticAnalyzer
-        {
+        internal class SA1213EventAccessorsMustFollowOrder : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1213EventAccessorsMustFollowOrder"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1213";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1213.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(OrderingResources.SA1213Title),
-                                                OrderingResources.ResourceManager,
-                                                typeof(OrderingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(OrderingResources.SA1213MessageFormat),
-                                                OrderingResources.ResourceManager,
-                                                typeof(OrderingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(OrderingResources.SA1213Description),
-                                                OrderingResources.ResourceManager,
-                                                typeof(OrderingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1213.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(OrderingResources.SA1213Title),
+                        OrderingResources.ResourceManager, typeof(OrderingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(OrderingResources.SA1213MessageFormat),
+                        OrderingResources.ResourceManager, typeof(OrderingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(OrderingResources.SA1213Description),
+                        OrderingResources.ResourceManager, typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.OrderingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> EventDeclarationAction =
-                  HandleEventDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> EventDeclarationAction
+                    = HandleEventDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -84,8 +75,8 @@ namespace StyleCop.Analyzers.OrderingRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(EventDeclarationAction,
-                                                         SyntaxKind.EventDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            EventDeclarationAction, SyntaxKind.EventDeclaration);
                 }
 
                 private static void HandleEventDeclaration(SyntaxNodeAnalysisContext context)
@@ -102,11 +93,13 @@ namespace StyleCop.Analyzers.OrderingRules
                         }
 
                         if (accessors [0]
-                                .Kind() == SyntaxKind.RemoveAccessorDeclaration &&
-                            accessors [1]
-                                .Kind() == SyntaxKind.AddAccessorDeclaration) {
+                                    .Kind()
+                                == SyntaxKind.RemoveAccessorDeclaration
+                            && accessors [1]
+                                    .Kind()
+                                == SyntaxKind.AddAccessorDeclaration) {
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                  Descriptor, accessors[0].Keyword.GetLocation()));
+                                    Descriptor, accessors[0].Keyword.GetLocation()));
                         }
                 }
         }

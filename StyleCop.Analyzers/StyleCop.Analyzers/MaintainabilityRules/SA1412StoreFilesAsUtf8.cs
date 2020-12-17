@@ -23,41 +23,33 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1412StoreFilesAsUtf8 : DiagnosticAnalyzer
-        {
+        internal class SA1412StoreFilesAsUtf8 : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1412StoreFilesAsUtf8"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1412";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1412.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1412Title),
-                                                MaintainabilityResources.ResourceManager,
-                                                typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1412MessageFormat),
-                    MaintainabilityResources.ResourceManager,
-                    typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1412Description),
-                                                MaintainabilityResources.ResourceManager,
-                                                typeof(MaintainabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1412.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(MaintainabilityResources.SA1412Title),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(MaintainabilityResources.SA1412MessageFormat),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(
+                        nameof(MaintainabilityResources.SA1412Description),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.MaintainabilityRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.DisabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.DisabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                  HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
                 private static readonly byte[] Utf8Preamble = Encoding.UTF8.GetPreamble();
 
@@ -96,13 +88,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         byte[] preamble = context.Tree.Encoding.GetPreamble();
 
                         if (!IsUtf8Preamble(preamble)) {
-                                ImmutableDictionary<string, string> properties =
-                                  ImmutableDictionary<string, string>.Empty.SetItem(
-                                    EncodingProperty, context.Tree.Encoding?.WebName ?? "<null>");
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                  Descriptor,
-                                  Location.Create(context.Tree, TextSpan.FromBounds(0, 0)),
-                                  properties));
+                                ImmutableDictionary<string, string> properties
+                                    = ImmutableDictionary<string, string>.Empty.SetItem(
+                                        EncodingProperty,
+                                        context.Tree.Encoding?.WebName ?? "<null>");
+                                context.ReportDiagnostic(Diagnostic.Create(Descriptor,
+                                    Location.Create(context.Tree, TextSpan.FromBounds(0, 0)),
+                                    properties));
                         }
                 }
 

@@ -19,9 +19,8 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Helper class for "Fix all occurrences" code fix providers.
         /// </summary>
-        internal partial class CustomBatchFixAllProvider : FixAllProvider
-        {
-                protected CustomBatchFixAllProvider() {}
+        internal partial class CustomBatchFixAllProvider : FixAllProvider {
+                protected CustomBatchFixAllProvider() { }
 
                 public static FixAllProvider Instance { get; }
                 = new CustomBatchFixAllProvider();
@@ -29,68 +28,64 @@ namespace StyleCop.Analyzers.Helpers
                 public override async Task<CodeAction> GetFixAsync(FixAllContext fixAllContext)
                 {
                         if (fixAllContext.Document != null) {
-                                var documentsAndDiagnosticsToFixMap =
-                                  await this.GetDocumentDiagnosticsToFixAsync(fixAllContext)
-                                    .ConfigureAwait(false);
+                                var documentsAndDiagnosticsToFixMap
+                                    = await this.GetDocumentDiagnosticsToFixAsync(fixAllContext)
+                                          .ConfigureAwait(false);
                                 return await this
-                                  .GetFixAsync(documentsAndDiagnosticsToFixMap, fixAllContext)
-                                  .ConfigureAwait(false);
+                                    .GetFixAsync(documentsAndDiagnosticsToFixMap, fixAllContext)
+                                    .ConfigureAwait(false);
                         } else {
-                                var projectsAndDiagnosticsToFixMap =
-                                  await this.GetProjectDiagnosticsToFixAsync(fixAllContext)
-                                    .ConfigureAwait(false);
+                                var projectsAndDiagnosticsToFixMap
+                                    = await this.GetProjectDiagnosticsToFixAsync(fixAllContext)
+                                          .ConfigureAwait(false);
                                 return await this
-                                  .GetFixAsync(projectsAndDiagnosticsToFixMap, fixAllContext)
-                                  .ConfigureAwait(false);
+                                    .GetFixAsync(projectsAndDiagnosticsToFixMap, fixAllContext)
+                                    .ConfigureAwait(false);
                         }
                 }
 
                 public virtual async Task<CodeAction> GetFixAsync(
-                  ImmutableDictionary<Document, ImmutableArray<Diagnostic>>
-                    documentsAndDiagnosticsToFixMap,
-                  FixAllContext fixAllContext)
+                    ImmutableDictionary<Document, ImmutableArray<Diagnostic>>
+                        documentsAndDiagnosticsToFixMap,
+                    FixAllContext fixAllContext)
                 {
-                        if (documentsAndDiagnosticsToFixMap != null &&
-                            documentsAndDiagnosticsToFixMap.Any()) {
+                        if (documentsAndDiagnosticsToFixMap != null
+                            && documentsAndDiagnosticsToFixMap.Any()) {
                                 fixAllContext.CancellationToken.ThrowIfCancellationRequested();
 
-                                var documents =
-                                  documentsAndDiagnosticsToFixMap.Keys.ToImmutableArray();
+                                var documents
+                                    = documentsAndDiagnosticsToFixMap.Keys.ToImmutableArray();
                                 var fixesBag = new List<CodeAction>[ documents.Length ];
                                 var fixOperations = new List<Task>(documents.Length);
                                 for (int index = 0; index < documents.Length; index++) {
                                         if (fixAllContext.CancellationToken
-                                              .IsCancellationRequested) {
+                                                .IsCancellationRequested) {
                                                 break;
                                         }
 
                                         var document = documents[index];
                                         fixesBag[index] = new List<CodeAction>();
-                                        fixOperations.Add(this.AddDocumentFixesAsync(
-                                          document,
-                                          documentsAndDiagnosticsToFixMap[document],
-                                          fixesBag[index].Add,
-                                          fixAllContext));
+                                        fixOperations.Add(this.AddDocumentFixesAsync(document,
+                                            documentsAndDiagnosticsToFixMap[document],
+                                            fixesBag[index].Add, fixAllContext));
                                 }
 
                                 await Task.WhenAll(fixOperations).ConfigureAwait(false);
 
                                 if (fixesBag.Any(fixes => fixes.Count > 0)) {
                                         return await this
-                                          .TryGetMergedFixAsync(fixesBag.SelectMany(i => i),
-                                                                fixAllContext)
-                                          .ConfigureAwait(false);
+                                            .TryGetMergedFixAsync(
+                                                fixesBag.SelectMany(i => i), fixAllContext)
+                                            .ConfigureAwait(false);
                                 }
                         }
 
                         return null;
                 }
 
-                public async virtual Task AddDocumentFixesAsync(
-                  Document document,
-                  ImmutableArray<Diagnostic> diagnostics,
-                  Action<CodeAction> addFix,
-                  FixAllContext fixAllContext)
+                public async virtual Task AddDocumentFixesAsync(Document document,
+                    ImmutableArray<Diagnostic> diagnostics, Action<CodeAction> addFix,
+                    FixAllContext fixAllContext)
                 {
                         Debug.Assert(!diagnostics.IsDefault, "!diagnostics.IsDefault");
                         var cancellationToken = fixAllContext.CancellationToken;
@@ -122,12 +117,12 @@ namespace StyleCop.Analyzers.Helpers
                         // IExtensionManager.PerformFunctionAsync() so that a buggy extension that
                         // throws can't bring down the host?
                         var task = fixAllContext.CodeFixProvider.RegisterCodeFixesAsync(context)
-                          ?? SpecializedTasks.CompletedTask;
+                            ?? SpecializedTasks.CompletedTask;
                         await task.ConfigureAwait(false);
 
                         cancellationToken.ThrowIfCancellationRequested();
-                        localFixes.RemoveAll(action => action.EquivalenceKey !=
-                                                       fixAllContext.CodeActionEquivalenceKey);
+                        localFixes.RemoveAll(action => action.EquivalenceKey
+                                != fixAllContext.CodeActionEquivalenceKey);
                         fixes[currentFixIndex] = localFixes;
                 });
         }
@@ -144,9 +139,9 @@ namespace StyleCop.Analyzers.Helpers
         }
 }
 
-public virtual async Task<CodeAction>
-GetFixAsync(ImmutableDictionary<Project, ImmutableArray<Diagnostic>> projectsAndDiagnosticsToFixMap,
-            FixAllContext fixAllContext)
+public virtual async Task<CodeAction> GetFixAsync(
+    ImmutableDictionary<Project, ImmutableArray<Diagnostic>> projectsAndDiagnosticsToFixMap,
+    FixAllContext fixAllContext)
 {
         if (projectsAndDiagnosticsToFixMap != null && projectsAndDiagnosticsToFixMap.Any()) {
                 var fixesBag = new List<CodeAction>[ projectsAndDiagnosticsToFixMap.Count ];
@@ -161,46 +156,43 @@ GetFixAsync(ImmutableDictionary<Project, ImmutableArray<Diagnostic>> projectsAnd
                         var diagnostics = projectsAndDiagnosticsToFixMap[project];
                         fixesBag[index] = new List<CodeAction>();
                         fixOperations.Add(this.AddProjectFixesAsync(
-                          project, diagnostics, fixesBag[index].Add, fixAllContext));
+                            project, diagnostics, fixesBag[index].Add, fixAllContext));
                 }
 
                 await Task.WhenAll(fixOperations).ConfigureAwait(false);
 
                 if (fixesBag.Any(fixes => fixes.Count > 0)) {
                         return await this
-                          .TryGetMergedFixAsync(fixesBag.SelectMany(i => i), fixAllContext)
-                          .ConfigureAwait(false);
+                            .TryGetMergedFixAsync(fixesBag.SelectMany(i => i), fixAllContext)
+                            .ConfigureAwait(false);
                 }
         }
 
         return null;
 }
 
-public virtual Task
-AddProjectFixesAsync(Project project,
-                     IEnumerable<Diagnostic> diagnostics,
-                     Action<CodeAction> addFix,
-                     FixAllContext fixAllContext)
+public virtual Task AddProjectFixesAsync(Project project, IEnumerable<Diagnostic> diagnostics,
+    Action<CodeAction> addFix, FixAllContext fixAllContext)
 {
         throw new NotImplementedException();
 }
 
-public virtual async Task<CodeAction>
-TryGetMergedFixAsync(IEnumerable<CodeAction> batchOfFixes, FixAllContext fixAllContext)
+public virtual async Task<CodeAction> TryGetMergedFixAsync(
+    IEnumerable<CodeAction> batchOfFixes, FixAllContext fixAllContext)
 {
         if (batchOfFixes == null) {
                 throw new ArgumentNullException(nameof(batchOfFixes));
         }
 
         if (!batchOfFixes.Any()) {
-                throw new ArgumentException($"{nameof(batchOfFixes)} cannot be empty.",
-                                            nameof(batchOfFixes));
+                throw new ArgumentException(
+                    $"{nameof(batchOfFixes)} cannot be empty.", nameof(batchOfFixes));
         }
 
         var solution = fixAllContext.Solution;
-        var newSolution =
-          await this.TryMergeFixesAsync(solution, batchOfFixes, fixAllContext.CancellationToken)
-            .ConfigureAwait(false);
+        var newSolution
+            = await this.TryMergeFixesAsync(solution, batchOfFixes, fixAllContext.CancellationToken)
+                  .ConfigureAwait(false);
         if (newSolution != null && newSolution != solution) {
                 var title = this.GetFixAllTitle(fixAllContext);
                 return CodeAction.Create(title, cancellationToken => Task.FromResult(newSolution));
@@ -209,8 +201,7 @@ TryGetMergedFixAsync(IEnumerable<CodeAction> batchOfFixes, FixAllContext fixAllC
         return null;
 }
 
-public virtual string
-GetFixAllTitle(FixAllContext fixAllContext)
+public virtual string GetFixAllTitle(FixAllContext fixAllContext)
 {
         var diagnosticIds = fixAllContext.DiagnosticIds;
         string diagnosticId;
@@ -221,28 +212,25 @@ GetFixAllTitle(FixAllContext fixAllContext)
         }
 
         switch (fixAllContext.Scope) {
-                case FixAllScope.Custom:
-                        return string.Format(HelpersResources.FixAllOccurrencesOfDiagnostic,
-                                             diagnosticId);
+        case FixAllScope.Custom:
+                return string.Format(HelpersResources.FixAllOccurrencesOfDiagnostic, diagnosticId);
 
-                case FixAllScope.Document:
-                        var document = fixAllContext.Document;
-                        return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInScope,
-                                             diagnosticId,
-                                             document.Name);
+        case FixAllScope.Document:
+                var document = fixAllContext.Document;
+                return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInScope,
+                    diagnosticId, document.Name);
 
-                case FixAllScope.Project:
-                        var project = fixAllContext.Project;
-                        return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInScope,
-                                             diagnosticId,
-                                             project.Name);
+        case FixAllScope.Project:
+                var project = fixAllContext.Project;
+                return string.Format(HelpersResources.FixAllOccurrencesOfDiagnosticInScope,
+                    diagnosticId, project.Name);
 
-                case FixAllScope.Solution:
-                        return string.Format(
-                          HelpersResources.FixAllOccurrencesOfDiagnosticInSolution, diagnosticId);
+        case FixAllScope.Solution:
+                return string.Format(
+                    HelpersResources.FixAllOccurrencesOfDiagnosticInSolution, diagnosticId);
 
-                default:
-                        throw new InvalidOperationException("Not reachable");
+        default:
+                throw new InvalidOperationException("Not reachable");
         }
 }
 
@@ -258,10 +246,8 @@ GetProjectDiagnosticsToFixAsync(FixAllContext fixAllContext)
         return FixAllContextHelper.GetProjectDiagnosticsToFixAsync(fixAllContext);
 }
 
-public virtual async Task<Solution>
-TryMergeFixesAsync(Solution oldSolution,
-                   IEnumerable<CodeAction> codeActions,
-                   CancellationToken cancellationToken)
+public virtual async Task<Solution> TryMergeFixesAsync(
+    Solution oldSolution, IEnumerable<CodeAction> codeActions, CancellationToken cancellationToken)
 {
         var changedDocumentsMap = new Dictionary<DocumentId, Document>();
         Dictionary<DocumentId, List<Document>> documentsToMergeMap = null;
@@ -270,9 +256,9 @@ TryMergeFixesAsync(Solution oldSolution,
                 cancellationToken.ThrowIfCancellationRequested();
 
                 // TODO: Parallelize GetChangedSolutionInternalAsync for codeActions
-                ImmutableArray<CodeActionOperation> operations =
-                  await codeAction.GetPreviewOperationsAsync(cancellationToken)
-                    .ConfigureAwait(false);
+                ImmutableArray<CodeActionOperation> operations
+                    = await codeAction.GetPreviewOperationsAsync(cancellationToken)
+                          .ConfigureAwait(false);
                 ApplyChangesOperation singleApplyChangesOperation = null;
                 foreach (var operation in operations) {
                         if (!(operation is ApplyChangesOperation applyChangesOperation)) {
@@ -297,8 +283,8 @@ TryMergeFixesAsync(Solution oldSolution,
 
                 // TODO: Handle added/removed documents
                 // TODO: Handle changed/added/removed additional documents
-                var documentIdsWithChanges =
-                  solutionChanges.GetProjectChanges().SelectMany(p => p.GetChangedDocuments());
+                var documentIdsWithChanges
+                    = solutionChanges.GetProjectChanges().SelectMany(p => p.GetChangedDocuments());
 
                 foreach (var documentId in documentIdsWithChanges) {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -311,13 +297,13 @@ TryMergeFixesAsync(Solution oldSolution,
                                         var documentsToMerge = new List<Document>();
                                         documentsToMerge.Add(existingDocument);
                                         documentsToMerge.Add(document);
-                                        documentsToMergeMap =
-                                          documentsToMergeMap ?? new Dictionary<DocumentId,
-                                                                               List<Document>>();
+                                        documentsToMergeMap
+                                            = documentsToMergeMap ?? new Dictionary<DocumentId,
+                                                List<Document>>();
                                         documentsToMergeMap[documentId] = documentsToMerge;
                                 } else {
                                         documentsToMergeMap [documentId]
-                                          .Add(document);
+                                            .Add(document);
                                 }
                         } else {
                                 changedDocumentsMap[documentId] = document;
@@ -330,8 +316,8 @@ TryMergeFixesAsync(Solution oldSolution,
                 cancellationToken.ThrowIfCancellationRequested();
                 var document = kvp.Value;
                 if (document != null) {
-                        var documentText =
-                          await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                        var documentText
+                            = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         currentSolution = currentSolution.WithDocumentText(kvp.Key, documentText);
                 }
         }
@@ -348,24 +334,22 @@ TryMergeFixesAsync(Solution oldSolution,
                         var oldDocument = oldSolution.GetDocument(documentId);
 
                         mergeTasks[i] = Task.Run(async() => {
-                                var appliedChanges =
-                                  (await documentsToMerge [0]
-                                     .GetTextChangesAsync(oldDocument, cancellationToken)
-                                     .ConfigureAwait(false))
-                                    .ToList();
+                                var appliedChanges
+                                    = (await documentsToMerge [0]
+                                            .GetTextChangesAsync(oldDocument, cancellationToken)
+                                            .ConfigureAwait(false))
+                                          .ToList();
 
                                 foreach (var document in documentsToMerge.Skip(1)) {
                                         cancellationToken.ThrowIfCancellationRequested();
-                                        appliedChanges =
-                                          await TryAddDocumentMergeChangesAsync(oldDocument,
-                                                                                document,
-                                                                                appliedChanges,
-                                                                                cancellationToken)
-                                            .ConfigureAwait(false);
+                                        appliedChanges
+                                            = await TryAddDocumentMergeChangesAsync(oldDocument,
+                                                document, appliedChanges, cancellationToken)
+                                                  .ConfigureAwait(false);
                                 }
 
                                 var oldText = await oldDocument.GetTextAsync(cancellationToken)
-                                                .ConfigureAwait(false);
+                                                  .ConfigureAwait(false);
                                 var newText = oldText.WithChanges(appliedChanges);
                                 mergedDocuments.TryAdd(documentId, newText);
                         });
@@ -394,20 +378,17 @@ TryMergeFixesAsync(Solution oldSolution,
 /// <param name="cumulativeChanges">Existing merged changes from other batch fixes into which
 /// newDocument changes are being merged.</param> <param name="cancellationToken">Cancellation
 /// token.</param> <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-private static async Task<List<TextChange>>
-TryAddDocumentMergeChangesAsync(Document oldDocument,
-                                Document newDocument,
-                                List<TextChange> cumulativeChanges,
-                                CancellationToken cancellationToken)
+private static async Task<List<TextChange>> TryAddDocumentMergeChangesAsync(Document oldDocument,
+    Document newDocument, List<TextChange> cumulativeChanges, CancellationToken cancellationToken)
 {
         var successfullyMergedChanges = new List<TextChange>();
 
         int cumulativeChangeIndex = 0;
         foreach (var change in await newDocument.GetTextChangesAsync(oldDocument, cancellationToken)
-                   .ConfigureAwait(false)) {
+                     .ConfigureAwait(false)) {
                 cancellationToken.ThrowIfCancellationRequested();
-                while (cumulativeChangeIndex < cumulativeChanges.Count &&
-                       cumulativeChanges[cumulativeChangeIndex].Span.End < change.Span.Start) {
+                while (cumulativeChangeIndex < cumulativeChanges.Count
+                    && cumulativeChanges[cumulativeChangeIndex].Span.End < change.Span.Start) {
                         cancellationToken.ThrowIfCancellationRequested();
 
                         // Existing change that does not overlap with the current change in
@@ -423,8 +404,8 @@ TryAddDocumentMergeChangesAsync(Document oldDocument,
                                 // existing change
                                 successfullyMergedChanges.Add(change);
                         } else {
-                                if (change.Span != cumulativeChange.Span ||
-                                    change.NewText != cumulativeChange.NewText) {
+                                if (change.Span != cumulativeChange.Span
+                                    || change.NewText != cumulativeChange.NewText) {
                                         // The current change in consideration overlaps an existing
                                         // change but the changes are not identical. Bail out merge
                                         // efforts and return the original 'cumulativeChanges'.

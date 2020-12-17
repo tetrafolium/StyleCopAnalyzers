@@ -26,8 +26,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1133CodeFixProvider))]
         [Shared]
-        internal class SA1133CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1133CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1133DoNotCombineAttributes.DiagnosticId);
@@ -40,75 +39,71 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    ReadabilityResources.SA1133CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1133CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(ReadabilityResources.SA1133CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1133CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
-                        var nodeInSourceSpan =
-                          syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                                              : true);
-                        AttributeListSyntax attributeList =
-                          nodeInSourceSpan.FirstAncestorOrSelf<AttributeListSyntax>();
+                                             .ConfigureAwait(false);
+                        var nodeInSourceSpan = syntaxRoot.FindNode(
+                            diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                            : true);
+                        AttributeListSyntax attributeList
+                            = nodeInSourceSpan.FirstAncestorOrSelf<AttributeListSyntax>();
 
                         var settings = SettingsHelper.GetStyleCopSettings(
-                          document.Project.AnalyzerOptions, cancellationToken);
+                            document.Project.AnalyzerOptions, cancellationToken);
                         var indentationSteps = IndentationHelper.GetIndentationSteps(
-                          settings.Indentation, attributeList);
+                            settings.Indentation, attributeList);
                         var indentationTrivia = IndentationHelper.GenerateWhitespaceTrivia(
-                          settings.Indentation, indentationSteps);
+                            settings.Indentation, indentationSteps);
 
-                        List<AttributeListSyntax> newAttributeLists =
-                          GetNewAttributeList(attributeList, indentationTrivia);
+                        List<AttributeListSyntax> newAttributeLists
+                            = GetNewAttributeList(attributeList, indentationTrivia);
 
-                        var newSyntaxRoot =
-                          syntaxRoot.ReplaceNode(attributeList, newAttributeLists);
-                        var newDocument =
-                          document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
+                        var newSyntaxRoot
+                            = syntaxRoot.ReplaceNode(attributeList, newAttributeLists);
+                        var newDocument
+                            = document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
 
                         return newDocument;
                 }
 
                 private static List<AttributeListSyntax> GetNewAttributeList(
-                  AttributeListSyntax attributeList,
-                  SyntaxTrivia indentationTrivia)
+                    AttributeListSyntax attributeList, SyntaxTrivia indentationTrivia)
                 {
                         var newAttributeLists = new List<AttributeListSyntax>();
 
                         for (var i = 0; i < attributeList.Attributes.Count; i++) {
                                 var newAttributes = SyntaxFactory.SingletonSeparatedList(
-                                  attributeList
-                                    .Attributes [i]
-                                    .WithLeadingTrivia(attributeList
-                                                         .Attributes [i]
-                                                         .GetLeadingTrivia()
-                                                         .WithoutLeadingWhitespace()));
-                                var newAttributeList =
-                                  SyntaxFactory.AttributeList(attributeList.Target, newAttributes);
+                                    attributeList
+                                        .Attributes [i]
+                                        .WithLeadingTrivia(attributeList
+                                                               .Attributes [i]
+                                                               .GetLeadingTrivia()
+                                                               .WithoutLeadingWhitespace()));
+                                var newAttributeList = SyntaxFactory.AttributeList(
+                                    attributeList.Target, newAttributes);
 
-                                newAttributeList =
-                                  (i == 0) ? newAttributeList.WithLeadingTrivia(
-                                               attributeList.GetLeadingTrivia())
-                                           : newAttributeList.WithLeadingTrivia(indentationTrivia);
+                                newAttributeList = (i == 0)
+                                    ? newAttributeList.WithLeadingTrivia(
+                                        attributeList.GetLeadingTrivia())
+                                    : newAttributeList.WithLeadingTrivia(indentationTrivia);
 
                                 newAttributeList = (i == (attributeList.Attributes.Count - 1))
-                                                     ? newAttributeList.WithTrailingTrivia(
-                                                         attributeList.GetTrailingTrivia())
-                                                     : newAttributeList.WithTrailingTrivia(
-                                                         SyntaxFactory.CarriageReturnLineFeed);
+                                    ? newAttributeList.WithTrailingTrivia(
+                                        attributeList.GetTrailingTrivia())
+                                    : newAttributeList.WithTrailingTrivia(
+                                        SyntaxFactory.CarriageReturnLineFeed);
 
                                 newAttributeLists.Add(newAttributeList);
                         }
@@ -116,49 +111,48 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         return newAttributeLists;
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider
-                {
+                private class FixAll : DocumentBasedFixAllProvider {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
-                        protected override string CodeActionTitle =>
-                          ReadabilityResources.SA1133CodeFix;
+                        protected override string
+                            CodeActionTitle => ReadabilityResources.SA1133CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                          FixAllContext fixAllContext,
-                          Document document,
-                          ImmutableArray<Diagnostic> diagnostics)
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
                                 var settings = SettingsHelper.GetStyleCopSettings(
-                                  document.Project.AnalyzerOptions,
-                                  fixAllContext.CancellationToken);
-                                var syntaxRoot =
-                                  await document.GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                                    .ConfigureAwait(false);
+                                    document.Project.AnalyzerOptions,
+                                    fixAllContext.CancellationToken);
+                                var syntaxRoot
+                                    = await document
+                                          .GetSyntaxRootAsync(fixAllContext.CancellationToken)
+                                          .ConfigureAwait(false);
 
                                 var nodes = diagnostics.Select(
-                                  diagnostic => syntaxRoot
-                                                  .FindNode(diagnostic.Location.SourceSpan,
-                                                            getInnermostNodeForTie
-                                                            : true)
-                                                  .FirstAncestorOrSelf<AttributeListSyntax>());
+                                    diagnostic => syntaxRoot
+                                                      .FindNode(diagnostic.Location.SourceSpan,
+                                                                getInnermostNodeForTie
+                                                                : true)
+                                                      .FirstAncestorOrSelf<AttributeListSyntax>());
 
                                 var newRoot = syntaxRoot.TrackNodes(nodes);
 
                                 foreach (var attributeList in nodes) {
-                                        var indentationSteps =
-                                          IndentationHelper.GetIndentationSteps(
-                                            settings.Indentation, attributeList);
-                                        var indentationTrivia =
-                                          IndentationHelper.GenerateWhitespaceTrivia(
-                                            settings.Indentation, indentationSteps);
+                                        var indentationSteps
+                                            = IndentationHelper.GetIndentationSteps(
+                                                settings.Indentation, attributeList);
+                                        var indentationTrivia
+                                            = IndentationHelper.GenerateWhitespaceTrivia(
+                                                settings.Indentation, indentationSteps);
                                         newRoot = newRoot.ReplaceNode(
-                                          newRoot.GetCurrentNode(attributeList),
-                                          GetNewAttributeList(attributeList, indentationTrivia));
+                                            newRoot.GetCurrentNode(attributeList),
+                                            GetNewAttributeList(attributeList, indentationTrivia));
                                 }
 
                                 return newRoot;

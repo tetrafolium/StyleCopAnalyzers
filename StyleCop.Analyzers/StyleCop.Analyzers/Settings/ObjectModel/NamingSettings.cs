@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         using System.Text.RegularExpressions;
         using LightJson;
 
-        internal class NamingSettings
-        {
+        internal class NamingSettings {
                 /// <summary>
                 /// This is the backing field for the <see cref="AllowedHungarianPrefixes"/>
                 /// property.
@@ -41,62 +40,58 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <param name="namingSettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal NamingSettings(JsonObject namingSettingsObject)
-                  : this()
+                    : this()
                 {
                         foreach (var kvp in namingSettingsObject) {
                                 switch (kvp.Key) {
-                                        case "allowCommonHungarianPrefixes":
-                                                this.AllowCommonHungarianPrefixes =
-                                                  kvp.ToBooleanValue();
-                                                break;
+                                case "allowCommonHungarianPrefixes":
+                                        this.AllowCommonHungarianPrefixes = kvp.ToBooleanValue();
+                                        break;
 
-                                        case "allowedHungarianPrefixes":
-                                                kvp.AssertIsArray();
-                                                foreach (var prefixJsonValue in kvp.Value
-                                                           .AsJsonArray) {
-                                                        var prefix =
-                                                          prefixJsonValue.ToStringValue(kvp.Key);
+                                case "allowedHungarianPrefixes":
+                                        kvp.AssertIsArray();
+                                        foreach (var prefixJsonValue in kvp.Value.AsJsonArray) {
+                                                var prefix = prefixJsonValue.ToStringValue(kvp.Key);
 
-                                                        if (!Regex.IsMatch(prefix,
-                                                                           "^[a-z]{1,2}$")) {
-                                                                continue;
-                                                        }
-
-                                                        this.allowedHungarianPrefixes.Add(prefix);
+                                                if (!Regex.IsMatch(prefix, "^[a-z]{1,2}$")) {
+                                                        continue;
                                                 }
 
-                                                break;
+                                                this.allowedHungarianPrefixes.Add(prefix);
+                                        }
 
-                                        case "allowedNamespaceComponents":
-                                                kvp.AssertIsArray();
-                                                this.allowedNamespaceComponents.AddRange(
-                                                  kvp.Value.AsJsonArray.Select(
-                                                    x => x.ToStringValue(kvp.Key)));
-                                                break;
+                                        break;
 
-                                        case "includeInferredTupleElementNames":
-                                                this.IncludeInferredTupleElementNames =
-                                                  kvp.ToBooleanValue();
-                                                break;
+                                case "allowedNamespaceComponents":
+                                        kvp.AssertIsArray();
+                                        this.allowedNamespaceComponents.AddRange(
+                                            kvp.Value.AsJsonArray.Select(
+                                                x => x.ToStringValue(kvp.Key)));
+                                        break;
 
-                                        case "tupleElementNameCasing":
-                                                this.TupleElementNameCasing =
-                                                  kvp.ToEnumValue<TupleElementNameCase>();
-                                                break;
+                                case "includeInferredTupleElementNames":
+                                        this.IncludeInferredTupleElementNames
+                                            = kvp.ToBooleanValue();
+                                        break;
 
-                                        default:
-                                                break;
+                                case "tupleElementNameCasing":
+                                        this.TupleElementNameCasing
+                                            = kvp.ToEnumValue<TupleElementNameCase>();
+                                        break;
+
+                                default:
+                                        break;
                                 }
                         }
                 }
 
                 public bool AllowCommonHungarianPrefixes { get; }
 
-                public ImmutableArray<string> AllowedHungarianPrefixes =>
-                  this.allowedHungarianPrefixes.ToImmutable();
+                public ImmutableArray<string>
+                    AllowedHungarianPrefixes => this.allowedHungarianPrefixes.ToImmutable();
 
-                public ImmutableArray<string> AllowedNamespaceComponents =>
-                  this.allowedNamespaceComponents.ToImmutable();
+                public ImmutableArray<string>
+                    AllowedNamespaceComponents => this.allowedNamespaceComponents.ToImmutable();
 
                 public bool IncludeInferredTupleElementNames { get; }
 

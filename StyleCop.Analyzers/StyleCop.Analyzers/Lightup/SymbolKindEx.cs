@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis;
 
-        internal static class SymbolKindEx
-        {
+        internal static class SymbolKindEx {
                 public const SymbolKind Discard = (SymbolKind) 19;
         }
 }

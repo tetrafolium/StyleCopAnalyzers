@@ -7,21 +7,20 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IParameterReferenceOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IParameterReferenceOperation";
+        internal readonly struct IParameterReferenceOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IParameterReferenceOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IParameterSymbol> ParameterAccessor;
                 private readonly IOperation operation;
                 static IParameterReferenceOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IParameterReferenceOperationWrapper));
-                        ParameterAccessor =
-                          LightupHelpers
-                            .CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(
-                              WrappedType, nameof(Parameter));
+                            typeof(IParameterReferenceOperationWrapper));
+                        ParameterAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(
+                                      WrappedType, nameof(Parameter));
                 }
 
                 private IParameterReferenceOperationWrapper(IOperation operation)
@@ -33,7 +32,7 @@ namespace StyleCop.Analyzers.Lightup
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IParameterSymbol Parameter => ParameterAccessor(this.WrappedOperation);
                 public static IParameterReferenceOperationWrapper FromOperation(
-                  IOperation operation)
+                    IOperation operation)
                 {
                         if (operation == null) {
                                 return default;
@@ -41,7 +40,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IParameterReferenceOperationWrapper(operation);
@@ -49,8 +48,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

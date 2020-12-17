@@ -39,44 +39,36 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine : DiagnosticAnalyzer
-        {
+        internal class SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine
+            : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1510";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1510.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1510Title),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1510MessageFormat),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1510Description),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1510.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1510Title),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1510MessageFormat),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1510Description),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.LayoutRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> ElseStatementAction =
-                  HandleElseStatement;
-                private static readonly Action<SyntaxNodeAnalysisContext> CatchClauseAction =
-                  HandleCatchClause;
-                private static readonly Action<SyntaxNodeAnalysisContext> FinallyClauseAction =
-                  HandleFinallyClause;
+                private static readonly Action<SyntaxNodeAnalysisContext> ElseStatementAction
+                    = HandleElseStatement;
+                private static readonly Action<SyntaxNodeAnalysisContext> CatchClauseAction
+                    = HandleCatchClause;
+                private static readonly Action<SyntaxNodeAnalysisContext> FinallyClauseAction
+                    = HandleFinallyClause;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -88,11 +80,11 @@ namespace StyleCop.Analyzers.LayoutRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(ElseStatementAction,
-                                                         SyntaxKind.ElseClause);
+                        context.RegisterSyntaxNodeAction(
+                            ElseStatementAction, SyntaxKind.ElseClause);
                         context.RegisterSyntaxNodeAction(CatchClauseAction, SyntaxKind.CatchClause);
-                        context.RegisterSyntaxNodeAction(FinallyClauseAction,
-                                                         SyntaxKind.FinallyClause);
+                        context.RegisterSyntaxNodeAction(
+                            FinallyClauseAction, SyntaxKind.FinallyClause);
                 }
 
                 private static void HandleElseStatement(SyntaxNodeAnalysisContext context)
@@ -105,7 +97,7 @@ namespace StyleCop.Analyzers.LayoutRules
                         }
 
                         context.ReportDiagnostic(Diagnostic.Create(
-                          Descriptor, elseKeyword.GetLocation(), elseKeyword.ToString()));
+                            Descriptor, elseKeyword.GetLocation(), elseKeyword.ToString()));
                 }
 
                 private static void HandleCatchClause(SyntaxNodeAnalysisContext context)
@@ -118,7 +110,7 @@ namespace StyleCop.Analyzers.LayoutRules
                         }
 
                         context.ReportDiagnostic(Diagnostic.Create(
-                          Descriptor, catchKeyword.GetLocation(), catchKeyword.ToString()));
+                            Descriptor, catchKeyword.GetLocation(), catchKeyword.ToString()));
                 }
 
                 private static void HandleFinallyClause(SyntaxNodeAnalysisContext context)
@@ -131,7 +123,7 @@ namespace StyleCop.Analyzers.LayoutRules
                         }
 
                         context.ReportDiagnostic(Diagnostic.Create(
-                          Descriptor, finallyKeyword.GetLocation(), finallyKeyword.ToString()));
+                            Descriptor, finallyKeyword.GetLocation(), finallyKeyword.ToString()));
                 }
         }
 }

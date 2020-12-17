@@ -13,8 +13,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Class containing the extension methods for the <see cref="NameSyntax"/> class.
         /// </summary>
-        internal static class NameSyntaxHelpers
-        {
+        internal static class NameSyntaxHelpers {
                 private const string DotChar = ".";
 
                 /// <summary>
@@ -55,25 +54,21 @@ namespace StyleCop.Analyzers.Helpers
                         string right = second.ToNormalizedString();
 
                         // First compare without considering case
-                        int result = CultureInfo.InvariantCulture.CompareInfo.Compare(
-                          left,
-                          right,
-                          CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace |
-                            CompareOptions.IgnoreWidth);
+                        int result = CultureInfo.InvariantCulture.CompareInfo.Compare(left, right,
+                            CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace
+                                | CompareOptions.IgnoreWidth);
                         if (result == 0) {
                                 // Compare case if they matched
-                                result = CultureInfo.InvariantCulture.CompareInfo.Compare(
-                                  left,
-                                  right,
-                                  CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreWidth);
+                                result
+                                    = CultureInfo.InvariantCulture.CompareInfo.Compare(left, right,
+                                        CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreWidth);
                         }
 
                         return result;
                 }
 
-                private static void BuildName(NameSyntax nameSyntax,
-                                              StringBuilder builder,
-                                              bool includeAlias)
+                private static void BuildName(
+                    NameSyntax nameSyntax, StringBuilder builder, bool includeAlias)
                 {
                         if (nameSyntax.IsKind(SyntaxKind.IdentifierName)) {
                                 var identifierNameSyntax = (IdentifierNameSyntax) nameSyntax;
@@ -86,14 +81,14 @@ namespace StyleCop.Analyzers.Helpers
                         } else if (nameSyntax.IsKind(SyntaxKind.GenericName)) {
                                 var genericNameSyntax = (GenericNameSyntax) nameSyntax;
                                 builder.AppendFormat("{0}{1}",
-                                                     genericNameSyntax.Identifier.ValueText,
-                                                     genericNameSyntax.TypeArgumentList);
+                                    genericNameSyntax.Identifier.ValueText,
+                                    genericNameSyntax.TypeArgumentList);
                         } else if (nameSyntax.IsKind(SyntaxKind.AliasQualifiedName)) {
-                                var aliasQualifiedNameSyntax =
-                                  (AliasQualifiedNameSyntax) nameSyntax;
+                                var aliasQualifiedNameSyntax
+                                    = (AliasQualifiedNameSyntax) nameSyntax;
                                 if (includeAlias) {
                                         builder.Append(
-                                          aliasQualifiedNameSyntax.Alias.Identifier.ValueText);
+                                            aliasQualifiedNameSyntax.Alias.Identifier.ValueText);
                                         builder.Append("::");
                                 }
 

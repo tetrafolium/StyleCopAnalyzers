@@ -12,24 +12,19 @@ namespace StyleCop.Analyzers.OrderingRules
         /// <summary>
         /// Implements a code fix for all misaligned using statements.
         /// </summary>
-        internal sealed partial class UsingCodeFixProvider
-        {
+        internal sealed partial class UsingCodeFixProvider {
                 /// <summary>
                 /// Immutable class representing a text span with a collection of children.
                 /// </summary>
-                private class TreeTextSpan
-                  : IEquatable<TreeTextSpan>
-                  , IComparable<TreeTextSpan>
-                {
+                private class TreeTextSpan : IEquatable<TreeTextSpan>, IComparable<TreeTextSpan> {
                         /// <summary>
                         /// Initializes a new instance of the <see cref="TreeTextSpan"/> class.
                         /// </summary>
                         /// <param name="start">The start position for the span.</param>
                         /// <param name="end">The end position for the span.</param>
                         /// <param name="children">The children of the span.</param>
-                        internal TreeTextSpan(int start,
-                                              int end,
-                                              ImmutableArray<TreeTextSpan> children)
+                        internal TreeTextSpan(
+                            int start, int end, ImmutableArray<TreeTextSpan> children)
                         {
                                 this.Start = start;
                                 this.End = end;
@@ -158,8 +153,7 @@ namespace StyleCop.Analyzers.OrderingRules
                         /// Helper class that can be used to construct a tree of <see
                         /// cref="TreeTextSpan"/> objects.
                         /// </summary>
-                        internal class Builder
-                        {
+                        internal class Builder {
                                 private readonly List<Builder> children = new List<Builder>();
                                 private readonly int start;
                                 private int end = int.MaxValue;
@@ -213,8 +207,8 @@ namespace StyleCop.Analyzers.OrderingRules
                                                 var child = this.children[i];
 
                                                 if (child.start > previousEnd) {
-                                                        newFiller =
-                                                          new Builder(previousEnd, child.start);
+                                                        newFiller
+                                                            = new Builder(previousEnd, child.start);
                                                         this.children.Insert(i, newFiller);
                                                         i++;
                                                 }
@@ -238,8 +232,8 @@ namespace StyleCop.Analyzers.OrderingRules
                                 /// object.</returns>
                                 internal TreeTextSpan ToSpan()
                                 {
-                                        var children =
-                                          this.children.Select(x => x.ToSpan()).ToImmutableArray();
+                                        var children = this.children.Select(x => x.ToSpan())
+                                                           .ToImmutableArray();
 
                                         return new TreeTextSpan(this.start, this.end, children);
                                 }

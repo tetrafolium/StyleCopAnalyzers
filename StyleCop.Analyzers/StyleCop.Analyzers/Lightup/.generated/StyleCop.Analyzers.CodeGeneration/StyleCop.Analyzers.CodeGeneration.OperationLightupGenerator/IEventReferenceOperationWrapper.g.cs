@@ -7,20 +7,18 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IEventReferenceOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IEventReferenceOperation";
+        internal readonly struct IEventReferenceOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IEventReferenceOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IEventSymbol> EventAccessor;
                 private readonly IOperation operation;
                 static IEventReferenceOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IEventReferenceOperationWrapper));
-                        EventAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IEventSymbol>(
-                            WrappedType, nameof(Event));
+                            typeof(IEventReferenceOperationWrapper));
+                        EventAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            IEventSymbol>(WrappedType, nameof(Event));
                 }
 
                 private IEventReferenceOperationWrapper(IOperation operation)
@@ -34,11 +32,12 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation Instance =>((IMemberReferenceOperationWrapper) this).Instance;
                 public ISymbol Member =>((IMemberReferenceOperationWrapper) this).Member;
                 public static explicit operator IEventReferenceOperationWrapper(
-                  IMemberReferenceOperationWrapper wrapper) =>
-                  FromOperation(wrapper.WrappedOperation);
+                    IMemberReferenceOperationWrapper
+                        wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator IMemberReferenceOperationWrapper(
-                  IEventReferenceOperationWrapper wrapper) =>
-                  IMemberReferenceOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+                    IEventReferenceOperationWrapper wrapper) => IMemberReferenceOperationWrapper
+                                                                    .FromUpcast(
+                                                                        wrapper.WrappedOperation);
                 public static IEventReferenceOperationWrapper FromOperation(IOperation operation)
                 {
                         if (operation == null) {
@@ -47,7 +46,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IEventReferenceOperationWrapper(operation);
@@ -55,8 +54,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

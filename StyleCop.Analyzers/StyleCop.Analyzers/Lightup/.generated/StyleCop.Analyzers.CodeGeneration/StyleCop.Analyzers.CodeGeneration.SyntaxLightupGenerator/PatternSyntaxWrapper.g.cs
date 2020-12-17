@@ -9,18 +9,17 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal readonly partial struct PatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.PatternSyntax";
+        internal readonly partial struct PatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.PatternSyntax";
                 private static readonly Type WrappedType;
 
                 private readonly CSharpSyntaxNode node;
 
                 static PatternSyntaxWrapper()
                 {
-                        WrappedType =
-                          SyntaxWrapperHelper.GetWrappedType(typeof(PatternSyntaxWrapper));
+                        WrappedType
+                            = SyntaxWrapperHelper.GetWrappedType(typeof(PatternSyntaxWrapper));
                 }
 
                 private PatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
@@ -28,7 +27,7 @@ namespace StyleCop.Analyzers.Lightup
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public static explicit operator PatternSyntaxWrapper(
-                  ExpressionOrPatternSyntaxWrapper node)
+                    ExpressionOrPatternSyntaxWrapper node)
                 {
                         return (PatternSyntaxWrapper) node.SyntaxNode;
                 }
@@ -41,14 +40,14 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new PatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator ExpressionOrPatternSyntaxWrapper(
-                  PatternSyntaxWrapper wrapper)
+                    PatternSyntaxWrapper wrapper)
                 {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }

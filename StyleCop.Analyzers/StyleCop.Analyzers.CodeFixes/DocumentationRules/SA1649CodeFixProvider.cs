@@ -18,8 +18,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1649CodeFixProvider))]
         [Shared]
-        internal class SA1649CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1649CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1649FileNameMustMatchTypeName.DiagnosticId);
@@ -36,51 +35,43 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    DocumentationResources.SA1649CodeFix,
-                                    cancellationToken => GetTransformedSolutionAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1649CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(DocumentationResources.SA1649CodeFix,
+                                        cancellationToken => GetTransformedSolutionAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1649CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Solution> GetTransformedSolutionAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var solution = document.Project.Solution;
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
 
-                        var expectedFileName =
-                          diagnostic
-                            .Properties[SA1649FileNameMustMatchTypeName.ExpectedFileNameKey];
-                        var newPath = document.FilePath !=
-                                      null ? Path.Combine(Path.GetDirectoryName(document.FilePath),
-                                                         expectedFileName)
-                          : null;
+                        var expectedFileName
+                            = diagnostic
+                                  .Properties[SA1649FileNameMustMatchTypeName.ExpectedFileNameKey];
+                        var newPath = document.FilePath
+                            != null ? Path.Combine(
+                                Path.GetDirectoryName(document.FilePath), expectedFileName)
+                            : null;
 
                         var newDocumentId = DocumentId.CreateNewId(document.Id.ProjectId);
 
                         var newSolution = solution.RemoveDocument(document.Id)
-                                            .AddDocument(newDocumentId,
-                                                         expectedFileName,
-                                                         syntaxRoot,
-                                                         document.Folders,
-                                                         newPath);
+                                              .AddDocument(newDocumentId, expectedFileName,
+                                                  syntaxRoot, document.Folders, newPath);
 
                         // Make sure to also add the file to linked projects
                         foreach (var linkedDocumentId in document.GetLinkedDocumentIds()) {
-                                DocumentId linkedExtractedDocumentId =
-                                  DocumentId.CreateNewId(linkedDocumentId.ProjectId);
+                                DocumentId linkedExtractedDocumentId
+                                    = DocumentId.CreateNewId(linkedDocumentId.ProjectId);
                                 newSolution = newSolution.AddDocument(linkedExtractedDocumentId,
-                                                                      expectedFileName,
-                                                                      syntaxRoot,
-                                                                      document.Folders);
+                                    expectedFileName, syntaxRoot, document.Folders);
                         }
 
                         return newSolution;

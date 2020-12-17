@@ -9,8 +9,7 @@ namespace LightJson.Serialization
         /// <summary>
         /// Represents a text scanner that reads one character at a time.
         /// </summary>
-        internal sealed class TextScanner
-        {
+        internal sealed class TextScanner {
                 private readonly TextReader reader;
                 private TextPosition position;
 
@@ -48,8 +47,8 @@ namespace LightJson.Serialization
                         var next = this.reader.Peek();
 
                         if (next == -1 && throwAtEndOfFile) {
-                                throw new JsonParseException(ErrorType.IncompleteMessage,
-                                                             this.position);
+                                throw new JsonParseException(
+                                    ErrorType.IncompleteMessage, this.position);
                         } else {
                                 return next;
                         }
@@ -64,8 +63,8 @@ namespace LightJson.Serialization
                         var next = this.reader.Read();
 
                         if (next == -1) {
-                                throw new JsonParseException(ErrorType.IncompleteMessage,
-                                                             this.position);
+                                throw new JsonParseException(
+                                    ErrorType.IncompleteMessage, this.position);
                         } else {
                                 if (next == '\n') {
                                         this.position.Line += 1;
@@ -107,9 +106,8 @@ namespace LightJson.Serialization
                         var errorPosition = this.position;
                         if (this.Read() != next) {
                                 throw new JsonParseException(
-                                  string.Format("Parser expected '{0}'", next),
-                                  ErrorType.InvalidOrUnexpectedCharacter,
-                                  errorPosition);
+                                    string.Format("Parser expected '{0}'", next),
+                                    ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
                         }
                 }
 
@@ -130,19 +128,18 @@ namespace LightJson.Serialization
                         // First character is the first slash
                         this.Read();
                         switch (this.Peek()) {
-                                case '/':
-                                        this.SkipLineComment();
-                                        return;
+                        case '/':
+                                this.SkipLineComment();
+                                return;
 
-                                case '*':
-                                        this.SkipBlockComment();
-                                        return;
+                        case '*':
+                                this.SkipBlockComment();
+                                return;
 
-                                default:
-                                        throw new JsonParseException(
-                                          string.Format("Parser expected '{0}'", this.Peek()),
-                                          ErrorType.InvalidOrUnexpectedCharacter,
-                                          this.position);
+                        default:
+                                throw new JsonParseException(
+                                    string.Format("Parser expected '{0}'", this.Peek()),
+                                    ErrorType.InvalidOrUnexpectedCharacter, this.position);
                         }
                 }
 
@@ -153,18 +150,18 @@ namespace LightJson.Serialization
 
                         while (true) {
                                 switch (this.reader.Peek()) {
-                                        case '\n':
-                                                // Reached the end of the line
-                                                this.Read();
-                                                return;
+                                case '\n':
+                                        // Reached the end of the line
+                                        this.Read();
+                                        return;
 
-                                        case -1:
-                                                // Reached the end of the file
-                                                return;
+                                case -1:
+                                        // Reached the end of the file
+                                        return;
 
-                                        default:
-                                                this.Read();
-                                                continue;
+                                default:
+                                        this.Read();
+                                        continue;
                                 }
                         }
                 }
@@ -177,28 +174,28 @@ namespace LightJson.Serialization
                         bool foundStar = false;
                         while (true) {
                                 switch (this.reader.Peek()) {
-                                        case '*':
-                                                this.Read();
-                                                foundStar = true;
-                                                continue;
+                                case '*':
+                                        this.Read();
+                                        foundStar = true;
+                                        continue;
 
-                                        case '/':
-                                                this.Read();
-                                                if (foundStar) {
-                                                        return;
-                                                } else {
-                                                        foundStar = false;
-                                                        continue;
-                                                }
-
-                                        case -1:
-                                                // Reached the end of the file
+                                case '/':
+                                        this.Read();
+                                        if (foundStar) {
                                                 return;
-
-                                        default:
-                                                this.Read();
+                                        } else {
                                                 foundStar = false;
                                                 continue;
+                                        }
+
+                                case -1:
+                                        // Reached the end of the file
+                                        return;
+
+                                default:
+                                        this.Read();
+                                        foundStar = false;
+                                        continue;
                                 }
                         }
                 }

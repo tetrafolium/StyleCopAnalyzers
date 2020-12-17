@@ -22,8 +22,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1513CodeFixProvider))]
         [Shared]
-        internal class SA1513CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1513CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1513ClosingBraceMustBeFollowedByBlankLine.DiagnosticId);
@@ -39,28 +38,25 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    LayoutResources.SA1513CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1513CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(LayoutResources.SA1513CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1513CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
                         var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.End);
 
-                        var newTrivia =
-                          token.LeadingTrivia.Insert(0, SyntaxFactory.CarriageReturnLineFeed);
+                        var newTrivia
+                            = token.LeadingTrivia.Insert(0, SyntaxFactory.CarriageReturnLineFeed);
                         var newToken = token.WithLeadingTrivia(newTrivia);
                         var newSyntaxRoot = syntaxRoot.ReplaceToken(token, newToken);
                         var newDocument = document.WithSyntaxRoot(newSyntaxRoot);

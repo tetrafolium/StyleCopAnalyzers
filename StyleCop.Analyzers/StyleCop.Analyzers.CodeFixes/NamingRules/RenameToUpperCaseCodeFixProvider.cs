@@ -23,11 +23,10 @@ namespace StyleCop.Analyzers.NamingRules
         /// with an upper-case letter, or place the item within a <c>NativeMethods</c> class if
         /// appropriate.</para>
         /// </remarks>
-        [ExportCodeFixProvider(LanguageNames.CSharp,
-                               Name = nameof(RenameToUpperCaseCodeFixProvider))]
+        [ExportCodeFixProvider(
+            LanguageNames.CSharp, Name = nameof(RenameToUpperCaseCodeFixProvider))]
         [Shared]
-        internal class RenameToUpperCaseCodeFixProvider : CodeFixProvider
-        {
+        internal class RenameToUpperCaseCodeFixProvider : CodeFixProvider {
                 /// <summary>
                 /// During conflict resolution for fields, this suffix is tried before falling back
                 /// to 1, 2, 3, etc...
@@ -36,12 +35,11 @@ namespace StyleCop.Analyzers.NamingRules
 
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
-                = ImmutableArray.Create(
-                  SA1300ElementMustBeginWithUpperCaseLetter.DiagnosticId,
-                  SA1303ConstFieldNamesMustBeginWithUpperCaseLetter.DiagnosticId,
-                  SA1304NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter.DiagnosticId,
-                  SA1307AccessibleFieldsMustBeginWithUpperCaseLetter.DiagnosticId,
-                  SA1311StaticReadonlyFieldsMustBeginWithUpperCaseLetter.DiagnosticId);
+                = ImmutableArray.Create(SA1300ElementMustBeginWithUpperCaseLetter.DiagnosticId,
+                    SA1303ConstFieldNamesMustBeginWithUpperCaseLetter.DiagnosticId,
+                    SA1304NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter.DiagnosticId,
+                    SA1307AccessibleFieldsMustBeginWithUpperCaseLetter.DiagnosticId,
+                    SA1311StaticReadonlyFieldsMustBeginWithUpperCaseLetter.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -54,7 +52,7 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         var document = context.Document;
                         var root = await document.GetSyntaxRootAsync(context.CancellationToken)
-                                     .ConfigureAwait(false);
+                                       .ConfigureAwait(false);
 
                         foreach (var diagnostic in context.Diagnostics) {
                                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -67,76 +65,77 @@ namespace StyleCop.Analyzers.NamingRules
                                         // namespaces are not symbols. So we are just renaming the
                                         // namespace
                                         Task<Document> RenameNamespace(
-                                          CancellationToken cancellationToken)
+                                            CancellationToken cancellationToken)
                                         {
-                                                IdentifierNameSyntax identifierSyntax =
-                                                  (IdentifierNameSyntax) token.Parent;
+                                                IdentifierNameSyntax identifierSyntax
+                                                    = (IdentifierNameSyntax) token.Parent;
 
-                                                var newIdentifierSyntax =
-                                                  identifierSyntax.WithIdentifier(
-                                                    SyntaxFactory.Identifier(newName));
+                                                var newIdentifierSyntax
+                                                    = identifierSyntax.WithIdentifier(
+                                                        SyntaxFactory.Identifier(newName));
 
-                                                var newRoot = root.ReplaceNode(identifierSyntax,
-                                                                               newIdentifierSyntax);
+                                                var newRoot = root.ReplaceNode(
+                                                    identifierSyntax, newIdentifierSyntax);
                                                 return Task.FromResult(
-                                                  context.Document.WithSyntaxRoot(newRoot));
+                                                    context.Document.WithSyntaxRoot(newRoot));
                                         }
 
                                         context.RegisterCodeFix(
-                                          CodeAction.Create(
-                                            string.Format(NamingResources.RenameToCodeFix, newName),
-                                            (Func<CancellationToken, Task<Document>>)
-                                              RenameNamespace,
-                                            nameof(RenameToUpperCaseCodeFixProvider) + "_" +
-                                              diagnostic.Id),
-                                          diagnostic);
+                                            CodeAction.Create(
+                                                string.Format(
+                                                    NamingResources.RenameToCodeFix, newName),
+                                                (Func<CancellationToken, Task<Document>>)
+                                                    RenameNamespace,
+                                                nameof(RenameToUpperCaseCodeFixProvider) + "_"
+                                                    + diagnostic.Id),
+                                            diagnostic);
                                 } else if (memberSyntax != null) {
-                                        SemanticModel semanticModel =
-                                          await document
-                                            .GetSemanticModelAsync(context.CancellationToken)
-                                            .ConfigureAwait(false);
+                                        SemanticModel semanticModel
+                                            = await document
+                                                  .GetSemanticModelAsync(context.CancellationToken)
+                                                  .ConfigureAwait(false);
 
-                                        var declaredSymbol =
-                                          semanticModel.GetDeclaredSymbol(memberSyntax);
+                                        var declaredSymbol
+                                            = semanticModel.GetDeclaredSymbol(memberSyntax);
                                         if (declaredSymbol == null) {
                                                 continue;
                                         }
 
                                         bool usedSuffix = false;
-                                        if (declaredSymbol.Kind == SymbolKind.Field &&
-                                            declaredSymbol.ContainingType?.TypeKind !=
-                                              TypeKind.Enum &&
-                                            !await RenameHelper
-                                               .IsValidNewMemberNameAsync(semanticModel,
-                                                                          declaredSymbol,
-                                                                          newName,
-                                                                          context.CancellationToken)
-                                               .ConfigureAwait(false)) {
+                                        if (declaredSymbol.Kind == SymbolKind.Field
+                                            && declaredSymbol.ContainingType?.TypeKind
+                                                != TypeKind.Enum
+                                            && !await RenameHelper
+                                                    .IsValidNewMemberNameAsync(semanticModel,
+                                                        declaredSymbol, newName,
+                                                        context.CancellationToken)
+                                                    .ConfigureAwait(false)) {
                                                 usedSuffix = true;
                                                 newName += Suffix;
                                         }
 
                                         int index = 0;
-                                        while (
-                                          !await RenameHelper
-                                             .IsValidNewMemberNameAsync(semanticModel,
-                                                                        declaredSymbol,
-                                                                        newName,
-                                                                        context.CancellationToken)
-                                             .ConfigureAwait(false)) {
+                                        while (!await RenameHelper
+                                                    .IsValidNewMemberNameAsync(semanticModel,
+                                                        declaredSymbol, newName,
+                                                        context.CancellationToken)
+                                                    .ConfigureAwait(false)) {
                                                 usedSuffix = false;
                                                 index++;
                                                 newName = baseName + index;
                                         }
 
                                         context.RegisterCodeFix(
-                                          CodeAction.Create(
-                                            string.Format(NamingResources.RenameToCodeFix, newName),
-                                            cancellationToken => RenameHelper.RenameSymbolAsync(
-                                              document, root, token, newName, cancellationToken),
-                                            nameof(RenameToUpperCaseCodeFixProvider) + "_" +
-                                              diagnostic.Id + "_" + usedSuffix + "_" + index),
-                                          diagnostic);
+                                            CodeAction.Create(
+                                                string.Format(
+                                                    NamingResources.RenameToCodeFix, newName),
+                                                cancellationToken => RenameHelper.RenameSymbolAsync(
+                                                    document, root, token, newName,
+                                                    cancellationToken),
+                                                nameof(RenameToUpperCaseCodeFixProvider) + "_"
+                                                    + diagnostic.Id + "_" + usedSuffix + "_"
+                                                    + index),
+                                            diagnostic);
                                 }
                         }
                 }

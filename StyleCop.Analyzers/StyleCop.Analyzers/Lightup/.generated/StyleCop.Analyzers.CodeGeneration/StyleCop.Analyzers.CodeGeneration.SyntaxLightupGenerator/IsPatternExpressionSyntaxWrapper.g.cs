@@ -10,52 +10,49 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct IsPatternExpressionSyntaxWrapper
-          : ISyntaxWrapper<ExpressionSyntax>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.IsPatternExpressionSyntax";
+            : ISyntaxWrapper<ExpressionSyntax> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.IsPatternExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax> ExpressionAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken> IsKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, CSharpSyntaxNode> PatternAccessor;
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax, ExpressionSyntax>
-                  WithExpressionAccessor;
+                    WithExpressionAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                  WithIsKeywordAccessor;
+                    WithIsKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, CSharpSyntaxNode, ExpressionSyntax>
-                  WithPatternAccessor;
+                    WithPatternAccessor;
 
                 private readonly ExpressionSyntax node;
 
                 static IsPatternExpressionSyntaxWrapper()
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                          typeof(IsPatternExpressionSyntaxWrapper));
-                        ExpressionAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                              WrappedType, nameof(Expression));
-                        IsKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(IsKeyword));
-                        PatternAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, CSharpSyntaxNode>(
-                              WrappedType, nameof(Pattern));
-                        WithExpressionAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                              WrappedType, nameof(Expression));
-                        WithIsKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(IsKeyword));
-                        WithPatternAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, CSharpSyntaxNode>(
-                              WrappedType, nameof(Pattern));
+                            typeof(IsPatternExpressionSyntaxWrapper));
+                        ExpressionAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                                      WrappedType, nameof(Expression));
+                        IsKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(IsKeyword));
+                        PatternAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, CSharpSyntaxNode>(
+                                      WrappedType, nameof(Pattern));
+                        WithExpressionAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                ExpressionSyntax>(WrappedType, nameof(Expression));
+                        WithIsKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(IsKeyword));
+                        WithPatternAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                CSharpSyntaxNode>(WrappedType, nameof(Pattern));
                 }
 
                 private IsPatternExpressionSyntaxWrapper(ExpressionSyntax node)
@@ -88,14 +85,14 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IsPatternExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
                 public static implicit operator ExpressionSyntax(
-                  IsPatternExpressionSyntaxWrapper wrapper)
+                    IsPatternExpressionSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
@@ -108,19 +105,19 @@ namespace StyleCop.Analyzers.Lightup
                 public IsPatternExpressionSyntaxWrapper WithExpression(ExpressionSyntax expression)
                 {
                         return new IsPatternExpressionSyntaxWrapper(
-                          WithExpressionAccessor(this.SyntaxNode, expression));
+                            WithExpressionAccessor(this.SyntaxNode, expression));
                 }
 
                 public IsPatternExpressionSyntaxWrapper WithIsKeyword(SyntaxToken isKeyword)
                 {
                         return new IsPatternExpressionSyntaxWrapper(
-                          WithIsKeywordAccessor(this.SyntaxNode, isKeyword));
+                            WithIsKeywordAccessor(this.SyntaxNode, isKeyword));
                 }
 
                 public IsPatternExpressionSyntaxWrapper WithPattern(PatternSyntaxWrapper pattern)
                 {
                         return new IsPatternExpressionSyntaxWrapper(
-                          WithPatternAccessor(this.SyntaxNode, pattern));
+                            WithPatternAccessor(this.SyntaxNode, pattern));
                 }
         }
 }

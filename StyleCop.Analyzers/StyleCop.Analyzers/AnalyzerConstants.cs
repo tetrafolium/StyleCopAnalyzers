@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers
         using System.Diagnostics.CodeAnalysis;
         using Microsoft.CodeAnalysis;
 
-        internal static class AnalyzerConstants
-        {
+        internal static class AnalyzerConstants {
                 static AnalyzerConstants()
                 {
 #if DEBUG
@@ -32,11 +31,10 @@ namespace StyleCop.Analyzers
                 /// which is currently untested.
                 /// </value>
                 [ExcludeFromCodeCoverage]
-                [SuppressMessage(
-                  "StyleCop.CSharp.DocumentationRules",
-                  "SA1623:Property summary documentation should match accessors.",
-                  Justification =
-                    "This property behaves more like an opaque value than a Boolean.")]
+                [SuppressMessage("StyleCop.CSharp.DocumentationRules",
+                    "SA1623:Property summary documentation should match accessors.",
+                    Justification
+                    = "This property behaves more like an opaque value than a Boolean.")]
                 internal static bool DisabledNoTests
                 {
                         get;
@@ -56,11 +54,10 @@ namespace StyleCop.Analyzers
                 /// diagnostic is disabled by default because it is an alternative to a reference
                 /// StyleCop rule.
                 /// </value>
-                [SuppressMessage(
-                  "StyleCop.CSharp.DocumentationRules",
-                  "SA1623:Property summary documentation should match accessors.",
-                  Justification =
-                    "This property behaves more like an opaque value than a Boolean.")]
+                [SuppressMessage("StyleCop.CSharp.DocumentationRules",
+                    "SA1623:Property summary documentation should match accessors.",
+                    Justification
+                    = "This property behaves more like an opaque value than a Boolean.")]
                 internal static bool DisabledAlternative => false;
 
                 /// <summary>
@@ -75,11 +72,10 @@ namespace StyleCop.Analyzers
                 /// DiagnosticSeverity, bool, string, string, string[])"/> to indicate that the
                 /// diagnostic should be enabled by default.
                 /// </value>
-                [SuppressMessage(
-                  "StyleCop.CSharp.DocumentationRules",
-                  "SA1623:Property summary documentation should match accessors.",
-                  Justification =
-                    "This property behaves more like an opaque value than a Boolean.")]
+                [SuppressMessage("StyleCop.CSharp.DocumentationRules",
+                    "SA1623:Property summary documentation should match accessors.",
+                    Justification
+                    = "This property behaves more like an opaque value than a Boolean.")]
                 internal static bool EnabledByDefault => true;
 
                 /// <summary>
@@ -94,11 +90,10 @@ namespace StyleCop.Analyzers
                 /// DiagnosticSeverity, bool, string, string, string[])"/> to indicate that the
                 /// diagnostic should be disabled by default.
                 /// </value>
-                [SuppressMessage(
-                  "StyleCop.CSharp.DocumentationRules",
-                  "SA1623:Property summary documentation should match accessors.",
-                  Justification =
-                    "This property behaves more like an opaque value than a Boolean.")]
+                [SuppressMessage("StyleCop.CSharp.DocumentationRules",
+                    "SA1623:Property summary documentation should match accessors.",
+                    Justification
+                    = "This property behaves more like an opaque value than a Boolean.")]
                 internal static bool DisabledByDefault => false;
         }
 }

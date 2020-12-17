@@ -18,12 +18,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1413CodeFixProvider))]
         [Shared]
-        internal class SA1413CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1413CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                  SA1413UseTrailingCommasInMultiLineInitializers.DiagnosticId);
+                    SA1413UseTrailingCommasInMultiLineInitializers.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -36,30 +35,27 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    MaintainabilityResources.SA1413CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1413CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(MaintainabilityResources.SA1413CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1413CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
-                        var text =
-                          await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                                             .ConfigureAwait(false);
+                        var text
+                            = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         var syntaxNode = syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
 
-                        TextChange textChange = new TextChange(diagnostic.Location.SourceSpan,
-                                                               syntaxNode.ToString() + ",");
+                        TextChange textChange = new TextChange(
+                            diagnostic.Location.SourceSpan, syntaxNode.ToString() + ",");
                         return document.WithText(text.WithChanges(textChange));
                 }
         }

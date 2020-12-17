@@ -5,12 +5,10 @@ namespace StyleCop.Analyzers.Helpers
 {
         using System.Collections.Generic;
 
-        internal static class DictionaryExtensions
-        {
+        internal static class DictionaryExtensions {
                 public static TValue GetValueOrDefault<TKey, TValue>(
-                  this Dictionary<TKey, TValue> dictionary,
-                  TKey key,
-                  TValue defaultValue) where TKey : notnull
+                    this Dictionary<TKey, TValue> dictionary, TKey key,
+                    TValue defaultValue) where TKey : notnull
                 {
                         if (!dictionary.TryGetValue(key, out var value)) {
                                 value = defaultValue;

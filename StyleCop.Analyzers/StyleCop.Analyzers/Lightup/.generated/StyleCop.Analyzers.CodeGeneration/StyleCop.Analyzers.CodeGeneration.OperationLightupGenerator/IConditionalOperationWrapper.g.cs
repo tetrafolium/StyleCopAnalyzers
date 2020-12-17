@@ -7,10 +7,9 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IConditionalOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IConditionalOperation";
+        internal readonly struct IConditionalOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IConditionalOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ConditionAccessor;
                 private static readonly Func<IOperation, IOperation> WhenTrueAccessor;
@@ -20,19 +19,22 @@ namespace StyleCop.Analyzers.Lightup
                 static IConditionalOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IConditionalOperationWrapper));
-                        ConditionAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(Condition));
-                        WhenTrueAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(WhenTrue));
-                        WhenFalseAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(WhenFalse));
-                        IsRefAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                            WrappedType, nameof(IsRef));
+                            typeof(IConditionalOperationWrapper));
+                        ConditionAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(Condition));
+                        WhenTrueAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(WhenTrue));
+                        WhenFalseAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(WhenFalse));
+                        IsRefAccessor
+                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                                WrappedType, nameof(IsRef));
                 }
 
                 private IConditionalOperationWrapper(IOperation operation)
@@ -54,7 +56,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IConditionalOperationWrapper(operation);
@@ -62,8 +64,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

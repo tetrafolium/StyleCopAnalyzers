@@ -11,8 +11,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Helper class containing methods for determining query indentation.
         /// </summary>
-        internal static class QueryIndentationHelpers
-        {
+        internal static class QueryIndentationHelpers {
                 /// <summary>
                 /// Gets a whitespace trivia containing the proper amount of indentation for new
                 /// lines in the given query.
@@ -22,23 +21,22 @@ namespace StyleCop.Analyzers.Helpers
                 /// from.</param> <returns>A whitespace trivia containing the proper amount of
                 /// indentation.</returns>
                 internal static SyntaxTrivia GetQueryIndentationTrivia(
-                  IndentationSettings indentationSettings,
-                  QueryExpressionSyntax queryExpression)
+                    IndentationSettings indentationSettings, QueryExpressionSyntax queryExpression)
                 {
                         var firstTokenOnTextLine = IndentationHelper.GetFirstTokenOnTextLine(
-                          queryExpression.FromClause.FromKeyword);
+                            queryExpression.FromClause.FromKeyword);
                         var indentationSteps = IndentationHelper.GetIndentationSteps(
-                          indentationSettings, firstTokenOnTextLine);
+                            indentationSettings, firstTokenOnTextLine);
 
                         // add an extra indentation step when the first from clause is not properly
                         // indented yet
-                        if (!firstTokenOnTextLine.IsKind(SyntaxKind.OpenParenToken) &&
-                            (firstTokenOnTextLine != queryExpression.FromClause.FromKeyword)) {
+                        if (!firstTokenOnTextLine.IsKind(SyntaxKind.OpenParenToken)
+                            && (firstTokenOnTextLine != queryExpression.FromClause.FromKeyword)) {
                                 indentationSteps++;
                         }
 
-                        return IndentationHelper.GenerateWhitespaceTrivia(indentationSettings,
-                                                                          indentationSteps);
+                        return IndentationHelper.GenerateWhitespaceTrivia(
+                            indentationSettings, indentationSteps);
                 }
 
                 /// <summary>
@@ -50,16 +48,15 @@ namespace StyleCop.Analyzers.Helpers
                 /// <returns>A whitespace trivia containing the proper amount of
                 /// indentation.</returns>
                 internal static SyntaxTrivia GetQueryIndentationTrivia(
-                  IndentationSettings indentationSettings,
-                  SyntaxToken token)
+                    IndentationSettings indentationSettings, SyntaxToken token)
                 {
                         var currentNode = token.Parent;
                         while (!currentNode.IsKind(SyntaxKind.QueryExpression)) {
                                 currentNode = currentNode.Parent;
                         }
 
-                        return GetQueryIndentationTrivia(indentationSettings,
-                                                         (QueryExpressionSyntax) currentNode);
+                        return GetQueryIndentationTrivia(
+                            indentationSettings, (QueryExpressionSyntax) currentNode);
                 }
         }
 }

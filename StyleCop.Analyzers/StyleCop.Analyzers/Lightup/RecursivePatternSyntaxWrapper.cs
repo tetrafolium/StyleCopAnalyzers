@@ -5,10 +5,9 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal partial struct RecursivePatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-        {
+        internal partial struct RecursivePatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
                 public RecursivePatternSyntaxWrapper AddPositionalPatternClauseSubpatterns(
-                  params SubpatternSyntaxWrapper[] items)
+                    params SubpatternSyntaxWrapper[] items)
                 {
                         var positionalPatternClause = this.PositionalPatternClause;
                         if (positionalPatternClause.SyntaxNode is null) {
@@ -16,12 +15,12 @@ namespace StyleCop.Analyzers.Lightup
                         }
 
                         return this.WithPositionalPatternClause(
-                          positionalPatternClause.WithSubpatterns(
-                            positionalPatternClause.Subpatterns.AddRange(items)));
+                            positionalPatternClause.WithSubpatterns(
+                                positionalPatternClause.Subpatterns.AddRange(items)));
                 }
 
                 public RecursivePatternSyntaxWrapper AddPropertyPatternClauseSubpatterns(
-                  params SubpatternSyntaxWrapper[] items)
+                    params SubpatternSyntaxWrapper[] items)
                 {
                         var propertyPatternClause = this.PropertyPatternClause;
                         if (propertyPatternClause.SyntaxNode is null) {
@@ -29,7 +28,7 @@ namespace StyleCop.Analyzers.Lightup
                         }
 
                         return this.WithPropertyPatternClause(propertyPatternClause.WithSubpatterns(
-                          propertyPatternClause.Subpatterns.AddRange(items)));
+                            propertyPatternClause.Subpatterns.AddRange(items)));
                 }
         }
 }

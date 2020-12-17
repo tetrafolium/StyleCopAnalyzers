@@ -8,37 +8,36 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal partial struct LocalFunctionStatementSyntaxWrapper
-          : ISyntaxWrapper<StatementSyntax>
-        {
+            : ISyntaxWrapper<StatementSyntax> {
                 public LocalFunctionStatementSyntaxWrapper AddModifiers(params SyntaxToken[] items)
                 {
                         return this.WithModifiers(this.Modifiers.AddRange(items));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper AddTypeParameterListParameters(
-                  params TypeParameterSyntax[] items)
+                    params TypeParameterSyntax[] items)
                 {
-                        var typeParameterList =
-                          this.TypeParameterList ?? SyntaxFactory.TypeParameterList();
+                        var typeParameterList
+                            = this.TypeParameterList ?? SyntaxFactory.TypeParameterList();
                         return this.WithTypeParameterList(typeParameterList.WithParameters(
-                          typeParameterList.Parameters.AddRange(items)));
+                            typeParameterList.Parameters.AddRange(items)));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper AddParameterListParameters(
-                  params ParameterSyntax[] items)
+                    params ParameterSyntax[] items)
                 {
                         return this.WithParameterList(this.ParameterList.WithParameters(
-                          this.ParameterList.Parameters.AddRange(items)));
+                            this.ParameterList.Parameters.AddRange(items)));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper AddConstraintClauses(
-                  params TypeParameterConstraintClauseSyntax[] items)
+                    params TypeParameterConstraintClauseSyntax[] items)
                 {
                         return this.WithConstraintClauses(this.ConstraintClauses.AddRange(items));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper AddBodyStatements(
-                  params StatementSyntax[] items)
+                    params StatementSyntax[] items)
                 {
                         var body = this.Body ?? SyntaxFactory.Block();
                         return this.WithBody(body.WithStatements(body.Statements.AddRange(items)));

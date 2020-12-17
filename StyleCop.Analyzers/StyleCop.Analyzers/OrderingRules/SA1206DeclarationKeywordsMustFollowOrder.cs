@@ -34,56 +34,41 @@ namespace StyleCop.Analyzers.OrderingRules
         /// prevent elements from being given a higher access level than needed.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1206DeclarationKeywordsMustFollowOrder : DiagnosticAnalyzer
-        {
+        internal class SA1206DeclarationKeywordsMustFollowOrder : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1206DeclarationKeywordsMustFollowOrder"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1206";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1206.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(OrderingResources.SA1206Title),
-                                                OrderingResources.ResourceManager,
-                                                typeof(OrderingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(OrderingResources.SA1206MessageFormat),
-                                                OrderingResources.ResourceManager,
-                                                typeof(OrderingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(OrderingResources.SA1206Description),
-                                                OrderingResources.ResourceManager,
-                                                typeof(OrderingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1206.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(OrderingResources.SA1206Title),
+                        OrderingResources.ResourceManager, typeof(OrderingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(OrderingResources.SA1206MessageFormat),
+                        OrderingResources.ResourceManager, typeof(OrderingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(OrderingResources.SA1206Description),
+                        OrderingResources.ResourceManager, typeof(OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.OrderingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds =
-                  ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                                        SyntaxKind.StructDeclaration,
-                                        SyntaxKind.InterfaceDeclaration,
-                                        SyntaxKind.EnumDeclaration,
-                                        SyntaxKind.DelegateDeclaration,
-                                        SyntaxKind.FieldDeclaration,
-                                        SyntaxKind.MethodDeclaration,
-                                        SyntaxKind.PropertyDeclaration,
-                                        SyntaxKind.EventDeclaration,
-                                        SyntaxKind.EventFieldDeclaration,
-                                        SyntaxKind.IndexerDeclaration,
-                                        SyntaxKind.OperatorDeclaration,
-                                        SyntaxKind.ConversionOperatorDeclaration,
-                                        SyntaxKind.ConstructorDeclaration);
+                private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds
+                    = ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                        SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration,
+                        SyntaxKind.EnumDeclaration, SyntaxKind.DelegateDeclaration,
+                        SyntaxKind.FieldDeclaration, SyntaxKind.MethodDeclaration,
+                        SyntaxKind.PropertyDeclaration, SyntaxKind.EventDeclaration,
+                        SyntaxKind.EventFieldDeclaration, SyntaxKind.IndexerDeclaration,
+                        SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration,
+                        SyntaxKind.ConstructorDeclaration);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction =
-                  HandleDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction
+                    = HandleDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -101,13 +86,12 @@ namespace StyleCop.Analyzers.OrderingRules
                 private static void HandleDeclaration(SyntaxNodeAnalysisContext context)
                 {
                         var modifiers = DeclarationModifiersHelper.GetModifiers(
-                          context.Node as MemberDeclarationSyntax);
+                            context.Node as MemberDeclarationSyntax);
                         CheckModifiersOrderAndReportDiagnostics(context, modifiers);
                 }
 
                 private static void CheckModifiersOrderAndReportDiagnostics(
-                  SyntaxNodeAnalysisContext context,
-                  SyntaxTokenList modifiers)
+                    SyntaxNodeAnalysisContext context, SyntaxTokenList modifiers)
                 {
                         var previousModifierType = ModifierType.None;
                         var otherModifiersAppearEarlier = false;
@@ -119,14 +103,14 @@ namespace StyleCop.Analyzers.OrderingRules
 
                                 bool reportPreviousModifier = false;
                                 bool reportPreviousOtherModifier = false;
-                                if (CompareModifiersType(currentModifierType,
-                                                         previousModifierType) < 0) {
+                                if (CompareModifiersType(currentModifierType, previousModifierType)
+                                    < 0) {
                                         reportPreviousModifier = true;
                                 }
 
                                 if (AccessOrStaticModifierNotFollowingOtherModifier(
-                                      currentModifierType, previousModifierType) &&
-                                    otherModifiersAppearEarlier) {
+                                        currentModifierType, previousModifierType)
+                                    && otherModifiersAppearEarlier) {
                                         reportPreviousOtherModifier = true;
                                 }
 
@@ -134,22 +118,19 @@ namespace StyleCop.Analyzers.OrderingRules
                                         // Note: Only report one diagnostic per modifier. If both
                                         // diagnostics apply, report the diagnostic relative to the
                                         // earlier modifier.
-                                        var reportedModifier =
-                                          reportPreviousModifier &&
-                                              (!reportPreviousOtherModifier ||
-                                               previousModifier.SpanStart <
-                                                 previousOtherModifier.SpanStart)
+                                        var reportedModifier = reportPreviousModifier
+                                                && (!reportPreviousOtherModifier
+                                                    || previousModifier.SpanStart
+                                                        < previousOtherModifier.SpanStart)
                                             ? previousModifier.ValueText
                                             : previousOtherModifier.ValueText;
                                         context.ReportDiagnostic(
-                                          Diagnostic.Create(Descriptor,
-                                                            modifier.GetLocation(),
-                                                            modifier.ValueText,
-                                                            reportedModifier));
+                                            Diagnostic.Create(Descriptor, modifier.GetLocation(),
+                                                modifier.ValueText, reportedModifier));
                                 }
 
-                                if (!otherModifiersAppearEarlier &&
-                                    currentModifierType == ModifierType.Other) {
+                                if (!otherModifiersAppearEarlier
+                                    && currentModifierType == ModifierType.Other) {
                                         otherModifiersAppearEarlier = true;
                                         previousOtherModifier = modifier;
                                 }
@@ -172,15 +153,15 @@ namespace StyleCop.Analyzers.OrderingRules
                                 result = lessThan;
                         } else if (second == ModifierType.None) {
                                 result = greaterThan;
-                        } else if (first == ModifierType.Access && (second == ModifierType.Static ||
-                                                                    second == ModifierType.Other)) {
+                        } else if (first == ModifierType.Access
+                            && (second == ModifierType.Static || second == ModifierType.Other)) {
                                 result = lessThan;
                         } else if (first == ModifierType.Static && second == ModifierType.Other) {
                                 result = lessThan;
                         } else if (first == ModifierType.Static && second == ModifierType.Access) {
                                 result = greaterThan;
-                        } else if (first == ModifierType.Other && (second == ModifierType.Static ||
-                                                                   second == ModifierType.Access)) {
+                        } else if (first == ModifierType.Other
+                            && (second == ModifierType.Static || second == ModifierType.Access)) {
                                 result = greaterThan;
                         }
 
@@ -188,9 +169,9 @@ namespace StyleCop.Analyzers.OrderingRules
                 }
 
                 private static bool AccessOrStaticModifierNotFollowingOtherModifier(
-                  ModifierType current,
-                  ModifierType previous) =>(current == ModifierType.Access ||
-                                            current == ModifierType.Static) &&
-                                           previous != ModifierType.Other;
+                    ModifierType current,
+                    ModifierType previous) =>(current == ModifierType.Access
+                                                 || current == ModifierType.Static)
+                    && previous != ModifierType.Other;
         }
 }

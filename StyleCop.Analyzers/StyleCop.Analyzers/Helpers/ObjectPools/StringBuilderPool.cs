@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         // This code was copied from the Roslyn code base (and slightly modified)
         using System.Text;
 
-        internal static class StringBuilderPool
-        {
+        internal static class StringBuilderPool {
                 public static StringBuilder Allocate()
                 {
                         return SharedPools.Default<StringBuilder>().AllocateAndClear();

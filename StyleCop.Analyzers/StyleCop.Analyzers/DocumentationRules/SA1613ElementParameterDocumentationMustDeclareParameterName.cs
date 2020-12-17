@@ -27,38 +27,31 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1613ElementParameterDocumentationMustDeclareParameterName
-          : ElementDocumentationBase
-        {
+            : ElementDocumentationBase {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1613ElementParameterDocumentationMustDeclareParameterName"/>
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1613";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1613.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(DocumentationResources.SA1613Title),
-                                                DocumentationResources.ResourceManager,
-                                                typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(DocumentationResources.SA1613MessageFormat),
-                                                DocumentationResources.ResourceManager,
-                                                typeof(DocumentationResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(DocumentationResources.SA1613Description),
-                                                DocumentationResources.ResourceManager,
-                                                typeof(DocumentationResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1613.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(DocumentationResources.SA1613Title),
+                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(DocumentationResources.SA1613MessageFormat),
+                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(
+                        nameof(DocumentationResources.SA1613Description),
+                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.DocumentationRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
                 /// <summary>
                 /// Initializes a new instance of the <see
@@ -68,10 +61,11 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// warnings from this diagnostic. See
                 /// DotNetAnalyzers/StyleCopAnalyzers#631.</para></remarks>
                 public SA1613ElementParameterDocumentationMustDeclareParameterName()
-                  : base(matchElementName
-                         : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
-                         : false)
-                {}
+                    : base(matchElementName
+                           : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
+                           : false)
+                {
+                }
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -79,17 +73,16 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         StyleCopSettings settings,
-                                                         bool needsComment,
-                                                         IEnumerable<XmlNodeSyntax> syntaxList,
-                                                         params Location[] diagnosticLocations)
+                    StyleCopSettings settings, bool needsComment,
+                    IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
                 {
                         foreach (var syntax in syntaxList) {
-                                var nameParameter =
-                                  XmlCommentHelper
-                                    .GetFirstAttributeOrDefault<XmlNameAttributeSyntax>(syntax);
-                                var parameterValue =
-                                  nameParameter?.Identifier?.Identifier.ValueText;
+                                var nameParameter
+                                    = XmlCommentHelper
+                                          .GetFirstAttributeOrDefault<XmlNameAttributeSyntax>(
+                                              syntax);
+                                var parameterValue
+                                    = nameParameter?.Identifier?.Identifier.ValueText;
 
                                 if (string.IsNullOrWhiteSpace(parameterValue)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, nameParameter?.GetLocation() ?? syntax.GetLocation()));
@@ -99,22 +92,20 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                 /// <inheritdoc/>
                 protected override void HandleCompleteDocumentation(
-                  SyntaxNodeAnalysisContext context,
-                  bool needsComment,
-                  XElement completeDocumentation,
-                  params Location[] diagnosticLocations)
+                    SyntaxNodeAnalysisContext context, bool needsComment,
+                    XElement completeDocumentation, params Location[] diagnosticLocations)
                 {
                         var xmlParamTags = completeDocumentation.Nodes().OfType<XElement>().Where(
-                          e => e.Name == XmlCommentHelper.ParamXmlTag);
+                            e => e.Name == XmlCommentHelper.ParamXmlTag);
 
                         foreach (var paramTag in xmlParamTags) {
-                                var name =
-                                  paramTag.Attributes().FirstOrDefault(a => a.Name == "name")
-                                  ?.Value;
+                                var name
+                                    = paramTag.Attributes().FirstOrDefault(a => a.Name == "name")
+                                    ?.Value;
 
                                 if (string.IsNullOrWhiteSpace(name)) {
                                         context.ReportDiagnostic(Diagnostic.Create(
-                                          Descriptor, diagnosticLocations.First()));
+                                            Descriptor, diagnosticLocations.First()));
                                 }
                         }
                 }

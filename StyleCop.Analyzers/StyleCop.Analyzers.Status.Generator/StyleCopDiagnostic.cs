@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <summary>
         /// Represents a diagnostic in the StyleCop.Analyzers project.
         /// </summary>
-        public class StyleCopDiagnostic
-        {
+        public class StyleCopDiagnostic {
                 /// <summary>
                 /// Gets or sets the ID of the diagnostic, including the prefix 'SA' or 'SX'.
                 /// </summary>

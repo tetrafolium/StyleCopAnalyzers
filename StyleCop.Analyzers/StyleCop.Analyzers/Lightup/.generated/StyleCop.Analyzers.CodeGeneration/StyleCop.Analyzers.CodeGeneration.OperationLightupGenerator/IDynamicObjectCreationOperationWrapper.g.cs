@@ -7,27 +7,25 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IDynamicObjectCreationOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IDynamicObjectCreationOperation";
+        internal readonly struct IDynamicObjectCreationOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IDynamicObjectCreationOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> InitializerAccessor;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
-                  ArgumentsAccessor;
+                    ArgumentsAccessor;
                 private readonly IOperation operation;
                 static IDynamicObjectCreationOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IDynamicObjectCreationOperationWrapper));
-                        InitializerAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(Initializer));
-                        ArgumentsAccessor =
-                          LightupHelpers
-                            .CreateOperationPropertyAccessor<IOperation,
-                                                             ImmutableArray<IOperation>>(
-                              WrappedType, nameof(Arguments));
+                            typeof(IDynamicObjectCreationOperationWrapper));
+                        InitializerAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(Initializer));
+                        ArgumentsAccessor
+                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                                ImmutableArray<IOperation>>(WrappedType, nameof(Arguments));
                 }
 
                 private IDynamicObjectCreationOperationWrapper(IOperation operation)
@@ -37,13 +35,13 @@ namespace StyleCop.Analyzers.Lightup
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IObjectOrCollectionInitializerOperationWrapper Initializer =>
-                  IObjectOrCollectionInitializerOperationWrapper.FromOperation(
-                    InitializerAccessor(this.WrappedOperation));
-                public ImmutableArray<IOperation> Arguments =>
-                  ArgumentsAccessor(this.WrappedOperation);
+                public IObjectOrCollectionInitializerOperationWrapper
+                    Initializer => IObjectOrCollectionInitializerOperationWrapper.FromOperation(
+                        InitializerAccessor(this.WrappedOperation));
+                public ImmutableArray<IOperation> Arguments => ArgumentsAccessor(
+                    this.WrappedOperation);
                 public static IDynamicObjectCreationOperationWrapper FromOperation(
-                  IOperation operation)
+                    IOperation operation)
                 {
                         if (operation == null) {
                                 return default;
@@ -51,7 +49,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IDynamicObjectCreationOperationWrapper(operation);
@@ -59,8 +57,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

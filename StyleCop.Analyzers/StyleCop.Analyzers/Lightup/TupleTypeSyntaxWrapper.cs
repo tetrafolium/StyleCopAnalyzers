@@ -5,12 +5,11 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax>
-        {
+        internal partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax> {
                 public TupleTypeSyntaxWrapper AddElements(params TupleElementSyntaxWrapper[] items)
                 {
                         return new TupleTypeSyntaxWrapper(
-                          this.WithElements(this.Elements.AddRange(items)));
+                            this.WithElements(this.Elements.AddRange(items)));
                 }
         }
 }

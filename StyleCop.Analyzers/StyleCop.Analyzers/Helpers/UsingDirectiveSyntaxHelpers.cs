@@ -14,8 +14,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Class containing the extension methods for the <see cref="UsingDirectiveSyntax"/> class.
         /// </summary>
-        internal static class UsingDirectiveSyntaxHelpers
-        {
+        internal static class UsingDirectiveSyntaxHelpers {
                 private const string SystemUsingDirectiveIdentifier = nameof(System);
 
                 /// <summary>
@@ -34,7 +33,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>True if the <see cref="UsingDirectiveSyntax"/> is preceded by a preprocessor
         /// directive, otherwise false.</returns>
         internal static bool IsPrecededByPreprocessorDirective(
-          this UsingDirectiveSyntax usingDirective)
+            this UsingDirectiveSyntax usingDirective)
         {
                 if (!usingDirective.HasLeadingTrivia) {
                         return false;
@@ -57,8 +56,9 @@ namespace StyleCop.Analyzers.Helpers
         /// cref="UsingDirectiveSyntax"/> contains a namespace alias qualifier; otherwise, <see
         /// langword="false"/>.
         /// </returns>
-        internal static bool HasNamespaceAliasQualifier(this UsingDirectiveSyntax usingDirective) =>
-          usingDirective.DescendantNodes().Any(node => node.IsKind(SyntaxKind.AliasQualifiedName));
+        internal static bool HasNamespaceAliasQualifier(this UsingDirectiveSyntax
+                usingDirective) => usingDirective.DescendantNodes()
+                                       .Any(node => node.IsKind(SyntaxKind.AliasQualifiedName));
 
         /// <summary>
         /// Get the <see cref="UsingGroup"/> for the give using directive.
@@ -67,8 +67,8 @@ namespace StyleCop.Analyzers.Helpers
         /// used.</param> <param name="settings">The <see cref="StyleCopSettings"/> that will be
         /// used.</param> <returns>The <see cref="UsingGroup"/> for the given <paramref
         /// name="usingDirective"/>.</returns>
-        internal static UsingGroup GetUsingGroupType(this UsingDirectiveSyntax usingDirective,
-                                                     StyleCopSettings settings)
+        internal static UsingGroup GetUsingGroupType(
+            this UsingDirectiveSyntax usingDirective, StyleCopSettings settings)
         {
                 if (usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword)) {
                         return UsingGroup.Static;
@@ -78,8 +78,8 @@ namespace StyleCop.Analyzers.Helpers
                         return UsingGroup.Alias;
                 }
 
-                if (settings.OrderingRules.SystemUsingDirectivesFirst &&
-                    usingDirective.IsSystemUsingDirective()) {
+                if (settings.OrderingRules.SystemUsingDirectivesFirst
+                    && usingDirective.IsSystemUsingDirective()) {
                         return UsingGroup.System;
                 }
 
@@ -95,23 +95,22 @@ namespace StyleCop.Analyzers.Helpers
         /// interrupt the operation.</param> <returns>True if the name part of the using directive
         /// starts with an alias.</returns>
         internal static bool StartsWithAlias(this UsingDirectiveSyntax usingDirective,
-                                             SemanticModel semanticModel,
-                                             CancellationToken cancellationToken)
+            SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-                var firstPart =
-                  usingDirective.Name.DescendantNodes().FirstOrDefault() ?? usingDirective.Name;
+                var firstPart
+                    = usingDirective.Name.DescendantNodes().FirstOrDefault() ?? usingDirective.Name;
                 return semanticModel.GetAliasInfo(firstPart, cancellationToken) != null;
         }
 
-        private static bool ExcludeGlobalKeyword(IdentifierNameSyntax token) =>
-          !token.Identifier.IsKind(SyntaxKind.GlobalKeyword);
+        private static bool ExcludeGlobalKeyword(
+            IdentifierNameSyntax token) => !token.Identifier.IsKind(SyntaxKind.GlobalKeyword);
 
         private static SyntaxToken? GetFirstIdentifierInUsingDirective(
-          UsingDirectiveSyntax usingDirective)
+            UsingDirectiveSyntax usingDirective)
         {
                 foreach (var identifier in usingDirective.DescendantNodes()) {
-                        if (identifier is IdentifierNameSyntax identifierName &&
-                            ExcludeGlobalKeyword(identifierName)) {
+                        if (identifier is IdentifierNameSyntax identifierName
+                            && ExcludeGlobalKeyword(identifierName)) {
                                 return identifierName.Identifier;
                         }
                 }

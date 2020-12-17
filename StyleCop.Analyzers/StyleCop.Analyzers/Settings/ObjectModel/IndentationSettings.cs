@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
         using LightJson;
 
-        internal class IndentationSettings
-        {
+        internal class IndentationSettings {
                 /// <summary>
                 /// This is the backing field for the <see cref="IndentationSize"/> property.
                 /// </summary>
@@ -38,24 +37,24 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <param name="indentationSettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal IndentationSettings(JsonObject indentationSettingsObject)
-                  : this()
+                    : this()
                 {
                         foreach (var kvp in indentationSettingsObject) {
                                 switch (kvp.Key) {
-                                        case "indentationSize":
-                                                this.indentationSize = kvp.ToInt32Value();
-                                                break;
+                                case "indentationSize":
+                                        this.indentationSize = kvp.ToInt32Value();
+                                        break;
 
-                                        case "tabSize":
-                                                this.tabSize = kvp.ToInt32Value();
-                                                break;
+                                case "tabSize":
+                                        this.tabSize = kvp.ToInt32Value();
+                                        break;
 
-                                        case "useTabs":
-                                                this.useTabs = kvp.ToBooleanValue();
-                                                break;
+                                case "useTabs":
+                                        this.useTabs = kvp.ToBooleanValue();
+                                        break;
 
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
                         }
                 }

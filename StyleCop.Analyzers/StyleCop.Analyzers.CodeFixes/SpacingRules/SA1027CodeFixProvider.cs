@@ -22,8 +22,7 @@ namespace StyleCop.Analyzers.SpacingRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1027CodeFixProvider))]
         [Shared]
-        internal class SA1027CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1027CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1027UseTabsCorrectly.DiagnosticId);
@@ -36,33 +35,29 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    SpacingResources.SA1027CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1027CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(SpacingResources.SA1027CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1027CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var settings = SettingsHelper.GetStyleCopSettings(
-                          document.Project.AnalyzerOptions, cancellationToken);
-                        SourceText sourceText =
-                          await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                            document.Project.AnalyzerOptions, cancellationToken);
+                        SourceText sourceText
+                            = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         return document.WithText(sourceText.WithChanges(
-                          FixDiagnostic(settings.Indentation, sourceText, diagnostic)));
+                            FixDiagnostic(settings.Indentation, sourceText, diagnostic)));
                 }
 
                 private static TextChange FixDiagnostic(IndentationSettings indentationSettings,
-                                                        SourceText sourceText,
-                                                        Diagnostic diagnostic)
+                    SourceText sourceText, Diagnostic diagnostic)
                 {
                         TextSpan span = diagnostic.Location.SourceSpan;
 
@@ -70,23 +65,23 @@ namespace StyleCop.Analyzers.SpacingRules
 
                         bool useTabs = false;
                         string behavior;
-                        if (diagnostic.Properties.TryGetValue(SA1027UseTabsCorrectly.BehaviorKey,
-                                                              out behavior)) {
+                        if (diagnostic.Properties.TryGetValue(
+                                SA1027UseTabsCorrectly.BehaviorKey, out behavior)) {
                                 useTabs = behavior == SA1027UseTabsCorrectly.ConvertToTabsBehavior;
                         }
 
-                        string text =
-                          sourceText.ToString(TextSpan.FromBounds(startLine.Start, span.End));
+                        string text
+                            = sourceText.ToString(TextSpan.FromBounds(startLine.Start, span.End));
                         StringBuilder replacement = StringBuilderPool.Allocate();
                         int spaceCount = 0;
                         int column = 0;
                         for (int i = 0; i < text.Length; i++) {
                                 char c = text[i];
                                 if (c == '\t') {
-                                        var offsetWithinTabColumn =
-                                          column % indentationSettings.TabSize;
-                                        var tabWidth =
-                                          indentationSettings.TabSize - offsetWithinTabColumn;
+                                        var offsetWithinTabColumn
+                                            = column % indentationSettings.TabSize;
+                                        var tabWidth
+                                            = indentationSettings.TabSize - offsetWithinTabColumn;
 
                                         if (i >= span.Start - startLine.Start) {
                                                 if (useTabs) {
@@ -107,13 +102,13 @@ namespace StyleCop.Analyzers.SpacingRules
                                                         if (useTabs) {
                                                                 // Note that we account for column
                                                                 // not yet being incremented
-                                                                var offsetWithinTabColumn =
-                                                                  (column + 1) %
-                                                                  indentationSettings.TabSize;
+                                                                var offsetWithinTabColumn
+                                                                    = (column + 1)
+                                                                    % indentationSettings.TabSize;
                                                                 if (offsetWithinTabColumn == 0) {
                                                                         // We reached a tab stop.
-                                                                        replacement.Length -=
-                                                                          spaceCount;
+                                                                        replacement.Length
+                                                                            -= spaceCount;
                                                                         replacement.Append('\t');
                                                                         spaceCount = 0;
                                                                 }
@@ -138,44 +133,43 @@ namespace StyleCop.Analyzers.SpacingRules
                         return new TextChange(span, StringBuilderPool.ReturnAndFree(replacement));
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider
-                {
+                private class FixAll : DocumentBasedFixAllProvider {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
                         protected override string CodeActionTitle => SpacingResources.SA1027CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                          FixAllContext fixAllContext,
-                          Document document,
-                          ImmutableArray<Diagnostic> diagnostics)
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
                                 var settings = SettingsHelper.GetStyleCopSettings(
-                                  document.Project.AnalyzerOptions,
-                                  fixAllContext.CancellationToken);
-                                SourceText sourceText =
-                                  await document.GetTextAsync(fixAllContext.CancellationToken)
-                                    .ConfigureAwait(false);
+                                    document.Project.AnalyzerOptions,
+                                    fixAllContext.CancellationToken);
+                                SourceText sourceText
+                                    = await document.GetTextAsync(fixAllContext.CancellationToken)
+                                          .ConfigureAwait(false);
 
                                 List<TextChange> changes = new List<TextChange>();
                                 foreach (var diagnostic in diagnostics) {
                                         changes.Add(FixDiagnostic(
-                                          settings.Indentation, sourceText, diagnostic));
+                                            settings.Indentation, sourceText, diagnostic));
                                 }
 
-                                changes.Sort((left, right) =>
-                                               left.Span.Start.CompareTo(right.Span.Start));
+                                changes.Sort(
+                                    (left, right) => left.Span.Start.CompareTo(right.Span.Start));
 
-                                SyntaxTree tree =
-                                  await document.GetSyntaxTreeAsync(fixAllContext.CancellationToken)
-                                    .ConfigureAwait(false);
+                                SyntaxTree tree
+                                    = await document
+                                          .GetSyntaxTreeAsync(fixAllContext.CancellationToken)
+                                          .ConfigureAwait(false);
                                 return await tree.WithChangedText(sourceText.WithChanges(changes))
-                                  .GetRootAsync(fixAllContext.CancellationToken)
-                                  .ConfigureAwait(false);
+                                    .GetRootAsync(fixAllContext.CancellationToken)
+                                    .ConfigureAwait(false);
                         }
                 }
         }

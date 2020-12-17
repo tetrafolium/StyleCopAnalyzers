@@ -9,29 +9,28 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal readonly partial struct TypePatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.TypePatternSyntax";
+        internal readonly partial struct TypePatternSyntaxWrapper
+            : ISyntaxWrapper<CSharpSyntaxNode> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.TypePatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax, CSharpSyntaxNode>
-                  WithTypeAccessor;
+                    WithTypeAccessor;
 
                 private readonly CSharpSyntaxNode node;
 
                 static TypePatternSyntaxWrapper()
                 {
-                        WrappedType =
-                          SyntaxWrapperHelper.GetWrappedType(typeof(TypePatternSyntaxWrapper));
-                        TypeAccessor =
-                          LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
-                            WrappedType, nameof(Type));
-                        WithTypeAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
-                              WrappedType, nameof(Type));
+                        WrappedType
+                            = SyntaxWrapperHelper.GetWrappedType(typeof(TypePatternSyntaxWrapper));
+                        TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode,
+                            TypeSyntax>(WrappedType, nameof(Type));
+                        WithTypeAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                                      WrappedType, nameof(Type));
                 }
 
                 private TypePatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
@@ -49,7 +48,7 @@ namespace StyleCop.Analyzers.Lightup
                 }
 
                 public static explicit operator TypePatternSyntaxWrapper(
-                  ExpressionOrPatternSyntaxWrapper node)
+                    ExpressionOrPatternSyntaxWrapper node)
                 {
                         return (TypePatternSyntaxWrapper) node.SyntaxNode;
                 }
@@ -62,20 +61,20 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new TypePatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator PatternSyntaxWrapper(
-                  TypePatternSyntaxWrapper wrapper)
+                    TypePatternSyntaxWrapper wrapper)
                 {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
                 public static implicit operator ExpressionOrPatternSyntaxWrapper(
-                  TypePatternSyntaxWrapper wrapper)
+                    TypePatternSyntaxWrapper wrapper)
                 {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
@@ -93,7 +92,7 @@ namespace StyleCop.Analyzers.Lightup
                 public TypePatternSyntaxWrapper WithType(TypeSyntax type)
                 {
                         return new TypePatternSyntaxWrapper(
-                          WithTypeAccessor(this.SyntaxNode, type));
+                            WithTypeAccessor(this.SyntaxNode, type));
                 }
         }
 }

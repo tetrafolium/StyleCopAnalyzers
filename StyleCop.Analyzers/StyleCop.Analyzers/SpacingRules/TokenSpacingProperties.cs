@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.SpacingRules
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class TokenSpacingProperties
-        {
+        internal static class TokenSpacingProperties {
                 internal const string LocationKey = "location";
                 internal const string ActionKey = "action";
                 internal const string LayoutKey = "layout";

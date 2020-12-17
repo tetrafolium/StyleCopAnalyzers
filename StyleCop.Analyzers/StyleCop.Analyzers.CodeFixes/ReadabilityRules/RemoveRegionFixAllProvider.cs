@@ -11,14 +11,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
         using Microsoft.CodeAnalysis.CSharp.Syntax;
         using StyleCop.Analyzers.Helpers;
 
-        internal sealed class RemoveRegionFixAllProvider : DocumentBasedFixAllProvider
-        {
+        internal sealed class RemoveRegionFixAllProvider : DocumentBasedFixAllProvider {
                 protected override string CodeActionTitle => "Remove region";
 
                 protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                  FixAllContext fixAllContext,
-                  Document document,
-                  ImmutableArray<Diagnostic> diagnostics)
+                    FixAllContext fixAllContext, Document document,
+                    ImmutableArray<Diagnostic> diagnostics)
                 {
                         if (diagnostics.IsEmpty) {
                                 return null;
@@ -26,17 +24,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                         SyntaxNode root = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
-                        var nodesToRemove =
-                          diagnostics
-                            .Select(d => root.FindNode(d.Location.SourceSpan, findInsideTrivia
-                                                       : true))
-                            .Where(node => node != null && !node.IsMissing)
-                            .OfType<RegionDirectiveTriviaSyntax>()
-                            .SelectMany(node => node.GetRelatedDirectives())
-                            .Where(node => !node.IsMissing);
+                        var nodesToRemove
+                            = diagnostics
+                                  .Select(d => root.FindNode(d.Location.SourceSpan, findInsideTrivia
+                                                             : true))
+                                  .Where(node => node != null && !node.IsMissing)
+                                  .OfType<RegionDirectiveTriviaSyntax>()
+                                  .SelectMany(node => node.GetRelatedDirectives())
+                                  .Where(node => !node.IsMissing);
 
-                        return root.RemoveNodes(nodesToRemove,
-                                                SyntaxRemoveOptions.AddElasticMarker);
+                        return root.RemoveNodes(
+                            nodesToRemove, SyntaxRemoveOptions.AddElasticMarker);
                 }
         }
 }

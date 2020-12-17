@@ -7,10 +7,9 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IPatternCaseClauseOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IPatternCaseClauseOperation";
+        internal readonly struct IPatternCaseClauseOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IPatternCaseClauseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ILabelSymbol> LabelAccessor;
                 private static readonly Func<IOperation, IOperation> PatternAccessor;
@@ -19,16 +18,13 @@ namespace StyleCop.Analyzers.Lightup
                 static IPatternCaseClauseOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IPatternCaseClauseOperationWrapper));
-                        LabelAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
-                            WrappedType, nameof(Label));
-                        PatternAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(Pattern));
-                        GuardAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(Guard));
+                            typeof(IPatternCaseClauseOperationWrapper));
+                        LabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            ILabelSymbol>(WrappedType, nameof(Label));
+                        PatternAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            IOperation>(WrappedType, nameof(Pattern));
+                        GuardAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            IOperation>(WrappedType, nameof(Guard));
                 }
 
                 private IPatternCaseClauseOperationWrapper(IOperation operation)
@@ -39,15 +35,16 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public ILabelSymbol Label => LabelAccessor(this.WrappedOperation);
-                public IPatternOperationWrapper Pattern =>
-                  IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
+                public IPatternOperationWrapper Pattern => IPatternOperationWrapper.FromOperation(
+                    PatternAccessor(this.WrappedOperation));
                 public IOperation Guard => GuardAccessor(this.WrappedOperation);
                 public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
                 public static explicit operator IPatternCaseClauseOperationWrapper(
-                  ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
+                    ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator ICaseClauseOperationWrapper(
-                  IPatternCaseClauseOperationWrapper wrapper) =>
-                  ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+                    IPatternCaseClauseOperationWrapper
+                        wrapper) => ICaseClauseOperationWrapper
+                                        .FromUpcast(wrapper.WrappedOperation);
                 public static IPatternCaseClauseOperationWrapper FromOperation(IOperation operation)
                 {
                         if (operation == null) {
@@ -56,7 +53,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IPatternCaseClauseOperationWrapper(operation);
@@ -64,8 +61,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

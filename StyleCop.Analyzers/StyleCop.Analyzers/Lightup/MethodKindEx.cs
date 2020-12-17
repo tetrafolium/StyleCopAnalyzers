@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Lightup
 {
         using Microsoft.CodeAnalysis;
 
-        internal static class MethodKindEx
-        {
+        internal static class MethodKindEx {
                 public const MethodKind LocalFunction = (MethodKind) 17;
         }
 }

@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
         using LightJson;
 
-        internal class StyleCopSettings
-        {
+        internal class StyleCopSettings {
                 /// <summary>
                 /// This is the backing field for the <see cref="Indentation"/> property.
                 /// </summary>
@@ -64,61 +63,59 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 }
 
                 protected internal StyleCopSettings(JsonObject settingsObject)
-                  : this()
+                    : this()
                 {
                         foreach (var kvp in settingsObject) {
                                 var childSettingsObject = kvp.Value.AsJsonObject;
                                 switch (kvp.Key) {
-                                        case "indentation":
-                                                kvp.AssertIsObject();
-                                                this.indentation =
-                                                  new IndentationSettings(childSettingsObject);
-                                                break;
+                                case "indentation":
+                                        kvp.AssertIsObject();
+                                        this.indentation
+                                            = new IndentationSettings(childSettingsObject);
+                                        break;
 
-                                        case "spacingRules":
-                                                kvp.AssertIsObject();
-                                                this.spacingRules =
-                                                  new SpacingSettings(childSettingsObject);
-                                                break;
+                                case "spacingRules":
+                                        kvp.AssertIsObject();
+                                        this.spacingRules
+                                            = new SpacingSettings(childSettingsObject);
+                                        break;
 
-                                        case "readabilityRules":
-                                                kvp.AssertIsObject();
-                                                this.readabilityRules =
-                                                  new ReadabilitySettings(childSettingsObject);
-                                                break;
+                                case "readabilityRules":
+                                        kvp.AssertIsObject();
+                                        this.readabilityRules
+                                            = new ReadabilitySettings(childSettingsObject);
+                                        break;
 
-                                        case "orderingRules":
-                                                kvp.AssertIsObject();
-                                                this.orderingRules =
-                                                  new OrderingSettings(childSettingsObject);
-                                                break;
+                                case "orderingRules":
+                                        kvp.AssertIsObject();
+                                        this.orderingRules
+                                            = new OrderingSettings(childSettingsObject);
+                                        break;
 
-                                        case "namingRules":
-                                                kvp.AssertIsObject();
-                                                this.namingRules =
-                                                  new NamingSettings(childSettingsObject);
-                                                break;
+                                case "namingRules":
+                                        kvp.AssertIsObject();
+                                        this.namingRules = new NamingSettings(childSettingsObject);
+                                        break;
 
-                                        case "maintainabilityRules":
-                                                kvp.AssertIsObject();
-                                                this.maintainabilityRules =
-                                                  new MaintainabilitySettings(childSettingsObject);
-                                                break;
+                                case "maintainabilityRules":
+                                        kvp.AssertIsObject();
+                                        this.maintainabilityRules
+                                            = new MaintainabilitySettings(childSettingsObject);
+                                        break;
 
-                                        case "layoutRules":
-                                                kvp.AssertIsObject();
-                                                this.layoutRules =
-                                                  new LayoutSettings(childSettingsObject);
-                                                break;
+                                case "layoutRules":
+                                        kvp.AssertIsObject();
+                                        this.layoutRules = new LayoutSettings(childSettingsObject);
+                                        break;
 
-                                        case "documentationRules":
-                                                kvp.AssertIsObject();
-                                                this.documentationRules =
-                                                  new DocumentationSettings(childSettingsObject);
-                                                break;
+                                case "documentationRules":
+                                        kvp.AssertIsObject();
+                                        this.documentationRules
+                                            = new DocumentationSettings(childSettingsObject);
+                                        break;
 
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
                         }
                 }

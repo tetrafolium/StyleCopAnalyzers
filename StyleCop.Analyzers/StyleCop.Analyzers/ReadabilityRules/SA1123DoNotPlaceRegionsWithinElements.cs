@@ -22,40 +22,32 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// maintained over time.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1123DoNotPlaceRegionsWithinElements : DiagnosticAnalyzer
-        {
+        internal class SA1123DoNotPlaceRegionsWithinElements : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1123DoNotPlaceRegionsWithinElements"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1123";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1123.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1123Title),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1123MessageFormat),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1123Description),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1123.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1123Title),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(ReadabilityResources.SA1123MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1123Description),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.ReadabilityRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                  RegionDirectiveTriviaAction = HandleRegionDirectiveTrivia;
+                    RegionDirectiveTriviaAction = HandleRegionDirectiveTrivia;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -67,8 +59,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(RegionDirectiveTriviaAction,
-                                                         SyntaxKind.RegionDirectiveTrivia);
+                        context.RegisterSyntaxNodeAction(
+                            RegionDirectiveTriviaAction, SyntaxKind.RegionDirectiveTrivia);
                 }
 
                 /// <summary>
@@ -83,7 +75,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// <paramref name="regionSyntax"/> is <see langword="null"/>.
                 /// </exception>
                 internal static bool IsCompletelyContainedInBody(
-                  RegionDirectiveTriviaSyntax regionSyntax)
+                    RegionDirectiveTriviaSyntax regionSyntax)
                 {
                         if (regionSyntax == null) {
                                 throw new ArgumentNullException(nameof(regionSyntax));
@@ -92,8 +84,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         BlockSyntax syntax = null;
                         foreach (var directive in regionSyntax.GetRelatedDirectives()) {
                                 BlockSyntax blockSyntax = directive.AncestorsAndSelf()
-                                                            .OfType<BlockSyntax>()
-                                                            .LastOrDefault();
+                                                              .OfType<BlockSyntax>()
+                                                              .LastOrDefault();
                                 if (blockSyntax == null) {
                                         return false;
                                 } else if (syntax == null) {
@@ -108,13 +100,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 private static void HandleRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
                 {
-                        RegionDirectiveTriviaSyntax regionSyntax =
-                          (RegionDirectiveTriviaSyntax) context.Node;
+                        RegionDirectiveTriviaSyntax regionSyntax
+                            = (RegionDirectiveTriviaSyntax) context.Node;
 
                         if (IsCompletelyContainedInBody(regionSyntax)) {
                                 // Region should not be located within a code element.
                                 context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor, regionSyntax.GetLocation()));
+                                    Diagnostic.Create(Descriptor, regionSyntax.GetLocation()));
                         }
                 }
         }

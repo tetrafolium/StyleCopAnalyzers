@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Class containing the parsed file header information.
         /// </summary>
-        internal class FileHeader
-        {
+        internal class FileHeader {
                 private readonly int fileHeaderStart;
 
                 /// <summary>
@@ -33,7 +32,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// Prevents a default instance of the <see cref="FileHeader"/> class from being
                 /// created.
                 /// </summary>
-                private FileHeader() {}
+                private FileHeader() { }
 
                 /// <summary>
                 /// Gets a <see cref="FileHeader"/> instance representing a missing file header.
@@ -78,9 +77,8 @@ namespace StyleCop.Analyzers.Helpers
                                 return Location.Create(syntaxTree, new TextSpan(0, 0));
                         }
 
-                        return Location.Create(
-                          syntaxTree,
-                          TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderStart + 2));
+                        return Location.Create(syntaxTree,
+                            TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderStart + 2));
                 }
         }
 }

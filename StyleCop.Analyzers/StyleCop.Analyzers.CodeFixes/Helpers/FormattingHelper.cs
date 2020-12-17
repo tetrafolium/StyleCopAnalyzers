@@ -10,14 +10,12 @@ namespace StyleCop.Analyzers.Helpers
         using Microsoft.CodeAnalysis.CSharp.Syntax;
         using Microsoft.CodeAnalysis.Formatting;
 
-        internal static class FormattingHelper
-        {
+        internal static class FormattingHelper {
                 public static SyntaxTrivia GetNewLineTrivia(Document document)
                 {
-                        return SyntaxFactory.SyntaxTrivia(
-                          SyntaxKind.EndOfLineTrivia,
-                          document.Project.Solution.Workspace.Options.GetOption(
-                            FormattingOptions.NewLine, LanguageNames.CSharp));
+                        return SyntaxFactory.SyntaxTrivia(SyntaxKind.EndOfLineTrivia,
+                            document.Project.Solution.Workspace.Options.GetOption(
+                                FormattingOptions.NewLine, LanguageNames.CSharp));
                 }
 
                 /// <summary>
@@ -33,24 +31,24 @@ namespace StyleCop.Analyzers.Helpers
                 /// as part of a <see cref="CodeAction"/>.
                 /// </returns>
                 public static TNode WithoutFormatting<TNode>(this TNode node) where TNode
-                  : SyntaxNode
+                    : SyntaxNode
                 {
                         /* Strategy:
                          *  1. Transform all descendants of the node (nodes, tokens, and trivia),
                          * but not the node itself
                          *  2. Transform the resulting node itself
                          */
-                        TNode result = node.ReplaceSyntax(
-                          node.DescendantNodes(descendIntoTrivia
-                                               : true),
-                          (originalNode, rewrittenNode) => WithoutFormattingImpl(rewrittenNode),
-                          node.DescendantTokens(descendIntoTrivia
-                                                : true),
-                          (originalToken, rewrittenToken) => WithoutFormattingImpl(rewrittenToken),
-                          node.DescendantTrivia(descendIntoTrivia
-                                                : true),
-                          (originalTrivia, rewrittenTrivia) =>
-                            WithoutFormattingImpl(rewrittenTrivia));
+                        TNode result = node.ReplaceSyntax(node.DescendantNodes(descendIntoTrivia
+                                                                               : true),
+                            (originalNode, rewrittenNode) => WithoutFormattingImpl(rewrittenNode),
+                            node.DescendantTokens(descendIntoTrivia
+                                                  : true),
+                            (originalToken, rewrittenToken) => WithoutFormattingImpl(
+                                rewrittenToken),
+                            node.DescendantTrivia(descendIntoTrivia
+                                                  : true),
+                            (originalTrivia, rewrittenTrivia) => WithoutFormattingImpl(
+                                rewrittenTrivia));
 
                         return WithoutFormattingImpl(result);
                 }
@@ -73,12 +71,12 @@ namespace StyleCop.Analyzers.Helpers
                          * reformatted
                          *  2. Remove formatting from the resulting token
                          */
-                        SyntaxTriviaList newLeadingTrivia =
-                          token.LeadingTrivia.Select(WithoutFormatting).ToSyntaxTriviaList();
-                        SyntaxTriviaList newTrailingTrivia =
-                          token.TrailingTrivia.Select(WithoutFormatting).ToSyntaxTriviaList();
+                        SyntaxTriviaList newLeadingTrivia
+                            = token.LeadingTrivia.Select(WithoutFormatting).ToSyntaxTriviaList();
+                        SyntaxTriviaList newTrailingTrivia
+                            = token.TrailingTrivia.Select(WithoutFormatting).ToSyntaxTriviaList();
                         return WithoutFormattingImpl(token.WithLeadingTrivia(newLeadingTrivia)
-                                                       .WithTrailingTrivia(newTrailingTrivia));
+                                                         .WithTrailingTrivia(newTrailingTrivia));
                 }
 
                 /// <summary>
@@ -107,8 +105,8 @@ namespace StyleCop.Analyzers.Helpers
                                 // where it is not by leaving the structure node unaltered rather
                                 // than throwing some sort of exception.
                                 if (trivia.GetStructure() is StructuredTriviaSyntax structure) {
-                                        result =
-                                          SyntaxFactory.Trivia(structure.WithoutFormatting());
+                                        result
+                                            = SyntaxFactory.Trivia(structure.WithoutFormatting());
                                 }
                         }
 
@@ -132,10 +130,10 @@ namespace StyleCop.Analyzers.Helpers
                 /// as part of a <see cref="CodeAction"/>.
                 /// </returns>
                 private static TNode WithoutFormattingImpl<TNode>(TNode node) where TNode
-                  : SyntaxNode
+                    : SyntaxNode
                 {
-                        return node.WithoutAnnotations(Formatter.Annotation,
-                                                       SyntaxAnnotation.ElasticAnnotation);
+                        return node.WithoutAnnotations(
+                            Formatter.Annotation, SyntaxAnnotation.ElasticAnnotation);
                 }
 
                 /// <summary>
@@ -156,8 +154,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// </returns>
                 private static SyntaxToken WithoutFormattingImpl(SyntaxToken token)
                 {
-                        return token.WithoutAnnotations(Formatter.Annotation,
-                                                        SyntaxAnnotation.ElasticAnnotation);
+                        return token.WithoutAnnotations(
+                            Formatter.Annotation, SyntaxAnnotation.ElasticAnnotation);
                 }
 
                 /// <summary>
@@ -177,8 +175,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// </returns>
                 private static SyntaxTrivia WithoutFormattingImpl(SyntaxTrivia trivia)
                 {
-                        return trivia.WithoutAnnotations(Formatter.Annotation,
-                                                         SyntaxAnnotation.ElasticAnnotation);
+                        return trivia.WithoutAnnotations(
+                            Formatter.Annotation, SyntaxAnnotation.ElasticAnnotation);
                 }
         }
 }

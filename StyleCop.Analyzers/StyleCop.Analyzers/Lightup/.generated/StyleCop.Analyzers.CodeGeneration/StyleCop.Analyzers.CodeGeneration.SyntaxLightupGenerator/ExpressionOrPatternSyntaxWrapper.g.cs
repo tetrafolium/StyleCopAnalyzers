@@ -10,10 +10,9 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct ExpressionOrPatternSyntaxWrapper
-          : ISyntaxWrapper<CSharpSyntaxNode>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionOrPatternSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionOrPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private readonly CSharpSyntaxNode node;
@@ -21,7 +20,7 @@ namespace StyleCop.Analyzers.Lightup
                 static ExpressionOrPatternSyntaxWrapper()
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                          typeof(ExpressionOrPatternSyntaxWrapper));
+                            typeof(ExpressionOrPatternSyntaxWrapper));
                 }
 
                 private ExpressionOrPatternSyntaxWrapper(CSharpSyntaxNode node)
@@ -39,14 +38,14 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new ExpressionOrPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator CSharpSyntaxNode(
-                  ExpressionOrPatternSyntaxWrapper wrapper)
+                    ExpressionOrPatternSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }

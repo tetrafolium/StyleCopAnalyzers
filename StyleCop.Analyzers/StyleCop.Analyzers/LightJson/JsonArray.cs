@@ -12,8 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(JsonArrayDebugView))]
-internal sealed class JsonArray : IEnumerable<JsonValue>
-{
+internal sealed class JsonArray : IEnumerable<JsonValue> {
         private readonly IList<JsonValue> items;
 
         /// <summary>
@@ -27,7 +26,7 @@ internal sealed class JsonArray : IEnumerable<JsonValue>
         /// </summary>
         /// <param name="values">The values to be added to this collection.</param>
         public JsonArray(params JsonValue[] values)
-          : this()
+            : this()
         {
                 if (values == null) {
                         throw new ArgumentNullException(nameof(values));
@@ -142,8 +141,7 @@ internal sealed class JsonArray : IEnumerable<JsonValue>
         }
 
         [ExcludeFromCodeCoverage]
-        private class JsonArrayDebugView
-        {
+        private class JsonArrayDebugView {
                 private readonly JsonArray jsonArray;
 
                 public JsonArrayDebugView(JsonArray jsonArray) { this.jsonArray = jsonArray; }

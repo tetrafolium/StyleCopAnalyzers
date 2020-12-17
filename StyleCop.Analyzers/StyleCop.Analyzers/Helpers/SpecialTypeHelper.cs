@@ -9,10 +9,9 @@ namespace StyleCop.Analyzers.Helpers
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class SpecialTypeHelper
-        {
+        internal static class SpecialTypeHelper {
                 private static ImmutableDictionary<SpecialType, PredefinedTypeSyntax>
-                  PredefinedSpecialTypes
+                    PredefinedSpecialTypes
                 {
                         get;
                 }
@@ -56,12 +55,11 @@ namespace StyleCop.Analyzers.Helpers
                         return PredefinedSpecialTypes.ContainsKey(specialType);
                 }
 
-                public static bool TryGetPredefinedType(SpecialType specialType,
-                                                        out PredefinedTypeSyntax
-                                                          predefinedTypeSyntax)
+                public static bool TryGetPredefinedType(
+                    SpecialType specialType, out PredefinedTypeSyntax predefinedTypeSyntax)
                 {
-                        return PredefinedSpecialTypes.TryGetValue(specialType,
-                                                                  out predefinedTypeSyntax);
+                        return PredefinedSpecialTypes.TryGetValue(
+                            specialType, out predefinedTypeSyntax);
                 }
         }
 }

@@ -11,14 +11,14 @@ namespace LightJson.Serialization
         /// <remarks>
         /// <para>This exception is only intended to be thrown by LightJson.</para>
         /// </remarks>
-        internal sealed class JsonParseException : Exception
-        {
+        internal sealed class JsonParseException : Exception {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class.
                 /// </summary>
                 public JsonParseException()
-                  : base(GetDefaultMessage(ErrorType.Unknown))
-                {}
+                    : base(GetDefaultMessage(ErrorType.Unknown))
+                {
+                }
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class with
@@ -28,8 +28,9 @@ namespace LightJson.Serialization
                 /// <param name="position">The position in the text where the error
                 /// occurred.</param>
                 public JsonParseException(ErrorType type, TextPosition position)
-                  : this(GetDefaultMessage(type), type, position)
-                {}
+                    : this(GetDefaultMessage(type), type, position)
+                {
+                }
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class with
@@ -40,7 +41,7 @@ namespace LightJson.Serialization
                 /// <param name="position">The position in the text where the error
                 /// occurred.</param>
                 public JsonParseException(string message, ErrorType type, TextPosition position)
-                  : base(message)
+                    : base(message)
                 {
                         this.Type = type;
                         this.Position = position;
@@ -96,17 +97,17 @@ namespace LightJson.Serialization
                 private static string GetDefaultMessage(ErrorType type)
                 {
                         switch (type) {
-                                case ErrorType.IncompleteMessage:
-                                        return "The string ended before a value could be parsed.";
+                        case ErrorType.IncompleteMessage:
+                                return "The string ended before a value could be parsed.";
 
-                                case ErrorType.InvalidOrUnexpectedCharacter:
-                                        return "The parser encountered an invalid or unexpected character.";
+                        case ErrorType.InvalidOrUnexpectedCharacter:
+                                return "The parser encountered an invalid or unexpected character.";
 
-                                case ErrorType.DuplicateObjectKeys:
-                                        return "The parser encountered a JsonObject with duplicate keys.";
+                        case ErrorType.DuplicateObjectKeys:
+                                return "The parser encountered a JsonObject with duplicate keys.";
 
-                                default:
-                                        return "An error occurred while parsing the JSON message.";
+                        default:
+                                return "An error occurred while parsing the JSON message.";
                         }
                 }
         }

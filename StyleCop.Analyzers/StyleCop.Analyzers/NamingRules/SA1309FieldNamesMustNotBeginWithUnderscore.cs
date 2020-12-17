@@ -34,40 +34,31 @@ namespace StyleCop.Analyzers.NamingRules
         /// is placed within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1309FieldNamesMustNotBeginWithUnderscore : DiagnosticAnalyzer
-        {
+        internal class SA1309FieldNamesMustNotBeginWithUnderscore : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1309FieldNamesMustNotBeginWithUnderscore"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1309";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1309.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(NamingResources.SA1309Title),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(NamingResources.SA1309MessageFormat),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(NamingResources.SA1309Description),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1309.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(NamingResources.SA1309Title),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(NamingResources.SA1309MessageFormat),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(NamingResources.SA1309Description),
+                        NamingResources.ResourceManager, typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.NamingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction =
-                  HandleFieldDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction
+                    = HandleFieldDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -79,8 +70,8 @@ namespace StyleCop.Analyzers.NamingRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(FieldDeclarationAction,
-                                                         SyntaxKind.FieldDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            FieldDeclarationAction, SyntaxKind.FieldDeclaration);
                 }
 
                 private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
@@ -105,15 +96,15 @@ namespace StyleCop.Analyzers.NamingRules
                                         continue;
                                 }
 
-                                if (!identifier.ValueText.StartsWith("_",
-                                                                     StringComparison.Ordinal)) {
+                                if (!identifier.ValueText.StartsWith(
+                                        "_", StringComparison.Ordinal)) {
                                         continue;
                                 }
 
                                 // Field '{name}' should not begin with an underscore
                                 string name = identifier.ValueText;
                                 context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
+                                    Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
                         }
                 }
         }

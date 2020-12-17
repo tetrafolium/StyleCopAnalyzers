@@ -12,23 +12,21 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         using Microsoft.CodeAnalysis.CSharp.Syntax;
         using StyleCop.Analyzers.Helpers;
 
-        internal sealed class SA1407SA1408FixAllProvider : DocumentBasedFixAllProvider
-        {
-                protected override string CodeActionTitle =>
-                  MaintainabilityResources.SA1407SA1408CodeFix;
+        internal sealed class SA1407SA1408FixAllProvider : DocumentBasedFixAllProvider {
+                protected override string
+                    CodeActionTitle => MaintainabilityResources.SA1407SA1408CodeFix;
 
                 protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                  FixAllContext fixAllContext,
-                  Document document,
-                  ImmutableArray<Diagnostic> diagnostics)
+                    FixAllContext fixAllContext, Document document,
+                    ImmutableArray<Diagnostic> diagnostics)
                 {
                         if (diagnostics.IsEmpty) {
                                 return null;
                         }
 
-                        var root =
-                          await document.GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                            .ConfigureAwait(false);
+                        var root
+                            = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken)
+                                  .ConfigureAwait(false);
 
                         List<SyntaxNode> nodes = new List<SyntaxNode>();
                         foreach (var diagnostic in diagnostics) {
@@ -41,7 +39,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         }
 
                         return root.ReplaceNodes(
-                          nodes, (originalNode, rewrittenNode) => AddParentheses(rewrittenNode));
+                            nodes, (originalNode, rewrittenNode) => AddParentheses(rewrittenNode));
                 }
 
                 private static SyntaxNode AddParentheses(SyntaxNode node)
@@ -53,8 +51,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         BinaryExpressionSyntax trimmedSyntax = syntax.WithoutTrivia();
 
                         return SyntaxFactory.ParenthesizedExpression(trimmedSyntax)
-                          .WithTriviaFrom(syntax)
-                          .WithoutFormatting();
+                            .WithTriviaFrom(syntax)
+                            .WithoutFormatting();
                 }
         }
 }

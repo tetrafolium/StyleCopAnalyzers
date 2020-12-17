@@ -18,8 +18,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1629CodeFixProvider))]
         [Shared]
-        internal class SA1629CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1629CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1629DocumentationTextMustEndWithAPeriod.DiagnosticId);
@@ -35,14 +34,14 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 if (!diagnostic.Properties.ContainsKey(
-                                      SA1629DocumentationTextMustEndWithAPeriod.NoCodeFixKey)) {
+                                        SA1629DocumentationTextMustEndWithAPeriod.NoCodeFixKey)) {
                                         context.RegisterCodeFix(
-                                          CodeAction.Create(
-                                            DocumentationResources.SA1629CodeFix,
-                                            cancellationToken => GetTransformedDocumentAsync(
-                                              context.Document, diagnostic, cancellationToken),
-                                            nameof(SA1629CodeFixProvider)),
-                                          diagnostic);
+                                            CodeAction.Create(DocumentationResources.SA1629CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync(
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof(SA1629CodeFixProvider)),
+                                            diagnostic);
                                 }
                         }
 
@@ -50,17 +49,15 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
-                        var text =
-                          await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                        var text
+                            = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         bool replaceChar = diagnostic.Properties.ContainsKey(
-                          SA1629DocumentationTextMustEndWithAPeriod.ReplaceCharKey);
+                            SA1629DocumentationTextMustEndWithAPeriod.ReplaceCharKey);
                         var newText = text.WithChanges(new TextChange(
-                          new TextSpan(diagnostic.Location.SourceSpan.Start, replaceChar ? 1 : 0),
-                          "."));
+                            new TextSpan(diagnostic.Location.SourceSpan.Start, replaceChar ? 1 : 0),
+                            "."));
 
                         return document.WithText(newText);
                 }

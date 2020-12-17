@@ -6,16 +6,16 @@ namespace StyleCop.Analyzers.Lightup
         using System;
         using Microsoft.CodeAnalysis;
 
-        internal static class IFieldSymbolExtensions
-        {
+        internal static class IFieldSymbolExtensions {
                 private static readonly Func<IFieldSymbol, IFieldSymbol>
-                  CorrespondingTupleFieldAccessor;
+                    CorrespondingTupleFieldAccessor;
 
                 static IFieldSymbolExtensions()
                 {
-                        CorrespondingTupleFieldAccessor =
-                          LightupHelpers.CreateSyntaxPropertyAccessor<IFieldSymbol, IFieldSymbol>(
-                            typeof(IFieldSymbol), nameof(CorrespondingTupleField));
+                        CorrespondingTupleFieldAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<IFieldSymbol, IFieldSymbol>(
+                                      typeof(IFieldSymbol), nameof(CorrespondingTupleField));
                 }
 
                 public static IFieldSymbol CorrespondingTupleField(this IFieldSymbol symbol)

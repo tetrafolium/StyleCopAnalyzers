@@ -19,12 +19,11 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1506CodeFixProvider))]
         [Shared]
-        internal class SA1506CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1506CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                  SA1506ElementDocumentationHeadersMustNotBeFollowedByBlankLine.DiagnosticId);
+                    SA1506ElementDocumentationHeadersMustNotBeFollowedByBlankLine.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -37,68 +36,65 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    LayoutResources.SA1506CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1506CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(LayoutResources.SA1506CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1506CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
 
                         var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
                         var triviaList = token.LeadingTrivia;
 
-                        var index =
-                          triviaList.IndexOf(SyntaxKind.SingleLineDocumentationCommentTrivia);
+                        var index
+                            = triviaList.IndexOf(SyntaxKind.SingleLineDocumentationCommentTrivia);
 
                         int currentLineStart = index + 1;
                         bool onBlankLine = true;
                         for (int currentIndex = currentLineStart; currentIndex < triviaList.Count;
                              currentIndex++) {
                                 switch (triviaList [currentIndex]
-                                          .Kind()) {
-                                        case SyntaxKind.EndOfLineTrivia:
-                                                if (onBlankLine) {
-                                                        triviaList = triviaList.RemoveRange(
-                                                          currentLineStart,
-                                                          currentIndex - currentLineStart + 1);
-                                                        currentIndex = currentLineStart - 1;
-                                                        continue;
-                                                } else {
-                                                        currentLineStart = currentIndex + 1;
-                                                        onBlankLine = true;
-                                                        break;
-                                                }
-
-                                        case SyntaxKind.WhitespaceTrivia:
+                                            .Kind()) {
+                                case SyntaxKind.EndOfLineTrivia:
+                                        if (onBlankLine) {
+                                                triviaList
+                                                    = triviaList.RemoveRange(currentLineStart,
+                                                        currentIndex - currentLineStart + 1);
+                                                currentIndex = currentLineStart - 1;
+                                                continue;
+                                        } else {
+                                                currentLineStart = currentIndex + 1;
+                                                onBlankLine = true;
                                                 break;
+                                        }
 
-                                        default:
-                                                if (triviaList [currentIndex]
-                                                      .HasBuiltinEndLine()) {
-                                                        currentLineStart = currentIndex + 1;
-                                                        onBlankLine = true;
-                                                        break;
-                                                } else {
-                                                        onBlankLine = false;
-                                                        break;
-                                                }
+                                case SyntaxKind.WhitespaceTrivia:
+                                        break;
+
+                                default:
+                                        if (triviaList [currentIndex]
+                                                .HasBuiltinEndLine()) {
+                                                currentLineStart = currentIndex + 1;
+                                                onBlankLine = true;
+                                                break;
+                                        } else {
+                                                onBlankLine = false;
+                                                break;
+                                        }
                                 }
                         }
 
-                        var newSyntaxRoot =
-                          syntaxRoot.ReplaceToken(token, token.WithLeadingTrivia(triviaList));
+                        var newSyntaxRoot
+                            = syntaxRoot.ReplaceToken(token, token.WithLeadingTrivia(triviaList));
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

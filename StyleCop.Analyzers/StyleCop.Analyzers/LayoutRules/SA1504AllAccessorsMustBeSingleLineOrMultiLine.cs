@@ -63,41 +63,32 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1504AllAccessorsMustBeSingleLineOrMultiLine : DiagnosticAnalyzer
-        {
+        internal class SA1504AllAccessorsMustBeSingleLineOrMultiLine : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1504AllAccessorsMustBeSingleLineOrMultiLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1504";
 
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1504.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1504Title),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1504MessageFormat),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1504Description),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1504.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1504Title),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1504MessageFormat),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1504Description),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.LayoutRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> AccessorListAction =
-                  HandleAccessorList;
+                private static readonly Action<SyntaxNodeAnalysisContext> AccessorListAction
+                    = HandleAccessorList;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -109,8 +100,8 @@ namespace StyleCop.Analyzers.LayoutRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(AccessorListAction,
-                                                         SyntaxKind.AccessorList);
+                        context.RegisterSyntaxNodeAction(
+                            AccessorListAction, SyntaxKind.AccessorList);
                 }
 
                 private static void HandleAccessorList(SyntaxNodeAnalysisContext context)
@@ -131,8 +122,8 @@ namespace StyleCop.Analyzers.LayoutRules
                                 }
 
                                 var fileLinePositionSpan = accessor.GetLineSpan();
-                                if (fileLinePositionSpan.StartLinePosition.Line ==
-                                    fileLinePositionSpan.EndLinePosition.Line) {
+                                if (fileLinePositionSpan.StartLinePosition.Line
+                                    == fileLinePositionSpan.EndLinePosition.Line) {
                                         hasSingleLineAccessor = true;
                                 } else {
                                         hasMultipleLinesAccessor = true;
@@ -140,9 +131,8 @@ namespace StyleCop.Analyzers.LayoutRules
                         }
 
                         if (hasSingleLineAccessor && hasMultipleLinesAccessor) {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                  Descriptor,
-                                  accessorList.Accessors.First().Keyword.GetLocation()));
+                                context.ReportDiagnostic(Diagnostic.Create(Descriptor,
+                                    accessorList.Accessors.First().Keyword.GetLocation()));
                         }
                 }
         }

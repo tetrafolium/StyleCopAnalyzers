@@ -7,16 +7,15 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IInstanceReferenceOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IInstanceReferenceOperation";
+        internal readonly struct IInstanceReferenceOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IInstanceReferenceOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
                 static IInstanceReferenceOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IInstanceReferenceOperationWrapper));
+                            typeof(IInstanceReferenceOperationWrapper));
                 }
 
                 private IInstanceReferenceOperationWrapper(IOperation operation)
@@ -27,7 +26,7 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public object ReferenceKind => throw new NotImplementedException(
-                  "Property 'IInstanceReferenceOperation.ReferenceKind' has unsupported type 'InstanceReferenceKind'");
+                    "Property 'IInstanceReferenceOperation.ReferenceKind' has unsupported type 'InstanceReferenceKind'");
                 public static IInstanceReferenceOperationWrapper FromOperation(IOperation operation)
                 {
                         if (operation == null) {
@@ -36,7 +35,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IInstanceReferenceOperationWrapper(operation);
@@ -44,8 +43,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

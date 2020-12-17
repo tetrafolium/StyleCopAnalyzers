@@ -7,49 +7,47 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         using System.Collections.Generic;
         using System.Text;
 
-        internal static class SharedPoolExtensions
-        {
+        internal static class SharedPoolExtensions {
                 private const int Threshold = 512;
 
                 public static PooledObject<StringBuilder> GetPooledObject(
-                  this ObjectPool<StringBuilder> pool)
+                    this ObjectPool<StringBuilder> pool)
                 {
                         return PooledObject<StringBuilder>.Create(pool);
                 }
 
                 public static PooledObject<Stack<TItem>> GetPooledObject<TItem>(
-                  this ObjectPool<Stack<TItem>> pool)
+                    this ObjectPool<Stack<TItem>> pool)
                 {
                         return PooledObject<Stack<TItem>>.Create(pool);
                 }
 
                 public static PooledObject<Queue<TItem>> GetPooledObject<TItem>(
-                  this ObjectPool<Queue<TItem>> pool)
+                    this ObjectPool<Queue<TItem>> pool)
                 {
                         return PooledObject<Queue<TItem>>.Create(pool);
                 }
 
                 public static PooledObject<HashSet<TItem>> GetPooledObject<TItem>(
-                  this ObjectPool<HashSet<TItem>> pool)
+                    this ObjectPool<HashSet<TItem>> pool)
                 {
                         return PooledObject<HashSet<TItem>>.Create(pool);
                 }
 
                 public static PooledObject<Dictionary<TKey, TValue>> GetPooledObject<TKey, TValue>(
-                  this ObjectPool<Dictionary<TKey, TValue>> pool)
+                    this ObjectPool<Dictionary<TKey, TValue>> pool)
                 {
                         return PooledObject<Dictionary<TKey, TValue>>.Create(pool);
                 }
 
                 public static PooledObject<List<TItem>> GetPooledObject<TItem>(
-                  this ObjectPool<List<TItem>> pool)
+                    this ObjectPool<List<TItem>> pool)
                 {
                         return PooledObject<List<TItem>>.Create(pool);
                 }
 
                 public static PooledObject<T> GetPooledObject<T>(this ObjectPool<T> pool) where T
-                  : class
-                {
+                    : class {
                         return new PooledObject<T>(pool, p => p.Allocate(), (p, o) => p.Free(o));
                 }
 
@@ -86,7 +84,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 }
 
                 public static Dictionary<TKey, TValue> AllocateAndClear<TKey, TValue>(
-                  this ObjectPool<Dictionary<TKey, TValue>> pool)
+                    this ObjectPool<Dictionary<TKey, TValue>> pool)
                 {
                         var map = pool.Allocate();
                         map.Clear();
@@ -102,8 +100,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                         return list;
                 }
 
-                public static void ClearAndFree(this ObjectPool<StringBuilder> pool,
-                                                StringBuilder sb)
+                public static void ClearAndFree(
+                    this ObjectPool<StringBuilder> pool, StringBuilder sb)
                 {
                         if (sb == null) {
                                 return;
@@ -167,8 +165,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 }
 
                 public static void ClearAndFree<TKey, TValue>(
-                  this ObjectPool<Dictionary<TKey, TValue>> pool,
-                  Dictionary<TKey, TValue> map)
+                    this ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> map)
                 {
                         if (map == null) {
                                 return;

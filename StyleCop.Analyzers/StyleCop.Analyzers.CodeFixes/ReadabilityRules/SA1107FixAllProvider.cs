@@ -11,28 +11,26 @@ namespace StyleCop.Analyzers.ReadabilityRules
         using Microsoft.CodeAnalysis.Editing;
         using StyleCop.Analyzers.Helpers;
 
-        internal class SA1107FixAllProvider : DocumentBasedFixAllProvider
-        {
+        internal class SA1107FixAllProvider : DocumentBasedFixAllProvider {
                 protected override string CodeActionTitle => ReadabilityResources.SA1107CodeFix;
 
                 protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                  FixAllContext fixAllContext,
-                  Document document,
-                  ImmutableArray<Diagnostic> diagnostics)
+                    FixAllContext fixAllContext, Document document,
+                    ImmutableArray<Diagnostic> diagnostics)
                 {
                         if (diagnostics.IsEmpty) {
                                 return null;
                         }
 
-                        DocumentEditor editor =
-                          await DocumentEditor
-                            .CreateAsync(document, fixAllContext.CancellationToken)
-                            .ConfigureAwait(false);
+                        DocumentEditor editor
+                            = await DocumentEditor
+                                  .CreateAsync(document, fixAllContext.CancellationToken)
+                                  .ConfigureAwait(false);
 
                         SyntaxNode root = editor.GetChangedRoot();
 
-                        ImmutableList<SyntaxNode> nodesToChange =
-                          ImmutableList.Create<SyntaxNode>();
+                        ImmutableList<SyntaxNode> nodesToChange
+                            = ImmutableList.Create<SyntaxNode>();
 
                         // Make sure all nodes we care about are tracked
                         foreach (var diagnostic in diagnostics) {
@@ -46,8 +44,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                         foreach (var node in nodesToChange) {
                                 editor.ReplaceNode(node,
-                                                   node.WithLeadingTrivia(
-                                                     SyntaxFactory.ElasticCarriageReturnLineFeed));
+                                    node.WithLeadingTrivia(
+                                        SyntaxFactory.ElasticCarriageReturnLineFeed));
                         }
 
                         return editor.GetChangedRoot();

@@ -10,41 +10,39 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct ThrowExpressionSyntaxWrapper
-          : ISyntaxWrapper<ExpressionSyntax>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.ThrowExpressionSyntax";
+            : ISyntaxWrapper<ExpressionSyntax> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.ThrowExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, SyntaxToken> ThrowKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax> ExpressionAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                  WithThrowKeywordAccessor;
+                    WithThrowKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax, ExpressionSyntax>
-                  WithExpressionAccessor;
+                    WithExpressionAccessor;
 
                 private readonly ExpressionSyntax node;
 
                 static ThrowExpressionSyntaxWrapper()
                 {
-                        WrappedType =
-                          SyntaxWrapperHelper.GetWrappedType(typeof(ThrowExpressionSyntaxWrapper));
-                        ThrowKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(ThrowKeyword));
-                        ExpressionAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                              WrappedType, nameof(Expression));
-                        WithThrowKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(ThrowKeyword));
-                        WithExpressionAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                              WrappedType, nameof(Expression));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
+                            typeof(ThrowExpressionSyntaxWrapper));
+                        ThrowKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(ThrowKeyword));
+                        ExpressionAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                                      WrappedType, nameof(Expression));
+                        WithThrowKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(ThrowKeyword));
+                        WithExpressionAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                ExpressionSyntax>(WrappedType, nameof(Expression));
                 }
 
                 private ThrowExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
@@ -69,14 +67,14 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new ThrowExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
                 public static implicit operator ExpressionSyntax(
-                  ThrowExpressionSyntaxWrapper wrapper)
+                    ThrowExpressionSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
@@ -89,13 +87,13 @@ namespace StyleCop.Analyzers.Lightup
                 public ThrowExpressionSyntaxWrapper WithThrowKeyword(SyntaxToken throwKeyword)
                 {
                         return new ThrowExpressionSyntaxWrapper(
-                          WithThrowKeywordAccessor(this.SyntaxNode, throwKeyword));
+                            WithThrowKeywordAccessor(this.SyntaxNode, throwKeyword));
                 }
 
                 public ThrowExpressionSyntaxWrapper WithExpression(ExpressionSyntax expression)
                 {
                         return new ThrowExpressionSyntaxWrapper(
-                          WithExpressionAccessor(this.SyntaxNode, expression));
+                            WithExpressionAccessor(this.SyntaxNode, expression));
                 }
         }
 }

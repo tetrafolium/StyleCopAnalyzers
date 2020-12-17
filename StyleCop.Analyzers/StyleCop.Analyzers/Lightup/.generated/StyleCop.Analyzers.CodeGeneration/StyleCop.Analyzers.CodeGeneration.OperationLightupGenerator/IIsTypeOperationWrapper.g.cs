@@ -7,10 +7,9 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IIsTypeOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IIsTypeOperation";
+        internal readonly struct IIsTypeOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IIsTypeOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ValueOperandAccessor;
                 private static readonly Func<IOperation, ITypeSymbol> TypeOperandAccessor;
@@ -18,17 +17,19 @@ namespace StyleCop.Analyzers.Lightup
                 private readonly IOperation operation;
                 static IIsTypeOperationWrapper()
                 {
-                        WrappedType =
-                          OperationWrapperHelper.GetWrappedType(typeof(IIsTypeOperationWrapper));
-                        ValueOperandAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(ValueOperand));
-                        TypeOperandAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
-                            WrappedType, nameof(TypeOperand));
-                        IsNegatedAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                            WrappedType, nameof(IsNegated));
+                        WrappedType = OperationWrapperHelper.GetWrappedType(
+                            typeof(IIsTypeOperationWrapper));
+                        ValueOperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(ValueOperand));
+                        TypeOperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                                      WrappedType, nameof(TypeOperand));
+                        IsNegatedAccessor
+                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                                WrappedType, nameof(IsNegated));
                 }
 
                 private IIsTypeOperationWrapper(IOperation operation)
@@ -49,7 +50,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IIsTypeOperationWrapper(operation);
@@ -57,8 +58,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

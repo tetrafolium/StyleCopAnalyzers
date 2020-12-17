@@ -11,15 +11,15 @@ namespace LightJson.Serialization
         /// <remarks>
         /// <para>This exception is only intended to be thrown by LightJson.</para>
         /// </remarks>
-        internal sealed class JsonSerializationException : Exception
-        {
+        internal sealed class JsonSerializationException : Exception {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonSerializationException"/>
                 /// class.
                 /// </summary>
                 public JsonSerializationException()
-                  : base(GetDefaultMessage(ErrorType.Unknown))
-                {}
+                    : base(GetDefaultMessage(ErrorType.Unknown))
+                {
+                }
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonSerializationException"/> class
@@ -27,8 +27,9 @@ namespace LightJson.Serialization
                 /// </summary>
                 /// <param name="type">The error type that describes the cause of the error.</param>
                 public JsonSerializationException(ErrorType type)
-                  : this(GetDefaultMessage(type), type)
-                {}
+                    : this(GetDefaultMessage(type), type)
+                {
+                }
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonSerializationException"/> class
@@ -37,7 +38,7 @@ namespace LightJson.Serialization
                 /// <param name="message">The message that describes the error.</param>
                 /// <param name="type">The error type that describes the cause of the error.</param>
                 public JsonSerializationException(string message, ErrorType type)
-                  : base(message)
+                    : base(message)
                 {
                         this.Type = type;
                 }
@@ -81,17 +82,17 @@ namespace LightJson.Serialization
                 private static string GetDefaultMessage(ErrorType type)
                 {
                         switch (type) {
-                                case ErrorType.InvalidNumber:
-                                        return "The value been serialized contains an invalid number value (NAN, infinity).";
+                        case ErrorType.InvalidNumber:
+                                return "The value been serialized contains an invalid number value (NAN, infinity).";
 
-                                case ErrorType.InvalidValueType:
-                                        return "The value been serialized contains (or is) an invalid JSON type.";
+                        case ErrorType.InvalidValueType:
+                                return "The value been serialized contains (or is) an invalid JSON type.";
 
-                                case ErrorType.CircularReference:
-                                        return "The value been serialized contains circular references.";
+                        case ErrorType.CircularReference:
+                                return "The value been serialized contains circular references.";
 
-                                default:
-                                        return "An error occurred during serialization.";
+                        default:
+                                return "An error occurred during serialization.";
                         }
                 }
         }

@@ -23,22 +23,20 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1122CodeFixProvider))]
         [Shared]
-        internal class SA1122CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1122CodeFixProvider : CodeFixProvider {
                 private static readonly SyntaxNode StringEmptyExpression;
 
                 static SA1122CodeFixProvider()
                 {
-                        var identifierNameSyntax =
-                          SyntaxFactory.IdentifierName(nameof(string.Empty));
+                        var identifierNameSyntax
+                            = SyntaxFactory.IdentifierName(nameof(string.Empty));
                         var stringKeyword = SyntaxFactory.PredefinedType(
-                          SyntaxFactory.Token(SyntaxKind.StringKeyword));
-                        StringEmptyExpression =
-                          SyntaxFactory
-                            .MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                                                    stringKeyword,
-                                                    identifierNameSyntax)
-                            .WithoutFormatting();
+                            SyntaxFactory.Token(SyntaxKind.StringKeyword));
+                        StringEmptyExpression
+                            = SyntaxFactory
+                                  .MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                      stringKeyword, identifierNameSyntax)
+                                  .WithoutFormatting();
                 }
 
                 /// <inheritdoc/>
@@ -51,69 +49,65 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// <inheritdoc/>
                 public override async Task RegisterCodeFixesAsync(CodeFixContext context)
                 {
-                        var root =
-                          await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                            .ConfigureAwait(false);
+                        var root
+                            = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                                  .ConfigureAwait(false);
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    ReadabilityResources.SA1122CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1122CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(ReadabilityResources.SA1122CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1122CodeFixProvider)),
+                                    diagnostic);
                         }
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
 
-                        var node =
-                          syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                                              : true);
-                        var newSyntaxRoot =
-                          syntaxRoot.ReplaceNode(node, StringEmptyExpression.WithTriviaFrom(node));
+                        var node = syntaxRoot.FindNode(
+                            diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                            : true);
+                        var newSyntaxRoot = syntaxRoot.ReplaceNode(
+                            node, StringEmptyExpression.WithTriviaFrom(node));
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider
-                {
+                private class FixAll : DocumentBasedFixAllProvider {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
-                        protected override string CodeActionTitle =>
-                          ReadabilityResources.SA1122CodeFix;
+                        protected override string
+                            CodeActionTitle => ReadabilityResources.SA1122CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                          FixAllContext fixAllContext,
-                          Document document,
-                          ImmutableArray<Diagnostic> diagnostics)
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
-                                var syntaxRoot =
-                                  await document.GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                                    .ConfigureAwait(false);
+                                var syntaxRoot
+                                    = await document
+                                          .GetSyntaxRootAsync(fixAllContext.CancellationToken)
+                                          .ConfigureAwait(false);
 
                                 List<SyntaxNode> expressions = new List<SyntaxNode>();
                                 foreach (var diagnostic in diagnostics) {
                                         var node = syntaxRoot.FindNode(
-                                          diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                                          : true);
+                                            diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                            : true);
                                         expressions.Add(node);
                                 }
 
-                                return syntaxRoot.ReplaceNodes(
-                                  expressions,
-                                  (originalNode, rewrittenNode) =>
-                                    StringEmptyExpression.WithTriviaFrom(rewrittenNode));
+                                return syntaxRoot.ReplaceNodes(expressions,
+                                    (originalNode, rewrittenNode) => StringEmptyExpression
+                                                                         .WithTriviaFrom(
+                                                                             rewrittenNode));
                         }
                 }
         }

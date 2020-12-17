@@ -19,8 +19,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1141CodeFixProvider))]
         [Shared]
-        internal class SA1141CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1141CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1141UseTupleSyntax.DiagnosticId);
@@ -37,30 +36,27 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    ReadabilityResources.SA1141CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1141CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(ReadabilityResources.SA1141CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1141CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
-                                              .ConfigureAwait(false);
+                                                .ConfigureAwait(false);
 
-                        var node =
-                          syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
-                                              : true);
+                        var node = syntaxRoot.FindNode(
+                            diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                            : true);
                         if (node.IsKind(SyntaxKind.SimpleMemberAccessExpression)) {
                                 // get the invocation node when processing ValueTuple.Create, as
                                 // that needs to be replaced.
@@ -75,68 +71,65 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         newNode = separatorRewriter.Visit(newNode);
 
                         switch (node.Parent.Kind()) {
-                                case SyntaxKind.MethodDeclaration:
-                                case SyntaxKind.Parameter:
-                                case SyntaxKind.PropertyDeclaration:
-                                case SyntaxKind.IndexerDeclaration:
-                                case SyntaxKind.DelegateDeclaration:
-                                        newNode = newNode.WithTrailingTrivia(SyntaxFactory.Space);
-                                        break;
+                        case SyntaxKind.MethodDeclaration:
+                        case SyntaxKind.Parameter:
+                        case SyntaxKind.PropertyDeclaration:
+                        case SyntaxKind.IndexerDeclaration:
+                        case SyntaxKind.DelegateDeclaration:
+                                newNode = newNode.WithTrailingTrivia(SyntaxFactory.Space);
+                                break;
                         }
 
                         var newSyntaxRoot = syntaxRoot.ReplaceNode(node, newNode)
-                                              .WithAdditionalAnnotations(Simplifier.Annotation);
+                                                .WithAdditionalAnnotations(Simplifier.Annotation);
                         return document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
                 }
 
-                private static SyntaxNode GetReplacementNode(SemanticModel semanticModel,
-                                                             SyntaxNode node)
+                private static SyntaxNode GetReplacementNode(
+                    SemanticModel semanticModel, SyntaxNode node)
                 {
                         switch (node) {
-                                case QualifiedNameSyntax qualifiedNameSyntax:
-                                        return TransformGenericNameToTuple(
-                                          semanticModel,
-                                          (GenericNameSyntax) qualifiedNameSyntax.Right);
+                        case QualifiedNameSyntax qualifiedNameSyntax:
+                                return TransformGenericNameToTuple(
+                                    semanticModel, (GenericNameSyntax) qualifiedNameSyntax.Right);
 
-                                case GenericNameSyntax genericNameSyntax:
-                                        return TransformGenericNameToTuple(semanticModel,
-                                                                           genericNameSyntax);
+                        case GenericNameSyntax genericNameSyntax:
+                                return TransformGenericNameToTuple(
+                                    semanticModel, genericNameSyntax);
 
-                                case ObjectCreationExpressionSyntax objectCreationExpression:
-                                        return TransformArgumentListToTuple(
-                                          semanticModel,
-                                          objectCreationExpression.ArgumentList.Arguments);
+                        case ObjectCreationExpressionSyntax objectCreationExpression:
+                                return TransformArgumentListToTuple(
+                                    semanticModel, objectCreationExpression.ArgumentList.Arguments);
 
-                                case InvocationExpressionSyntax invocationExpressionSyntax:
-                                        return TransformArgumentListToTuple(
-                                          semanticModel,
-                                          invocationExpressionSyntax.ArgumentList.Arguments);
+                        case InvocationExpressionSyntax invocationExpressionSyntax:
+                                return TransformArgumentListToTuple(semanticModel,
+                                    invocationExpressionSyntax.ArgumentList.Arguments);
 
-                                default:
-                                        return node;
+                        default:
+                                return node;
                         }
                 }
 
-                private static SyntaxNode TransformGenericNameToTuple(SemanticModel semanticModel,
-                                                                      GenericNameSyntax genericName)
+                private static SyntaxNode TransformGenericNameToTuple(
+                    SemanticModel semanticModel, GenericNameSyntax genericName)
                 {
-                        var implementationType =
-                          typeof(SeparatedSyntaxListWrapper<>.AutoWrapSeparatedSyntaxList<>)
-                            .MakeGenericType(typeof(TupleElementSyntaxWrapper),
-                                             SyntaxWrapperHelper.GetWrappedType(
-                                               typeof(TupleElementSyntaxWrapper)));
+                        var implementationType
+                            = typeof(SeparatedSyntaxListWrapper<>.AutoWrapSeparatedSyntaxList<>)
+                                  .MakeGenericType(typeof(TupleElementSyntaxWrapper),
+                                      SyntaxWrapperHelper.GetWrappedType(
+                                          typeof(TupleElementSyntaxWrapper)));
                         var tupleElements = (SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>)
-                                              Activator.CreateInstance(implementationType);
+                                                Activator.CreateInstance(implementationType);
 
                         foreach (var typeArgument in genericName.TypeArgumentList.Arguments) {
                                 if (IsValueTuple(semanticModel, typeArgument)) {
                                         var tupleTypeSyntax = (TypeSyntax)
-                                          GetReplacementNode(semanticModel, typeArgument);
+                                            GetReplacementNode(semanticModel, typeArgument);
                                         tupleElements = tupleElements.Add(
-                                          SyntaxFactoryEx.TupleElement(tupleTypeSyntax));
+                                            SyntaxFactoryEx.TupleElement(tupleTypeSyntax));
                                 } else {
                                         tupleElements = tupleElements.Add(
-                                          SyntaxFactoryEx.TupleElement(typeArgument));
+                                            SyntaxFactoryEx.TupleElement(typeArgument));
                                 }
                         }
 
@@ -144,23 +137,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 }
 
                 private static SyntaxNode TransformArgumentListToTuple(
-                  SemanticModel semanticModel,
-                  SeparatedSyntaxList<ArgumentSyntax> arguments)
+                    SemanticModel semanticModel, SeparatedSyntaxList<ArgumentSyntax> arguments)
                 {
                         SeparatedSyntaxList<ArgumentSyntax> processedArguments = default;
 
                         for (var i = 0; i < arguments.Count; i++) {
                                 var argument = arguments[i];
 
-                                var argumentTypeInfo =
-                                  semanticModel.GetTypeInfo(argument.Expression);
-                                if (!Equals(argumentTypeInfo.Type,
-                                            argumentTypeInfo.ConvertedType)) {
+                                var argumentTypeInfo
+                                    = semanticModel.GetTypeInfo(argument.Expression);
+                                if (!Equals(
+                                        argumentTypeInfo.Type, argumentTypeInfo.ConvertedType)) {
                                         var expectedType = SyntaxFactory.ParseTypeName(
-                                          argumentTypeInfo.ConvertedType.ToDisplayString());
-                                        argument =
-                                          argument.WithExpression(SyntaxFactory.CastExpression(
-                                            expectedType, argument.Expression));
+                                            argumentTypeInfo.ConvertedType.ToDisplayString());
+                                        argument
+                                            = argument.WithExpression(SyntaxFactory.CastExpression(
+                                                expectedType, argument.Expression));
                                 }
 
                                 processedArguments = processedArguments.Add(argument);
@@ -176,15 +168,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         }
 
                         var symbolInfo = semanticModel.GetSymbolInfo(typeSyntax);
-                        return (symbolInfo.Symbol is ITypeSymbol typeSymbol) &&
-                               typeSymbol.IsTupleType();
+                        return (symbolInfo.Symbol is ITypeSymbol typeSymbol)
+                            && typeSymbol.IsTupleType();
                 }
 
-                private class SeparatorRewriter : CSharpSyntaxRewriter
-                {
+                private class SeparatorRewriter : CSharpSyntaxRewriter {
                         public SeparatorRewriter()
-                          : base(false)
-                        {}
+                            : base(false)
+                        {
+                        }
 
                         public override SyntaxToken VisitToken(SyntaxToken token)
                         {

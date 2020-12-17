@@ -25,41 +25,31 @@ namespace StyleCop.Analyzers.SpacingRules
         /// <para>For these reasons, trailing whitespace should be avoided.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1028CodeMustNotContainTrailingWhitespace : DiagnosticAnalyzer
-        {
+        internal class SA1028CodeMustNotContainTrailingWhitespace : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1028CodeMustNotContainTrailingWhitespace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1028";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1028.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(SpacingResources.SA1028Title),
-                                                SpacingResources.ResourceManager,
-                                                typeof(SpacingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(SpacingResources.SA1028MessageFormat),
-                                                SpacingResources.ResourceManager,
-                                                typeof(SpacingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(SpacingResources.SA1028Description),
-                                                SpacingResources.ResourceManager,
-                                                typeof(SpacingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1028.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(SpacingResources.SA1028Title),
+                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(SpacingResources.SA1028MessageFormat),
+                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(SpacingResources.SA1028Description),
+                        SpacingResources.ResourceManager, typeof(SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.SpacingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink,
-                                           WellKnownDiagnosticTags.Unnecessary);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink, WellKnownDiagnosticTags.Unnecessary);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                  HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
                 /// <inheritdoc />
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -92,124 +82,112 @@ namespace StyleCop.Analyzers.SpacingRules
                         SyntaxTrivia previousTrivia = default;
                         foreach (var trivia in root.DescendantTrivia(descendIntoTrivia : true)) {
                                 switch (trivia.Kind()) {
-                                        case SyntaxKind.WhitespaceTrivia:
-                                                break;
+                                case SyntaxKind.WhitespaceTrivia:
+                                        break;
 
-                                        case SyntaxKind.EndOfLineTrivia:
-                                                if (previousTrivia.Span.End < trivia.SpanStart) {
-                                                        // Some token appeared between the previous
-                                                        // trivia and the end of the line.
+                                case SyntaxKind.EndOfLineTrivia:
+                                        if (previousTrivia.Span.End < trivia.SpanStart) {
+                                                // Some token appeared between the previous
+                                                // trivia and the end of the line.
+                                                break;
+                                        }
+
+                                        if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia)) {
+                                                // Report warning for whitespace token
+                                                // followed by the end of a line
+                                                context.ReportDiagnostic(Diagnostic.Create(
+                                                    Descriptor, previousTrivia.GetLocation()));
+                                        } else if (previousTrivia.IsKind(
+                                                       SyntaxKind.PreprocessingMessageTrivia)) {
+                                                TextSpan trailinMessageWhitespace
+                                                    = FindTrailingWhitespace(
+                                                        text, previousTrivia.Span);
+                                                if (!trailinMessageWhitespace.IsEmpty) {
+                                                        context.ReportDiagnostic(
+                                                            Diagnostic.Create(Descriptor,
+                                                                Location.Create(context.Tree,
+                                                                    trailinMessageWhitespace)));
+                                                }
+                                        }
+
+                                        break;
+
+                                case SyntaxKind.SingleLineCommentTrivia:
+                                        TextSpan trailingWhitespace
+                                            = FindTrailingWhitespace(text, trivia.Span);
+                                        if (!trailingWhitespace.IsEmpty) {
+                                                context.ReportDiagnostic(
+                                                    Diagnostic.Create(Descriptor,
+                                                        Location.Create(
+                                                            context.Tree, trailingWhitespace)));
+                                        }
+
+                                        break;
+
+                                case SyntaxKind.MultiLineCommentTrivia:
+                                        var line
+                                            = text.Lines.GetLineFromPosition(trivia.Span.Start);
+                                        while (line.End <= trivia.Span.End) {
+                                                trailingWhitespace
+                                                    = FindTrailingWhitespace(text, line.Span);
+                                                if (!trailingWhitespace.IsEmpty) {
+                                                        context.ReportDiagnostic(
+                                                            Diagnostic.Create(Descriptor,
+                                                                Location.Create(context.Tree,
+                                                                    trailingWhitespace)));
+                                                }
+
+                                                if (line.EndIncludingLineBreak == text.Length) {
+                                                        // We've reached the end of the
+                                                        // document.
                                                         break;
                                                 }
 
-                                                if (previousTrivia.IsKind(
-                                                      SyntaxKind.WhitespaceTrivia)) {
-                                                        // Report warning for whitespace token
-                                                        // followed by the end of a line
-                                                        context.ReportDiagnostic(Diagnostic.Create(
-                                                          Descriptor,
-                                                          previousTrivia.GetLocation()));
-                                                } else if (previousTrivia.IsKind(
-                                                             SyntaxKind
-                                                               .PreprocessingMessageTrivia)) {
-                                                        TextSpan trailinMessageWhitespace =
-                                                          FindTrailingWhitespace(
-                                                            text, previousTrivia.Span);
-                                                        if (!trailinMessageWhitespace.IsEmpty) {
-                                                                context.ReportDiagnostic(
-                                                                  Diagnostic.Create(
-                                                                    Descriptor,
-                                                                    Location.Create(
-                                                                      context.Tree,
-                                                                      trailinMessageWhitespace)));
-                                                        }
-                                                }
+                                                line = text.Lines.GetLineFromPosition(
+                                                    line.EndIncludingLineBreak + 1);
+                                        }
 
-                                                break;
+                                        break;
 
-                                        case SyntaxKind.SingleLineCommentTrivia:
-                                                TextSpan trailingWhitespace =
-                                                  FindTrailingWhitespace(text, trivia.Span);
-                                                if (!trailingWhitespace.IsEmpty) {
-                                                        context.ReportDiagnostic(Diagnostic.Create(
-                                                          Descriptor,
-                                                          Location.Create(context.Tree,
-                                                                          trailingWhitespace)));
-                                                }
-
-                                                break;
-
-                                        case SyntaxKind.MultiLineCommentTrivia:
-                                                var line =
-                                                  text.Lines.GetLineFromPosition(trivia.Span.Start);
-                                                while (line.End <= trivia.Span.End) {
-                                                        trailingWhitespace =
-                                                          FindTrailingWhitespace(text, line.Span);
+                                case SyntaxKind.SingleLineDocumentationCommentTrivia:
+                                case SyntaxKind.MultiLineDocumentationCommentTrivia:
+                                        SyntaxToken previousToken = default;
+                                        foreach (var token in trivia.GetStructure()
+                                                     .DescendantTokens(descendIntoTrivia
+                                                                       : true)) {
+                                                if (token.IsKind(
+                                                        SyntaxKind.XmlTextLiteralNewLineToken)
+                                                    && previousToken.IsKind(
+                                                        SyntaxKind.XmlTextLiteralToken)
+                                                    && previousToken.Span.End == token.SpanStart) {
+                                                        trailingWhitespace = FindTrailingWhitespace(
+                                                            text, previousToken.Span);
                                                         if (!trailingWhitespace.IsEmpty) {
                                                                 context.ReportDiagnostic(
-                                                                  Diagnostic.Create(
-                                                                    Descriptor,
-                                                                    Location.Create(
-                                                                      context.Tree,
-                                                                      trailingWhitespace)));
+                                                                    Diagnostic.Create(Descriptor,
+                                                                        Location.Create(
+                                                                            context.Tree,
+                                                                            trailingWhitespace)));
                                                         }
-
-                                                        if (line.EndIncludingLineBreak ==
-                                                            text.Length) {
-                                                                // We've reached the end of the
-                                                                // document.
-                                                                break;
-                                                        }
-
-                                                        line = text.Lines.GetLineFromPosition(
-                                                          line.EndIncludingLineBreak + 1);
                                                 }
 
-                                                break;
+                                                previousToken = token;
+                                        }
 
-                                        case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                                        case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                                                SyntaxToken previousToken = default;
-                                                foreach (var token in trivia.GetStructure()
-                                                           .DescendantTokens(descendIntoTrivia
-                                                                             : true)) {
-                                                        if (token.IsKind(
-                                                              SyntaxKind
-                                                                .XmlTextLiteralNewLineToken) &&
-                                                            previousToken.IsKind(
-                                                              SyntaxKind.XmlTextLiteralToken) &&
-                                                            previousToken.Span.End ==
-                                                              token.SpanStart) {
-                                                                trailingWhitespace =
-                                                                  FindTrailingWhitespace(
-                                                                    text, previousToken.Span);
-                                                                if (!trailingWhitespace.IsEmpty) {
-                                                                        context.ReportDiagnostic(
-                                                                          Diagnostic.Create(
-                                                                            Descriptor,
-                                                                            Location.Create(
-                                                                              context.Tree,
-                                                                              trailingWhitespace)));
-                                                                }
-                                                        }
+                                        break;
 
-                                                        previousToken = token;
-                                                }
-
-                                                break;
-
-                                        default:
-                                                break;
+                                default:
+                                        break;
                                 }
 
                                 previousTrivia = trivia;
                         }
 
-                        if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia) &&
-                            previousTrivia.Span.End == previousTrivia.SyntaxTree.Length) {
+                        if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia)
+                            && previousTrivia.Span.End == previousTrivia.SyntaxTree.Length) {
                                 // Report whitespace at the end of the last line in the document
                                 context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor, previousTrivia.GetLocation()));
+                                    Diagnostic.Create(Descriptor, previousTrivia.GetLocation()));
                         }
                 }
 

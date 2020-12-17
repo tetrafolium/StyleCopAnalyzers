@@ -21,40 +21,32 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoCodeFix("Provided by Visual Studio")]
-        internal class SA1125UseShorthandForNullableTypes : DiagnosticAnalyzer
-        {
+        internal class SA1125UseShorthandForNullableTypes : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1125UseShorthandForNullableTypes"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1125";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1125.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1125Title),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1125MessageFormat),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(ReadabilityResources.SA1125Description),
-                                                ReadabilityResources.ResourceManager,
-                                                typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1125.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1125Title),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(ReadabilityResources.SA1125MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(ReadabilityResources.SA1125Description),
+                        ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.ReadabilityRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> GenericNameAction =
-                  HandleGenericName;
+                private static readonly Action<SyntaxNodeAnalysisContext> GenericNameAction
+                    = HandleGenericName;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -73,8 +65,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         GenericNameSyntax genericNameSyntax = (GenericNameSyntax) context.Node;
 
-                        if (genericNameSyntax.Identifier.IsMissing ||
-                            genericNameSyntax.Identifier.ValueText != "Nullable") {
+                        if (genericNameSyntax.Identifier.IsMissing
+                            || genericNameSyntax.Identifier.ValueText != "Nullable") {
                                 return;
                         }
 
@@ -86,8 +78,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         } else if (genericNameSyntax.Parent is QualifiedCrefSyntax) {
                                 // cref="Nullable{T}.Value"
                                 return;
-                        } else if (genericNameSyntax.Parent is QualifiedNameSyntax &&
-                                   genericNameSyntax.Parent.Parent is QualifiedCrefSyntax) {
+                        } else if (genericNameSyntax.Parent is QualifiedNameSyntax
+                            && genericNameSyntax.Parent.Parent is QualifiedCrefSyntax) {
                                 // cref="System.Nullable{T}.Value"
                                 return;
                         }
@@ -111,11 +103,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         }
 
                         SemanticModel semanticModel = context.SemanticModel;
-                        INamedTypeSymbol symbol =
-                          semanticModel.GetSymbolInfo(genericNameSyntax, context.CancellationToken)
-                            .Symbol as INamedTypeSymbol;
-                        if (symbol?.OriginalDefinition?.SpecialType !=
-                            SpecialType.System_Nullable_T) {
+                        INamedTypeSymbol symbol
+                            = semanticModel
+                                  .GetSymbolInfo(genericNameSyntax, context.CancellationToken)
+                                  .Symbol as INamedTypeSymbol;
+                        if (symbol?.OriginalDefinition?.SpecialType
+                            != SpecialType.System_Nullable_T) {
                                 return;
                         }
 
@@ -131,7 +124,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                         // Use shorthand for nullable types
                         context.ReportDiagnostic(
-                          Diagnostic.Create(Descriptor, locationNode.GetLocation()));
+                            Diagnostic.Create(Descriptor, locationNode.GetLocation()));
                 }
         }
 }

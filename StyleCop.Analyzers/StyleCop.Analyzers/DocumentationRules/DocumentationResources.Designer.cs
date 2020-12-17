@@ -21,36 +21,36 @@ namespace StyleCop.Analyzers.DocumentationRules
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
-          "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+            "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class DocumentationResources
-        {
+        internal class DocumentationResources {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                  "Microsoft.Performance",
-                  "CA1811:AvoidUncalledPrivateCode")]
-                internal
-                DocumentationResources()
-                {}
+                    "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+                internal DocumentationResources()
+                {
+                }
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Resources.ResourceManager ResourceManager
                 {
                         get
                         {
                                 if (object.ReferenceEquals(resourceMan, null)) {
-                                        global::System.Resources.ResourceManager
-                                          temp = new global::System.Resources.ResourceManager(
-                                          "StyleCop.Analyzers.DocumentationRules.DocumentationResources",
-                                          typeof(DocumentationResources).GetTypeInfo().Assembly);
+                                        global::System.Resources.ResourceManager temp
+                                            = new global::System.Resources.ResourceManager(
+                                                "StyleCop.Analyzers.DocumentationRules.DocumentationResources",
+                                                typeof(DocumentationResources)
+                                                    .GetTypeInfo()
+                                                    .Assembly);
                                         resourceMan = temp;
                                 }
                                 return resourceMan;
@@ -62,7 +62,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Globalization.CultureInfo Culture
                 {
                         get { return resourceCulture; }
@@ -76,8 +76,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("ConstructorDocumentationCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "ConstructorDocumentationCodeFix", resourceCulture);
                         }
                 }
 
@@ -88,8 +88,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("DestructorDocumentationCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "DestructorDocumentationCodeFix", resourceCulture);
                         }
                 }
 
@@ -100,8 +100,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("DestructorStandardTextFirstPart",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "DestructorStandardTextFirstPart", resourceCulture);
                         }
                 }
 
@@ -112,8 +112,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("DestructorStandardTextSecondPart",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "DestructorStandardTextSecondPart", resourceCulture);
                         }
                 }
 
@@ -124,8 +124,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("InheritdocCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "InheritdocCodeFix", resourceCulture);
                         }
                 }
 
@@ -136,8 +136,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("MethodDocumentationCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "MethodDocumentationCodeFix", resourceCulture);
                         }
                 }
 
@@ -149,7 +149,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "NonPrivateConstructorStandardTextFirstPart", resourceCulture);
+                                    "NonPrivateConstructorStandardTextFirstPart", resourceCulture);
                         }
                 }
 
@@ -161,7 +161,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "NonPrivateConstructorStandardTextSecondPart", resourceCulture);
+                                    "NonPrivateConstructorStandardTextSecondPart", resourceCulture);
                         }
                 }
 
@@ -172,8 +172,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("ParameterNotUsed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "ParameterNotUsed", resourceCulture);
                         }
                 }
 
@@ -185,7 +185,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "PrivateConstructorStandardTextFirstPart", resourceCulture);
+                                    "PrivateConstructorStandardTextFirstPart", resourceCulture);
                         }
                 }
 
@@ -197,7 +197,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "PrivateConstructorStandardTextSecondPart", resourceCulture);
+                                    "PrivateConstructorStandardTextSecondPart", resourceCulture);
                         }
                 }
 
@@ -208,8 +208,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("PropertySummaryStartTextCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "PropertySummaryStartTextCodeFix", resourceCulture);
                         }
                 }
 
@@ -221,8 +221,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1600Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1600Description", resourceCulture);
                         }
                 }
 
@@ -233,8 +233,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1600MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1600MessageFormat", resourceCulture);
                         }
                 }
 
@@ -254,8 +254,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1601Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1601Description", resourceCulture);
                         }
                 }
 
@@ -266,8 +266,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1601MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1601MessageFormat", resourceCulture);
                         }
                 }
 
@@ -287,8 +287,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1602Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1602Description", resourceCulture);
                         }
                 }
 
@@ -299,8 +299,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1602MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1602MessageFormat", resourceCulture);
                         }
                 }
 
@@ -320,8 +320,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1603Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1603Description", resourceCulture);
                         }
                 }
 
@@ -333,8 +333,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1603MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1603MessageFormat", resourceCulture);
                         }
                 }
 
@@ -354,8 +354,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1604Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1604Description", resourceCulture);
                         }
                 }
 
@@ -367,8 +367,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1604MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1604MessageFormat", resourceCulture);
                         }
                 }
 
@@ -390,8 +390,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1605Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1605Description", resourceCulture);
                         }
                 }
 
@@ -403,8 +403,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1605MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1605MessageFormat", resourceCulture);
                         }
                 }
 
@@ -425,8 +425,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1606Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1606Description", resourceCulture);
                         }
                 }
 
@@ -438,8 +438,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1606MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1606MessageFormat", resourceCulture);
                         }
                 }
 
@@ -460,8 +460,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1607Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1607Description", resourceCulture);
                         }
                 }
 
@@ -473,8 +473,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1607MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1607MessageFormat", resourceCulture);
                         }
                 }
 
@@ -496,8 +496,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1608Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1608Description", resourceCulture);
                         }
                 }
 
@@ -509,8 +509,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1608MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1608MessageFormat", resourceCulture);
                         }
                 }
 
@@ -531,8 +531,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1609Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1609Description", resourceCulture);
                         }
                 }
 
@@ -544,8 +544,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1609MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1609MessageFormat", resourceCulture);
                         }
                 }
 
@@ -556,8 +556,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1609SA1610CodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1609SA1610CodeFix", resourceCulture);
                         }
                 }
 
@@ -578,8 +578,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1610Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1610Description", resourceCulture);
                         }
                 }
 
@@ -591,8 +591,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1610MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1610MessageFormat", resourceCulture);
                         }
                 }
 
@@ -613,8 +613,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1611Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1611Description", resourceCulture);
                         }
                 }
 
@@ -626,8 +626,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1611MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1611MessageFormat", resourceCulture);
                         }
                 }
 
@@ -649,8 +649,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1612Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1612Description", resourceCulture);
                         }
                 }
 
@@ -663,8 +663,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1612MissingParamForDocumentationMessageFormat",
-                                  resourceCulture);
+                                    "SA1612MissingParamForDocumentationMessageFormat",
+                                    resourceCulture);
                         }
                 }
 
@@ -677,7 +677,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "SA1612ParamWrongOrderMessageFormat", resourceCulture);
+                                    "SA1612ParamWrongOrderMessageFormat", resourceCulture);
                         }
                 }
 
@@ -699,8 +699,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1613Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1613Description", resourceCulture);
                         }
                 }
 
@@ -712,8 +712,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1613MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1613MessageFormat", resourceCulture);
                         }
                 }
 
@@ -734,8 +734,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1614Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1614Description", resourceCulture);
                         }
                 }
 
@@ -747,8 +747,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1614MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1614MessageFormat", resourceCulture);
                         }
                 }
 
@@ -769,8 +769,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1615Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1615Description", resourceCulture);
                         }
                 }
 
@@ -782,8 +782,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1615MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1615MessageFormat", resourceCulture);
                         }
                 }
 
@@ -794,8 +794,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1615SA1616CodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1615SA1616CodeFix", resourceCulture);
                         }
                 }
 
@@ -816,8 +816,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1616Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1616Description", resourceCulture);
                         }
                 }
 
@@ -829,8 +829,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1616MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1616MessageFormat", resourceCulture);
                         }
                 }
 
@@ -860,8 +860,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1617Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1617Description", resourceCulture);
                         }
                 }
 
@@ -873,8 +873,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1617MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1617MessageFormat", resourceCulture);
                         }
                 }
 
@@ -895,8 +895,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1618Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1618Description", resourceCulture);
                         }
                 }
 
@@ -908,8 +908,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1618MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1618MessageFormat", resourceCulture);
                         }
                 }
 
@@ -931,8 +931,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1619Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1619Description", resourceCulture);
                         }
                 }
 
@@ -944,8 +944,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1619MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1619MessageFormat", resourceCulture);
                         }
                 }
 
@@ -967,8 +967,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1620Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1620Description", resourceCulture);
                         }
                 }
 
@@ -980,8 +980,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1620MissingMessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1620MissingMessageFormat", resourceCulture);
                         }
                 }
 
@@ -1002,8 +1002,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1620WrongOrderMessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1620WrongOrderMessageFormat", resourceCulture);
                         }
                 }
 
@@ -1016,8 +1016,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1621Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1621Description", resourceCulture);
                         }
                 }
 
@@ -1029,8 +1029,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1621MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1621MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1051,8 +1051,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1622Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1622Description", resourceCulture);
                         }
                 }
 
@@ -1064,8 +1064,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1622MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1622MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1087,8 +1087,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1623Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1623Description", resourceCulture);
                         }
                 }
 
@@ -1100,8 +1100,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1623MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1623MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1123,8 +1123,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1624Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1624Description", resourceCulture);
                         }
                 }
 
@@ -1137,8 +1137,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1624MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1624MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1161,8 +1161,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1625Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1625Description", resourceCulture);
                         }
                 }
 
@@ -1174,8 +1174,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1625MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1625MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1204,8 +1204,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1626Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1626Description", resourceCulture);
                         }
                 }
 
@@ -1217,8 +1217,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1626MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1626MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1239,8 +1239,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1627Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1627Description", resourceCulture);
                         }
                 }
 
@@ -1252,8 +1252,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1627MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1627MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1273,8 +1273,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1628Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1628Description", resourceCulture);
                         }
                 }
 
@@ -1285,8 +1285,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1628MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1628MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1315,8 +1315,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1629Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1629Description", resourceCulture);
                         }
                 }
 
@@ -1328,8 +1328,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1629MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1629MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1350,8 +1350,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1630Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1630Description", resourceCulture);
                         }
                 }
 
@@ -1362,8 +1362,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1630MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1630MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1384,8 +1384,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1631Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1631Description", resourceCulture);
                         }
                 }
 
@@ -1396,8 +1396,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1631MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1631MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1418,8 +1418,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1632Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1632Description", resourceCulture);
                         }
                 }
 
@@ -1430,8 +1430,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1632MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1632MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1460,8 +1460,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1633Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1633Description", resourceCulture);
                         }
                 }
 
@@ -1472,8 +1472,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1633MessageFormatMalformed",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1633MessageFormatMalformed", resourceCulture);
                         }
                 }
 
@@ -1485,8 +1485,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1633MessageFormatMissing",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1633MessageFormatMissing", resourceCulture);
                         }
                 }
 
@@ -1506,8 +1506,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1634Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1634Description", resourceCulture);
                         }
                 }
 
@@ -1519,8 +1519,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1634MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1634MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1540,8 +1540,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1635Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1635Description", resourceCulture);
                         }
                 }
 
@@ -1552,8 +1552,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1635MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1635MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1573,8 +1573,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1636Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1636Description", resourceCulture);
                         }
                 }
 
@@ -1586,8 +1586,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1636MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1636MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1608,8 +1608,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1637Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1637Description", resourceCulture);
                         }
                 }
 
@@ -1620,8 +1620,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1637MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1637MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1642,8 +1642,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1638Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1638Description", resourceCulture);
                         }
                 }
 
@@ -1655,8 +1655,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1638MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1638MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1677,8 +1677,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1639Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1639Description", resourceCulture);
                         }
                 }
 
@@ -1689,8 +1689,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1639MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1639MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1710,8 +1710,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1640Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1640Description", resourceCulture);
                         }
                 }
 
@@ -1723,8 +1723,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1640MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1640MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1745,8 +1745,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1641Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1641Description", resourceCulture);
                         }
                 }
 
@@ -1758,8 +1758,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1641MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1641MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1780,8 +1780,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1642Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1642Description", resourceCulture);
                         }
                 }
 
@@ -1793,8 +1793,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1642MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1642MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1805,8 +1805,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1642SA1643CodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1642SA1643CodeFix", resourceCulture);
                         }
                 }
 
@@ -1827,8 +1827,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1643Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1643Description", resourceCulture);
                         }
                 }
 
@@ -1840,8 +1840,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1643MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1643MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1862,8 +1862,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1644Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1644Description", resourceCulture);
                         }
                 }
 
@@ -1874,8 +1874,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1644MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1644MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1896,8 +1896,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1645Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1645Description", resourceCulture);
                         }
                 }
 
@@ -1908,8 +1908,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1645MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1645MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1930,8 +1930,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1646Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1646Description", resourceCulture);
                         }
                 }
 
@@ -1942,8 +1942,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1646MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1646MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1964,8 +1964,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1647Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1647Description", resourceCulture);
                         }
                 }
 
@@ -1976,8 +1976,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1647MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1647MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1999,8 +1999,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1648Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1648Description", resourceCulture);
                         }
                 }
 
@@ -2012,8 +2012,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1648MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1648MessageFormat", resourceCulture);
                         }
                 }
 
@@ -2042,8 +2042,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1649Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1649Description", resourceCulture);
                         }
                 }
 
@@ -2054,8 +2054,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1649MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1649MessageFormat", resourceCulture);
                         }
                 }
 
@@ -2075,8 +2075,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1650Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1650Description", resourceCulture);
                         }
                 }
 
@@ -2087,8 +2087,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1650MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1650MessageFormat", resourceCulture);
                         }
                 }
 
@@ -2117,8 +2117,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1651Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1651Description", resourceCulture);
                         }
                 }
 
@@ -2129,8 +2129,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1651MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1651MessageFormat", resourceCulture);
                         }
                 }
 
@@ -2149,8 +2149,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("StartingTextGets",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "StartingTextGets", resourceCulture);
                         }
                 }
 
@@ -2161,8 +2161,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("StartingTextGetsOrSets",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "StartingTextGetsOrSets", resourceCulture);
                         }
                 }
 
@@ -2174,8 +2174,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("StartingTextGetsOrSetsWhether",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "StartingTextGetsOrSetsWhether", resourceCulture);
                         }
                 }
 
@@ -2186,8 +2186,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("StartingTextGetsWhether",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "StartingTextGetsWhether", resourceCulture);
                         }
                 }
 
@@ -2198,8 +2198,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("StartingTextReturns",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "StartingTextReturns", resourceCulture);
                         }
                 }
 
@@ -2210,8 +2210,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("StartingTextReturnsWhether",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "StartingTextReturnsWhether", resourceCulture);
                         }
                 }
 
@@ -2222,8 +2222,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("StartingTextSets",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "StartingTextSets", resourceCulture);
                         }
                 }
 
@@ -2234,8 +2234,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("StartingTextSetsWhether",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "StartingTextSetsWhether", resourceCulture);
                         }
                 }
 
@@ -2247,7 +2247,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "StaticConstructorStandardTextFirstPart", resourceCulture);
+                                    "StaticConstructorStandardTextFirstPart", resourceCulture);
                         }
                 }
 
@@ -2259,7 +2259,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                         get
                         {
                                 return ResourceManager.GetString(
-                                  "StaticConstructorStandardTextSecondPart", resourceCulture);
+                                    "StaticConstructorStandardTextSecondPart", resourceCulture);
                         }
                 }
 
@@ -2270,8 +2270,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("TaskReturnElementFirstPart",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "TaskReturnElementFirstPart", resourceCulture);
                         }
                 }
 
@@ -2283,8 +2283,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("TaskReturnElementSecondPart",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "TaskReturnElementSecondPart", resourceCulture);
                         }
                 }
 

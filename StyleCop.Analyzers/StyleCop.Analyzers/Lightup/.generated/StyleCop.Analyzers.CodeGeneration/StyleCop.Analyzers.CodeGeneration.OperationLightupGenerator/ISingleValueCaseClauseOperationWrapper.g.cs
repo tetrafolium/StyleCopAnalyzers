@@ -7,20 +7,18 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ISingleValueCaseClauseOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.ISingleValueCaseClauseOperation";
+        internal readonly struct ISingleValueCaseClauseOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.ISingleValueCaseClauseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
                 private readonly IOperation operation;
                 static ISingleValueCaseClauseOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(ISingleValueCaseClauseOperationWrapper));
-                        ValueAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(Value));
+                            typeof(ISingleValueCaseClauseOperationWrapper));
+                        ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            IOperation>(WrappedType, nameof(Value));
                 }
 
                 private ISingleValueCaseClauseOperationWrapper(IOperation operation)
@@ -34,12 +32,13 @@ namespace StyleCop.Analyzers.Lightup
                 public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
                 public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
                 public static explicit operator ISingleValueCaseClauseOperationWrapper(
-                  ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
+                    ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator ICaseClauseOperationWrapper(
-                  ISingleValueCaseClauseOperationWrapper wrapper) =>
-                  ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+                    ISingleValueCaseClauseOperationWrapper
+                        wrapper) => ICaseClauseOperationWrapper
+                                        .FromUpcast(wrapper.WrappedOperation);
                 public static ISingleValueCaseClauseOperationWrapper FromOperation(
-                  IOperation operation)
+                    IOperation operation)
                 {
                         if (operation == null) {
                                 return default;
@@ -47,7 +46,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new ISingleValueCaseClauseOperationWrapper(operation);
@@ -55,8 +54,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

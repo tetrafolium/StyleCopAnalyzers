@@ -7,23 +7,20 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IArrayInitializerOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IArrayInitializerOperation";
+        internal readonly struct IArrayInitializerOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IArrayInitializerOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
-                  ElementValuesAccessor;
+                    ElementValuesAccessor;
                 private readonly IOperation operation;
                 static IArrayInitializerOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IArrayInitializerOperationWrapper));
-                        ElementValuesAccessor =
-                          LightupHelpers
-                            .CreateOperationPropertyAccessor<IOperation,
-                                                             ImmutableArray<IOperation>>(
-                              WrappedType, nameof(ElementValues));
+                            typeof(IArrayInitializerOperationWrapper));
+                        ElementValuesAccessor
+                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                                ImmutableArray<IOperation>>(WrappedType, nameof(ElementValues));
                 }
 
                 private IArrayInitializerOperationWrapper(IOperation operation)
@@ -33,8 +30,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public ImmutableArray<IOperation> ElementValues =>
-                  ElementValuesAccessor(this.WrappedOperation);
+                public ImmutableArray<IOperation> ElementValues => ElementValuesAccessor(
+                    this.WrappedOperation);
                 public static IArrayInitializerOperationWrapper FromOperation(IOperation operation)
                 {
                         if (operation == null) {
@@ -43,7 +40,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IArrayInitializerOperationWrapper(operation);
@@ -51,8 +48,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

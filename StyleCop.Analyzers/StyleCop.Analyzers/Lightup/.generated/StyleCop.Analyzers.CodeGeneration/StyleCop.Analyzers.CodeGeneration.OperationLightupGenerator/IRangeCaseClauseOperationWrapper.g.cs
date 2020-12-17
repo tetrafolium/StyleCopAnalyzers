@@ -7,10 +7,9 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IRangeCaseClauseOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IRangeCaseClauseOperation";
+        internal readonly struct IRangeCaseClauseOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IRangeCaseClauseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> MinimumValueAccessor;
                 private static readonly Func<IOperation, IOperation> MaximumValueAccessor;
@@ -18,13 +17,15 @@ namespace StyleCop.Analyzers.Lightup
                 static IRangeCaseClauseOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IRangeCaseClauseOperationWrapper));
-                        MinimumValueAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(MinimumValue));
-                        MaximumValueAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(MaximumValue));
+                            typeof(IRangeCaseClauseOperationWrapper));
+                        MinimumValueAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(MinimumValue));
+                        MaximumValueAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(MaximumValue));
                 }
 
                 private IRangeCaseClauseOperationWrapper(IOperation operation)
@@ -39,10 +40,11 @@ namespace StyleCop.Analyzers.Lightup
                 public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
                 public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
                 public static explicit operator IRangeCaseClauseOperationWrapper(
-                  ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
+                    ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator ICaseClauseOperationWrapper(
-                  IRangeCaseClauseOperationWrapper wrapper) =>
-                  ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+                    IRangeCaseClauseOperationWrapper wrapper) => ICaseClauseOperationWrapper
+                                                                     .FromUpcast(
+                                                                         wrapper.WrappedOperation);
                 public static IRangeCaseClauseOperationWrapper FromOperation(IOperation operation)
                 {
                         if (operation == null) {
@@ -51,7 +53,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IRangeCaseClauseOperationWrapper(operation);
@@ -59,8 +61,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

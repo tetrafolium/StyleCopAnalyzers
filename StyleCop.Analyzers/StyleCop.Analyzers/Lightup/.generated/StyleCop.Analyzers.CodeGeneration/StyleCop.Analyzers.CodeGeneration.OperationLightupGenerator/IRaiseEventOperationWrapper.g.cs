@@ -7,25 +7,25 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IRaiseEventOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IRaiseEventOperation";
+        internal readonly struct IRaiseEventOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IRaiseEventOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> EventReferenceAccessor;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
-                  ArgumentsAccessor;
+                    ArgumentsAccessor;
                 private readonly IOperation operation;
                 static IRaiseEventOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IRaiseEventOperationWrapper));
-                        EventReferenceAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(EventReference));
-                        ArgumentsAccessor =
-                          LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
-                            WrappedType, nameof(Arguments));
+                            typeof(IRaiseEventOperationWrapper));
+                        EventReferenceAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(EventReference));
+                        ArgumentsAccessor
+                            = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                                WrappedType, nameof(Arguments));
                 }
 
                 private IRaiseEventOperationWrapper(IOperation operation)
@@ -35,11 +35,11 @@ namespace StyleCop.Analyzers.Lightup
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IEventReferenceOperationWrapper EventReference =>
-                  IEventReferenceOperationWrapper.FromOperation(
-                    EventReferenceAccessor(this.WrappedOperation));
-                public ImmutableArray<IOperation> Arguments =>
-                  ArgumentsAccessor(this.WrappedOperation);
+                public IEventReferenceOperationWrapper
+                    EventReference => IEventReferenceOperationWrapper.FromOperation(
+                        EventReferenceAccessor(this.WrappedOperation));
+                public ImmutableArray<IOperation> Arguments => ArgumentsAccessor(
+                    this.WrappedOperation);
                 public static IRaiseEventOperationWrapper FromOperation(IOperation operation)
                 {
                         if (operation == null) {
@@ -48,7 +48,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IRaiseEventOperationWrapper(operation);
@@ -56,8 +56,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

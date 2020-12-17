@@ -7,21 +7,21 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class ArgumentSyntaxExtensions
-        {
+        internal static class ArgumentSyntaxExtensions {
                 private static readonly Func<ArgumentSyntax, SyntaxToken> RefKindKeywordAccessor;
                 private static readonly Func<ArgumentSyntax, SyntaxToken, ArgumentSyntax>
-                  WithRefKindKeywordAccessor;
+                    WithRefKindKeywordAccessor;
 
                 static ArgumentSyntaxExtensions()
                 {
-                        RefKindKeywordAccessor =
-                          LightupHelpers.CreateSyntaxPropertyAccessor<ArgumentSyntax, SyntaxToken>(
-                            typeof(ArgumentSyntax), nameof(RefKindKeyword));
-                        WithRefKindKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ArgumentSyntax, SyntaxToken>(
-                              typeof(ArgumentSyntax), nameof(RefKindKeyword));
+                        RefKindKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ArgumentSyntax, SyntaxToken>(
+                                      typeof(ArgumentSyntax), nameof(RefKindKeyword));
+                        WithRefKindKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ArgumentSyntax, SyntaxToken>(
+                                      typeof(ArgumentSyntax), nameof(RefKindKeyword));
                 }
 
                 public static SyntaxToken RefKindKeyword(this ArgumentSyntax syntax)
@@ -29,8 +29,8 @@ namespace StyleCop.Analyzers.Lightup
                         return RefKindKeywordAccessor(syntax);
                 }
 
-                public static ArgumentSyntax WithRefKindKeyword(this ArgumentSyntax syntax,
-                                                                SyntaxToken refKindKeyword)
+                public static ArgumentSyntax WithRefKindKeyword(
+                    this ArgumentSyntax syntax, SyntaxToken refKindKeyword)
                 {
                         return WithRefKindKeywordAccessor(syntax, refKindKeyword);
                 }

@@ -13,8 +13,7 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <summary>
         /// The starting point of this application.
         /// </summary>
-        internal class Program
-        {
+        internal class Program {
                 /// <summary>
                 /// The starting point of this application.
                 /// </summary>
@@ -30,7 +29,7 @@ namespace StyleCop.Analyzers.Status.Generator
 
                         if (!File.Exists(args[0])) {
                                 Console.WriteLine(
-                                  $"Could not find solution file: {Path.GetFullPath(args[0])}");
+                                    $"Could not find solution file: {Path.GetFullPath(args[0])}");
                                 return 1;
                         }
 
@@ -44,8 +43,8 @@ namespace StyleCop.Analyzers.Status.Generator
                         Commit commit;
                         string commitId;
 
-                        using(Repository repository =
-                                new Repository(Path.GetDirectoryName(args[0])))
+                        using(
+                            Repository repository = new Repository(Path.GetDirectoryName(args[0])))
                         {
                                 commitId = repository.Head.Tip.Sha;
                                 commit = repository.Head.Tip;
@@ -63,7 +62,7 @@ namespace StyleCop.Analyzers.Status.Generator
                                 };
 
                                 Console.WriteLine(
-                                  JsonConvert.SerializeObject(output, Formatting.Indented));
+                                    JsonConvert.SerializeObject(output, Formatting.Indented));
                         }
 
                         return 0;

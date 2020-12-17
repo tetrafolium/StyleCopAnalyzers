@@ -20,12 +20,11 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1509CodeFixProvider))]
         [Shared]
-        internal class SA1509CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1509CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                  SA1509OpeningBracesMustNotBePrecededByBlankLine.DiagnosticId);
+                    SA1509OpeningBracesMustNotBePrecededByBlankLine.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -38,23 +37,21 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(LayoutResources.SA1509CodeFix,
-                                                    token => this.GetTransformedDocumentAsync(
-                                                      context.Document, diagnostic, token),
-                                                    nameof(SA1509CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(LayoutResources.SA1509CodeFix,
+                                        token => this.GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, token),
+                                        nameof(SA1509CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
 
                         var openBrace = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
                         var leadingTrivia = openBrace.LeadingTrivia;
@@ -62,8 +59,8 @@ namespace StyleCop.Analyzers.LayoutRules
                         var newTriviaList = SyntaxFactory.TriviaList();
 
                         var previousEmptyLines = this.GetPreviousEmptyLines(openBrace).ToList();
-                        newTriviaList =
-                          newTriviaList.AddRange(leadingTrivia.Except(previousEmptyLines));
+                        newTriviaList
+                            = newTriviaList.AddRange(leadingTrivia.Except(previousEmptyLines));
 
                         var newOpenBrace = openBrace.WithLeadingTrivia(newTriviaList);
                         var newSyntaxRoot = syntaxRoot.ReplaceToken(openBrace, newOpenBrace);
@@ -79,16 +76,16 @@ namespace StyleCop.Analyzers.LayoutRules
                         var lineToCheck = lineOfOpenBrace - 1;
 
                         while (lineToCheck > -1) {
-                                var trivias =
-                                  openBrace.LeadingTrivia
-                                    .Where(t =>
-                                             t.GetLineSpan().StartLinePosition.Line == lineToCheck)
-                                    .ToList();
-                                var endOfLineTrivia =
-                                  trivias.Where(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).ToList();
-                                if (endOfLineTrivia.Any() &&
-                                    trivias.Except(endOfLineTrivia)
-                                      .All(t => t.IsKind(SyntaxKind.WhitespaceTrivia))) {
+                                var trivias = openBrace.LeadingTrivia
+                                                  .Where(t => t.GetLineSpan().StartLinePosition.Line
+                                                          == lineToCheck)
+                                                  .ToList();
+                                var endOfLineTrivia
+                                    = trivias.Where(t => t.IsKind(SyntaxKind.EndOfLineTrivia))
+                                          .ToList();
+                                if (endOfLineTrivia.Any()
+                                    && trivias.Except(endOfLineTrivia)
+                                           .All(t => t.IsKind(SyntaxKind.WhitespaceTrivia))) {
                                         lineToCheck--;
                                         result.AddRange(trivias);
                                 } else {

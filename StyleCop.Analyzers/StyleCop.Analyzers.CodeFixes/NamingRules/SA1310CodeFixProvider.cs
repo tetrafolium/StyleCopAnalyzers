@@ -22,8 +22,7 @@ namespace StyleCop.Analyzers.NamingRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1310CodeFixProvider))]
         [Shared]
-        internal class SA1310CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1310CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1310FieldNamesMustNotContainUnderscore.DiagnosticId);
@@ -39,7 +38,7 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         var document = context.Document;
                         var root = await document.GetSyntaxRootAsync(context.CancellationToken)
-                                     .ConfigureAwait(false);
+                                       .ConfigureAwait(false);
 
                         foreach (var diagnostic in context.Diagnostics) {
                                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -47,17 +46,14 @@ namespace StyleCop.Analyzers.NamingRules
                                 string proposedName = BuildProposedName(currentName);
                                 if (proposedName != currentName) {
                                         context.RegisterCodeFix(
-                                          CodeAction.Create(
-                                            string.Format(NamingResources.RenameToCodeFix,
-                                                          proposedName),
-                                            cancellationToken =>
-                                              RenameHelper.RenameSymbolAsync(document,
-                                                                             root,
-                                                                             token,
-                                                                             proposedName,
-                                                                             cancellationToken),
-                                            nameof(SA1310CodeFixProvider)),
-                                          diagnostic);
+                                            CodeAction.Create(
+                                                string.Format(
+                                                    NamingResources.RenameToCodeFix, proposedName),
+                                                cancellationToken => RenameHelper.RenameSymbolAsync(
+                                                    document, root, token, proposedName,
+                                                    cancellationToken),
+                                                nameof(SA1310CodeFixProvider)),
+                                            diagnostic);
                                 }
                         }
                 }

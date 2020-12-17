@@ -38,48 +38,39 @@ namespace StyleCop.Analyzers.LayoutRules
         /// allowed to be written all on a single line, as long as the accessor is short.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1502ElementMustNotBeOnASingleLine : DiagnosticAnalyzer
-        {
+        internal class SA1502ElementMustNotBeOnASingleLine : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1502ElementMustNotBeOnASingleLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1502";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1502.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1502Title),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1502MessageFormat),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1502Description),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1502.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1502Title),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1502MessageFormat),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1502Description),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.LayoutRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
+                private static readonly Action<SyntaxNodeAnalysisContext> BaseTypeDeclarationAction
+                    = HandleBaseTypeDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                  BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
+                    BasePropertyDeclarationAction = HandleBasePropertyDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                  BasePropertyDeclarationAction = HandleBasePropertyDeclaration;
+                    BaseMethodDeclarationAction = HandleBaseMethodDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                  BaseMethodDeclarationAction = HandleBaseMethodDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext>
-                  LocalFunctionStatementAction = HandleLocalFunctionStatement;
-                private static readonly Action<SyntaxNodeAnalysisContext>
-                  NamespaceDeclarationAction = HandleNamespaceDeclaration;
+                    LocalFunctionStatementAction = HandleLocalFunctionStatement;
+                private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction
+                    = HandleNamespaceDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -91,23 +82,23 @@ namespace StyleCop.Analyzers.LayoutRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(BaseTypeDeclarationAction,
-                                                         SyntaxKinds.BaseTypeDeclaration);
-                        context.RegisterSyntaxNodeAction(BasePropertyDeclarationAction,
-                                                         SyntaxKinds.BasePropertyDeclaration);
-                        context.RegisterSyntaxNodeAction(BaseMethodDeclarationAction,
-                                                         SyntaxKinds.BaseMethodDeclaration);
-                        context.RegisterSyntaxNodeAction(LocalFunctionStatementAction,
-                                                         SyntaxKindEx.LocalFunctionStatement);
-                        context.RegisterSyntaxNodeAction(NamespaceDeclarationAction,
-                                                         SyntaxKind.NamespaceDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            BaseTypeDeclarationAction, SyntaxKinds.BaseTypeDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            BasePropertyDeclarationAction, SyntaxKinds.BasePropertyDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            BaseMethodDeclarationAction, SyntaxKinds.BaseMethodDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            LocalFunctionStatementAction, SyntaxKindEx.LocalFunctionStatement);
+                        context.RegisterSyntaxNodeAction(
+                            NamespaceDeclarationAction, SyntaxKind.NamespaceDeclaration);
                 }
 
                 private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
                 {
                         var typeDeclaration = (BaseTypeDeclarationSyntax) context.Node;
-                        CheckViolation(
-                          context, typeDeclaration.OpenBraceToken, typeDeclaration.CloseBraceToken);
+                        CheckViolation(context, typeDeclaration.OpenBraceToken,
+                            typeDeclaration.CloseBraceToken);
                 }
 
                 private static void HandleBasePropertyDeclaration(SyntaxNodeAnalysisContext context)
@@ -116,14 +107,13 @@ namespace StyleCop.Analyzers.LayoutRules
 
                         // The AccessorList will be null when an expression body is present.
                         if (basePropertyDeclaration.AccessorList != null) {
-                                bool isAutoProperty =
-                                  basePropertyDeclaration.AccessorList.Accessors.All(
-                                    accessor => accessor.Body == null);
+                                bool isAutoProperty
+                                    = basePropertyDeclaration.AccessorList.Accessors.All(
+                                        accessor => accessor.Body == null);
                                 if (!isAutoProperty) {
-                                        CheckViolation(
-                                          context,
-                                          basePropertyDeclaration.AccessorList.OpenBraceToken,
-                                          basePropertyDeclaration.AccessorList.CloseBraceToken);
+                                        CheckViolation(context,
+                                            basePropertyDeclaration.AccessorList.OpenBraceToken,
+                                            basePropertyDeclaration.AccessorList.CloseBraceToken);
                                 }
                         }
                 }
@@ -134,44 +124,40 @@ namespace StyleCop.Analyzers.LayoutRules
 
                         // Method declarations in interfaces will have an empty body.
                         if (baseMethodDeclaration.Body != null) {
-                                CheckViolation(context,
-                                               baseMethodDeclaration.Body.OpenBraceToken,
-                                               baseMethodDeclaration.Body.CloseBraceToken);
+                                CheckViolation(context, baseMethodDeclaration.Body.OpenBraceToken,
+                                    baseMethodDeclaration.Body.CloseBraceToken);
                         }
                 }
 
                 private static void HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context)
                 {
-                        var localFunctionStatement =
-                          (LocalFunctionStatementSyntaxWrapper) context.Node;
+                        var localFunctionStatement
+                            = (LocalFunctionStatementSyntaxWrapper) context.Node;
 
                         // Expression-bodied local functions do not have a body
                         if (localFunctionStatement.Body != null) {
-                                CheckViolation(context,
-                                               localFunctionStatement.Body.OpenBraceToken,
-                                               localFunctionStatement.Body.CloseBraceToken);
+                                CheckViolation(context, localFunctionStatement.Body.OpenBraceToken,
+                                    localFunctionStatement.Body.CloseBraceToken);
                         }
                 }
 
                 private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
                 {
                         var namespaceDeclaration = (NamespaceDeclarationSyntax) context.Node;
-                        CheckViolation(context,
-                                       namespaceDeclaration.OpenBraceToken,
-                                       namespaceDeclaration.CloseBraceToken);
+                        CheckViolation(context, namespaceDeclaration.OpenBraceToken,
+                            namespaceDeclaration.CloseBraceToken);
                 }
 
                 private static void CheckViolation(SyntaxNodeAnalysisContext context,
-                                                   SyntaxToken openBraceToken,
-                                                   SyntaxToken closeBraceToken)
+                    SyntaxToken openBraceToken, SyntaxToken closeBraceToken)
                 {
                         var openingBraceLineSpan = openBraceToken.GetLineSpan();
                         var closingBraceLineSpan = closeBraceToken.GetLineSpan();
 
-                        if (openingBraceLineSpan.EndLinePosition.Line ==
-                            closingBraceLineSpan.StartLinePosition.Line) {
+                        if (openingBraceLineSpan.EndLinePosition.Line
+                            == closingBraceLineSpan.StartLinePosition.Line) {
                                 context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor, openBraceToken.GetLocation()));
+                                    Diagnostic.Create(Descriptor, openBraceToken.GetLocation()));
                         }
                 }
         }

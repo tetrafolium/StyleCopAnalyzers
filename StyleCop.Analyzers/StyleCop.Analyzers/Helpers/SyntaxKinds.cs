@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers.Helpers
         using Microsoft.CodeAnalysis.CSharp.Syntax;
         using StyleCop.Analyzers.Lightup;
 
-        internal static class SyntaxKinds
-        {
+        internal static class SyntaxKinds {
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
                 /// tree as a <see cref="BaseTypeDeclarationSyntax"/>.
@@ -19,11 +18,9 @@ namespace StyleCop.Analyzers.Helpers
                 /// as a <see cref="BaseTypeDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> BaseTypeDeclaration { get; }
-                = ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                                        SyntaxKind.StructDeclaration,
-                                        SyntaxKind.InterfaceDeclaration,
-                                        SyntaxKind.EnumDeclaration,
-                                        SyntaxKindEx.RecordDeclaration);
+                = ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
+                    SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration,
+                    SyntaxKindEx.RecordDeclaration);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -34,10 +31,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// as a <see cref="TypeDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> TypeDeclaration { get; }
-                = ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                                        SyntaxKind.StructDeclaration,
-                                        SyntaxKind.InterfaceDeclaration,
-                                        SyntaxKindEx.RecordDeclaration);
+                = ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
+                    SyntaxKind.InterfaceDeclaration, SyntaxKindEx.RecordDeclaration);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -48,8 +43,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// as a <see cref="BaseFieldDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> BaseFieldDeclaration { get; }
-                = ImmutableArray.Create(SyntaxKind.FieldDeclaration,
-                                        SyntaxKind.EventFieldDeclaration);
+                = ImmutableArray.Create(
+                    SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -61,10 +56,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 public static ImmutableArray<SyntaxKind> BaseMethodDeclaration { get; }
                 = ImmutableArray.Create(SyntaxKind.MethodDeclaration,
-                                        SyntaxKind.ConstructorDeclaration,
-                                        SyntaxKind.DestructorDeclaration,
-                                        SyntaxKind.OperatorDeclaration,
-                                        SyntaxKind.ConversionOperatorDeclaration);
+                    SyntaxKind.ConstructorDeclaration, SyntaxKind.DestructorDeclaration,
+                    SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -75,9 +68,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// as a <see cref="BasePropertyDeclarationSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> BasePropertyDeclaration { get; }
-                = ImmutableArray.Create(SyntaxKind.PropertyDeclaration,
-                                        SyntaxKind.EventDeclaration,
-                                        SyntaxKind.IndexerDeclaration);
+                = ImmutableArray.Create(SyntaxKind.PropertyDeclaration, SyntaxKind.EventDeclaration,
+                    SyntaxKind.IndexerDeclaration);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -89,10 +81,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 public static ImmutableArray<SyntaxKind> AccessorDeclaration { get; }
                 = ImmutableArray.Create(SyntaxKind.GetAccessorDeclaration,
-                                        SyntaxKind.SetAccessorDeclaration,
-                                        SyntaxKind.AddAccessorDeclaration,
-                                        SyntaxKind.RemoveAccessorDeclaration,
-                                        SyntaxKind.UnknownAccessorDeclaration);
+                    SyntaxKind.SetAccessorDeclaration, SyntaxKind.AddAccessorDeclaration,
+                    SyntaxKind.RemoveAccessorDeclaration, SyntaxKind.UnknownAccessorDeclaration);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -104,9 +94,9 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 public static ImmutableArray<SyntaxKind> InitializerExpression { get; }
                 = ImmutableArray.Create(SyntaxKind.ArrayInitializerExpression,
-                                        SyntaxKind.CollectionInitializerExpression,
-                                        SyntaxKind.ComplexElementInitializerExpression,
-                                        SyntaxKind.ObjectInitializerExpression);
+                    SyntaxKind.CollectionInitializerExpression,
+                    SyntaxKind.ComplexElementInitializerExpression,
+                    SyntaxKind.ObjectInitializerExpression);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -118,7 +108,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 public static ImmutableArray<SyntaxKind> DocumentationComment { get; }
                 = ImmutableArray.Create(SyntaxKind.SingleLineDocumentationCommentTrivia,
-                                        SyntaxKind.MultiLineDocumentationCommentTrivia);
+                    SyntaxKind.MultiLineDocumentationCommentTrivia);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -129,8 +119,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// as a <see cref="ConstructorInitializerSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> ConstructorInitializer { get; }
-                = ImmutableArray.Create(SyntaxKind.BaseConstructorInitializer,
-                                        SyntaxKind.ThisConstructorInitializer);
+                = ImmutableArray.Create(
+                    SyntaxKind.BaseConstructorInitializer, SyntaxKind.ThisConstructorInitializer);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -141,8 +131,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// as a <see cref="LambdaExpressionSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> LambdaExpression { get; }
-                = ImmutableArray.Create(SyntaxKind.ParenthesizedLambdaExpression,
-                                        SyntaxKind.SimpleLambdaExpression);
+                = ImmutableArray.Create(
+                    SyntaxKind.ParenthesizedLambdaExpression, SyntaxKind.SimpleLambdaExpression);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -154,8 +144,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 public static ImmutableArray<SyntaxKind> AnonymousFunctionExpression { get; }
                 = ImmutableArray.Create(SyntaxKind.ParenthesizedLambdaExpression,
-                                        SyntaxKind.SimpleLambdaExpression,
-                                        SyntaxKind.AnonymousMethodExpression);
+                    SyntaxKind.SimpleLambdaExpression, SyntaxKind.AnonymousMethodExpression);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -177,8 +166,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// as a <see cref="BaseParameterListSyntax"/>.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> BaseParameterList { get; }
-                = ImmutableArray.Create(SyntaxKind.ParameterList,
-                                        SyntaxKind.BracketedParameterList);
+                = ImmutableArray.Create(
+                    SyntaxKind.ParameterList, SyntaxKind.BracketedParameterList);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
@@ -200,10 +189,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// integer literals.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> IntegerLiteralKeyword { get; }
-                = ImmutableArray.Create(SyntaxKind.IntKeyword,
-                                        SyntaxKind.LongKeyword,
-                                        SyntaxKind.ULongKeyword,
-                                        SyntaxKind.UIntKeyword);
+                = ImmutableArray.Create(SyntaxKind.IntKeyword, SyntaxKind.LongKeyword,
+                    SyntaxKind.ULongKeyword, SyntaxKind.UIntKeyword);
 
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which represent keywords of
@@ -214,8 +201,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// literals.
                 /// </value>
                 public static ImmutableArray<SyntaxKind> RealLiteralKeyword { get; }
-                = ImmutableArray.Create(SyntaxKind.FloatKeyword,
-                                        SyntaxKind.DoubleKeyword,
-                                        SyntaxKind.DecimalKeyword);
+                = ImmutableArray.Create(
+                    SyntaxKind.FloatKeyword, SyntaxKind.DoubleKeyword, SyntaxKind.DecimalKeyword);
         }
 }

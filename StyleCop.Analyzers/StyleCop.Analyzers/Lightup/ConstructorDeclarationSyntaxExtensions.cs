@@ -6,26 +6,23 @@ namespace StyleCop.Analyzers.Lightup
         using System;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class ConstructorDeclarationSyntaxExtensions
-        {
+        internal static class ConstructorDeclarationSyntaxExtensions {
                 private static readonly Func<ConstructorDeclarationSyntax,
-                                             ArrowExpressionClauseSyntax,
-                                             ConstructorDeclarationSyntax>
-                  WithExpressionBodyAccessor;
+                    ArrowExpressionClauseSyntax, ConstructorDeclarationSyntax>
+                    WithExpressionBodyAccessor;
 
                 static ConstructorDeclarationSyntaxExtensions()
                 {
-                        WithExpressionBodyAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ConstructorDeclarationSyntax,
-                                                              ArrowExpressionClauseSyntax>(
-                              typeof(ConstructorDeclarationSyntax),
-                              nameof(BaseMethodDeclarationSyntaxExtensions.ExpressionBody));
+                        WithExpressionBodyAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                                ConstructorDeclarationSyntax, ArrowExpressionClauseSyntax>(
+                                typeof(ConstructorDeclarationSyntax),
+                                nameof(BaseMethodDeclarationSyntaxExtensions.ExpressionBody));
                 }
 
                 public static ConstructorDeclarationSyntax WithExpressionBody(
-                  this ConstructorDeclarationSyntax syntax,
-                  ArrowExpressionClauseSyntax expressionBody)
+                    this ConstructorDeclarationSyntax syntax,
+                    ArrowExpressionClauseSyntax expressionBody)
                 {
                         return WithExpressionBodyAccessor(syntax, expressionBody);
                 }

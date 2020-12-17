@@ -7,16 +7,15 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IFlowCaptureReferenceOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IFlowCaptureReferenceOperation";
+        internal readonly struct IFlowCaptureReferenceOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IFlowCaptureReferenceOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
                 static IFlowCaptureReferenceOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(IFlowCaptureReferenceOperationWrapper));
+                            typeof(IFlowCaptureReferenceOperationWrapper));
                 }
 
                 private IFlowCaptureReferenceOperationWrapper(IOperation operation)
@@ -27,9 +26,9 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public object Id => throw new NotImplementedException(
-                  "Property 'IFlowCaptureReferenceOperation.Id' has unsupported type 'CaptureId'");
+                    "Property 'IFlowCaptureReferenceOperation.Id' has unsupported type 'CaptureId'");
                 public static IFlowCaptureReferenceOperationWrapper FromOperation(
-                  IOperation operation)
+                    IOperation operation)
                 {
                         if (operation == null) {
                                 return default;
@@ -37,7 +36,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IFlowCaptureReferenceOperationWrapper(operation);
@@ -45,8 +44,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

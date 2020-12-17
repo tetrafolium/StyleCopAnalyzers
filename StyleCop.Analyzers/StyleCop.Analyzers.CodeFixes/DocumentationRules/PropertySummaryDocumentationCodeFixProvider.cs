@@ -18,15 +18,14 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <summary>
         /// Implements the code fix for property summary documentation.
         /// </summary>
-        [ExportCodeFixProvider(LanguageNames.CSharp,
-                               Name = nameof(PropertySummaryDocumentationCodeFixProvider))]
+        [ExportCodeFixProvider(
+            LanguageNames.CSharp, Name = nameof(PropertySummaryDocumentationCodeFixProvider))]
         [Shared]
-        internal class PropertySummaryDocumentationCodeFixProvider : CodeFixProvider
-        {
+        internal class PropertySummaryDocumentationCodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(PropertySummaryDocumentationAnalyzer.SA1623Descriptor.Id,
-                                        PropertySummaryDocumentationAnalyzer.SA1624Descriptor.Id);
+                    PropertySummaryDocumentationAnalyzer.SA1624Descriptor.Id);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider()
@@ -39,14 +38,16 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 if (!diagnostic.Properties.ContainsKey(
-                                      PropertySummaryDocumentationAnalyzer.NoCodeFixKey)) {
+                                        PropertySummaryDocumentationAnalyzer.NoCodeFixKey)) {
                                         context.RegisterCodeFix(
-                                          CodeAction.Create(
-                                            DocumentationResources.PropertySummaryStartTextCodeFix,
-                                            cancellationToken => GetTransformedDocumentAsync(
-                                              context.Document, diagnostic, cancellationToken),
-                                            nameof(PropertySummaryDocumentationCodeFixProvider)),
-                                          diagnostic);
+                                            CodeAction.Create(DocumentationResources
+                                                                  .PropertySummaryStartTextCodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync(
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof(
+                                                    PropertySummaryDocumentationCodeFixProvider)),
+                                            diagnostic);
                                 }
                         }
 
@@ -54,27 +55,25 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
 
                         var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
                         var documentation = node.GetDocumentationCommentTriviaSyntax();
 
-                        var summaryElement =
-                          (XmlElementSyntax) documentation.Content.GetFirstXmlElement(
-                            XmlCommentHelper.SummaryXmlTag);
-                        var textElement =
-                          XmlCommentHelper.TryGetFirstTextElementWithContent(summaryElement);
+                        var summaryElement
+                            = (XmlElementSyntax) documentation.Content.GetFirstXmlElement(
+                                XmlCommentHelper.SummaryXmlTag);
+                        var textElement
+                            = XmlCommentHelper.TryGetFirstTextElementWithContent(summaryElement);
                         if (textElement == null) {
                                 return document;
                         }
 
                         var textToken = textElement.TextTokens.First(
-                          token => token.IsKind(SyntaxKind.XmlTextLiteralToken));
+                            token => token.IsKind(SyntaxKind.XmlTextLiteralToken));
                         var text = textToken.ValueText;
 
                         // preserve leading whitespace
@@ -89,31 +88,31 @@ namespace StyleCop.Analyzers.DocumentationRules
                         string modifiedText;
                         string textToRemove;
                         if (diagnostic.Properties.TryGetValue(
-                              PropertySummaryDocumentationAnalyzer.TextToRemoveKey,
-                              out textToRemove)) {
-                                modifiedText =
-                                  text.Substring(text.IndexOf(textToRemove) + textToRemove.Length)
-                                    .TrimStart();
+                                PropertySummaryDocumentationAnalyzer.TextToRemoveKey,
+                                out textToRemove)) {
+                                modifiedText = text.Substring(text.IndexOf(textToRemove)
+                                                       + textToRemove.Length)
+                                                   .TrimStart();
                         } else {
                                 modifiedText = text.Substring(index);
                         }
 
                         if (modifiedText.Length > 0) {
-                                modifiedText = char.ToLowerInvariant(modifiedText[0]) +
-                                               modifiedText.Substring(1);
+                                modifiedText = char.ToLowerInvariant(modifiedText[0])
+                                    + modifiedText.Substring(1);
                         }
 
                         // create the new text string
-                        var textToAdd =
-                          diagnostic
-                            .Properties[PropertySummaryDocumentationAnalyzer.ExpectedTextKey];
+                        var textToAdd
+                            = diagnostic
+                                  .Properties[PropertySummaryDocumentationAnalyzer.ExpectedTextKey];
                         var newText = $"{preservedWhitespace}{textToAdd} {modifiedText}";
 
                         // replace the token
                         var newXmlTextLiteral = SyntaxFactory.XmlTextLiteral(
-                          textToken.LeadingTrivia, newText, newText, textToken.TrailingTrivia);
-                        var newTextTokens =
-                          textElement.TextTokens.Replace(textToken, newXmlTextLiteral);
+                            textToken.LeadingTrivia, newText, newText, textToken.TrailingTrivia);
+                        var newTextTokens
+                            = textElement.TextTokens.Replace(textToken, newXmlTextLiteral);
                         var newTextElement = textElement.WithTextTokens(newTextTokens);
 
                         var newSyntaxRoot = syntaxRoot.ReplaceNode(textElement, newTextElement);

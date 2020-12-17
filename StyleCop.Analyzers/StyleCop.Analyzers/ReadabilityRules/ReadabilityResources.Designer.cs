@@ -21,36 +21,36 @@ namespace StyleCop.Analyzers.ReadabilityRules
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
-          "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+            "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class ReadabilityResources
-        {
+        internal class ReadabilityResources {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                  "Microsoft.Performance",
-                  "CA1811:AvoidUncalledPrivateCode")]
-                internal
-                ReadabilityResources()
-                {}
+                    "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+                internal ReadabilityResources()
+                {
+                }
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Resources.ResourceManager ResourceManager
                 {
                         get
                         {
                                 if (object.ReferenceEquals(resourceMan, null)) {
-                                        global::System.Resources.ResourceManager
-                                          temp = new global::System.Resources.ResourceManager(
-                                          "StyleCop.Analyzers.ReadabilityRules.ReadabilityResources",
-                                          typeof(ReadabilityResources).GetTypeInfo().Assembly);
+                                        global::System.Resources.ResourceManager temp
+                                            = new global::System.Resources.ResourceManager(
+                                                "StyleCop.Analyzers.ReadabilityRules.ReadabilityResources",
+                                                typeof(ReadabilityResources)
+                                                    .GetTypeInfo()
+                                                    .Assembly);
                                         resourceMan = temp;
                                 }
                                 return resourceMan;
@@ -62,7 +62,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Globalization.CultureInfo Culture
                 {
                         get { return resourceCulture; }
@@ -76,8 +76,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("IndentationCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "IndentationCodeFix", resourceCulture);
                         }
                 }
 
@@ -88,8 +88,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("RemoveRegionCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "RemoveRegionCodeFix", resourceCulture);
                         }
                 }
 
@@ -111,8 +111,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1100Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1100Description", resourceCulture);
                         }
                 }
 
@@ -124,8 +124,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1100MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1100MessageFormat", resourceCulture);
                         }
                 }
 
@@ -156,8 +156,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1101Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1101Description", resourceCulture);
                         }
                 }
 
@@ -168,8 +168,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1101MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1101MessageFormat", resourceCulture);
                         }
                 }
 
@@ -197,8 +197,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1102Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1102Description", resourceCulture);
                         }
                 }
 
@@ -210,8 +210,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1102MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1102MessageFormat", resourceCulture);
                         }
                 }
 
@@ -231,8 +231,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1103CodeFixMultipleLines",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1103CodeFixMultipleLines", resourceCulture);
                         }
                 }
 
@@ -243,8 +243,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1103CodeFixSingleLine",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1103CodeFixSingleLine", resourceCulture);
                         }
                 }
 
@@ -257,8 +257,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1103Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1103Description", resourceCulture);
                         }
                 }
 
@@ -270,8 +270,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1103MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1103MessageFormat", resourceCulture);
                         }
                 }
 
@@ -293,8 +293,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1104Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1104Description", resourceCulture);
                         }
                 }
 
@@ -306,8 +306,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1104MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1104MessageFormat", resourceCulture);
                         }
                 }
 
@@ -318,8 +318,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1104SA1105CodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1104SA1105CodeFix", resourceCulture);
                         }
                 }
 
@@ -340,8 +340,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1105Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1105Description", resourceCulture);
                         }
                 }
 
@@ -353,8 +353,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1105MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1105MessageFormat", resourceCulture);
                         }
                 }
 
@@ -383,8 +383,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1106Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1106Description", resourceCulture);
                         }
                 }
 
@@ -396,8 +396,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1106MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1106MessageFormat", resourceCulture);
                         }
                 }
 
@@ -426,8 +426,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1107Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1107Description", resourceCulture);
                         }
                 }
 
@@ -439,8 +439,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1107MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1107MessageFormat", resourceCulture);
                         }
                 }
 
@@ -462,8 +462,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1108Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1108Description", resourceCulture);
                         }
                 }
 
@@ -475,8 +475,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1108MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1108MessageFormat", resourceCulture);
                         }
                 }
 
@@ -498,8 +498,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1109Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1109Description", resourceCulture);
                         }
                 }
 
@@ -510,8 +510,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1109MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1109MessageFormat", resourceCulture);
                         }
                 }
 
@@ -532,8 +532,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1110Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1110Description", resourceCulture);
                         }
                 }
 
@@ -545,8 +545,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1110MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1110MessageFormat", resourceCulture);
                         }
                 }
 
@@ -569,8 +569,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1111Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1111Description", resourceCulture);
                         }
                 }
 
@@ -582,8 +582,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1111MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1111MessageFormat", resourceCulture);
                         }
                 }
 
@@ -606,8 +606,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1112Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1112Description", resourceCulture);
                         }
                 }
 
@@ -619,8 +619,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1112MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1112MessageFormat", resourceCulture);
                         }
                 }
 
@@ -642,8 +642,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1113Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1113Description", resourceCulture);
                         }
                 }
 
@@ -655,8 +655,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1113MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1113MessageFormat", resourceCulture);
                         }
                 }
 
@@ -679,8 +679,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1114Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1114Description", resourceCulture);
                         }
                 }
 
@@ -692,8 +692,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1114MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1114MessageFormat", resourceCulture);
                         }
                 }
 
@@ -715,8 +715,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1115Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1115Description", resourceCulture);
                         }
                 }
 
@@ -728,8 +728,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1115MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1115MessageFormat", resourceCulture);
                         }
                 }
 
@@ -758,8 +758,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1116Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1116Description", resourceCulture);
                         }
                 }
 
@@ -771,8 +771,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1116MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1116MessageFormat", resourceCulture);
                         }
                 }
 
@@ -794,8 +794,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1117Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1117Description", resourceCulture);
                         }
                 }
 
@@ -807,8 +807,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1117MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1117MessageFormat", resourceCulture);
                         }
                 }
 
@@ -832,8 +832,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1118Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1118Description", resourceCulture);
                         }
                 }
 
@@ -844,8 +844,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1118MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1118MessageFormat", resourceCulture);
                         }
                 }
 
@@ -874,8 +874,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1120Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1120Description", resourceCulture);
                         }
                 }
 
@@ -886,8 +886,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1120MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1120MessageFormat", resourceCulture);
                         }
                 }
 
@@ -915,8 +915,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1121Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1121Description", resourceCulture);
                         }
                 }
 
@@ -927,8 +927,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1121MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1121MessageFormat", resourceCulture);
                         }
                 }
 
@@ -956,8 +956,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1122Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1122Description", resourceCulture);
                         }
                 }
 
@@ -968,8 +968,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1122MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1122MessageFormat", resourceCulture);
                         }
                 }
 
@@ -989,8 +989,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1123Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1123Description", resourceCulture);
                         }
                 }
 
@@ -1002,8 +1002,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1123MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1123MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1022,8 +1022,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1124Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1124Description", resourceCulture);
                         }
                 }
 
@@ -1034,8 +1034,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1124MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1124MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1056,8 +1056,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1125Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1125Description", resourceCulture);
                         }
                 }
 
@@ -1068,8 +1068,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1125MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1125MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1091,8 +1091,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1126Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1126Description", resourceCulture);
                         }
                 }
 
@@ -1103,8 +1103,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1126MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1126MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1133,8 +1133,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1127Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1127Description", resourceCulture);
                         }
                 }
 
@@ -1146,8 +1146,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1127MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1127MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1177,8 +1177,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1128Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1128Description", resourceCulture);
                         }
                 }
 
@@ -1190,8 +1190,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1128MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1128MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1222,8 +1222,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1129Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1129Description", resourceCulture);
                         }
                 }
 
@@ -1235,8 +1235,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1129MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1129MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1266,8 +1266,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1130Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1130Description", resourceCulture);
                         }
                 }
 
@@ -1278,8 +1278,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1130MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1130MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1308,8 +1308,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1131Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1131Description", resourceCulture);
                         }
                 }
 
@@ -1321,8 +1321,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1131MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1131MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1351,8 +1351,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1132Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1132Description", resourceCulture);
                         }
                 }
 
@@ -1364,8 +1364,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1132MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1132MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1394,8 +1394,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1133Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1133Description", resourceCulture);
                         }
                 }
 
@@ -1407,8 +1407,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1133MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1133MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1436,8 +1436,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1134Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1134Description", resourceCulture);
                         }
                 }
 
@@ -1449,8 +1449,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1134MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1134MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1478,8 +1478,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1135Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1135Description", resourceCulture);
                         }
                 }
 
@@ -1491,8 +1491,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1135MessageFormatNamespace",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1135MessageFormatNamespace", resourceCulture);
                         }
                 }
 
@@ -1504,8 +1504,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1135MessageFormatType",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1135MessageFormatType", resourceCulture);
                         }
                 }
 
@@ -1533,8 +1533,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1136Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1136Description", resourceCulture);
                         }
                 }
 
@@ -1546,8 +1546,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1136MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1136MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1568,8 +1568,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1137Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1137Description", resourceCulture);
                         }
                 }
 
@@ -1581,8 +1581,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1137MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1137MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1613,8 +1613,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1139Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1139Description", resourceCulture);
                         }
                 }
 
@@ -1626,8 +1626,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1139MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1139MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1656,8 +1656,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1141Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1141Description", resourceCulture);
                         }
                 }
 
@@ -1668,8 +1668,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1141MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1141MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1697,8 +1697,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1142Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1142Description", resourceCulture);
                         }
                 }
 
@@ -1709,8 +1709,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1142MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SA1142MessageFormat", resourceCulture);
                         }
                 }
 
@@ -1738,8 +1738,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SX1101Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SX1101Description", resourceCulture);
                         }
                 }
 
@@ -1751,8 +1751,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SX1101MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString(
+                                    "SX1101MessageFormat", resourceCulture);
                         }
                 }
 

@@ -38,43 +38,34 @@ namespace StyleCop.Analyzers.LayoutRules
         /// code.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1520UseBracesConsistently : DiagnosticAnalyzer
-        {
+        internal class SA1520UseBracesConsistently : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see cref="SA1520UseBracesConsistently"/>
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1520";
 
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1520.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1520Title),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1520MessageFormat),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(LayoutResources.SA1520Description),
-                                                LayoutResources.ResourceManager,
-                                                typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1520.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1520Title),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1520MessageFormat),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(LayoutResources.SA1520Description),
+                        LayoutResources.ResourceManager, typeof(LayoutResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-                internal static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.LayoutRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                internal static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
-                private static readonly Action<SyntaxNodeAnalysisContext> IfStatementAction =
-                  HandleIfStatement;
+                private static readonly Action<SyntaxNodeAnalysisContext> IfStatementAction
+                    = HandleIfStatement;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -101,8 +92,8 @@ namespace StyleCop.Analyzers.LayoutRules
                         for (IfStatementSyntax current = ifStatement; current != null;
                              current = current.Else?.Statement as IfStatementSyntax) {
                                 clauses.Add(current.Statement);
-                                if (current.Else != null &&
-                                    !(current.Else.Statement is IfStatementSyntax)) {
+                                if (current.Else != null
+                                    && !(current.Else.Statement is IfStatementSyntax)) {
                                         clauses.Add(current.Else.Statement);
                                 }
                         }
@@ -122,26 +113,27 @@ namespace StyleCop.Analyzers.LayoutRules
                         }
                 }
 
-                private static void CheckChildStatement(SyntaxNodeAnalysisContext context,
-                                                        StatementSyntax childStatement)
+                private static void CheckChildStatement(
+                    SyntaxNodeAnalysisContext context, StatementSyntax childStatement)
                 {
                         if (childStatement is BlockSyntax) {
                                 return;
                         }
 
                         if (!context.IsAnalyzerSuppressed(
-                              SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.Descriptor)) {
+                                SA1519BracesMustNotBeOmittedFromMultiLineChildStatement
+                                    .Descriptor)) {
                                 // diagnostics for multi-line statements is handled by SA1519, as
                                 // long as it's not suppressed
                                 FileLinePositionSpan lineSpan = childStatement.GetLineSpan();
-                                if (lineSpan.StartLinePosition.Line !=
-                                    lineSpan.EndLinePosition.Line) {
+                                if (lineSpan.StartLinePosition.Line
+                                    != lineSpan.EndLinePosition.Line) {
                                         return;
                                 }
                         }
 
                         context.ReportDiagnostic(
-                          Diagnostic.Create(Descriptor, childStatement.GetLocation()));
+                            Diagnostic.Create(Descriptor, childStatement.GetLocation()));
                 }
         }
 }

@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers.Helpers
         using StyleCop.Analyzers.Settings.ObjectModel;
         using Path = System.IO.Path;
 
-        internal static class FileNameHelpers
-        {
+        internal static class FileNameHelpers {
                 internal static string GetFileNameAndSuffix(string path, out string suffix)
                 {
                         string fileName = Path.GetFileName(path);
@@ -24,8 +23,8 @@ namespace StyleCop.Analyzers.Helpers
                         return fileName;
                 }
 
-                internal static string GetConventionalFileName(MemberDeclarationSyntax declaration,
-                                                               FileNamingConvention convention)
+                internal static string GetConventionalFileName(
+                    MemberDeclarationSyntax declaration, FileNamingConvention convention)
                 {
                         if (declaration is TypeDeclarationSyntax typeDeclaration) {
                                 if (typeDeclaration.TypeParameterList == null) {
@@ -33,11 +32,11 @@ namespace StyleCop.Analyzers.Helpers
                                 }
 
                                 switch (convention) {
-                                        case FileNamingConvention.Metadata:
-                                                return GetMetadataFileName(typeDeclaration);
+                                case FileNamingConvention.Metadata:
+                                        return GetMetadataFileName(typeDeclaration);
 
-                                        default:
-                                                return GetStyleCopFileName(typeDeclaration);
+                                default:
+                                        return GetStyleCopFileName(typeDeclaration);
                                 }
                         }
 
@@ -46,8 +45,8 @@ namespace StyleCop.Analyzers.Helpers
 
                 internal static string GetSimpleFileName(MemberDeclarationSyntax memberDeclaration)
                 {
-                        var nameOrIdentifier =
-                          NamedTypeHelpers.GetNameOrIdentifier(memberDeclaration);
+                        var nameOrIdentifier
+                            = NamedTypeHelpers.GetNameOrIdentifier(memberDeclaration);
                         return nameOrIdentifier;
                 }
 
@@ -58,10 +57,9 @@ namespace StyleCop.Analyzers.Helpers
 
                 private static string GetStyleCopFileName(TypeDeclarationSyntax typeDeclaration)
                 {
-                        var typeParameterList =
-                          string.Join(",",
-                                      typeDeclaration.TypeParameterList.Parameters.Select(
-                                        p => p.Identifier.ValueText));
+                        var typeParameterList = string.Join(",",
+                            typeDeclaration.TypeParameterList.Parameters.Select(
+                                p => p.Identifier.ValueText));
                         return $"{typeDeclaration.Identifier.ValueText}{{{typeParameterList}}}";
                 }
         }

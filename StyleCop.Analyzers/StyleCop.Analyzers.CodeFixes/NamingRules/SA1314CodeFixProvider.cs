@@ -21,8 +21,7 @@ namespace StyleCop.Analyzers.NamingRules
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1314CodeFixProvider))]
         [Shared]
-        internal class SA1314CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1314CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1314TypeParameterNamesMustBeginWithT.DiagnosticId);
@@ -39,44 +38,41 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    NamingResources.SA1314CodeFix,
-                                    cancellationToken => CreateChangedSolutionAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1314CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(NamingResources.SA1314CodeFix,
+                                        cancellationToken => CreateChangedSolutionAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1314CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Solution> CreateChangedSolutionAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
-                                     .ConfigureAwait(false);
+                                       .ConfigureAwait(false);
                         var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
                         var baseName = "T" + token.ValueText;
                         var index = 0;
                         var newName = baseName;
 
                         var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
-                                              .ConfigureAwait(false);
-                        var declaredSymbol =
-                          semanticModel.GetDeclaredSymbol(token.Parent, cancellationToken);
+                                                .ConfigureAwait(false);
+                        var declaredSymbol
+                            = semanticModel.GetDeclaredSymbol(token.Parent, cancellationToken);
                         while (!await RenameHelper
-                                  .IsValidNewMemberNameAsync(
-                                    semanticModel, declaredSymbol, newName, cancellationToken)
-                                  .ConfigureAwait(false)) {
+                                    .IsValidNewMemberNameAsync(
+                                        semanticModel, declaredSymbol, newName, cancellationToken)
+                                    .ConfigureAwait(false)) {
                                 index++;
                                 newName = baseName + index;
                         }
 
                         return await RenameHelper
-                          .RenameSymbolAsync(document, root, token, newName, cancellationToken)
-                          .ConfigureAwait(false);
+                            .RenameSymbolAsync(document, root, token, newName, cancellationToken)
+                            .ConfigureAwait(false);
                 }
         }
 }

@@ -14,8 +14,7 @@ using LightJson.Serialization;
 /// </summary>
 [DebuggerDisplay("{ToString(),nq}", Type = "JsonValue({Type})")]
 [DebuggerTypeProxy(typeof(JsonValueDebugView))]
-internal struct JsonValue
-{
+internal struct JsonValue {
         /// <summary>
         /// Represents a null JsonValue.
         /// </summary>
@@ -232,21 +231,21 @@ internal struct JsonValue
                 get
                 {
                         switch (this.Type) {
-                                case JsonValueType.Boolean:
-                                        return this.value == 1;
+                        case JsonValueType.Boolean:
+                                return this.value == 1;
 
-                                case JsonValueType.Number:
-                                        return this.value != 0;
+                        case JsonValueType.Number:
+                                return this.value != 0;
 
-                                case JsonValueType.String:
-                                        return (string) this.reference != string.Empty;
+                        case JsonValueType.String:
+                                return (string) this.reference != string.Empty;
 
-                                case JsonValueType.Object:
-                                case JsonValueType.Array:
-                                        return true;
+                        case JsonValueType.Object:
+                        case JsonValueType.Array:
+                                return true;
 
-                                default:
-                                        return false;
+                        default:
+                                return false;
                         }
                 }
         }
@@ -283,25 +282,23 @@ internal struct JsonValue
                 get
                 {
                         switch (this.Type) {
-                                case JsonValueType.Boolean:
-                                        return (this.value == 1) ? 1 : 0;
+                        case JsonValueType.Boolean:
+                                return (this.value == 1) ? 1 : 0;
 
-                                case JsonValueType.Number:
-                                        return this.value;
+                        case JsonValueType.Number:
+                                return this.value;
 
-                                case JsonValueType.String:
-                                        double number;
-                                        if (double.TryParse((string) this.reference,
-                                                            NumberStyles.Float,
-                                                            CultureInfo.InvariantCulture,
-                                                            out number)) {
-                                                return number;
-                                        } else {
-                                                goto default;
-                                        }
+                        case JsonValueType.String:
+                                double number;
+                                if (double.TryParse((string) this.reference, NumberStyles.Float,
+                                        CultureInfo.InvariantCulture, out number)) {
+                                        return number;
+                                } else {
+                                        goto default;
+                                }
 
-                                default:
-                                        return 0;
+                        default:
+                                return 0;
                         }
                 }
         }
@@ -315,17 +312,17 @@ internal struct JsonValue
                 get
                 {
                         switch (this.Type) {
-                                case JsonValueType.Boolean:
-                                        return (this.value == 1) ? "true" : "false";
+                        case JsonValueType.Boolean:
+                                return (this.value == 1) ? "true" : "false";
 
-                                case JsonValueType.Number:
-                                        return this.value.ToString(CultureInfo.InvariantCulture);
+                        case JsonValueType.Number:
+                                return this.value.ToString(CultureInfo.InvariantCulture);
 
-                                case JsonValueType.String:
-                                        return (string) this.reference;
+                        case JsonValueType.String:
+                                return (string) this.reference;
 
-                                default:
-                                        return null;
+                        default:
+                                return null;
                         }
                 }
         }
@@ -360,8 +357,8 @@ internal struct JsonValue
                 {
                         DateTime value;
 
-                        if (this.IsString &&
-                            DateTime.TryParse((string) this.reference, out value)) {
+                        if (this.IsString
+                            && DateTime.TryParse((string) this.reference, out value)) {
                                 return value;
                         } else {
                                 return null;
@@ -378,17 +375,17 @@ internal struct JsonValue
                 get
                 {
                         switch (this.Type) {
-                                case JsonValueType.Boolean:
-                                case JsonValueType.Number:
-                                        return this.value;
+                        case JsonValueType.Boolean:
+                        case JsonValueType.Number:
+                                return this.value;
 
-                                case JsonValueType.String:
-                                case JsonValueType.Object:
-                                case JsonValueType.Array:
-                                        return this.reference;
+                        case JsonValueType.String:
+                        case JsonValueType.Object:
+                        case JsonValueType.Array:
+                                return this.reference;
 
-                                default:
-                                        return null;
+                        default:
+                                return null;
                         }
                 }
         }
@@ -408,7 +405,7 @@ internal struct JsonValue
                                 return ((JsonObject) this.reference)[key];
                         } else {
                                 throw new InvalidOperationException(
-                                  "This value does not represent a JsonObject.");
+                                    "This value does not represent a JsonObject.");
                         }
                 }
 
@@ -418,7 +415,7 @@ internal struct JsonValue
                                 ((JsonObject) this.reference)[key] = value;
                         } else {
                                 throw new InvalidOperationException(
-                                  "This value does not represent a JsonObject.");
+                                    "This value does not represent a JsonObject.");
                         }
                 }
         }
@@ -438,7 +435,7 @@ internal struct JsonValue
                                 return ((JsonArray) this.reference)[index];
                         } else {
                                 throw new InvalidOperationException(
-                                  "This value does not represent a JsonArray.");
+                                    "This value does not represent a JsonArray.");
                         }
                 }
 
@@ -448,7 +445,7 @@ internal struct JsonValue
                                 ((JsonArray) this.reference)[index] = value;
                         } else {
                                 throw new InvalidOperationException(
-                                  "This value does not represent a JsonArray.");
+                                    "This value does not represent a JsonArray.");
                         }
                 }
         }
@@ -678,8 +675,8 @@ internal struct JsonValue
         /// <param name="b">Second JsonValue to compare.</param>
         public static bool operator ==(JsonValue a, JsonValue b)
         {
-                return (a.Type == b.Type) && (a.value == b.value) &&
-                       Equals(a.reference, b.reference);
+                return (a.Type == b.Type) && (a.value == b.value)
+                    && Equals(a.reference, b.reference);
         }
 
         /// <summary>
@@ -717,14 +714,13 @@ internal struct JsonValue
                 if (this.IsNull) {
                         return this.Type.GetHashCode();
                 } else {
-                        return this.Type.GetHashCode() ^ this.value.GetHashCode() ^
-                               EqualityComparer<object>.Default.GetHashCode(this.reference);
+                        return this.Type.GetHashCode() ^ this.value.GetHashCode()
+                            ^ EqualityComparer<object>.Default.GetHashCode(this.reference);
                 }
         }
 
         [ExcludeFromCodeCoverage]
-        private class JsonValueDebugView
-        {
+        private class JsonValueDebugView {
                 private readonly JsonValue jsonValue;
 
                 public JsonValueDebugView(JsonValue jsonValue) { this.jsonValue = jsonValue; }

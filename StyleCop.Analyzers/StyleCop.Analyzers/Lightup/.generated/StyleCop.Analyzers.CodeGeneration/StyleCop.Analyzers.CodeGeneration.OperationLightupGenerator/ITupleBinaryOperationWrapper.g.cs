@@ -7,10 +7,9 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct ITupleBinaryOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.ITupleBinaryOperation";
+        internal readonly struct ITupleBinaryOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.ITupleBinaryOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> LeftOperandAccessor;
                 private static readonly Func<IOperation, IOperation> RightOperandAccessor;
@@ -18,13 +17,15 @@ namespace StyleCop.Analyzers.Lightup
                 static ITupleBinaryOperationWrapper()
                 {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                          typeof(ITupleBinaryOperationWrapper));
-                        LeftOperandAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(LeftOperand));
-                        RightOperandAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(RightOperand));
+                            typeof(ITupleBinaryOperationWrapper));
+                        LeftOperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(LeftOperand));
+                        RightOperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(RightOperand));
                 }
 
                 private ITupleBinaryOperationWrapper(IOperation operation)
@@ -35,7 +36,7 @@ namespace StyleCop.Analyzers.Lightup
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public object OperatorKind => throw new NotImplementedException(
-                  "Property 'ITupleBinaryOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
+                    "Property 'ITupleBinaryOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
                 public IOperation LeftOperand => LeftOperandAccessor(this.WrappedOperation);
                 public IOperation RightOperand => RightOperandAccessor(this.WrappedOperation);
                 public static ITupleBinaryOperationWrapper FromOperation(IOperation operation)
@@ -46,7 +47,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new ITupleBinaryOperationWrapper(operation);
@@ -54,8 +55,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

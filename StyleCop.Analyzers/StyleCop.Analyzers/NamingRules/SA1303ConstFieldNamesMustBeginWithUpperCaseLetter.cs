@@ -25,40 +25,31 @@ namespace StyleCop.Analyzers.NamingRules
         /// is placed within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1303ConstFieldNamesMustBeginWithUpperCaseLetter : DiagnosticAnalyzer
-        {
+        internal class SA1303ConstFieldNamesMustBeginWithUpperCaseLetter : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1303ConstFieldNamesMustBeginWithUpperCaseLetter"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1303";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1303.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(NamingResources.SA1303Title),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(NamingResources.SA1303MessageFormat),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(NamingResources.SA1303Description),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1303.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(NamingResources.SA1303Title),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(NamingResources.SA1303MessageFormat),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(NamingResources.SA1303Description),
+                        NamingResources.ResourceManager, typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.NamingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SymbolAnalysisContext> FieldDeclarationAction =
-                  Analyzer.HandleFieldDeclaration;
+                private static readonly Action<SymbolAnalysisContext> FieldDeclarationAction
+                    = Analyzer.HandleFieldDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -73,17 +64,16 @@ namespace StyleCop.Analyzers.NamingRules
                         context.RegisterSymbolAction(FieldDeclarationAction, SymbolKind.Field);
                 }
 
-                private static class Analyzer
-                {
+                private static class Analyzer {
                         public static void HandleFieldDeclaration(SymbolAnalysisContext context)
                         {
-                                if (!(context.Symbol is IFieldSymbol symbol) || !symbol.IsConst ||
-                                    symbol.ContainingType?.TypeKind == TypeKind.Enum) {
+                                if (!(context.Symbol is IFieldSymbol symbol) || !symbol.IsConst
+                                    || symbol.ContainingType?.TypeKind == TypeKind.Enum) {
                                         return;
                                 }
 
                                 if (NamedTypeHelpers.IsContainedInNativeMethodsClass(
-                                      symbol.ContainingType)) {
+                                        symbol.ContainingType)) {
                                         return;
                                 }
 
@@ -99,8 +89,8 @@ namespace StyleCop.Analyzers.NamingRules
                                  * information:
                                  * https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/369
                                  */
-                                if (!string.IsNullOrEmpty(symbol.Name) &&
-                                    char.IsLower(symbol.Name[0]) && symbol.Locations.Any()) {
+                                if (!string.IsNullOrEmpty(symbol.Name)
+                                    && char.IsLower(symbol.Name[0]) && symbol.Locations.Any()) {
                                         foreach (var location in context.Symbol.Locations) {
                                                 if (!location.IsInSource) {
                                                         // assume symbols not defined in a source
@@ -110,7 +100,7 @@ namespace StyleCop.Analyzers.NamingRules
                                         }
 
                                         context.ReportDiagnostic(
-                                          Diagnostic.Create(Descriptor, symbol.Locations[0]));
+                                            Diagnostic.Create(Descriptor, symbol.Locations[0]));
                                 }
                         }
                 }

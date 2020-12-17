@@ -10,41 +10,39 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct RefExpressionSyntaxWrapper
-          : ISyntaxWrapper<ExpressionSyntax>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.RefExpressionSyntax";
+            : ISyntaxWrapper<ExpressionSyntax> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.RefExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, SyntaxToken> RefKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax> ExpressionAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                  WithRefKeywordAccessor;
+                    WithRefKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax, ExpressionSyntax>
-                  WithExpressionAccessor;
+                    WithExpressionAccessor;
 
                 private readonly ExpressionSyntax node;
 
                 static RefExpressionSyntaxWrapper()
                 {
-                        WrappedType =
-                          SyntaxWrapperHelper.GetWrappedType(typeof(RefExpressionSyntaxWrapper));
-                        RefKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(RefKeyword));
-                        ExpressionAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                              WrappedType, nameof(Expression));
-                        WithRefKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                              WrappedType, nameof(RefKeyword));
-                        WithExpressionAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                              WrappedType, nameof(Expression));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
+                            typeof(RefExpressionSyntaxWrapper));
+                        RefKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(RefKeyword));
+                        ExpressionAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                                      WrappedType, nameof(Expression));
+                        WithRefKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                                      WrappedType, nameof(RefKeyword));
+                        WithExpressionAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                ExpressionSyntax>(WrappedType, nameof(Expression));
                 }
 
                 private RefExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
@@ -69,7 +67,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new RefExpressionSyntaxWrapper((ExpressionSyntax) node);
@@ -88,13 +86,13 @@ namespace StyleCop.Analyzers.Lightup
                 public RefExpressionSyntaxWrapper WithRefKeyword(SyntaxToken refKeyword)
                 {
                         return new RefExpressionSyntaxWrapper(
-                          WithRefKeywordAccessor(this.SyntaxNode, refKeyword));
+                            WithRefKeywordAccessor(this.SyntaxNode, refKeyword));
                 }
 
                 public RefExpressionSyntaxWrapper WithExpression(ExpressionSyntax expression)
                 {
                         return new RefExpressionSyntaxWrapper(
-                          WithExpressionAccessor(this.SyntaxNode, expression));
+                            WithExpressionAccessor(this.SyntaxNode, expression));
                 }
         }
 }

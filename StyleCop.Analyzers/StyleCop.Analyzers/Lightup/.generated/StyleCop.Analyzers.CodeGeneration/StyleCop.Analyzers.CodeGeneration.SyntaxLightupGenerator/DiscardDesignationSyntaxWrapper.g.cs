@@ -10,30 +10,29 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct DiscardDesignationSyntaxWrapper
-          : ISyntaxWrapper<CSharpSyntaxNode>
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.CSharp.Syntax.DiscardDesignationSyntax";
+            : ISyntaxWrapper<CSharpSyntaxNode> {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.DiscardDesignationSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> UnderscoreTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
-                  WithUnderscoreTokenAccessor;
+                    WithUnderscoreTokenAccessor;
 
                 private readonly CSharpSyntaxNode node;
 
                 static DiscardDesignationSyntaxWrapper()
                 {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                          typeof(DiscardDesignationSyntaxWrapper));
-                        UnderscoreTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                              WrappedType, nameof(UnderscoreToken));
-                        WithUnderscoreTokenAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                              WrappedType, nameof(UnderscoreToken));
+                            typeof(DiscardDesignationSyntaxWrapper));
+                        UnderscoreTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                      WrappedType, nameof(UnderscoreToken));
+                        WithUnderscoreTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                                      WrappedType, nameof(UnderscoreToken));
                 }
 
                 private DiscardDesignationSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
@@ -46,7 +45,7 @@ namespace StyleCop.Analyzers.Lightup
                 }
 
                 public static explicit operator DiscardDesignationSyntaxWrapper(
-                  VariableDesignationSyntaxWrapper node)
+                    VariableDesignationSyntaxWrapper node)
                 {
                         return (DiscardDesignationSyntaxWrapper) node.SyntaxNode;
                 }
@@ -59,20 +58,20 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new DiscardDesignationSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator VariableDesignationSyntaxWrapper(
-                  DiscardDesignationSyntaxWrapper wrapper)
+                    DiscardDesignationSyntaxWrapper wrapper)
                 {
                         return VariableDesignationSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
                 public static implicit operator CSharpSyntaxNode(
-                  DiscardDesignationSyntaxWrapper wrapper)
+                    DiscardDesignationSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
@@ -83,10 +82,10 @@ namespace StyleCop.Analyzers.Lightup
                 }
 
                 public DiscardDesignationSyntaxWrapper WithUnderscoreToken(
-                  SyntaxToken underscoreToken)
+                    SyntaxToken underscoreToken)
                 {
                         return new DiscardDesignationSyntaxWrapper(
-                          WithUnderscoreTokenAccessor(this.SyntaxNode, underscoreToken));
+                            WithUnderscoreTokenAccessor(this.SyntaxNode, underscoreToken));
                 }
         }
 }

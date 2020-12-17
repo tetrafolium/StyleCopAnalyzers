@@ -5,12 +5,11 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
         using LightJson;
 
-        internal class SpacingSettings
-        {
+        internal class SpacingSettings {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="SpacingSettings"/> class.
                 /// </summary>
-                protected internal SpacingSettings() {}
+                protected internal SpacingSettings() { }
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="SpacingSettings"/> class.
@@ -18,7 +17,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <param name="spacingSettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal SpacingSettings(JsonObject spacingSettingsObject)
-                  : this()
+                    : this()
                 {
                         // Currently unused
                         _ = spacingSettingsObject;

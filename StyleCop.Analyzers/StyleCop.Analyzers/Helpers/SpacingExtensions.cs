@@ -7,35 +7,32 @@ namespace StyleCop.Analyzers.Helpers
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class SpacingExtensions
-        {
+        internal static class SpacingExtensions {
                 public static bool IsMissingOrDefault(this SyntaxToken token)
                 {
                         return token.IsKind(SyntaxKind.None) || token.IsMissing;
                 }
 
                 public static SyntaxToken WithoutLeadingWhitespace(
-                  this SyntaxToken token,
-                  bool removeEndOfLineTrivia = false)
+                    this SyntaxToken token, bool removeEndOfLineTrivia = false)
                 {
                         if (!token.HasLeadingTrivia) {
                                 return token;
                         }
 
                         return token.WithLeadingTrivia(
-                          token.LeadingTrivia.WithoutWhitespace(removeEndOfLineTrivia));
+                            token.LeadingTrivia.WithoutWhitespace(removeEndOfLineTrivia));
                 }
 
                 public static SyntaxTriviaList WithoutWhitespace(
-                  this SyntaxTriviaList syntaxTriviaList,
-                  bool removeEndOfLineTrivia = false)
+                    this SyntaxTriviaList syntaxTriviaList, bool removeEndOfLineTrivia = false)
                 {
                         if (syntaxTriviaList.Count == 0) {
                                 return syntaxTriviaList;
                         }
 
-                        var trivia =
-                          syntaxTriviaList.Where(i => !i.IsKind(SyntaxKind.WhitespaceTrivia));
+                        var trivia
+                            = syntaxTriviaList.Where(i => !i.IsKind(SyntaxKind.WhitespaceTrivia));
                         if (removeEndOfLineTrivia) {
                                 trivia = trivia.Where(i => !i.IsKind(SyntaxKind.EndOfLineTrivia));
                         }
@@ -52,7 +49,7 @@ namespace StyleCop.Analyzers.Helpers
                 public static SyntaxToken WithoutTrivia(this SyntaxToken token)
                 {
                         return token.WithLeadingTrivia(default(SyntaxTriviaList))
-                          .WithTrailingTrivia(default(SyntaxTriviaList));
+                            .WithTrailingTrivia(default(SyntaxTriviaList));
                 }
         }
 }

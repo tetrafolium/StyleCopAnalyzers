@@ -7,45 +7,32 @@ namespace StyleCop.Analyzers.Lightup
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class LocalDeclarationStatementSyntaxExtensions
-        {
+        internal static class LocalDeclarationStatementSyntaxExtensions {
                 private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken>
-                  AwaitKeywordAccessor;
+                    AwaitKeywordAccessor;
                 private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken>
-                  UsingKeywordAccessor;
+                    UsingKeywordAccessor;
 
-                private static readonly Func<LocalDeclarationStatementSyntax,
-                                             SyntaxToken,
-                                             LocalDeclarationStatementSyntax>
-                  WithAwaitKeywordAccessor;
-                private static readonly Func<LocalDeclarationStatementSyntax,
-                                             SyntaxToken,
-                                             LocalDeclarationStatementSyntax>
-                  WithUsingKeywordAccessor;
+                private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken,
+                    LocalDeclarationStatementSyntax> WithAwaitKeywordAccessor;
+                private static readonly Func<LocalDeclarationStatementSyntax, SyntaxToken,
+                    LocalDeclarationStatementSyntax> WithUsingKeywordAccessor;
 
                 static LocalDeclarationStatementSyntaxExtensions()
                 {
-                        AwaitKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<LocalDeclarationStatementSyntax,
-                                                          SyntaxToken>(
-                              typeof(LocalDeclarationStatementSyntax), nameof(AwaitKeyword));
-                        UsingKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxPropertyAccessor<LocalDeclarationStatementSyntax,
-                                                          SyntaxToken>(
-                              typeof(LocalDeclarationStatementSyntax), nameof(UsingKeyword));
+                        AwaitKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            LocalDeclarationStatementSyntax, SyntaxToken>(
+                            typeof(LocalDeclarationStatementSyntax), nameof(AwaitKeyword));
+                        UsingKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            LocalDeclarationStatementSyntax, SyntaxToken>(
+                            typeof(LocalDeclarationStatementSyntax), nameof(UsingKeyword));
 
-                        WithAwaitKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<LocalDeclarationStatementSyntax,
-                                                              SyntaxToken>(
-                              typeof(LocalDeclarationStatementSyntax), nameof(AwaitKeyword));
-                        WithUsingKeywordAccessor =
-                          LightupHelpers
-                            .CreateSyntaxWithPropertyAccessor<LocalDeclarationStatementSyntax,
-                                                              SyntaxToken>(
-                              typeof(LocalDeclarationStatementSyntax), nameof(UsingKeyword));
+                        WithAwaitKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            LocalDeclarationStatementSyntax, SyntaxToken>(
+                            typeof(LocalDeclarationStatementSyntax), nameof(AwaitKeyword));
+                        WithUsingKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            LocalDeclarationStatementSyntax, SyntaxToken>(
+                            typeof(LocalDeclarationStatementSyntax), nameof(UsingKeyword));
                 }
 
                 public static SyntaxToken AwaitKeyword(this LocalDeclarationStatementSyntax syntax)
@@ -59,15 +46,13 @@ namespace StyleCop.Analyzers.Lightup
                 }
 
                 public static LocalDeclarationStatementSyntax WithAwaitKeyword(
-                  this LocalDeclarationStatementSyntax syntax,
-                  SyntaxToken awaitKeyword)
+                    this LocalDeclarationStatementSyntax syntax, SyntaxToken awaitKeyword)
                 {
                         return WithAwaitKeywordAccessor(syntax, awaitKeyword);
                 }
 
                 public static LocalDeclarationStatementSyntax WithUsingKeyword(
-                  this LocalDeclarationStatementSyntax syntax,
-                  SyntaxToken usingKeyword)
+                    this LocalDeclarationStatementSyntax syntax, SyntaxToken usingKeyword)
                 {
                         return WithUsingKeywordAccessor(syntax, usingKeyword);
                 }

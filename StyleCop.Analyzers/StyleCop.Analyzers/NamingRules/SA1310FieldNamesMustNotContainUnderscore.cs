@@ -29,40 +29,31 @@ namespace StyleCop.Analyzers.NamingRules
         /// within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1310FieldNamesMustNotContainUnderscore : DiagnosticAnalyzer
-        {
+        internal class SA1310FieldNamesMustNotContainUnderscore : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1310FieldNamesMustNotContainUnderscore"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1310";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1310.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(NamingResources.SA1310Title),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(nameof(NamingResources.SA1310MessageFormat),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(NamingResources.SA1310Description),
-                                                NamingResources.ResourceManager,
-                                                typeof(NamingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1310.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(NamingResources.SA1310Title),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(nameof(NamingResources.SA1310MessageFormat),
+                        NamingResources.ResourceManager, typeof(NamingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(nameof(NamingResources.SA1310Description),
+                        NamingResources.ResourceManager, typeof(NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.NamingRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink);
+                private static readonly DiagnosticDescriptor Descriptor
+                    = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+                        AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+                        AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction =
-                  HandleFieldDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction
+                    = HandleFieldDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -74,8 +65,8 @@ namespace StyleCop.Analyzers.NamingRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(FieldDeclarationAction,
-                                                         SyntaxKind.FieldDeclaration);
+                        context.RegisterSyntaxNodeAction(
+                            FieldDeclarationAction, SyntaxKind.FieldDeclaration);
                 }
 
                 private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
@@ -101,37 +92,37 @@ namespace StyleCop.Analyzers.NamingRules
                                 }
 
                                 switch (identifier.ValueText.IndexOf('_')) {
-                                        case -1:
-                                                // no _ character
+                                case -1:
+                                        // no _ character
+                                        continue;
+
+                                case 0:
+                                        // leading underscore -> report as SA1309
+                                        continue;
+
+                                case 1:
+                                        switch (identifier.ValueText[0]) {
+                                        case 'm':
+                                        case 's':
+                                        case 't':
+                                                // m_, s_, and t_ prefixes are
+                                                // reported as SA1308
                                                 continue;
-
-                                        case 0:
-                                                // leading underscore -> report as SA1309
-                                                continue;
-
-                                        case 1:
-                                                switch (identifier.ValueText[0]) {
-                                                        case 'm':
-                                                        case 's':
-                                                        case 't':
-                                                                // m_, s_, and t_ prefixes are
-                                                                // reported as SA1308
-                                                                continue;
-
-                                                        default:
-                                                                break;
-                                                }
-
-                                                break;
 
                                         default:
                                                 break;
+                                        }
+
+                                        break;
+
+                                default:
+                                        break;
                                 }
 
                                 // Field '{name}' should not contain an underscore
                                 string name = identifier.ValueText;
                                 context.ReportDiagnostic(
-                                  Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
+                                    Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
                         }
                 }
         }

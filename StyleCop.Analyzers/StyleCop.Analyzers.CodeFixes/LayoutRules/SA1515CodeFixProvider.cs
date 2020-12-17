@@ -21,12 +21,11 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1515CodeFixProvider))]
         [Shared]
-        internal class SA1515CodeFixProvider : CodeFixProvider
-        {
+        internal class SA1515CodeFixProvider : CodeFixProvider {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                  SA1515SingleLineCommentMustBePrecededByBlankLine.DiagnosticId);
+                    SA1515SingleLineCommentMustBePrecededByBlankLine.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
@@ -36,46 +35,42 @@ namespace StyleCop.Analyzers.LayoutRules
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                  CodeAction.Create(
-                                    LayoutResources.SA1515CodeFix,
-                                    cancellationToken => GetTransformedDocumentAsync(
-                                      context.Document, diagnostic, cancellationToken),
-                                    nameof(SA1515CodeFixProvider)),
-                                  diagnostic);
+                                    CodeAction.Create(LayoutResources.SA1515CodeFix,
+                                        cancellationToken => GetTransformedDocumentAsync(
+                                            context.Document, diagnostic, cancellationToken),
+                                        nameof(SA1515CodeFixProvider)),
+                                    diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                  Document document,
-                  Diagnostic diagnostic,
-                  CancellationToken cancellationToken)
+                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
                 {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                           .ConfigureAwait(false);
+                                             .ConfigureAwait(false);
 
-                        var singleLineComment =
-                          syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start);
+                        var singleLineComment
+                            = syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start);
                         var commentArray = new[]{ singleLineComment };
 
-                        var leadingTrivia =
-                          FixTriviaList(singleLineComment.Token.LeadingTrivia, commentArray);
-                        var trailingTrivia =
-                          FixTriviaList(singleLineComment.Token.TrailingTrivia, commentArray);
+                        var leadingTrivia
+                            = FixTriviaList(singleLineComment.Token.LeadingTrivia, commentArray);
+                        var trailingTrivia
+                            = FixTriviaList(singleLineComment.Token.TrailingTrivia, commentArray);
 
                         var newToken = singleLineComment.Token.WithLeadingTrivia(leadingTrivia)
-                                         .WithTrailingTrivia(trailingTrivia);
+                                           .WithTrailingTrivia(trailingTrivia);
 
-                        var newSyntaxRoot =
-                          syntaxRoot.ReplaceToken(singleLineComment.Token, newToken);
+                        var newSyntaxRoot
+                            = syntaxRoot.ReplaceToken(singleLineComment.Token, newToken);
 
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
                 private static SyntaxTriviaList FixTriviaList(
-                  SyntaxTriviaList triviaList,
-                  IEnumerable<SyntaxTrivia> commentTrivias)
+                    SyntaxTriviaList triviaList, IEnumerable<SyntaxTrivia> commentTrivias)
                 {
                         foreach (var singleLineComment in commentTrivias) {
                                 var index = triviaList.IndexOf(singleLineComment);
@@ -86,82 +81,77 @@ namespace StyleCop.Analyzers.LayoutRules
                                 index--;
                                 while (index >= 0) {
                                         switch (triviaList [index]
-                                                  .Kind()) {
-                                                case SyntaxKind.WhitespaceTrivia:
-                                                        index--;
-                                                        break;
+                                                    .Kind()) {
+                                        case SyntaxKind.WhitespaceTrivia:
+                                                index--;
+                                                break;
 
-                                                default:
-                                                        triviaList = triviaList.ReplaceRange(
-                                                          triviaList[index],
-                                                          new[]{
-                                                            triviaList[index],
+                                        default:
+                                                triviaList
+                                                    = triviaList.ReplaceRange(triviaList[index],
+                                                        new[]{ triviaList[index],
                                                             SyntaxFactory.CarriageReturnLineFeed });
 
-                                                        // We found the trivia so we don't have to
-                                                        // loop any longer
-                                                        index = -2;
-                                                        break;
+                                                // We found the trivia so we don't have to
+                                                // loop any longer
+                                                index = -2;
+                                                break;
                                         }
                                 }
 
                                 if (index == -1) {
-                                        triviaList = triviaList.ReplaceRange(
-                                          triviaList[0],
-                                          new[]{ SyntaxFactory.CarriageReturnLineFeed,
-                                                 triviaList[0] });
+                                        triviaList = triviaList.ReplaceRange(triviaList[0],
+                                            new[]{ SyntaxFactory.CarriageReturnLineFeed,
+                                                triviaList[0] });
                                 }
                         }
 
                         return triviaList;
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider
-                {
+                private class FixAll : DocumentBasedFixAllProvider {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
                         protected override string CodeActionTitle => LayoutResources.SA1515CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                          FixAllContext fixAllContext,
-                          Document document,
-                          ImmutableArray<Diagnostic> diagnostics)
+                            FixAllContext fixAllContext, Document document,
+                            ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
-                                var syntaxRoot =
-                                  await document.GetSyntaxRootAsync().ConfigureAwait(false);
+                                var syntaxRoot
+                                    = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
                                 List<SyntaxTrivia> trivias = new List<SyntaxTrivia>();
 
                                 foreach (var diagnostic in diagnostics) {
                                         trivias.Add(syntaxRoot.FindTrivia(
-                                          diagnostic.Location.SourceSpan.Start));
+                                            diagnostic.Location.SourceSpan.Start));
                                 }
 
                                 var tokensWithTrivia = trivias.GroupBy(x => x.Token);
 
-                                Dictionary<SyntaxToken, SyntaxToken> replacements =
-                                  new Dictionary<SyntaxToken, SyntaxToken>();
+                                Dictionary<SyntaxToken, SyntaxToken> replacements
+                                    = new Dictionary<SyntaxToken, SyntaxToken>();
 
                                 foreach (var tokenWithTrivia in tokensWithTrivia) {
                                         var token = tokenWithTrivia.Key;
-                                        var newLeadingTrivia =
-                                          FixTriviaList(token.LeadingTrivia, tokenWithTrivia);
-                                        var newTrailingTrivia =
-                                          FixTriviaList(token.TrailingTrivia, tokenWithTrivia);
+                                        var newLeadingTrivia
+                                            = FixTriviaList(token.LeadingTrivia, tokenWithTrivia);
+                                        var newTrailingTrivia
+                                            = FixTriviaList(token.TrailingTrivia, tokenWithTrivia);
 
                                         replacements.Add(token,
-                                                         token.WithLeadingTrivia(newLeadingTrivia)
-                                                           .WithTrailingTrivia(newTrailingTrivia));
+                                            token.WithLeadingTrivia(newLeadingTrivia)
+                                                .WithTrailingTrivia(newTrailingTrivia));
                                 }
 
                                 return syntaxRoot.ReplaceTokens(replacements.Keys,
-                                                                (oldToken, newToken) =>
-                                                                  replacements[oldToken]);
+                                    (oldToken, newToken) => replacements[oldToken]);
                         }
                 }
         }

@@ -7,10 +7,9 @@ namespace StyleCop.Analyzers.Lightup
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IRangeOperationWrapper : IOperationWrapper
-        {
-                internal const string WrappedTypeName =
-                  "Microsoft.CodeAnalysis.Operations.IRangeOperation";
+        internal readonly struct IRangeOperationWrapper : IOperationWrapper {
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IRangeOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> LeftOperandAccessor;
                 private static readonly Func<IOperation, IOperation> RightOperandAccessor;
@@ -19,20 +18,21 @@ namespace StyleCop.Analyzers.Lightup
                 private readonly IOperation operation;
                 static IRangeOperationWrapper()
                 {
-                        WrappedType =
-                          OperationWrapperHelper.GetWrappedType(typeof(IRangeOperationWrapper));
-                        LeftOperandAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(LeftOperand));
-                        RightOperandAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                            WrappedType, nameof(RightOperand));
-                        IsLiftedAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                            WrappedType, nameof(IsLifted));
-                        MethodAccessor =
-                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
-                            WrappedType, nameof(Method));
+                        WrappedType
+                            = OperationWrapperHelper.GetWrappedType(typeof(IRangeOperationWrapper));
+                        LeftOperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(LeftOperand));
+                        RightOperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation>(
+                                      WrappedType, nameof(RightOperand));
+                        IsLiftedAccessor
+                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                                WrappedType, nameof(IsLifted));
+                        MethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation,
+                            IMethodSymbol>(WrappedType, nameof(Method));
                 }
 
                 private IRangeOperationWrapper(IOperation operation) { this.operation = operation; }
@@ -51,7 +51,7 @@ namespace StyleCop.Analyzers.Lightup
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IRangeOperationWrapper(operation);
@@ -59,8 +59,8 @@ namespace StyleCop.Analyzers.Lightup
 
                 public static bool IsInstance(IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                            && LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }
         }
 }

@@ -29,43 +29,34 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis
-          : DiagnosticAnalyzer
-        {
+            : DiagnosticAnalyzer {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis"/>
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1411";
-                private const string HelpLink =
-                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1411.md";
-                private static readonly LocalizableString Title =
-                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1411Title),
-                                                MaintainabilityResources.ResourceManager,
-                                                typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                  new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1411MessageFormat),
-                    MaintainabilityResources.ResourceManager,
-                    typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description =
-                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1411Description),
-                                                MaintainabilityResources.ResourceManager,
-                                                typeof(MaintainabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1411.md";
+                private static readonly LocalizableString Title
+                    = new LocalizableResourceString(nameof(MaintainabilityResources.SA1411Title),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString(
+                        nameof(MaintainabilityResources.SA1411MessageFormat),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString(
+                        nameof(MaintainabilityResources.SA1411Description),
+                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor =
-                  new DiagnosticDescriptor(DiagnosticId,
-                                           Title,
-                                           MessageFormat,
-                                           AnalyzerCategory.MaintainabilityRules,
-                                           DiagnosticSeverity.Warning,
-                                           AnalyzerConstants.EnabledByDefault,
-                                           Description,
-                                           HelpLink,
-                                           WellKnownDiagnosticTags.Unnecessary);
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules,
+                    DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                    HelpLink, WellKnownDiagnosticTags.Unnecessary);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                  AttributeArgumentListAction = HandleAttributeArgumentList;
+                    AttributeArgumentListAction = HandleAttributeArgumentList;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -77,21 +68,21 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
-                        context.RegisterSyntaxNodeAction(AttributeArgumentListAction,
-                                                         SyntaxKind.AttributeArgumentList);
+                        context.RegisterSyntaxNodeAction(
+                            AttributeArgumentListAction, SyntaxKind.AttributeArgumentList);
                 }
 
                 private static void HandleAttributeArgumentList(SyntaxNodeAnalysisContext context)
                 {
-                        AttributeArgumentListSyntax syntax =
-                          (AttributeArgumentListSyntax) context.Node;
+                        AttributeArgumentListSyntax syntax
+                            = (AttributeArgumentListSyntax) context.Node;
                         if (syntax.Arguments.Count != 0) {
                                 return;
                         }
 
                         // Attribute constructor should not use unnecessary parenthesis
                         context.ReportDiagnostic(
-                          Diagnostic.Create(Descriptor, syntax.GetLocation()));
+                            Diagnostic.Create(Descriptor, syntax.GetLocation()));
                 }
         }
 }
