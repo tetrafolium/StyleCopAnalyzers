@@ -19,11 +19,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 internal const string LayoutPack = "pack";
                 internal const string LayoutPreserve = "preserve";
 
-                internal static ImmutableDictionary<string, string> InsertPreceding
-                {
-                        get;
-                }
-                = ImmutableDictionary<string, string>.Empty.SetItem(LocationKey, LocationPreceding).SetItem(ActionKey, ActionInsert);
+                internal static ImmutableDictionary<string, string> InsertPreceding { get; }
+                = ImmutableDictionary<string, string>.Empty.SetItem (LocationKey, LocationPreceding).SetItem (ActionKey, ActionInsert);
 
                 /// <summary>
                 /// Gets a property collection indicating that the code fix should remove any
@@ -45,10 +42,7 @@ namespace StyleCop.Analyzers.SpacingRules
                 .SetItem(ActionKey, ActionRemoveImmediate)
                 .SetItem(LayoutKey, LayoutPack);
 
-                internal static ImmutableDictionary<string, string> RemovePreceding
-                {
-                        get;
-                }
+                internal static ImmutableDictionary<string, string> RemovePreceding { get; }
                 =
             ImmutableDictionary<string, string>.Empty
                 .SetItem(LocationKey, LocationPreceding)
@@ -65,17 +59,11 @@ namespace StyleCop.Analyzers.SpacingRules
                 .SetItem(ActionKey, ActionRemove)
                 .SetItem(LayoutKey, LayoutPreserve);
 
-                internal static ImmutableDictionary<string, string> InsertFollowing
-                {
-                        get;
-                }
-                = ImmutableDictionary<string, string>.Empty.SetItem(LocationKey, LocationFollowing).SetItem(ActionKey, ActionInsert);
+                internal static ImmutableDictionary<string, string> InsertFollowing { get; }
+                = ImmutableDictionary<string, string>.Empty.SetItem (LocationKey, LocationFollowing).SetItem (ActionKey, ActionInsert);
 
-                internal static ImmutableDictionary<string, string> RemoveFollowing
-                {
-                        get;
-                }
-                = ImmutableDictionary<string, string>.Empty.SetItem(LocationKey, LocationFollowing).SetItem(ActionKey, ActionRemove);
+                internal static ImmutableDictionary<string, string> RemoveFollowing { get; }
+                = ImmutableDictionary<string, string>.Empty.SetItem (LocationKey, LocationFollowing).SetItem (ActionKey, ActionRemove);
 
                 internal static ImmutableDictionary<string, string> RemoveFollowingPreserveLayout
                 {

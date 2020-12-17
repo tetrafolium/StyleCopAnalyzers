@@ -75,7 +75,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// }
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1515SingleLineCommentMustBePrecededByBlankLine : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -83,239 +83,249 @@ namespace StyleCop.Analyzers.LayoutRules
                 /// cref="SA1515SingleLineCommentMustBePrecededByBlankLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1515";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1515.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1515Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1515MessageFormat),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1515Description),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1515.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (LayoutResources.SA1515Title), LayoutResources.ResourceManager,
+                    typeof (LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1515MessageFormat),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1515Description),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxTreeAction(SyntaxTreeAction);
+                        context.RegisterSyntaxTreeAction (SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                private static void
+                HandleSyntaxTree (SyntaxTreeAnalysisContext context)
                 {
-                        var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
+                        var syntaxRoot = context.Tree.GetRoot (context.CancellationToken);
                         var previousCommentNotOnOwnLine = false;
 
-                        foreach (var trivia in syntaxRoot.DescendantTrivia().Where(
-                                     trivia => trivia.IsKind(SyntaxKind.SingleLineCommentTrivia)))
-                        {
-                                if (trivia.FullSpan.Start == 0)
+                        foreach (var trivia in syntaxRoot.DescendantTrivia ().Where (
+                                     trivia => trivia.IsKind (SyntaxKind.SingleLineCommentTrivia)))
                                 {
-                                        // skip the trivia if it is at the start of the file
+                                        if (trivia.FullSpan.Start == 0)
+                                                {
+                                                        // skip the trivia if it is at the start of
+                                                        // the file
+                                                        previousCommentNotOnOwnLine = false;
+                                                        continue;
+                                                }
+
+                                        if (trivia.ToString ().StartsWith (
+                                                "////", StringComparison.Ordinal))
+                                                {
+                                                        // ignore commented out code
+                                                        previousCommentNotOnOwnLine = false;
+                                                        continue;
+                                                }
+
+                                        int triviaIndex;
+                                        var triviaList = TriviaHelper.GetContainingTriviaList (
+                                            trivia, out triviaIndex);
+
+                                        if (!IsOnOwnLine (triviaList, triviaIndex))
+                                                {
+                                                        // ignore comments after other code
+                                                        // elements.
+                                                        previousCommentNotOnOwnLine = true;
+                                                        continue;
+                                                }
+
+                                        if (IsPrecededByBlankLine (triviaList, triviaIndex))
+                                                {
+                                                        // allow properly formatted blank line
+                                                        // comments.
+                                                        previousCommentNotOnOwnLine = false;
+                                                        continue;
+                                                }
+
+                                        if (!previousCommentNotOnOwnLine
+                                            && IsPrecededBySingleLineCommentOrDocumentation (
+                                                triviaList, triviaIndex))
+                                                {
+                                                        // allow consecutive single line comments.
+                                                        previousCommentNotOnOwnLine = false;
+                                                        continue;
+                                                }
+
                                         previousCommentNotOnOwnLine = false;
-                                        continue;
+
+                                        if (IsAtStartOfScope (trivia))
+                                                {
+                                                        // allow single line comment at scope start.
+                                                        continue;
+                                                }
+
+                                        if (IsPrecededByDirectiveTrivia (triviaList, triviaIndex))
+                                                {
+                                                        // allow single line comment that is
+                                                        // preceded by some directive trivia (if,
+                                                        // elif, else)
+                                                        continue;
+                                                }
+
+                                        var diagnosticSpan = TextSpan.FromBounds (
+                                            trivia.SpanStart, trivia.SpanStart + 2);
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor,
+                                            Location.Create (context.Tree, diagnosticSpan)));
                                 }
-
-                                if (trivia.ToString().StartsWith("////", StringComparison.Ordinal))
-                                {
-                                        // ignore commented out code
-                                        previousCommentNotOnOwnLine = false;
-                                        continue;
-                                }
-
-                                int triviaIndex;
-                                var triviaList =
-                                    TriviaHelper.GetContainingTriviaList(trivia, out triviaIndex);
-
-                                if (!IsOnOwnLine(triviaList, triviaIndex))
-                                {
-                                        // ignore comments after other code elements.
-                                        previousCommentNotOnOwnLine = true;
-                                        continue;
-                                }
-
-                                if (IsPrecededByBlankLine(triviaList, triviaIndex))
-                                {
-                                        // allow properly formatted blank line comments.
-                                        previousCommentNotOnOwnLine = false;
-                                        continue;
-                                }
-
-                                if (!previousCommentNotOnOwnLine &&
-                                    IsPrecededBySingleLineCommentOrDocumentation(triviaList,
-                                                                                 triviaIndex))
-                                {
-                                        // allow consecutive single line comments.
-                                        previousCommentNotOnOwnLine = false;
-                                        continue;
-                                }
-
-                                previousCommentNotOnOwnLine = false;
-
-                                if (IsAtStartOfScope(trivia))
-                                {
-                                        // allow single line comment at scope start.
-                                        continue;
-                                }
-
-                                if (IsPrecededByDirectiveTrivia(triviaList, triviaIndex))
-                                {
-                                        // allow single line comment that is preceded by some
-                                        // directive trivia (if, elif, else)
-                                        continue;
-                                }
-
-                                var diagnosticSpan =
-                                    TextSpan.FromBounds(trivia.SpanStart, trivia.SpanStart + 2);
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, Location.Create(context.Tree, diagnosticSpan)));
-                        }
                 }
 
-                private static bool IsOnOwnLine<T>(T triviaList, int triviaIndex) where T
-                    : IReadOnlyList<SyntaxTrivia>
+                private static bool
+                IsOnOwnLine<T> (T triviaList, int triviaIndex) where T : IReadOnlyList<SyntaxTrivia>
                 {
                         while (triviaIndex >= 0)
-                        {
-                                if (triviaList [triviaIndex]
-                                        .IsKind(SyntaxKind.EndOfLineTrivia))
                                 {
-                                        return true;
-                                }
+                                        if (triviaList [triviaIndex]
+                                                .IsKind (SyntaxKind.EndOfLineTrivia))
+                                                {
+                                                        return true;
+                                                }
 
-                                triviaIndex--;
-                        }
+                                        triviaIndex--;
+                                }
 
                         return false;
                 }
 
-                private static bool IsPrecededBySingleLineCommentOrDocumentation<T>(
-                    T triviaList, int triviaIndex) where T : IReadOnlyList<SyntaxTrivia>
+                private static bool
+                IsPrecededBySingleLineCommentOrDocumentation<T> (T triviaList,
+                                                                 int triviaIndex) where T
+                    : IReadOnlyList<SyntaxTrivia>
                 {
                         var eolCount = 0;
 
                         triviaIndex--;
                         while ((eolCount < 2) && (triviaIndex >= 0))
-                        {
-                                var currentTrivia = triviaList[triviaIndex];
-                                switch (currentTrivia.Kind())
                                 {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        triviaIndex--;
-                                        break;
+                                        var currentTrivia = triviaList[triviaIndex];
+                                        switch (currentTrivia.Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        triviaIndex--;
+                                                        break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        triviaIndex--;
-                                        break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        eolCount++;
+                                                        triviaIndex--;
+                                                        break;
 
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                                        return true;
+                                                case SyntaxKind.SingleLineCommentTrivia:
+                                                case SyntaxKind
+                                                    .SingleLineDocumentationCommentTrivia:
+                                                        return true;
 
-                                default:
-                                        return false;
+                                                default:
+                                                        return false;
+                                                }
                                 }
-                        }
 
                         return false;
                 }
 
-                private static bool IsPrecededByBlankLine<T>(T triviaList, int triviaIndex) where T
+                private static bool
+                IsPrecededByBlankLine<T> (T triviaList, int triviaIndex) where T
                     : IReadOnlyList<SyntaxTrivia>
                 {
                         var eolCount = 0;
                         var index = triviaIndex - 1;
 
                         while ((eolCount < 2) && (index >= 0))
-                        {
-                                if (triviaList[index].IsDirective)
                                 {
-                                        // directive trivia are special, as they have a 'built-in'
-                                        // end-of-line.
-                                        return eolCount > 0;
+                                        if (triviaList[index].IsDirective)
+                                                {
+                                                        // directive trivia are special, as they
+                                                        // have a 'built-in' end-of-line.
+                                                        return eolCount > 0;
+                                                }
+
+                                        switch (triviaList [index]
+                                                    .Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        index--;
+                                                        break;
+
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        eolCount++;
+                                                        index--;
+                                                        break;
+
+                                                default:
+                                                        return false;
+                                                }
                                 }
-
-                                switch (triviaList [index]
-                                            .Kind())
-                                {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        index--;
-                                        break;
-
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        index--;
-                                        break;
-
-                                default:
-                                        return false;
-                                }
-                        }
 
                         return eolCount >= 2;
                 }
 
-                private static bool IsAtStartOfScope(SyntaxTrivia trivia)
+                private static bool
+                IsAtStartOfScope (SyntaxTrivia trivia)
                 {
                         var token = trivia.Token;
 
-                        if (token.TrailingTrivia.Contains(trivia) &&
-                            token.IsKind(SyntaxKind.OpenBraceToken))
-                        {
-                                return true;
-                        }
+                        if (token.TrailingTrivia.Contains (trivia)
+                            && token.IsKind (SyntaxKind.OpenBraceToken))
+                                {
+                                        return true;
+                                }
 
-                        var prevToken = token.GetPreviousToken();
-                        return prevToken.IsKind(SyntaxKind.OpenBraceToken) ||
-                               prevToken.Parent.IsKind(SyntaxKind.CaseSwitchLabel) ||
-                               prevToken.Parent.IsKind(SyntaxKindEx.CasePatternSwitchLabel) ||
-                               prevToken.Parent.IsKind(SyntaxKind.DefaultSwitchLabel);
+                        var prevToken = token.GetPreviousToken ();
+                        return prevToken.IsKind (SyntaxKind.OpenBraceToken)
+                               || prevToken.Parent.IsKind (SyntaxKind.CaseSwitchLabel)
+                               || prevToken.Parent.IsKind (SyntaxKindEx.CasePatternSwitchLabel)
+                               || prevToken.Parent.IsKind (SyntaxKind.DefaultSwitchLabel);
                 }
 
-                private static bool IsPrecededByDirectiveTrivia<T>(T triviaList,
-                                                                   int triviaIndex) where T
+                private static bool
+                IsPrecededByDirectiveTrivia<T> (T triviaList, int triviaIndex) where T
                     : IReadOnlyList<SyntaxTrivia>
                 {
                         triviaIndex--;
                         while (triviaIndex >= 0)
-                        {
-                                switch (triviaList [triviaIndex]
-                                            .Kind())
                                 {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        triviaIndex--;
-                                        break;
+                                        switch (triviaList [triviaIndex]
+                                                    .Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        triviaIndex--;
+                                                        break;
 
-                                case SyntaxKind.IfDirectiveTrivia:
-                                case SyntaxKind.ElifDirectiveTrivia:
-                                case SyntaxKind.ElseDirectiveTrivia:
-                                        return true;
+                                                case SyntaxKind.IfDirectiveTrivia:
+                                                case SyntaxKind.ElifDirectiveTrivia:
+                                                case SyntaxKind.ElseDirectiveTrivia:
+                                                        return true;
 
-                                default:
-                                        return false;
+                                                default:
+                                                        return false;
+                                                }
                                 }
-                        }
 
                         return false;
                 }

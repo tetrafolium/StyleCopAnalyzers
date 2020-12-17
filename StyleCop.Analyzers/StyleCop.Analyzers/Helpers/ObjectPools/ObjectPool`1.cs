@@ -41,13 +41,16 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 // because we expect to be able to satisfy most requests from it.
                 private T firstItem;
 
-                internal ObjectPool(Func<T> factory) : this(factory, Environment.ProcessorCount * 2)
+                internal
+                ObjectPool (Func<T> factory)
+                    : this(factory, Environment.ProcessorCount * 2)
                 {
                 }
 
-                internal ObjectPool(Func<T> factory, int size)
+                internal
+                ObjectPool (Func<T> factory, int size)
                 {
-                        Debug.Assert(size >= 1, "The object pool can't be empty");
+                        Debug.Assert (size >= 1, "The object pool can't be empty");
                         this.factory = factory;
                         this.items = new Element[size - 1];
                 }
@@ -62,7 +65,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 /// </remarks>
                 /// <returns>A (possibly) cached instance of type <typeparamref
                 /// name="T"/>.</returns>
-                internal T Allocate()
+                internal T
+                Allocate ()
                 {
                         // PERF: Examine the first element. If that fails, AllocateSlow will look at
                         // the remaining elements. Note that the initial read is optimistically not
@@ -70,11 +74,11 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                         // candidate. in a worst case we may miss some recently returned objects.
                         // Not a big deal.
                         T inst = this.firstItem;
-                        if (inst == null ||
-                            inst != Interlocked.CompareExchange(ref this.firstItem, null, inst))
-                        {
-                                inst = this.AllocateSlow();
-                        }
+                        if (inst == null
+                            || inst != Interlocked.CompareExchange (ref this.firstItem, null, inst))
+                                {
+                                        inst = this.AllocateSlow ();
+                                }
 
                         return inst;
                 }
@@ -89,70 +93,77 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 /// Allocate.</para>
                 /// </remarks>
                 /// <param name="obj">The object to free.</param>
-                internal void Free(T obj)
+                internal void
+                Free (T obj)
                 {
                         if (this.firstItem == null)
-                        {
-                                // Intentionally not using interlocked here.
-                                // In a worst case scenario two objects may be stored into same
-                                // slot. It is very unlikely to happen and will only mean that one
-                                // of the objects will get collected.
-                                this.firstItem = obj;
-                        }
-                        else
-                        {
-                                this.FreeSlow(obj);
-                        }
-                }
-
-                private T CreateInstance()
-                {
-                        var inst = this.factory();
-                        return inst;
-                }
-
-                private T AllocateSlow()
-                {
-                        var items = this.items;
-
-                        for (int i = 0; i < items.Length; i++)
-                        {
-                                // Note that the initial read is optimistically not synchronized.
-                                // That is intentional. We will interlock only when we have a
-                                // candidate. in a worst case we may miss some recently returned
-                                // objects. Not a big deal.
-                                T inst = items[i].Value;
-                                if (inst != null)
-                                {
-                                        if (inst == Interlocked.CompareExchange(ref items[i].Value,
-                                                                                null, inst))
-                                        {
-                                                return inst;
-                                        }
-                                }
-                        }
-
-                        return this.CreateInstance();
-                }
-
-                private void FreeSlow(T obj)
-                {
-                        var items = this.items;
-                        for (int i = 0; i < items.Length; i++)
-                        {
-                                if (items[i].Value == null)
                                 {
                                         // Intentionally not using interlocked here.
                                         // In a worst case scenario two objects may be stored into
                                         // same slot. It is very unlikely to happen and will only
                                         // mean that one of the objects will get collected.
-                                        items[i].Value = obj;
-                                        break;
+                                        this.firstItem = obj;
                                 }
-                        }
+                        else
+                                {
+                                        this.FreeSlow (obj);
+                                }
                 }
 
-                [DebuggerDisplay("{Value,nq}")]
+                private T
+                CreateInstance ()
+                {
+                        var inst = this.factory ();
+                        return inst;
+                }
+
+                private T
+                AllocateSlow ()
+                {
+                        var items = this.items;
+
+                        for (int i = 0; i < items.Length; i++)
+                                {
+                                        // Note that the initial read is optimistically not
+                                        // synchronized. That is intentional. We will interlock only
+                                        // when we have a candidate. in a worst case we may miss
+                                        // some recently returned objects. Not a big deal.
+                                        T inst = items[i].Value;
+                                        if (inst != null)
+                                                {
+                                                        if (inst
+                                                            == Interlocked.CompareExchange (
+                                                                ref items[i].Value, null, inst))
+                                                                {
+                                                                        return inst;
+                                                                }
+                                                }
+                                }
+
+                        return this.CreateInstance ();
+                }
+
+                private void
+                FreeSlow (T obj)
+                {
+                        var items = this.items;
+                        for (int i = 0; i < items.Length; i++)
+                                {
+                                        if (items[i].Value == null)
+                                                {
+                                                        // Intentionally not using interlocked here.
+                                                        // In a worst case scenario two objects may
+                                                        // be stored into same slot. It is very
+                                                        // unlikely to happen and will only mean
+                                                        // that one of the objects will get
+                                                        // collected.
+                                                        items[i].Value = obj;
+                                                        break;
+                                                }
+                                }
+                }
+
+                [DebuggerDisplay ("{Value,nq}")]
                 private struct Element
                 {
                         internal T Value;

@@ -23,7 +23,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// Debug.Assert(value != true, "The value must always be true.");
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1405DebugAssertMustProvideMessageText
             : SystemDiagnosticsDebugDiagnosticBase
         {
@@ -32,48 +32,49 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// cref="SA1405DebugAssertMustProvideMessageText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1405";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1405.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1405Title),
-                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1405MessageFormat),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1405Description),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1405.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (MaintainabilityResources.SA1405Title),
+                    MaintainabilityResources.ResourceManager, typeof (MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (MaintainabilityResources.SA1405MessageFormat),
+                        MaintainabilityResources.ResourceManager,
+                        typeof (MaintainabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (MaintainabilityResources.SA1405Description),
+                        MaintainabilityResources.ResourceManager,
+                        typeof (MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext>
-                    InvocationExpressionAction = HandleInvocationExpression;
+                private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction
+                    = HandleInvocationExpression;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(InvocationExpressionAction,
-                                                         SyntaxKind.InvocationExpression);
+                        context.RegisterSyntaxNodeAction (InvocationExpressionAction,
+                                                          SyntaxKind.InvocationExpression);
                 }
 
-                private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleInvocationExpression (SyntaxNodeAnalysisContext context)
                 {
-                        HandleInvocationExpression(context, nameof(Debug.Assert), 1, Descriptor);
+                        HandleInvocationExpression (context, nameof (Debug.Assert), 1, Descriptor);
                 }
         }
 }

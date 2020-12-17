@@ -21,88 +21,90 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <para>To fix a violation of this rule, remove the <c>&lt;returns&gt;</c> tag from the
         /// element.</para>
         /// </remarks>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1617CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1617CodeFixProvider))]
         [Shared]
         internal class SA1617CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics)
-                        {
-                                if (!diagnostic.Properties.ContainsKey(
-                                        SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey))
                                 {
-                                        context.RegisterCodeFix(
-                                            CodeAction.Create(DocumentationResources.SA1617CodeFix,
-                                                              cancellationToken =>
-                                                                  GetTransformedDocumentAsync(
-                                                                      context.Document, diagnostic,
-                                                                      cancellationToken),
-                                                              nameof(SA1617CodeFixProvider)),
-                                            diagnostic);
+                                        if (!diagnostic.Properties.ContainsKey (
+                                                SA1617VoidReturnValueMustNotBeDocumented
+                                                    .NoCodeFixKey))
+                                                {
+                                                        context.RegisterCodeFix (
+                                                            CodeAction.Create (
+                                                                DocumentationResources
+                                                                    .SA1617CodeFix,
+                                                                cancellationToken => GetTransformedDocumentAsync (
+                                                                    context.Document, diagnostic,
+                                                                    cancellationToken),
+                                                                nameof (SA1617CodeFixProvider)),
+                                                            diagnostic);
+                                                }
                                 }
-                        }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var root = await document.GetSyntaxRootAsync(cancellationToken)
-                                       .ConfigureAwait(false);
-                        var node = root.FindNode(diagnostic.Location.SourceSpan);
-                        var documentation = node.GetDocumentationCommentTriviaSyntax();
+                        var root = await document.GetSyntaxRootAsync (cancellationToken)
+                                       .ConfigureAwait (false);
+                        var node = root.FindNode (diagnostic.Location.SourceSpan);
+                        var documentation = node.GetDocumentationCommentTriviaSyntax ();
 
                         // Check if the return value is documented
-                        var returnsElement = documentation.Content.GetFirstXmlElement(
+                        var returnsElement = documentation.Content.GetFirstXmlElement (
                             XmlCommentHelper.ReturnsXmlTag);
 
                         if (returnsElement == null)
-                        {
-                                return document;
-                        }
+                                {
+                                        return document;
+                                }
 
                         // Find the node previous to the <returns> node to determine if it is an XML
                         // comment indicator. If so, we will remove that node from the syntax tree
                         // as well.
                         SyntaxNode previous = null;
-                        foreach (var item in documentation.ChildNodes())
-                        {
-                                if (item.Equals(returnsElement))
+                        foreach (var item in documentation.ChildNodes ())
                                 {
-                                        break;
+                                        if (item.Equals (returnsElement))
+                                                {
+                                                        break;
+                                                }
+
+                                        previous = item;
                                 }
 
-                                previous = item;
-                        }
+                        List<SyntaxNode> nodesToFix = new List<SyntaxNode> ();
+                        nodesToFix.Add (returnsElement);
 
-                        List<SyntaxNode> nodesToFix = new List<SyntaxNode>();
-                        nodesToFix.Add(returnsElement);
+                        if (previous is XmlTextSyntax previousAsTextSyntax
+                            && XmlCommentHelper.IsConsideredEmpty (previousAsTextSyntax))
+                                {
+                                        nodesToFix.Add (previous);
+                                }
 
-                        if (previous is XmlTextSyntax previousAsTextSyntax &&
-                            XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax))
-                        {
-                                nodesToFix.Add(previous);
-                        }
-
-                        var newSyntaxRoot =
-                            root.RemoveNodes(nodesToFix, SyntaxRemoveOptions.KeepLeadingTrivia);
-                        return document.WithSyntaxRoot(newSyntaxRoot);
+                        var newSyntaxRoot
+                            = root.RemoveNodes (nodesToFix, SyntaxRemoveOptions.KeepLeadingTrivia);
+                        return document.WithSyntaxRoot (newSyntaxRoot);
                 }
         }
 }

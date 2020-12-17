@@ -24,8 +24,8 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <c>&lt;param&gt;</c> tag which is empty and does not contain a description of the
         /// parameter.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        [NoCodeFix("Cannot generate documentation")]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
+        [NoCodeFix ("Cannot generate documentation")]
         internal class SA1614ElementParameterDocumentationMustHaveText : ElementDocumentationBase
         {
                 /// <summary>
@@ -33,77 +33,80 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// cref="SA1614ElementParameterDocumentationMustHaveText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1614";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1614.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1614Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1614MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1614Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1614.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (DocumentationResources.SA1614Title),
+                    DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1614MessageFormat),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1614Description),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                public SA1614ElementParameterDocumentationMustHaveText()
-                    : base(matchElementName
-                           : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
-                           : true)
+                public SA1614ElementParameterDocumentationMustHaveText ()
+                    : base (matchElementName
+                            : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
+                            : true)
                 {
                 }
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         StyleCopSettings settings,
-                                                         bool needsComment,
-                                                         IEnumerable<XmlNodeSyntax> syntaxList,
-                                                         params Location[] diagnosticLocations)
+                protected override void
+                HandleXmlElement (SyntaxNodeAnalysisContext context, StyleCopSettings settings,
+                                  bool needsComment, IEnumerable<XmlNodeSyntax> syntaxList,
+                                  params Location[] diagnosticLocations)
                 {
                         foreach (var syntax in syntaxList)
-                        {
-                                bool isEmpty = syntax is XmlEmptyElementSyntax ||
-                                               XmlCommentHelper.IsConsideredEmpty(syntax);
-
-                                if (isEmpty)
                                 {
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, syntax.GetLocation()));
+                                        bool isEmpty
+                                            = syntax is XmlEmptyElementSyntax
+                                              || XmlCommentHelper.IsConsideredEmpty (syntax);
+
+                                        if (isEmpty)
+                                                {
+                                                        context.ReportDiagnostic (
+                                                            Diagnostic.Create (
+                                                                Descriptor, syntax.GetLocation ()));
+                                                }
                                 }
-                        }
                 }
 
                 /// <inheritdoc/>
-                protected override void HandleCompleteDocumentation(
-                    SyntaxNodeAnalysisContext context, bool needsComment,
-                    XElement completeDocumentation, params Location[] diagnosticLocations)
+                protected override void
+                HandleCompleteDocumentation (SyntaxNodeAnalysisContext context, bool needsComment,
+                                             XElement completeDocumentation,
+                                             params Location[] diagnosticLocations)
                 {
-                        var xmlParamTags = completeDocumentation.Nodes().OfType<XElement>().Where(
-                            e => e.Name == XmlCommentHelper.ParamXmlTag);
+                        var xmlParamTags
+                            = completeDocumentation.Nodes ().OfType<XElement> ().Where (
+                                e => e.Name == XmlCommentHelper.ParamXmlTag);
 
                         foreach (var paramTag in xmlParamTags)
-                        {
-                                bool isEmpty = XmlCommentHelper.IsConsideredEmpty(paramTag);
-
-                                if (isEmpty)
                                 {
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, diagnosticLocations.First()));
+                                        bool isEmpty
+                                            = XmlCommentHelper.IsConsideredEmpty (paramTag);
+
+                                        if (isEmpty)
+                                                {
+                                                        context.ReportDiagnostic (
+                                                            Diagnostic.Create (
+                                                                Descriptor,
+                                                                diagnosticLocations.First ()));
+                                                }
                                 }
-                        }
                 }
         }
 }

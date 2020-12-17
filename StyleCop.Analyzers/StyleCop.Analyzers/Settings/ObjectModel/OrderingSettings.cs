@@ -8,10 +8,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 
         internal class OrderingSettings
         {
-                private static readonly ImmutableArray<OrderingTrait> DefaultElementOrder =
-                    ImmutableArray.Create(OrderingTrait.Kind, OrderingTrait.Accessibility,
-                                          OrderingTrait.Constant, OrderingTrait.Static,
-                                          OrderingTrait.Readonly);
+                private static readonly ImmutableArray<OrderingTrait> DefaultElementOrder
+                    = ImmutableArray.Create (OrderingTrait.Kind, OrderingTrait.Accessibility,
+                                             OrderingTrait.Constant, OrderingTrait.Static,
+                                             OrderingTrait.Readonly);
 
                 /// <summary>
                 /// This is the backing field for the <see cref="ElementOrder"/> property.
@@ -39,9 +39,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <summary>
                 /// Initializes a new instance of the <see cref="OrderingSettings"/> class.
                 /// </summary>
-                protected internal OrderingSettings()
+                protected internal
+                OrderingSettings ()
                 {
-                        this.elementOrder = ImmutableArray.CreateBuilder<OrderingTrait>();
+                        this.elementOrder = ImmutableArray.CreateBuilder<OrderingTrait> ();
                         this.systemUsingDirectivesFirst = true;
                         this.usingDirectivesPlacement = UsingDirectivesPlacement.InsideNamespace;
                         this.blankLinesBetweenUsingGroups = OptionSetting.Allow;
@@ -52,57 +53,64 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// </summary>
                 /// <param name="orderingSettingsObject">The JSON object containing the
                 /// settings.</param>
-                protected internal OrderingSettings(JsonObject orderingSettingsObject) : this()
+                protected internal
+                OrderingSettings (JsonObject orderingSettingsObject)
+                    : this()
                 {
                         foreach (var kvp in orderingSettingsObject)
-                        {
-                                switch (kvp.Key)
                                 {
-                                case "elementOrder":
-                                        kvp.AssertIsArray();
-                                        foreach (var value in kvp.Value.AsJsonArray)
-                                        {
-                                                this.elementOrder.Add(
-                                                    value.ToEnumValue<OrderingTrait>(kvp.Key));
-                                        }
+                                        switch (kvp.Key)
+                                                {
+                                                case "elementOrder":
+                                                        kvp.AssertIsArray ();
+                                                        foreach (var value in kvp.Value.AsJsonArray)
+                                                                {
+                                                                        this.elementOrder.Add (
+                                                                            value.ToEnumValue<
+                                                                                OrderingTrait> (
+                                                                                kvp.Key));
+                                                                }
 
-                                        break;
+                                                        break;
 
-                                case "systemUsingDirectivesFirst":
-                                        this.systemUsingDirectivesFirst = kvp.ToBooleanValue();
-                                        break;
+                                                case "systemUsingDirectivesFirst":
+                                                        this.systemUsingDirectivesFirst
+                                                            = kvp.ToBooleanValue ();
+                                                        break;
 
-                                case "usingDirectivesPlacement":
-                                        this.usingDirectivesPlacement =
-                                            kvp.ToEnumValue<UsingDirectivesPlacement>();
-                                        break;
+                                                case "usingDirectivesPlacement":
+                                                        this.usingDirectivesPlacement
+                                                            = kvp.ToEnumValue<
+                                                                UsingDirectivesPlacement> ();
+                                                        break;
 
-                                case "blankLinesBetweenUsingGroups":
-                                        this.blankLinesBetweenUsingGroups =
-                                            kvp.ToEnumValue<OptionSetting>();
-                                        break;
+                                                case "blankLinesBetweenUsingGroups":
+                                                        this.blankLinesBetweenUsingGroups
+                                                            = kvp.ToEnumValue<OptionSetting> ();
+                                                        break;
 
-                                default:
-                                        break;
+                                                default:
+                                                        break;
+                                                }
                                 }
-                        }
                 }
 
                 public ImmutableArray<OrderingTrait> ElementOrder
                 {
                         get
                         {
-                                return this.elementOrder.Count > 0 ? this.elementOrder.ToImmutable()
-                                                                   : DefaultElementOrder;
+                                return this.elementOrder.Count > 0
+                                           ? this.elementOrder.ToImmutable ()
+                                           : DefaultElementOrder;
                         }
                 }
 
                 public bool SystemUsingDirectivesFirst => this.systemUsingDirectivesFirst;
 
-                public UsingDirectivesPlacement UsingDirectivesPlacement =>
-                    this.usingDirectivesPlacement;
+                public UsingDirectivesPlacement
+                    UsingDirectivesPlacement => this.usingDirectivesPlacement;
 
-                public OptionSetting BlankLinesBetweenUsingGroups =>
-                    this.blankLinesBetweenUsingGroups;
+                public OptionSetting
+                    BlankLinesBetweenUsingGroups => this.blankLinesBetweenUsingGroups;
         }
 }

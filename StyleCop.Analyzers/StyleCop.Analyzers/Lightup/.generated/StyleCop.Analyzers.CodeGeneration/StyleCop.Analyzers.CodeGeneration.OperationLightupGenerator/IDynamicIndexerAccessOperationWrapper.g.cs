@@ -9,55 +9,58 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IDynamicIndexerAccessOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IDynamicIndexerAccessOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IDynamicIndexerAccessOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> OperationAccessor;
-                private static readonly Func<IOperation, ImmutableArray<IOperation>>
+                private static readonly Func<IOperation, ImmutableArray<IOperation> >
                     ArgumentsAccessor;
                 private readonly IOperation operation;
-                static IDynamicIndexerAccessOperationWrapper()
+                static IDynamicIndexerAccessOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IDynamicIndexerAccessOperationWrapper));
-                        OperationAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Operation));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IDynamicIndexerAccessOperationWrapper));
+                        OperationAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Operation));
                         ArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<
-                            IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Arguments));
+                            IOperation, ImmutableArray<IOperation> > (WrappedType,
+                                                                      nameof (Arguments));
                 }
 
-                private IDynamicIndexerAccessOperationWrapper(IOperation operation)
+                private IDynamicIndexerAccessOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IOperation Operation => OperationAccessor(this.WrappedOperation);
-                public ImmutableArray<IOperation> Arguments =>
-                    ArgumentsAccessor(this.WrappedOperation);
-                public static IDynamicIndexerAccessOperationWrapper FromOperation(
-                    IOperation operation)
+                public IOperation Operation => OperationAccessor (this.WrappedOperation);
+                public ImmutableArray<IOperation> Arguments => ArgumentsAccessor (
+                    this.WrappedOperation);
+                public static IDynamicIndexerAccessOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IDynamicIndexerAccessOperationWrapper(operation);
+                        return new IDynamicIndexerAccessOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

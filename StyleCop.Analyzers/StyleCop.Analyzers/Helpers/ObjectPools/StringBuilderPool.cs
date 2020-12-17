@@ -8,20 +8,23 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
 
         internal static class StringBuilderPool
         {
-                public static StringBuilder Allocate()
+                public static StringBuilder
+                Allocate ()
                 {
-                        return SharedPools.Default<StringBuilder>().AllocateAndClear();
+                        return SharedPools.Default<StringBuilder> ().AllocateAndClear ();
                 }
 
-                public static void Free(StringBuilder builder)
+                public static void
+                Free (StringBuilder builder)
                 {
-                        SharedPools.Default<StringBuilder>().ClearAndFree(builder);
+                        SharedPools.Default<StringBuilder> ().ClearAndFree (builder);
                 }
 
-                public static string ReturnAndFree(StringBuilder builder)
+                public static string
+                ReturnAndFree (StringBuilder builder)
                 {
-                        SharedPools.Default<StringBuilder>();
-                        return builder.ToString();
+                        SharedPools.Default<StringBuilder> ();
+                        return builder.ToString ();
                 }
         }
 }

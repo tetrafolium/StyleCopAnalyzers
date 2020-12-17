@@ -9,53 +9,57 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IConditionalAccessOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IConditionalAccessOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IConditionalAccessOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> OperationAccessor;
                 private static readonly Func<IOperation, IOperation> WhenNotNullAccessor;
                 private readonly IOperation operation;
-                static IConditionalAccessOperationWrapper()
+                static IConditionalAccessOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IConditionalAccessOperationWrapper));
-                        OperationAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Operation));
-                        WhenNotNullAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(WhenNotNull));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IConditionalAccessOperationWrapper));
+                        OperationAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Operation));
+                        WhenNotNullAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (WhenNotNull));
                 }
 
-                private IConditionalAccessOperationWrapper(IOperation operation)
+                private IConditionalAccessOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IOperation Operation => OperationAccessor(this.WrappedOperation);
-                public IOperation WhenNotNull => WhenNotNullAccessor(this.WrappedOperation);
-                public static IConditionalAccessOperationWrapper FromOperation(IOperation operation)
+                public IOperation Operation => OperationAccessor (this.WrappedOperation);
+                public IOperation WhenNotNull => WhenNotNullAccessor (this.WrappedOperation);
+                public static IConditionalAccessOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IConditionalAccessOperationWrapper(operation);
+                        return new IConditionalAccessOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

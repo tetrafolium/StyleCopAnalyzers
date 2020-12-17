@@ -20,7 +20,7 @@ namespace StyleCop.Analyzers.SpacingRules
         /// <para>A closing attribute bracket should never be preceded by whitespace, unless the
         /// bracket is the first character on the line.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1017ClosingAttributeBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -28,96 +28,95 @@ namespace StyleCop.Analyzers.SpacingRules
                 /// cref="SA1017ClosingAttributeBracketsMustBeSpacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1017";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1017.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1017Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1017MessageFormat),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1017Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1017.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (SpacingResources.SA1017Title), SpacingResources.ResourceManager,
+                    typeof (SpacingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (SpacingResources.SA1017MessageFormat),
+                                                     SpacingResources.ResourceManager,
+                                                     typeof (SpacingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (SpacingResources.SA1017Description),
+                                                     SpacingResources.ResourceManager,
+                                                     typeof (SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxTreeAction(SyntaxTreeAction);
+                        context.RegisterSyntaxTreeAction (SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                private static void
+                HandleSyntaxTree (SyntaxTreeAnalysisContext context)
                 {
-                        SyntaxNode root =
-                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-                        foreach (var token in root.DescendantTokens())
-                        {
-                                switch (token.Kind())
+                        SyntaxNode root
+                            = context.Tree.GetCompilationUnitRoot (context.CancellationToken);
+                        foreach (var token in root.DescendantTokens ())
                                 {
-                                case SyntaxKind.CloseBracketToken:
-                                        HandleCloseBracketToken(context, token);
-                                        break;
+                                        switch (token.Kind ())
+                                                {
+                                                case SyntaxKind.CloseBracketToken:
+                                                        HandleCloseBracketToken (context, token);
+                                                        break;
 
-                                default:
-                                        break;
+                                                default:
+                                                        break;
+                                                }
                                 }
-                        }
                 }
 
-                private static void HandleCloseBracketToken(SyntaxTreeAnalysisContext context,
-                                                            SyntaxToken token)
+                private static void
+                HandleCloseBracketToken (SyntaxTreeAnalysisContext context, SyntaxToken token)
                 {
                         if (token.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        if (!token.Parent.IsKind(SyntaxKind.AttributeList))
-                        {
-                                return;
-                        }
+                        if (!token.Parent.IsKind (SyntaxKind.AttributeList))
+                                {
+                                        return;
+                                }
 
-                        if (token.IsFirstInLine())
-                        {
-                                return;
-                        }
+                        if (token.IsFirstInLine ())
+                                {
+                                        return;
+                                }
 
-                        SyntaxToken precedingToken = token.GetPreviousToken();
+                        SyntaxToken precedingToken = token.GetPreviousToken ();
                         if (!precedingToken.HasTrailingTrivia)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        if (!precedingToken.TrailingTrivia.Last().IsKind(
+                        if (!precedingToken.TrailingTrivia.Last ().IsKind (
                                 SyntaxKind.WhitespaceTrivia))
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         // Closing attribute brackets should not be preceded by a space.
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, token.GetLocation(),
-                                              TokenSpacingProperties.RemoveImmediatePreceding));
+                        context.ReportDiagnostic (
+                            Diagnostic.Create (Descriptor, token.GetLocation (),
+                                               TokenSpacingProperties.RemoveImmediatePreceding));
                 }
         }
 }

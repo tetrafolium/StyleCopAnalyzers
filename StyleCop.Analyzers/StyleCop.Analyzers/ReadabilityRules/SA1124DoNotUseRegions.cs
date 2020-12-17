@@ -19,7 +19,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// default, hiding the code within the region. It is generally a bad practice to hide code,
         /// as this can lead to bad decisions as the code is maintained over time.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1124DoNotUseRegions : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -27,21 +27,21 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1124";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1124.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1124Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1124MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1124Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1124.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (ReadabilityResources.SA1124Title), ReadabilityResources.ResourceManager,
+                    typeof (ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1124MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1124Description),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
@@ -50,35 +50,34 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     RegionDirectiveTriviaAction = HandleRegionDirectiveTrivia;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(RegionDirectiveTriviaAction,
-                                                         SyntaxKind.RegionDirectiveTrivia);
+                        context.RegisterSyntaxNodeAction (RegionDirectiveTriviaAction,
+                                                          SyntaxKind.RegionDirectiveTrivia);
                 }
 
-                private static void HandleRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleRegionDirectiveTrivia (SyntaxNodeAnalysisContext context)
                 {
-                        RegionDirectiveTriviaSyntax regionSyntax =
-                            (RegionDirectiveTriviaSyntax) context.Node;
+                        RegionDirectiveTriviaSyntax regionSyntax
+                            = (RegionDirectiveTriviaSyntax) context.Node;
 
                         // regions that are completely inside a body are handled by SA1123.
-                        if (!SA1123DoNotPlaceRegionsWithinElements.IsCompletelyContainedInBody(
+                        if (!SA1123DoNotPlaceRegionsWithinElements.IsCompletelyContainedInBody (
                                 regionSyntax))
-                        {
-                                // Regions should not be used.
-                                context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, regionSyntax.GetLocation()));
-                        }
+                                {
+                                        // Regions should not be used.
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor, regionSyntax.GetLocation ()));
+                                }
                 }
         }
 }

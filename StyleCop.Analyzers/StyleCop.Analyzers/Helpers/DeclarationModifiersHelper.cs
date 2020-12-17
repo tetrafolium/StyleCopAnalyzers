@@ -27,28 +27,29 @@ namespace StyleCop.Analyzers.Helpers
                 /// <returns>A <see cref="SyntaxTokenList"/> representing the original modifiers (if
                 /// any) with the addition of a modifier of the specified <paramref
                 /// name="modifierKeyword"/> at the beginning of the list.</returns>
-                internal static SyntaxTokenList AddModifier<T>(SyntaxTokenList modifiers,
-                                                               ref T leadingTriviaNode,
-                                                               SyntaxKind modifierKeyword) where T
-                    : SyntaxNode
+                internal static SyntaxTokenList
+                AddModifier<T> (SyntaxTokenList modifiers, ref T leadingTriviaNode,
+                                SyntaxKind modifierKeyword) where T : SyntaxNode
                 {
-                        SyntaxToken modifier = SyntaxFactory.Token(modifierKeyword);
+                        SyntaxToken modifier = SyntaxFactory.Token (modifierKeyword);
                         if (modifiers.Count > 0)
-                        {
-                                modifier = modifier.WithLeadingTrivia(modifiers[0].LeadingTrivia);
-                                modifiers = modifiers.Replace(
-                                    modifiers[0],
-                                    modifiers [0]
-                                        .WithLeadingTrivia(SyntaxFactory.ElasticSpace));
-                                modifiers = modifiers.Insert(0, modifier);
-                        }
+                                {
+                                        modifier = modifier.WithLeadingTrivia (
+                                            modifiers[0].LeadingTrivia);
+                                        modifiers = modifiers.Replace (
+                                            modifiers[0],
+                                            modifiers [0]
+                                                .WithLeadingTrivia (SyntaxFactory.ElasticSpace));
+                                        modifiers = modifiers.Insert (0, modifier);
+                                }
                         else
-                        {
-                                modifiers = SyntaxTokenList.Create(modifier.WithLeadingTrivia(
-                                    leadingTriviaNode.GetLeadingTrivia()));
-                                leadingTriviaNode =
-                                    leadingTriviaNode.WithLeadingTrivia(SyntaxFactory.ElasticSpace);
-                        }
+                                {
+                                        modifiers
+                                            = SyntaxTokenList.Create (modifier.WithLeadingTrivia (
+                                                leadingTriviaNode.GetLeadingTrivia ()));
+                                        leadingTriviaNode = leadingTriviaNode.WithLeadingTrivia (
+                                            SyntaxFactory.ElasticSpace);
+                                }
 
                         return modifiers;
                 }
@@ -68,27 +69,29 @@ namespace StyleCop.Analyzers.Helpers
                 /// cref="SyntaxTokenList"/> representing the original modifiers (if any) with the
                 /// addition of a modifier of the specified <paramref name="modifierKeyword"/> at
                 /// the beginning of the list.</returns>
-                internal static SyntaxTokenList AddModifier(SyntaxTokenList modifiers,
-                                                            ref SyntaxToken leadingTriviaToken,
-                                                            SyntaxKind modifierKeyword)
+                internal static SyntaxTokenList
+                AddModifier (SyntaxTokenList modifiers, ref SyntaxToken leadingTriviaToken,
+                             SyntaxKind modifierKeyword)
                 {
-                        SyntaxToken modifier = SyntaxFactory.Token(modifierKeyword);
+                        SyntaxToken modifier = SyntaxFactory.Token (modifierKeyword);
                         if (modifiers.Count > 0)
-                        {
-                                modifier = modifier.WithLeadingTrivia(modifiers[0].LeadingTrivia);
-                                modifiers = modifiers.Replace(
-                                    modifiers[0],
-                                    modifiers [0]
-                                        .WithLeadingTrivia(SyntaxFactory.ElasticSpace));
-                                modifiers = modifiers.Insert(0, modifier);
-                        }
+                                {
+                                        modifier = modifier.WithLeadingTrivia (
+                                            modifiers[0].LeadingTrivia);
+                                        modifiers = modifiers.Replace (
+                                            modifiers[0],
+                                            modifiers [0]
+                                                .WithLeadingTrivia (SyntaxFactory.ElasticSpace));
+                                        modifiers = modifiers.Insert (0, modifier);
+                                }
                         else
-                        {
-                                modifiers = SyntaxTokenList.Create(
-                                    modifier.WithLeadingTrivia(leadingTriviaToken.LeadingTrivia));
-                                leadingTriviaToken = leadingTriviaToken.WithLeadingTrivia(
-                                    SyntaxFactory.ElasticSpace);
-                        }
+                                {
+                                        modifiers
+                                            = SyntaxTokenList.Create (modifier.WithLeadingTrivia (
+                                                leadingTriviaToken.LeadingTrivia));
+                                        leadingTriviaToken = leadingTriviaToken.WithLeadingTrivia (
+                                            SyntaxFactory.ElasticSpace);
+                                }
 
                         return modifiers;
                 }
@@ -108,102 +111,114 @@ namespace StyleCop.Analyzers.Helpers
                 /// cref="SyntaxTokenList"/> representing the original modifiers (if any) with the
                 /// addition of a modifier of the specified <paramref name="modifierKeywords"/> at
                 /// the beginning of the list.</returns>
-                internal static SyntaxTokenList AddModifiers(
-                    SyntaxTokenList modifiers, ref SyntaxToken leadingTriviaToken,
-                    IEnumerable<SyntaxKind> modifierKeywords)
+                internal static SyntaxTokenList
+                AddModifiers (SyntaxTokenList modifiers, ref SyntaxToken leadingTriviaToken,
+                              IEnumerable<SyntaxKind> modifierKeywords)
                 {
-                        foreach (var modifierKeyword in modifierKeywords.Reverse())
-                        {
-                                modifiers =
-                                    AddModifier(modifiers, ref leadingTriviaToken, modifierKeyword);
-                        }
+                        foreach (var modifierKeyword in modifierKeywords.Reverse ())
+                                {
+                                        modifiers = AddModifier (modifiers, ref leadingTriviaToken,
+                                                                 modifierKeyword);
+                                }
 
                         return modifiers;
                 }
 
-                internal static SyntaxTokenList GetModifiers(this MemberDeclarationSyntax syntax)
+                internal static SyntaxTokenList
+                GetModifiers (this MemberDeclarationSyntax syntax)
                 {
                         if (syntax is BaseMethodDeclarationSyntax)
-                        {
-                                return ((BaseMethodDeclarationSyntax) syntax).Modifiers;
-                        }
+                                {
+                                        return ((BaseMethodDeclarationSyntax) syntax).Modifiers;
+                                }
                         else if (syntax is BasePropertyDeclarationSyntax)
-                        {
-                                return ((BasePropertyDeclarationSyntax) syntax).Modifiers;
-                        }
+                                {
+                                        return ((BasePropertyDeclarationSyntax) syntax).Modifiers;
+                                }
                         else if (syntax is BaseTypeDeclarationSyntax)
-                        {
-                                return ((BaseTypeDeclarationSyntax) syntax).Modifiers;
-                        }
+                                {
+                                        return ((BaseTypeDeclarationSyntax) syntax).Modifiers;
+                                }
                         else if (syntax is BaseFieldDeclarationSyntax)
-                        {
-                                return ((BaseFieldDeclarationSyntax) syntax).Modifiers;
-                        }
+                                {
+                                        return ((BaseFieldDeclarationSyntax) syntax).Modifiers;
+                                }
                         else if (syntax is DelegateDeclarationSyntax)
-                        {
-                                return ((DelegateDeclarationSyntax) syntax).Modifiers;
-                        }
+                                {
+                                        return ((DelegateDeclarationSyntax) syntax).Modifiers;
+                                }
                         else if (syntax is IncompleteMemberSyntax)
-                        {
-                                return ((IncompleteMemberSyntax) syntax).Modifiers;
-                        }
+                                {
+                                        return ((IncompleteMemberSyntax) syntax).Modifiers;
+                                }
 
                         return default;
                 }
 
-                internal static SyntaxNode WithModifiers(this SyntaxNode node,
-                                                         SyntaxTokenList modifiers)
+                internal static SyntaxNode
+                WithModifiers (this SyntaxNode node, SyntaxTokenList modifiers)
                 {
-                        switch (node.Kind())
-                        {
-                        case SyntaxKind.MethodDeclaration:
-                                return ((MethodDeclarationSyntax) node).WithModifiers(modifiers);
+                        switch (node.Kind ())
+                                {
+                                case SyntaxKind.MethodDeclaration:
+                                        return ((MethodDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.ConstructorDeclaration:
-                                return ((ConstructorDeclarationSyntax) node)
-                                    .WithModifiers(modifiers);
+                                case SyntaxKind.ConstructorDeclaration:
+                                        return ((ConstructorDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.OperatorDeclaration:
-                                return ((OperatorDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.OperatorDeclaration:
+                                        return ((OperatorDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.ConversionOperatorDeclaration:
-                                return ((ConversionOperatorDeclarationSyntax) node)
-                                    .WithModifiers(modifiers);
+                                case SyntaxKind.ConversionOperatorDeclaration:
+                                        return ((ConversionOperatorDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.PropertyDeclaration:
-                                return ((PropertyDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.PropertyDeclaration:
+                                        return ((PropertyDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.EventDeclaration:
-                                return ((EventDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.EventDeclaration:
+                                        return ((EventDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.IndexerDeclaration:
-                                return ((IndexerDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.IndexerDeclaration:
+                                        return ((IndexerDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.ClassDeclaration:
-                                return ((ClassDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.ClassDeclaration:
+                                        return ((ClassDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.StructDeclaration:
-                                return ((StructDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.StructDeclaration:
+                                        return ((StructDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.InterfaceDeclaration:
-                                return ((InterfaceDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.InterfaceDeclaration:
+                                        return ((InterfaceDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.EnumDeclaration:
-                                return ((EnumDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.EnumDeclaration:
+                                        return ((EnumDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.DelegateDeclaration:
-                                return ((DelegateDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.DelegateDeclaration:
+                                        return ((DelegateDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.FieldDeclaration:
-                                return ((FieldDeclarationSyntax) node).WithModifiers(modifiers);
+                                case SyntaxKind.FieldDeclaration:
+                                        return ((FieldDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        case SyntaxKind.EventFieldDeclaration:
-                                return ((EventFieldDeclarationSyntax) node)
-                                    .WithModifiers(modifiers);
+                                case SyntaxKind.EventFieldDeclaration:
+                                        return ((EventFieldDeclarationSyntax) node)
+                                            .WithModifiers (modifiers);
 
-                        default:
-                                return node;
-                        }
+                                default:
+                                        return node;
+                                }
                 }
         }
 }

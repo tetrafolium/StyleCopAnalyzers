@@ -14,27 +14,28 @@ namespace StyleCop.Analyzers.Lightup
                 private static readonly Func<CrefParameterSyntax, SyntaxToken, CrefParameterSyntax>
                     WithRefKindKeywordAccessor;
 
-                static CrefParameterSyntaxExtensions()
+                static CrefParameterSyntaxExtensions ()
                 {
-                        RefKindKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CrefParameterSyntax, SyntaxToken>(
-                                    typeof(CrefParameterSyntax), nameof(RefKindKeyword));
-                        WithRefKindKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CrefParameterSyntax, SyntaxToken>(
-                                    typeof(CrefParameterSyntax), nameof(RefKindKeyword));
+                        RefKindKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CrefParameterSyntax, SyntaxToken> (
+                                      typeof (CrefParameterSyntax), nameof (RefKindKeyword));
+                        WithRefKindKeywordAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<CrefParameterSyntax,
+                                                                              SyntaxToken> (
+                                typeof (CrefParameterSyntax), nameof (RefKindKeyword));
                 }
 
-                public static SyntaxToken RefKindKeyword(this CrefParameterSyntax syntax)
+                public static SyntaxToken
+                RefKindKeyword (this CrefParameterSyntax syntax)
                 {
-                        return RefKindKeywordAccessor(syntax);
+                        return RefKindKeywordAccessor (syntax);
                 }
 
-                public static CrefParameterSyntax WithRefKindKeyword(
-                    this CrefParameterSyntax syntax, SyntaxToken refKindKeyword)
+                public static CrefParameterSyntax
+                WithRefKindKeyword (this CrefParameterSyntax syntax, SyntaxToken refKindKeyword)
                 {
-                        return WithRefKindKeywordAccessor(syntax, refKindKeyword);
+                        return WithRefKindKeywordAccessor (syntax, refKindKeyword);
                 }
         }
 }

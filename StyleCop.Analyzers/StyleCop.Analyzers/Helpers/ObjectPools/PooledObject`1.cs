@@ -18,128 +18,138 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
                 private readonly ObjectPool<T> pool;
                 private T pooledObject;
 
-                public PooledObject(ObjectPool<T> pool, Func<ObjectPool<T>, T> allocator,
-                                    Action<ObjectPool<T>, T> releaser)
+                public PooledObject (ObjectPool<T> pool, Func<ObjectPool<T>, T> allocator,
+                                     Action<ObjectPool<T>, T> releaser)
                     : this()
                 {
                         this.pool = pool;
-                        this.pooledObject = allocator(pool);
+                        this.pooledObject = allocator (pool);
                         this.releaser = releaser;
                 }
 
                 public T Object
                 {
-                        get
-                        {
-                                return this.pooledObject;
-                        }
+                        get { return this.pooledObject; }
                 }
 
-                public static PooledObject<StringBuilder> Create(ObjectPool<StringBuilder> pool)
+                public static PooledObject<StringBuilder>
+                Create (ObjectPool<StringBuilder> pool)
                 {
-                        return new PooledObject<StringBuilder>(pool, Allocator, Releaser);
+                        return new PooledObject<StringBuilder> (pool, Allocator, Releaser);
                 }
 
-                public static PooledObject<Stack<TItem>> Create<TItem>(
-                    ObjectPool<Stack<TItem>> pool)
+                public static PooledObject<Stack<TItem> >
+                Create<TItem> (ObjectPool<Stack<TItem> > pool)
                 {
-                        return new PooledObject<Stack<TItem>>(pool, Allocator, Releaser);
+                        return new PooledObject<Stack<TItem> > (pool, Allocator, Releaser);
                 }
 
-                public static PooledObject<Queue<TItem>> Create<TItem>(
-                    ObjectPool<Queue<TItem>> pool)
+                public static PooledObject<Queue<TItem> >
+                Create<TItem> (ObjectPool<Queue<TItem> > pool)
                 {
-                        return new PooledObject<Queue<TItem>>(pool, Allocator, Releaser);
+                        return new PooledObject<Queue<TItem> > (pool, Allocator, Releaser);
                 }
 
-                public static PooledObject<HashSet<TItem>> Create<TItem>(
-                    ObjectPool<HashSet<TItem>> pool)
+                public static PooledObject<HashSet<TItem> >
+                Create<TItem> (ObjectPool<HashSet<TItem> > pool)
                 {
-                        return new PooledObject<HashSet<TItem>>(pool, Allocator, Releaser);
+                        return new PooledObject<HashSet<TItem> > (pool, Allocator, Releaser);
                 }
 
-                public static PooledObject<Dictionary<TKey, TValue>> Create<TKey, TValue>(
-                    ObjectPool<Dictionary<TKey, TValue>> pool)
+                public static PooledObject<Dictionary<TKey, TValue> >
+                Create<TKey, TValue> (ObjectPool<Dictionary<TKey, TValue> > pool)
                 {
-                        return new PooledObject<Dictionary<TKey, TValue>>(pool, Allocator,
-                                                                          Releaser);
+                        return new PooledObject<Dictionary<TKey, TValue> > (pool, Allocator,
+                                                                            Releaser);
                 }
 
-                public static PooledObject<List<TItem>> Create<TItem>(ObjectPool<List<TItem>> pool)
+                public static PooledObject<List<TItem> >
+                Create<TItem> (ObjectPool<List<TItem> > pool)
                 {
-                        return new PooledObject<List<TItem>>(pool, Allocator, Releaser);
+                        return new PooledObject<List<TItem> > (pool, Allocator, Releaser);
                 }
 
-                public void Dispose()
+                public void
+                Dispose ()
                 {
                         if (this.pooledObject != null)
-                        {
-                                this.releaser(this.pool, this.pooledObject);
-                                this.pooledObject = null;
-                        }
+                                {
+                                        this.releaser (this.pool, this.pooledObject);
+                                        this.pooledObject = null;
+                                }
                 }
 
-                private static StringBuilder Allocator(ObjectPool<StringBuilder> pool)
+                private static StringBuilder
+                Allocator (ObjectPool<StringBuilder> pool)
                 {
-                        return pool.AllocateAndClear();
+                        return pool.AllocateAndClear ();
                 }
 
-                private static void Releaser(ObjectPool<StringBuilder> pool, StringBuilder sb)
+                private static void
+                Releaser (ObjectPool<StringBuilder> pool, StringBuilder sb)
                 {
-                        pool.ClearAndFree(sb);
+                        pool.ClearAndFree (sb);
                 }
 
-                private static Stack<TItem> Allocator<TItem>(ObjectPool<Stack<TItem>> pool)
+                private static Stack<TItem>
+                Allocator<TItem> (ObjectPool<Stack<TItem> > pool)
                 {
-                        return pool.AllocateAndClear();
+                        return pool.AllocateAndClear ();
                 }
 
-                private static void Releaser<TItem>(ObjectPool<Stack<TItem>> pool, Stack<TItem> obj)
+                private static void
+                Releaser<TItem> (ObjectPool<Stack<TItem> > pool, Stack<TItem> obj)
                 {
-                        pool.ClearAndFree(obj);
+                        pool.ClearAndFree (obj);
                 }
 
-                private static Queue<TItem> Allocator<TItem>(ObjectPool<Queue<TItem>> pool)
+                private static Queue<TItem>
+                Allocator<TItem> (ObjectPool<Queue<TItem> > pool)
                 {
-                        return pool.AllocateAndClear();
+                        return pool.AllocateAndClear ();
                 }
 
-                private static void Releaser<TItem>(ObjectPool<Queue<TItem>> pool, Queue<TItem> obj)
+                private static void
+                Releaser<TItem> (ObjectPool<Queue<TItem> > pool, Queue<TItem> obj)
                 {
-                        pool.ClearAndFree(obj);
+                        pool.ClearAndFree (obj);
                 }
 
-                private static HashSet<TItem> Allocator<TItem>(ObjectPool<HashSet<TItem>> pool)
+                private static HashSet<TItem>
+                Allocator<TItem> (ObjectPool<HashSet<TItem> > pool)
                 {
-                        return pool.AllocateAndClear();
+                        return pool.AllocateAndClear ();
                 }
 
-                private static void Releaser<TItem>(ObjectPool<HashSet<TItem>> pool,
-                                                    HashSet<TItem> obj)
+                private static void
+                Releaser<TItem> (ObjectPool<HashSet<TItem> > pool, HashSet<TItem> obj)
                 {
-                        pool.ClearAndFree(obj);
+                        pool.ClearAndFree (obj);
                 }
 
-                private static Dictionary<TKey, TValue> Allocator<TKey, TValue>(
-                    ObjectPool<Dictionary<TKey, TValue>> pool)
+                private static Dictionary<TKey, TValue>
+                Allocator<TKey, TValue> (ObjectPool<Dictionary<TKey, TValue> > pool)
                 {
-                        return pool.AllocateAndClear();
+                        return pool.AllocateAndClear ();
                 }
 
-                private static void Releaser<TKey, TValue>(
-                    ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> obj)
+                private static void
+                Releaser<TKey, TValue> (ObjectPool<Dictionary<TKey, TValue> > pool,
+                                        Dictionary<TKey, TValue> obj)
                 {
-                        pool.ClearAndFree(obj);
+                        pool.ClearAndFree (obj);
                 }
 
-                private static List<TItem> Allocator<TItem>(ObjectPool<List<TItem>> pool)
+                private static List<TItem>
+                Allocator<TItem> (ObjectPool<List<TItem> > pool)
                 {
-                        return pool.AllocateAndClear();
+                        return pool.AllocateAndClear ();
                 }
 
-                private static void Releaser<TItem>(ObjectPool<List<TItem>> pool, List<TItem> obj)
+                private static void
+                Releaser<TItem> (ObjectPool<List<TItem> > pool, List<TItem> obj)
                 {
-                        pool.ClearAndFree(obj);
+                        pool.ClearAndFree (obj);
                 }
         }
 }

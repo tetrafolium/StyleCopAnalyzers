@@ -25,8 +25,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <para>This will result in the body of the statement being hidden when the region is
         /// collapsed.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        [NoDiagnostic(
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
+        [NoDiagnostic (
             "This diagnostic is rarely-occurring specialization of SA1123; the latter is now preferred in all cases.")]
         internal class SA1109BlockStatementsMustNotContainEmbeddedRegions : DiagnosticAnalyzer
         {
@@ -35,40 +35,38 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// cref="SA1109BlockStatementsMustNotContainEmbeddedRegions"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1109";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1109.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1109Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1109MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1109Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1109.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (ReadabilityResources.SA1109Title), ReadabilityResources.ResourceManager,
+                    typeof (ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1109MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1109Description),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS2000 // Add analyzer diagnostic IDs to analyzer release.
-                    new DiagnosticDescriptor(
+                    new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault,
                         Description, HelpLink, WellKnownDiagnosticTags.NotConfigurable);
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
                 [ExcludeFromCodeCoverage]
 #pragma warning disable RS1025 // Configure generated code analysis
 #pragma warning disable RS1026 // Enable concurrent execution
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
 #pragma warning restore RS1026 // Enable concurrent execution
 #pragma warning restore RS1025 // Configure generated code analysis
                 {

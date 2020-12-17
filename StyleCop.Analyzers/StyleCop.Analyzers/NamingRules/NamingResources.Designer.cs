@@ -20,39 +20,42 @@ namespace StyleCop.Analyzers.NamingRules
         // class via a tool like ResGen or Visual Studio.
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute (
             "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute ()]
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute ()]
         internal class NamingResources
         {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
-                [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+                [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute (
                     "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-                internal NamingResources()
+                internal
+                NamingResources ()
                 {
                 }
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
-                [global::System.ComponentModel.EditorBrowsableAttribute(
+                [global::System.ComponentModel.EditorBrowsableAttribute (
                     global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Resources.ResourceManager ResourceManager
                 {
                         get
                         {
-                                if (object.ReferenceEquals(resourceMan, null))
-                                {
-                                        global::System.Resources.ResourceManager temp =
-                                            new global::System.Resources.ResourceManager(
-                                                "StyleCop.Analyzers.NamingRules.NamingResources",
-                                                typeof(NamingResources).GetTypeInfo().Assembly);
-                                        resourceMan = temp;
-                                }
+                                if (object.ReferenceEquals (resourceMan, null))
+                                        {
+                                                global::System.Resources.ResourceManager temp
+                                                    = new global::System.Resources.ResourceManager (
+                                                        "StyleCop.Analyzers.NamingRules.NamingResources",
+                                                        typeof (NamingResources)
+                                                            .GetTypeInfo ()
+                                                            .Assembly);
+                                                resourceMan = temp;
+                                        }
                                 return resourceMan;
                         }
                 }
@@ -61,18 +64,12 @@ namespace StyleCop.Analyzers.NamingRules
                 ///   Overrides the current thread's CurrentUICulture property for all
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
-                [global::System.ComponentModel.EditorBrowsableAttribute(
+                [global::System.ComponentModel.EditorBrowsableAttribute (
                     global::System.ComponentModel.EditorBrowsableState.Advanced)]
                 internal static global::System.Globalization.CultureInfo Culture
                 {
-                        get
-                        {
-                                return resourceCulture;
-                        }
-                        set
-                        {
-                                resourceCulture = value;
-                        }
+                        get { return resourceCulture; }
+                        set { resourceCulture = value; }
                 }
 
                 /// <summary>
@@ -82,8 +79,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("RenameToCodeFix",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("RenameToCodeFix",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -95,8 +92,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1300Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1300Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -108,8 +105,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1300MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1300MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -119,10 +116,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1300Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1300Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1300Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -133,8 +127,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1301Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1301Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -146,8 +140,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1301MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1301MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -157,10 +151,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1301Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1301Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1301Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -169,10 +160,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1302CodeFix
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1302CodeFix", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1302CodeFix", resourceCulture); }
                 }
 
                 /// <summary>
@@ -183,8 +171,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1302Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1302Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -195,8 +183,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1302MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1302MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -205,10 +193,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1302Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1302Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1302Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -219,8 +204,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1303Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1303Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -232,8 +217,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1303MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1303MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -243,10 +228,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1303Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1303Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1303Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -257,8 +239,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1304Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1304Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -270,8 +252,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1304MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1304MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -281,10 +263,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1304Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1304Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1304Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -295,8 +274,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1305Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1305Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -308,8 +287,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1305MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1305MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -319,10 +298,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1305Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1305Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1305Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -333,8 +309,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1306Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1306Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -346,8 +322,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1306MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1306MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -357,10 +333,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1306Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1306Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1306Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -371,8 +344,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1307Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1307Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -384,8 +357,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1307MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1307MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -395,10 +368,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1307Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1307Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1307Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -409,8 +379,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1308Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1308Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -422,8 +392,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1308MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1308MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -432,10 +402,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1308Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1308Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1308Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -446,8 +413,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1309Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1309Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -459,8 +426,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1309MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1309MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -470,10 +437,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1309Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1309Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1309Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -484,8 +448,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1310Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1310Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -497,8 +461,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1310MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1310MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -508,10 +472,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1310Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1310Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1310Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -522,8 +483,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1311Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1311Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -535,8 +496,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1311MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1311MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -546,10 +507,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1311Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1311Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1311Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -560,8 +518,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1312Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1312Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -573,8 +531,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1312MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1312MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -584,10 +542,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1312Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1312Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1312Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -598,8 +553,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1313Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1313Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -611,8 +566,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1313MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1313MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -622,10 +577,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1313Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1313Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1313Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -634,10 +586,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1314CodeFix
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1314CodeFix", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1314CodeFix", resourceCulture); }
                 }
 
                 /// <summary>
@@ -648,8 +597,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1314Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1314Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -661,8 +610,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1314MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1314MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -672,10 +621,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1314Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1314Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1314Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -683,10 +629,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1316CodeFix
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1316CodeFix", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1316CodeFix", resourceCulture); }
                 }
 
                 /// <summary>
@@ -697,8 +640,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1316Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1316Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -710,8 +653,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SA1316MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SA1316MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -721,10 +664,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SA1316Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SA1316Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SA1316Title", resourceCulture); }
                 }
 
                 /// <summary>
@@ -735,8 +675,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SX1309Description",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SX1309Description",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -748,8 +688,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SX1309MessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SX1309MessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -761,8 +701,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SX1309SDescription",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SX1309SDescription",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -774,8 +714,8 @@ namespace StyleCop.Analyzers.NamingRules
                 {
                         get
                         {
-                                return ResourceManager.GetString("SX1309SMessageFormat",
-                                                                 resourceCulture);
+                                return ResourceManager.GetString ("SX1309SMessageFormat",
+                                                                  resourceCulture);
                         }
                 }
 
@@ -785,10 +725,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SX1309STitle
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SX1309STitle", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SX1309STitle", resourceCulture); }
                 }
 
                 /// <summary>
@@ -797,10 +734,7 @@ namespace StyleCop.Analyzers.NamingRules
                 /// </summary>
                 internal static string SX1309Title
                 {
-                        get
-                        {
-                                return ResourceManager.GetString("SX1309Title", resourceCulture);
-                        }
+                        get { return ResourceManager.GetString ("SX1309Title", resourceCulture); }
                 }
         }
 }

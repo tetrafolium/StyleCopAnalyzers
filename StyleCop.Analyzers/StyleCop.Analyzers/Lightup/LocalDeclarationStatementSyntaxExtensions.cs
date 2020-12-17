@@ -21,43 +21,47 @@ namespace StyleCop.Analyzers.Lightup
                                              LocalDeclarationStatementSyntax>
                     WithUsingKeywordAccessor;
 
-                static LocalDeclarationStatementSyntaxExtensions()
+                static LocalDeclarationStatementSyntaxExtensions ()
                 {
                         AwaitKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            LocalDeclarationStatementSyntax, SyntaxToken>(
-                            typeof(LocalDeclarationStatementSyntax), nameof(AwaitKeyword));
+                            LocalDeclarationStatementSyntax, SyntaxToken> (
+                            typeof (LocalDeclarationStatementSyntax), nameof (AwaitKeyword));
                         UsingKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            LocalDeclarationStatementSyntax, SyntaxToken>(
-                            typeof(LocalDeclarationStatementSyntax), nameof(UsingKeyword));
+                            LocalDeclarationStatementSyntax, SyntaxToken> (
+                            typeof (LocalDeclarationStatementSyntax), nameof (UsingKeyword));
 
                         WithAwaitKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            LocalDeclarationStatementSyntax, SyntaxToken>(
-                            typeof(LocalDeclarationStatementSyntax), nameof(AwaitKeyword));
+                            LocalDeclarationStatementSyntax, SyntaxToken> (
+                            typeof (LocalDeclarationStatementSyntax), nameof (AwaitKeyword));
                         WithUsingKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            LocalDeclarationStatementSyntax, SyntaxToken>(
-                            typeof(LocalDeclarationStatementSyntax), nameof(UsingKeyword));
+                            LocalDeclarationStatementSyntax, SyntaxToken> (
+                            typeof (LocalDeclarationStatementSyntax), nameof (UsingKeyword));
                 }
 
-                public static SyntaxToken AwaitKeyword(this LocalDeclarationStatementSyntax syntax)
+                public static SyntaxToken
+                AwaitKeyword (this LocalDeclarationStatementSyntax syntax)
                 {
-                        return AwaitKeywordAccessor(syntax);
+                        return AwaitKeywordAccessor (syntax);
                 }
 
-                public static SyntaxToken UsingKeyword(this LocalDeclarationStatementSyntax syntax)
+                public static SyntaxToken
+                UsingKeyword (this LocalDeclarationStatementSyntax syntax)
                 {
-                        return UsingKeywordAccessor(syntax);
+                        return UsingKeywordAccessor (syntax);
                 }
 
-                public static LocalDeclarationStatementSyntax WithAwaitKeyword(
-                    this LocalDeclarationStatementSyntax syntax, SyntaxToken awaitKeyword)
+                public static LocalDeclarationStatementSyntax
+                WithAwaitKeyword (this LocalDeclarationStatementSyntax syntax,
+                                  SyntaxToken awaitKeyword)
                 {
-                        return WithAwaitKeywordAccessor(syntax, awaitKeyword);
+                        return WithAwaitKeywordAccessor (syntax, awaitKeyword);
                 }
 
-                public static LocalDeclarationStatementSyntax WithUsingKeyword(
-                    this LocalDeclarationStatementSyntax syntax, SyntaxToken usingKeyword)
+                public static LocalDeclarationStatementSyntax
+                WithUsingKeyword (this LocalDeclarationStatementSyntax syntax,
+                                  SyntaxToken usingKeyword)
                 {
-                        return WithUsingKeywordAccessor(syntax, usingKeyword);
+                        return WithUsingKeywordAccessor (syntax, usingKeyword);
                 }
         }
 }

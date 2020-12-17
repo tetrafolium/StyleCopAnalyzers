@@ -10,38 +10,40 @@ namespace StyleCop.Analyzers.Lightup
         internal partial struct LocalFunctionStatementSyntaxWrapper
             : ISyntaxWrapper<StatementSyntax>
         {
-                public LocalFunctionStatementSyntaxWrapper AddModifiers(params SyntaxToken[] items)
+                public LocalFunctionStatementSyntaxWrapper
+                AddModifiers (params SyntaxToken[] items)
                 {
-                        return this.WithModifiers(this.Modifiers.AddRange(items));
+                        return this.WithModifiers (this.Modifiers.AddRange (items));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper AddTypeParameterListParameters(
-                    params TypeParameterSyntax[] items)
+                public LocalFunctionStatementSyntaxWrapper
+                AddTypeParameterListParameters (params TypeParameterSyntax[] items)
                 {
-                        var typeParameterList =
-                            this.TypeParameterList ?? SyntaxFactory.TypeParameterList();
-                        return this.WithTypeParameterList(typeParameterList.WithParameters(
-                            typeParameterList.Parameters.AddRange(items)));
+                        var typeParameterList
+                            = this.TypeParameterList ?? SyntaxFactory.TypeParameterList ();
+                        return this.WithTypeParameterList (typeParameterList.WithParameters (
+                            typeParameterList.Parameters.AddRange (items)));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper AddParameterListParameters(
-                    params ParameterSyntax[] items)
+                public LocalFunctionStatementSyntaxWrapper
+                AddParameterListParameters (params ParameterSyntax[] items)
                 {
-                        return this.WithParameterList(this.ParameterList.WithParameters(
-                            this.ParameterList.Parameters.AddRange(items)));
+                        return this.WithParameterList (this.ParameterList.WithParameters (
+                            this.ParameterList.Parameters.AddRange (items)));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper AddConstraintClauses(
-                    params TypeParameterConstraintClauseSyntax[] items)
+                public LocalFunctionStatementSyntaxWrapper
+                AddConstraintClauses (params TypeParameterConstraintClauseSyntax[] items)
                 {
-                        return this.WithConstraintClauses(this.ConstraintClauses.AddRange(items));
+                        return this.WithConstraintClauses (this.ConstraintClauses.AddRange (items));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper AddBodyStatements(
-                    params StatementSyntax[] items)
+                public LocalFunctionStatementSyntaxWrapper
+                AddBodyStatements (params StatementSyntax[] items)
                 {
-                        var body = this.Body ?? SyntaxFactory.Block();
-                        return this.WithBody(body.WithStatements(body.Statements.AddRange(items)));
+                        var body = this.Body ?? SyntaxFactory.Block ();
+                        return this.WithBody (
+                            body.WithStatements (body.Statements.AddRange (items)));
                 }
         }
 }

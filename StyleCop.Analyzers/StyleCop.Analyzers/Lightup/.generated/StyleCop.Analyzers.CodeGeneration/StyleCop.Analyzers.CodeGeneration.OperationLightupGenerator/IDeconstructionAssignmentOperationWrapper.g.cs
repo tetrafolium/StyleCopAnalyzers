@@ -9,17 +9,17 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IDeconstructionAssignmentOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IDeconstructionAssignmentOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IDeconstructionAssignmentOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
-                static IDeconstructionAssignmentOperationWrapper()
+                static IDeconstructionAssignmentOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IDeconstructionAssignmentOperationWrapper));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IDeconstructionAssignmentOperationWrapper));
                 }
 
-                private IDeconstructionAssignmentOperationWrapper(IOperation operation)
+                private IDeconstructionAssignmentOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
@@ -28,32 +28,35 @@ namespace StyleCop.Analyzers.Lightup
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IOperation Target =>((IAssignmentOperationWrapper) this).Target;
                 public IOperation Value =>((IAssignmentOperationWrapper) this).Value;
-                public static explicit operator IDeconstructionAssignmentOperationWrapper(
-                    IAssignmentOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit operator IAssignmentOperationWrapper(
-                    IDeconstructionAssignmentOperationWrapper wrapper) =>
-                    IAssignmentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IDeconstructionAssignmentOperationWrapper FromOperation(
-                    IOperation operation)
+                public static explicit operator IDeconstructionAssignmentOperationWrapper (
+                    IAssignmentOperationWrapper wrapper) => FromOperation (wrapper
+                                                                               .WrappedOperation);
+                public static implicit operator IAssignmentOperationWrapper (
+                    IDeconstructionAssignmentOperationWrapper
+                        wrapper) => IAssignmentOperationWrapper
+                                        .FromUpcast (wrapper.WrappedOperation);
+                public static IDeconstructionAssignmentOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IDeconstructionAssignmentOperationWrapper(operation);
+                        return new IDeconstructionAssignmentOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

@@ -16,9 +16,7 @@ namespace LightJson.Serialization
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class.
                 /// </summary>
-                public JsonParseException() : base(GetDefaultMessage(ErrorType.Unknown))
-                {
-                }
+                public JsonParseException () : base (GetDefaultMessage (ErrorType.Unknown)) {}
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class with
@@ -27,8 +25,8 @@ namespace LightJson.Serialization
                 /// <param name="type">The error type that describes the cause of the error.</param>
                 /// <param name="position">The position in the text where the error
                 /// occurred.</param>
-                public JsonParseException(ErrorType type, TextPosition position)
-                    : this(GetDefaultMessage(type), type, position)
+                public JsonParseException (ErrorType type, TextPosition position)
+                    : this(GetDefaultMessage (type), type, position)
                 {
                 }
 
@@ -40,8 +38,8 @@ namespace LightJson.Serialization
                 /// <param name="type">The error type that describes the cause of the error.</param>
                 /// <param name="position">The position in the text where the error
                 /// occurred.</param>
-                public JsonParseException(string message, ErrorType type, TextPosition position)
-                    : base(message)
+                public JsonParseException (string message, ErrorType type, TextPosition position)
+                    : base (message)
                 {
                         this.Type = type;
                         this.Position = position;
@@ -94,22 +92,23 @@ namespace LightJson.Serialization
                         private set;
                 }
 
-                private static string GetDefaultMessage(ErrorType type)
+                private static string
+                GetDefaultMessage (ErrorType type)
                 {
                         switch (type)
-                        {
-                        case ErrorType.IncompleteMessage:
-                                return "The string ended before a value could be parsed.";
+                                {
+                                case ErrorType.IncompleteMessage:
+                                        return "The string ended before a value could be parsed.";
 
-                        case ErrorType.InvalidOrUnexpectedCharacter:
-                                return "The parser encountered an invalid or unexpected character.";
+                                case ErrorType.InvalidOrUnexpectedCharacter:
+                                        return "The parser encountered an invalid or unexpected character.";
 
-                        case ErrorType.DuplicateObjectKeys:
-                                return "The parser encountered a JsonObject with duplicate keys.";
+                                case ErrorType.DuplicateObjectKeys:
+                                        return "The parser encountered a JsonObject with duplicate keys.";
 
-                        default:
-                                return "An error occurred while parsing the JSON message.";
-                        }
+                                default:
+                                        return "An error occurred while parsing the JSON message.";
+                                }
                 }
         }
 }

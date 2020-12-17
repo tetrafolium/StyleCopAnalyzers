@@ -18,94 +18,95 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <summary>
         /// Implements a code fix for <see cref="SA1508ClosingBracesMustNotBePrecededByBlankLine"/>.
         /// </summary>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1508CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1508CodeFixProvider))]
         [Shared]
         internal class SA1508CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (
                     SA1508ClosingBracesMustNotBePrecededByBlankLine.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (var diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        LayoutResources.SA1508CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1508CodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                LayoutResources.SA1508CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof (SA1508CodeFixProvider)),
+                                            diagnostic);
+                                }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
+                        var syntaxRoot = await document.GetSyntaxRootAsync (cancellationToken)
+                                             .ConfigureAwait (false);
 
-                        var closeBraceToken =
-                            syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
-                        var previousToken = closeBraceToken.GetPreviousToken();
+                        var closeBraceToken
+                            = syntaxRoot.FindToken (diagnostic.Location.SourceSpan.Start);
+                        var previousToken = closeBraceToken.GetPreviousToken ();
 
-                        var triviaList =
-                            previousToken.TrailingTrivia.AddRange(closeBraceToken.LeadingTrivia);
+                        var triviaList
+                            = previousToken.TrailingTrivia.AddRange (closeBraceToken.LeadingTrivia);
 
                         // skip all leading whitespace for the close brace
                         var index = triviaList.Count - 1;
                         while (triviaList [index]
-                                   .IsKind(SyntaxKind.WhitespaceTrivia))
-                        {
-                                index--;
-                        }
+                                   .IsKind (SyntaxKind.WhitespaceTrivia))
+                                {
+                                        index--;
+                                }
 
                         var firstLeadingWhitespace = index + 1;
 
                         var done = false;
                         var lastEndOfLineIndex = -1;
                         while (!done && index >= 0)
-                        {
-                                switch (triviaList [index]
-                                            .Kind())
                                 {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        lastEndOfLineIndex = index;
-                                        break;
-                                default:
-                                        done = true;
-                                        break;
+                                        switch (triviaList [index]
+                                                    .Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        lastEndOfLineIndex = index;
+                                                        break;
+                                                default:
+                                                        done = true;
+                                                        break;
+                                                }
+
+                                        index--;
                                 }
 
-                                index--;
-                        }
-
-                        var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
-                                [previousToken] = previousToken.WithTrailingTrivia(
-                                    triviaList.Take(lastEndOfLineIndex + 1)),
-                                [ closeBraceToken ] = closeBraceToken.WithLeadingTrivia(
-                                    triviaList.Skip(firstLeadingWhitespace)),
+                        var replaceMap = new Dictionary<SyntaxToken, SyntaxToken> (){
+                                    [previousToken] = previousToken.WithTrailingTrivia (
+                                        triviaList.Take (lastEndOfLineIndex + 1)),
+                                    [ closeBraceToken ] = closeBraceToken.WithLeadingTrivia (
+                                        triviaList.Skip (firstLeadingWhitespace)),
                         };
 
-                        var newSyntaxRoot =
-                            syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]);
-                        return document.WithSyntaxRoot(newSyntaxRoot);
+                        var newSyntaxRoot = syntaxRoot.ReplaceTokens (replaceMap.Keys,
+                                                                      (t1, t2) => replaceMap[t1]);
+                        return document.WithSyntaxRoot (newSyntaxRoot);
                 }
         }
 }

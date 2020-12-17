@@ -49,8 +49,8 @@ namespace StyleCop.Analyzers.Lightup
                 public const SyntaxKind RefExpression = (SyntaxKind) 9050;
                 public const SyntaxKind RefType = (SyntaxKind) 9051;
                 public const SyntaxKind ThrowExpression = (SyntaxKind) 9052;
-                public const SyntaxKind ImplicitStackAllocArrayCreationExpression =
-                    (SyntaxKind) 9053;
+                public const SyntaxKind ImplicitStackAllocArrayCreationExpression
+                    = (SyntaxKind) 9053;
                 public const SyntaxKind SuppressNullableWarningExpression = (SyntaxKind) 9054;
                 public const SyntaxKind NullableDirectiveTrivia = (SyntaxKind) 9055;
                 public const SyntaxKind FunctionPointerType = (SyntaxKind) 9056;
@@ -58,7 +58,7 @@ namespace StyleCop.Analyzers.Lightup
                 public const SyntaxKind WithExpression = (SyntaxKind) 9061;
                 public const SyntaxKind WithInitializerExpression = (SyntaxKind) 9062;
                 public const SyntaxKind RecordDeclaration = (SyntaxKind) 9063;
-                public const SyntaxKind FunctionPointerUnmanagedCallingConventionList =
-                    (SyntaxKind) 9066;
+                public const SyntaxKind FunctionPointerUnmanagedCallingConventionList
+                    = (SyntaxKind) 9066;
         }
 }

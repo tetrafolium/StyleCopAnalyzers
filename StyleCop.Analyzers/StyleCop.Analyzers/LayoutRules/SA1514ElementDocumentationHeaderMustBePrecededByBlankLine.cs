@@ -60,7 +60,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <para>In the code above, the header is the first item within its scope, and thus it
         /// should not be preceded by a blank line.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1514ElementDocumentationHeaderMustBePrecededByBlankLine
             : DiagnosticAnalyzer
         {
@@ -70,27 +70,27 @@ namespace StyleCop.Analyzers.LayoutRules
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1514";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1514.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1514Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1514MessageFormat),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1514Description),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1514.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (LayoutResources.SA1514Title), LayoutResources.ResourceManager,
+                    typeof (LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1514MessageFormat),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1514Description),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds =
-                    ImmutableArray.Create(
+                private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds
+                    = ImmutableArray.Create (
                         SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
                         SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration,
                         SyntaxKind.EnumMemberDeclaration, SyntaxKind.MethodDeclaration,
@@ -100,100 +100,102 @@ namespace StyleCop.Analyzers.LayoutRules
                         SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration,
                         SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction =
-                    HandleDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction
+                    = HandleDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(DeclarationAction, HandledSyntaxKinds);
+                        context.RegisterSyntaxNodeAction (DeclarationAction, HandledSyntaxKinds);
                 }
 
-                private static void HandleDeclaration(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleDeclaration (SyntaxNodeAnalysisContext context)
                 {
-                        var nodeTriviaList = context.Node.GetLeadingTrivia();
-                        var documentationHeaderIndex = context.Node.GetLeadingTrivia().IndexOf(
+                        var nodeTriviaList = context.Node.GetLeadingTrivia ();
+                        var documentationHeaderIndex = context.Node.GetLeadingTrivia ().IndexOf (
                             SyntaxKind.SingleLineDocumentationCommentTrivia);
 
                         if (documentationHeaderIndex == -1)
-                        {
-                                // there is no documentation header.
-                                return;
-                        }
+                                {
+                                        // there is no documentation header.
+                                        return;
+                                }
 
                         var documentationHeader = nodeTriviaList[documentationHeaderIndex];
-                        var triviaList = TriviaHelper.GetContainingTriviaList(
+                        var triviaList = TriviaHelper.GetContainingTriviaList (
                             documentationHeader, out documentationHeaderIndex);
                         var eolCount = 0;
                         var done = false;
                         for (var i = documentationHeaderIndex - 1; !done && (i >= 0); i--)
-                        {
-                                var trivia = triviaList[i];
-                                if (trivia.IsDirective &&
-                                    !trivia.IsKind(SyntaxKind.EndIfDirectiveTrivia) &&
-                                    !trivia.IsKind(SyntaxKind.RegionDirectiveTrivia) &&
-                                    !trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
                                 {
-                                        return;
-                                }
+                                        var trivia = triviaList[i];
+                                        if (trivia.IsDirective
+                                            && !trivia.IsKind (SyntaxKind.EndIfDirectiveTrivia)
+                                            && !trivia.IsKind (SyntaxKind.RegionDirectiveTrivia)
+                                            && !trivia.IsKind (SyntaxKind.EndRegionDirectiveTrivia))
+                                                {
+                                                        return;
+                                                }
 
-                                switch (trivia.Kind())
-                                {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        break;
+                                        switch (trivia.Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        eolCount++;
+                                                        break;
 
-                                case SyntaxKind.EndIfDirectiveTrivia:
-                                case SyntaxKind.RegionDirectiveTrivia:
-                                case SyntaxKind.EndRegionDirectiveTrivia:
-                                        eolCount++;
-                                        done = true;
-                                        break;
-                                default:
-                                        done = true;
-                                        break;
+                                                case SyntaxKind.EndIfDirectiveTrivia:
+                                                case SyntaxKind.RegionDirectiveTrivia:
+                                                case SyntaxKind.EndRegionDirectiveTrivia:
+                                                        eolCount++;
+                                                        done = true;
+                                                        break;
+                                                default:
+                                                        done = true;
+                                                        break;
+                                                }
                                 }
-                        }
 
                         if (eolCount >= 2)
-                        {
-                                // there is a blank line available
-                                return;
-                        }
-
-                        if (!done)
-                        {
-                                var prevToken = documentationHeader.Token.GetPreviousToken();
-                                if (prevToken.IsKind(SyntaxKind.OpenBraceToken))
                                 {
-                                        // no leading blank line necessary at start of scope.
+                                        // there is a blank line available
                                         return;
                                 }
-                        }
 
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            Descriptor, GetDiagnosticLocation(documentationHeader)));
+                        if (!done)
+                                {
+                                        var prevToken
+                                            = documentationHeader.Token.GetPreviousToken ();
+                                        if (prevToken.IsKind (SyntaxKind.OpenBraceToken))
+                                                {
+                                                        // no leading blank line necessary at start
+                                                        // of scope.
+                                                        return;
+                                                }
+                                }
+
+                        context.ReportDiagnostic (Diagnostic.Create (
+                            Descriptor, GetDiagnosticLocation (documentationHeader)));
                 }
 
-                private static Location GetDiagnosticLocation(SyntaxTrivia documentationHeader)
+                private static Location
+                GetDiagnosticLocation (SyntaxTrivia documentationHeader)
                 {
-                        var documentationHeaderStructure =
-                            (DocumentationCommentTriviaSyntax) documentationHeader.GetStructure();
-                        return Location.Create(
+                        var documentationHeaderStructure = (DocumentationCommentTriviaSyntax)
+                                                               documentationHeader.GetStructure ();
+                        return Location.Create (
                             documentationHeaderStructure.SyntaxTree,
-                            documentationHeaderStructure.GetLeadingTrivia().Span);
+                            documentationHeaderStructure.GetLeadingTrivia ().Span);
                 }
         }
 }

@@ -9,50 +9,51 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IInterpolatedStringContentOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IInterpolatedStringContentOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IInterpolatedStringContentOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
-                static IInterpolatedStringContentOperationWrapper()
+                static IInterpolatedStringContentOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IInterpolatedStringContentOperationWrapper));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IInterpolatedStringContentOperationWrapper));
                 }
 
-                private IInterpolatedStringContentOperationWrapper(IOperation operation)
+                private IInterpolatedStringContentOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public static IInterpolatedStringContentOperationWrapper FromOperation(
-                    IOperation operation)
+                public static IInterpolatedStringContentOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IInterpolatedStringContentOperationWrapper(operation);
+                        return new IInterpolatedStringContentOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
 
-                internal static IInterpolatedStringContentOperationWrapper FromUpcast(
-                    IOperation operation)
+                internal static IInterpolatedStringContentOperationWrapper
+                FromUpcast (IOperation operation)
                 {
-                        return new IInterpolatedStringContentOperationWrapper(operation);
+                        return new IInterpolatedStringContentOperationWrapper (operation);
                 }
         }
 }

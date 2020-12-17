@@ -17,69 +17,70 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <summary>
         /// This class provides a code fix for the SA1104 diagnostic.
         /// </summary>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1104SA1105CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1104SA1105CodeFixProvider))]
         [Shared]
         internal class SA1104SA1105CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(SA110xQueryClauses.SA1104Descriptor.Id,
-                                        SA110xQueryClauses.SA1105Descriptor.Id);
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (SA110xQueryClauses.SA1104Descriptor.Id,
+                                         SA110xQueryClauses.SA1105Descriptor.Id);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (var diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        ReadabilityResources.SA1104SA1105CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1104SA1105CodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                ReadabilityResources.SA1104SA1105CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof (SA1104SA1105CodeFixProvider)),
+                                            diagnostic);
+                                }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
-                        var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
+                        var syntaxRoot = await document.GetSyntaxRootAsync (cancellationToken)
+                                             .ConfigureAwait (false);
+                        var token = syntaxRoot.FindToken (diagnostic.Location.SourceSpan.Start);
 
-                        var settings = SettingsHelper.GetStyleCopSettings(
+                        var settings = SettingsHelper.GetStyleCopSettings (
                             document.Project.AnalyzerOptions, cancellationToken);
-                        var indentationTrivia = QueryIndentationHelpers.GetQueryIndentationTrivia(
+                        var indentationTrivia = QueryIndentationHelpers.GetQueryIndentationTrivia (
                             settings.Indentation, token);
 
-                        var precedingToken = token.GetPreviousToken();
-                        var triviaList =
-                            precedingToken.TrailingTrivia.AddRange(token.LeadingTrivia);
-                        var processedTriviaList = triviaList.WithoutTrailingWhitespace().Add(
+                        var precedingToken = token.GetPreviousToken ();
+                        var triviaList
+                            = precedingToken.TrailingTrivia.AddRange (token.LeadingTrivia);
+                        var processedTriviaList = triviaList.WithoutTrailingWhitespace ().Add (
                             SyntaxFactory.CarriageReturnLineFeed);
 
-                        var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
-                                [precedingToken] =
-                                    precedingToken.WithTrailingTrivia(processedTriviaList),
-                                [ token ] = token.WithLeadingTrivia(indentationTrivia),
+                        var replaceMap = new Dictionary<SyntaxToken, SyntaxToken> (){
+                                    [precedingToken]
+                                    = precedingToken.WithTrailingTrivia (processedTriviaList),
+                                    [ token ] = token.WithLeadingTrivia (indentationTrivia),
                         };
 
-                        var newSyntaxRoot =
-                            syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1])
-                                .WithoutFormatting();
-                        return document.WithSyntaxRoot(newSyntaxRoot);
+                        var newSyntaxRoot
+                            = syntaxRoot.ReplaceTokens (replaceMap.Keys, (t1, t2) => replaceMap[t1])
+                                  .WithoutFormatting ();
+                        return document.WithSyntaxRoot (newSyntaxRoot);
                 }
         }
 }

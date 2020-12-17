@@ -19,12 +19,13 @@ namespace StyleCop.Analyzers.Helpers
                 /// <exception cref="ArgumentNullException">
                 /// If <paramref name="argument"/> is <see langword="null"/>.
                 /// </exception>
-                public static void NotNull<T>(T argument, string parameterName) where T : class
+                public static void
+                NotNull<T> (T argument, string parameterName) where T : class
                 {
                         if (argument == null)
-                        {
-                                throw new ArgumentNullException(parameterName);
-                        }
+                                {
+                                        throw new ArgumentNullException (parameterName);
+                                }
                 }
         }
 }

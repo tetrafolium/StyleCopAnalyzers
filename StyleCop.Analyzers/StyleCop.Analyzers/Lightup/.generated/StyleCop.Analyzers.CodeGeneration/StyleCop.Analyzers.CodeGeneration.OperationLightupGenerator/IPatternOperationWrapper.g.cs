@@ -9,58 +9,63 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IPatternOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IPatternOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IPatternOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ITypeSymbol> InputTypeAccessor;
                 private static readonly Func<IOperation, ITypeSymbol> NarrowedTypeAccessor;
                 private readonly IOperation operation;
-                static IPatternOperationWrapper()
+                static IPatternOperationWrapper ()
                 {
-                        WrappedType =
-                            OperationWrapperHelper.GetWrappedType(typeof(IPatternOperationWrapper));
-                        InputTypeAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
-                                WrappedType, nameof(InputType));
-                        NarrowedTypeAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
-                                WrappedType, nameof(NarrowedType));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IPatternOperationWrapper));
+                        InputTypeAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, ITypeSymbol> (
+                                      WrappedType, nameof (InputType));
+                        NarrowedTypeAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, ITypeSymbol> (
+                                      WrappedType, nameof (NarrowedType));
                 }
 
-                private IPatternOperationWrapper(IOperation operation)
+                private IPatternOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public ITypeSymbol InputType => InputTypeAccessor(this.WrappedOperation);
-                public ITypeSymbol NarrowedType => NarrowedTypeAccessor(this.WrappedOperation);
-                public static IPatternOperationWrapper FromOperation(IOperation operation)
+                public ITypeSymbol InputType => InputTypeAccessor (this.WrappedOperation);
+                public ITypeSymbol NarrowedType => NarrowedTypeAccessor (this.WrappedOperation);
+                public static IPatternOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IPatternOperationWrapper(operation);
+                        return new IPatternOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
 
-                internal static IPatternOperationWrapper FromUpcast(IOperation operation)
+                internal static IPatternOperationWrapper
+                FromUpcast (IOperation operation)
                 {
-                        return new IPatternOperationWrapper(operation);
+                        return new IPatternOperationWrapper (operation);
                 }
         }
 }

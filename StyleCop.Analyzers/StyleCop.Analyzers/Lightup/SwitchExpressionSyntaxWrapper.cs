@@ -7,11 +7,11 @@ namespace StyleCop.Analyzers.Lightup
 
         internal partial struct SwitchExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
         {
-                public SwitchExpressionSyntaxWrapper AddArms(
-                    params SwitchExpressionArmSyntaxWrapper[] arms)
+                public SwitchExpressionSyntaxWrapper
+                AddArms (params SwitchExpressionArmSyntaxWrapper[] arms)
                 {
-                        return new SwitchExpressionSyntaxWrapper(
-                            this.WithArms(this.Arms.AddRange(arms)));
+                        return new SwitchExpressionSyntaxWrapper (
+                            this.WithArms (this.Arms.AddRange (arms)));
                 }
         }
 }

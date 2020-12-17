@@ -9,65 +9,71 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct ISwitchExpressionArmOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.ISwitchExpressionArmOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.ISwitchExpressionArmOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> PatternAccessor;
                 private static readonly Func<IOperation, IOperation> GuardAccessor;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
-                private static readonly Func<IOperation, ImmutableArray<ILocalSymbol>>
+                private static readonly Func<IOperation, ImmutableArray<ILocalSymbol> >
                     LocalsAccessor;
                 private readonly IOperation operation;
-                static ISwitchExpressionArmOperationWrapper()
+                static ISwitchExpressionArmOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(ISwitchExpressionArmOperationWrapper));
-                        PatternAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Pattern));
-                        GuardAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Guard));
-                        ValueAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Value));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (ISwitchExpressionArmOperationWrapper));
+                        PatternAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Pattern));
+                        GuardAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Guard));
+                        ValueAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Value));
                         LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<
-                            IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
+                            IOperation, ImmutableArray<ILocalSymbol> > (WrappedType,
+                                                                        nameof (Locals));
                 }
 
-                private ISwitchExpressionArmOperationWrapper(IOperation operation)
+                private ISwitchExpressionArmOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IPatternOperationWrapper Pattern =>
-                    IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
-                public IOperation Guard => GuardAccessor(this.WrappedOperation);
-                public IOperation Value => ValueAccessor(this.WrappedOperation);
-                public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor(this.WrappedOperation);
-                public static ISwitchExpressionArmOperationWrapper FromOperation(
-                    IOperation operation)
+                public IPatternOperationWrapper Pattern => IPatternOperationWrapper.FromOperation (
+                    PatternAccessor (this.WrappedOperation));
+                public IOperation Guard => GuardAccessor (this.WrappedOperation);
+                public IOperation Value => ValueAccessor (this.WrappedOperation);
+                public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor (
+                    this.WrappedOperation);
+                public static ISwitchExpressionArmOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new ISwitchExpressionArmOperationWrapper(operation);
+                        return new ISwitchExpressionArmOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

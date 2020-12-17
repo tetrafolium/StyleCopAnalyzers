@@ -24,7 +24,7 @@ namespace StyleCop.Analyzers.NamingRules
         /// placeholder for Win32 or COM wrappers. StyleCop will ignore this violation if the item
         /// is placed within a <c>NativeMethods</c> class.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1303ConstFieldNamesMustBeginWithUpperCaseLetter : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -32,59 +32,58 @@ namespace StyleCop.Analyzers.NamingRules
                 /// cref="SA1303ConstFieldNamesMustBeginWithUpperCaseLetter"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1303";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1303.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(NamingResources.SA1303Title), NamingResources.ResourceManager,
-                    typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SA1303MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SA1303Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1303.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (NamingResources.SA1303Title), NamingResources.ResourceManager,
+                    typeof (NamingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (NamingResources.SA1303MessageFormat),
+                                                     NamingResources.ResourceManager,
+                                                     typeof (NamingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (NamingResources.SA1303Description),
+                                                     NamingResources.ResourceManager,
+                                                     typeof (NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SymbolAnalysisContext> FieldDeclarationAction =
-                    Analyzer.HandleFieldDeclaration;
+                private static readonly Action<SymbolAnalysisContext> FieldDeclarationAction
+                    = Analyzer.HandleFieldDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSymbolAction(FieldDeclarationAction, SymbolKind.Field);
+                        context.RegisterSymbolAction (FieldDeclarationAction, SymbolKind.Field);
                 }
 
                 private static class Analyzer
                 {
-                        public static void HandleFieldDeclaration(SymbolAnalysisContext context)
+                        public static void
+                        HandleFieldDeclaration (SymbolAnalysisContext context)
                         {
-                                if (!(context.Symbol is IFieldSymbol symbol) || !symbol.IsConst ||
-                                    symbol.ContainingType?.TypeKind == TypeKind.Enum)
-                                {
-                                        return;
-                                }
+                                if (!(context.Symbol is IFieldSymbol symbol) || !symbol.IsConst
+                                    || symbol.ContainingType?.TypeKind == TypeKind.Enum)
+                                        {
+                                                return;
+                                        }
 
-                                if (NamedTypeHelpers.IsContainedInNativeMethodsClass(
+                                if (NamedTypeHelpers.IsContainedInNativeMethodsClass (
                                         symbol.ContainingType))
-                                {
-                                        return;
-                                }
+                                        {
+                                                return;
+                                        }
 
                                 /* This code uses char.IsLower(...) instead of !char.IsUpper(...)
                                  * for all of the following reasons:
@@ -98,22 +97,25 @@ namespace StyleCop.Analyzers.NamingRules
                                  * information:
                                  * https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/369
                                  */
-                                if (!string.IsNullOrEmpty(symbol.Name) &&
-                                    char.IsLower(symbol.Name[0]) && symbol.Locations.Any())
-                                {
-                                        foreach (var location in context.Symbol.Locations)
+                                if (!string.IsNullOrEmpty (symbol.Name)
+                                    && char.IsLower (symbol.Name[0]) && symbol.Locations.Any ())
                                         {
-                                                if (!location.IsInSource)
-                                                {
-                                                        // assume symbols not defined in a source
-                                                        // document are "out of reach"
-                                                        return;
-                                                }
-                                        }
+                                                foreach (var location in context.Symbol.Locations)
+                                                        {
+                                                                if (!location.IsInSource)
+                                                                        {
+                                                                                // assume symbols
+                                                                                // not defined in a
+                                                                                // source document
+                                                                                // are "out of
+                                                                                // reach"
+                                                                                return;
+                                                                        }
+                                                        }
 
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, symbol.Locations[0]));
-                                }
+                                                context.ReportDiagnostic (Diagnostic.Create (
+                                                    Descriptor, symbol.Locations[0]));
+                                        }
                         }
                 }
         }

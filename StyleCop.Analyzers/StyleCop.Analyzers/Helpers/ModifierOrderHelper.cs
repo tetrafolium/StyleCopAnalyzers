@@ -41,40 +41,41 @@ namespace StyleCop.Analyzers.OrderingRules
                         Other,
                 }
 
-                internal static ModifierType GetModifierType(SyntaxToken modifier)
+                internal static ModifierType
+                GetModifierType (SyntaxToken modifier)
                 {
                         var result = default(ModifierType);
 
-                        switch (modifier.Kind())
-                        {
-                        case SyntaxKind.PublicKeyword:
-                        case SyntaxKind.ProtectedKeyword:
-                        case SyntaxKind.InternalKeyword:
-                        case SyntaxKind.PrivateKeyword:
-                                result = ModifierType.Access;
-                                break;
+                        switch (modifier.Kind ())
+                                {
+                                case SyntaxKind.PublicKeyword:
+                                case SyntaxKind.ProtectedKeyword:
+                                case SyntaxKind.InternalKeyword:
+                                case SyntaxKind.PrivateKeyword:
+                                        result = ModifierType.Access;
+                                        break;
 
-                        case SyntaxKind.StaticKeyword:
-                                result = ModifierType.Static;
-                                break;
+                                case SyntaxKind.StaticKeyword:
+                                        result = ModifierType.Static;
+                                        break;
 
-                        case SyntaxKind.VirtualKeyword:
-                        case SyntaxKind.AbstractKeyword:
-                        case SyntaxKind.OverrideKeyword:
-                        case SyntaxKind.ExternKeyword:
-                        case SyntaxKind.UnsafeKeyword:
-                        case SyntaxKind.NewKeyword:
-                        case SyntaxKind.SealedKeyword:
-                        case SyntaxKind.ReadOnlyKeyword:
-                        case SyntaxKind.VolatileKeyword:
-                        case SyntaxKind.FixedKeyword:
-                        case SyntaxKind.ConstKeyword:
-                        case SyntaxKind.AsyncKeyword:
-                        case SyntaxKind.PartialKeyword:
-                        case SyntaxKind.RefKeyword:
-                                result = ModifierType.Other;
-                                break;
-                        }
+                                case SyntaxKind.VirtualKeyword:
+                                case SyntaxKind.AbstractKeyword:
+                                case SyntaxKind.OverrideKeyword:
+                                case SyntaxKind.ExternKeyword:
+                                case SyntaxKind.UnsafeKeyword:
+                                case SyntaxKind.NewKeyword:
+                                case SyntaxKind.SealedKeyword:
+                                case SyntaxKind.ReadOnlyKeyword:
+                                case SyntaxKind.VolatileKeyword:
+                                case SyntaxKind.FixedKeyword:
+                                case SyntaxKind.ConstKeyword:
+                                case SyntaxKind.AsyncKeyword:
+                                case SyntaxKind.PartialKeyword:
+                                case SyntaxKind.RefKeyword:
+                                        result = ModifierType.Other;
+                                        break;
+                                }
 
                         return result;
                 }

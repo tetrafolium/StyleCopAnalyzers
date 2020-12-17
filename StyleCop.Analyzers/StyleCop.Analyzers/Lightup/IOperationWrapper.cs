@@ -9,10 +9,7 @@ namespace StyleCop.Analyzers.Lightup
 
         internal interface IOperationWrapper
         {
-                IOperation? WrappedOperation
-                {
-                        get;
-                }
+                IOperation? WrappedOperation { get; }
 
                 ////IOperationWrapper Parent { get; }
 
@@ -20,10 +17,7 @@ namespace StyleCop.Analyzers.Lightup
 
                 ////SyntaxNode Syntax { get; }
 
-                ITypeSymbol? Type
-                {
-                        get;
-                }
+                ITypeSymbol? Type { get; }
 
                 ////Optional<object> ConstantValue { get; }
 

@@ -23,10 +23,11 @@ namespace StyleCop.Analyzers.Helpers
                 /// diagnostic is currently suppressed.</param> <param name="descriptor">The
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
-                internal static bool IsAnalyzerSuppressed(this SyntaxNodeAnalysisContext context,
-                                                          DiagnosticDescriptor descriptor)
+                internal static bool
+                IsAnalyzerSuppressed (this SyntaxNodeAnalysisContext context,
+                                      DiagnosticDescriptor descriptor)
                 {
-                        return context.SemanticModel.Compilation.IsAnalyzerSuppressed(descriptor);
+                        return context.SemanticModel.Compilation.IsAnalyzerSuppressed (descriptor);
                 }
 
                 /// <summary>
@@ -37,10 +38,11 @@ namespace StyleCop.Analyzers.Helpers
                 /// diagnostic is currently suppressed.</param> <param name="descriptor">The
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
-                internal static bool IsAnalyzerSuppressed(
-                    this CompilationStartAnalysisContext context, DiagnosticDescriptor descriptor)
+                internal static bool
+                IsAnalyzerSuppressed (this CompilationStartAnalysisContext context,
+                                      DiagnosticDescriptor descriptor)
                 {
-                        return context.Compilation.IsAnalyzerSuppressed(descriptor);
+                        return context.Compilation.IsAnalyzerSuppressed (descriptor);
                 }
 
                 /// <summary>
@@ -51,10 +53,10 @@ namespace StyleCop.Analyzers.Helpers
                 /// diagnostic is currently suppressed.</param> <param name="descriptor">The
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
-                internal static bool IsAnalyzerSuppressed(this Compilation compilation,
-                                                          DiagnosticDescriptor descriptor)
+                internal static bool
+                IsAnalyzerSuppressed (this Compilation compilation, DiagnosticDescriptor descriptor)
                 {
-                        return compilation.Options.IsAnalyzerSuppressed(descriptor);
+                        return compilation.Options.IsAnalyzerSuppressed (descriptor);
                 }
 
                 /// <summary>
@@ -65,18 +67,20 @@ namespace StyleCop.Analyzers.Helpers
                 /// determine if the diagnostic is currently suppressed.</param> <param
                 /// name="descriptor">The diagnostic descriptor to check.</param> <returns>True if
                 /// the diagnostic is currently suppressed.</returns>
-                internal static bool IsAnalyzerSuppressed(
-                    this CompilationOptions compilationOptions, DiagnosticDescriptor descriptor)
+                internal static bool
+                IsAnalyzerSuppressed (this CompilationOptions compilationOptions,
+                                      DiagnosticDescriptor descriptor)
                 {
-                        switch (descriptor.GetEffectiveSeverity(compilationOptions))
-                        {
-                        case ReportDiagnostic.Suppress:
-                                return true;
-                        case ReportDiagnostic.Default:
-                                throw new InvalidOperationException("This should be unreachable.");
-                        default:
-                                return false;
-                        }
+                        switch (descriptor.GetEffectiveSeverity (compilationOptions))
+                                {
+                                case ReportDiagnostic.Suppress:
+                                        return true;
+                                case ReportDiagnostic.Default:
+                                        throw new InvalidOperationException (
+                                            "This should be unreachable.");
+                                default:
+                                        return false;
+                                }
                 }
 
                 /// <summary>
@@ -90,8 +94,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// cref="DocumentationMode.Diagnose"/>, if the documentation mode could not be
                 /// determined.</para>
                 /// </returns>
-                internal static DocumentationMode GetDocumentationMode(
-                    this SyntaxNodeAnalysisContext context)
+                internal static DocumentationMode
+                GetDocumentationMode (this SyntaxNodeAnalysisContext context)
                 {
                         return context.Node.SyntaxTree?.Options
                             .DocumentationMode ?? DocumentationMode.Diagnose;

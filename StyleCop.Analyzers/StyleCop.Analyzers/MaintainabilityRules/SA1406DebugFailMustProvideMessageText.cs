@@ -22,8 +22,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// Debug.Fail("The code should never reach this point.");
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        [NoCodeFix("No message is available for Debug.Fail")]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
+        [NoCodeFix ("No message is available for Debug.Fail")]
         internal class SA1406DebugFailMustProvideMessageText : SystemDiagnosticsDebugDiagnosticBase
         {
                 /// <summary>
@@ -31,50 +31,51 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// cref="SA1406DebugFailMustProvideMessageText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1406";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1406.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1406Title),
-                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1406MessageFormat),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1406Description),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1406.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (MaintainabilityResources.SA1406Title),
+                    MaintainabilityResources.ResourceManager, typeof (MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (MaintainabilityResources.SA1406MessageFormat),
+                        MaintainabilityResources.ResourceManager,
+                        typeof (MaintainabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (MaintainabilityResources.SA1406Description),
+                        MaintainabilityResources.ResourceManager,
+                        typeof (MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext>
-                    InvocationExpressionAction = HandleInvocationExpression;
+                private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction
+                    = HandleInvocationExpression;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(InvocationExpressionAction,
-                                                         SyntaxKind.InvocationExpression);
+                        context.RegisterSyntaxNodeAction (InvocationExpressionAction,
+                                                          SyntaxKind.InvocationExpression);
                 }
 
-                private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleInvocationExpression (SyntaxNodeAnalysisContext context)
                 {
                         // Debug.Fail is not available in a portable library. So no
                         // nameof(Debug.Fail) here
-                        HandleInvocationExpression(context, "Fail", 0, Descriptor);
+                        HandleInvocationExpression (context, "Fail", 0, Descriptor);
                 }
         }
 }

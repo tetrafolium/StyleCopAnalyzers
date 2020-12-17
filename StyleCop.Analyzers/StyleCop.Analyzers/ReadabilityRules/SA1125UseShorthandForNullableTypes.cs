@@ -19,8 +19,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <para>A violation of this rule occurs whenever the <see cref="Nullable{T}"/> type has
         /// been defined without using the shorthand C# style.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        [NoCodeFix("Provided by Visual Studio")]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
+        [NoCodeFix ("Provided by Visual Studio")]
         internal class SA1125UseShorthandForNullableTypes : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -28,120 +28,121 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// cref="SA1125UseShorthandForNullableTypes"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1125";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1125.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1125Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1125MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1125Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1125.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (ReadabilityResources.SA1125Title), ReadabilityResources.ResourceManager,
+                    typeof (ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1125MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1125Description),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> GenericNameAction =
-                    HandleGenericName;
+                private static readonly Action<SyntaxNodeAnalysisContext> GenericNameAction
+                    = HandleGenericName;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(GenericNameAction, SyntaxKind.GenericName);
+                        context.RegisterSyntaxNodeAction (GenericNameAction,
+                                                          SyntaxKind.GenericName);
                 }
 
-                private static void HandleGenericName(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleGenericName (SyntaxNodeAnalysisContext context)
                 {
                         GenericNameSyntax genericNameSyntax = (GenericNameSyntax) context.Node;
 
-                        if (genericNameSyntax.Identifier.IsMissing ||
-                            genericNameSyntax.Identifier.ValueText != "Nullable")
-                        {
-                                return;
-                        }
+                        if (genericNameSyntax.Identifier.IsMissing
+                            || genericNameSyntax.Identifier.ValueText != "Nullable")
+                                {
+                                        return;
+                                }
 
                         // This covers the specific forms in an XML comment which cannot be
                         // simplified
                         if (genericNameSyntax.Parent is NameMemberCrefSyntax)
-                        {
-                                // cref="Nullable{T}"
-                                return;
-                        }
+                                {
+                                        // cref="Nullable{T}"
+                                        return;
+                                }
                         else if (genericNameSyntax.Parent is QualifiedCrefSyntax)
-                        {
-                                // cref="Nullable{T}.Value"
-                                return;
-                        }
-                        else if (genericNameSyntax.Parent is QualifiedNameSyntax &&
-                                 genericNameSyntax.Parent.Parent is QualifiedCrefSyntax)
-                        {
-                                // cref="System.Nullable{T}.Value"
-                                return;
-                        }
+                                {
+                                        // cref="Nullable{T}.Value"
+                                        return;
+                                }
+                        else if (genericNameSyntax.Parent is QualifiedNameSyntax
+                                 && genericNameSyntax.Parent.Parent is QualifiedCrefSyntax)
+                                {
+                                        // cref="System.Nullable{T}.Value"
+                                        return;
+                                }
 
                         // The shorthand syntax is not available in using directives (covers
                         // standard, alias, and static)
-                        if (genericNameSyntax.FirstAncestorOrSelf<UsingDirectiveSyntax>() != null)
-                        {
-                                return;
-                        }
+                        if (genericNameSyntax.FirstAncestorOrSelf<UsingDirectiveSyntax> () != null)
+                                {
+                                        return;
+                                }
 
                         // This covers special cases of static and instance member access through
                         // the type name. It also covers most special cases for the `nameof`
                         // expression.
                         if (genericNameSyntax.Parent is MemberAccessExpressionSyntax)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         // This covers the special case of `nameof(Nullable<int>)`
                         if (genericNameSyntax.Parent is ArgumentSyntax)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         SemanticModel semanticModel = context.SemanticModel;
-                        INamedTypeSymbol symbol =
-                            semanticModel
-                                .GetSymbolInfo(genericNameSyntax, context.CancellationToken)
-                                .Symbol as INamedTypeSymbol;
-                        if (symbol?.OriginalDefinition?.SpecialType !=
-                            SpecialType.System_Nullable_T)
-                        {
-                                return;
-                        }
+                        INamedTypeSymbol symbol
+                            = semanticModel
+                                  .GetSymbolInfo (genericNameSyntax, context.CancellationToken)
+                                  .Symbol as INamedTypeSymbol;
+                        if (symbol?.OriginalDefinition?.SpecialType
+                            != SpecialType.System_Nullable_T)
+                                {
+                                        return;
+                                }
 
                         if (symbol.IsUnboundGenericType)
-                        {
-                                // There is never a shorthand syntax for the open generic Nullable<>
-                                return;
-                        }
+                                {
+                                        // There is never a shorthand syntax for the open generic
+                                        // Nullable<>
+                                        return;
+                                }
 
                         SyntaxNode locationNode = genericNameSyntax;
                         if (genericNameSyntax.Parent is QualifiedNameSyntax)
-                        {
-                                locationNode = genericNameSyntax.Parent;
-                        }
+                                {
+                                        locationNode = genericNameSyntax.Parent;
+                                }
 
                         // Use shorthand for nullable types
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, locationNode.GetLocation()));
+                        context.ReportDiagnostic (
+                            Diagnostic.Create (Descriptor, locationNode.GetLocation ()));
                 }
         }
 }

@@ -25,7 +25,8 @@ namespace StyleCop.Analyzers.Helpers
                 /// <param name="fileHeaderStart">The offset within the file at which the header
                 /// started.</param> <param name="fileHeaderEnd">The offset within the file at which
                 /// the header ended.</param>
-                internal XmlFileHeader(XElement headerXml, int fileHeaderStart, int fileHeaderEnd)
+                internal
+                XmlFileHeader (XElement headerXml, int fileHeaderStart, int fileHeaderEnd)
                 {
                         this.headerXml = headerXml;
                         this.fileHeaderStart = fileHeaderStart;
@@ -36,9 +37,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// Prevents a default instance of the <see cref="XmlFileHeader"/> class from being
                 /// created.
                 /// </summary>
-                private XmlFileHeader()
-                {
-                }
+                private XmlFileHeader () {}
 
                 /// <summary>
                 /// Gets a <see cref="XmlFileHeader"/> instance representing a missing file header.
@@ -48,10 +47,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 internal static XmlFileHeader MissingFileHeader
                 {
-                        get
-                        {
-                                return new XmlFileHeader{IsMissing = true};
-                        }
+                        get { return new XmlFileHeader{ IsMissing = true }; }
                 }
 
                 /// <summary>
@@ -62,10 +58,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// </value>
                 internal static XmlFileHeader MalformedFileHeader
                 {
-                        get
-                        {
-                                return new XmlFileHeader{IsMalformed = true};
-                        }
+                        get { return new XmlFileHeader{ IsMalformed = true }; }
                 }
 
                 /// <summary>
@@ -98,10 +91,11 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="tagName">The tag name for the node.</param>
                 /// <returns>The requested node, or null if the node could not be found.</returns>
-                internal XElement GetElement(string tagName)
+                internal XElement
+                GetElement (string tagName)
                 {
-                        return this.headerXml.Descendants().FirstOrDefault(
-                            e => e.Name.LocalName.Equals(tagName, StringComparison.Ordinal));
+                        return this.headerXml.Descendants ().FirstOrDefault (
+                            e => e.Name.LocalName.Equals (tagName, StringComparison.Ordinal));
                 }
 
                 /// <summary>
@@ -110,16 +104,17 @@ namespace StyleCop.Analyzers.Helpers
                 /// <param name="syntaxTree">The syntax tree to use for generating the
                 /// location.</param> <returns>The location representing the start of the file
                 /// header.</returns>
-                internal Location GetLocation(SyntaxTree syntaxTree)
+                internal Location
+                GetLocation (SyntaxTree syntaxTree)
                 {
                         if (this.IsMissing || this.IsMalformed)
-                        {
-                                return Location.Create(syntaxTree, new TextSpan(0, 0));
-                        }
+                                {
+                                        return Location.Create (syntaxTree, new TextSpan (0, 0));
+                                }
 
-                        return Location.Create(
+                        return Location.Create (
                             syntaxTree,
-                            TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderStart + 2));
+                            TextSpan.FromBounds (this.fileHeaderStart, this.fileHeaderStart + 2));
                 }
 
                 /// <summary>
@@ -130,20 +125,21 @@ namespace StyleCop.Analyzers.Helpers
                 /// location.</param> <param name="element">The XML element to get the location
                 /// of.</param> <returns>The location representing the position of the given element
                 /// in the source file.</returns>
-                internal Location GetElementLocation(SyntaxTree syntaxTree, XElement element)
+                internal Location
+                GetElementLocation (SyntaxTree syntaxTree, XElement element)
                 {
-                        var headerSourceText = syntaxTree.GetText()
-                                                   .GetSubText(TextSpan.FromBounds(
+                        var headerSourceText = syntaxTree.GetText ()
+                                                   .GetSubText (TextSpan.FromBounds (
                                                        this.fileHeaderStart, this.fileHeaderEnd))
-                                                   .ToString();
+                                                   .ToString ();
 
                         var tagStart = "<" + element.Name.LocalName;
-                        var index = headerSourceText.IndexOf(tagStart);
+                        var index = headerSourceText.IndexOf (tagStart);
 
-                        var textSpan =
-                            TextSpan.FromBounds(this.fileHeaderStart + index,
-                                                this.fileHeaderStart + index + tagStart.Length);
-                        return Location.Create(syntaxTree, textSpan);
+                        var textSpan
+                            = TextSpan.FromBounds (this.fileHeaderStart + index,
+                                                   this.fileHeaderStart + index + tagStart.Length);
+                        return Location.Create (syntaxTree, textSpan);
                 }
         }
 }

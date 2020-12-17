@@ -11,8 +11,8 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly partial struct RefTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.RefTypeSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.RefTypeSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<TypeSyntax, SyntaxToken> RefKeywordAccessor;
@@ -26,104 +26,97 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly TypeSyntax node;
 
-                static RefTypeSyntaxWrapper()
+                static RefTypeSyntaxWrapper ()
                 {
-                        WrappedType =
-                            SyntaxWrapperHelper.GetWrappedType(typeof(RefTypeSyntaxWrapper));
-                        RefKeywordAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                WrappedType, nameof(RefKeyword));
-                        ReadOnlyKeywordAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                WrappedType, nameof(ReadOnlyKeyword));
-                        TypeAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, TypeSyntax>(
-                                WrappedType, nameof(Type));
-                        WithRefKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                    WrappedType, nameof(RefKeyword));
-                        WithReadOnlyKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                    WrappedType, nameof(ReadOnlyKeyword));
-                        WithTypeAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeSyntax, TypeSyntax>(
-                                WrappedType, nameof(Type));
+                        WrappedType
+                            = SyntaxWrapperHelper.GetWrappedType (typeof (RefTypeSyntaxWrapper));
+                        RefKeywordAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken> (
+                                WrappedType, nameof (RefKeyword));
+                        ReadOnlyKeywordAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken> (
+                                WrappedType, nameof (ReadOnlyKeyword));
+                        TypeAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, TypeSyntax> (
+                                WrappedType, nameof (Type));
+                        WithRefKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken> (
+                                      WrappedType, nameof (RefKeyword));
+                        WithReadOnlyKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken> (
+                                      WrappedType, nameof (ReadOnlyKeyword));
+                        WithTypeAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, TypeSyntax> (
+                                      WrappedType, nameof (Type));
                 }
 
-                private RefTypeSyntaxWrapper(TypeSyntax node)
-                {
-                        this.node = node;
-                }
+                private RefTypeSyntaxWrapper (TypeSyntax node) { this.node = node; }
 
                 public TypeSyntax SyntaxNode => this.node;
 
                 public SyntaxToken RefKeyword
                 {
-                        get
-                        {
-                                return RefKeywordAccessor(this.SyntaxNode);
-                        }
+                        get { return RefKeywordAccessor (this.SyntaxNode); }
                 }
 
                 public SyntaxToken ReadOnlyKeyword
                 {
-                        get
-                        {
-                                return ReadOnlyKeywordAccessor(this.SyntaxNode);
-                        }
+                        get { return ReadOnlyKeywordAccessor (this.SyntaxNode); }
                 }
 
                 public TypeSyntax Type
                 {
-                        get
-                        {
-                                return TypeAccessor(this.SyntaxNode);
-                        }
+                        get { return TypeAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator RefTypeSyntaxWrapper(SyntaxNode node)
+                public static explicit operator RefTypeSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new RefTypeSyntaxWrapper((TypeSyntax) node);
+                        return new RefTypeSyntaxWrapper ((TypeSyntax) node);
                 }
 
-                public static implicit operator TypeSyntax(RefTypeSyntaxWrapper wrapper)
+                public static implicit operator TypeSyntax (RefTypeSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public RefTypeSyntaxWrapper WithRefKeyword(SyntaxToken refKeyword)
+                public RefTypeSyntaxWrapper
+                WithRefKeyword (SyntaxToken refKeyword)
                 {
-                        return new RefTypeSyntaxWrapper(
-                            WithRefKeywordAccessor(this.SyntaxNode, refKeyword));
+                        return new RefTypeSyntaxWrapper (
+                            WithRefKeywordAccessor (this.SyntaxNode, refKeyword));
                 }
 
-                public RefTypeSyntaxWrapper WithReadOnlyKeyword(SyntaxToken readOnlyKeyword)
+                public RefTypeSyntaxWrapper
+                WithReadOnlyKeyword (SyntaxToken readOnlyKeyword)
                 {
-                        return new RefTypeSyntaxWrapper(
-                            WithReadOnlyKeywordAccessor(this.SyntaxNode, readOnlyKeyword));
+                        return new RefTypeSyntaxWrapper (
+                            WithReadOnlyKeywordAccessor (this.SyntaxNode, readOnlyKeyword));
                 }
 
-                public RefTypeSyntaxWrapper WithType(TypeSyntax type)
+                public RefTypeSyntaxWrapper
+                WithType (TypeSyntax type)
                 {
-                        return new RefTypeSyntaxWrapper(WithTypeAccessor(this.SyntaxNode, type));
+                        return new RefTypeSyntaxWrapper (WithTypeAccessor (this.SyntaxNode, type));
                 }
         }
 }

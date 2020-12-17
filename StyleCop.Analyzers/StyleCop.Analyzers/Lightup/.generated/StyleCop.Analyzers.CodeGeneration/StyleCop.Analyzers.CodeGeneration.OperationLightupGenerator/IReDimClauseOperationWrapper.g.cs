@@ -9,55 +9,58 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IReDimClauseOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IReDimClauseOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IReDimClauseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> OperandAccessor;
-                private static readonly Func<IOperation, ImmutableArray<IOperation>>
+                private static readonly Func<IOperation, ImmutableArray<IOperation> >
                     DimensionSizesAccessor;
                 private readonly IOperation operation;
-                static IReDimClauseOperationWrapper()
+                static IReDimClauseOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IReDimClauseOperationWrapper));
-                        OperandAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Operand));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IReDimClauseOperationWrapper));
+                        OperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Operand));
                         DimensionSizesAccessor = LightupHelpers.CreateOperationPropertyAccessor<
-                            IOperation, ImmutableArray<IOperation>>(WrappedType,
-                                                                    nameof(DimensionSizes));
+                            IOperation, ImmutableArray<IOperation> > (WrappedType,
+                                                                      nameof (DimensionSizes));
                 }
 
-                private IReDimClauseOperationWrapper(IOperation operation)
+                private IReDimClauseOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IOperation Operand => OperandAccessor(this.WrappedOperation);
-                public ImmutableArray<IOperation> DimensionSizes =>
-                    DimensionSizesAccessor(this.WrappedOperation);
-                public static IReDimClauseOperationWrapper FromOperation(IOperation operation)
+                public IOperation Operand => OperandAccessor (this.WrappedOperation);
+                public ImmutableArray<IOperation> DimensionSizes => DimensionSizesAccessor (
+                    this.WrappedOperation);
+                public static IReDimClauseOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IReDimClauseOperationWrapper(operation);
+                        return new IReDimClauseOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

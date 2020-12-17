@@ -15,52 +15,54 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <summary>
         /// Implements a code fix for <see cref="SA1511WhileDoFooterMustNotBePrecededByBlankLine"/>.
         /// </summary>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1511CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1511CodeFixProvider))]
         [Shared]
         internal class SA1511CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (
                     SA1511WhileDoFooterMustNotBePrecededByBlankLine.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        LayoutResources.SA1511CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1511CodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                LayoutResources.SA1511CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof (SA1511CodeFixProvider)),
+                                            diagnostic);
+                                }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
+                        var syntaxRoot = await document.GetSyntaxRootAsync (cancellationToken)
+                                             .ConfigureAwait (false);
 
-                        var whileToken = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
+                        var whileToken
+                            = syntaxRoot.FindToken (diagnostic.Location.SourceSpan.Start);
 
-                        var newSyntaxRoot = syntaxRoot.ReplaceToken(
-                            whileToken, whileToken.WithoutLeadingBlankLines());
-                        return document.WithSyntaxRoot(newSyntaxRoot);
+                        var newSyntaxRoot = syntaxRoot.ReplaceToken (
+                            whileToken, whileToken.WithoutLeadingBlankLines ());
+                        return document.WithSyntaxRoot (newSyntaxRoot);
                 }
         }
 }

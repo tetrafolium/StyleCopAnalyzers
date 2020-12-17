@@ -21,90 +21,89 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <para>To fix a violation of this rule, remove a slash from the beginning of the comment
         /// so that it begins with only two slashes.</para>
         /// </remarks>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1626CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1626CodeFixProvider))]
         [Shared]
         internal class SA1626CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (
                     SA1626SingleLineCommentsMustNotUseDocumentationStyleSlashes.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return FixAll.Instance;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        DocumentationResources.SA1626CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1626CodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                DocumentationResources.SA1626CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof (SA1626CodeFixProvider)),
+                                            diagnostic);
+                                }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var text =
-                            await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                        var text = await document.GetTextAsync (cancellationToken)
+                                       .ConfigureAwait (false);
 
-                        TextChange textChange = new TextChange(
-                            new TextSpan(diagnostic.Location.SourceSpan.Start, 1), string.Empty);
-                        return document.WithText(text.WithChanges(textChange));
+                        TextChange textChange = new TextChange (
+                            new TextSpan (diagnostic.Location.SourceSpan.Start, 1), string.Empty);
+                        return document.WithText (text.WithChanges (textChange));
                 }
 
                 private class FixAll : DocumentBasedFixAllProvider
                 {
-                        public static FixAllProvider Instance
-                        {
-                                get;
-                        }
-                        = new FixAll();
+                        public static FixAllProvider Instance { get; }
+                        = new FixAll ();
 
-                        protected override string CodeActionTitle =>
-                            DocumentationResources.SA1626CodeFix;
+                        protected override string
+                            CodeActionTitle => DocumentationResources.SA1626CodeFix;
 
-                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
-                            ImmutableArray<Diagnostic> diagnostics)
+                        protected override async Task<SyntaxNode>
+                        FixAllInDocumentAsync (FixAllContext fixAllContext, Document document,
+                                               ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty)
-                                {
-                                        return null;
-                                }
+                                        {
+                                                return null;
+                                        }
 
-                                var text = await document.GetTextAsync().ConfigureAwait(false);
+                                var text = await document.GetTextAsync ().ConfigureAwait (false);
 
-                                List<TextChange> changes = new List<TextChange>();
+                                List<TextChange> changes = new List<TextChange> ();
                                 foreach (var diagnostic in diagnostics)
-                                {
-                                        var sourceSpan = diagnostic.Location.SourceSpan;
-                                        changes.Add(new TextChange(
-                                            new TextSpan(sourceSpan.Start, 1), string.Empty));
-                                }
+                                        {
+                                                var sourceSpan = diagnostic.Location.SourceSpan;
+                                                changes.Add (new TextChange (
+                                                    new TextSpan (sourceSpan.Start, 1),
+                                                    string.Empty));
+                                        }
 
-                                changes.Sort((left, right) =>
-                                                 left.Span.Start.CompareTo(right.Span.Start));
+                                changes.Sort (
+                                    (left, right) => left.Span.Start.CompareTo (right.Span.Start));
 
-                                var tree =
-                                    await document.GetSyntaxTreeAsync().ConfigureAwait(false);
-                                return await tree.WithChangedText(text.WithChanges(changes))
-                                    .GetRootAsync()
-                                    .ConfigureAwait(false);
+                                var tree
+                                    = await document.GetSyntaxTreeAsync ().ConfigureAwait (false);
+                                return await tree.WithChangedText (text.WithChanges (changes))
+                                    .GetRootAsync ()
+                                    .ConfigureAwait (false);
                         }
                 }
         }

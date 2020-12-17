@@ -11,38 +11,38 @@ namespace StyleCop.Analyzers.Lightup
 
         internal abstract class SyntaxWrapper<TNode>
         {
-                public static SyntaxWrapper<TNode> Default
+                public static SyntaxWrapper<TNode> Default { get; }
+                = FindDefaultSyntaxWrapper ();
+
+                public abstract TNode Wrap (SyntaxNode node);
+
+                public abstract SyntaxNode Unwrap (TNode node);
+
+                private static SyntaxWrapper<TNode>
+                FindDefaultSyntaxWrapper ()
                 {
-                        get;
-                }
-                = FindDefaultSyntaxWrapper();
+                        if (typeof (SyntaxNode)
+                                .GetTypeInfo ()
+                                .IsAssignableFrom (typeof (TNode).GetTypeInfo ()))
+                                {
+                                        return new DirectCastSyntaxWrapper ();
+                                }
 
-                public abstract TNode Wrap(SyntaxNode node);
-
-                public abstract SyntaxNode Unwrap(TNode node);
-
-                private static SyntaxWrapper<TNode> FindDefaultSyntaxWrapper()
-                {
-                        if (typeof(SyntaxNode)
-                                .GetTypeInfo()
-                                .IsAssignableFrom(typeof(TNode).GetTypeInfo()))
-                        {
-                                return new DirectCastSyntaxWrapper();
-                        }
-
-                        return new ConversionSyntaxWrapper();
+                        return new ConversionSyntaxWrapper ();
                 }
 
                 private sealed class DirectCastSyntaxWrapper : SyntaxWrapper<TNode>
                 {
-                        public override SyntaxNode Unwrap(TNode node)
+                        public override SyntaxNode
+                        Unwrap (TNode node)
                         {
-                                return (SyntaxNode)(object) node;
+                                return (SyntaxNode) (object) node;
                         }
 
-                        public override TNode Wrap(SyntaxNode node)
+                        public override TNode
+                        Wrap (SyntaxNode node)
                         {
-                                return (TNode)(object) node;
+                                return (TNode) (object) node;
                         }
                 }
 
@@ -51,38 +51,42 @@ namespace StyleCop.Analyzers.Lightup
                         private readonly Func<TNode, SyntaxNode> unwrapAccessor;
                         private readonly Func<SyntaxNode, TNode> wrapAccessor;
 
-                        public ConversionSyntaxWrapper()
+                        public ConversionSyntaxWrapper ()
                         {
-                                this.unwrapAccessor =
-                                    LightupHelpers.CreateSyntaxPropertyAccessor<TNode, SyntaxNode>(
-                                        typeof(TNode),
-                                        nameof(ISyntaxWrapper<SyntaxNode>.SyntaxNode));
+                                this.unwrapAccessor
+                                    = LightupHelpers
+                                          .CreateSyntaxPropertyAccessor<TNode, SyntaxNode> (
+                                              typeof (TNode),
+                                              nameof (ISyntaxWrapper<SyntaxNode>.SyntaxNode));
 
-                                var explicitOperator =
-                                    typeof(TNode)
-                                        .GetTypeInfo()
-                                        .GetDeclaredMethods("op_Explicit")
-                                        .Single(m => m.ReturnType ==
-                                                     typeof(TNode) &&m.GetParameters()[0]
-                                                         .ParameterType == typeof(SyntaxNode));
-                                var syntaxParameter =
-                                    Expression.Parameter(typeof(SyntaxNode), "syntax");
-                                Expression<Func<SyntaxNode, TNode>> wrapAccessorExpression =
-                                    Expression.Lambda<Func<SyntaxNode, TNode>>(
-                                        Expression.Call(explicitOperator, syntaxParameter),
+                                var explicitOperator
+                                    = typeof (TNode)
+                                          .GetTypeInfo ()
+                                          .GetDeclaredMethods ("op_Explicit")
+                                          .Single (m => m.ReturnType
+                                                        == typeof (TNode) &&m.GetParameters ()[0]
+                                                               .ParameterType
+                                                        == typeof (SyntaxNode));
+                                var syntaxParameter
+                                    = Expression.Parameter (typeof (SyntaxNode), "syntax");
+                                Expression<Func<SyntaxNode, TNode> > wrapAccessorExpression
+                                    = Expression.Lambda<Func<SyntaxNode, TNode> > (
+                                        Expression.Call (explicitOperator, syntaxParameter),
                                         syntaxParameter);
 
-                                this.wrapAccessor = wrapAccessorExpression.Compile();
+                                this.wrapAccessor = wrapAccessorExpression.Compile ();
                         }
 
-                        public override SyntaxNode Unwrap(TNode node)
+                        public override SyntaxNode
+                        Unwrap (TNode node)
                         {
-                                return this.unwrapAccessor(node);
+                                return this.unwrapAccessor (node);
                         }
 
-                        public override TNode Wrap(SyntaxNode node)
+                        public override TNode
+                        Wrap (SyntaxNode node)
                         {
-                                return this.wrapAccessor(node);
+                                return this.wrapAccessor (node);
                         }
                 }
         }

@@ -73,7 +73,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// }
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1512SingleLineCommentsMustNotBeFollowedByBlankLine : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -81,21 +81,21 @@ namespace StyleCop.Analyzers.LayoutRules
                 /// cref="SA1512SingleLineCommentsMustNotBeFollowedByBlankLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1512";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1512.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1512Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1512MessageFormat),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1512Description),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1512.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (LayoutResources.SA1512Title), LayoutResources.ResourceManager,
+                    typeof (LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1512MessageFormat),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1512Description),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
@@ -104,184 +104,202 @@ namespace StyleCop.Analyzers.LayoutRules
                     CompilationStartAction = HandleCompilationStart;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterCompilationStartAction(CompilationStartAction);
+                        context.RegisterCompilationStartAction (CompilationStartAction);
                 }
 
-                private static void HandleCompilationStart(CompilationStartAnalysisContext context)
+                private static void
+                HandleCompilationStart (CompilationStartAnalysisContext context)
                 {
-                        context.RegisterSyntaxTreeAction(
-                            c => HandleSyntaxTreeAnalysis(c, context.Compilation));
+                        context.RegisterSyntaxTreeAction (
+                            c => HandleSyntaxTreeAnalysis (c, context.Compilation));
                 }
 
-                private static void HandleSyntaxTreeAnalysis(SyntaxTreeAnalysisContext context,
-                                                             Compilation compilation)
+                private static void
+                HandleSyntaxTreeAnalysis (SyntaxTreeAnalysisContext context,
+                                          Compilation compilation)
                 {
-                        var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
+                        var syntaxRoot = context.Tree.GetRoot (context.CancellationToken);
 
-                        foreach (var trivia in syntaxRoot.DescendantTrivia().Where(
-                                     trivia => trivia.IsKind(SyntaxKind.SingleLineCommentTrivia)))
-                        {
-                                if (trivia.ToString().StartsWith("////", StringComparison.Ordinal))
+                        foreach (var trivia in syntaxRoot.DescendantTrivia ().Where (
+                                     trivia => trivia.IsKind (SyntaxKind.SingleLineCommentTrivia)))
                                 {
-                                        // ignore commented out code
-                                        continue;
-                                }
-
-                                int triviaIndex;
-
-                                // PERF: Explicitly cast to IReadOnlyList so we only box once.
-                                var triviaList =
-                                    TriviaHelper.GetContainingTriviaList(trivia, out triviaIndex);
-
-                                if (!IsOnOwnLine(triviaList, triviaIndex))
-                                {
-                                        // ignore comments after other code elements.
-                                        continue;
-                                }
-
-                                if (IsPartOfFileHeader(triviaList, triviaIndex))
-                                {
-                                        // ignore comments that are part of the file header.
-                                        continue;
-                                }
-
-                                var trailingBlankLineCount =
-                                    GetTrailingBlankLineCount(triviaList, ref triviaIndex);
-                                if (trailingBlankLineCount == 0)
-                                {
-                                        // ignore comments that are not followed by a blank line
-                                        continue;
-                                }
-                                else if (trailingBlankLineCount > 1)
-                                {
-                                        if (!compilation.IsAnalyzerSuppressed(
-                                                SA1507CodeMustNotContainMultipleBlankLinesInARow
-                                                    .Descriptor))
-                                        {
-                                                // ignore comments that are followed by multiple
-                                                // blank lines -> the multiple blank lines will be
-                                                // reported by SA1507
-                                                continue;
-                                        }
-                                }
-                                else
-                                {
-                                        if (triviaIndex < triviaList.Count)
-                                        {
-                                                switch (triviaList [triviaIndex]
-                                                            .Kind())
+                                        if (trivia.ToString ().StartsWith (
+                                                "////", StringComparison.Ordinal))
                                                 {
-                                                case SyntaxKind.SingleLineCommentTrivia:
-                                                case SyntaxKind
-                                                    .SingleLineDocumentationCommentTrivia:
-                                                case SyntaxKind.MultiLineCommentTrivia:
-                                                case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                                                        // ignore a single blank line in
-                                                        // between two comments.
+                                                        // ignore commented out code
                                                         continue;
                                                 }
-                                        }
-                                }
 
-                                var diagnosticSpan =
-                                    TextSpan.FromBounds(trivia.SpanStart, trivia.SpanStart + 2);
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, Location.Create(context.Tree, diagnosticSpan)));
-                        }
+                                        int triviaIndex;
+
+                                        // PERF: Explicitly cast to IReadOnlyList so we only box
+                                        // once.
+                                        var triviaList = TriviaHelper.GetContainingTriviaList (
+                                            trivia, out triviaIndex);
+
+                                        if (!IsOnOwnLine (triviaList, triviaIndex))
+                                                {
+                                                        // ignore comments after other code
+                                                        // elements.
+                                                        continue;
+                                                }
+
+                                        if (IsPartOfFileHeader (triviaList, triviaIndex))
+                                                {
+                                                        // ignore comments that are part of the file
+                                                        // header.
+                                                        continue;
+                                                }
+
+                                        var trailingBlankLineCount = GetTrailingBlankLineCount (
+                                            triviaList, ref triviaIndex);
+                                        if (trailingBlankLineCount == 0)
+                                                {
+                                                        // ignore comments that are not followed by
+                                                        // a blank line
+                                                        continue;
+                                                }
+                                        else if (trailingBlankLineCount > 1)
+                                                {
+                                                        if (!compilation.IsAnalyzerSuppressed (
+                                                                SA1507CodeMustNotContainMultipleBlankLinesInARow
+                                                                    .Descriptor))
+                                                                {
+                                                                        // ignore comments that are
+                                                                        // followed by multiple
+                                                                        // blank lines -> the
+                                                                        // multiple blank lines will
+                                                                        // be reported by SA1507
+                                                                        continue;
+                                                                }
+                                                }
+                                        else
+                                                {
+                                                        if (triviaIndex < triviaList.Count)
+                                                                {
+                                                                        switch (triviaList
+                                                                                [triviaIndex]
+                                                                                    .Kind ())
+                                                                                {
+                                                                                case SyntaxKind
+                                                                                    .SingleLineCommentTrivia:
+                                                                                case SyntaxKind
+                                                                                    .SingleLineDocumentationCommentTrivia:
+                                                                                case SyntaxKind
+                                                                                    .MultiLineCommentTrivia:
+                                                                                case SyntaxKind
+                                                                                    .MultiLineDocumentationCommentTrivia:
+                                                                                        // ignore a
+                                                                                        // single
+                                                                                        // blank
+                                                                                        // line in
+                                                                                        // between
+                                                                                        // two
+                                                                                        // comments.
+                                                                                        continue;
+                                                                                }
+                                                                }
+                                                }
+
+                                        var diagnosticSpan = TextSpan.FromBounds (
+                                            trivia.SpanStart, trivia.SpanStart + 2);
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor,
+                                            Location.Create (context.Tree, diagnosticSpan)));
+                                }
                 }
 
-                private static bool IsOnOwnLine<T>(T triviaList, int triviaIndex) where T
-                    : IReadOnlyList<SyntaxTrivia>
+                private static bool
+                IsOnOwnLine<T> (T triviaList, int triviaIndex) where T : IReadOnlyList<SyntaxTrivia>
                 {
                         while (triviaIndex >= 0)
-                        {
-                                if (triviaList [triviaIndex]
-                                        .IsKind(SyntaxKind.EndOfLineTrivia))
                                 {
-                                        return true;
-                                }
+                                        if (triviaList [triviaIndex]
+                                                .IsKind (SyntaxKind.EndOfLineTrivia))
+                                                {
+                                                        return true;
+                                                }
 
-                                triviaIndex--;
-                        }
+                                        triviaIndex--;
+                                }
 
                         return false;
                 }
 
-                private static bool IsPartOfFileHeader<T>(T triviaList, int triviaIndex) where T
+                private static bool
+                IsPartOfFileHeader<T> (T triviaList, int triviaIndex) where T
                     : IReadOnlyList<SyntaxTrivia>
                 {
                         if (triviaList[0].FullSpan.Start > 0)
-                        {
-                                return false;
-                        }
+                                {
+                                        return false;
+                                }
 
                         var inSingleLineComment = false;
 
                         for (var i = 0; i < triviaList.Count; i++)
-                        {
-                                switch (triviaList [i]
-                                            .Kind())
                                 {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        if (!inSingleLineComment)
-                                        {
-                                                return triviaIndex < i;
-                                        }
+                                        switch (triviaList [i]
+                                                    .Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        if (!inSingleLineComment)
+                                                                {
+                                                                        return triviaIndex < i;
+                                                                }
 
-                                        inSingleLineComment = false;
-                                        break;
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                        inSingleLineComment = true;
-                                        break;
-                                default:
-                                        return triviaIndex < i;
+                                                        inSingleLineComment = false;
+                                                        break;
+                                                case SyntaxKind.SingleLineCommentTrivia:
+                                                        inSingleLineComment = true;
+                                                        break;
+                                                default:
+                                                        return triviaIndex < i;
+                                                }
                                 }
-                        }
 
                         return true;
                 }
 
-                private static int GetTrailingBlankLineCount<T>(T triviaList,
-                                                                ref int triviaIndex) where T
+                private static int
+                GetTrailingBlankLineCount<T> (T triviaList, ref int triviaIndex) where T
                     : IReadOnlyList<SyntaxTrivia>
                 {
                         int eolCount = 0;
 
                         for (var i = triviaIndex + 1; i < triviaList.Count; i++)
-                        {
-                                switch (triviaList [i]
-                                            .Kind())
                                 {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        // ignore whitespace
-                                        break;
+                                        switch (triviaList [i]
+                                                    .Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        // ignore whitespace
+                                                        break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        eolCount++;
-                                        break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        eolCount++;
+                                                        break;
 
-                                default:
-                                        triviaIndex = i;
-                                        return Math.Max(0, eolCount - 1);
+                                                default:
+                                                        triviaIndex = i;
+                                                        return Math.Max (0, eolCount - 1);
+                                                }
                                 }
-                        }
 
                         triviaIndex = triviaList.Count;
-                        return Math.Max(0, eolCount - 1);
+                        return Math.Max (0, eolCount - 1);
                 }
         }
 }

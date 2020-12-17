@@ -15,8 +15,8 @@ namespace StyleCop.Analyzers.Helpers
         /// </summary>
         internal struct MemberOrderHelper
         {
-                private static readonly ImmutableArray<SyntaxKind> TypeMemberOrder =
-                    ImmutableArray.Create(
+                private static readonly ImmutableArray<SyntaxKind> TypeMemberOrder
+                    = ImmutableArray.Create (
                         SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration,
                         SyntaxKind.MethodDeclaration, SyntaxKind.OperatorDeclaration,
                         SyntaxKind.ConversionOperatorDeclaration, SyntaxKind.IndexerDeclaration,
@@ -31,65 +31,72 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="member">The member to wrap.</param>
                 /// <param name="elementOrder">The element ordering traits.</param>
-                internal MemberOrderHelper(MemberDeclarationSyntax member,
-                                           ImmutableArray<OrderingTrait> elementOrder)
+                internal
+                MemberOrderHelper (MemberDeclarationSyntax member,
+                                   ImmutableArray<OrderingTrait> elementOrder)
                 {
                         this.Member = member;
-                        var modifiers = member.GetModifiers();
-                        var type = member.Kind();
-                        type = type == SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration
+                        var modifiers = member.GetModifiers ();
+                        var type = member.Kind ();
+                        type = type
+                               == SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration
                             : type;
 
                         this.Priority = 0;
                         foreach (OrderingTrait trait in elementOrder)
-                        {
-                                switch (trait)
                                 {
-                                case OrderingTrait.Kind:
-                                        // 4 bits are required to store this.
-                                        this.Priority <<= 4;
-                                        this.Priority |= TypeMemberOrder.IndexOf(type) & 0x0F;
-                                        break;
+                                        switch (trait)
+                                                {
+                                                case OrderingTrait.Kind:
+                                                        // 4 bits are required to store this.
+                                                        this.Priority <<= 4;
+                                                        this.Priority
+                                                            |= TypeMemberOrder.IndexOf (type)
+                                                               & 0x0F;
+                                                        break;
 
-                                case OrderingTrait.Accessibility:
-                                        // 3 bits are required to store this.
-                                        this.Priority <<= 3;
-                                        this.Priority |=
-                                            (int) GetAccessLevelForOrdering(member, modifiers) &
-                                            0x07;
-                                        break;
+                                                case OrderingTrait.Accessibility:
+                                                        // 3 bits are required to store this.
+                                                        this.Priority <<= 3;
+                                                        this.Priority
+                                                            |= (int) GetAccessLevelForOrdering (
+                                                                   member, modifiers)
+                                                               & 0x07;
+                                                        break;
 
-                                case OrderingTrait.Constant:
-                                        this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.ConstKeyword))
-                                        {
-                                                this.Priority |= 1;
-                                        }
+                                                case OrderingTrait.Constant:
+                                                        this.Priority <<= 1;
+                                                        if (modifiers.Any (SyntaxKind.ConstKeyword))
+                                                                {
+                                                                        this.Priority |= 1;
+                                                                }
 
-                                        break;
+                                                        break;
 
-                                case OrderingTrait.Static:
-                                        this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.StaticKeyword))
-                                        {
-                                                this.Priority |= 1;
-                                        }
+                                                case OrderingTrait.Static:
+                                                        this.Priority <<= 1;
+                                                        if (modifiers.Any (
+                                                                SyntaxKind.StaticKeyword))
+                                                                {
+                                                                        this.Priority |= 1;
+                                                                }
 
-                                        break;
+                                                        break;
 
-                                case OrderingTrait.Readonly:
-                                        this.Priority <<= 1;
-                                        if (modifiers.Any(SyntaxKind.ReadOnlyKeyword))
-                                        {
-                                                this.Priority |= 1;
-                                        }
+                                                case OrderingTrait.Readonly:
+                                                        this.Priority <<= 1;
+                                                        if (modifiers.Any (
+                                                                SyntaxKind.ReadOnlyKeyword))
+                                                                {
+                                                                        this.Priority |= 1;
+                                                                }
 
-                                        break;
+                                                        break;
 
-                                default:
-                                        continue;
+                                                default:
+                                                        continue;
+                                                }
                                 }
-                        }
                 }
 
                 [Flags]
@@ -121,10 +128,7 @@ namespace StyleCop.Analyzers.Helpers
                 /// <value>
                 /// The wrapped member.
                 /// </value>
-                internal MemberDeclarationSyntax Member
-                {
-                        get;
-                }
+                internal MemberDeclarationSyntax Member { get; }
 
                 /// <summary>
                 /// Gets the priority for this member.
@@ -132,47 +136,49 @@ namespace StyleCop.Analyzers.Helpers
                 /// <value>
                 /// The priority for this member.
                 /// </value>
-                internal int Priority
-                {
-                        get;
-                }
+                internal int Priority { get; }
 
-                internal static AccessLevel GetAccessLevelForOrdering(SyntaxNode member,
-                                                                      SyntaxTokenList modifiers)
+                internal static AccessLevel
+                GetAccessLevelForOrdering (SyntaxNode member, SyntaxTokenList modifiers)
                 {
-                        SyntaxKind type = member.Kind();
+                        SyntaxKind type = member.Kind ();
 
                         AccessLevel accessibility;
-                        if ((type == SyntaxKind.ConstructorDeclaration &&
-                             modifiers.Any(SyntaxKind.StaticKeyword)) ||
-                            (type == SyntaxKind.MethodDeclaration &&
-                             ((MethodDeclarationSyntax) member).ExplicitInterfaceSpecifier !=
-                                 null) ||
-                            (type == SyntaxKind.PropertyDeclaration &&
-                             ((PropertyDeclarationSyntax) member).ExplicitInterfaceSpecifier !=
-                                 null) ||
-                            (type == SyntaxKind.IndexerDeclaration &&
-                             ((IndexerDeclarationSyntax) member).ExplicitInterfaceSpecifier !=
-                                 null))
-                        {
-                                accessibility = AccessLevel.Public;
-                        }
-                        else
-                        {
-                                accessibility = AccessLevelHelper.GetAccessLevel(modifiers);
-                                if (accessibility == AccessLevel.NotSpecified)
+                        if ((type == SyntaxKind.ConstructorDeclaration
+                             && modifiers.Any (SyntaxKind.StaticKeyword))
+                            || (type == SyntaxKind.MethodDeclaration
+                                && ((MethodDeclarationSyntax) member).ExplicitInterfaceSpecifier
+                                       != null)
+                            || (type == SyntaxKind.PropertyDeclaration
+                                && ((PropertyDeclarationSyntax) member).ExplicitInterfaceSpecifier
+                                       != null)
+                            || (type == SyntaxKind.IndexerDeclaration
+                                && ((IndexerDeclarationSyntax) member).ExplicitInterfaceSpecifier
+                                       != null))
                                 {
-                                        if (member.Parent.IsKind(SyntaxKind.CompilationUnit) ||
-                                            member.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
-                                        {
-                                                accessibility = AccessLevel.Internal;
-                                        }
-                                        else
-                                        {
-                                                accessibility = AccessLevel.Private;
-                                        }
+                                        accessibility = AccessLevel.Public;
                                 }
-                        }
+                        else
+                                {
+                                        accessibility
+                                            = AccessLevelHelper.GetAccessLevel (modifiers);
+                                        if (accessibility == AccessLevel.NotSpecified)
+                                                {
+                                                        if (member.Parent.IsKind (
+                                                                SyntaxKind.CompilationUnit)
+                                                            || member.Parent.IsKind (
+                                                                SyntaxKind.NamespaceDeclaration))
+                                                                {
+                                                                        accessibility
+                                                                            = AccessLevel.Internal;
+                                                                }
+                                                        else
+                                                                {
+                                                                        accessibility
+                                                                            = AccessLevel.Private;
+                                                                }
+                                                }
+                                }
 
                         return accessibility;
                 }

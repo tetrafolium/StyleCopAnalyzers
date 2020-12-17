@@ -19,9 +19,6 @@ namespace StyleCop.Analyzers.Lightup
                 /// <value>
                 /// The wrapped syntax node.
                 /// </value>
-                T SyntaxNode
-                {
-                        get;
-                }
+                T SyntaxNode { get; }
         }
 }

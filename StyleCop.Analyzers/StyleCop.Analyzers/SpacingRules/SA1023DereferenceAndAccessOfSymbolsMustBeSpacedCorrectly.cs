@@ -40,7 +40,7 @@ namespace StyleCop.Analyzers.SpacingRules
         /// y = *x;
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1023DereferenceAndAccessOfSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -48,243 +48,249 @@ namespace StyleCop.Analyzers.SpacingRules
                 /// <see cref="SA1023DereferenceAndAccessOfSymbolsMustBeSpacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1023";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1023.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1023Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1023Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1023.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (SpacingResources.SA1023Title), SpacingResources.ResourceManager,
+                    typeof (SpacingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (SpacingResources.SA1023Description),
+                                                     SpacingResources.ResourceManager,
+                                                     typeof (SpacingResources));
 
-                private static readonly LocalizableString MessageNotPreceded =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1023MessageNotPreceded),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
-                private static readonly LocalizableString MessageNotFollowed =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1023MessageNotFollowed),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
-                private static readonly LocalizableString MessageFollowed =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1023MessageFollowed),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
-                private static readonly LocalizableString MessageNotAtBeginningOfLine =
-                    new LocalizableResourceString(
-                        nameof(SpacingResources.SA1023MessageNotAtBeginningOfLine),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
-                private static readonly LocalizableString MessageNotAtEndOfLine =
-                    new LocalizableResourceString(
-                        nameof(SpacingResources.SA1023MessageNotAtEndOfLine),
-                        SpacingResources.ResourceManager, typeof(SpacingResources));
+                private static readonly LocalizableString MessageNotPreceded
+                    = new LocalizableResourceString (
+                        nameof (SpacingResources.SA1023MessageNotPreceded),
+                        SpacingResources.ResourceManager, typeof (SpacingResources));
+                private static readonly LocalizableString MessageNotFollowed
+                    = new LocalizableResourceString (
+                        nameof (SpacingResources.SA1023MessageNotFollowed),
+                        SpacingResources.ResourceManager, typeof (SpacingResources));
+                private static readonly LocalizableString MessageFollowed
+                    = new LocalizableResourceString (
+                        nameof (SpacingResources.SA1023MessageFollowed),
+                        SpacingResources.ResourceManager, typeof (SpacingResources));
+                private static readonly LocalizableString MessageNotAtBeginningOfLine
+                    = new LocalizableResourceString (
+                        nameof (SpacingResources.SA1023MessageNotAtBeginningOfLine),
+                        SpacingResources.ResourceManager, typeof (SpacingResources));
+                private static readonly LocalizableString MessageNotAtEndOfLine
+                    = new LocalizableResourceString (
+                        nameof (SpacingResources.SA1023MessageNotAtEndOfLine),
+                        SpacingResources.ResourceManager, typeof (SpacingResources));
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-                internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-                    new DiagnosticDescriptor(
+                internal static readonly DiagnosticDescriptor DescriptorNotPreceded
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
 
-                internal static readonly DiagnosticDescriptor DescriptorNotFollowed =
-                    new DiagnosticDescriptor(
+                internal static readonly DiagnosticDescriptor DescriptorNotFollowed
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
 
-                internal static readonly DiagnosticDescriptor DescriptorFollowed =
-                    new DiagnosticDescriptor(
+                internal static readonly DiagnosticDescriptor DescriptorFollowed
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
 
-                internal static readonly DiagnosticDescriptor DescriptorNotAtBeginningOfLine =
-                    new DiagnosticDescriptor(
+                internal static readonly DiagnosticDescriptor DescriptorNotAtBeginningOfLine
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageNotAtBeginningOfLine,
                         AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
                         AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                internal static readonly DiagnosticDescriptor DescriptorNotAtEndOfLine =
-                    new DiagnosticDescriptor(
+                internal static readonly DiagnosticDescriptor DescriptorNotAtEndOfLine
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageNotAtEndOfLine, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(DescriptorNotPreceded);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (DescriptorNotPreceded);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxTreeAction(SyntaxTreeAction);
+                        context.RegisterSyntaxTreeAction (SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                private static void
+                HandleSyntaxTree (SyntaxTreeAnalysisContext context)
                 {
-                        SyntaxNode root =
-                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-                        foreach (var token in root.DescendantTokens())
-                        {
-                                if (token.IsKind(SyntaxKind.AsteriskToken))
+                        SyntaxNode root
+                            = context.Tree.GetCompilationUnitRoot (context.CancellationToken);
+                        foreach (var token in root.DescendantTokens ())
                                 {
-                                        HandleAsteriskToken(context, token);
+                                        if (token.IsKind (SyntaxKind.AsteriskToken))
+                                                {
+                                                        HandleAsteriskToken (context, token);
+                                                }
                                 }
-                        }
                 }
 
-                private static void HandleAsteriskToken(SyntaxTreeAnalysisContext context,
-                                                        SyntaxToken token)
+                private static void
+                HandleAsteriskToken (SyntaxTreeAnalysisContext context, SyntaxToken token)
                 {
                         if (token.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         bool allowAtLineStart;
                         bool allowAtLineEnd;
                         bool allowPrecedingSpace;
                         bool allowTrailingSpace;
-                        switch (token.Parent.Kind())
-                        {
-                        case SyntaxKindEx.FunctionPointerType:
-                                allowAtLineStart = true;
-                                allowAtLineEnd = true;
-                                allowPrecedingSpace = false;
-                                var nextToken = token.GetNextToken();
-                                switch (nextToken.Kind())
+                        switch (token.Parent.Kind ())
                                 {
-                                case SyntaxKindEx.ManagedKeyword:
-                                case SyntaxKindEx.UnmanagedKeyword:
-                                        allowTrailingSpace = true;
-                                        break;
-
-                                default:
-                                        allowTrailingSpace = false;
-                                        break;
-                                }
-
-                                break;
-
-                        case SyntaxKind.PointerType when token.Parent.Parent.IsKind(
-                            SyntaxKindEx.FunctionPointerParameter):
-                                allowAtLineStart = true;
-                                allowAtLineEnd = true;
-                                allowPrecedingSpace = false;
-                                allowTrailingSpace = false;
-                                break;
-
-                        case SyntaxKind.PointerType:
-                                allowAtLineStart = false;
-                                allowAtLineEnd = true;
-                                allowPrecedingSpace = false;
-                                nextToken = token.GetNextToken();
-                                switch (nextToken.Kind())
-                                {
-                                case SyntaxKind.OpenBracketToken:
-                                case SyntaxKind.OpenParenToken:
-                                case SyntaxKind.CloseParenToken:
-                                case SyntaxKind.AsteriskToken:
-                                        allowTrailingSpace = false;
-                                        break;
-
-                                default:
-                                        allowTrailingSpace = true;
-                                        break;
-                                }
-
-                                break;
-
-                        case SyntaxKind.PointerIndirectionExpression:
-                                allowAtLineStart = true;
-                                allowAtLineEnd = false;
-                                allowTrailingSpace = false;
-                                var prevToken = token.GetPreviousToken();
-                                switch (prevToken.Kind())
-                                {
-                                case SyntaxKind.OpenBracketToken:
-                                case SyntaxKind.OpenParenToken:
-                                case SyntaxKind.CloseParenToken:
+                                case SyntaxKindEx.FunctionPointerType:
+                                        allowAtLineStart = true;
+                                        allowAtLineEnd = true;
                                         allowPrecedingSpace = false;
+                                        var nextToken = token.GetNextToken ();
+                                        switch (nextToken.Kind ())
+                                                {
+                                                case SyntaxKindEx.ManagedKeyword:
+                                                case SyntaxKindEx.UnmanagedKeyword:
+                                                        allowTrailingSpace = true;
+                                                        break;
+
+                                                default:
+                                                        allowTrailingSpace = false;
+                                                        break;
+                                                }
+
                                         break;
+
+                                case SyntaxKind.PointerType when token.Parent.Parent.IsKind (
+                                    SyntaxKindEx.FunctionPointerParameter):
+                                        allowAtLineStart = true;
+                                        allowAtLineEnd = true;
+                                        allowPrecedingSpace = false;
+                                        allowTrailingSpace = false;
+                                        break;
+
+                                case SyntaxKind.PointerType:
+                                        allowAtLineStart = false;
+                                        allowAtLineEnd = true;
+                                        allowPrecedingSpace = false;
+                                        nextToken = token.GetNextToken ();
+                                        switch (nextToken.Kind ())
+                                                {
+                                                case SyntaxKind.OpenBracketToken:
+                                                case SyntaxKind.OpenParenToken:
+                                                case SyntaxKind.CloseParenToken:
+                                                case SyntaxKind.AsteriskToken:
+                                                        allowTrailingSpace = false;
+                                                        break;
+
+                                                default:
+                                                        allowTrailingSpace = true;
+                                                        break;
+                                                }
+
+                                        break;
+
+                                case SyntaxKind.PointerIndirectionExpression:
+                                        allowAtLineStart = true;
+                                        allowAtLineEnd = false;
+                                        allowTrailingSpace = false;
+                                        var prevToken = token.GetPreviousToken ();
+                                        switch (prevToken.Kind ())
+                                                {
+                                                case SyntaxKind.OpenBracketToken:
+                                                case SyntaxKind.OpenParenToken:
+                                                case SyntaxKind.CloseParenToken:
+                                                        allowPrecedingSpace = false;
+                                                        break;
+                                                default:
+                                                        allowPrecedingSpace = true;
+                                                        break;
+                                                }
+
+                                        break;
+
                                 default:
-                                        allowPrecedingSpace = true;
-                                        break;
+                                        return;
                                 }
 
-                                break;
-
-                        default:
-                                return;
-                        }
-
-                        bool firstInLine = token.IsFirstInLine();
-                        bool precededBySpace =
-                            firstInLine || token.IsPrecededByWhitespace(context.CancellationToken);
-                        bool followedBySpace = token.IsFollowedByWhitespace();
-                        bool lastInLine = token.IsLastInLine();
+                        bool firstInLine = token.IsFirstInLine ();
+                        bool precededBySpace
+                            = firstInLine
+                              || token.IsPrecededByWhitespace (context.CancellationToken);
+                        bool followedBySpace = token.IsFollowedByWhitespace ();
+                        bool lastInLine = token.IsLastInLine ();
 
                         if (!allowAtLineStart && firstInLine)
-                        {
-                                // Dereference symbol '*' should {not appear at the beginning of a
-                                // line}.
-                                var properties = TokenSpacingProperties.RemovePreceding;
+                                {
+                                        // Dereference symbol '*' should {not appear at the
+                                        // beginning of a line}.
+                                        var properties = TokenSpacingProperties.RemovePreceding;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
-                                context.ReportDiagnostic(
-                                    Diagnostic.Create(DescriptorNotAtBeginningOfLine,
-                                                      token.GetLocation(), properties));
+                                        context.ReportDiagnostic (
+                                            Diagnostic.Create (DescriptorNotAtBeginningOfLine,
+                                                               token.GetLocation (), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                        }
+                                }
                         else if (!allowPrecedingSpace && precededBySpace)
-                        {
-                                // Dereference symbol '*' should {not be preceded by a space}.
-                                var properties = TokenSpacingProperties.RemovePreceding;
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    DescriptorNotPreceded, token.GetLocation(), properties));
-                        }
+                                {
+                                        // Dereference symbol '*' should {not be preceded by a
+                                        // space}.
+                                        var properties = TokenSpacingProperties.RemovePreceding;
+                                        context.ReportDiagnostic (
+                                            Diagnostic.Create (DescriptorNotPreceded,
+                                                               token.GetLocation (), properties));
+                                }
 
                         if (!allowAtLineEnd && lastInLine)
-                        {
-                                // Dereference symbol '*' should {not appear at the end of a line}.
-                                var properties = TokenSpacingProperties.RemoveFollowing;
+                                {
+                                        // Dereference symbol '*' should {not appear at the end of a
+                                        // line}.
+                                        var properties = TokenSpacingProperties.RemoveFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    DescriptorNotAtEndOfLine, token.GetLocation(), properties));
+                                        context.ReportDiagnostic (
+                                            Diagnostic.Create (DescriptorNotAtEndOfLine,
+                                                               token.GetLocation (), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                        }
+                                }
                         else if (!allowTrailingSpace && followedBySpace)
-                        {
-                                // Dereference symbol '*' should {not be followed by a space}.
-                                var properties = TokenSpacingProperties.RemoveFollowing;
+                                {
+                                        // Dereference symbol '*' should {not be followed by a
+                                        // space}.
+                                        var properties = TokenSpacingProperties.RemoveFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    DescriptorNotFollowed, token.GetLocation(), properties));
+                                        context.ReportDiagnostic (
+                                            Diagnostic.Create (DescriptorNotFollowed,
+                                                               token.GetLocation (), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                        }
+                                }
 
                         if (!followedBySpace && allowTrailingSpace)
-                        {
-                                // Dereference symbol '*' should {be followed by a space}.
-                                var properties = TokenSpacingProperties.InsertFollowing;
+                                {
+                                        // Dereference symbol '*' should {be followed by a space}.
+                                        var properties = TokenSpacingProperties.InsertFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    DescriptorFollowed, token.GetLocation(), properties));
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            DescriptorFollowed, token.GetLocation (), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                        }
+                                }
                 }
         }
 }

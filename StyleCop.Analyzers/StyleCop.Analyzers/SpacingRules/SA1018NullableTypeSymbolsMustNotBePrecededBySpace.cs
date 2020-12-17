@@ -21,7 +21,7 @@ namespace StyleCop.Analyzers.SpacingRules
         ///
         /// <para>A nullable type symbol should never be preceded by whitespace.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1018NullableTypeSymbolsMustNotBePrecededBySpace : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -29,74 +29,73 @@ namespace StyleCop.Analyzers.SpacingRules
                 /// cref="SA1018NullableTypeSymbolsMustNotBePrecededBySpace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1018";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1018.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1018Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1018MessageFormat),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1018Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1018.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (SpacingResources.SA1018Title), SpacingResources.ResourceManager,
+                    typeof (SpacingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (SpacingResources.SA1018MessageFormat),
+                                                     SpacingResources.ResourceManager,
+                                                     typeof (SpacingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (SpacingResources.SA1018Description),
+                                                     SpacingResources.ResourceManager,
+                                                     typeof (SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> NullableTypeAction =
-                    HandleNullableType;
+                private static readonly Action<SyntaxNodeAnalysisContext> NullableTypeAction
+                    = HandleNullableType;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(NullableTypeAction,
-                                                         SyntaxKind.NullableType);
+                        context.RegisterSyntaxNodeAction (NullableTypeAction,
+                                                          SyntaxKind.NullableType);
                 }
 
-                private static void HandleNullableType(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleNullableType (SyntaxNodeAnalysisContext context)
                 {
                         var nullableType = (NullableTypeSyntax) context.Node;
                         var questionToken = nullableType.QuestionToken;
 
                         if (questionToken.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         if (nullableType.ElementType.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         /* Do not test for the first character on the line!
                          * The StyleCop documentation is wrong there, the actual StyleCop code does
                          * not accept it.
                          */
 
-                        SyntaxToken precedingToken = questionToken.GetPreviousToken();
-                        var triviaList = TriviaHelper.MergeTriviaLists(
+                        SyntaxToken precedingToken = questionToken.GetPreviousToken ();
+                        var triviaList = TriviaHelper.MergeTriviaLists (
                             precedingToken.TrailingTrivia, questionToken.LeadingTrivia);
-                        if (triviaList.Any(t => t.IsKind(SyntaxKind.WhitespaceTrivia) ||
-                                                t.IsKind(SyntaxKind.EndOfLineTrivia)))
-                        {
-                                context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, questionToken.GetLocation()));
-                        }
+                        if (triviaList.Any (t => t.IsKind (SyntaxKind.WhitespaceTrivia)
+                                                 || t.IsKind (SyntaxKind.EndOfLineTrivia)))
+                                {
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor, questionToken.GetLocation ()));
+                                }
                 }
         }
 }

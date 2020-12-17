@@ -35,10 +35,10 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// }
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        [NoDiagnostic(
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
+        [NoDiagnostic (
             "This diagnostic was determined to be too subjective and/or misleading to developers.")]
-        [NoCodeFix("Cannot generate documentation")]
+        [NoCodeFix ("Cannot generate documentation")]
         internal class SA1630DocumentationTextMustContainWhitespace : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -46,40 +46,38 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// cref="SA1630DocumentationTextMustContainWhitespace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1630";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1630.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1630Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1630MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1630Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1630.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (DocumentationResources.SA1630Title),
+                    DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1630MessageFormat),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1630Description),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS2000 // Add analyzer diagnostic IDs to analyzer release.
-                    new DiagnosticDescriptor(
+                    new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault,
                         Description, HelpLink, WellKnownDiagnosticTags.NotConfigurable);
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
                 [ExcludeFromCodeCoverage]
 #pragma warning disable RS1025 // Configure generated code analysis
 #pragma warning disable RS1026 // Enable concurrent execution
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
 #pragma warning restore RS1026 // Enable concurrent execution
 #pragma warning restore RS1025 // Configure generated code analysis
                 {

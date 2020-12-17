@@ -73,7 +73,7 @@ namespace StyleCop.Analyzers.Status.Generator
                 /// <value>
                 /// A value indicating the code fix status for the diagnostic.
                 /// </value>
-                [JsonConverter(typeof(StringEnumConverter))]
+                [JsonConverter (typeof (StringEnumConverter))]
                 public CodeFixStatus CodeFixStatus
                 {
                         get;
@@ -87,7 +87,7 @@ namespace StyleCop.Analyzers.Status.Generator
                 /// <value>
                 /// A value that represents how the fix all functionality is implemented.
                 /// </value>
-                [JsonConverter(typeof(StringEnumConverter))]
+                [JsonConverter (typeof (StringEnumConverter))]
                 public FixAllStatus FixAllStatus
                 {
                         get;
@@ -151,9 +151,10 @@ namespace StyleCop.Analyzers.Status.Generator
                 /// <param name="value">A JSON string representing a <see
                 /// cref="StyleCopDiagnostic"/>.</param> <returns>A <see cref="StyleCopDiagnostic"/>
                 /// that is populated with the data stored in <paramref name="value"/>.</returns>
-                public static StyleCopDiagnostic FromJson(string value)
+                public static StyleCopDiagnostic
+                FromJson (string value)
                 {
-                        return JsonConvert.DeserializeObject<StyleCopDiagnostic>(value);
+                        return JsonConvert.DeserializeObject<StyleCopDiagnostic> (value);
                 }
 
                 /// <summary>
@@ -162,7 +163,8 @@ namespace StyleCop.Analyzers.Status.Generator
                 /// <returns>
                 /// The string contains the diagnostic id and the short name.
                 /// </returns>
-                public override string ToString()
+                public override string
+                ToString ()
                 {
                         return this.Id + " " + this.Name;
                 }
@@ -171,9 +173,10 @@ namespace StyleCop.Analyzers.Status.Generator
                 /// Returns a JSON representation of this diagnostic.
                 /// </summary>
                 /// <returns>A JSON string representing this diagnostic.</returns>
-                public string ToJson()
+                public string
+                ToJson ()
                 {
-                        return JsonConvert.SerializeObject(this);
+                        return JsonConvert.SerializeObject (this);
                 }
         }
 }

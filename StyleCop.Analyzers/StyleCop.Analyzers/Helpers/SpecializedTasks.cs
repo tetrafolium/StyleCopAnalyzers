@@ -7,11 +7,8 @@ namespace StyleCop.Analyzers.Helpers
 
         internal static class SpecializedTasks
         {
-                internal static Task CompletedTask
-                {
-                        get;
-                }
-                = Task.FromResult(default(VoidResult));
+                internal static Task CompletedTask { get; }
+                = Task.FromResult (default(VoidResult));
 
                 private struct VoidResult
                 {

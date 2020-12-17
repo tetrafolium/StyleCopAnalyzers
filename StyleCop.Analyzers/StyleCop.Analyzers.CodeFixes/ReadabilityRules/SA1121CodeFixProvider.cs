@@ -22,141 +22,139 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <para>To fix a violation of this rule, ensure that the comma is followed by a single
         /// space, and is not preceded by any space.</para>
         /// </remarks>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1121CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1121CodeFixProvider))]
         [Shared]
         internal class SA1121CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(SA1121UseBuiltInTypeAlias.DiagnosticId);
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (SA1121UseBuiltInTypeAlias.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return FixAll.Instance;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (var diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        ReadabilityResources.SA1121CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1121CodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                ReadabilityResources.SA1121CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof (SA1121CodeFixProvider)),
+                                            diagnostic);
+                                }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static SyntaxNode ComputeReplacement(SemanticModel semanticModel,
-                                                             SyntaxNode node,
-                                                             CancellationToken cancellationToken)
+                private static SyntaxNode
+                ComputeReplacement (SemanticModel semanticModel, SyntaxNode node,
+                                    CancellationToken cancellationToken)
                 {
                         if (node.Parent is MemberAccessExpressionSyntax memberAccess)
-                        {
-                                if (node == memberAccess.Name)
                                 {
-                                        node = memberAccess;
+                                        if (node == memberAccess.Name)
+                                                {
+                                                        node = memberAccess;
+                                                }
                                 }
-                        }
 
-                        var type = semanticModel.GetSymbolInfo(node, cancellationToken)
+                        var type = semanticModel.GetSymbolInfo (node, cancellationToken)
                                        .Symbol as INamedTypeSymbol;
 
                         PredefinedTypeSyntax typeSyntax;
-                        if (!SpecialTypeHelper.TryGetPredefinedType(type.SpecialType,
-                                                                    out typeSyntax))
-                        {
-                                return node;
-                        }
+                        if (!SpecialTypeHelper.TryGetPredefinedType (type.SpecialType,
+                                                                     out typeSyntax))
+                                {
+                                        return node;
+                                }
 
                         SyntaxNode newNode;
                         if (node is CrefSyntax)
-                        {
-                                newNode = SyntaxFactory.TypeCref(typeSyntax);
-                        }
+                                {
+                                        newNode = SyntaxFactory.TypeCref (typeSyntax);
+                                }
                         else
-                        {
-                                newNode = typeSyntax;
-                        }
+                                {
+                                        newNode = typeSyntax;
+                                }
 
-                        return newNode.WithTriviaFrom(node).WithoutFormatting();
+                        return newNode.WithTriviaFrom (node).WithoutFormatting ();
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var root = await document.GetSyntaxRootAsync(cancellationToken)
-                                       .ConfigureAwait(false);
-                        var semanticModel = await document.GetSemanticModelAsync(cancellationToken)
-                                                .ConfigureAwait(false);
+                        var root = await document.GetSyntaxRootAsync (cancellationToken)
+                                       .ConfigureAwait (false);
+                        var semanticModel = await document.GetSemanticModelAsync (cancellationToken)
+                                                .ConfigureAwait (false);
                         if (semanticModel == null)
-                        {
-                                return document;
-                        }
+                                {
+                                        return document;
+                                }
 
-                        var node = root.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
-                                                 : true, getInnermostNodeForTie
-                                                 : true);
+                        var node = root.FindNode (diagnostic.Location.SourceSpan, findInsideTrivia
+                                                  : true, getInnermostNodeForTie
+                                                  : true);
 
-                        var newNode = ComputeReplacement(semanticModel, node, cancellationToken);
+                        var newNode = ComputeReplacement (semanticModel, node, cancellationToken);
 
-                        var newRoot = root.ReplaceNode(node, newNode);
-                        return document.WithSyntaxRoot(newRoot);
+                        var newRoot = root.ReplaceNode (node, newNode);
+                        return document.WithSyntaxRoot (newRoot);
                 }
 
                 private class FixAll : DocumentBasedFixAllProvider
                 {
-                        public static FixAllProvider Instance
-                        {
-                                get;
-                        }
-                        = new FixAll();
+                        public static FixAllProvider Instance { get; }
+                        = new FixAll ();
 
-                        protected override string CodeActionTitle =>
-                            ReadabilityResources.SA1121CodeFix;
+                        protected override string
+                            CodeActionTitle => ReadabilityResources.SA1121CodeFix;
 
-                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
-                            ImmutableArray<Diagnostic> diagnostics)
+                        protected override async Task<SyntaxNode>
+                        FixAllInDocumentAsync (FixAllContext fixAllContext, Document document,
+                                               ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty)
-                                {
-                                        return null;
-                                }
+                                        {
+                                                return null;
+                                        }
 
-                                var syntaxRoot =
-                                    await document.GetSyntaxRootAsync().ConfigureAwait(false);
-                                var semanticModel =
-                                    await document
-                                        .GetSemanticModelAsync(fixAllContext.CancellationToken)
-                                        .ConfigureAwait(false);
+                                var syntaxRoot
+                                    = await document.GetSyntaxRootAsync ().ConfigureAwait (false);
+                                var semanticModel
+                                    = await document
+                                          .GetSemanticModelAsync (fixAllContext.CancellationToken)
+                                          .ConfigureAwait (false);
 
-                                List<SyntaxNode> nodesToReplace =
-                                    new List<SyntaxNode>(diagnostics.Length);
+                                List<SyntaxNode> nodesToReplace
+                                    = new List<SyntaxNode> (diagnostics.Length);
                                 foreach (var diagnostic in diagnostics)
-                                {
-                                        var node = syntaxRoot.FindNode(
-                                            diagnostic.Location.SourceSpan, findInsideTrivia
-                                            : true, getInnermostNodeForTie
-                                            : true);
+                                        {
+                                                var node = syntaxRoot.FindNode (
+                                                    diagnostic.Location.SourceSpan, findInsideTrivia
+                                                    : true, getInnermostNodeForTie
+                                                    : true);
 
-                                        nodesToReplace.Add(node);
-                                }
+                                                nodesToReplace.Add (node);
+                                        }
 
-                                return syntaxRoot.ReplaceNodes(
+                                return syntaxRoot.ReplaceNodes (
                                     nodesToReplace,
-                                    (originalNode, rewrittenNode) =>
-                                        ComputeReplacement(semanticModel, originalNode,
-                                                           fixAllContext.CancellationToken));
+                                    (originalNode, rewrittenNode) => ComputeReplacement (
+                                        semanticModel, originalNode,
+                                        fixAllContext.CancellationToken));
                         }
                 }
         }

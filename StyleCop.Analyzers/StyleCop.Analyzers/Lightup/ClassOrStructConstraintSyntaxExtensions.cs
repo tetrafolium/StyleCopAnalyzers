@@ -15,25 +15,27 @@ namespace StyleCop.Analyzers.Lightup
                     Func<ClassOrStructConstraintSyntax, SyntaxToken, ClassOrStructConstraintSyntax>
                         WithQuestionTokenAccessor;
 
-                static ClassOrStructConstraintSyntaxExtensions()
+                static ClassOrStructConstraintSyntaxExtensions ()
                 {
                         QuestionTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            ClassOrStructConstraintSyntax, SyntaxToken>(
-                            typeof(ClassOrStructConstraintSyntax), nameof(QuestionToken));
+                            ClassOrStructConstraintSyntax, SyntaxToken> (
+                            typeof (ClassOrStructConstraintSyntax), nameof (QuestionToken));
                         WithQuestionTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ClassOrStructConstraintSyntax, SyntaxToken>(
-                            typeof(ClassOrStructConstraintSyntax), nameof(QuestionToken));
+                            ClassOrStructConstraintSyntax, SyntaxToken> (
+                            typeof (ClassOrStructConstraintSyntax), nameof (QuestionToken));
                 }
 
-                public static SyntaxToken QuestionToken(this ClassOrStructConstraintSyntax syntax)
+                public static SyntaxToken
+                QuestionToken (this ClassOrStructConstraintSyntax syntax)
                 {
-                        return QuestionTokenAccessor(syntax);
+                        return QuestionTokenAccessor (syntax);
                 }
 
-                public static ClassOrStructConstraintSyntax WithQuestionToken(
-                    this ClassOrStructConstraintSyntax syntax, SyntaxToken questionToken)
+                public static ClassOrStructConstraintSyntax
+                WithQuestionToken (this ClassOrStructConstraintSyntax syntax,
+                                   SyntaxToken questionToken)
                 {
-                        return WithQuestionTokenAccessor(syntax, questionToken);
+                        return WithQuestionTokenAccessor (syntax, questionToken);
                 }
         }
 }

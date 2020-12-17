@@ -54,7 +54,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// class member, the call should be prefixed with <c>this.</c> rather than
         /// <c>base.</c>.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists
             : DiagnosticAnalyzer
         {
@@ -64,92 +64,94 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1100";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1100.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1100Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1100MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1100Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1100.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (ReadabilityResources.SA1100Title), ReadabilityResources.ResourceManager,
+                    typeof (ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1100MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1100Description),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> BaseExpressionAction =
-                    HandleBaseExpression;
+                private static readonly Action<SyntaxNodeAnalysisContext> BaseExpressionAction
+                    = HandleBaseExpression;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(BaseExpressionAction,
-                                                         SyntaxKind.BaseExpression);
+                        context.RegisterSyntaxNodeAction (BaseExpressionAction,
+                                                          SyntaxKind.BaseExpression);
                 }
 
-                private static void HandleBaseExpression(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleBaseExpression (SyntaxNodeAnalysisContext context)
                 {
                         var baseExpressionSyntax = (BaseExpressionSyntax) context.Node;
                         var parent = baseExpressionSyntax.Parent;
-                        var targetSymbol =
-                            context.SemanticModel.GetSymbolInfo(parent, context.CancellationToken);
+                        var targetSymbol = context.SemanticModel.GetSymbolInfo (
+                            parent, context.CancellationToken);
                         if (targetSymbol.Symbol == null)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         ExpressionSyntax speculativeExpression;
 
                         if (parent is MemberAccessExpressionSyntax memberAccessExpression)
-                        {
-                                // make sure to evaluate the complete invocation expression if this
-                                // is a call, or overload resolution will fail
-                                speculativeExpression = memberAccessExpression.WithExpression(
-                                    SyntaxFactory.ThisExpression());
-                                if (memberAccessExpression.Parent is InvocationExpressionSyntax
-                                        invocationExpression)
                                 {
-                                        speculativeExpression = invocationExpression.WithExpression(
-                                            speculativeExpression);
+                                        // make sure to evaluate the complete invocation expression
+                                        // if this is a call, or overload resolution will fail
+                                        speculativeExpression
+                                            = memberAccessExpression.WithExpression (
+                                                SyntaxFactory.ThisExpression ());
+                                        if (memberAccessExpression.Parent is
+                                                InvocationExpressionSyntax invocationExpression)
+                                                {
+                                                        speculativeExpression
+                                                            = invocationExpression.WithExpression (
+                                                                speculativeExpression);
+                                                }
                                 }
-                        }
                         else if (parent is ElementAccessExpressionSyntax elementAccessExpression)
-                        {
-                                speculativeExpression = elementAccessExpression.WithExpression(
-                                    SyntaxFactory.ThisExpression());
-                        }
+                                {
+                                        speculativeExpression
+                                            = elementAccessExpression.WithExpression (
+                                                SyntaxFactory.ThisExpression ());
+                                }
                         else
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        var speculativeSymbol = context.SemanticModel.GetSpeculativeSymbolInfo(
+                        var speculativeSymbol = context.SemanticModel.GetSpeculativeSymbolInfo (
                             parent.SpanStart, speculativeExpression,
                             SpeculativeBindingOption.BindAsExpression);
-                        if (!targetSymbol.Symbol.Equals(speculativeSymbol.Symbol))
-                        {
-                                return;
-                        }
+                        if (!targetSymbol.Symbol.Equals (speculativeSymbol.Symbol))
+                                {
+                                        return;
+                                }
 
                         // Do not prefix calls with base unless local implementation exists
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, baseExpressionSyntax.GetLocation()));
+                        context.ReportDiagnostic (
+                            Diagnostic.Create (Descriptor, baseExpressionSyntax.GetLocation ()));
                 }
         }
 }

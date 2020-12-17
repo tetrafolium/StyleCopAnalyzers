@@ -9,10 +9,10 @@ namespace StyleCop.Analyzers.Lightup
             : ISyntaxWrapper<ExpressionSyntax>
         {
                 public ImplicitStackAllocArrayCreationExpressionSyntaxWrapper
-                AddInitializerExpressions(params ExpressionSyntax[] items)
+                AddInitializerExpressions (params ExpressionSyntax[] items)
                 {
-                        return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(
-                            this.WithInitializer(this.Initializer.AddExpressions(items)));
+                        return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper (
+                            this.WithInitializer (this.Initializer.AddExpressions (items)));
                 }
         }
 }

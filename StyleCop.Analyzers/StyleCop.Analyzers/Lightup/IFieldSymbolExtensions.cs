@@ -11,16 +11,18 @@ namespace StyleCop.Analyzers.Lightup
                 private static readonly Func<IFieldSymbol, IFieldSymbol>
                     CorrespondingTupleFieldAccessor;
 
-                static IFieldSymbolExtensions()
+                static IFieldSymbolExtensions ()
                 {
-                        CorrespondingTupleFieldAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<IFieldSymbol, IFieldSymbol>(
-                                typeof(IFieldSymbol), nameof(CorrespondingTupleField));
+                        CorrespondingTupleFieldAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<IFieldSymbol, IFieldSymbol> (
+                                      typeof (IFieldSymbol), nameof (CorrespondingTupleField));
                 }
 
-                public static IFieldSymbol CorrespondingTupleField(this IFieldSymbol symbol)
+                public static IFieldSymbol
+                CorrespondingTupleField (this IFieldSymbol symbol)
                 {
-                        return CorrespondingTupleFieldAccessor(symbol);
+                        return CorrespondingTupleFieldAccessor (symbol);
                 }
         }
 }

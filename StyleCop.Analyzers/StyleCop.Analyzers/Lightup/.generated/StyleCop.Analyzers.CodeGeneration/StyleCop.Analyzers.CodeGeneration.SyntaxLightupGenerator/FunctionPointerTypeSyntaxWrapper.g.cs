@@ -12,8 +12,8 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct FunctionPointerTypeSyntaxWrapper
             : ISyntaxWrapper<TypeSyntax>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerTypeSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerTypeSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<TypeSyntax, SyntaxToken> DelegateKeywordAccessor;
@@ -32,63 +32,54 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly TypeSyntax node;
 
-                static FunctionPointerTypeSyntaxWrapper()
+                static FunctionPointerTypeSyntaxWrapper ()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(FunctionPointerTypeSyntaxWrapper));
-                        DelegateKeywordAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                WrappedType, nameof(DelegateKeyword));
-                        AsteriskTokenAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                WrappedType, nameof(AsteriskToken));
-                        CallingConventionAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<TypeSyntax, CSharpSyntaxNode>(
-                                    WrappedType, nameof(CallingConvention));
-                        ParameterListAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<TypeSyntax, CSharpSyntaxNode>(
-                                    WrappedType, nameof(ParameterList));
-                        WithDelegateKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                    WrappedType, nameof(DelegateKeyword));
-                        WithAsteriskTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken>(
-                                    WrappedType, nameof(AsteriskToken));
-                        WithCallingConventionAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<TypeSyntax, CSharpSyntaxNode>(
-                                    WrappedType, nameof(CallingConvention));
-                        WithParameterListAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<TypeSyntax, CSharpSyntaxNode>(
-                                    WrappedType, nameof(ParameterList));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (FunctionPointerTypeSyntaxWrapper));
+                        DelegateKeywordAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken> (
+                                WrappedType, nameof (DelegateKeyword));
+                        AsteriskTokenAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<TypeSyntax, SyntaxToken> (
+                                WrappedType, nameof (AsteriskToken));
+                        CallingConventionAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<TypeSyntax, CSharpSyntaxNode> (
+                                      WrappedType, nameof (CallingConvention));
+                        ParameterListAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<TypeSyntax, CSharpSyntaxNode> (
+                                      WrappedType, nameof (ParameterList));
+                        WithDelegateKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken> (
+                                      WrappedType, nameof (DelegateKeyword));
+                        WithAsteriskTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, SyntaxToken> (
+                                      WrappedType, nameof (AsteriskToken));
+                        WithCallingConventionAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, CSharpSyntaxNode> (
+                                      WrappedType, nameof (CallingConvention));
+                        WithParameterListAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<TypeSyntax, CSharpSyntaxNode> (
+                                      WrappedType, nameof (ParameterList));
                 }
 
-                private FunctionPointerTypeSyntaxWrapper(TypeSyntax node)
-                {
-                        this.node = node;
-                }
+                private FunctionPointerTypeSyntaxWrapper (TypeSyntax node) { this.node = node; }
 
                 public TypeSyntax SyntaxNode => this.node;
 
                 public SyntaxToken DelegateKeyword
                 {
-                        get
-                        {
-                                return DelegateKeywordAccessor(this.SyntaxNode);
-                        }
+                        get { return DelegateKeywordAccessor (this.SyntaxNode); }
                 }
 
                 public SyntaxToken AsteriskToken
                 {
-                        get
-                        {
-                                return AsteriskTokenAccessor(this.SyntaxNode);
-                        }
+                        get { return AsteriskTokenAccessor (this.SyntaxNode); }
                 }
 
                 public FunctionPointerCallingConventionSyntaxWrapper CallingConvention
@@ -96,7 +87,7 @@ namespace StyleCop.Analyzers.Lightup
                         get
                         {
                                 return (FunctionPointerCallingConventionSyntaxWrapper)
-                                    CallingConventionAccessor(this.SyntaxNode);
+                                    CallingConventionAccessor (this.SyntaxNode);
                         }
                 }
 
@@ -105,61 +96,65 @@ namespace StyleCop.Analyzers.Lightup
                         get
                         {
                                 return (FunctionPointerParameterListSyntaxWrapper)
-                                    ParameterListAccessor(this.SyntaxNode);
+                                    ParameterListAccessor (this.SyntaxNode);
                         }
                 }
 
-                public static explicit operator FunctionPointerTypeSyntaxWrapper(SyntaxNode node)
+                public static explicit operator FunctionPointerTypeSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new FunctionPointerTypeSyntaxWrapper((TypeSyntax) node);
+                        return new FunctionPointerTypeSyntaxWrapper ((TypeSyntax) node);
                 }
 
-                public static implicit operator TypeSyntax(FunctionPointerTypeSyntaxWrapper wrapper)
+                public static implicit
+                operator TypeSyntax (FunctionPointerTypeSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public FunctionPointerTypeSyntaxWrapper WithDelegateKeyword(
-                    SyntaxToken delegateKeyword)
+                public FunctionPointerTypeSyntaxWrapper
+                WithDelegateKeyword (SyntaxToken delegateKeyword)
                 {
-                        return new FunctionPointerTypeSyntaxWrapper(
-                            WithDelegateKeywordAccessor(this.SyntaxNode, delegateKeyword));
+                        return new FunctionPointerTypeSyntaxWrapper (
+                            WithDelegateKeywordAccessor (this.SyntaxNode, delegateKeyword));
                 }
 
-                public FunctionPointerTypeSyntaxWrapper WithAsteriskToken(SyntaxToken asteriskToken)
+                public FunctionPointerTypeSyntaxWrapper
+                WithAsteriskToken (SyntaxToken asteriskToken)
                 {
-                        return new FunctionPointerTypeSyntaxWrapper(
-                            WithAsteriskTokenAccessor(this.SyntaxNode, asteriskToken));
+                        return new FunctionPointerTypeSyntaxWrapper (
+                            WithAsteriskTokenAccessor (this.SyntaxNode, asteriskToken));
                 }
 
-                public FunctionPointerTypeSyntaxWrapper WithCallingConvention(
+                public FunctionPointerTypeSyntaxWrapper
+                WithCallingConvention (
                     FunctionPointerCallingConventionSyntaxWrapper callingConvention)
                 {
-                        return new FunctionPointerTypeSyntaxWrapper(
-                            WithCallingConventionAccessor(this.SyntaxNode, callingConvention));
+                        return new FunctionPointerTypeSyntaxWrapper (
+                            WithCallingConventionAccessor (this.SyntaxNode, callingConvention));
                 }
 
-                public FunctionPointerTypeSyntaxWrapper WithParameterList(
-                    FunctionPointerParameterListSyntaxWrapper parameterList)
+                public FunctionPointerTypeSyntaxWrapper
+                WithParameterList (FunctionPointerParameterListSyntaxWrapper parameterList)
                 {
-                        return new FunctionPointerTypeSyntaxWrapper(
-                            WithParameterListAccessor(this.SyntaxNode, parameterList));
+                        return new FunctionPointerTypeSyntaxWrapper (
+                            WithParameterListAccessor (this.SyntaxNode, parameterList));
                 }
         }
 }

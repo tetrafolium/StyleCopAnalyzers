@@ -19,19 +19,19 @@ namespace StyleCop.Analyzers.Settings
         /// Implements a code fix that will generate a StyleCop settings file if it does not exist
         /// yet.
         /// </summary>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SettingsFileCodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SettingsFileCodeFixProvider))]
         [Shared]
         internal class SettingsFileCodeFixProvider : CodeFixProvider
         {
-                internal const string DefaultSettingsFileContent =
-                    @"{
-                    // ACTION REQUIRED: This file was automatically added to your project, but it
-                    // will not take effect until additional steps are taken to enable it. See the
-                    // following page for additional information:
-                    //
-                    // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
+                internal const string DefaultSettingsFileContent
+                    = @"{
+                      // ACTION REQUIRED: This file was automatically added to your project, but it
+                      // will not take effect until additional steps are taken to enable it. See the
+                      // following page for additional information:
+                      //
+                      // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
 
-                    "" $schema "" : "" https
+                      "" $schema "" : "" https
                     : // raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json"",
                       "" settings "":
                 {
@@ -49,7 +49,7 @@ namespace StyleCop.Analyzers.Settings
         {
                 get;
         }
-        = ImmutableArray.Create(
+        = ImmutableArray.Create (
             SA1600ElementsMustBeDocumented.DiagnosticId,
             SA1601PartialElementsMustBeDocumented.DiagnosticId,
             SA1602EnumerationItemsMustBeDocumented.DiagnosticId,
@@ -60,46 +60,47 @@ namespace StyleCop.Analyzers.Settings
             FileHeaderAnalyzers.SA1641Descriptor.Id, SA1649FileNameMustMatchTypeName.DiagnosticId);
 
         /// <inheritdoc/>
-        public override Task RegisterCodeFixesAsync(CodeFixContext context)
+        public override Task RegisterCodeFixesAsync (CodeFixContext context)
         {
                 var project = context.Document.Project;
                 var workspace = project.Solution.Workspace;
 
                 // check if the settings file already exists
-                if (project.AdditionalDocuments.Any(
-                        document => SettingsHelper.IsStyleCopSettingsFile(document.Name)))
-                {
-                        return SpecializedTasks.CompletedTask;
-                }
+                if (project.AdditionalDocuments.Any (
+                        document => SettingsHelper.IsStyleCopSettingsFile (document.Name)))
+                        {
+                                return SpecializedTasks.CompletedTask;
+                        }
 
                 // check if we are allowed to add it
-                if (!workspace.CanApplyChange(ApplyChangesKind.AddAdditionalDocument))
-                {
-                        return SpecializedTasks.CompletedTask;
-                }
+                if (!workspace.CanApplyChange (ApplyChangesKind.AddAdditionalDocument))
+                        {
+                                return SpecializedTasks.CompletedTask;
+                        }
 
                 foreach (var diagnostic in context.Diagnostics)
-                {
-                        context.RegisterCodeFix(
-                            CodeAction.Create(SettingsResources.SettingsFileCodeFix,
-                                              cancellationToken => GetTransformedSolutionAsync(
-                                                  context.Document, cancellationToken),
-                                              nameof(SettingsFileCodeFixProvider)),
-                            diagnostic);
-                }
+                        {
+                                context.RegisterCodeFix (
+                                    CodeAction.Create (
+                                        SettingsResources.SettingsFileCodeFix,
+                                        cancellationToken => GetTransformedSolutionAsync (
+                                            context.Document, cancellationToken),
+                                        nameof (SettingsFileCodeFixProvider)),
+                                    diagnostic);
+                        }
 
                 return SpecializedTasks.CompletedTask;
         }
 
         /// <inheritdoc/>
-        public override FixAllProvider GetFixAllProvider()
+        public override FixAllProvider GetFixAllProvider ()
         {
                 // Added this to make it explicitly clear that this code fix does not support fix
                 // all actions.
                 return null;
         }
 
-        private static Task<Solution> GetTransformedSolutionAsync(
+        private static Task<Solution> GetTransformedSolutionAsync (
             Document document, CancellationToken cancellationToken)
         {
                 // Currently unused
@@ -108,12 +109,12 @@ namespace StyleCop.Analyzers.Settings
                 var project = document.Project;
                 var solution = project.Solution;
 
-                var newDocumentId = DocumentId.CreateNewId(project.Id);
+                var newDocumentId = DocumentId.CreateNewId (project.Id);
 
-                var newSolution = solution.AddAdditionalDocument(
+                var newSolution = solution.AddAdditionalDocument (
                     newDocumentId, SettingsHelper.SettingsFileName, DefaultSettingsFileContent);
 
-                return Task.FromResult(newSolution);
+                return Task.FromResult (newSolution);
         }
 }
 }

@@ -24,107 +24,106 @@ namespace StyleCop.Analyzers.SpacingRules
         /// comment begins with four forward slashes, in which case the leading space can be
         /// omitted.</para>
         /// </remarks>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1005CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1005CodeFixProvider))]
         [Shared]
         internal class SA1005CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (
                     SA1005SingleLineCommentsMustBeginWithSingleSpace.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return FixAll.Instance;
                 }
 
                 /// <inheritdoc/>
-                public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override async Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
-                        var root =
-                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                .ConfigureAwait(false);
+                        var root
+                            = await context.Document.GetSyntaxRootAsync (context.CancellationToken)
+                                  .ConfigureAwait (false);
 
                         foreach (var diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(SpacingResources.SA1005CodeFix,
-                                                      cancellationToken =>
-                                                          GetTransformedDocumentAsync(
-                                                              context.Document, diagnostic.Location,
-                                                              cancellationToken),
-                                                      nameof(SA1005CodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                SpacingResources.SA1005CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic.Location,
+                                                    cancellationToken),
+                                                nameof (SA1005CodeFixProvider)),
+                                            diagnostic);
+                                }
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Location location, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Location location,
+                                             CancellationToken cancellationToken)
                 {
-                        var text =
-                            await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                        var text = await document.GetTextAsync (cancellationToken)
+                                       .ConfigureAwait (false);
                         var sourceSpan = location.SourceSpan;
 
-                        return document.WithText(text.WithChanges(GetTextChange(text, sourceSpan)));
+                        return document.WithText (
+                            text.WithChanges (GetTextChange (text, sourceSpan)));
                 }
 
-                private static TextChange GetTextChange(SourceText text, TextSpan sourceSpan)
+                private static TextChange
+                GetTextChange (SourceText text, TextSpan sourceSpan)
                 {
-                        var subText = text.GetSubText(sourceSpan).ToString();
+                        var subText = text.GetSubText (sourceSpan).ToString ();
 
                         int i = 2;
                         for (; i < subText.Length; i++)
-                        {
-                                if (!char.IsWhiteSpace(subText[i]))
                                 {
-                                        break;
+                                        if (!char.IsWhiteSpace (subText[i]))
+                                                {
+                                                        break;
+                                                }
                                 }
-                        }
 
-                        return new TextChange(new TextSpan(sourceSpan.Start + 2, i - 2), " ");
+                        return new TextChange (new TextSpan (sourceSpan.Start + 2, i - 2), " ");
                 }
 
                 private class FixAll : DocumentBasedFixAllProvider
                 {
-                        public static FixAllProvider Instance
-                        {
-                                get;
-                        }
-                        = new FixAll();
+                        public static FixAllProvider Instance { get; }
+                        = new FixAll ();
 
                         protected override string CodeActionTitle => SpacingResources.SA1005CodeFix;
 
-                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
-                            ImmutableArray<Diagnostic> diagnostics)
+                        protected override async Task<SyntaxNode>
+                        FixAllInDocumentAsync (FixAllContext fixAllContext, Document document,
+                                               ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty)
-                                {
-                                        return null;
-                                }
+                                        {
+                                                return null;
+                                        }
 
-                                var text = await document.GetTextAsync().ConfigureAwait(false);
+                                var text = await document.GetTextAsync ().ConfigureAwait (false);
 
-                                List<TextChange> changes = new List<TextChange>();
+                                List<TextChange> changes = new List<TextChange> ();
 
                                 foreach (var diagnostic in diagnostics)
-                                {
-                                        var sourceSpan = diagnostic.Location.SourceSpan;
-                                        changes.Add(GetTextChange(text, sourceSpan));
-                                }
+                                        {
+                                                var sourceSpan = diagnostic.Location.SourceSpan;
+                                                changes.Add (GetTextChange (text, sourceSpan));
+                                        }
 
-                                changes.Sort((left, right) =>
-                                                 left.Span.Start.CompareTo(right.Span.Start));
+                                changes.Sort (
+                                    (left, right) => left.Span.Start.CompareTo (right.Span.Start));
 
-                                var tree =
-                                    await document.GetSyntaxTreeAsync().ConfigureAwait(false);
-                                return await tree.WithChangedText(text.WithChanges(changes))
-                                    .GetRootAsync()
-                                    .ConfigureAwait(false);
+                                var tree
+                                    = await document.GetSyntaxTreeAsync ().ConfigureAwait (false);
+                                return await tree.WithChangedText (text.WithChanges (changes))
+                                    .GetRootAsync ()
+                                    .ConfigureAwait (false);
                         }
                 }
         }

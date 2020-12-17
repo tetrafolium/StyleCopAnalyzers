@@ -23,7 +23,7 @@ namespace StyleCop.Analyzers.OrderingRules
         /// make it easier to identify the static members used throughout the code.
         /// </para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1217UsingStaticDirectivesMustBeOrderedAlphabetically : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -31,21 +31,21 @@ namespace StyleCop.Analyzers.OrderingRules
                 /// cref="SA1217UsingStaticDirectivesMustBeOrderedAlphabetically"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1217";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1217.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(OrderingResources.SA1217Title), OrderingResources.ResourceManager,
-                    typeof(OrderingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1217MessageFormat),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1217Description),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1217.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (OrderingResources.SA1217Title), OrderingResources.ResourceManager,
+                    typeof (OrderingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (OrderingResources.SA1217MessageFormat),
+                                                     OrderingResources.ResourceManager,
+                                                     typeof (OrderingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (OrderingResources.SA1217Description),
+                                                     OrderingResources.ResourceManager,
+                                                     typeof (OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
@@ -56,128 +56,161 @@ namespace StyleCop.Analyzers.OrderingRules
                     NamespaceDeclarationAction = HandleNamespaceDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(CompilationUnitAction,
-                                                         SyntaxKind.CompilationUnit);
-                        context.RegisterSyntaxNodeAction(NamespaceDeclarationAction,
-                                                         SyntaxKind.NamespaceDeclaration);
+                        context.RegisterSyntaxNodeAction (CompilationUnitAction,
+                                                          SyntaxKind.CompilationUnit);
+                        context.RegisterSyntaxNodeAction (NamespaceDeclarationAction,
+                                                          SyntaxKind.NamespaceDeclaration);
                 }
 
-                private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context,
-                                                          StyleCopSettings settings)
+                private static void
+                HandleCompilationUnit (SyntaxNodeAnalysisContext context, StyleCopSettings settings)
                 {
                         var compilationUnit = (CompilationUnitSyntax) context.Node;
-                        CheckUsingDeclarations(context, settings.OrderingRules,
-                                               compilationUnit.Usings);
+                        CheckUsingDeclarations (context, settings.OrderingRules,
+                                                compilationUnit.Usings);
                 }
 
-                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context,
-                                                               StyleCopSettings settings)
+                private static void
+                HandleNamespaceDeclaration (SyntaxNodeAnalysisContext context,
+                                            StyleCopSettings settings)
                 {
                         var namespaceDirective = (NamespaceDeclarationSyntax) context.Node;
-                        CheckUsingDeclarations(context, settings.OrderingRules,
-                                               namespaceDirective.Usings);
+                        CheckUsingDeclarations (context, settings.OrderingRules,
+                                                namespaceDirective.Usings);
                 }
 
-                private static void CheckUsingDeclarations(
-                    SyntaxNodeAnalysisContext context, OrderingSettings orderingSettings,
-                    SyntaxList<UsingDirectiveSyntax> usingDirectives)
+                private static void
+                CheckUsingDeclarations (SyntaxNodeAnalysisContext context,
+                                        OrderingSettings orderingSettings,
+                                        SyntaxList<UsingDirectiveSyntax> usingDirectives)
                 {
                         UsingDirectiveSyntax lastStaticUsingDirective = null;
                         UsingDirectiveSyntax lastSystemStaticUsingDirective = null;
                         UsingDirectiveSyntax firstNonSystemUsing = null;
 
                         foreach (var usingDirective in usingDirectives)
-                        {
-                                if (usingDirective.IsPrecededByPreprocessorDirective())
                                 {
-                                        lastStaticUsingDirective = null;
-                                        lastSystemStaticUsingDirective = null;
-                                        firstNonSystemUsing = null;
+                                        if (usingDirective.IsPrecededByPreprocessorDirective ())
+                                                {
+                                                        lastStaticUsingDirective = null;
+                                                        lastSystemStaticUsingDirective = null;
+                                                        firstNonSystemUsing = null;
+                                                }
+
+                                        if (usingDirective.StaticKeyword.IsKind (
+                                                SyntaxKind.StaticKeyword))
+                                                {
+                                                        if (orderingSettings
+                                                                .SystemUsingDirectivesFirst
+                                                            && usingDirective
+                                                                   .IsSystemUsingDirective ())
+                                                                {
+                                                                        if (firstNonSystemUsing
+                                                                            != null)
+                                                                                {
+                                                                                        context.ReportDiagnostic (
+                                                                                            Diagnostic
+                                                                                                .Create (
+                                                                                                    Descriptor,
+                                                                                                    firstNonSystemUsing
+                                                                                                        .GetLocation (),
+                                                                                                    new[]{
+                                                                                                        firstNonSystemUsing
+                                                                                                            .Name
+                                                                                                            .ToNormalizedString (),
+                                                                                                        usingDirective
+                                                                                                            .Name
+                                                                                                            .ToNormalizedString () }));
+                                                                                        return;
+                                                                                }
+
+                                                                        if (lastSystemStaticUsingDirective
+                                                                            != null)
+                                                                                {
+                                                                                        var firstName
+                                                                                            = lastSystemStaticUsingDirective
+                                                                                                  .Name;
+                                                                                        var secondName
+                                                                                            = usingDirective
+                                                                                                  .Name;
+
+                                                                                        if (NameSyntaxHelpers
+                                                                                                .Compare (
+                                                                                                    firstName,
+                                                                                                    secondName)
+                                                                                            > 0)
+                                                                                                {
+                                                                                                        context
+                                                                                                            .ReportDiagnostic (
+                                                                                                                Diagnostic
+                                                                                                                    .Create (
+                                                                                                                        Descriptor,
+                                                                                                                        lastSystemStaticUsingDirective
+                                                                                                                            .GetLocation (),
+                                                                                                                        new[]{
+                                                                                                                            firstName
+                                                                                                                                .ToNormalizedString (),
+                                                                                                                            secondName
+                                                                                                                                .ToNormalizedString () }));
+                                                                                                        return;
+                                                                                                }
+                                                                                }
+
+                                                                        lastSystemStaticUsingDirective
+                                                                            = usingDirective;
+                                                                }
+                                                        else
+                                                                {
+                                                                        if (lastStaticUsingDirective
+                                                                            != null)
+                                                                                {
+                                                                                        var firstName
+                                                                                            = lastStaticUsingDirective
+                                                                                                  .Name;
+                                                                                        var secondName
+                                                                                            = usingDirective
+                                                                                                  .Name;
+
+                                                                                        if (NameSyntaxHelpers
+                                                                                                .Compare (
+                                                                                                    firstName,
+                                                                                                    secondName)
+                                                                                            > 0)
+                                                                                                {
+                                                                                                        context
+                                                                                                            .ReportDiagnostic (
+                                                                                                                Diagnostic
+                                                                                                                    .Create (
+                                                                                                                        Descriptor,
+                                                                                                                        lastStaticUsingDirective
+                                                                                                                            .GetLocation (),
+                                                                                                                        new[]{
+                                                                                                                            firstName
+                                                                                                                                .ToNormalizedString (),
+                                                                                                                            secondName
+                                                                                                                                .ToNormalizedString () }));
+                                                                                                        return;
+                                                                                                }
+                                                                                }
+
+                                                                        lastStaticUsingDirective
+                                                                            = usingDirective;
+                                                                        firstNonSystemUsing
+                                                                            = firstNonSystemUsing ??
+                                                                                usingDirective;
+                                                                }
+                                                }
                                 }
-
-                                if (usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
-                                {
-                                        if (orderingSettings.SystemUsingDirectivesFirst &&
-                                            usingDirective.IsSystemUsingDirective())
-                                        {
-                                                if (firstNonSystemUsing != null)
-                                                {
-                                                        context.ReportDiagnostic(Diagnostic.Create(
-                                                            Descriptor,
-                                                            firstNonSystemUsing.GetLocation(),
-                                                            new[]{firstNonSystemUsing.Name
-                                                                      .ToNormalizedString(),
-                                                                  usingDirective.Name
-                                                                      .ToNormalizedString()}));
-                                                        return;
-                                                }
-
-                                                if (lastSystemStaticUsingDirective != null)
-                                                {
-                                                        var firstName =
-                                                            lastSystemStaticUsingDirective.Name;
-                                                        var secondName = usingDirective.Name;
-
-                                                        if (NameSyntaxHelpers.Compare(
-                                                                firstName, secondName) > 0)
-                                                        {
-                                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                                    Descriptor,
-                                                                    lastSystemStaticUsingDirective
-                                                                        .GetLocation(),
-                                                                    new[]{
-                                                                        firstName
-                                                                            .ToNormalizedString(),
-                                                                        secondName
-                                                                            .ToNormalizedString()}));
-                                                                return;
-                                                        }
-                                                }
-
-                                                lastSystemStaticUsingDirective = usingDirective;
-                                        }
-                                        else
-                                        {
-                                                if (lastStaticUsingDirective != null)
-                                                {
-                                                        var firstName =
-                                                            lastStaticUsingDirective.Name;
-                                                        var secondName = usingDirective.Name;
-
-                                                        if (NameSyntaxHelpers.Compare(
-                                                                firstName, secondName) > 0)
-                                                        {
-                                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                                    Descriptor,
-                                                                    lastStaticUsingDirective
-                                                                        .GetLocation(),
-                                                                    new[]{
-                                                                        firstName
-                                                                            .ToNormalizedString(),
-                                                                        secondName
-                                                                            .ToNormalizedString()}));
-                                                                return;
-                                                        }
-                                                }
-
-                                                lastStaticUsingDirective = usingDirective;
-                                                firstNonSystemUsing =
-                                                    firstNonSystemUsing ?? usingDirective;
-                                        }
-                                }
-                        }
                 }
         }
 }

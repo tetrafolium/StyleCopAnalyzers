@@ -25,7 +25,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <summary>
                 /// Initializes a new instance of the <see cref="IndentationSettings"/> class.
                 /// </summary>
-                protected internal IndentationSettings()
+                protected internal
+                IndentationSettings ()
                 {
                         this.indentationSize = 4;
                         this.tabSize = 4;
@@ -37,29 +38,30 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// </summary>
                 /// <param name="indentationSettingsObject">The JSON object containing the
                 /// settings.</param>
-                protected internal IndentationSettings(JsonObject indentationSettingsObject)
+                protected internal
+                IndentationSettings (JsonObject indentationSettingsObject)
                     : this()
                 {
                         foreach (var kvp in indentationSettingsObject)
-                        {
-                                switch (kvp.Key)
                                 {
-                                case "indentationSize":
-                                        this.indentationSize = kvp.ToInt32Value();
-                                        break;
+                                        switch (kvp.Key)
+                                                {
+                                                case "indentationSize":
+                                                        this.indentationSize = kvp.ToInt32Value ();
+                                                        break;
 
-                                case "tabSize":
-                                        this.tabSize = kvp.ToInt32Value();
-                                        break;
+                                                case "tabSize":
+                                                        this.tabSize = kvp.ToInt32Value ();
+                                                        break;
 
-                                case "useTabs":
-                                        this.useTabs = kvp.ToBooleanValue();
-                                        break;
+                                                case "useTabs":
+                                                        this.useTabs = kvp.ToBooleanValue ();
+                                                        break;
 
-                                default:
-                                        break;
+                                                default:
+                                                        break;
+                                                }
                                 }
-                        }
                 }
 
                 public int IndentationSize => this.indentationSize;

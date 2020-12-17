@@ -9,8 +9,8 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IBinaryOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IBinaryOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IBinaryOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> LeftOperandAccessor;
                 private static readonly Func<IOperation, IOperation> RightOperandAccessor;
@@ -19,67 +19,71 @@ namespace StyleCop.Analyzers.Lightup
                 private static readonly Func<IOperation, bool> IsCompareTextAccessor;
                 private static readonly Func<IOperation, IMethodSymbol> OperatorMethodAccessor;
                 private readonly IOperation operation;
-                static IBinaryOperationWrapper()
+                static IBinaryOperationWrapper ()
                 {
-                        WrappedType =
-                            OperationWrapperHelper.GetWrappedType(typeof(IBinaryOperationWrapper));
-                        LeftOperandAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(LeftOperand));
-                        RightOperandAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(RightOperand));
-                        IsLiftedAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                                WrappedType, nameof(IsLifted));
-                        IsCheckedAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                                WrappedType, nameof(IsChecked));
-                        IsCompareTextAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                                WrappedType, nameof(IsCompareText));
-                        OperatorMethodAccessor =
-                            LightupHelpers
-                                .CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
-                                    WrappedType, nameof(OperatorMethod));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IBinaryOperationWrapper));
+                        LeftOperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (LeftOperand));
+                        RightOperandAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (RightOperand));
+                        IsLiftedAccessor
+                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool> (
+                                WrappedType, nameof (IsLifted));
+                        IsCheckedAccessor
+                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool> (
+                                WrappedType, nameof (IsChecked));
+                        IsCompareTextAccessor
+                            = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool> (
+                                WrappedType, nameof (IsCompareText));
+                        OperatorMethodAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IMethodSymbol> (
+                                      WrappedType, nameof (OperatorMethod));
                 }
 
-                private IBinaryOperationWrapper(IOperation operation)
+                private IBinaryOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public object OperatorKind => throw new NotImplementedException(
+                public object OperatorKind => throw new NotImplementedException (
                     "Property 'IBinaryOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
-                public IOperation LeftOperand => LeftOperandAccessor(this.WrappedOperation);
-                public IOperation RightOperand => RightOperandAccessor(this.WrappedOperation);
-                public bool IsLifted => IsLiftedAccessor(this.WrappedOperation);
-                public bool IsChecked => IsCheckedAccessor(this.WrappedOperation);
-                public bool IsCompareText => IsCompareTextAccessor(this.WrappedOperation);
-                public IMethodSymbol OperatorMethod =>
-                    OperatorMethodAccessor(this.WrappedOperation);
-                public static IBinaryOperationWrapper FromOperation(IOperation operation)
+                public IOperation LeftOperand => LeftOperandAccessor (this.WrappedOperation);
+                public IOperation RightOperand => RightOperandAccessor (this.WrappedOperation);
+                public bool IsLifted => IsLiftedAccessor (this.WrappedOperation);
+                public bool IsChecked => IsCheckedAccessor (this.WrappedOperation);
+                public bool IsCompareText => IsCompareTextAccessor (this.WrappedOperation);
+                public IMethodSymbol OperatorMethod => OperatorMethodAccessor (
+                    this.WrappedOperation);
+                public static IBinaryOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IBinaryOperationWrapper(operation);
+                        return new IBinaryOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

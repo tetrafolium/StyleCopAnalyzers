@@ -55,7 +55,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// }
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1500BracesForMultiLineStatementsMustNotShareLine : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -63,287 +63,330 @@ namespace StyleCop.Analyzers.LayoutRules
                 /// <see cref="SA1500BracesForMultiLineStatementsMustNotShareLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1500";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1500.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1500Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1500MessageFormat),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1500Description),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1500.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (LayoutResources.SA1500Title), LayoutResources.ResourceManager,
+                    typeof (LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1500MessageFormat),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1500Description),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext>
-                    NamespaceDeclarationAction = HandleNamespaceDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext>
-                    BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
-                private static readonly Action<SyntaxNodeAnalysisContext> AccessorListAction =
-                    HandleAccessorList;
+                private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction
+                    = HandleNamespaceDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> BaseTypeDeclarationAction
+                    = HandleBaseTypeDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> AccessorListAction
+                    = HandleAccessorList;
                 private static readonly Action<SyntaxNodeAnalysisContext> BlockAction = HandleBlock;
-                private static readonly Action<SyntaxNodeAnalysisContext> SwitchStatementAction =
-                    HandleSwitchStatement;
+                private static readonly Action<SyntaxNodeAnalysisContext> SwitchStatementAction
+                    = HandleSwitchStatement;
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     InitializerExpressionAction = HandleInitializerExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    AnonymousObjectCreationExpressionAction =
-                        HandleAnonymousObjectCreationExpression;
+                    AnonymousObjectCreationExpressionAction
+                    = HandleAnonymousObjectCreationExpression;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(NamespaceDeclarationAction,
-                                                         SyntaxKind.NamespaceDeclaration);
-                        context.RegisterSyntaxNodeAction(BaseTypeDeclarationAction,
-                                                         SyntaxKinds.BaseTypeDeclaration);
-                        context.RegisterSyntaxNodeAction(AccessorListAction,
-                                                         SyntaxKind.AccessorList);
-                        context.RegisterSyntaxNodeAction(BlockAction, SyntaxKind.Block);
-                        context.RegisterSyntaxNodeAction(SwitchStatementAction,
-                                                         SyntaxKind.SwitchStatement);
-                        context.RegisterSyntaxNodeAction(InitializerExpressionAction,
-                                                         SyntaxKinds.InitializerExpression);
-                        context.RegisterSyntaxNodeAction(
+                        context.RegisterSyntaxNodeAction (NamespaceDeclarationAction,
+                                                          SyntaxKind.NamespaceDeclaration);
+                        context.RegisterSyntaxNodeAction (BaseTypeDeclarationAction,
+                                                          SyntaxKinds.BaseTypeDeclaration);
+                        context.RegisterSyntaxNodeAction (AccessorListAction,
+                                                          SyntaxKind.AccessorList);
+                        context.RegisterSyntaxNodeAction (BlockAction, SyntaxKind.Block);
+                        context.RegisterSyntaxNodeAction (SwitchStatementAction,
+                                                          SyntaxKind.SwitchStatement);
+                        context.RegisterSyntaxNodeAction (InitializerExpressionAction,
+                                                          SyntaxKinds.InitializerExpression);
+                        context.RegisterSyntaxNodeAction (
                             AnonymousObjectCreationExpressionAction,
                             SyntaxKind.AnonymousObjectCreationExpression);
                 }
 
-                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleNamespaceDeclaration (SyntaxNodeAnalysisContext context)
                 {
                         var syntax = (NamespaceDeclarationSyntax) context.Node;
-                        CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
+                        CheckBraces (context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
 
-                private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleBaseTypeDeclaration (SyntaxNodeAnalysisContext context)
                 {
                         var syntax = (BaseTypeDeclarationSyntax) context.Node;
-                        CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
+                        CheckBraces (context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
 
-                private static void HandleAccessorList(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleAccessorList (SyntaxNodeAnalysisContext context)
                 {
                         var syntax = (AccessorListSyntax) context.Node;
-                        CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
+                        CheckBraces (context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
 
-                private static void HandleBlock(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleBlock (SyntaxNodeAnalysisContext context)
                 {
                         var syntax = (BlockSyntax) context.Node;
-                        CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
+                        CheckBraces (context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
 
-                private static void HandleSwitchStatement(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleSwitchStatement (SyntaxNodeAnalysisContext context)
                 {
                         var syntax = (SwitchStatementSyntax) context.Node;
-                        CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
+                        CheckBraces (context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
 
-                private static void HandleInitializerExpression(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleInitializerExpression (SyntaxNodeAnalysisContext context)
                 {
                         var syntax = (InitializerExpressionSyntax) context.Node;
-                        CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
+                        CheckBraces (context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
 
-                private static void HandleAnonymousObjectCreationExpression(
-                    SyntaxNodeAnalysisContext context)
+                private static void
+                HandleAnonymousObjectCreationExpression (SyntaxNodeAnalysisContext context)
                 {
                         var syntax = (AnonymousObjectCreationExpressionSyntax) context.Node;
-                        CheckBraces(context, syntax.OpenBraceToken, syntax.CloseBraceToken);
+                        CheckBraces (context, syntax.OpenBraceToken, syntax.CloseBraceToken);
                 }
 
-                private static void CheckBraces(SyntaxNodeAnalysisContext context,
-                                                SyntaxToken openBraceToken,
-                                                SyntaxToken closeBraceToken)
+                private static void
+                CheckBraces (SyntaxNodeAnalysisContext context, SyntaxToken openBraceToken,
+                             SyntaxToken closeBraceToken)
                 {
                         bool checkCloseBrace = true;
-                        int openBraceTokenLine = openBraceToken.GetLine();
+                        int openBraceTokenLine = openBraceToken.GetLine ();
 
-                        if (openBraceTokenLine == closeBraceToken.GetLine())
-                        {
-                                if (context.Node.IsKind(SyntaxKind.ArrayInitializerExpression))
+                        if (openBraceTokenLine == closeBraceToken.GetLine ())
                                 {
-                                        switch (context.Node.Parent.Kind())
-                                        {
-                                        case SyntaxKind.EqualsValueClause:
-                                                if (((EqualsValueClauseSyntax) context.Node.Parent)
-                                                        .EqualsToken.GetLine() ==
-                                                    openBraceTokenLine)
+                                        if (context.Node.IsKind (
+                                                SyntaxKind.ArrayInitializerExpression))
                                                 {
-                                                        return;
+                                                        switch (context.Node.Parent.Kind ())
+                                                                {
+                                                                case SyntaxKind.EqualsValueClause:
+                                                                        if (((EqualsValueClauseSyntax)
+                                                                                 context.Node
+                                                                                     .Parent)
+                                                                                .EqualsToken
+                                                                                .GetLine ()
+                                                                            == openBraceTokenLine)
+                                                                                {
+                                                                                        return;
+                                                                                }
+
+                                                                        break;
+
+                                                                case SyntaxKind
+                                                                    .ArrayCreationExpression:
+                                                                        if (((ArrayCreationExpressionSyntax)
+                                                                                 context.Node
+                                                                                     .Parent)
+                                                                                .NewKeyword
+                                                                                .GetLine ()
+                                                                            == openBraceTokenLine)
+                                                                                {
+                                                                                        return;
+                                                                                }
+
+                                                                        break;
+
+                                                                case SyntaxKind
+                                                                    .ImplicitArrayCreationExpression:
+                                                                        if (((ImplicitArrayCreationExpressionSyntax)
+                                                                                 context.Node
+                                                                                     .Parent)
+                                                                                .NewKeyword
+                                                                                .GetLine ()
+                                                                            == openBraceTokenLine)
+                                                                                {
+                                                                                        return;
+                                                                                }
+
+                                                                        break;
+
+                                                                case SyntaxKind
+                                                                    .StackAllocArrayCreationExpression:
+                                                                        if (((StackAllocArrayCreationExpressionSyntax)
+                                                                                 context.Node
+                                                                                     .Parent)
+                                                                                .StackAllocKeyword
+                                                                                .GetLine ()
+                                                                            == openBraceTokenLine)
+                                                                                {
+                                                                                        return;
+                                                                                }
+
+                                                                        break;
+
+                                                                case SyntaxKindEx
+                                                                    .ImplicitStackAllocArrayCreationExpression:
+                                                                        if (((ImplicitStackAllocArrayCreationExpressionSyntaxWrapper)
+                                                                                 context.Node
+                                                                                     .Parent)
+                                                                                .StackAllocKeyword
+                                                                                .GetLine ()
+                                                                            == openBraceTokenLine)
+                                                                                {
+                                                                                        return;
+                                                                                }
+
+                                                                        break;
+
+                                                                case SyntaxKind
+                                                                    .ArrayInitializerExpression:
+                                                                        if (!InitializerExpressionSharesLine (
+                                                                                (InitializerExpressionSyntax)
+                                                                                    context.Node))
+                                                                                {
+                                                                                        return;
+                                                                                }
+
+                                                                        checkCloseBrace = false;
+                                                                        break;
+
+                                                                default:
+                                                                        break;
+                                                                }
                                                 }
-
-                                                break;
-
-                                        case SyntaxKind.ArrayCreationExpression:
-                                                if (((ArrayCreationExpressionSyntax)
-                                                         context.Node.Parent)
-                                                        .NewKeyword.GetLine() == openBraceTokenLine)
+                                        else
                                                 {
-                                                        return;
+                                                        switch (context.Node.Parent.Kind ())
+                                                                {
+                                                                case SyntaxKind
+                                                                    .GetAccessorDeclaration:
+                                                                case SyntaxKind
+                                                                    .SetAccessorDeclaration:
+                                                                case SyntaxKind
+                                                                    .AddAccessorDeclaration:
+                                                                case SyntaxKind
+                                                                    .RemoveAccessorDeclaration:
+                                                                case SyntaxKind
+                                                                    .UnknownAccessorDeclaration:
+                                                                        if (((AccessorDeclarationSyntax)
+                                                                                 context.Node
+                                                                                     .Parent)
+                                                                                .Keyword.GetLine ()
+                                                                            == openBraceTokenLine)
+                                                                                {
+                                                                                        // reported
+                                                                                        // as
+                                                                                        // SA1504,
+                                                                                        // if at all
+                                                                                        return;
+                                                                                }
+
+                                                                        checkCloseBrace = false;
+                                                                        break;
+
+                                                                default:
+                                                                        // reported by SA1501 or
+                                                                        // SA1502
+                                                                        return;
+                                                                }
                                                 }
-
-                                                break;
-
-                                        case SyntaxKind.ImplicitArrayCreationExpression:
-                                                if (((ImplicitArrayCreationExpressionSyntax)
-                                                         context.Node.Parent)
-                                                        .NewKeyword.GetLine() == openBraceTokenLine)
-                                                {
-                                                        return;
-                                                }
-
-                                                break;
-
-                                        case SyntaxKind.StackAllocArrayCreationExpression:
-                                                if (((StackAllocArrayCreationExpressionSyntax)
-                                                         context.Node.Parent)
-                                                        .StackAllocKeyword.GetLine() ==
-                                                    openBraceTokenLine)
-                                                {
-                                                        return;
-                                                }
-
-                                                break;
-
-                                        case SyntaxKindEx.ImplicitStackAllocArrayCreationExpression:
-                                                if (((ImplicitStackAllocArrayCreationExpressionSyntaxWrapper)
-                                                         context.Node.Parent)
-                                                        .StackAllocKeyword.GetLine() ==
-                                                    openBraceTokenLine)
-                                                {
-                                                        return;
-                                                }
-
-                                                break;
-
-                                        case SyntaxKind.ArrayInitializerExpression:
-                                                if (!InitializerExpressionSharesLine(
-                                                        (InitializerExpressionSyntax) context.Node))
-                                                {
-                                                        return;
-                                                }
-
-                                                checkCloseBrace = false;
-                                                break;
-
-                                        default:
-                                                break;
-                                        }
                                 }
-                                else
-                                {
-                                        switch (context.Node.Parent.Kind())
-                                        {
-                                        case SyntaxKind.GetAccessorDeclaration:
-                                        case SyntaxKind.SetAccessorDeclaration:
-                                        case SyntaxKind.AddAccessorDeclaration:
-                                        case SyntaxKind.RemoveAccessorDeclaration:
-                                        case SyntaxKind.UnknownAccessorDeclaration:
-                                                if (((AccessorDeclarationSyntax)
-                                                         context.Node.Parent)
-                                                        .Keyword.GetLine() == openBraceTokenLine)
-                                                {
-                                                        // reported as SA1504, if at all
-                                                        return;
-                                                }
 
-                                                checkCloseBrace = false;
-                                                break;
-
-                                        default:
-                                                // reported by SA1501 or SA1502
-                                                return;
-                                        }
-                                }
-                        }
-
-                        CheckBraceToken(context, openBraceToken);
+                        CheckBraceToken (context, openBraceToken);
                         if (checkCloseBrace)
-                        {
-                                CheckBraceToken(context, closeBraceToken);
-                        }
+                                {
+                                        CheckBraceToken (context, closeBraceToken);
+                                }
                 }
 
-                private static bool InitializerExpressionSharesLine(
-                    InitializerExpressionSyntax node)
+                private static bool
+                InitializerExpressionSharesLine (InitializerExpressionSyntax node)
                 {
                         var parent = (InitializerExpressionSyntax) node.Parent;
-                        var index = parent.Expressions.IndexOf(node);
+                        var index = parent.Expressions.IndexOf (node);
 
-                        return (index > 0) && (parent
-                                                   .Expressions [index - 1]
-                                                   .GetEndLine() == parent
-                                                                        .Expressions [index]
-                                                                        .GetLine());
+                        return (index > 0)
+                               && (parent
+                                       .Expressions [index - 1]
+                                       .GetEndLine ()
+                                   == parent
+                                          .Expressions [index]
+                                          .GetLine ());
                 }
 
-                private static void CheckBraceToken(SyntaxNodeAnalysisContext context,
-                                                    SyntaxToken token)
+                private static void
+                CheckBraceToken (SyntaxNodeAnalysisContext context, SyntaxToken token)
                 {
                         if (token.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        int line = token.GetLineSpan().StartLinePosition.Line;
+                        int line = token.GetLineSpan ().StartLinePosition.Line;
 
-                        SyntaxToken previousToken = token.GetPreviousToken(includeZeroWidth : true);
+                        SyntaxToken previousToken = token.GetPreviousToken (includeZeroWidth
+                                                                            : true);
                         if (!previousToken.IsMissing)
-                        {
-                                if (previousToken.GetLineSpan().StartLinePosition.Line == line)
                                 {
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, token.GetLocation()));
+                                        if (previousToken.GetLineSpan ().StartLinePosition.Line
+                                            == line)
+                                                {
+                                                        context.ReportDiagnostic (
+                                                            Diagnostic.Create (
+                                                                Descriptor, token.GetLocation ()));
 
-                                        // no need to report more than one instance for this token
-                                        return;
+                                                        // no need to report more than one instance
+                                                        // for this token
+                                                        return;
+                                                }
                                 }
-                        }
 
-                        SyntaxToken nextToken = token.GetNextToken(includeZeroWidth : true);
+                        SyntaxToken nextToken = token.GetNextToken (includeZeroWidth : true);
                         if (!nextToken.IsMissing)
-                        {
-                                switch (nextToken.Kind())
                                 {
-                                case SyntaxKind.CloseParenToken:
-                                case SyntaxKind.CommaToken:
-                                case SyntaxKind.SemicolonToken:
-                                case SyntaxKind.DotToken:
-                                        // these are allowed to appear on the same line
-                                        return;
+                                        switch (nextToken.Kind ())
+                                                {
+                                                case SyntaxKind.CloseParenToken:
+                                                case SyntaxKind.CommaToken:
+                                                case SyntaxKind.SemicolonToken:
+                                                case SyntaxKind.DotToken:
+                                                        // these are allowed to appear on the same
+                                                        // line
+                                                        return;
 
-                                case SyntaxKind.EndOfFileToken:
-                                        // last token of this file
-                                        return;
+                                                case SyntaxKind.EndOfFileToken:
+                                                        // last token of this file
+                                                        return;
 
-                                default:
-                                        break;
+                                                default:
+                                                        break;
+                                                }
+
+                                        if (nextToken.GetLineSpan ().StartLinePosition.Line == line)
+                                                {
+                                                        context.ReportDiagnostic (
+                                                            Diagnostic.Create (
+                                                                Descriptor, token.GetLocation ()));
+                                                }
                                 }
-
-                                if (nextToken.GetLineSpan().StartLinePosition.Line == line)
-                                {
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, token.GetLocation()));
-                                }
-                        }
                 }
         }
 }

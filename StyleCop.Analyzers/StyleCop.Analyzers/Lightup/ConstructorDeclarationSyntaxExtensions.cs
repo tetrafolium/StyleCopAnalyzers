@@ -12,20 +12,20 @@ namespace StyleCop.Analyzers.Lightup
                     Func<ConstructorDeclarationSyntax, ArrowExpressionClauseSyntax,
                          ConstructorDeclarationSyntax> WithExpressionBodyAccessor;
 
-                static ConstructorDeclarationSyntaxExtensions()
+                static ConstructorDeclarationSyntaxExtensions ()
                 {
-                        WithExpressionBodyAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                ConstructorDeclarationSyntax, ArrowExpressionClauseSyntax>(
-                                typeof(ConstructorDeclarationSyntax),
-                                nameof(BaseMethodDeclarationSyntaxExtensions.ExpressionBody));
+                        WithExpressionBodyAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                                ConstructorDeclarationSyntax, ArrowExpressionClauseSyntax> (
+                                typeof (ConstructorDeclarationSyntax),
+                                nameof (BaseMethodDeclarationSyntaxExtensions.ExpressionBody));
                 }
 
-                public static ConstructorDeclarationSyntax WithExpressionBody(
-                    this ConstructorDeclarationSyntax syntax,
-                    ArrowExpressionClauseSyntax expressionBody)
+                public static ConstructorDeclarationSyntax
+                WithExpressionBody (this ConstructorDeclarationSyntax syntax,
+                                    ArrowExpressionClauseSyntax expressionBody)
                 {
-                        return WithExpressionBodyAccessor(syntax, expressionBody);
+                        return WithExpressionBodyAccessor (syntax, expressionBody);
                 }
         }
 }

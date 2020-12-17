@@ -17,7 +17,7 @@ namespace LightJson.Serialization
                 /// Initializes a new instance of the <see cref="JsonSerializationException"/>
                 /// class.
                 /// </summary>
-                public JsonSerializationException() : base(GetDefaultMessage(ErrorType.Unknown))
+                public JsonSerializationException () : base (GetDefaultMessage (ErrorType.Unknown))
                 {
                 }
 
@@ -26,8 +26,8 @@ namespace LightJson.Serialization
                 /// with the given error type.
                 /// </summary>
                 /// <param name="type">The error type that describes the cause of the error.</param>
-                public JsonSerializationException(ErrorType type)
-                    : this(GetDefaultMessage(type), type)
+                public JsonSerializationException (ErrorType type)
+                    : this(GetDefaultMessage (type), type)
                 {
                 }
 
@@ -37,7 +37,7 @@ namespace LightJson.Serialization
                 /// </summary>
                 /// <param name="message">The message that describes the error.</param>
                 /// <param name="type">The error type that describes the cause of the error.</param>
-                public JsonSerializationException(string message, ErrorType type) : base(message)
+                public JsonSerializationException (string message, ErrorType type) : base (message)
                 {
                         this.Type = type;
                 }
@@ -76,27 +76,25 @@ namespace LightJson.Serialization
                 /// <value>
                 /// The type of error that caused the exception to be thrown.
                 /// </value>
-                public ErrorType Type
-                {
-                        get;
-                }
+                public ErrorType Type { get; }
 
-                private static string GetDefaultMessage(ErrorType type)
+                private static string
+                GetDefaultMessage (ErrorType type)
                 {
                         switch (type)
-                        {
-                        case ErrorType.InvalidNumber:
-                                return "The value been serialized contains an invalid number value (NAN, infinity).";
+                                {
+                                case ErrorType.InvalidNumber:
+                                        return "The value been serialized contains an invalid number value (NAN, infinity).";
 
-                        case ErrorType.InvalidValueType:
-                                return "The value been serialized contains (or is) an invalid JSON type.";
+                                case ErrorType.InvalidValueType:
+                                        return "The value been serialized contains (or is) an invalid JSON type.";
 
-                        case ErrorType.CircularReference:
-                                return "The value been serialized contains circular references.";
+                                case ErrorType.CircularReference:
+                                        return "The value been serialized contains circular references.";
 
-                        default:
-                                return "An error occurred during serialization.";
-                        }
+                                default:
+                                        return "An error occurred during serialization.";
+                                }
                 }
         }
 }

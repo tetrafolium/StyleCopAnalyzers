@@ -20,7 +20,7 @@ namespace StyleCop.Analyzers
         /// </list>
         /// <para>The <see cref="Reason"/> should be provided.</para>
         /// </remarks>
-        [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+        [AttributeUsage (AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
         internal sealed class NoDiagnosticAttribute : System.Attribute
         {
                 /// <summary>
@@ -28,10 +28,7 @@ namespace StyleCop.Analyzers
                 /// </summary>
                 /// <param name="reason">The reason why the <see cref="DiagnosticAnalyzer"/> does
                 /// not have an implementation.</param>
-                public NoDiagnosticAttribute(string reason)
-                {
-                        this.Reason = reason;
-                }
+                public NoDiagnosticAttribute (string reason) { this.Reason = reason; }
 
                 /// <summary>
                 /// Gets the reason why the <see cref="DiagnosticAnalyzer"/> does not have an
@@ -41,9 +38,6 @@ namespace StyleCop.Analyzers
                 /// The reason why the <see cref="DiagnosticAnalyzer"/> does not have an
                 /// implementation.
                 /// </value>
-                public string Reason
-                {
-                        get;
-                }
+                public string Reason { get; }
         }
 }

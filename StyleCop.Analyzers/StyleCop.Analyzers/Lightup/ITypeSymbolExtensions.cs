@@ -10,16 +10,17 @@ namespace StyleCop.Analyzers.Lightup
         {
                 private static readonly Func<ITypeSymbol, bool> IsTupleTypeAccessor;
 
-                static ITypeSymbolExtensions()
+                static ITypeSymbolExtensions ()
                 {
-                        IsTupleTypeAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<ITypeSymbol, bool>(
-                                typeof(ITypeSymbol), nameof(IsTupleType));
+                        IsTupleTypeAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<ITypeSymbol, bool> (
+                                typeof (ITypeSymbol), nameof (IsTupleType));
                 }
 
-                public static bool IsTupleType(this ITypeSymbol symbol)
+                public static bool
+                IsTupleType (this ITypeSymbol symbol)
                 {
-                        return IsTupleTypeAccessor(symbol);
+                        return IsTupleTypeAccessor (symbol);
                 }
         }
 }

@@ -24,14 +24,12 @@ namespace LightJson.Serialization
                 /// rendered. It is used to prevent circular references; since collections that
                 /// contain themselves will never finish rendering.
                 /// </summary>
-                private HashSet<IEnumerable<JsonValue>> renderingCollections;
+                private HashSet<IEnumerable<JsonValue> > renderingCollections;
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonWriter"/> class.
                 /// </summary>
-                public JsonWriter() : this(false)
-                {
-                }
+                public JsonWriter () : this(false) {}
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonWriter"/> class.
@@ -39,14 +37,14 @@ namespace LightJson.Serialization
                 /// <param name="pretty">
                 /// A value indicating whether the output of the writer should be human-readable.
                 /// </param>
-                public JsonWriter(bool pretty)
+                public JsonWriter (bool pretty)
                 {
                         if (pretty)
-                        {
-                                this.IndentString = "\t";
-                                this.SpacingString = " ";
-                                this.NewLineString = "\n";
-                        }
+                                {
+                                        this.IndentString = "\t";
+                                        this.SpacingString = " ";
+                                        this.NewLineString = "\n";
+                                }
                 }
 
                 /// <summary>
@@ -104,256 +102,274 @@ namespace LightJson.Serialization
                 /// </summary>
                 /// <param name="jsonValue">The JsonValue to serialize.</param>
                 /// <returns>The serialized value.</returns>
-                public string Serialize(JsonValue jsonValue)
+                public string
+                Serialize (JsonValue jsonValue)
                 {
-                        this.Initialize();
+                        this.Initialize ();
 
-                        this.Render(jsonValue);
+                        this.Render (jsonValue);
 
-                        return this.writer.ToString();
+                        return this.writer.ToString ();
                 }
 
                 /// <summary>
                 /// Releases all the resources used by this object.
                 /// </summary>
-                public void Dispose()
+                public void
+                Dispose ()
                 {
                         if (this.writer != null)
-                        {
-                                this.writer.Dispose();
-                        }
+                                {
+                                        this.writer.Dispose ();
+                                }
                 }
 
-                private void Initialize()
+                private void
+                Initialize ()
                 {
                         this.indent = 0;
                         this.isNewLine = true;
-                        this.writer = new StringWriter();
-                        this.renderingCollections = new HashSet<IEnumerable<JsonValue>>();
+                        this.writer = new StringWriter ();
+                        this.renderingCollections = new HashSet<IEnumerable<JsonValue> > ();
                 }
 
-                private void Write(string text)
+                private void
+                Write (string text)
                 {
                         if (this.isNewLine)
-                        {
-                                this.isNewLine = false;
-                                this.WriteIndentation();
-                        }
+                                {
+                                        this.isNewLine = false;
+                                        this.WriteIndentation ();
+                                }
 
-                        this.writer.Write(text);
+                        this.writer.Write (text);
                 }
 
-                private void WriteEncodedJsonValue(JsonValue value)
+                private void
+                WriteEncodedJsonValue (JsonValue value)
                 {
                         switch (value.Type)
-                        {
-                        case JsonValueType.Null:
-                                this.Write("null");
-                                break;
-
-                        case JsonValueType.Boolean:
-                                this.Write(value.AsString);
-                                break;
-
-                        case JsonValueType.Number:
-                                this.Write(((double) value).ToString(CultureInfo.InvariantCulture));
-                                break;
-
-                        default:
-                                Debug.Assert(value.Type == JsonValueType.String,
-                                             "value.Type == JsonValueType.String");
-                                this.WriteEncodedString((string) value);
-                                break;
-                        }
-                }
-
-                private void WriteEncodedString(string text)
-                {
-                        this.Write("\"");
-
-                        for (int i = 0; i < text.Length; i += 1)
-                        {
-                                var currentChar = text[i];
-
-                                // Encoding special characters.
-                                switch (currentChar)
                                 {
-                                case '\\':
-                                        this.writer.Write("\\\\");
+                                case JsonValueType.Null:
+                                        this.Write ("null");
                                         break;
 
-                                case '\"':
-                                        this.writer.Write("\\\"");
+                                case JsonValueType.Boolean:
+                                        this.Write (value.AsString);
                                         break;
 
-                                case '/':
-                                        this.writer.Write("\\/");
-                                        break;
-
-                                case '\b':
-                                        this.writer.Write("\\b");
-                                        break;
-
-                                case '\f':
-                                        this.writer.Write("\\f");
-                                        break;
-
-                                case '\n':
-                                        this.writer.Write("\\n");
-                                        break;
-
-                                case '\r':
-                                        this.writer.Write("\\r");
-                                        break;
-
-                                case '\t':
-                                        this.writer.Write("\\t");
+                                case JsonValueType.Number:
+                                        this.Write (((double) value)
+                                                        .ToString (CultureInfo.InvariantCulture));
                                         break;
 
                                 default:
-                                        this.writer.Write(currentChar);
+                                        Debug.Assert (value.Type == JsonValueType.String,
+                                                      "value.Type == JsonValueType.String");
+                                        this.WriteEncodedString ((string) value);
                                         break;
                                 }
-                        }
-
-                        this.writer.Write("\"");
                 }
 
-                private void WriteIndentation()
+                private void
+                WriteEncodedString (string text)
+                {
+                        this.Write ("\"");
+
+                        for (int i = 0; i < text.Length; i += 1)
+                                {
+                                        var currentChar = text[i];
+
+                                        // Encoding special characters.
+                                        switch (currentChar)
+                                                {
+                                                case '\\':
+                                                        this.writer.Write ("\\\\");
+                                                        break;
+
+                                                case '\"':
+                                                        this.writer.Write ("\\\"");
+                                                        break;
+
+                                                case '/':
+                                                        this.writer.Write ("\\/");
+                                                        break;
+
+                                                case '\b':
+                                                        this.writer.Write ("\\b");
+                                                        break;
+
+                                                case '\f':
+                                                        this.writer.Write ("\\f");
+                                                        break;
+
+                                                case '\n':
+                                                        this.writer.Write ("\\n");
+                                                        break;
+
+                                                case '\r':
+                                                        this.writer.Write ("\\r");
+                                                        break;
+
+                                                case '\t':
+                                                        this.writer.Write ("\\t");
+                                                        break;
+
+                                                default:
+                                                        this.writer.Write (currentChar);
+                                                        break;
+                                                }
+                                }
+
+                        this.writer.Write ("\"");
+                }
+
+                private void
+                WriteIndentation ()
                 {
                         for (var i = 0; i < this.indent; i += 1)
-                        {
-                                this.Write(this.IndentString);
-                        }
+                                {
+                                        this.Write (this.IndentString);
+                                }
                 }
 
-                private void WriteSpacing()
+                private void
+                WriteSpacing ()
                 {
-                        this.Write(this.SpacingString);
+                        this.Write (this.SpacingString);
                 }
 
-                private void WriteLine()
+                private void
+                WriteLine ()
                 {
-                        this.Write(this.NewLineString);
+                        this.Write (this.NewLineString);
                         this.isNewLine = true;
                 }
 
-                private void WriteLine(string line)
+                private void
+                WriteLine (string line)
                 {
-                        this.Write(line);
-                        this.WriteLine();
+                        this.Write (line);
+                        this.WriteLine ();
                 }
 
-                private void AddRenderingCollection(IEnumerable<JsonValue> value)
+                private void
+                AddRenderingCollection (IEnumerable<JsonValue> value)
                 {
-                        if (!this.renderingCollections.Add(value))
-                        {
-                                throw new JsonSerializationException(ErrorType.CircularReference);
-                        }
+                        if (!this.renderingCollections.Add (value))
+                                {
+                                        throw new JsonSerializationException (
+                                            ErrorType.CircularReference);
+                                }
                 }
 
-                private void RemoveRenderingCollection(IEnumerable<JsonValue> value)
+                private void
+                RemoveRenderingCollection (IEnumerable<JsonValue> value)
                 {
-                        this.renderingCollections.Remove(value);
+                        this.renderingCollections.Remove (value);
                 }
 
-                private void Render(JsonValue value)
+                private void
+                Render (JsonValue value)
                 {
                         switch (value.Type)
-                        {
-                        case JsonValueType.Null:
-                        case JsonValueType.Boolean:
-                        case JsonValueType.Number:
-                        case JsonValueType.String:
-                                this.WriteEncodedJsonValue(value);
-                                break;
+                                {
+                                case JsonValueType.Null:
+                                case JsonValueType.Boolean:
+                                case JsonValueType.Number:
+                                case JsonValueType.String:
+                                        this.WriteEncodedJsonValue (value);
+                                        break;
 
-                        case JsonValueType.Object:
-                                this.Render((JsonObject) value);
-                                break;
+                                case JsonValueType.Object:
+                                        this.Render ((JsonObject) value);
+                                        break;
 
-                        case JsonValueType.Array:
-                                this.Render((JsonArray) value);
-                                break;
+                                case JsonValueType.Array:
+                                        this.Render ((JsonArray) value);
+                                        break;
 
-                        default:
-                                throw new JsonSerializationException(ErrorType.InvalidValueType);
-                        }
+                                default:
+                                        throw new JsonSerializationException (
+                                            ErrorType.InvalidValueType);
+                                }
                 }
 
-                private void Render(JsonArray value)
+                private void
+                Render (JsonArray value)
                 {
-                        this.AddRenderingCollection(value);
+                        this.AddRenderingCollection (value);
 
-                        this.WriteLine("[");
+                        this.WriteLine ("[");
 
                         this.indent += 1;
 
-                        using(var enumerator = value.GetEnumerator())
+                        using (var enumerator = value.GetEnumerator ())
                         {
-                                var hasNext = enumerator.MoveNext();
+                                var hasNext = enumerator.MoveNext ();
 
                                 while (hasNext)
-                                {
-                                        this.Render(enumerator.Current);
-
-                                        hasNext = enumerator.MoveNext();
-
-                                        if (hasNext)
                                         {
-                                                this.WriteLine(",");
+                                                this.Render (enumerator.Current);
+
+                                                hasNext = enumerator.MoveNext ();
+
+                                                if (hasNext)
+                                                        {
+                                                                this.WriteLine (",");
+                                                        }
+                                                else
+                                                        {
+                                                                this.WriteLine ();
+                                                        }
                                         }
-                                        else
-                                        {
-                                                this.WriteLine();
-                                        }
-                                }
                         }
 
                         this.indent -= 1;
 
-                        this.Write("]");
+                        this.Write ("]");
 
-                        this.RemoveRenderingCollection(value);
+                        this.RemoveRenderingCollection (value);
                 }
 
-                private void Render(JsonObject value)
+                private void
+                Render (JsonObject value)
                 {
-                        this.AddRenderingCollection(value);
+                        this.AddRenderingCollection (value);
 
-                        this.WriteLine("{");
+                        this.WriteLine ("{");
 
                         this.indent += 1;
 
-                        using(var enumerator = this.GetJsonObjectEnumerator(value))
+                        using (var enumerator = this.GetJsonObjectEnumerator (value))
                         {
-                                var hasNext = enumerator.MoveNext();
+                                var hasNext = enumerator.MoveNext ();
 
                                 while (hasNext)
-                                {
-                                        this.WriteEncodedString(enumerator.Current.Key);
-                                        this.Write(":");
-                                        this.WriteSpacing();
-                                        this.Render(enumerator.Current.Value);
-
-                                        hasNext = enumerator.MoveNext();
-
-                                        if (hasNext)
                                         {
-                                                this.WriteLine(",");
+                                                this.WriteEncodedString (enumerator.Current.Key);
+                                                this.Write (":");
+                                                this.WriteSpacing ();
+                                                this.Render (enumerator.Current.Value);
+
+                                                hasNext = enumerator.MoveNext ();
+
+                                                if (hasNext)
+                                                        {
+                                                                this.WriteLine (",");
+                                                        }
+                                                else
+                                                        {
+                                                                this.WriteLine ();
+                                                        }
                                         }
-                                        else
-                                        {
-                                                this.WriteLine();
-                                        }
-                                }
                         }
 
                         this.indent -= 1;
 
-                        this.Write("}");
+                        this.Write ("}");
 
-                        this.RemoveRenderingCollection(value);
+                        this.RemoveRenderingCollection (value);
                 }
 
                 /// <summary>
@@ -364,25 +380,26 @@ namespace LightJson.Serialization
                 /// <param name="jsonObject">The JsonObject for which to get an enumerator.</param>
                 /// <returns>An enumerator for the properties in a <see
                 /// cref="JsonObject"/>.</returns>
-                private IEnumerator<KeyValuePair<string, JsonValue>> GetJsonObjectEnumerator(
-                    JsonObject jsonObject)
+                private IEnumerator<KeyValuePair<string, JsonValue> >
+                GetJsonObjectEnumerator (JsonObject jsonObject)
                 {
                         if (this.SortObjects)
-                        {
-                                var sortedDictionary =
-                                    new SortedDictionary<string, JsonValue>(StringComparer.Ordinal);
-
-                                foreach (var item in jsonObject)
                                 {
-                                        sortedDictionary.Add(item.Key, item.Value);
-                                }
+                                        var sortedDictionary
+                                            = new SortedDictionary<string, JsonValue> (
+                                                StringComparer.Ordinal);
 
-                                return sortedDictionary.GetEnumerator();
-                        }
+                                        foreach (var item in jsonObject)
+                                                {
+                                                        sortedDictionary.Add (item.Key, item.Value);
+                                                }
+
+                                        return sortedDictionary.GetEnumerator ();
+                                }
                         else
-                        {
-                                return jsonObject.GetEnumerator();
-                        }
+                                {
+                                        return jsonObject.GetEnumerator ();
+                                }
                 }
         }
 }

@@ -26,7 +26,7 @@ namespace StyleCop.Analyzers.NamingRules
         /// for Win32 or COM wrappers. StyleCop will ignore this violation if the item is placed
         /// within a <c>NativeMethods</c> class.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1302InterfaceNamesMustBeginWithI : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -34,64 +34,64 @@ namespace StyleCop.Analyzers.NamingRules
                 /// cref="SA1302InterfaceNamesMustBeginWithI"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1302";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1302.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(NamingResources.SA1302Title), NamingResources.ResourceManager,
-                    typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SA1302MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SA1302Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1302.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (NamingResources.SA1302Title), NamingResources.ResourceManager,
+                    typeof (NamingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (NamingResources.SA1302MessageFormat),
+                                                     NamingResources.ResourceManager,
+                                                     typeof (NamingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (NamingResources.SA1302Description),
+                                                     NamingResources.ResourceManager,
+                                                     typeof (NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext>
-                    InterfaceDeclarationAction = HandleInterfaceDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> InterfaceDeclarationAction
+                    = HandleInterfaceDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(InterfaceDeclarationAction,
-                                                         SyntaxKind.InterfaceDeclaration);
+                        context.RegisterSyntaxNodeAction (InterfaceDeclarationAction,
+                                                          SyntaxKind.InterfaceDeclaration);
                 }
 
-                private static void HandleInterfaceDeclaration(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleInterfaceDeclaration (SyntaxNodeAnalysisContext context)
                 {
                         var interfaceDeclaration = (InterfaceDeclarationSyntax) context.Node;
                         if (interfaceDeclaration.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        if (NamedTypeHelpers.IsContainedInNativeMethodsClass(interfaceDeclaration))
-                        {
-                                return;
-                        }
+                        if (NamedTypeHelpers.IsContainedInNativeMethodsClass (interfaceDeclaration))
+                                {
+                                        return;
+                                }
 
                         string name = interfaceDeclaration.Identifier.ValueText;
-                        if (name != null && !name.StartsWith("I", StringComparison.Ordinal))
-                        {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, interfaceDeclaration.Identifier.GetLocation()));
-                        }
+                        if (name != null && !name.StartsWith ("I", StringComparison.Ordinal))
+                                {
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor,
+                                            interfaceDeclaration.Identifier.GetLocation ()));
+                                }
                 }
         }
 }

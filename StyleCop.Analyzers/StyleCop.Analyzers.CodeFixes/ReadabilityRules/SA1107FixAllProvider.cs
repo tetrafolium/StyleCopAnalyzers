@@ -15,45 +15,46 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
                 protected override string CodeActionTitle => ReadabilityResources.SA1107CodeFix;
 
-                protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                    FixAllContext fixAllContext, Document document,
-                    ImmutableArray<Diagnostic> diagnostics)
+                protected override async Task<SyntaxNode>
+                FixAllInDocumentAsync (FixAllContext fixAllContext, Document document,
+                                       ImmutableArray<Diagnostic> diagnostics)
                 {
                         if (diagnostics.IsEmpty)
-                        {
-                                return null;
-                        }
+                                {
+                                        return null;
+                                }
 
-                        DocumentEditor editor =
-                            await DocumentEditor
-                                .CreateAsync(document, fixAllContext.CancellationToken)
-                                .ConfigureAwait(false);
+                        DocumentEditor editor
+                            = await DocumentEditor
+                                  .CreateAsync (document, fixAllContext.CancellationToken)
+                                  .ConfigureAwait (false);
 
-                        SyntaxNode root = editor.GetChangedRoot();
+                        SyntaxNode root = editor.GetChangedRoot ();
 
-                        ImmutableList<SyntaxNode> nodesToChange =
-                            ImmutableList.Create<SyntaxNode>();
+                        ImmutableList<SyntaxNode> nodesToChange
+                            = ImmutableList.Create<SyntaxNode> ();
 
                         // Make sure all nodes we care about are tracked
                         foreach (var diagnostic in diagnostics)
-                        {
-                                var location = diagnostic.Location;
-                                var syntaxNode = root.FindNode(location.SourceSpan);
-                                if (syntaxNode != null)
                                 {
-                                        editor.TrackNode(syntaxNode);
-                                        nodesToChange = nodesToChange.Add(syntaxNode);
+                                        var location = diagnostic.Location;
+                                        var syntaxNode = root.FindNode (location.SourceSpan);
+                                        if (syntaxNode != null)
+                                                {
+                                                        editor.TrackNode (syntaxNode);
+                                                        nodesToChange
+                                                            = nodesToChange.Add (syntaxNode);
+                                                }
                                 }
-                        }
 
                         foreach (var node in nodesToChange)
-                        {
-                                editor.ReplaceNode(
-                                    node, node.WithLeadingTrivia(
-                                              SyntaxFactory.ElasticCarriageReturnLineFeed));
-                        }
+                                {
+                                        editor.ReplaceNode (
+                                            node, node.WithLeadingTrivia (
+                                                      SyntaxFactory.ElasticCarriageReturnLineFeed));
+                                }
 
-                        return editor.GetChangedRoot();
+                        return editor.GetChangedRoot ();
                 }
         }
 }

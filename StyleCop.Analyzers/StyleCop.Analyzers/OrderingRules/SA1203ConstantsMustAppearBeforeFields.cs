@@ -21,7 +21,7 @@ namespace StyleCop.Analyzers.OrderingRules
         /// fundamentally different types of elements with different considerations for the
         /// compiler, different naming requirements, etc.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1203ConstantsMustAppearBeforeFields : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -29,58 +29,56 @@ namespace StyleCop.Analyzers.OrderingRules
                 /// cref="SA1203ConstantsMustAppearBeforeFields"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1203";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1203.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(OrderingResources.SA1203Title), OrderingResources.ResourceManager,
-                    typeof(OrderingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1203MessageFormat),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1203Description),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1203.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (OrderingResources.SA1203Title), OrderingResources.ResourceManager,
+                    typeof (OrderingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (OrderingResources.SA1203MessageFormat),
+                                                     OrderingResources.ResourceManager,
+                                                     typeof (OrderingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (OrderingResources.SA1203Description),
+                                                     OrderingResources.ResourceManager,
+                                                     typeof (OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
-                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                                          SyntaxKind.StructDeclaration);
+                private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds
+                    = ImmutableArray.Create (SyntaxKind.ClassDeclaration,
+                                             SyntaxKind.StructDeclaration);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     TypeDeclarationAction = HandleTypeDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(TypeDeclarationAction,
-                                                         TypeDeclarationKinds);
+                        context.RegisterSyntaxNodeAction (TypeDeclarationAction,
+                                                          TypeDeclarationKinds);
                 }
 
-                private static void HandleTypeDeclaration(SyntaxNodeAnalysisContext context,
-                                                          StyleCopSettings settings)
+                private static void
+                HandleTypeDeclaration (SyntaxNodeAnalysisContext context, StyleCopSettings settings)
                 {
                         var elementOrder = settings.OrderingRules.ElementOrder;
-                        int constantIndex = elementOrder.IndexOf(OrderingTrait.Constant);
+                        int constantIndex = elementOrder.IndexOf (OrderingTrait.Constant);
                         if (constantIndex < 0)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         var typeDeclaration = (TypeDeclarationSyntax) context.Node;
 
@@ -91,79 +89,89 @@ namespace StyleCop.Analyzers.OrderingRules
                         var previousAccessLevel = AccessLevel.NotSpecified;
 
                         foreach (var member in members)
-                        {
-                                if (!(member is FieldDeclarationSyntax field))
                                 {
-                                        continue;
-                                }
-
-                                AccessLevel currentAccessLevel =
-                                    MemberOrderHelper.GetAccessLevelForOrdering(field,
-                                                                                field.Modifiers);
-                                bool currentFieldConstant =
-                                    field.Modifiers.Any(SyntaxKind.ConstKeyword);
-                                bool currentFieldReadonly =
-                                    currentFieldConstant ||
-                                    field.Modifiers.Any(SyntaxKind.ReadOnlyKeyword);
-                                bool currentFieldStatic =
-                                    currentFieldConstant ||
-                                    field.Modifiers.Any(SyntaxKind.StaticKeyword);
-                                bool compareConst = true;
-                                for (int j = 0; compareConst && j < constantIndex; j++)
-                                {
-                                        switch (elementOrder[j])
-                                        {
-                                        case OrderingTrait.Accessibility:
-                                                if (currentAccessLevel != previousAccessLevel)
+                                        if (!(member is FieldDeclarationSyntax field))
                                                 {
-                                                        compareConst = false;
+                                                        continue;
                                                 }
 
-                                                continue;
-
-                                        case OrderingTrait.Readonly:
-                                                if (currentFieldReadonly != previousFieldReadonly)
+                                        AccessLevel currentAccessLevel
+                                            = MemberOrderHelper.GetAccessLevelForOrdering (
+                                                field, field.Modifiers);
+                                        bool currentFieldConstant
+                                            = field.Modifiers.Any (SyntaxKind.ConstKeyword);
+                                        bool currentFieldReadonly
+                                            = currentFieldConstant
+                                              || field.Modifiers.Any (SyntaxKind.ReadOnlyKeyword);
+                                        bool currentFieldStatic
+                                            = currentFieldConstant
+                                              || field.Modifiers.Any (SyntaxKind.StaticKeyword);
+                                        bool compareConst = true;
+                                        for (int j = 0; compareConst && j < constantIndex; j++)
                                                 {
-                                                        compareConst = false;
+                                                        switch (elementOrder[j])
+                                                                {
+                                                                case OrderingTrait.Accessibility:
+                                                                        if (currentAccessLevel
+                                                                            != previousAccessLevel)
+                                                                                {
+                                                                                        compareConst
+                                                                                            = false;
+                                                                                }
+
+                                                                        continue;
+
+                                                                case OrderingTrait.Readonly:
+                                                                        if (currentFieldReadonly
+                                                                            != previousFieldReadonly)
+                                                                                {
+                                                                                        compareConst
+                                                                                            = false;
+                                                                                }
+
+                                                                        continue;
+
+                                                                case OrderingTrait.Static:
+                                                                        if (currentFieldStatic
+                                                                            != previousFieldStatic)
+                                                                                {
+                                                                                        compareConst
+                                                                                            = false;
+                                                                                }
+
+                                                                        continue;
+
+                                                                case OrderingTrait.Kind:
+                                                                        // Only fields may be marked
+                                                                        // const, and all fields
+                                                                        // have the same kind.
+                                                                        continue;
+
+                                                                case OrderingTrait.Constant:
+                                                                default:
+                                                                        continue;
+                                                                }
                                                 }
 
-                                                continue;
-
-                                        case OrderingTrait.Static:
-                                                if (currentFieldStatic != previousFieldStatic)
+                                        if (compareConst)
                                                 {
-                                                        compareConst = false;
+                                                        if (!previousFieldConstant
+                                                            && currentFieldConstant)
+                                                                {
+                                                                        context.ReportDiagnostic (
+                                                                            Diagnostic.Create (
+                                                                                Descriptor,
+                                                                                NamedTypeHelpers
+                                                                                    .GetNameOrIdentifierLocation (
+                                                                                        member)));
+                                                                }
                                                 }
 
-                                                continue;
-
-                                        case OrderingTrait.Kind:
-                                                // Only fields may be marked const, and all
-                                                // fields have the same kind.
-                                                continue;
-
-                                        case OrderingTrait.Constant:
-                                        default:
-                                                continue;
-                                        }
+                                        previousFieldConstant = currentFieldConstant;
+                                        previousFieldReadonly = currentFieldReadonly;
+                                        previousFieldStatic = currentFieldStatic;
+                                        previousAccessLevel = currentAccessLevel;
                                 }
-
-                                if (compareConst)
-                                {
-                                        if (!previousFieldConstant && currentFieldConstant)
-                                        {
-                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                    Descriptor,
-                                                    NamedTypeHelpers.GetNameOrIdentifierLocation(
-                                                        member)));
-                                        }
-                                }
-
-                                previousFieldConstant = currentFieldConstant;
-                                previousFieldReadonly = currentFieldReadonly;
-                                previousFieldStatic = currentFieldStatic;
-                                previousAccessLevel = currentAccessLevel;
-                        }
                 }
         }
 }

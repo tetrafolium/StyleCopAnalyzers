@@ -25,7 +25,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// does not match the actual parameters on the element, or if the parameter documentation
         /// is not listed in the same order as the element's parameters.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1612ElementParameterDocumentationMustMatchElementParameters
             : ElementDocumentationBase
         {
@@ -35,234 +35,261 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1612";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1612.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1612Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1612Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1612.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (DocumentationResources.SA1612Title),
+                    DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1612Description),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
 
-                private static readonly LocalizableString
-                    MissingParamForDocumentationMessageFormat = new LocalizableResourceString(
-                        nameof(
+                private static readonly LocalizableString MissingParamForDocumentationMessageFormat
+                    = new LocalizableResourceString (
+                        nameof (
                             DocumentationResources.SA1612MissingParamForDocumentationMessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString ParamWrongOrderMessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1612ParamWrongOrderMessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString ParamWrongOrderMessageFormat
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1612ParamWrongOrderMessageFormat),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
 
-                private static readonly DiagnosticDescriptor MissingParameterDescriptor =
-                    new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor MissingParameterDescriptor
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MissingParamForDocumentationMessageFormat,
                         AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
                         AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                private static readonly DiagnosticDescriptor OrderDescriptor =
-                    new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor OrderDescriptor
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, ParamWrongOrderMessageFormat,
                         AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
                         AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-                public SA1612ElementParameterDocumentationMustMatchElementParameters()
-                    : base(matchElementName
-                           : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
-                           : true)
+                public SA1612ElementParameterDocumentationMustMatchElementParameters ()
+                    : base (matchElementName
+                            : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
+                            : true)
                 {
                 }
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(MissingParameterDescriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (MissingParameterDescriptor);
 
                 /// <inheritdoc/>
-                protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         StyleCopSettings settings,
-                                                         bool needsComment,
-                                                         IEnumerable<XmlNodeSyntax> syntaxList,
-                                                         params Location[] diagnosticLocations)
+                protected override void
+                HandleXmlElement (SyntaxNodeAnalysisContext context, StyleCopSettings settings,
+                                  bool needsComment, IEnumerable<XmlNodeSyntax> syntaxList,
+                                  params Location[] diagnosticLocations)
                 {
                         var node = context.Node;
-                        var identifier = GetIdentifier(node);
+                        var identifier = GetIdentifier (node);
 
                         bool supportedIdentifier = identifier != null;
                         if (!supportedIdentifier)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        var parameterList = GetParameters(node) ?.ToImmutableArray();
+                        var parameterList = GetParameters (node) ?.ToImmutableArray ();
 
-                        bool hasNoParameters = !parameterList?.Any() ?? false;
+                        bool hasNoParameters = !parameterList?.Any () ?? false;
                         if (hasNoParameters)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         var parentParameters = parameterList.Value;
 
                         var index = 0;
                         foreach (var syntax in syntaxList)
-                        {
-                                var nameAttributeSyntax =
-                                    XmlCommentHelper
-                                        .GetFirstAttributeOrDefault<XmlNameAttributeSyntax>(syntax);
-                                var nameAttributeText =
-                                    nameAttributeSyntax?.Identifier?.Identifier.ValueText;
+                                {
+                                        var nameAttributeSyntax
+                                            = XmlCommentHelper.GetFirstAttributeOrDefault<
+                                                XmlNameAttributeSyntax> (syntax);
+                                        var nameAttributeText
+                                            = nameAttributeSyntax?.Identifier?.Identifier.ValueText;
 
-                                // Make sure we ignore violations that should be reported by SA1613
-                                // instead.
-                                if (string.IsNullOrWhiteSpace(nameAttributeText))
+                                        // Make sure we ignore violations that should be reported by
+                                        // SA1613 instead.
+                                        if (string.IsNullOrWhiteSpace (nameAttributeText))
+                                                {
+                                                        return;
+                                                }
+
+                                        var location = nameAttributeSyntax.Identifier.Identifier
+                                                           .GetLocation ();
+
+                                        var parentParameter = parentParameters.FirstOrDefault (
+                                            s => s.Identifier.ValueText == nameAttributeText);
+                                        if (parentParameter == null)
+                                                {
+                                                        context.ReportDiagnostic (
+                                                            Diagnostic.Create (
+                                                                MissingParameterDescriptor,
+                                                                location, nameAttributeText));
+                                                }
+                                        else
+                                                {
+                                                        if (!needsComment)
+                                                                {
+                                                                        // Parameter documentation
+                                                                        // is allowed to be omitted,
+                                                                        // so skip parameters for
+                                                                        // which there is no
+                                                                        // documentation.
+                                                                        while (
+                                                                            index < parentParameters
+                                                                                        .Length
+                                                                            && parentParameters
+                                                                                       [index]
+                                                                                   != parentParameter)
+                                                                                {
+                                                                                        index++;
+                                                                                }
+                                                                }
+
+                                                        if (parentParameters.Length <= index
+                                                            || parentParameters[index]
+                                                                   != parentParameter)
+                                                                {
+#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+                                                                        context.ReportDiagnostic (
+                                                                            Diagnostic.Create (
+                                                                                OrderDescriptor,
+                                                                                location,
+                                                                                nameAttributeText,
+                                                                                parentParameters.IndexOf (
+                                                                                    parentParameter)
+                                                                                    + 1));
+#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                                                }
+                                                }
+
+                                        index++;
+                                }
+                }
+
+                /// <inheritdoc/>
+                protected override void
+                HandleCompleteDocumentation (SyntaxNodeAnalysisContext context, bool needsComment,
+                                             XElement completeDocumentation,
+                                             params Location[] diagnosticLocations)
+                {
+                        var node = context.Node;
+                        var identifier = GetIdentifier (node);
+
+                        bool supportedIdentifier = identifier != null;
+                        if (!supportedIdentifier)
                                 {
                                         return;
                                 }
 
-                                var location =
-                                    nameAttributeSyntax.Identifier.Identifier.GetLocation();
+                        var identifierLocation = identifier.Value.GetLocation ();
+                        var parameterList = GetParameters (node) ?.ToImmutableArray ();
 
-                                var parentParameter = parentParameters.FirstOrDefault(
-                                    s => s.Identifier.ValueText == nameAttributeText);
-                                if (parentParameter == null)
-                                {
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(MissingParameterDescriptor, location,
-                                                              nameAttributeText));
-                                }
-                                else
-                                {
-                                        if (!needsComment)
-                                        {
-                                                // Parameter documentation is allowed to be omitted,
-                                                // so skip parameters for which there is no
-                                                // documentation.
-                                                while (index < parentParameters.Length &&
-                                                       parentParameters[index] != parentParameter)
-                                                {
-                                                        index++;
-                                                }
-                                        }
-
-                                        if (parentParameters.Length <= index ||
-                                            parentParameters[index] != parentParameter)
-                                        {
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
-                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                    OrderDescriptor, location, nameAttributeText,
-                                                    parentParameters.IndexOf(parentParameter) + 1));
-#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                                        }
-                                }
-
-                                index++;
-                        }
-                }
-
-                /// <inheritdoc/>
-                protected override void HandleCompleteDocumentation(
-                    SyntaxNodeAnalysisContext context, bool needsComment,
-                    XElement completeDocumentation, params Location[] diagnosticLocations)
-                {
-                        var node = context.Node;
-                        var identifier = GetIdentifier(node);
-
-                        bool supportedIdentifier = identifier != null;
-                        if (!supportedIdentifier)
-                        {
-                                return;
-                        }
-
-                        var identifierLocation = identifier.Value.GetLocation();
-                        var parameterList = GetParameters(node) ?.ToImmutableArray();
-
-                        bool hasNoParameters = !parameterList?.Any() ?? false;
+                        bool hasNoParameters = !parameterList?.Any () ?? false;
                         if (hasNoParameters)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         // We are working with an <include> element
-                        var xmlParamTags = completeDocumentation.Nodes().OfType<XElement>().Where(
-                            e => e.Name == XmlCommentHelper.ParamXmlTag);
+                        var xmlParamTags
+                            = completeDocumentation.Nodes ().OfType<XElement> ().Where (
+                                e => e.Name == XmlCommentHelper.ParamXmlTag);
 
                         var parentParameters = parameterList.Value;
 
                         var index = 0;
                         foreach (var paramTag in xmlParamTags)
-                        {
-                                var nameAttributeText =
-                                    paramTag.Attributes().FirstOrDefault(a => a.Name == "name")
-                                    ?.Value;
+                                {
+                                        var nameAttributeText
+                                            = paramTag.Attributes ().FirstOrDefault (a => a.Name
+                                                                                          == "name")
+                                            ?.Value;
 
-                                // Make sure we ignore violations that should be reported by SA1613
-                                // instead.
-                                if (string.IsNullOrWhiteSpace(nameAttributeText))
-                                {
-                                        return;
-                                }
-
-                                var parentParameter = parentParameters.FirstOrDefault(
-                                    s => s.Identifier.ValueText == nameAttributeText);
-                                if (parentParameter == null)
-                                {
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            MissingParameterDescriptor, identifierLocation,
-                                            nameAttributeText));
-                                }
-                                else
-                                {
-                                        if (!needsComment)
-                                        {
-                                                // Parameter documentation is allowed to be omitted,
-                                                // so skip parameters for which there is no
-                                                // documentation.
-                                                while (index < parentParameters.Length &&
-                                                       parentParameters[index] != parentParameter)
+                                        // Make sure we ignore violations that should be reported by
+                                        // SA1613 instead.
+                                        if (string.IsNullOrWhiteSpace (nameAttributeText))
                                                 {
-                                                        index++;
+                                                        return;
                                                 }
-                                        }
 
-                                        if (parentParameters.Length <= index ||
-                                            parentParameters[index] != parentParameter)
-                                        {
+                                        var parentParameter = parentParameters.FirstOrDefault (
+                                            s => s.Identifier.ValueText == nameAttributeText);
+                                        if (parentParameter == null)
+                                                {
+                                                        context.ReportDiagnostic (
+                                                            Diagnostic.Create (
+                                                                MissingParameterDescriptor,
+                                                                identifierLocation,
+                                                                nameAttributeText));
+                                                }
+                                        else
+                                                {
+                                                        if (!needsComment)
+                                                                {
+                                                                        // Parameter documentation
+                                                                        // is allowed to be omitted,
+                                                                        // so skip parameters for
+                                                                        // which there is no
+                                                                        // documentation.
+                                                                        while (
+                                                                            index < parentParameters
+                                                                                        .Length
+                                                                            && parentParameters
+                                                                                       [index]
+                                                                                   != parentParameter)
+                                                                                {
+                                                                                        index++;
+                                                                                }
+                                                                }
+
+                                                        if (parentParameters.Length <= index
+                                                            || parentParameters[index]
+                                                                   != parentParameter)
+                                                                {
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
-                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                    OrderDescriptor, identifierLocation,
-                                                    nameAttributeText,
-                                                    parentParameters.IndexOf(parentParameter) + 1));
+                                                                        context.ReportDiagnostic (
+                                                                            Diagnostic.Create (
+                                                                                OrderDescriptor,
+                                                                                identifierLocation,
+                                                                                nameAttributeText,
+                                                                                parentParameters.IndexOf (
+                                                                                    parentParameter)
+                                                                                    + 1));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                                        }
-                                }
+                                                                }
+                                                }
 
-                                index++;
-                        }
+                                        index++;
+                                }
                 }
 
-                private static IEnumerable<ParameterSyntax> GetParameters(SyntaxNode node)
+                private static IEnumerable<ParameterSyntax>
+                GetParameters (SyntaxNode node)
                 {
                         return (node as BaseMethodDeclarationSyntax)
                             ?.ParameterList?.Parameters
-                ??(node as IndexerDeclarationSyntax)
+                ?? (node as IndexerDeclarationSyntax)
                             ?.ParameterList?.Parameters
-                ??(node as DelegateDeclarationSyntax)
+                ?? (node as DelegateDeclarationSyntax)
                             ?.ParameterList?.Parameters;
                 }
 
-                private static SyntaxToken? GetIdentifier(SyntaxNode node)
+                private static SyntaxToken?
+                GetIdentifier (SyntaxNode node)
                 {
                         return (node as MethodDeclarationSyntax)
                             ?.Identifier
-                ??(node as IndexerDeclarationSyntax)
+                ?? (node as IndexerDeclarationSyntax)
                             ?.ThisKeyword
-                ??(node as DelegateDeclarationSyntax)
+                ?? (node as DelegateDeclarationSyntax)
                             ?.Identifier;
                 }
         }

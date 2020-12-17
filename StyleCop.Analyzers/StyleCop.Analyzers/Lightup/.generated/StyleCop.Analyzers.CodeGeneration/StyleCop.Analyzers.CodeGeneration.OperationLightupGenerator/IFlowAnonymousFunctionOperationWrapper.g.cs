@@ -9,50 +9,51 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IFlowAnonymousFunctionOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IFlowAnonymousFunctionOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IFlowAnonymousFunctionOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IMethodSymbol> SymbolAccessor;
                 private readonly IOperation operation;
-                static IFlowAnonymousFunctionOperationWrapper()
+                static IFlowAnonymousFunctionOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IFlowAnonymousFunctionOperationWrapper));
-                        SymbolAccessor =
-                            LightupHelpers
-                                .CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
-                                    WrappedType, nameof(Symbol));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IFlowAnonymousFunctionOperationWrapper));
+                        SymbolAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IMethodSymbol> (
+                                      WrappedType, nameof (Symbol));
                 }
 
-                private IFlowAnonymousFunctionOperationWrapper(IOperation operation)
+                private IFlowAnonymousFunctionOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IMethodSymbol Symbol => SymbolAccessor(this.WrappedOperation);
-                public static IFlowAnonymousFunctionOperationWrapper FromOperation(
-                    IOperation operation)
+                public IMethodSymbol Symbol => SymbolAccessor (this.WrappedOperation);
+                public static IFlowAnonymousFunctionOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IFlowAnonymousFunctionOperationWrapper(operation);
+                        return new IFlowAnonymousFunctionOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

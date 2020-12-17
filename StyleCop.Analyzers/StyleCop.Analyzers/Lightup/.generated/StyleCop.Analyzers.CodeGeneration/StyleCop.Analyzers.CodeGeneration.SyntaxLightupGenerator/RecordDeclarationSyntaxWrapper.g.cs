@@ -12,8 +12,8 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct RecordDeclarationSyntaxWrapper
             : ISyntaxWrapper<TypeDeclarationSyntax>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.RecordDeclarationSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.RecordDeclarationSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<TypeDeclarationSyntax, ParameterListSyntax>
@@ -47,57 +47,59 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly TypeDeclarationSyntax node;
 
-                static RecordDeclarationSyntaxWrapper()
+                static RecordDeclarationSyntaxWrapper ()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(RecordDeclarationSyntaxWrapper));
-                        ParameterListAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<TypeDeclarationSyntax,
-                                                                        ParameterListSyntax>(
-                                WrappedType, nameof(ParameterList));
-                        WithAttributeListsAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                TypeDeclarationSyntax, SyntaxList<AttributeListSyntax>>(
-                                WrappedType, nameof(AttributeLists));
-                        WithModifiersAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            TypeDeclarationSyntax, SyntaxTokenList>(WrappedType, nameof(Modifiers));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (RecordDeclarationSyntaxWrapper));
+                        ParameterListAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<TypeDeclarationSyntax,
+                                                                          ParameterListSyntax> (
+                                WrappedType, nameof (ParameterList));
+                        WithAttributeListsAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                                TypeDeclarationSyntax, SyntaxList<AttributeListSyntax> > (
+                                WrappedType, nameof (AttributeLists));
+                        WithModifiersAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
+                                                                              SyntaxTokenList> (
+                                WrappedType, nameof (Modifiers));
                         WithKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            TypeDeclarationSyntax, SyntaxToken>(WrappedType, nameof(Keyword));
+                            TypeDeclarationSyntax, SyntaxToken> (WrappedType, nameof (Keyword));
                         WithIdentifierAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            TypeDeclarationSyntax, SyntaxToken>(WrappedType, nameof(Identifier));
-                        WithTypeParameterListAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                TypeDeclarationSyntax, TypeParameterListSyntax>(
-                                WrappedType, nameof(TypeParameterList));
-                        WithParameterListAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
-                                                                            ParameterListSyntax>(
-                                WrappedType, nameof(ParameterList));
+                            TypeDeclarationSyntax, SyntaxToken> (WrappedType, nameof (Identifier));
+                        WithTypeParameterListAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                                TypeDeclarationSyntax, TypeParameterListSyntax> (
+                                WrappedType, nameof (TypeParameterList));
+                        WithParameterListAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
+                                                                              ParameterListSyntax> (
+                                WrappedType, nameof (ParameterList));
                         WithBaseListAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            TypeDeclarationSyntax, BaseListSyntax>(WrappedType, nameof(BaseList));
-                        WithConstraintClausesAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            TypeDeclarationSyntax, BaseListSyntax> (WrappedType, nameof (BaseList));
+                        WithConstraintClausesAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<
                                 TypeDeclarationSyntax,
-                                SyntaxList<TypeParameterConstraintClauseSyntax>>(
-                                WrappedType, nameof(ConstraintClauses));
-                        WithOpenBraceTokenAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
-                                                                            SyntaxToken>(
-                                WrappedType, nameof(OpenBraceToken));
+                                SyntaxList<TypeParameterConstraintClauseSyntax> > (
+                                WrappedType, nameof (ConstraintClauses));
+                        WithOpenBraceTokenAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
+                                                                              SyntaxToken> (
+                                WrappedType, nameof (OpenBraceToken));
                         WithMembersAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            TypeDeclarationSyntax, SyntaxList<MemberDeclarationSyntax>>(
-                            WrappedType, nameof(Members));
-                        WithCloseBraceTokenAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
-                                                                            SyntaxToken>(
-                                WrappedType, nameof(CloseBraceToken));
-                        WithSemicolonTokenAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
-                                                                            SyntaxToken>(
-                                WrappedType, nameof(SemicolonToken));
+                            TypeDeclarationSyntax, SyntaxList<MemberDeclarationSyntax> > (
+                            WrappedType, nameof (Members));
+                        WithCloseBraceTokenAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
+                                                                              SyntaxToken> (
+                                WrappedType, nameof (CloseBraceToken));
+                        WithSemicolonTokenAccessor
+                            = LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeDeclarationSyntax,
+                                                                              SyntaxToken> (
+                                WrappedType, nameof (SemicolonToken));
                 }
 
-                private RecordDeclarationSyntaxWrapper(TypeDeclarationSyntax node)
+                private RecordDeclarationSyntaxWrapper (TypeDeclarationSyntax node)
                 {
                         this.node = node;
                 }
@@ -106,203 +108,175 @@ namespace StyleCop.Analyzers.Lightup
 
                 public SyntaxList<AttributeListSyntax> AttributeLists
                 {
-                        get
-                        {
-                                return this.SyntaxNode.AttributeLists();
-                        }
+                        get { return this.SyntaxNode.AttributeLists (); }
                 }
 
                 public SyntaxTokenList Modifiers
                 {
-                        get
-                        {
-                                return this.SyntaxNode.Modifiers();
-                        }
+                        get { return this.SyntaxNode.Modifiers (); }
                 }
 
                 public SyntaxToken Keyword
                 {
-                        get
-                        {
-                                return this.SyntaxNode.Keyword;
-                        }
+                        get { return this.SyntaxNode.Keyword; }
                 }
 
                 public SyntaxToken Identifier
                 {
-                        get
-                        {
-                                return this.SyntaxNode.Identifier;
-                        }
+                        get { return this.SyntaxNode.Identifier; }
                 }
 
                 public TypeParameterListSyntax TypeParameterList
                 {
-                        get
-                        {
-                                return this.SyntaxNode.TypeParameterList;
-                        }
+                        get { return this.SyntaxNode.TypeParameterList; }
                 }
 
                 public ParameterListSyntax ParameterList
                 {
-                        get
-                        {
-                                return ParameterListAccessor(this.SyntaxNode);
-                        }
+                        get { return ParameterListAccessor (this.SyntaxNode); }
                 }
 
                 public BaseListSyntax BaseList
                 {
-                        get
-                        {
-                                return this.SyntaxNode.BaseList;
-                        }
+                        get { return this.SyntaxNode.BaseList; }
                 }
 
                 public SyntaxList<TypeParameterConstraintClauseSyntax> ConstraintClauses
                 {
-                        get
-                        {
-                                return this.SyntaxNode.ConstraintClauses;
-                        }
+                        get { return this.SyntaxNode.ConstraintClauses; }
                 }
 
                 public SyntaxToken OpenBraceToken
                 {
-                        get
-                        {
-                                return this.SyntaxNode.OpenBraceToken;
-                        }
+                        get { return this.SyntaxNode.OpenBraceToken; }
                 }
 
                 public SyntaxList<MemberDeclarationSyntax> Members
                 {
-                        get
-                        {
-                                return this.SyntaxNode.Members;
-                        }
+                        get { return this.SyntaxNode.Members; }
                 }
 
                 public SyntaxToken CloseBraceToken
                 {
-                        get
-                        {
-                                return this.SyntaxNode.CloseBraceToken;
-                        }
+                        get { return this.SyntaxNode.CloseBraceToken; }
                 }
 
                 public SyntaxToken SemicolonToken
                 {
-                        get
-                        {
-                                return this.SyntaxNode.SemicolonToken;
-                        }
+                        get { return this.SyntaxNode.SemicolonToken; }
                 }
 
-                public static explicit operator RecordDeclarationSyntaxWrapper(SyntaxNode node)
+                public static explicit operator RecordDeclarationSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new RecordDeclarationSyntaxWrapper((TypeDeclarationSyntax) node);
+                        return new RecordDeclarationSyntaxWrapper ((TypeDeclarationSyntax) node);
                 }
 
-                public static implicit operator TypeDeclarationSyntax(
-                    RecordDeclarationSyntaxWrapper wrapper)
+                public static implicit
+                operator TypeDeclarationSyntax (RecordDeclarationSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public RecordDeclarationSyntaxWrapper WithAttributeLists(
-                    SyntaxList<AttributeListSyntax> attributeLists)
+                public RecordDeclarationSyntaxWrapper
+                WithAttributeLists (SyntaxList<AttributeListSyntax> attributeLists)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithAttributeListsAccessor (this.SyntaxNode, attributeLists));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithModifiers(SyntaxTokenList modifiers)
+                public RecordDeclarationSyntaxWrapper
+                WithModifiers (SyntaxTokenList modifiers)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithModifiersAccessor(this.SyntaxNode, modifiers));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithModifiersAccessor (this.SyntaxNode, modifiers));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithKeyword(SyntaxToken keyword)
+                public RecordDeclarationSyntaxWrapper
+                WithKeyword (SyntaxToken keyword)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithKeywordAccessor(this.SyntaxNode, keyword));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithKeywordAccessor (this.SyntaxNode, keyword));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithIdentifier(SyntaxToken identifier)
+                public RecordDeclarationSyntaxWrapper
+                WithIdentifier (SyntaxToken identifier)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithIdentifierAccessor(this.SyntaxNode, identifier));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithIdentifierAccessor (this.SyntaxNode, identifier));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithTypeParameterList(
-                    TypeParameterListSyntax typeParameterList)
+                public RecordDeclarationSyntaxWrapper
+                WithTypeParameterList (TypeParameterListSyntax typeParameterList)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithTypeParameterListAccessor(this.SyntaxNode, typeParameterList));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithTypeParameterListAccessor (this.SyntaxNode, typeParameterList));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithParameterList(
-                    ParameterListSyntax parameterList)
+                public RecordDeclarationSyntaxWrapper
+                WithParameterList (ParameterListSyntax parameterList)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithParameterListAccessor(this.SyntaxNode, parameterList));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithParameterListAccessor (this.SyntaxNode, parameterList));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithBaseList(BaseListSyntax baseList)
+                public RecordDeclarationSyntaxWrapper
+                WithBaseList (BaseListSyntax baseList)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithBaseListAccessor(this.SyntaxNode, baseList));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithBaseListAccessor (this.SyntaxNode, baseList));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithConstraintClauses(
+                public RecordDeclarationSyntaxWrapper
+                WithConstraintClauses (
                     SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithConstraintClausesAccessor(this.SyntaxNode, constraintClauses));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithConstraintClausesAccessor (this.SyntaxNode, constraintClauses));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithOpenBraceToken(SyntaxToken openBraceToken)
+                public RecordDeclarationSyntaxWrapper
+                WithOpenBraceToken (SyntaxToken openBraceToken)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithOpenBraceTokenAccessor(this.SyntaxNode, openBraceToken));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithOpenBraceTokenAccessor (this.SyntaxNode, openBraceToken));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithMembers(
-                    SyntaxList<MemberDeclarationSyntax> members)
+                public RecordDeclarationSyntaxWrapper
+                WithMembers (SyntaxList<MemberDeclarationSyntax> members)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithMembersAccessor(this.SyntaxNode, members));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithMembersAccessor (this.SyntaxNode, members));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithCloseBraceToken(
-                    SyntaxToken closeBraceToken)
+                public RecordDeclarationSyntaxWrapper
+                WithCloseBraceToken (SyntaxToken closeBraceToken)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithCloseBraceTokenAccessor(this.SyntaxNode, closeBraceToken));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithCloseBraceTokenAccessor (this.SyntaxNode, closeBraceToken));
                 }
 
-                public RecordDeclarationSyntaxWrapper WithSemicolonToken(SyntaxToken semicolonToken)
+                public RecordDeclarationSyntaxWrapper
+                WithSemicolonToken (SyntaxToken semicolonToken)
                 {
-                        return new RecordDeclarationSyntaxWrapper(
-                            WithSemicolonTokenAccessor(this.SyntaxNode, semicolonToken));
+                        return new RecordDeclarationSyntaxWrapper (
+                            WithSemicolonTokenAccessor (this.SyntaxNode, semicolonToken));
                 }
         }
 }

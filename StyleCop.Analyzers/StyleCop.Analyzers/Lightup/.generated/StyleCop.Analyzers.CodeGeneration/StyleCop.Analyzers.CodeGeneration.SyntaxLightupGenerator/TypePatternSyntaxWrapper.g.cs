@@ -11,8 +11,8 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly partial struct TypePatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.TypePatternSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.TypePatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
@@ -21,88 +21,84 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly CSharpSyntaxNode node;
 
-                static TypePatternSyntaxWrapper()
+                static TypePatternSyntaxWrapper ()
                 {
-                        WrappedType =
-                            SyntaxWrapperHelper.GetWrappedType(typeof(TypePatternSyntaxWrapper));
-                        TypeAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
-                                    WrappedType, nameof(Type));
-                        WithTypeAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
-                                    WrappedType, nameof(Type));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (TypePatternSyntaxWrapper));
+                        TypeAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax> (
+                                      WrappedType, nameof (Type));
+                        WithTypeAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax> (
+                                      WrappedType, nameof (Type));
                 }
 
-                private TypePatternSyntaxWrapper(CSharpSyntaxNode node)
-                {
-                        this.node = node;
-                }
+                private TypePatternSyntaxWrapper (CSharpSyntaxNode node) { this.node = node; }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public TypeSyntax Type
                 {
-                        get
-                        {
-                                return TypeAccessor(this.SyntaxNode);
-                        }
+                        get { return TypeAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator TypePatternSyntaxWrapper(PatternSyntaxWrapper node)
+                public static explicit operator TypePatternSyntaxWrapper (PatternSyntaxWrapper node)
                 {
                         return (TypePatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator TypePatternSyntaxWrapper(
-                    ExpressionOrPatternSyntaxWrapper node)
+                public static explicit
+                operator TypePatternSyntaxWrapper (ExpressionOrPatternSyntaxWrapper node)
                 {
                         return (TypePatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator TypePatternSyntaxWrapper(SyntaxNode node)
+                public static explicit operator TypePatternSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new TypePatternSyntaxWrapper((CSharpSyntaxNode) node);
+                        return new TypePatternSyntaxWrapper ((CSharpSyntaxNode) node);
                 }
 
-                public static implicit operator PatternSyntaxWrapper(
-                    TypePatternSyntaxWrapper wrapper)
+                public static implicit
+                operator PatternSyntaxWrapper (TypePatternSyntaxWrapper wrapper)
                 {
-                        return PatternSyntaxWrapper.FromUpcast(wrapper.node);
+                        return PatternSyntaxWrapper.FromUpcast (wrapper.node);
                 }
 
-                public static implicit operator ExpressionOrPatternSyntaxWrapper(
-                    TypePatternSyntaxWrapper wrapper)
+                public static implicit
+                operator ExpressionOrPatternSyntaxWrapper (TypePatternSyntaxWrapper wrapper)
                 {
-                        return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
+                        return ExpressionOrPatternSyntaxWrapper.FromUpcast (wrapper.node);
                 }
 
-                public static implicit operator CSharpSyntaxNode(TypePatternSyntaxWrapper wrapper)
+                public static implicit operator CSharpSyntaxNode (TypePatternSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public TypePatternSyntaxWrapper WithType(TypeSyntax type)
+                public TypePatternSyntaxWrapper
+                WithType (TypeSyntax type)
                 {
-                        return new TypePatternSyntaxWrapper(
-                            WithTypeAccessor(this.SyntaxNode, type));
+                        return new TypePatternSyntaxWrapper (
+                            WithTypeAccessor (this.SyntaxNode, type));
                 }
         }
 }

@@ -12,13 +12,13 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct PositionalPatternClauseSyntaxWrapper
             : ISyntaxWrapper<CSharpSyntaxNode>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.PositionalPatternClauseSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.PositionalPatternClauseSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> OpenParenTokenAccessor;
                 private static readonly
-                    Func<CSharpSyntaxNode, SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper>>
+                    Func<CSharpSyntaxNode, SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper> >
                         SubpatternsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> CloseParenTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
@@ -31,37 +31,37 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly CSharpSyntaxNode node;
 
-                static PositionalPatternClauseSyntaxWrapper()
+                static PositionalPatternClauseSyntaxWrapper ()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(PositionalPatternClauseSyntaxWrapper));
-                        OpenParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(OpenParenToken));
-                        SubpatternsAccessor =
-                            LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<
-                                CSharpSyntaxNode, SubpatternSyntaxWrapper>(WrappedType,
-                                                                           nameof(Subpatterns));
-                        CloseParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(CloseParenToken));
-                        WithOpenParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(OpenParenToken));
-                        WithSubpatternsAccessor =
-                            LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
-                                CSharpSyntaxNode, SubpatternSyntaxWrapper>(WrappedType,
-                                                                           nameof(Subpatterns));
-                        WithCloseParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(CloseParenToken));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (PositionalPatternClauseSyntaxWrapper));
+                        OpenParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (OpenParenToken));
+                        SubpatternsAccessor
+                            = LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<
+                                CSharpSyntaxNode, SubpatternSyntaxWrapper> (WrappedType,
+                                                                            nameof (Subpatterns));
+                        CloseParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (CloseParenToken));
+                        WithOpenParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (OpenParenToken));
+                        WithSubpatternsAccessor
+                            = LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
+                                CSharpSyntaxNode, SubpatternSyntaxWrapper> (WrappedType,
+                                                                            nameof (Subpatterns));
+                        WithCloseParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (CloseParenToken));
                 }
 
-                private PositionalPatternClauseSyntaxWrapper(CSharpSyntaxNode node)
+                private PositionalPatternClauseSyntaxWrapper (CSharpSyntaxNode node)
                 {
                         this.node = node;
                 }
@@ -70,75 +70,67 @@ namespace StyleCop.Analyzers.Lightup
 
                 public SyntaxToken OpenParenToken
                 {
-                        get
-                        {
-                                return OpenParenTokenAccessor(this.SyntaxNode);
-                        }
+                        get { return OpenParenTokenAccessor (this.SyntaxNode); }
                 }
 
                 public SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper> Subpatterns
                 {
-                        get
-                        {
-                                return SubpatternsAccessor(this.SyntaxNode);
-                        }
+                        get { return SubpatternsAccessor (this.SyntaxNode); }
                 }
 
                 public SyntaxToken CloseParenToken
                 {
-                        get
-                        {
-                                return CloseParenTokenAccessor(this.SyntaxNode);
-                        }
+                        get { return CloseParenTokenAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator PositionalPatternClauseSyntaxWrapper(
-                    SyntaxNode node)
+                public static explicit
+                operator PositionalPatternClauseSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new PositionalPatternClauseSyntaxWrapper((CSharpSyntaxNode) node);
+                        return new PositionalPatternClauseSyntaxWrapper ((CSharpSyntaxNode) node);
                 }
 
-                public static implicit operator CSharpSyntaxNode(
-                    PositionalPatternClauseSyntaxWrapper wrapper)
+                public static implicit
+                operator CSharpSyntaxNode (PositionalPatternClauseSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public PositionalPatternClauseSyntaxWrapper WithOpenParenToken(
-                    SyntaxToken openParenToken)
+                public PositionalPatternClauseSyntaxWrapper
+                WithOpenParenToken (SyntaxToken openParenToken)
                 {
-                        return new PositionalPatternClauseSyntaxWrapper(
-                            WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
+                        return new PositionalPatternClauseSyntaxWrapper (
+                            WithOpenParenTokenAccessor (this.SyntaxNode, openParenToken));
                 }
 
-                public PositionalPatternClauseSyntaxWrapper WithSubpatterns(
-                    SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper> subpatterns)
+                public PositionalPatternClauseSyntaxWrapper
+                WithSubpatterns (SeparatedSyntaxListWrapper<SubpatternSyntaxWrapper> subpatterns)
                 {
-                        return new PositionalPatternClauseSyntaxWrapper(
-                            WithSubpatternsAccessor(this.SyntaxNode, subpatterns));
+                        return new PositionalPatternClauseSyntaxWrapper (
+                            WithSubpatternsAccessor (this.SyntaxNode, subpatterns));
                 }
 
-                public PositionalPatternClauseSyntaxWrapper WithCloseParenToken(
-                    SyntaxToken closeParenToken)
+                public PositionalPatternClauseSyntaxWrapper
+                WithCloseParenToken (SyntaxToken closeParenToken)
                 {
-                        return new PositionalPatternClauseSyntaxWrapper(
-                            WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
+                        return new PositionalPatternClauseSyntaxWrapper (
+                            WithCloseParenTokenAccessor (this.SyntaxNode, closeParenToken));
                 }
         }
 }

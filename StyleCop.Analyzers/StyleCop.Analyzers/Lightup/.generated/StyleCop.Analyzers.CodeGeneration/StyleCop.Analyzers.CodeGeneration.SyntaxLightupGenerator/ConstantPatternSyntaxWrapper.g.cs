@@ -12,8 +12,8 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct ConstantPatternSyntaxWrapper
             : ISyntaxWrapper<CSharpSyntaxNode>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.ConstantPatternSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.ConstantPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, ExpressionSyntax> ExpressionAccessor;
@@ -22,88 +22,82 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly CSharpSyntaxNode node;
 
-                static ConstantPatternSyntaxWrapper()
+                static ConstantPatternSyntaxWrapper ()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(ConstantPatternSyntaxWrapper));
-                        ExpressionAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
-                                    WrappedType, nameof(Expression));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (ConstantPatternSyntaxWrapper));
+                        ExpressionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            CSharpSyntaxNode, ExpressionSyntax> (WrappedType, nameof (Expression));
                         WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Expression));
+                            CSharpSyntaxNode, ExpressionSyntax> (WrappedType, nameof (Expression));
                 }
 
-                private ConstantPatternSyntaxWrapper(CSharpSyntaxNode node)
-                {
-                        this.node = node;
-                }
+                private ConstantPatternSyntaxWrapper (CSharpSyntaxNode node) { this.node = node; }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
                 public ExpressionSyntax Expression
                 {
-                        get
-                        {
-                                return ExpressionAccessor(this.SyntaxNode);
-                        }
+                        get { return ExpressionAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator ConstantPatternSyntaxWrapper(
-                    PatternSyntaxWrapper node)
+                public static explicit
+                operator ConstantPatternSyntaxWrapper (PatternSyntaxWrapper node)
                 {
                         return (ConstantPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator ConstantPatternSyntaxWrapper(
-                    ExpressionOrPatternSyntaxWrapper node)
+                public static explicit
+                operator ConstantPatternSyntaxWrapper (ExpressionOrPatternSyntaxWrapper node)
                 {
                         return (ConstantPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator ConstantPatternSyntaxWrapper(SyntaxNode node)
+                public static explicit operator ConstantPatternSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new ConstantPatternSyntaxWrapper((CSharpSyntaxNode) node);
+                        return new ConstantPatternSyntaxWrapper ((CSharpSyntaxNode) node);
                 }
 
-                public static implicit operator PatternSyntaxWrapper(
-                    ConstantPatternSyntaxWrapper wrapper)
+                public static implicit
+                operator PatternSyntaxWrapper (ConstantPatternSyntaxWrapper wrapper)
                 {
-                        return PatternSyntaxWrapper.FromUpcast(wrapper.node);
+                        return PatternSyntaxWrapper.FromUpcast (wrapper.node);
                 }
 
-                public static implicit operator ExpressionOrPatternSyntaxWrapper(
-                    ConstantPatternSyntaxWrapper wrapper)
+                public static implicit
+                operator ExpressionOrPatternSyntaxWrapper (ConstantPatternSyntaxWrapper wrapper)
                 {
-                        return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
+                        return ExpressionOrPatternSyntaxWrapper.FromUpcast (wrapper.node);
                 }
 
-                public static implicit operator CSharpSyntaxNode(
-                    ConstantPatternSyntaxWrapper wrapper)
+                public static implicit
+                operator CSharpSyntaxNode (ConstantPatternSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public ConstantPatternSyntaxWrapper WithExpression(ExpressionSyntax expression)
+                public ConstantPatternSyntaxWrapper
+                WithExpression (ExpressionSyntax expression)
                 {
-                        return new ConstantPatternSyntaxWrapper(
-                            WithExpressionAccessor(this.SyntaxNode, expression));
+                        return new ConstantPatternSyntaxWrapper (
+                            WithExpressionAccessor (this.SyntaxNode, expression));
                 }
         }
 }

@@ -9,51 +9,53 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct ITypeParameterObjectCreationOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.ITypeParameterObjectCreationOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.ITypeParameterObjectCreationOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> InitializerAccessor;
                 private readonly IOperation operation;
-                static ITypeParameterObjectCreationOperationWrapper()
+                static ITypeParameterObjectCreationOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(ITypeParameterObjectCreationOperationWrapper));
-                        InitializerAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Initializer));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (ITypeParameterObjectCreationOperationWrapper));
+                        InitializerAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Initializer));
                 }
 
-                private ITypeParameterObjectCreationOperationWrapper(IOperation operation)
+                private ITypeParameterObjectCreationOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IObjectOrCollectionInitializerOperationWrapper Initializer =>
-                    IObjectOrCollectionInitializerOperationWrapper.FromOperation(
-                        InitializerAccessor(this.WrappedOperation));
-                public static ITypeParameterObjectCreationOperationWrapper FromOperation(
-                    IOperation operation)
+                public IObjectOrCollectionInitializerOperationWrapper
+                    Initializer => IObjectOrCollectionInitializerOperationWrapper.FromOperation (
+                        InitializerAccessor (this.WrappedOperation));
+                public static ITypeParameterObjectCreationOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new ITypeParameterObjectCreationOperationWrapper(operation);
+                        return new ITypeParameterObjectCreationOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

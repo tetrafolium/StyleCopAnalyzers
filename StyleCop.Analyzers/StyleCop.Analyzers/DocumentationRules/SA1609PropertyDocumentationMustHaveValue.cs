@@ -25,7 +25,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <para>A violation of this rule occurs when the <c>&lt;value&gt;</c> tag for a property
         /// is missing.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1609PropertyDocumentationMustHaveValue : PropertyDocumentationBase
         {
                 /// <summary>
@@ -33,71 +33,71 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// cref="SA1609PropertyDocumentationMustHaveValue"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1609";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1609.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1609Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1609MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1609Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1609.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (DocumentationResources.SA1609Title),
+                    DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1609MessageFormat),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1609Description),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault, Description,
                     HelpLink);
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
                 protected override string XmlTagToHandle => XmlCommentHelper.ValueXmlTag;
 
                 /// <inheritdoc/>
-                protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         bool needsComment, XmlNodeSyntax syntax,
-                                                         XElement completeDocumentation,
-                                                         Location diagnosticLocation)
+                protected override void
+                HandleXmlElement (SyntaxNodeAnalysisContext context, bool needsComment,
+                                  XmlNodeSyntax syntax, XElement completeDocumentation,
+                                  Location diagnosticLocation)
                 {
                         if (!needsComment)
-                        {
-                                // A missing 'value' documentation is allowed for this element.
-                                return;
-                        }
+                                {
+                                        // A missing 'value' documentation is allowed for this
+                                        // element.
+                                        return;
+                                }
 
-                        var properties = ImmutableDictionary.Create<string, string>();
+                        var properties = ImmutableDictionary.Create<string, string> ();
 
                         if (completeDocumentation != null)
-                        {
-                                var hasValueTag =
-                                    completeDocumentation.Nodes().OfType<XElement>().Any(
-                                        element => element.Name == XmlCommentHelper.ValueXmlTag);
-                                if (hasValueTag)
                                 {
-                                        return;
-                                }
+                                        var hasValueTag
+                                            = completeDocumentation.Nodes ()
+                                                  .OfType<XElement> ()
+                                                  .Any (element => element.Name
+                                                                   == XmlCommentHelper.ValueXmlTag);
+                                        if (hasValueTag)
+                                                {
+                                                        return;
+                                                }
 
-                                properties = properties.Add(NoCodeFixKey, string.Empty);
-                        }
+                                        properties = properties.Add (NoCodeFixKey, string.Empty);
+                                }
                         else
-                        {
-                                if (syntax != null)
                                 {
-                                        return;
+                                        if (syntax != null)
+                                                {
+                                                        return;
+                                                }
                                 }
-                        }
 
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, diagnosticLocation, properties));
+                        context.ReportDiagnostic (
+                            Diagnostic.Create (Descriptor, diagnosticLocation, properties));
                 }
         }
 }

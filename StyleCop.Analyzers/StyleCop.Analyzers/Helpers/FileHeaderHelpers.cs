@@ -21,18 +21,20 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="root">The root of the syntax tree.</param>
                 /// <returns>The copyright string, as parsed from the file header.</returns>
-                internal static FileHeader ParseFileHeader(SyntaxNode root)
+                internal static FileHeader
+                ParseFileHeader (SyntaxNode root)
                 {
-                        var firstToken = root.GetFirstToken(includeZeroWidth : true);
-                        var firstNonWhitespaceTrivia = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(
-                            firstToken.LeadingTrivia, true);
+                        var firstToken = root.GetFirstToken (includeZeroWidth : true);
+                        var firstNonWhitespaceTrivia
+                            = TriviaHelper.IndexOfFirstNonWhitespaceTrivia (
+                                firstToken.LeadingTrivia, true);
 
                         if (firstNonWhitespaceTrivia == -1)
-                        {
-                                return FileHeader.MissingFileHeader;
-                        }
+                                {
+                                        return FileHeader.MissingFileHeader;
+                                }
 
-                        var sb = StringBuilderPool.Allocate();
+                        var sb = StringBuilderPool.Allocate ();
                         var endOfLineCount = 0;
                         var done = false;
                         var fileHeaderStart = int.MaxValue;
@@ -40,95 +42,128 @@ namespace StyleCop.Analyzers.Helpers
 
                         for (var i = firstNonWhitespaceTrivia;
                              !done && (i < firstToken.LeadingTrivia.Count); i++)
-                        {
-                                var trivia = firstToken.LeadingTrivia[i];
-
-                                switch (trivia.Kind())
                                 {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        endOfLineCount = 0;
-                                        break;
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                        endOfLineCount = 0;
+                                        var trivia = firstToken.LeadingTrivia[i];
 
-                                        var commentString = trivia.ToFullString();
-
-                                        fileHeaderStart =
-                                            Math.Min(trivia.FullSpan.Start, fileHeaderStart);
-                                        fileHeaderEnd = trivia.FullSpan.End;
-
-                                        sb.AppendLine(commentString.Substring(2).Trim());
-                                        break;
-                                case SyntaxKind.MultiLineCommentTrivia:
-                                        // only process a MultiLineCommentTrivia if no
-                                        // SingleLineCommentTrivia have been processed
-                                        if (sb.Length == 0)
-                                        {
-                                                var triviaString = trivia.ToFullString();
-
-                                                var startIndex =
-                                                    triviaString.IndexOf("/*",
-                                                                         StringComparison.Ordinal) +
-                                                    2;
-                                                var endIndex = triviaString.LastIndexOf(
-                                                    "*/", StringComparison.Ordinal);
-                                                if (endIndex == -1)
+                                        switch (trivia.Kind ())
                                                 {
-                                                        // While editing, it is possible to
-                                                        // have a multiline comment trivia
-                                                        // that does not contain the closing
-                                                        // '*/' yet.
-                                                        return FileHeader.MissingFileHeader;
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        endOfLineCount = 0;
+                                                        break;
+                                                case SyntaxKind.SingleLineCommentTrivia:
+                                                        endOfLineCount = 0;
+
+                                                        var commentString = trivia.ToFullString ();
+
+                                                        fileHeaderStart = Math.Min (
+                                                            trivia.FullSpan.Start, fileHeaderStart);
+                                                        fileHeaderEnd = trivia.FullSpan.End;
+
+                                                        sb.AppendLine (
+                                                            commentString.Substring (2).Trim ());
+                                                        break;
+                                                case SyntaxKind.MultiLineCommentTrivia:
+                                                        // only process a MultiLineCommentTrivia if
+                                                        // no SingleLineCommentTrivia have been
+                                                        // processed
+                                                        if (sb.Length == 0)
+                                                                {
+                                                                        var triviaString
+                                                                            = trivia
+                                                                                  .ToFullString ();
+
+                                                                        var startIndex
+                                                                            = triviaString.IndexOf (
+                                                                                  "/*",
+                                                                                  StringComparison
+                                                                                      .Ordinal)
+                                                                              + 2;
+                                                                        var endIndex
+                                                                            = triviaString
+                                                                                  .LastIndexOf (
+                                                                                      "*/",
+                                                                                      StringComparison
+                                                                                          .Ordinal);
+                                                                        if (endIndex == -1)
+                                                                                {
+                                                                                        // While
+                                                                                        // editing,
+                                                                                        // it is
+                                                                                        // possible
+                                                                                        // to have a
+                                                                                        // multiline
+                                                                                        // comment
+                                                                                        // trivia
+                                                                                        // that does
+                                                                                        // not
+                                                                                        // contain
+                                                                                        // the
+                                                                                        // closing
+                                                                                        // '*/' yet.
+                                                                                        return FileHeader
+                                                                                            .MissingFileHeader;
+                                                                                }
+
+                                                                        var commentContext
+                                                                            = triviaString
+                                                                                  .Substring (
+                                                                                      startIndex,
+                                                                                      endIndex
+                                                                                          - startIndex)
+                                                                                  .Trim ();
+
+                                                                        var triviaStringParts
+                                                                            = commentContext
+                                                                                  .Replace ("\r\n",
+                                                                                            "\n")
+                                                                                  .Split ('\n');
+
+                                                                        foreach (
+                                                                            var part in
+                                                                                triviaStringParts)
+                                                                                {
+                                                                                        var trimmedPart
+                                                                                            = part.TrimStart (
+                                                                                                ' ',
+                                                                                                '*');
+                                                                                        sb.AppendLine (
+                                                                                            trimmedPart);
+                                                                                }
+
+                                                                        fileHeaderStart
+                                                                            = trivia.FullSpan.Start;
+                                                                        fileHeaderEnd
+                                                                            = trivia.FullSpan.End;
+                                                                }
+
+                                                        done = true;
+                                                        break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        endOfLineCount++;
+                                                        done = endOfLineCount > 1;
+                                                        break;
+                                                default:
+                                                        done = (fileHeaderStart < fileHeaderEnd)
+                                                               || !trivia.IsDirective;
+                                                        break;
                                                 }
-
-                                                var commentContext =
-                                                    triviaString
-                                                        .Substring(startIndex,
-                                                                   endIndex - startIndex)
-                                                        .Trim();
-
-                                                var triviaStringParts =
-                                                    commentContext.Replace("\r\n", "\n")
-                                                        .Split('\n');
-
-                                                foreach (var part in triviaStringParts)
-                                                {
-                                                        var trimmedPart = part.TrimStart(' ', '*');
-                                                        sb.AppendLine(trimmedPart);
-                                                }
-
-                                                fileHeaderStart = trivia.FullSpan.Start;
-                                                fileHeaderEnd = trivia.FullSpan.End;
-                                        }
-
-                                        done = true;
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        endOfLineCount++;
-                                        done = endOfLineCount > 1;
-                                        break;
-                                default:
-                                        done = (fileHeaderStart < fileHeaderEnd) ||
-                                               !trivia.IsDirective;
-                                        break;
                                 }
-                        }
 
                         if (fileHeaderStart > fileHeaderEnd)
-                        {
-                                StringBuilderPool.Free(sb);
-                                return FileHeader.MissingFileHeader;
-                        }
+                                {
+                                        StringBuilderPool.Free (sb);
+                                        return FileHeader.MissingFileHeader;
+                                }
 
                         if (sb.Length > 0)
-                        {
-                                // remove the final newline
-                                var eolLength = Environment.NewLine.Length;
-                                sb.Remove(sb.Length - eolLength, eolLength);
-                        }
+                                {
+                                        // remove the final newline
+                                        var eolLength = Environment.NewLine.Length;
+                                        sb.Remove (sb.Length - eolLength, eolLength);
+                                }
 
-                        return new FileHeader(StringBuilderPool.ReturnAndFree(sb), fileHeaderStart,
-                                              fileHeaderEnd);
+                        return new FileHeader (StringBuilderPool.ReturnAndFree (sb),
+                                               fileHeaderStart, fileHeaderEnd);
                 }
 
                 /// <summary>
@@ -136,70 +171,71 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="root">The root of the syntax tree.</param>
                 /// <returns>The parsed file header.</returns>
-                internal static XmlFileHeader ParseXmlFileHeader(SyntaxNode root)
+                internal static XmlFileHeader
+                ParseXmlFileHeader (SyntaxNode root)
                 {
-                        var firstToken = root.GetFirstToken(includeZeroWidth : true);
+                        var firstToken = root.GetFirstToken (includeZeroWidth : true);
                         string xmlString;
                         int fileHeaderStart;
                         int fileHeaderEnd;
 
-                        var firstNonWhitespaceTrivia = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(
-                            firstToken.LeadingTrivia, true);
+                        var firstNonWhitespaceTrivia
+                            = TriviaHelper.IndexOfFirstNonWhitespaceTrivia (
+                                firstToken.LeadingTrivia, true);
                         if (firstNonWhitespaceTrivia == -1)
-                        {
-                                return XmlFileHeader.MissingFileHeader;
-                        }
+                                {
+                                        return XmlFileHeader.MissingFileHeader;
+                                }
 
                         switch (firstToken
                                     .LeadingTrivia [firstNonWhitespaceTrivia]
-                                    .Kind())
-                        {
-                        case SyntaxKind.SingleLineCommentTrivia:
-                                xmlString = ProcessSingleLineCommentsHeader(
-                                    firstToken.LeadingTrivia, firstNonWhitespaceTrivia,
-                                    out fileHeaderStart, out fileHeaderEnd);
-                                break;
+                                    .Kind ())
+                                {
+                                case SyntaxKind.SingleLineCommentTrivia:
+                                        xmlString = ProcessSingleLineCommentsHeader (
+                                            firstToken.LeadingTrivia, firstNonWhitespaceTrivia,
+                                            out fileHeaderStart, out fileHeaderEnd);
+                                        break;
 
-                        case SyntaxKind.MultiLineCommentTrivia:
-                                xmlString = ProcessMultiLineCommentsHeader(
-                                    firstToken.LeadingTrivia[firstNonWhitespaceTrivia],
-                                    out fileHeaderStart, out fileHeaderEnd);
-                                break;
+                                case SyntaxKind.MultiLineCommentTrivia:
+                                        xmlString = ProcessMultiLineCommentsHeader (
+                                            firstToken.LeadingTrivia[firstNonWhitespaceTrivia],
+                                            out fileHeaderStart, out fileHeaderEnd);
+                                        break;
 
-                        default:
-                                return XmlFileHeader.MissingFileHeader;
-                        }
+                                default:
+                                        return XmlFileHeader.MissingFileHeader;
+                                }
 
                         if (fileHeaderStart > fileHeaderEnd)
-                        {
-                                return XmlFileHeader.MissingFileHeader;
-                        }
+                                {
+                                        return XmlFileHeader.MissingFileHeader;
+                                }
 
                         try
-                        {
-                                var parsedFileHeaderXml = XElement.Parse(xmlString);
+                                {
+                                        var parsedFileHeaderXml = XElement.Parse (xmlString);
 
-                                // a header without any XML tags is malformed.
-                                if (!parsedFileHeaderXml.Descendants().Any())
+                                        // a header without any XML tags is malformed.
+                                        if (!parsedFileHeaderXml.Descendants ().Any ())
+                                                {
+                                                        return XmlFileHeader.MalformedFileHeader;
+                                                }
+
+                                        return new XmlFileHeader (parsedFileHeaderXml,
+                                                                  fileHeaderStart, fileHeaderEnd);
+                                }
+                        catch (XmlException)
                                 {
                                         return XmlFileHeader.MalformedFileHeader;
                                 }
-
-                                return new XmlFileHeader(parsedFileHeaderXml, fileHeaderStart,
-                                                         fileHeaderEnd);
-                        }
-                        catch (XmlException)
-                        {
-                                return XmlFileHeader.MalformedFileHeader;
-                        }
                 }
 
-                private static string ProcessSingleLineCommentsHeader(SyntaxTriviaList triviaList,
-                                                                      int startIndex,
-                                                                      out int fileHeaderStart,
-                                                                      out int fileHeaderEnd)
+                private static string
+                ProcessSingleLineCommentsHeader (SyntaxTriviaList triviaList, int startIndex,
+                                                 out int fileHeaderStart, out int fileHeaderEnd)
                 {
-                        var sb = StringBuilderPool.Allocate();
+                        var sb = StringBuilderPool.Allocate ();
                         var endOfLineCount = 0;
                         var done = false;
 
@@ -208,81 +244,82 @@ namespace StyleCop.Analyzers.Helpers
 
                         // wrap the XML from the file header in a single root element to make XML
                         // parsing work.
-                        sb.AppendLine("<root>");
+                        sb.AppendLine ("<root>");
 
                         int i;
                         for (i = startIndex; !done && (i < triviaList.Count); i++)
-                        {
-                                var trivia = triviaList[i];
-
-                                switch (trivia.Kind())
                                 {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        endOfLineCount = 0;
-                                        break;
+                                        var trivia = triviaList[i];
 
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                        endOfLineCount = 0;
+                                        switch (trivia.Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        endOfLineCount = 0;
+                                                        break;
 
-                                        var commentString = trivia.ToFullString();
+                                                case SyntaxKind.SingleLineCommentTrivia:
+                                                        endOfLineCount = 0;
 
-                                        // ignore borders
-                                        if (commentString.StartsWith(
-                                                "//-", StringComparison.OrdinalIgnoreCase))
-                                        {
-                                                break;
-                                        }
+                                                        var commentString = trivia.ToFullString ();
 
-                                        fileHeaderStart =
-                                            Math.Min(trivia.FullSpan.Start, fileHeaderStart);
-                                        fileHeaderEnd = trivia.FullSpan.End;
+                                                        // ignore borders
+                                                        if (commentString.StartsWith (
+                                                                "//-",
+                                                                StringComparison.OrdinalIgnoreCase))
+                                                                {
+                                                                        break;
+                                                                }
 
-                                        sb.AppendLine(commentString.Substring(2));
-                                        break;
+                                                        fileHeaderStart = Math.Min (
+                                                            trivia.FullSpan.Start, fileHeaderStart);
+                                                        fileHeaderEnd = trivia.FullSpan.End;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        endOfLineCount++;
-                                        done = endOfLineCount > 1;
-                                        break;
+                                                        sb.AppendLine (commentString.Substring (2));
+                                                        break;
 
-                                default:
-                                        done = (fileHeaderStart < fileHeaderEnd) ||
-                                               !trivia.IsDirective;
-                                        break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        endOfLineCount++;
+                                                        done = endOfLineCount > 1;
+                                                        break;
+
+                                                default:
+                                                        done = (fileHeaderStart < fileHeaderEnd)
+                                                               || !trivia.IsDirective;
+                                                        break;
+                                                }
                                 }
-                        }
 
-                        sb.AppendLine("</root>");
-                        return StringBuilderPool.ReturnAndFree(sb);
+                        sb.AppendLine ("</root>");
+                        return StringBuilderPool.ReturnAndFree (sb);
                 }
 
-                private static string ProcessMultiLineCommentsHeader(SyntaxTrivia multiLineComment,
-                                                                     out int fileHeaderStart,
-                                                                     out int fileHeaderEnd)
+                private static string
+                ProcessMultiLineCommentsHeader (SyntaxTrivia multiLineComment,
+                                                out int fileHeaderStart, out int fileHeaderEnd)
                 {
-                        var sb = StringBuilderPool.Allocate();
+                        var sb = StringBuilderPool.Allocate ();
 
                         // wrap the XML from the file header in a single root element to make XML
                         // parsing work.
-                        sb.AppendLine("<root>");
+                        sb.AppendLine ("<root>");
 
                         fileHeaderStart = multiLineComment.FullSpan.Start;
                         fileHeaderEnd = multiLineComment.FullSpan.End;
 
-                        var rawCommentString = multiLineComment.ToFullString();
-                        var commentText =
-                            rawCommentString.Substring(2, rawCommentString.Length - 4);
-                        var commentLines = commentText.Replace("\r\n", "\n").Split('\n');
+                        var rawCommentString = multiLineComment.ToFullString ();
+                        var commentText
+                            = rawCommentString.Substring (2, rawCommentString.Length - 4);
+                        var commentLines = commentText.Replace ("\r\n", "\n").Split ('\n');
 
                         /* TODO: Ignore borders ??? */
 
                         foreach (var commentLine in commentLines)
-                        {
-                                sb.AppendLine(commentLine.TrimStart(' ', '*'));
-                        }
+                                {
+                                        sb.AppendLine (commentLine.TrimStart (' ', '*'));
+                                }
 
-                        sb.AppendLine("</root>");
-                        return StringBuilderPool.ReturnAndFree(sb);
+                        sb.AppendLine ("</root>");
+                        return StringBuilderPool.ReturnAndFree (sb);
                 }
         }
 }

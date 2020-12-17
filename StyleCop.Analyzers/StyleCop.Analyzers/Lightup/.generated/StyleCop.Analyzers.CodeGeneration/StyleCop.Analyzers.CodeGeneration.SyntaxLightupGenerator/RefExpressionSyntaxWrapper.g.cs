@@ -12,8 +12,8 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct RefExpressionSyntaxWrapper
             : ISyntaxWrapper<ExpressionSyntax>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.RefExpressionSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.RefExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, SyntaxToken> RefKeywordAccessor;
@@ -25,85 +25,78 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly ExpressionSyntax node;
 
-                static RefExpressionSyntaxWrapper()
+                static RefExpressionSyntaxWrapper ()
                 {
-                        WrappedType =
-                            SyntaxWrapperHelper.GetWrappedType(typeof(RefExpressionSyntaxWrapper));
-                        RefKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(RefKeyword));
-                        ExpressionAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                                    WrappedType, nameof(Expression));
-                        WithRefKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(RefKeyword));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (RefExpressionSyntaxWrapper));
+                        RefKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken> (
+                                      WrappedType, nameof (RefKeyword));
+                        ExpressionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            ExpressionSyntax, ExpressionSyntax> (WrappedType, nameof (Expression));
+                        WithRefKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken> (
+                                      WrappedType, nameof (RefKeyword));
                         WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
+                            ExpressionSyntax, ExpressionSyntax> (WrappedType, nameof (Expression));
                 }
 
-                private RefExpressionSyntaxWrapper(ExpressionSyntax node)
-                {
-                        this.node = node;
-                }
+                private RefExpressionSyntaxWrapper (ExpressionSyntax node) { this.node = node; }
 
                 public ExpressionSyntax SyntaxNode => this.node;
 
                 public SyntaxToken RefKeyword
                 {
-                        get
-                        {
-                                return RefKeywordAccessor(this.SyntaxNode);
-                        }
+                        get { return RefKeywordAccessor (this.SyntaxNode); }
                 }
 
                 public ExpressionSyntax Expression
                 {
-                        get
-                        {
-                                return ExpressionAccessor(this.SyntaxNode);
-                        }
+                        get { return ExpressionAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator RefExpressionSyntaxWrapper(SyntaxNode node)
+                public static explicit operator RefExpressionSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new RefExpressionSyntaxWrapper((ExpressionSyntax) node);
+                        return new RefExpressionSyntaxWrapper ((ExpressionSyntax) node);
                 }
 
-                public static implicit operator ExpressionSyntax(RefExpressionSyntaxWrapper wrapper)
+                public static implicit
+                operator ExpressionSyntax (RefExpressionSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public RefExpressionSyntaxWrapper WithRefKeyword(SyntaxToken refKeyword)
+                public RefExpressionSyntaxWrapper
+                WithRefKeyword (SyntaxToken refKeyword)
                 {
-                        return new RefExpressionSyntaxWrapper(
-                            WithRefKeywordAccessor(this.SyntaxNode, refKeyword));
+                        return new RefExpressionSyntaxWrapper (
+                            WithRefKeywordAccessor (this.SyntaxNode, refKeyword));
                 }
 
-                public RefExpressionSyntaxWrapper WithExpression(ExpressionSyntax expression)
+                public RefExpressionSyntaxWrapper
+                WithExpression (ExpressionSyntax expression)
                 {
-                        return new RefExpressionSyntaxWrapper(
-                            WithExpressionAccessor(this.SyntaxNode, expression));
+                        return new RefExpressionSyntaxWrapper (
+                            WithExpressionAccessor (this.SyntaxNode, expression));
                 }
         }
 }

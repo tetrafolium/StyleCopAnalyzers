@@ -9,48 +9,51 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IAddressOfOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IAddressOfOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IAddressOfOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ReferenceAccessor;
                 private readonly IOperation operation;
-                static IAddressOfOperationWrapper()
+                static IAddressOfOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IAddressOfOperationWrapper));
-                        ReferenceAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Reference));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IAddressOfOperationWrapper));
+                        ReferenceAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Reference));
                 }
 
-                private IAddressOfOperationWrapper(IOperation operation)
+                private IAddressOfOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IOperation Reference => ReferenceAccessor(this.WrappedOperation);
-                public static IAddressOfOperationWrapper FromOperation(IOperation operation)
+                public IOperation Reference => ReferenceAccessor (this.WrappedOperation);
+                public static IAddressOfOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IAddressOfOperationWrapper(operation);
+                        return new IAddressOfOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

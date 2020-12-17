@@ -13,9 +13,9 @@ namespace StyleCop.Analyzers.SpecialRules
         /// <summary>
         /// The project is configured to not parse XML documentation comments.
         /// </summary>
-        [NoCodeFix(
+        [NoCodeFix (
             "The necessary actions for this code fix are not supported by the analysis infrastructure.")]
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA0001XmlCommentAnalysisDisabled : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -23,21 +23,21 @@ namespace StyleCop.Analyzers.SpecialRules
                 /// cref="SA0001XmlCommentAnalysisDisabled"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA0001";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0001.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpecialResources.SA0001Title), SpecialResources.ResourceManager,
-                    typeof(SpecialResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpecialResources.SA0001MessageFormat),
-                                                  SpecialResources.ResourceManager,
-                                                  typeof(SpecialResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpecialResources.SA0001Description),
-                                                  SpecialResources.ResourceManager,
-                                                  typeof(SpecialResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0001.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (SpecialResources.SA0001Title), SpecialResources.ResourceManager,
+                    typeof (SpecialResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (SpecialResources.SA0001MessageFormat),
+                                                     SpecialResources.ResourceManager,
+                                                     typeof (SpecialResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (SpecialResources.SA0001Description),
+                                                     SpecialResources.ResourceManager,
+                                                     typeof (SpecialResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
@@ -46,57 +46,59 @@ namespace StyleCop.Analyzers.SpecialRules
                     CompilationStartAction = HandleCompilationStart;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterCompilationStartAction(CompilationStartAction);
+                        context.RegisterCompilationStartAction (CompilationStartAction);
                 }
 
-                private static void HandleCompilationStart(CompilationStartAnalysisContext context)
+                private static void
+                HandleCompilationStart (CompilationStartAnalysisContext context)
                 {
-                        Analyzer analyzer = new Analyzer();
-                        context.RegisterSyntaxTreeAction(analyzer.HandleSyntaxTree);
-                        context.RegisterCompilationEndAction(analyzer.HandleCompilation);
+                        Analyzer analyzer = new Analyzer ();
+                        context.RegisterSyntaxTreeAction (analyzer.HandleSyntaxTree);
+                        context.RegisterCompilationEndAction (analyzer.HandleCompilation);
                 }
 
                 private sealed class Analyzer
                 {
                         private bool documentationAnalysisDisabled;
 
-                        public void HandleCompilation(CompilationAnalysisContext context)
+                        public void
+                        HandleCompilation (CompilationAnalysisContext context)
                         {
-                                if (Volatile.Read(ref this.documentationAnalysisDisabled))
-                                {
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, Location.None));
-                                }
+                                if (Volatile.Read (ref this.documentationAnalysisDisabled))
+                                        {
+                                                context.ReportDiagnostic (
+                                                    Diagnostic.Create (Descriptor, Location.None));
+                                        }
                         }
 
-                        public void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                        public void
+                        HandleSyntaxTree (SyntaxTreeAnalysisContext context)
                         {
-                                if (context.Tree.Options.DocumentationMode ==
-                                    DocumentationMode.None)
-                                {
-                                        if (context.Tree.IsWhitespaceOnly(
-                                                context.CancellationToken))
+                                if (context.Tree.Options.DocumentationMode
+                                    == DocumentationMode.None)
                                         {
-                                                // Handling of empty documents is now the
-                                                // responsibility of the analyzers
-                                                return;
-                                        }
+                                                if (context.Tree.IsWhitespaceOnly (
+                                                        context.CancellationToken))
+                                                        {
+                                                                // Handling of empty documents is
+                                                                // now the responsibility of the
+                                                                // analyzers
+                                                                return;
+                                                        }
 
-                                        Volatile.Write(ref this.documentationAnalysisDisabled,
-                                                       true);
-                                }
+                                                Volatile.Write (
+                                                    ref this.documentationAnalysisDisabled, true);
+                                        }
                         }
                 }
         }

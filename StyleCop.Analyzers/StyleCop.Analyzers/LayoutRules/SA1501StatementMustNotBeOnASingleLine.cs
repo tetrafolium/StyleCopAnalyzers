@@ -43,7 +43,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// }
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1501StatementMustNotBeOnASingleLine : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -55,248 +55,276 @@ namespace StyleCop.Analyzers.LayoutRules
                 internal const string SuppressCodeFixKey = "SuppressCodeFix";
                 internal const string SuppressCodeFixValue = "true";
 
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1501.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(LayoutResources.SA1501Title), LayoutResources.ResourceManager,
-                    typeof(LayoutResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1501MessageFormat),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1501Description),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1501.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (LayoutResources.SA1501Title), LayoutResources.ResourceManager,
+                    typeof (LayoutResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1501MessageFormat),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (LayoutResources.SA1501Description),
+                                                     LayoutResources.ResourceManager,
+                                                     typeof (LayoutResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
                 private static readonly ImmutableDictionary<string, string>
-                    SuppressCodeFixProperties = ImmutableDictionary<string, string>.Empty.Add(
+                    SuppressCodeFixProperties = ImmutableDictionary<string, string>.Empty.Add (
                         SuppressCodeFixKey, SuppressCodeFixValue);
 
                 private static readonly Action<CompilationStartAnalysisContext>
                     CompilationStartAction = HandleCompilationStart;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(HandleBlock, SyntaxKind.Block);
-                        context.RegisterCompilationStartAction(CompilationStartAction);
+                        context.RegisterSyntaxNodeAction (HandleBlock, SyntaxKind.Block);
+                        context.RegisterCompilationStartAction (CompilationStartAction);
                 }
 
-                private static void HandleCompilationStart(CompilationStartAnalysisContext context)
+                private static void
+                HandleCompilationStart (CompilationStartAnalysisContext context)
                 {
                         // If SA1503 is suppressed, we need to handle compound blocks as well.
-                        if (context.IsAnalyzerSuppressed(SA1503BracesMustNotBeOmitted.Descriptor))
-                        {
-                                context.RegisterSyntaxNodeAction(HandleIfStatement,
-                                                                 SyntaxKind.IfStatement);
-                                context.RegisterSyntaxNodeAction(
-                                    ctx => CheckChildStatement(
-                                        ctx, ((DoStatementSyntax) ctx.Node).Statement),
-                                    SyntaxKind.DoStatement);
-                                context.RegisterSyntaxNodeAction(
-                                    ctx => CheckChildStatement(
-                                        ctx, ((WhileStatementSyntax) ctx.Node).Statement),
-                                    SyntaxKind.WhileStatement);
-                                context.RegisterSyntaxNodeAction(
-                                    ctx => CheckChildStatement(
-                                        ctx, ((ForStatementSyntax) ctx.Node).Statement),
-                                    SyntaxKind.ForStatement);
-                                context.RegisterSyntaxNodeAction(
-                                    ctx => CheckChildStatement(
-                                        ctx, ((ForEachStatementSyntax) ctx.Node).Statement),
-                                    SyntaxKind.ForEachStatement);
-                                context.RegisterSyntaxNodeAction(
-                                    ctx => CheckChildStatement(
-                                        ctx, ((LockStatementSyntax) ctx.Node).Statement),
-                                    SyntaxKind.LockStatement);
-                                context.RegisterSyntaxNodeAction(
-                                    ctx => CheckChildStatement(
-                                        ctx, ((UsingStatementSyntax) ctx.Node).Statement),
-                                    SyntaxKind.UsingStatement);
-                                context.RegisterSyntaxNodeAction(
-                                    ctx => CheckChildStatement(
-                                        ctx, ((FixedStatementSyntax) ctx.Node).Statement),
-                                    SyntaxKind.FixedStatement);
-                        }
+                        if (context.IsAnalyzerSuppressed (SA1503BracesMustNotBeOmitted.Descriptor))
+                                {
+                                        context.RegisterSyntaxNodeAction (HandleIfStatement,
+                                                                          SyntaxKind.IfStatement);
+                                        context.RegisterSyntaxNodeAction (
+                                            ctx => CheckChildStatement (
+                                                ctx, ((DoStatementSyntax) ctx.Node).Statement),
+                                            SyntaxKind.DoStatement);
+                                        context.RegisterSyntaxNodeAction (
+                                            ctx => CheckChildStatement (
+                                                ctx, ((WhileStatementSyntax) ctx.Node).Statement),
+                                            SyntaxKind.WhileStatement);
+                                        context.RegisterSyntaxNodeAction (
+                                            ctx => CheckChildStatement (
+                                                ctx, ((ForStatementSyntax) ctx.Node).Statement),
+                                            SyntaxKind.ForStatement);
+                                        context.RegisterSyntaxNodeAction (
+                                            ctx => CheckChildStatement (
+                                                ctx, ((ForEachStatementSyntax) ctx.Node).Statement),
+                                            SyntaxKind.ForEachStatement);
+                                        context.RegisterSyntaxNodeAction (
+                                            ctx => CheckChildStatement (
+                                                ctx, ((LockStatementSyntax) ctx.Node).Statement),
+                                            SyntaxKind.LockStatement);
+                                        context.RegisterSyntaxNodeAction (
+                                            ctx => CheckChildStatement (
+                                                ctx, ((UsingStatementSyntax) ctx.Node).Statement),
+                                            SyntaxKind.UsingStatement);
+                                        context.RegisterSyntaxNodeAction (
+                                            ctx => CheckChildStatement (
+                                                ctx, ((FixedStatementSyntax) ctx.Node).Statement),
+                                            SyntaxKind.FixedStatement);
+                                }
                 }
 
-                private static void HandleBlock(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleBlock (SyntaxNodeAnalysisContext context)
                 {
                         var block = (BlockSyntax) context.Node;
-                        if (!block.OpenBraceToken.IsMissing && !block.CloseBraceToken.IsMissing &&
-                            IsPartOfStatement(block))
-                        {
-                                var openBraceLineNumber =
-                                    block.SyntaxTree.GetLineSpan(block.OpenBraceToken.Span)
-                                        .StartLinePosition.Line;
-                                var closeBraceLineNumber =
-                                    block.SyntaxTree.GetLineSpan(block.CloseBraceToken.Span)
-                                        .StartLinePosition.Line;
-
-                                if (openBraceLineNumber == closeBraceLineNumber)
+                        if (!block.OpenBraceToken.IsMissing && !block.CloseBraceToken.IsMissing
+                            && IsPartOfStatement (block))
                                 {
-                                        switch (block.Parent.Kind())
-                                        {
-                                        case SyntaxKind.AnonymousMethodExpression:
-                                        case SyntaxKind.SimpleLambdaExpression:
-                                        case SyntaxKind.ParenthesizedLambdaExpression:
-                                                var containingExpression =
-                                                    GetContainingExpression(block.Parent);
-                                                if (IsSingleLineExpression(containingExpression))
+                                        var openBraceLineNumber
+                                            = block.SyntaxTree
+                                                  .GetLineSpan (block.OpenBraceToken.Span)
+                                                  .StartLinePosition.Line;
+                                        var closeBraceLineNumber
+                                            = block.SyntaxTree
+                                                  .GetLineSpan (block.CloseBraceToken.Span)
+                                                  .StartLinePosition.Line;
+
+                                        if (openBraceLineNumber == closeBraceLineNumber)
                                                 {
-                                                        // Single line lambda expressions
-                                                        // and anonymous method declarations
-                                                        // are allowed for single line
-                                                        // expressions.
-                                                        return;
+                                                        switch (block.Parent.Kind ())
+                                                                {
+                                                                case SyntaxKind
+                                                                    .AnonymousMethodExpression:
+                                                                case SyntaxKind
+                                                                    .SimpleLambdaExpression:
+                                                                case SyntaxKind
+                                                                    .ParenthesizedLambdaExpression:
+                                                                        var containingExpression
+                                                                            = GetContainingExpression (
+                                                                                block.Parent);
+                                                                        if (IsSingleLineExpression (
+                                                                                containingExpression))
+                                                                                {
+                                                                                        // Single
+                                                                                        // line
+                                                                                        // lambda
+                                                                                        // expressions
+                                                                                        // and
+                                                                                        // anonymous
+                                                                                        // method
+                                                                                        // declarations
+                                                                                        // are
+                                                                                        // allowed
+                                                                                        // for
+                                                                                        // single
+                                                                                        // line
+                                                                                        // expressions.
+                                                                                        return;
+                                                                                }
+
+                                                                        break;
+                                                                }
+
+                                                        ReportDiagnostic (
+                                                            context,
+                                                            block.OpenBraceToken.GetLocation ());
                                                 }
-
-                                                break;
-                                        }
-
-                                        ReportDiagnostic(context,
-                                                         block.OpenBraceToken.GetLocation());
                                 }
-                        }
                 }
 
-                private static void HandleIfStatement(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleIfStatement (SyntaxNodeAnalysisContext context)
                 {
                         var ifStatement = (IfStatementSyntax) context.Node;
-                        if (ifStatement.Parent.IsKind(SyntaxKind.ElseClause))
-                        {
-                                // this will be analyzed as a clause of the outer if statement
-                                return;
-                        }
-
-                        List<StatementSyntax> clauses = new List<StatementSyntax>();
-                        for (IfStatementSyntax current = ifStatement; current != null;
-                             current = current.Else?.Statement as IfStatementSyntax)
-                        {
-                                clauses.Add(current.Statement);
-                                if (current.Else != null &&
-                                    !(current.Else.Statement is IfStatementSyntax))
+                        if (ifStatement.Parent.IsKind (SyntaxKind.ElseClause))
                                 {
-                                        clauses.Add(current.Else.Statement);
-                                }
-                        }
-
-                        if (!context.IsAnalyzerSuppressed(SA1520UseBracesConsistently.Descriptor))
-                        {
-                                // inconsistencies will be reported as SA1520, as long as it's not
-                                // suppressed
-                                if (clauses.OfType<BlockSyntax>().Any())
-                                {
+                                        // this will be analyzed as a clause of the outer if
+                                        // statement
                                         return;
                                 }
-                        }
+
+                        List<StatementSyntax> clauses = new List<StatementSyntax> ();
+                        for (IfStatementSyntax current = ifStatement; current != null;
+                             current = current.Else?.Statement as IfStatementSyntax)
+                                {
+                                        clauses.Add (current.Statement);
+                                        if (current.Else != null
+                                            && !(current.Else.Statement is IfStatementSyntax))
+                                                {
+                                                        clauses.Add (current.Else.Statement);
+                                                }
+                                }
+
+                        if (!context.IsAnalyzerSuppressed (SA1520UseBracesConsistently.Descriptor))
+                                {
+                                        // inconsistencies will be reported as SA1520, as long as
+                                        // it's not suppressed
+                                        if (clauses.OfType<BlockSyntax> ().Any ())
+                                                {
+                                                        return;
+                                                }
+                                }
 
                         foreach (StatementSyntax clause in clauses)
-                        {
-                                CheckChildStatement(context, clause);
-                        }
+                                {
+                                        CheckChildStatement (context, clause);
+                                }
                 }
 
-                private static void CheckChildStatement(SyntaxNodeAnalysisContext context,
-                                                        StatementSyntax childStatement)
+                private static void
+                CheckChildStatement (SyntaxNodeAnalysisContext context,
+                                     StatementSyntax childStatement)
                 {
                         bool reportAsHidden = false;
 
                         if (childStatement == null || childStatement.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         if (childStatement is BlockSyntax)
-                        {
-                                // BlockSyntax child statements are handled by HandleBlock
-                                return;
-                        }
+                                {
+                                        // BlockSyntax child statements are handled by HandleBlock
+                                        return;
+                                }
 
                         // We are only interested in the case where statement and childStatement
                         // start on the same line. Use IsFirstInLine to detect this condition
                         // easily.
-                        SyntaxToken firstChildToken = childStatement.GetFirstToken();
-                        if (firstChildToken.IsMissingOrDefault() || firstChildToken.IsFirstInLine())
-                        {
-                                return;
-                        }
-
-                        if (!context.IsAnalyzerSuppressed(
-                                SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.Descriptor))
-                        {
-                                // diagnostics for multi-line statements is handled by SA1519, as
-                                // long as it's not suppressed
-                                FileLinePositionSpan lineSpan = childStatement.GetLineSpan();
-                                if (lineSpan.StartLinePosition.Line !=
-                                    lineSpan.EndLinePosition.Line)
+                        SyntaxToken firstChildToken = childStatement.GetFirstToken ();
+                        if (firstChildToken.IsMissingOrDefault ()
+                            || firstChildToken.IsFirstInLine ())
                                 {
-                                        reportAsHidden = true;
+                                        return;
                                 }
-                        }
 
-                        ReportDiagnostic(context, childStatement.GetLocation(), reportAsHidden);
+                        if (!context.IsAnalyzerSuppressed (
+                                SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.Descriptor))
+                                {
+                                        // diagnostics for multi-line statements is handled by
+                                        // SA1519, as long as it's not suppressed
+                                        FileLinePositionSpan lineSpan
+                                            = childStatement.GetLineSpan ();
+                                        if (lineSpan.StartLinePosition.Line
+                                            != lineSpan.EndLinePosition.Line)
+                                                {
+                                                        reportAsHidden = true;
+                                                }
+                                }
+
+                        ReportDiagnostic (context, childStatement.GetLocation (), reportAsHidden);
                 }
 
-                private static bool IsSingleLineExpression(ExpressionSyntax containingExpression)
+                private static bool
+                IsSingleLineExpression (ExpressionSyntax containingExpression)
                 {
                         if (containingExpression == null)
-                        {
-                                return false;
-                        }
+                                {
+                                        return false;
+                                }
 
-                        var lineSpan =
-                            containingExpression.SyntaxTree.GetLineSpan(containingExpression.Span);
+                        var lineSpan = containingExpression.SyntaxTree.GetLineSpan (
+                            containingExpression.Span);
                         return lineSpan.StartLinePosition.Line == lineSpan.EndLinePosition.Line;
                 }
 
-                private static bool IsPartOfStatement(BlockSyntax block)
+                private static bool
+                IsPartOfStatement (BlockSyntax block)
                 {
-                        return block.Parent.FirstAncestorOrSelf<StatementSyntax>() != null;
+                        return block.Parent.FirstAncestorOrSelf<StatementSyntax> () != null;
                 }
 
-                private static ExpressionSyntax GetContainingExpression(SyntaxNode node)
+                private static ExpressionSyntax
+                GetContainingExpression (SyntaxNode node)
                 {
-                        return node.FirstAncestorOrSelf<ExpressionSyntax>();
+                        return node.FirstAncestorOrSelf<ExpressionSyntax> ();
                 }
 
-                private static void ReportDiagnostic(SyntaxNodeAnalysisContext context,
-                                                     Location location, bool reportAsHidden = false)
+                private static void
+                ReportDiagnostic (SyntaxNodeAnalysisContext context, Location location,
+                                  bool reportAsHidden = false)
                 {
                         Diagnostic diagnostic;
 
                         if (reportAsHidden)
-                        {
-                                diagnostic = Diagnostic.Create(
-                                    Descriptor.Id, Descriptor.Category, Descriptor.MessageFormat,
-                                    DiagnosticSeverity.Hidden, Descriptor.DefaultSeverity,
-                                    Descriptor.IsEnabledByDefault, 1, Descriptor.Title,
-                                    Descriptor.Description, Descriptor.HelpLinkUri, location,
-                                    properties
-                                    : SuppressCodeFixProperties);
-                        }
+                                {
+                                        diagnostic = Diagnostic.Create (
+                                            Descriptor.Id, Descriptor.Category,
+                                            Descriptor.MessageFormat, DiagnosticSeverity.Hidden,
+                                            Descriptor.DefaultSeverity,
+                                            Descriptor.IsEnabledByDefault, 1, Descriptor.Title,
+                                            Descriptor.Description, Descriptor.HelpLinkUri,
+                                            location, properties
+                                            : SuppressCodeFixProperties);
+                                }
                         else
-                        {
-                                diagnostic = Diagnostic.Create(Descriptor, location);
-                        }
+                                {
+                                        diagnostic = Diagnostic.Create (Descriptor, location);
+                                }
 
-                        context.ReportDiagnostic(diagnostic);
+                        context.ReportDiagnostic (diagnostic);
                 }
         }
 }

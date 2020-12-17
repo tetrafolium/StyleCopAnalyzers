@@ -69,7 +69,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// class onto one part of the class. The <c>&lt;content&gt;</c> tags will be ignored by the
         /// SDK documentation tools.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1605PartialElementDocumentationMustHaveSummary
             : PartialElementDocumentationSummaryBase
         {
@@ -78,70 +78,74 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// cref="SA1605PartialElementDocumentationMustHaveSummary"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1605";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1605.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1605Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1605MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1605Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1605.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (DocumentationResources.SA1605Title),
+                    DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1605MessageFormat),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1605Description),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                protected override void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         bool needsComment, XmlNodeSyntax syntax,
-                                                         XElement completeDocumentation,
-                                                         Location[] diagnosticLocations)
+                protected override void
+                HandleXmlElement (SyntaxNodeAnalysisContext context, bool needsComment,
+                                  XmlNodeSyntax syntax, XElement completeDocumentation,
+                                  Location[] diagnosticLocations)
                 {
                         if (!needsComment)
-                        {
-                                // A missing summary is allowed for this element.
-                                return;
-                        }
+                                {
+                                        // A missing summary is allowed for this element.
+                                        return;
+                                }
 
                         if (completeDocumentation != null)
-                        {
-                                var hasSummaryTag =
-                                    completeDocumentation.Nodes().OfType<XElement>().Any(
-                                        element => element.Name == XmlCommentHelper.SummaryXmlTag);
-                                var hasContentTag =
-                                    completeDocumentation.Nodes().OfType<XElement>().Any(
-                                        element => element.Name == XmlCommentHelper.ContentXmlTag);
+                                {
+                                        var hasSummaryTag
+                                            = completeDocumentation.Nodes ()
+                                                  .OfType<XElement> ()
+                                                  .Any (
+                                                      element => element.Name
+                                                                 == XmlCommentHelper.SummaryXmlTag);
+                                        var hasContentTag
+                                            = completeDocumentation.Nodes ()
+                                                  .OfType<XElement> ()
+                                                  .Any (
+                                                      element => element.Name
+                                                                 == XmlCommentHelper.ContentXmlTag);
 
-                                if (hasSummaryTag || hasContentTag)
-                                {
-                                        return;
+                                        if (hasSummaryTag || hasContentTag)
+                                                {
+                                                        return;
+                                                }
                                 }
-                        }
                         else
-                        {
-                                if (syntax != null)
                                 {
-                                        return;
+                                        if (syntax != null)
+                                                {
+                                                        return;
+                                                }
                                 }
-                        }
 
                         foreach (var location in diagnosticLocations)
-                        {
-                                context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
-                        }
+                                {
+                                        context.ReportDiagnostic (
+                                            Diagnostic.Create (Descriptor, location));
+                                }
                 }
         }
 }

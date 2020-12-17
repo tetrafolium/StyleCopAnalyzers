@@ -7,10 +7,11 @@ namespace StyleCop.Analyzers.Lightup
 
         internal partial struct TupleExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
         {
-                public TupleExpressionSyntaxWrapper AddArguments(params ArgumentSyntax[] items)
+                public TupleExpressionSyntaxWrapper
+                AddArguments (params ArgumentSyntax[] items)
                 {
-                        return new TupleExpressionSyntaxWrapper(
-                            this.WithArguments(this.Arguments.AddRange(items)));
+                        return new TupleExpressionSyntaxWrapper (
+                            this.WithArguments (this.Arguments.AddRange (items)));
                 }
         }
 }

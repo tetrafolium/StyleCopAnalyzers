@@ -35,7 +35,7 @@ namespace StyleCop.Analyzers.OrderingRules
         /// readability and maintainability of the file and make it easier to identify the public
         /// interface that is being exposed from a class.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1202ElementsMustBeOrderedByAccess : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -43,31 +43,31 @@ namespace StyleCop.Analyzers.OrderingRules
                 /// cref="SA1202ElementsMustBeOrderedByAccess"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1202";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1202.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(OrderingResources.SA1202Title), OrderingResources.ResourceManager,
-                    typeof(OrderingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1202MessageFormat),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1202Description),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1202.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (OrderingResources.SA1202Title), OrderingResources.ResourceManager,
+                    typeof (OrderingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (OrderingResources.SA1202MessageFormat),
+                                                     OrderingResources.ResourceManager,
+                                                     typeof (OrderingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (OrderingResources.SA1202Description),
+                                                     OrderingResources.ResourceManager,
+                                                     typeof (OrderingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
-                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                                          SyntaxKind.StructDeclaration);
+                private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds
+                    = ImmutableArray.Create (SyntaxKind.ClassDeclaration,
+                                             SyntaxKind.StructDeclaration);
 
-                private static readonly ImmutableHashSet<SyntaxKind> MemberKinds =
-                    ImmutableHashSet.Create(
+                private static readonly ImmutableHashSet<SyntaxKind> MemberKinds
+                    = ImmutableHashSet.Create (
                         SyntaxKind.DelegateDeclaration, SyntaxKind.EnumDeclaration,
                         SyntaxKind.InterfaceDeclaration, SyntaxKind.StructDeclaration,
                         SyntaxKind.ClassDeclaration, SyntaxKind.FieldDeclaration,
@@ -84,78 +84,78 @@ namespace StyleCop.Analyzers.OrderingRules
                     TypeDeclarationAction = HandleTypeDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(CompilationUnitAction,
-                                                         SyntaxKind.CompilationUnit);
-                        context.RegisterSyntaxNodeAction(NamespaceDeclarationAction,
-                                                         SyntaxKind.NamespaceDeclaration);
-                        context.RegisterSyntaxNodeAction(TypeDeclarationAction,
-                                                         TypeDeclarationKinds);
+                        context.RegisterSyntaxNodeAction (CompilationUnitAction,
+                                                          SyntaxKind.CompilationUnit);
+                        context.RegisterSyntaxNodeAction (NamespaceDeclarationAction,
+                                                          SyntaxKind.NamespaceDeclaration);
+                        context.RegisterSyntaxNodeAction (TypeDeclarationAction,
+                                                          TypeDeclarationKinds);
                 }
 
-                private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context,
-                                                          StyleCopSettings settings)
+                private static void
+                HandleCompilationUnit (SyntaxNodeAnalysisContext context, StyleCopSettings settings)
                 {
                         var elementOrder = settings.OrderingRules.ElementOrder;
-                        int accessibilityIndex = elementOrder.IndexOf(OrderingTrait.Accessibility);
+                        int accessibilityIndex = elementOrder.IndexOf (OrderingTrait.Accessibility);
                         if (accessibilityIndex < 0)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         var compilationUnit = (CompilationUnitSyntax) context.Node;
 
-                        HandleMemberList(context, elementOrder, accessibilityIndex,
-                                         compilationUnit.Members);
+                        HandleMemberList (context, elementOrder, accessibilityIndex,
+                                          compilationUnit.Members);
                 }
 
-                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context,
-                                                               StyleCopSettings settings)
+                private static void
+                HandleNamespaceDeclaration (SyntaxNodeAnalysisContext context,
+                                            StyleCopSettings settings)
                 {
                         var elementOrder = settings.OrderingRules.ElementOrder;
-                        int accessibilityIndex = elementOrder.IndexOf(OrderingTrait.Accessibility);
+                        int accessibilityIndex = elementOrder.IndexOf (OrderingTrait.Accessibility);
                         if (accessibilityIndex < 0)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         var compilationUnit = (NamespaceDeclarationSyntax) context.Node;
 
-                        HandleMemberList(context, elementOrder, accessibilityIndex,
-                                         compilationUnit.Members);
+                        HandleMemberList (context, elementOrder, accessibilityIndex,
+                                          compilationUnit.Members);
                 }
 
-                private static void HandleTypeDeclaration(SyntaxNodeAnalysisContext context,
-                                                          StyleCopSettings settings)
+                private static void
+                HandleTypeDeclaration (SyntaxNodeAnalysisContext context, StyleCopSettings settings)
                 {
                         var elementOrder = settings.OrderingRules.ElementOrder;
-                        int accessibilityIndex = elementOrder.IndexOf(OrderingTrait.Accessibility);
+                        int accessibilityIndex = elementOrder.IndexOf (OrderingTrait.Accessibility);
                         if (accessibilityIndex < 0)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         var typeDeclaration = (TypeDeclarationSyntax) context.Node;
 
-                        HandleMemberList(context, elementOrder, accessibilityIndex,
-                                         typeDeclaration.Members);
+                        HandleMemberList (context, elementOrder, accessibilityIndex,
+                                          typeDeclaration.Members);
                 }
 
-                private static void HandleMemberList(SyntaxNodeAnalysisContext context,
-                                                     ImmutableArray<OrderingTrait> elementOrder,
-                                                     int accessibilityIndex,
-                                                     SyntaxList<MemberDeclarationSyntax> members)
+                private static void
+                HandleMemberList (SyntaxNodeAnalysisContext context,
+                                  ImmutableArray<OrderingTrait> elementOrder,
+                                  int accessibilityIndex,
+                                  SyntaxList<MemberDeclarationSyntax> members)
                 {
                         var previousSyntaxKind = SyntaxKind.None;
                         var previousAccessLevel = AccessLevel.NotSpecified;
@@ -164,92 +164,115 @@ namespace StyleCop.Analyzers.OrderingRules
                         bool previousIsStatic = false;
 
                         foreach (var member in members)
-                        {
-                                var currentSyntaxKind = member.Kind();
-                                currentSyntaxKind =
-                                    currentSyntaxKind ==
-                                    SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration
-                                    : currentSyntaxKind;
-
-                                // if the SyntaxKind of this member (e.g.
-                                // SyntaxKind.IncompleteMember) will not be handled, skip early.
-                                if (!MemberKinds.Contains(currentSyntaxKind))
                                 {
-                                        continue;
-                                }
+                                        var currentSyntaxKind = member.Kind ();
+                                        currentSyntaxKind
+                                            = currentSyntaxKind
+                                              == SyntaxKind.EventFieldDeclaration ? SyntaxKind
+                                                     .EventDeclaration : currentSyntaxKind;
 
-                                var modifiers = member.GetModifiers();
-                                AccessLevel currentAccessLevel =
-                                    MemberOrderHelper.GetAccessLevelForOrdering(member, modifiers);
-                                bool currentIsConst = modifiers.Any(SyntaxKind.ConstKeyword);
-                                bool currentIsReadonly = modifiers.Any(SyntaxKind.ReadOnlyKeyword);
-                                bool currentIsStatic = modifiers.Any(SyntaxKind.StaticKeyword);
-
-                                if (previousAccessLevel != AccessLevel.NotSpecified)
-                                {
-                                        bool compareAccessLevel = true;
-                                        for (int j = 0;
-                                             compareAccessLevel && j < accessibilityIndex; j++)
-                                        {
-                                                switch (elementOrder[j])
+                                        // if the SyntaxKind of this member (e.g.
+                                        // SyntaxKind.IncompleteMember) will not be handled, skip
+                                        // early.
+                                        if (!MemberKinds.Contains (currentSyntaxKind))
                                                 {
-                                                case OrderingTrait.Kind:
-                                                        if (previousSyntaxKind != currentSyntaxKind)
-                                                        {
-                                                                compareAccessLevel = false;
-                                                        }
-
-                                                        continue;
-
-                                                case OrderingTrait.Constant:
-                                                        if (previousIsConst != currentIsConst)
-                                                        {
-                                                                compareAccessLevel = false;
-                                                        }
-
-                                                        continue;
-
-                                                case OrderingTrait.Readonly:
-                                                        if (previousIsReadonly != currentIsReadonly)
-                                                        {
-                                                                compareAccessLevel = false;
-                                                        }
-
-                                                        continue;
-
-                                                case OrderingTrait.Static:
-                                                        if (previousIsStatic != currentIsStatic)
-                                                        {
-                                                                compareAccessLevel = false;
-                                                        }
-
-                                                        continue;
-
-                                                case OrderingTrait.Accessibility:
-                                                default:
                                                         continue;
                                                 }
-                                        }
 
-                                        if (compareAccessLevel &&
-                                            currentAccessLevel > previousAccessLevel)
-                                        {
-                                                context.ReportDiagnostic(Diagnostic.Create(
-                                                    Descriptor,
-                                                    NamedTypeHelpers.GetNameOrIdentifierLocation(
-                                                        member),
-                                                    AccessLevelHelper.GetName(currentAccessLevel),
-                                                    AccessLevelHelper.GetName(
-                                                        previousAccessLevel)));
-                                        }
+                                        var modifiers = member.GetModifiers ();
+                                        AccessLevel currentAccessLevel
+                                            = MemberOrderHelper.GetAccessLevelForOrdering (
+                                                member, modifiers);
+                                        bool currentIsConst
+                                            = modifiers.Any (SyntaxKind.ConstKeyword);
+                                        bool currentIsReadonly
+                                            = modifiers.Any (SyntaxKind.ReadOnlyKeyword);
+                                        bool currentIsStatic
+                                            = modifiers.Any (SyntaxKind.StaticKeyword);
+
+                                        if (previousAccessLevel != AccessLevel.NotSpecified)
+                                                {
+                                                        bool compareAccessLevel = true;
+                                                        for (int j = 0; compareAccessLevel
+                                                                        && j < accessibilityIndex;
+                                                             j++)
+                                                                {
+                                                                        switch (elementOrder[j])
+                                                                                {
+                                                                                case OrderingTrait
+                                                                                    .Kind:
+                                                                                        if (previousSyntaxKind
+                                                                                            != currentSyntaxKind)
+                                                                                                {
+                                                                                                        compareAccessLevel
+                                                                                                            = false;
+                                                                                                }
+
+                                                                                        continue;
+
+                                                                                case OrderingTrait
+                                                                                    .Constant:
+                                                                                        if (previousIsConst
+                                                                                            != currentIsConst)
+                                                                                                {
+                                                                                                        compareAccessLevel
+                                                                                                            = false;
+                                                                                                }
+
+                                                                                        continue;
+
+                                                                                case OrderingTrait
+                                                                                    .Readonly:
+                                                                                        if (previousIsReadonly
+                                                                                            != currentIsReadonly)
+                                                                                                {
+                                                                                                        compareAccessLevel
+                                                                                                            = false;
+                                                                                                }
+
+                                                                                        continue;
+
+                                                                                case OrderingTrait
+                                                                                    .Static:
+                                                                                        if (previousIsStatic
+                                                                                            != currentIsStatic)
+                                                                                                {
+                                                                                                        compareAccessLevel
+                                                                                                            = false;
+                                                                                                }
+
+                                                                                        continue;
+
+                                                                                case OrderingTrait
+                                                                                    .Accessibility:
+                                                                                default:
+                                                                                        continue;
+                                                                                }
+                                                                }
+
+                                                        if (compareAccessLevel
+                                                            && currentAccessLevel
+                                                                   > previousAccessLevel)
+                                                                {
+                                                                        context.ReportDiagnostic (
+                                                                            Diagnostic.Create (
+                                                                                Descriptor,
+                                                                                NamedTypeHelpers
+                                                                                    .GetNameOrIdentifierLocation (
+                                                                                        member),
+                                                                                AccessLevelHelper.GetName (
+                                                                                    currentAccessLevel),
+                                                                                AccessLevelHelper.GetName (
+                                                                                    previousAccessLevel)));
+                                                                }
+                                                }
+
+                                        previousSyntaxKind = currentSyntaxKind;
+                                        previousAccessLevel = currentAccessLevel;
+                                        previousIsConst = currentIsConst;
+                                        previousIsReadonly = currentIsReadonly;
+                                        previousIsStatic = currentIsStatic;
                                 }
-
-                                previousSyntaxKind = currentSyntaxKind;
-                                previousAccessLevel = currentAccessLevel;
-                                previousIsConst = currentIsConst;
-                                previousIsReadonly = currentIsReadonly;
-                                previousIsStatic = currentIsStatic;
-                        }
                 }
         }
 }

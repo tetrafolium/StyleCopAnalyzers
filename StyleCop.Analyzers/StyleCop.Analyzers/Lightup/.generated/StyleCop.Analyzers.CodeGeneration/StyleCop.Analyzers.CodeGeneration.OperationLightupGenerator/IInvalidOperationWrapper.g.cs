@@ -9,43 +9,45 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IInvalidOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IInvalidOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IInvalidOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
-                static IInvalidOperationWrapper()
+                static IInvalidOperationWrapper ()
                 {
-                        WrappedType =
-                            OperationWrapperHelper.GetWrappedType(typeof(IInvalidOperationWrapper));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IInvalidOperationWrapper));
                 }
 
-                private IInvalidOperationWrapper(IOperation operation)
+                private IInvalidOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public static IInvalidOperationWrapper FromOperation(IOperation operation)
+                public static IInvalidOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IInvalidOperationWrapper(operation);
+                        return new IInvalidOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

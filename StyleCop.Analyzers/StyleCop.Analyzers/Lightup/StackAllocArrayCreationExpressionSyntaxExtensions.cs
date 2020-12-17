@@ -14,27 +14,27 @@ namespace StyleCop.Analyzers.Lightup
                     Func<StackAllocArrayCreationExpressionSyntax, InitializerExpressionSyntax,
                          StackAllocArrayCreationExpressionSyntax> WithInitializerAccessor;
 
-                static StackAllocArrayCreationExpressionSyntaxExtensions()
+                static StackAllocArrayCreationExpressionSyntaxExtensions ()
                 {
                         InitializerAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            StackAllocArrayCreationExpressionSyntax, InitializerExpressionSyntax>(
-                            typeof(StackAllocArrayCreationExpressionSyntax), nameof(Initializer));
+                            StackAllocArrayCreationExpressionSyntax, InitializerExpressionSyntax> (
+                            typeof (StackAllocArrayCreationExpressionSyntax), nameof (Initializer));
                         WithInitializerAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            StackAllocArrayCreationExpressionSyntax, InitializerExpressionSyntax>(
-                            typeof(StackAllocArrayCreationExpressionSyntax), nameof(Initializer));
+                            StackAllocArrayCreationExpressionSyntax, InitializerExpressionSyntax> (
+                            typeof (StackAllocArrayCreationExpressionSyntax), nameof (Initializer));
                 }
 
-                public static InitializerExpressionSyntax Initializer(
-                    this StackAllocArrayCreationExpressionSyntax syntax)
+                public static InitializerExpressionSyntax
+                Initializer (this StackAllocArrayCreationExpressionSyntax syntax)
                 {
-                        return InitializerAccessor(syntax);
+                        return InitializerAccessor (syntax);
                 }
 
-                public static StackAllocArrayCreationExpressionSyntax WithInitializer(
-                    this StackAllocArrayCreationExpressionSyntax syntax,
-                    InitializerExpressionSyntax initializer)
+                public static StackAllocArrayCreationExpressionSyntax
+                WithInitializer (this StackAllocArrayCreationExpressionSyntax syntax,
+                                 InitializerExpressionSyntax initializer)
                 {
-                        return WithInitializerAccessor(syntax, initializer);
+                        return WithInitializerAccessor (syntax, initializer);
                 }
         }
 }

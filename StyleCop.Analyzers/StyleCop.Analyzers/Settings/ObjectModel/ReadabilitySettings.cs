@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <summary>
                 /// Initializes a new instance of the <see cref="ReadabilitySettings"/> class.
                 /// </summary>
-                protected internal ReadabilitySettings()
+                protected internal
+                ReadabilitySettings ()
                 {
                         this.allowBuiltInTypeAliases = false;
                 }
@@ -26,21 +27,23 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// </summary>
                 /// <param name="readabilitySettingsObject">The JSON object containing the
                 /// settings.</param>
-                protected internal ReadabilitySettings(JsonObject readabilitySettingsObject)
+                protected internal
+                ReadabilitySettings (JsonObject readabilitySettingsObject)
                     : this()
                 {
                         foreach (var kvp in readabilitySettingsObject)
-                        {
-                                switch (kvp.Key)
                                 {
-                                case "allowBuiltInTypeAliases":
-                                        this.allowBuiltInTypeAliases = kvp.ToBooleanValue();
-                                        break;
+                                        switch (kvp.Key)
+                                                {
+                                                case "allowBuiltInTypeAliases":
+                                                        this.allowBuiltInTypeAliases
+                                                            = kvp.ToBooleanValue ();
+                                                        break;
 
-                                default:
-                                        break;
+                                                default:
+                                                        break;
+                                                }
                                 }
-                        }
                 }
 
                 public bool AllowBuiltInTypeAliases => this.allowBuiltInTypeAliases;

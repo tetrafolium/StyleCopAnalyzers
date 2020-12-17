@@ -32,7 +32,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         ///
         /// <para>Placeholder elements should be reviewed and removed from documentation.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1651DoNotUsePlaceholderElements : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -46,115 +46,118 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// </summary>
                 internal const string NoCodeFixKey = "NoCodeFix";
 
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1651.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(DocumentationResources.SA1651Title),
-                    DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1651MessageFormat),
-                        DocumentationResources.ResourceManager, typeof(DocumentationResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1651Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1651.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (DocumentationResources.SA1651Title),
+                    DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1651MessageFormat),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (DocumentationResources.SA1651Description),
+                        DocumentationResources.ResourceManager, typeof (DocumentationResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext> XmlElementAction =
-                    HandleXmlElement;
-                private static readonly Action<SyntaxNodeAnalysisContext> XmlEmptyElementAction =
-                    HandleXmlEmptyElement;
+                private static readonly Action<SyntaxNodeAnalysisContext> XmlElementAction
+                    = HandleXmlElement;
+                private static readonly Action<SyntaxNodeAnalysisContext> XmlEmptyElementAction
+                    = HandleXmlEmptyElement;
 
-                private static readonly ImmutableDictionary<string, string> NoCodeFixProperties =
-                    ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
-
-                /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                private static readonly ImmutableDictionary<string, string> NoCodeFixProperties
+                    = ImmutableDictionary.Create<string, string> ().Add (NoCodeFixKey,
+                                                                         string.Empty);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
-                {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
-                        context.RegisterSyntaxNodeAction(XmlElementAction, SyntaxKind.XmlElement);
-                        context.RegisterSyntaxNodeAction(XmlEmptyElementAction,
-                                                         SyntaxKind.XmlEmptyElement);
+                /// <inheritdoc/>
+                public override void
+                Initialize (AnalysisContext context)
+                {
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
+
+                        context.RegisterSyntaxNodeAction (XmlElementAction, SyntaxKind.XmlElement);
+                        context.RegisterSyntaxNodeAction (XmlEmptyElementAction,
+                                                          SyntaxKind.XmlEmptyElement);
                 }
 
-                private static void HandleXmlElement(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleXmlElement (SyntaxNodeAnalysisContext context)
                 {
                         XmlElementSyntax syntax = (XmlElementSyntax) context.Node;
-                        CheckTag(context, syntax.StartTag?.Name?.ToString());
+                        CheckTag (context, syntax.StartTag?.Name?.ToString ());
                 }
 
-                private static void HandleXmlEmptyElement(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleXmlEmptyElement (SyntaxNodeAnalysisContext context)
                 {
                         XmlEmptyElementSyntax syntax = (XmlEmptyElementSyntax) context.Node;
-                        CheckTag(context, syntax.Name?.ToString());
+                        CheckTag (context, syntax.Name?.ToString ());
                 }
 
-                private static void CheckTag(SyntaxNodeAnalysisContext context, string tagName)
+                private static void
+                CheckTag (SyntaxNodeAnalysisContext context, string tagName)
                 {
-                        if (string.Equals(XmlCommentHelper.IncludeXmlTag, tagName,
-                                          StringComparison.Ordinal))
-                        {
-                                if (!IncludedDocumentationContainsPlaceHolderTags(context))
+                        if (string.Equals (XmlCommentHelper.IncludeXmlTag, tagName,
+                                           StringComparison.Ordinal))
                                 {
-                                        return;
-                                }
+                                        if (!IncludedDocumentationContainsPlaceHolderTags (context))
+                                                {
+                                                        return;
+                                                }
 
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, context.Node.GetLocation(), NoCodeFixProperties));
-                        }
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor, context.Node.GetLocation (),
+                                            NoCodeFixProperties));
+                                }
                         else
-                        {
-                                if (!string.Equals(XmlCommentHelper.PlaceholderTag, tagName,
-                                                   StringComparison.Ordinal))
                                 {
-                                        return;
-                                }
+                                        if (!string.Equals (XmlCommentHelper.PlaceholderTag,
+                                                            tagName, StringComparison.Ordinal))
+                                                {
+                                                        return;
+                                                }
 
-                                context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, context.Node.GetLocation()));
-                        }
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor, context.Node.GetLocation ()));
+                                }
                 }
 
-                private static bool IncludedDocumentationContainsPlaceHolderTags(
-                    SyntaxNodeAnalysisContext context)
+                private static bool
+                IncludedDocumentationContainsPlaceHolderTags (SyntaxNodeAnalysisContext context)
                 {
-                        var memberDeclaration =
-                            context.Node.FirstAncestorOrSelf<MemberDeclarationSyntax>();
+                        var memberDeclaration
+                            = context.Node.FirstAncestorOrSelf<MemberDeclarationSyntax> ();
                         if (memberDeclaration == null)
-                        {
-                                return false;
-                        }
+                                {
+                                        return false;
+                                }
 
-                        var declaration = context.SemanticModel.GetDeclaredSymbol(
+                        var declaration = context.SemanticModel.GetDeclaredSymbol (
                             memberDeclaration, context.CancellationToken);
                         if (declaration == null)
-                        {
-                                return false;
-                        }
+                                {
+                                        return false;
+                                }
 
-                        var rawDocumentation =
-                            declaration.GetDocumentationCommentXml(expandIncludes
-                                                                   : true, cancellationToken
-                                                                   : context.CancellationToken);
-                        var completeDocumentation =
-                            XElement.Parse(rawDocumentation, LoadOptions.None);
-                        return completeDocumentation.DescendantNodesAndSelf()
-                            .OfType<XElement>()
-                            .Any(element => element.Name == XmlCommentHelper.PlaceholderTag);
+                        var rawDocumentation
+                            = declaration.GetDocumentationCommentXml (expandIncludes
+                                                                      : true, cancellationToken
+                                                                      : context.CancellationToken);
+                        var completeDocumentation
+                            = XElement.Parse (rawDocumentation, LoadOptions.None);
+                        return completeDocumentation.DescendantNodesAndSelf ()
+                            .OfType<XElement> ()
+                            .Any (element => element.Name == XmlCommentHelper.PlaceholderTag);
                 }
         }
 }

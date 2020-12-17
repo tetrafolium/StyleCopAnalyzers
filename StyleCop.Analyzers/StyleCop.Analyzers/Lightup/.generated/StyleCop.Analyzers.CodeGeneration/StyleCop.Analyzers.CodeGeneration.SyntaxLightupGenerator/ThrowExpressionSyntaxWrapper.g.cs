@@ -12,8 +12,8 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct ThrowExpressionSyntaxWrapper
             : ISyntaxWrapper<ExpressionSyntax>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.ThrowExpressionSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.ThrowExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, SyntaxToken> ThrowKeywordAccessor;
@@ -25,86 +25,78 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly ExpressionSyntax node;
 
-                static ThrowExpressionSyntaxWrapper()
+                static ThrowExpressionSyntaxWrapper ()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(ThrowExpressionSyntaxWrapper));
-                        ThrowKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(ThrowKeyword));
-                        ExpressionAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                                    WrappedType, nameof(Expression));
-                        WithThrowKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(ThrowKeyword));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (ThrowExpressionSyntaxWrapper));
+                        ThrowKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken> (
+                                      WrappedType, nameof (ThrowKeyword));
+                        ExpressionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            ExpressionSyntax, ExpressionSyntax> (WrappedType, nameof (Expression));
+                        WithThrowKeywordAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken> (
+                                      WrappedType, nameof (ThrowKeyword));
                         WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
+                            ExpressionSyntax, ExpressionSyntax> (WrappedType, nameof (Expression));
                 }
 
-                private ThrowExpressionSyntaxWrapper(ExpressionSyntax node)
-                {
-                        this.node = node;
-                }
+                private ThrowExpressionSyntaxWrapper (ExpressionSyntax node) { this.node = node; }
 
                 public ExpressionSyntax SyntaxNode => this.node;
 
                 public SyntaxToken ThrowKeyword
                 {
-                        get
-                        {
-                                return ThrowKeywordAccessor(this.SyntaxNode);
-                        }
+                        get { return ThrowKeywordAccessor (this.SyntaxNode); }
                 }
 
                 public ExpressionSyntax Expression
                 {
-                        get
-                        {
-                                return ExpressionAccessor(this.SyntaxNode);
-                        }
+                        get { return ExpressionAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator ThrowExpressionSyntaxWrapper(SyntaxNode node)
+                public static explicit operator ThrowExpressionSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new ThrowExpressionSyntaxWrapper((ExpressionSyntax) node);
+                        return new ThrowExpressionSyntaxWrapper ((ExpressionSyntax) node);
                 }
 
-                public static implicit operator ExpressionSyntax(
-                    ThrowExpressionSyntaxWrapper wrapper)
+                public static implicit
+                operator ExpressionSyntax (ThrowExpressionSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public ThrowExpressionSyntaxWrapper WithThrowKeyword(SyntaxToken throwKeyword)
+                public ThrowExpressionSyntaxWrapper
+                WithThrowKeyword (SyntaxToken throwKeyword)
                 {
-                        return new ThrowExpressionSyntaxWrapper(
-                            WithThrowKeywordAccessor(this.SyntaxNode, throwKeyword));
+                        return new ThrowExpressionSyntaxWrapper (
+                            WithThrowKeywordAccessor (this.SyntaxNode, throwKeyword));
                 }
 
-                public ThrowExpressionSyntaxWrapper WithExpression(ExpressionSyntax expression)
+                public ThrowExpressionSyntaxWrapper
+                WithExpression (ExpressionSyntax expression)
                 {
-                        return new ThrowExpressionSyntaxWrapper(
-                            WithExpressionAccessor(this.SyntaxNode, expression));
+                        return new ThrowExpressionSyntaxWrapper (
+                            WithExpressionAccessor (this.SyntaxNode, expression));
                 }
         }
 }

@@ -9,49 +9,51 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IDeclarationExpressionOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IDeclarationExpressionOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IDeclarationExpressionOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ExpressionAccessor;
                 private readonly IOperation operation;
-                static IDeclarationExpressionOperationWrapper()
+                static IDeclarationExpressionOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IDeclarationExpressionOperationWrapper));
-                        ExpressionAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Expression));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IDeclarationExpressionOperationWrapper));
+                        ExpressionAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Expression));
                 }
 
-                private IDeclarationExpressionOperationWrapper(IOperation operation)
+                private IDeclarationExpressionOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IOperation Expression => ExpressionAccessor(this.WrappedOperation);
-                public static IDeclarationExpressionOperationWrapper FromOperation(
-                    IOperation operation)
+                public IOperation Expression => ExpressionAccessor (this.WrappedOperation);
+                public static IDeclarationExpressionOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IDeclarationExpressionOperationWrapper(operation);
+                        return new IDeclarationExpressionOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

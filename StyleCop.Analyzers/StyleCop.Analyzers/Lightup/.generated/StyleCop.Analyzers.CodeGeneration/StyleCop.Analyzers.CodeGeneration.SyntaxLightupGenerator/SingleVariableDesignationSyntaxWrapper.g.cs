@@ -12,8 +12,8 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct SingleVariableDesignationSyntaxWrapper
             : ISyntaxWrapper<CSharpSyntaxNode>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.SingleVariableDesignationSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.SingleVariableDesignationSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> IdentifierAccessor;
@@ -22,21 +22,21 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly CSharpSyntaxNode node;
 
-                static SingleVariableDesignationSyntaxWrapper()
+                static SingleVariableDesignationSyntaxWrapper ()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(SingleVariableDesignationSyntaxWrapper));
-                        IdentifierAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(Identifier));
-                        WithIdentifierAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(Identifier));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (SingleVariableDesignationSyntaxWrapper));
+                        IdentifierAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (Identifier));
+                        WithIdentifierAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (Identifier));
                 }
 
-                private SingleVariableDesignationSyntaxWrapper(CSharpSyntaxNode node)
+                private SingleVariableDesignationSyntaxWrapper (CSharpSyntaxNode node)
                 {
                         this.node = node;
                 }
@@ -45,56 +45,55 @@ namespace StyleCop.Analyzers.Lightup
 
                 public SyntaxToken Identifier
                 {
-                        get
-                        {
-                                return IdentifierAccessor(this.SyntaxNode);
-                        }
+                        get { return IdentifierAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator SingleVariableDesignationSyntaxWrapper(
+                public static explicit operator SingleVariableDesignationSyntaxWrapper (
                     VariableDesignationSyntaxWrapper node)
                 {
                         return (SingleVariableDesignationSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator SingleVariableDesignationSyntaxWrapper(
-                    SyntaxNode node)
+                public static explicit
+                operator SingleVariableDesignationSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new SingleVariableDesignationSyntaxWrapper((CSharpSyntaxNode) node);
+                        return new SingleVariableDesignationSyntaxWrapper ((CSharpSyntaxNode) node);
                 }
 
-                public static implicit operator VariableDesignationSyntaxWrapper(
+                public static implicit operator VariableDesignationSyntaxWrapper (
                     SingleVariableDesignationSyntaxWrapper wrapper)
                 {
-                        return VariableDesignationSyntaxWrapper.FromUpcast(wrapper.node);
+                        return VariableDesignationSyntaxWrapper.FromUpcast (wrapper.node);
                 }
 
-                public static implicit operator CSharpSyntaxNode(
-                    SingleVariableDesignationSyntaxWrapper wrapper)
+                public static implicit
+                operator CSharpSyntaxNode (SingleVariableDesignationSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public SingleVariableDesignationSyntaxWrapper WithIdentifier(SyntaxToken identifier)
+                public SingleVariableDesignationSyntaxWrapper
+                WithIdentifier (SyntaxToken identifier)
                 {
-                        return new SingleVariableDesignationSyntaxWrapper(
-                            WithIdentifierAccessor(this.SyntaxNode, identifier));
+                        return new SingleVariableDesignationSyntaxWrapper (
+                            WithIdentifierAccessor (this.SyntaxNode, identifier));
                 }
         }
 }

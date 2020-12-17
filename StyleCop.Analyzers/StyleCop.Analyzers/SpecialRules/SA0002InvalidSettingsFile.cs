@@ -14,8 +14,8 @@ namespace StyleCop.Analyzers.SpecialRules
         /// The <em>stylecop.json</em> settings file could not be loaded due to a deserialization
         /// failure.
         /// </summary>
-        [NoCodeFix("No automatic code fix is possible for general JSON syntax errors.")]
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [NoCodeFix ("No automatic code fix is possible for general JSON syntax errors.")]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA0002InvalidSettingsFile : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -23,71 +23,73 @@ namespace StyleCop.Analyzers.SpecialRules
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA0002";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0002.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpecialResources.SA0002Title), SpecialResources.ResourceManager,
-                    typeof(SpecialResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpecialResources.SA0002MessageFormat),
-                                                  SpecialResources.ResourceManager,
-                                                  typeof(SpecialResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpecialResources.SA0002Description),
-                                                  SpecialResources.ResourceManager,
-                                                  typeof(SpecialResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0002.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (SpecialResources.SA0002Title), SpecialResources.ResourceManager,
+                    typeof (SpecialResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (SpecialResources.SA0002MessageFormat),
+                                                     SpecialResources.ResourceManager,
+                                                     typeof (SpecialResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (SpecialResources.SA0002Description),
+                                                     SpecialResources.ResourceManager,
+                                                     typeof (SpecialResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
 #pragma warning disable RS1033 // Define diagnostic description correctly (Description ends with
                                // formatted exception text)
-                    new DiagnosticDescriptor(
+                    new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
 #pragma warning restore RS1033 // Define diagnostic description correctly
 
-                private static readonly Action<CompilationAnalysisContext> CompilationAction =
-                    HandleCompilation;
+                private static readonly Action<CompilationAnalysisContext> CompilationAction
+                    = HandleCompilation;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterCompilationAction(CompilationAction);
+                        context.RegisterCompilationAction (CompilationAction);
                 }
 
-                private static void HandleCompilation(CompilationAnalysisContext context)
+                private static void
+                HandleCompilation (CompilationAnalysisContext context)
                 {
                         try
-                        {
-                                SettingsHelper.GetStyleCopSettings(
-                                    context.Options, DeserializationFailureBehavior.ThrowException,
-                                    context.CancellationToken);
-                        }
+                                {
+                                        SettingsHelper.GetStyleCopSettings (
+                                            context.Options,
+                                            DeserializationFailureBehavior.ThrowException,
+                                            context.CancellationToken);
+                                }
                         catch (Exception ex)
-                            when(ex is JsonParseException || ex is InvalidSettingsException)
-                        {
-                                string details = ex.Message;
-                                string completeDescription = string.Format(
-                                    Description.ToString(CultureInfo.CurrentCulture), details);
+                            when (ex is JsonParseException || ex is InvalidSettingsException)
+                                {
+                                        string details = ex.Message;
+                                        string completeDescription = string.Format (
+                                            Description.ToString (CultureInfo.CurrentCulture),
+                                            details);
 
-                                var completeDescriptor = new DiagnosticDescriptor(
-                                    DiagnosticId, Title, MessageFormat,
-                                    AnalyzerCategory.SpecialRules, DiagnosticSeverity.Warning,
-                                    AnalyzerConstants.EnabledByDefault, completeDescription,
-                                    HelpLink);
-                                context.ReportDiagnostic(
-                                    Diagnostic.Create(completeDescriptor, Location.None));
-                        }
+                                        var completeDescriptor = new DiagnosticDescriptor (
+                                            DiagnosticId, Title, MessageFormat,
+                                            AnalyzerCategory.SpecialRules,
+                                            DiagnosticSeverity.Warning,
+                                            AnalyzerConstants.EnabledByDefault, completeDescription,
+                                            HelpLink);
+                                        context.ReportDiagnostic (
+                                            Diagnostic.Create (completeDescriptor, Location.None));
+                                }
                 }
         }
 }

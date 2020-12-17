@@ -22,95 +22,94 @@ namespace StyleCop.Analyzers.SpacingRules
         /// <para>To fix a violation of this rule, remove the extra whitespace characters and leave
         /// only a single space.</para>
         /// </remarks>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1025CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1025CodeFixProvider))]
         [Shared]
         internal class SA1025CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (
                     SA1025CodeMustNotContainMultipleWhitespaceInARow.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return FixAll.Instance;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (var diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        SpacingResources.SA1025CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1025CodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                SpacingResources.SA1025CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof (SA1025CodeFixProvider)),
+                                            diagnostic);
+                                }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var root = await document.GetSyntaxRootAsync(cancellationToken)
-                                       .ConfigureAwait(false);
+                        var root = await document.GetSyntaxRootAsync (cancellationToken)
+                                       .ConfigureAwait (false);
 
-                        var whitespaceTrivia =
-                            root.FindTrivia(diagnostic.Location.SourceSpan.Start, true);
+                        var whitespaceTrivia
+                            = root.FindTrivia (diagnostic.Location.SourceSpan.Start, true);
                         if (whitespaceTrivia.Span.Length > 1)
-                        {
-                                return document.WithSyntaxRoot(
-                                    root.ReplaceTrivia(whitespaceTrivia, SyntaxFactory.Space));
-                        }
+                                {
+                                        return document.WithSyntaxRoot (root.ReplaceTrivia (
+                                            whitespaceTrivia, SyntaxFactory.Space));
+                                }
 
                         return document;
                 }
 
                 private class FixAll : DocumentBasedFixAllProvider
                 {
-                        public static FixAllProvider Instance
-                        {
-                                get;
-                        }
-                        = new FixAll();
+                        public static FixAllProvider Instance { get; }
+                        = new FixAll ();
 
                         protected override string CodeActionTitle => SpacingResources.SA1025CodeFix;
 
-                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
-                            ImmutableArray<Diagnostic> diagnostics)
+                        protected override async Task<SyntaxNode>
+                        FixAllInDocumentAsync (FixAllContext fixAllContext, Document document,
+                                               ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty)
-                                {
-                                        return null;
-                                }
-
-                                var syntaxRoot =
-                                    await document.GetSyntaxRootAsync().ConfigureAwait(false);
-
-                                List<SyntaxTrivia> tokensToFix = new List<SyntaxTrivia>();
-                                foreach (var diagnostic in diagnostics)
-                                {
-                                        SyntaxTrivia whitespace = syntaxRoot.FindTrivia(
-                                            diagnostic.Location.SourceSpan.Start, findInsideTrivia
-                                            : true);
-                                        if (whitespace.Span.Length > 1)
                                         {
-                                                tokensToFix.Add(whitespace);
+                                                return null;
                                         }
-                                }
 
-                                return syntaxRoot.ReplaceTrivia(tokensToFix,
-                                                                (originalTrivia, rewrittenTrivia) =>
-                                                                    SyntaxFactory.Space);
+                                var syntaxRoot
+                                    = await document.GetSyntaxRootAsync ().ConfigureAwait (false);
+
+                                List<SyntaxTrivia> tokensToFix = new List<SyntaxTrivia> ();
+                                foreach (var diagnostic in diagnostics)
+                                        {
+                                                SyntaxTrivia whitespace = syntaxRoot.FindTrivia (
+                                                    diagnostic.Location.SourceSpan.Start,
+                                                    findInsideTrivia
+                                                    : true);
+                                                if (whitespace.Span.Length > 1)
+                                                        {
+                                                                tokensToFix.Add (whitespace);
+                                                        }
+                                        }
+
+                                return syntaxRoot.ReplaceTrivia (
+                                    tokensToFix,
+                                    (originalTrivia, rewrittenTrivia) => SyntaxFactory.Space);
                         }
                 }
         }

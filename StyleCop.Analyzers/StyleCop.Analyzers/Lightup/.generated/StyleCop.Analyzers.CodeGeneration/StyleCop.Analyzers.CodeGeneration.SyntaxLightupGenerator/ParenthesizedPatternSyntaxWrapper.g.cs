@@ -12,8 +12,8 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct ParenthesizedPatternSyntaxWrapper
             : ISyntaxWrapper<CSharpSyntaxNode>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.ParenthesizedPatternSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.ParenthesizedPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> OpenParenTokenAccessor;
@@ -28,35 +28,33 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly CSharpSyntaxNode node;
 
-                static ParenthesizedPatternSyntaxWrapper()
+                static ParenthesizedPatternSyntaxWrapper ()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(ParenthesizedPatternSyntaxWrapper));
-                        OpenParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(OpenParenToken));
-                        PatternAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                                    WrappedType, nameof(Pattern));
-                        CloseParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(CloseParenToken));
-                        WithOpenParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(OpenParenToken));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (ParenthesizedPatternSyntaxWrapper));
+                        OpenParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (OpenParenToken));
+                        PatternAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
+                            CSharpSyntaxNode, CSharpSyntaxNode> (WrappedType, nameof (Pattern));
+                        CloseParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (CloseParenToken));
+                        WithOpenParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (OpenParenToken));
                         WithPatternAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Pattern));
-                        WithCloseParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(CloseParenToken));
+                            CSharpSyntaxNode, CSharpSyntaxNode> (WrappedType, nameof (Pattern));
+                        WithCloseParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken> (
+                                      WrappedType, nameof (CloseParenToken));
                 }
 
-                private ParenthesizedPatternSyntaxWrapper(CSharpSyntaxNode node)
+                private ParenthesizedPatternSyntaxWrapper (CSharpSyntaxNode node)
                 {
                         this.node = node;
                 }
@@ -65,97 +63,90 @@ namespace StyleCop.Analyzers.Lightup
 
                 public SyntaxToken OpenParenToken
                 {
-                        get
-                        {
-                                return OpenParenTokenAccessor(this.SyntaxNode);
-                        }
+                        get { return OpenParenTokenAccessor (this.SyntaxNode); }
                 }
 
                 public PatternSyntaxWrapper Pattern
                 {
-                        get
-                        {
-                                return (PatternSyntaxWrapper) PatternAccessor(this.SyntaxNode);
-                        }
+                        get { return (PatternSyntaxWrapper) PatternAccessor (this.SyntaxNode); }
                 }
 
                 public SyntaxToken CloseParenToken
                 {
-                        get
-                        {
-                                return CloseParenTokenAccessor(this.SyntaxNode);
-                        }
+                        get { return CloseParenTokenAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator ParenthesizedPatternSyntaxWrapper(
-                    PatternSyntaxWrapper node)
+                public static explicit
+                operator ParenthesizedPatternSyntaxWrapper (PatternSyntaxWrapper node)
                 {
                         return (ParenthesizedPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator ParenthesizedPatternSyntaxWrapper(
-                    ExpressionOrPatternSyntaxWrapper node)
+                public static explicit
+                operator ParenthesizedPatternSyntaxWrapper (ExpressionOrPatternSyntaxWrapper node)
                 {
                         return (ParenthesizedPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator ParenthesizedPatternSyntaxWrapper(SyntaxNode node)
+                public static explicit operator ParenthesizedPatternSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new ParenthesizedPatternSyntaxWrapper((CSharpSyntaxNode) node);
+                        return new ParenthesizedPatternSyntaxWrapper ((CSharpSyntaxNode) node);
                 }
 
-                public static implicit operator PatternSyntaxWrapper(
+                public static implicit
+                operator PatternSyntaxWrapper (ParenthesizedPatternSyntaxWrapper wrapper)
+                {
+                        return PatternSyntaxWrapper.FromUpcast (wrapper.node);
+                }
+
+                public static implicit operator ExpressionOrPatternSyntaxWrapper (
                     ParenthesizedPatternSyntaxWrapper wrapper)
                 {
-                        return PatternSyntaxWrapper.FromUpcast(wrapper.node);
+                        return ExpressionOrPatternSyntaxWrapper.FromUpcast (wrapper.node);
                 }
 
-                public static implicit operator ExpressionOrPatternSyntaxWrapper(
-                    ParenthesizedPatternSyntaxWrapper wrapper)
-                {
-                        return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
-                }
-
-                public static implicit operator CSharpSyntaxNode(
-                    ParenthesizedPatternSyntaxWrapper wrapper)
+                public static implicit
+                operator CSharpSyntaxNode (ParenthesizedPatternSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public ParenthesizedPatternSyntaxWrapper WithOpenParenToken(
-                    SyntaxToken openParenToken)
+                public ParenthesizedPatternSyntaxWrapper
+                WithOpenParenToken (SyntaxToken openParenToken)
                 {
-                        return new ParenthesizedPatternSyntaxWrapper(
-                            WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
+                        return new ParenthesizedPatternSyntaxWrapper (
+                            WithOpenParenTokenAccessor (this.SyntaxNode, openParenToken));
                 }
 
-                public ParenthesizedPatternSyntaxWrapper WithPattern(PatternSyntaxWrapper pattern)
+                public ParenthesizedPatternSyntaxWrapper
+                WithPattern (PatternSyntaxWrapper pattern)
                 {
-                        return new ParenthesizedPatternSyntaxWrapper(
-                            WithPatternAccessor(this.SyntaxNode, pattern));
+                        return new ParenthesizedPatternSyntaxWrapper (
+                            WithPatternAccessor (this.SyntaxNode, pattern));
                 }
 
-                public ParenthesizedPatternSyntaxWrapper WithCloseParenToken(
-                    SyntaxToken closeParenToken)
+                public ParenthesizedPatternSyntaxWrapper
+                WithCloseParenToken (SyntaxToken closeParenToken)
                 {
-                        return new ParenthesizedPatternSyntaxWrapper(
-                            WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
+                        return new ParenthesizedPatternSyntaxWrapper (
+                            WithCloseParenTokenAccessor (this.SyntaxNode, closeParenToken));
                 }
         }
 }

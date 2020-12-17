@@ -14,27 +14,27 @@ namespace StyleCop.Analyzers.Lightup
                 private static readonly Func<ForEachStatementSyntax, SyntaxToken,
                                              ForEachStatementSyntax> WithAwaitKeywordAccessor;
 
-                static ForEachStatementSyntaxExtensions()
+                static ForEachStatementSyntaxExtensions ()
                 {
-                        AwaitKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ForEachStatementSyntax, SyntaxToken>(
-                                    typeof(ForEachStatementSyntax), nameof(AwaitKeyword));
-                        WithAwaitKeywordAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ForEachStatementSyntax,
-                                                                            SyntaxToken>(
-                                typeof(ForEachStatementSyntax), nameof(AwaitKeyword));
+                        AwaitKeywordAccessor
+                            = LightupHelpers.CreateSyntaxPropertyAccessor<ForEachStatementSyntax,
+                                                                          SyntaxToken> (
+                                typeof (ForEachStatementSyntax), nameof (AwaitKeyword));
+                        WithAwaitKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            ForEachStatementSyntax, SyntaxToken> (typeof (ForEachStatementSyntax),
+                                                                  nameof (AwaitKeyword));
                 }
 
-                public static SyntaxToken AwaitKeyword(this ForEachStatementSyntax syntax)
+                public static SyntaxToken
+                AwaitKeyword (this ForEachStatementSyntax syntax)
                 {
-                        return AwaitKeywordAccessor(syntax);
+                        return AwaitKeywordAccessor (syntax);
                 }
 
-                public static ForEachStatementSyntax WithAwaitKeyword(
-                    this ForEachStatementSyntax syntax, SyntaxToken awaitKeyword)
+                public static ForEachStatementSyntax
+                WithAwaitKeyword (this ForEachStatementSyntax syntax, SyntaxToken awaitKeyword)
                 {
-                        return WithAwaitKeywordAccessor(syntax, awaitKeyword);
+                        return WithAwaitKeywordAccessor (syntax, awaitKeyword);
                 }
         }
 }

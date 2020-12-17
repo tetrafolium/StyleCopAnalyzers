@@ -16,62 +16,64 @@ namespace StyleCop.Analyzers.NamingRules
         /// <summary>
         /// Implements a code fix for <see cref="SA1316TupleElementNamesShouldUseCorrectCasing"/>.
         /// </summary>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1316CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1316CodeFixProvider))]
         [Shared]
         internal class SA1316CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(SA1316TupleElementNamesShouldUseCorrectCasing.DiagnosticId);
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (
+                    SA1316TupleElementNamesShouldUseCorrectCasing.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         // Fix All is not yet supported
                         return null;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (var diagnostic in context.Diagnostics)
-                        {
-                                if (diagnostic.Properties.TryGetValue(
-                                        SA1316TupleElementNamesShouldUseCorrectCasing
-                                            .ExpectedTupleElementNameKey,
-                                        out string fixedTupleElementName))
                                 {
-                                        context.RegisterCodeFix(
-                                            CodeAction.Create(
-                                                NamingResources.SA1316CodeFix,
-                                                cancellationToken => GetTransformedDocumentAsync(
-                                                    context.Document, diagnostic,
-                                                    fixedTupleElementName, cancellationToken),
-                                                nameof(SA1316CodeFixProvider)),
-                                            diagnostic);
+                                        if (diagnostic.Properties.TryGetValue (
+                                                SA1316TupleElementNamesShouldUseCorrectCasing
+                                                    .ExpectedTupleElementNameKey,
+                                                out string fixedTupleElementName))
+                                                {
+                                                        context.RegisterCodeFix (
+                                                            CodeAction.Create (
+                                                                NamingResources.SA1316CodeFix,
+                                                                cancellationToken => GetTransformedDocumentAsync (
+                                                                    context.Document, diagnostic,
+                                                                    fixedTupleElementName,
+                                                                    cancellationToken),
+                                                                nameof (SA1316CodeFixProvider)),
+                                                            diagnostic);
+                                                }
                                 }
-                        }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, string fixedTupleElementName,
-                    CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             string fixedTupleElementName,
+                                             CancellationToken cancellationToken)
                 {
-                        var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
+                        var syntaxRoot = await document.GetSyntaxRootAsync (cancellationToken)
+                                             .ConfigureAwait (false);
 
-                        var identifierToken =
-                            syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
+                        var identifierToken
+                            = syntaxRoot.FindToken (diagnostic.Location.SourceSpan.Start);
 
-                        var newSyntaxRoot = syntaxRoot.ReplaceToken(
-                            identifierToken, SyntaxFactory.Identifier(fixedTupleElementName)
-                                                 .WithTriviaFrom(identifierToken));
-                        return document.WithSyntaxRoot(newSyntaxRoot);
+                        var newSyntaxRoot = syntaxRoot.ReplaceToken (
+                            identifierToken, SyntaxFactory.Identifier (fixedTupleElementName)
+                                                 .WithTriviaFrom (identifierToken));
+                        return document.WithSyntaxRoot (newSyntaxRoot);
                 }
         }
 }

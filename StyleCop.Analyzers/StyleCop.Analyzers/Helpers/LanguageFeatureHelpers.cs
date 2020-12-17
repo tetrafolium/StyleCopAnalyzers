@@ -17,12 +17,13 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="context">The analysis context that will be checked.</param>
                 /// <returns>True if tuples are supported by the compiler.</returns>
-                internal static bool SupportsTuples(this SyntaxNodeAnalysisContext context)
+                internal static bool
+                SupportsTuples (this SyntaxNodeAnalysisContext context)
                 {
-                        var csharpParseOptions =
-                            context.Node.SyntaxTree.Options as CSharpParseOptions;
-                        return (csharpParseOptions != null) &&
-                               (csharpParseOptions.LanguageVersion >= LanguageVersionEx.CSharp7);
+                        var csharpParseOptions
+                            = context.Node.SyntaxTree.Options as CSharpParseOptions;
+                        return (csharpParseOptions != null)
+                               && (csharpParseOptions.LanguageVersion >= LanguageVersionEx.CSharp7);
                 }
 
                 /// <summary>
@@ -30,12 +31,13 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="context">The analysis context that will be checked.</param>
                 /// <returns>True if tuples are supported by the compiler.</returns>
-                internal static bool SupportsTuples(this OperationAnalysisContext context)
+                internal static bool
+                SupportsTuples (this OperationAnalysisContext context)
                 {
-                        var csharpParseOptions =
-                            context.Operation.Syntax.SyntaxTree.Options as CSharpParseOptions;
-                        return (csharpParseOptions != null) &&
-                               (csharpParseOptions.LanguageVersion >= LanguageVersionEx.CSharp7);
+                        var csharpParseOptions
+                            = context.Operation.Syntax.SyntaxTree.Options as CSharpParseOptions;
+                        return (csharpParseOptions != null)
+                               && (csharpParseOptions.LanguageVersion >= LanguageVersionEx.CSharp7);
                 }
 
                 /// <summary>
@@ -43,13 +45,14 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="context">The analysis context that will be checked.</param>
                 /// <returns>True if inferred tuple names are supported by the compiler.</returns>
-                internal static bool SupportsInferredTupleElementNames(
-                    this SyntaxNodeAnalysisContext context)
+                internal static bool
+                SupportsInferredTupleElementNames (this SyntaxNodeAnalysisContext context)
                 {
-                        var csharpParseOptions =
-                            context.Node.SyntaxTree.Options as CSharpParseOptions;
-                        return (csharpParseOptions != null) &&
-                               (csharpParseOptions.LanguageVersion >= LanguageVersionEx.CSharp7_1);
+                        var csharpParseOptions
+                            = context.Node.SyntaxTree.Options as CSharpParseOptions;
+                        return (csharpParseOptions != null)
+                               && (csharpParseOptions.LanguageVersion
+                                   >= LanguageVersionEx.CSharp7_1);
                 }
         }
 }

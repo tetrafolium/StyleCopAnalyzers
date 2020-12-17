@@ -27,9 +27,10 @@ namespace System.Linq
                 /// <see langword="true"/> if <paramref name="list"/> contains <paramref
                 /// name="trivia"/>; otherwise, <see langword="false"/>.
                 /// </returns>
-                internal static bool Contains(this SyntaxTriviaList list, SyntaxTrivia trivia)
+                internal static bool
+                Contains (this SyntaxTriviaList list, SyntaxTrivia trivia)
                 {
-                        return list.IndexOf(trivia) != -1;
+                        return list.IndexOf (trivia) != -1;
                 }
 
                 /// <summary>
@@ -45,21 +46,21 @@ namespace System.Linq
                 /// trivia.</param> <returns> <see langword="true"/> if the specified list contains
                 /// any trivia matching the specified predicate; otherwise, <see langword="false"/>.
                 /// </returns>
-                internal static bool Any(this SyntaxTriviaList list,
-                                         Func<SyntaxTrivia, bool> predicate)
+                internal static bool
+                Any (this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
                 {
                         if (predicate == null)
-                        {
-                                throw new ArgumentNullException(nameof(predicate));
-                        }
+                                {
+                                        throw new ArgumentNullException (nameof (predicate));
+                                }
 
                         foreach (SyntaxTrivia trivia in list)
-                        {
-                                if (predicate(trivia))
                                 {
-                                        return true;
+                                        if (predicate (trivia))
+                                                {
+                                                        return true;
+                                                }
                                 }
-                        }
 
                         return false;
                 }
@@ -78,21 +79,21 @@ namespace System.Linq
                 /// list match the specified predicate; otherwise, <see langword="false"/>. If the
                 /// list is empty, this method returns <see langword="true"/>.
                 /// </returns>
-                internal static bool All(this SyntaxTriviaList list,
-                                         Func<SyntaxTrivia, bool> predicate)
+                internal static bool
+                All (this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
                 {
                         if (predicate == null)
-                        {
-                                throw new ArgumentNullException(nameof(predicate));
-                        }
+                                {
+                                        throw new ArgumentNullException (nameof (predicate));
+                                }
 
                         foreach (SyntaxTrivia trivia in list)
-                        {
-                                if (!predicate(trivia))
                                 {
-                                        return false;
+                                        if (!predicate (trivia))
+                                                {
+                                                        return false;
+                                                }
                                 }
-                        }
 
                         return true;
                 }
@@ -105,16 +106,16 @@ namespace System.Linq
                 /// <returns>The last <see cref="SyntaxTrivia"/> in <paramref name="list"/> with the
                 /// specified <paramref name="kind"/>; otherwise, a default <see
                 /// cref="SyntaxTrivia"/> instance if no matching trivia was found.</returns>
-                internal static SyntaxTrivia LastOrDefault(this SyntaxTriviaList list,
-                                                           SyntaxKind kind)
+                internal static SyntaxTrivia
+                LastOrDefault (this SyntaxTriviaList list, SyntaxKind kind)
                 {
-                        foreach (var trivia in list.Reverse())
-                        {
-                                if (trivia.IsKind(kind))
+                        foreach (var trivia in list.Reverse ())
                                 {
-                                        return trivia;
+                                        if (trivia.IsKind (kind))
+                                                {
+                                                        return trivia;
+                                                }
                                 }
-                        }
 
                         return default;
                 }

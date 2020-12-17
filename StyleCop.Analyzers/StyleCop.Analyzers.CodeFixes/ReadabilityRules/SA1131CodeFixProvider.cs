@@ -21,133 +21,134 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <remarks>
         /// <para>To fix a violation of this rule, switch the arguments of the comparison.</para>
         /// </remarks>
-        [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1131CodeFixProvider))]
+        [ExportCodeFixProvider (LanguageNames.CSharp, Name = nameof (SA1131CodeFixProvider))]
         [Shared]
         internal class SA1131CodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(SA1131UseReadableConditions.DiagnosticId);
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (SA1131UseReadableConditions.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return FixAll.Instance;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (var diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        ReadabilityResources.SA1131CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1131CodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                ReadabilityResources.SA1131CodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof (SA1131CodeFixProvider)),
+                                            diagnostic);
+                                }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
+                        var syntaxRoot = await document.GetSyntaxRootAsync (cancellationToken)
+                                             .ConfigureAwait (false);
 
-                        var binaryExpression = (BinaryExpressionSyntax) syntaxRoot.FindNode(
+                        var binaryExpression = (BinaryExpressionSyntax) syntaxRoot.FindNode (
                             diagnostic.Location.SourceSpan, getInnermostNodeForTie
                             : true);
 
-                        var newBinaryExpression = TransformExpression(binaryExpression);
+                        var newBinaryExpression = TransformExpression (binaryExpression);
 
-                        return document.WithSyntaxRoot(
-                            syntaxRoot.ReplaceNode(binaryExpression, newBinaryExpression));
+                        return document.WithSyntaxRoot (
+                            syntaxRoot.ReplaceNode (binaryExpression, newBinaryExpression));
                 }
 
-                private static BinaryExpressionSyntax TransformExpression(
-                    BinaryExpressionSyntax binaryExpression)
+                private static BinaryExpressionSyntax
+                TransformExpression (BinaryExpressionSyntax binaryExpression)
                 {
-                        var newLeft = binaryExpression.Right.WithTriviaFrom(binaryExpression.Left);
-                        var newRight = binaryExpression.Left.WithTriviaFrom(binaryExpression.Right);
-                        return binaryExpression.WithLeft(newLeft)
-                            .WithRight(newRight)
-                            .WithOperatorToken(
-                                GetCorrectOperatorToken(binaryExpression.OperatorToken));
+                        var newLeft = binaryExpression.Right.WithTriviaFrom (binaryExpression.Left);
+                        var newRight
+                            = binaryExpression.Left.WithTriviaFrom (binaryExpression.Right);
+                        return binaryExpression.WithLeft (newLeft)
+                            .WithRight (newRight)
+                            .WithOperatorToken (
+                                GetCorrectOperatorToken (binaryExpression.OperatorToken));
                 }
 
-                private static SyntaxToken GetCorrectOperatorToken(SyntaxToken operatorToken)
+                private static SyntaxToken
+                GetCorrectOperatorToken (SyntaxToken operatorToken)
                 {
-                        switch (operatorToken.Kind())
-                        {
-                        case SyntaxKind.EqualsEqualsToken:
-                        case SyntaxKind.ExclamationEqualsToken:
-                                return operatorToken;
+                        switch (operatorToken.Kind ())
+                                {
+                                case SyntaxKind.EqualsEqualsToken:
+                                case SyntaxKind.ExclamationEqualsToken:
+                                        return operatorToken;
 
-                        case SyntaxKind.GreaterThanToken:
-                                return SyntaxFactory.Token(operatorToken.LeadingTrivia,
-                                                           SyntaxKind.LessThanToken,
-                                                           operatorToken.TrailingTrivia);
+                                case SyntaxKind.GreaterThanToken:
+                                        return SyntaxFactory.Token (operatorToken.LeadingTrivia,
+                                                                    SyntaxKind.LessThanToken,
+                                                                    operatorToken.TrailingTrivia);
 
-                        case SyntaxKind.GreaterThanEqualsToken:
-                                return SyntaxFactory.Token(operatorToken.LeadingTrivia,
-                                                           SyntaxKind.LessThanEqualsToken,
-                                                           operatorToken.TrailingTrivia);
+                                case SyntaxKind.GreaterThanEqualsToken:
+                                        return SyntaxFactory.Token (operatorToken.LeadingTrivia,
+                                                                    SyntaxKind.LessThanEqualsToken,
+                                                                    operatorToken.TrailingTrivia);
 
-                        case SyntaxKind.LessThanToken:
-                                return SyntaxFactory.Token(operatorToken.LeadingTrivia,
-                                                           SyntaxKind.GreaterThanToken,
-                                                           operatorToken.TrailingTrivia);
+                                case SyntaxKind.LessThanToken:
+                                        return SyntaxFactory.Token (operatorToken.LeadingTrivia,
+                                                                    SyntaxKind.GreaterThanToken,
+                                                                    operatorToken.TrailingTrivia);
 
-                        case SyntaxKind.LessThanEqualsToken:
-                                return SyntaxFactory.Token(operatorToken.LeadingTrivia,
-                                                           SyntaxKind.GreaterThanEqualsToken,
-                                                           operatorToken.TrailingTrivia);
+                                case SyntaxKind.LessThanEqualsToken:
+                                        return SyntaxFactory.Token (
+                                            operatorToken.LeadingTrivia,
+                                            SyntaxKind.GreaterThanEqualsToken,
+                                            operatorToken.TrailingTrivia);
 
-                        default:
-                                return SyntaxFactory.Token(SyntaxKind.None);
-                        }
+                                default:
+                                        return SyntaxFactory.Token (SyntaxKind.None);
+                                }
                 }
 
                 private class FixAll : DocumentBasedFixAllProvider
                 {
-                        public static FixAllProvider Instance
-                        {
-                                get;
-                        }
-                        = new FixAll();
+                        public static FixAllProvider Instance { get; }
+                        = new FixAll ();
 
-                        protected override string CodeActionTitle =>
-                            ReadabilityResources.SA1131CodeFix;
+                        protected override string
+                            CodeActionTitle => ReadabilityResources.SA1131CodeFix;
 
-                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
-                            ImmutableArray<Diagnostic> diagnostics)
+                        protected override async Task<SyntaxNode>
+                        FixAllInDocumentAsync (FixAllContext fixAllContext, Document document,
+                                               ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty)
-                                {
-                                        return null;
-                                }
+                                        {
+                                                return null;
+                                        }
 
-                                var syntaxRoot =
-                                    await document
-                                        .GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                                        .ConfigureAwait(false);
+                                var syntaxRoot
+                                    = await document
+                                          .GetSyntaxRootAsync (fixAllContext.CancellationToken)
+                                          .ConfigureAwait (false);
 
-                                var nodes = diagnostics.Select(
-                                    diagnostic =>(BinaryExpressionSyntax) syntaxRoot.FindNode(
+                                var nodes = diagnostics.Select (
+                                    diagnostic =>(BinaryExpressionSyntax) syntaxRoot.FindNode (
                                         diagnostic.Location.SourceSpan, getInnermostNodeForTie
                                         : true));
 
-                                return syntaxRoot.ReplaceNodes(
-                                    nodes, (originalNode, rewrittenNode) =>
-                                               TransformExpression(rewrittenNode));
+                                return syntaxRoot.ReplaceNodes (
+                                    nodes, (originalNode,
+                                            rewrittenNode) => TransformExpression (rewrittenNode));
                         }
                 }
         }

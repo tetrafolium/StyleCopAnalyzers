@@ -9,58 +9,62 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IRelationalCaseClauseOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IRelationalCaseClauseOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IRelationalCaseClauseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
                 private readonly IOperation operation;
-                static IRelationalCaseClauseOperationWrapper()
+                static IRelationalCaseClauseOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IRelationalCaseClauseOperationWrapper));
-                        ValueAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Value));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IRelationalCaseClauseOperationWrapper));
+                        ValueAccessor
+                            = LightupHelpers
+                                  .CreateOperationPropertyAccessor<IOperation, IOperation> (
+                                      WrappedType, nameof (Value));
                 }
 
-                private IRelationalCaseClauseOperationWrapper(IOperation operation)
+                private IRelationalCaseClauseOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public IOperation Value => ValueAccessor(this.WrappedOperation);
-                public object Relation => throw new NotImplementedException(
+                public IOperation Value => ValueAccessor (this.WrappedOperation);
+                public object Relation => throw new NotImplementedException (
                     "Property 'IRelationalCaseClauseOperation.Relation' has unsupported type 'BinaryOperatorKind'");
                 public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
                 public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
-                public static explicit operator IRelationalCaseClauseOperationWrapper(
-                    ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit operator ICaseClauseOperationWrapper(
-                    IRelationalCaseClauseOperationWrapper wrapper) =>
-                    ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static IRelationalCaseClauseOperationWrapper FromOperation(
-                    IOperation operation)
+                public static explicit operator IRelationalCaseClauseOperationWrapper (
+                    ICaseClauseOperationWrapper wrapper) => FromOperation (wrapper
+                                                                               .WrappedOperation);
+                public static implicit operator ICaseClauseOperationWrapper (
+                    IRelationalCaseClauseOperationWrapper
+                        wrapper) => ICaseClauseOperationWrapper
+                                        .FromUpcast (wrapper.WrappedOperation);
+                public static IRelationalCaseClauseOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IRelationalCaseClauseOperationWrapper(operation);
+                        return new IRelationalCaseClauseOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

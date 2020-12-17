@@ -7,13 +7,14 @@ namespace StyleCop.Analyzers.Helpers
 
         internal static class ExpressionSyntaxHelpers
         {
-                public static ExpressionSyntax WalkDownParentheses(this ExpressionSyntax expression)
+                public static ExpressionSyntax
+                WalkDownParentheses (this ExpressionSyntax expression)
                 {
                         var result = expression;
                         while (result is ParenthesizedExpressionSyntax parenthesizedExpression)
-                        {
-                                result = parenthesizedExpression.Expression;
-                        }
+                                {
+                                        result = parenthesizedExpression.Expression;
+                                }
 
                         return result;
                 }

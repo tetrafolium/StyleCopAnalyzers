@@ -9,11 +9,11 @@ namespace StyleCop.Analyzers.CodeGeneration
 
         internal static class GeneratorSyntaxExtensions
         {
-                public static TSyntax WithLeadingBlankLine<TSyntax>(
-                    this TSyntax syntax) where TSyntax : SyntaxNode
+                public static TSyntax
+                WithLeadingBlankLine<TSyntax> (this TSyntax syntax) where TSyntax : SyntaxNode
                 {
-                        return syntax.WithLeadingTrivia(SyntaxFactory.TriviaList(
-                            SyntaxFactory.PreprocessingMessage(Environment.NewLine)));
+                        return syntax.WithLeadingTrivia (SyntaxFactory.TriviaList (
+                            SyntaxFactory.PreprocessingMessage (Environment.NewLine)));
                 }
         }
 }

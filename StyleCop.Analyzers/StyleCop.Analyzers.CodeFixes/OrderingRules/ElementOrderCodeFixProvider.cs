@@ -20,16 +20,13 @@ namespace StyleCop.Analyzers.OrderingRules
         /// <summary>
         /// Implements code fixes for element ordering rules.
         /// </summary>
-        [NoCodeFix("Disabled until stable")]
+        [NoCodeFix ("Disabled until stable")]
         [Shared]
         internal class ElementOrderCodeFixProvider : CodeFixProvider
         {
                 /// <inheritdoc/>
-                public override ImmutableArray<string> FixableDiagnosticIds
-                {
-                        get;
-                }
-                = ImmutableArray.Create(
+                public override ImmutableArray<string> FixableDiagnosticIds { get; }
+                = ImmutableArray.Create (
                     SA1201ElementsMustAppearInTheCorrectOrder.DiagnosticId,
                     SA1202ElementsMustBeOrderedByAccess.DiagnosticId,
                     SA1203ConstantsMustAppearBeforeFields.DiagnosticId,
@@ -37,332 +34,360 @@ namespace StyleCop.Analyzers.OrderingRules
                     SA1214ReadonlyElementsMustAppearBeforeNonReadonlyElements.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider()
+                public override FixAllProvider
+                GetFixAllProvider ()
                 {
                         return FixAll.Instance;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                public override Task
+                RegisterCodeFixesAsync (CodeFixContext context)
                 {
                         foreach (Diagnostic diagnostic in context.Diagnostics)
-                        {
-                                context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        OrderingResources.ElementOrderCodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(ElementOrderCodeFixProvider)),
-                                    diagnostic);
-                        }
+                                {
+                                        context.RegisterCodeFix (
+                                            CodeAction.Create (
+                                                OrderingResources.ElementOrderCodeFix,
+                                                cancellationToken => GetTransformedDocumentAsync (
+                                                    context.Document, diagnostic,
+                                                    cancellationToken),
+                                                nameof (ElementOrderCodeFixProvider)),
+                                            diagnostic);
+                                }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
-                private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+                private static async Task<Document>
+                GetTransformedDocumentAsync (Document document, Diagnostic diagnostic,
+                                             CancellationToken cancellationToken)
                 {
-                        var settings = SettingsHelper.GetStyleCopSettings(
+                        var settings = SettingsHelper.GetStyleCopSettings (
                             document.Project.AnalyzerOptions, cancellationToken);
                         var elementOrder = settings.OrderingRules.ElementOrder;
-                        var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
+                        var syntaxRoot = await document.GetSyntaxRootAsync (cancellationToken)
+                                             .ConfigureAwait (false);
 
-                        var memberDeclaration = syntaxRoot.FindNode(diagnostic.Location.SourceSpan)
-                                                    .FirstAncestorOrSelf<MemberDeclarationSyntax>();
+                        var memberDeclaration
+                            = syntaxRoot.FindNode (diagnostic.Location.SourceSpan)
+                                  .FirstAncestorOrSelf<MemberDeclarationSyntax> ();
                         if (memberDeclaration == null)
-                        {
-                                return document;
-                        }
+                                {
+                                        return document;
+                                }
 
-                        syntaxRoot = UpdateSyntaxRoot(memberDeclaration, elementOrder, syntaxRoot,
-                                                      settings.Indentation);
+                        syntaxRoot = UpdateSyntaxRoot (memberDeclaration, elementOrder, syntaxRoot,
+                                                       settings.Indentation);
 
-                        return document.WithSyntaxRoot(syntaxRoot);
+                        return document.WithSyntaxRoot (syntaxRoot);
                 }
 
-                private static SyntaxNode UpdateSyntaxRoot(
-                    MemberDeclarationSyntax memberDeclaration,
-                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
-                    IndentationSettings indentationSettings)
+                private static SyntaxNode
+                UpdateSyntaxRoot (MemberDeclarationSyntax memberDeclaration,
+                                  ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
+                                  IndentationSettings indentationSettings)
                 {
                         var parentDeclaration = memberDeclaration.Parent;
-                        var memberToMove = new MemberOrderHelper(memberDeclaration, elementOrder);
+                        var memberToMove = new MemberOrderHelper (memberDeclaration, elementOrder);
 
                         if (parentDeclaration is TypeDeclarationSyntax)
-                        {
-                                return HandleTypeDeclaration(
-                                    memberToMove, (TypeDeclarationSyntax) parentDeclaration,
-                                    elementOrder, syntaxRoot, indentationSettings);
-                        }
+                                {
+                                        return HandleTypeDeclaration (
+                                            memberToMove, (TypeDeclarationSyntax) parentDeclaration,
+                                            elementOrder, syntaxRoot, indentationSettings);
+                                }
 
                         if (parentDeclaration is NamespaceDeclarationSyntax)
-                        {
-                                return HandleNamespaceDeclaration(
-                                    memberToMove, (NamespaceDeclarationSyntax) parentDeclaration,
-                                    elementOrder, syntaxRoot, indentationSettings);
-                        }
+                                {
+                                        return HandleNamespaceDeclaration (
+                                            memberToMove,
+                                            (NamespaceDeclarationSyntax) parentDeclaration,
+                                            elementOrder, syntaxRoot, indentationSettings);
+                                }
 
                         if (parentDeclaration is CompilationUnitSyntax)
-                        {
-                                return HandleCompilationUnitDeclaration(
-                                    memberToMove, (CompilationUnitSyntax) parentDeclaration,
-                                    elementOrder, syntaxRoot, indentationSettings);
-                        }
+                                {
+                                        return HandleCompilationUnitDeclaration (
+                                            memberToMove, (CompilationUnitSyntax) parentDeclaration,
+                                            elementOrder, syntaxRoot, indentationSettings);
+                                }
 
                         return syntaxRoot;
                 }
 
-                private static SyntaxNode HandleTypeDeclaration(
-                    MemberOrderHelper memberOrder, TypeDeclarationSyntax typeDeclarationNode,
-                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
-                    IndentationSettings indentationSettings)
+                private static SyntaxNode
+                HandleTypeDeclaration (MemberOrderHelper memberOrder,
+                                       TypeDeclarationSyntax typeDeclarationNode,
+                                       ImmutableArray<OrderingTrait> elementOrder,
+                                       SyntaxNode syntaxRoot,
+                                       IndentationSettings indentationSettings)
                 {
-                        return OrderMember(memberOrder, typeDeclarationNode.Members, elementOrder,
-                                           syntaxRoot, indentationSettings);
+                        return OrderMember (memberOrder, typeDeclarationNode.Members, elementOrder,
+                                            syntaxRoot, indentationSettings);
                 }
 
-                private static SyntaxNode HandleCompilationUnitDeclaration(
-                    MemberOrderHelper memberOrder, CompilationUnitSyntax compilationUnitDeclaration,
-                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
-                    IndentationSettings indentationSettings)
+                private static SyntaxNode
+                HandleCompilationUnitDeclaration (MemberOrderHelper memberOrder,
+                                                  CompilationUnitSyntax compilationUnitDeclaration,
+                                                  ImmutableArray<OrderingTrait> elementOrder,
+                                                  SyntaxNode syntaxRoot,
+                                                  IndentationSettings indentationSettings)
                 {
-                        return OrderMember(memberOrder, compilationUnitDeclaration.Members,
-                                           elementOrder, syntaxRoot, indentationSettings);
+                        return OrderMember (memberOrder, compilationUnitDeclaration.Members,
+                                            elementOrder, syntaxRoot, indentationSettings);
                 }
 
-                private static SyntaxNode HandleNamespaceDeclaration(
-                    MemberOrderHelper memberOrder, NamespaceDeclarationSyntax namespaceDeclaration,
-                    ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
-                    IndentationSettings indentationSettings)
+                private static SyntaxNode
+                HandleNamespaceDeclaration (MemberOrderHelper memberOrder,
+                                            NamespaceDeclarationSyntax namespaceDeclaration,
+                                            ImmutableArray<OrderingTrait> elementOrder,
+                                            SyntaxNode syntaxRoot,
+                                            IndentationSettings indentationSettings)
                 {
-                        return OrderMember(memberOrder, namespaceDeclaration.Members, elementOrder,
-                                           syntaxRoot, indentationSettings);
+                        return OrderMember (memberOrder, namespaceDeclaration.Members, elementOrder,
+                                            syntaxRoot, indentationSettings);
                 }
 
-                private static SyntaxNode OrderMember(MemberOrderHelper memberOrder,
-                                                      SyntaxList<MemberDeclarationSyntax> members,
-                                                      ImmutableArray<OrderingTrait> elementOrder,
-                                                      SyntaxNode syntaxRoot,
-                                                      IndentationSettings indentationSettings)
+                private static SyntaxNode
+                OrderMember (MemberOrderHelper memberOrder,
+                             SyntaxList<MemberDeclarationSyntax> members,
+                             ImmutableArray<OrderingTrait> elementOrder, SyntaxNode syntaxRoot,
+                             IndentationSettings indentationSettings)
                 {
-                        var memberIndex = members.IndexOf(memberOrder.Member);
+                        var memberIndex = members.IndexOf (memberOrder.Member);
                         MemberOrderHelper target = default;
 
                         for (var i = memberIndex - 1; i >= 0; --i)
-                        {
-                                var orderHelper = new MemberOrderHelper(members[i], elementOrder);
-                                if (orderHelper.Priority < memberOrder.Priority)
                                 {
-                                        target = orderHelper;
+                                        var orderHelper
+                                            = new MemberOrderHelper (members[i], elementOrder);
+                                        if (orderHelper.Priority < memberOrder.Priority)
+                                                {
+                                                        target = orderHelper;
+                                                }
+                                        else
+                                                {
+                                                        break;
+                                                }
                                 }
-                                else
-                                {
-                                        break;
-                                }
-                        }
 
-                        return target.Member != null ? MoveMember(syntaxRoot, memberOrder.Member,
-                                                                 target.Member, indentationSettings)
+                        return target.Member
+                               != null ? MoveMember (syntaxRoot, memberOrder.Member, target.Member,
+                                                    indentationSettings)
                             : syntaxRoot;
                 }
 
-                private static SyntaxNode MoveMember(SyntaxNode syntaxRoot,
-                                                     MemberDeclarationSyntax member,
-                                                     MemberDeclarationSyntax targetMember,
-                                                     IndentationSettings indentationSettings)
+                private static SyntaxNode
+                MoveMember (SyntaxNode syntaxRoot, MemberDeclarationSyntax member,
+                            MemberDeclarationSyntax targetMember,
+                            IndentationSettings indentationSettings)
                 {
-                        var firstToken = syntaxRoot.GetFirstToken();
-                        var fileHeader = GetFileHeader(firstToken.LeadingTrivia);
-                        syntaxRoot = syntaxRoot.TrackNodes(member, targetMember, firstToken.Parent);
-                        var memberToMove = syntaxRoot.GetCurrentNode(member);
-                        var targetMemberTracked = syntaxRoot.GetCurrentNode(targetMember);
+                        var firstToken = syntaxRoot.GetFirstToken ();
+                        var fileHeader = GetFileHeader (firstToken.LeadingTrivia);
+                        syntaxRoot
+                            = syntaxRoot.TrackNodes (member, targetMember, firstToken.Parent);
+                        var memberToMove = syntaxRoot.GetCurrentNode (member);
+                        var targetMemberTracked = syntaxRoot.GetCurrentNode (targetMember);
                         if (!memberToMove.HasLeadingTrivia)
-                        {
-                                var targetIndentationLevel = IndentationHelper.GetIndentationSteps(
-                                    indentationSettings, targetMember);
-                                var indentationString = IndentationHelper.GenerateIndentationString(
-                                    indentationSettings, targetIndentationLevel);
-                                memberToMove = memberToMove.WithLeadingTrivia(
-                                    SyntaxFactory.Whitespace(indentationString));
-                        }
+                                {
+                                        var targetIndentationLevel
+                                            = IndentationHelper.GetIndentationSteps (
+                                                indentationSettings, targetMember);
+                                        var indentationString
+                                            = IndentationHelper.GenerateIndentationString (
+                                                indentationSettings, targetIndentationLevel);
+                                        memberToMove = memberToMove.WithLeadingTrivia (
+                                            SyntaxFactory.Whitespace (indentationString));
+                                }
 
-                        if (!HasLeadingBlankLines(targetMember) && HasLeadingBlankLines(member))
-                        {
-                                memberToMove = memberToMove.WithTrailingTrivia(
-                                    memberToMove.GetTrailingTrivia().Add(
-                                        SyntaxFactory.CarriageReturnLineFeed));
-                                memberToMove = memberToMove.WithLeadingTrivia(
-                                    GetLeadingTriviaWithoutLeadingBlankLines(memberToMove));
-                        }
+                        if (!HasLeadingBlankLines (targetMember) && HasLeadingBlankLines (member))
+                                {
+                                        memberToMove = memberToMove.WithTrailingTrivia (
+                                            memberToMove.GetTrailingTrivia ().Add (
+                                                SyntaxFactory.CarriageReturnLineFeed));
+                                        memberToMove = memberToMove.WithLeadingTrivia (
+                                            GetLeadingTriviaWithoutLeadingBlankLines (
+                                                memberToMove));
+                                }
 
-                        syntaxRoot =
-                            syntaxRoot.InsertNodesBefore(targetMemberTracked, new[]{memberToMove});
-                        var fieldToMoveTracked = syntaxRoot.GetCurrentNodes(member).Last();
-                        syntaxRoot = syntaxRoot.RemoveNode(fieldToMoveTracked,
-                                                           SyntaxRemoveOptions.KeepNoTrivia);
-                        if (fileHeader.Any())
-                        {
-                                var oldFirstToken = syntaxRoot.GetCurrentNode(firstToken.Parent)
-                                                        .ChildTokens()
-                                                        .First();
-                                syntaxRoot = syntaxRoot.ReplaceToken(
-                                    oldFirstToken, oldFirstToken.WithLeadingTrivia(StripFileHeader(
-                                                       oldFirstToken.LeadingTrivia)));
-                                var newFirstToken = syntaxRoot.GetFirstToken();
-                                syntaxRoot = syntaxRoot.ReplaceToken(
-                                    newFirstToken,
-                                    newFirstToken.WithLeadingTrivia(
-                                        fileHeader.AddRange(newFirstToken.LeadingTrivia)));
-                        }
+                        syntaxRoot = syntaxRoot.InsertNodesBefore (targetMemberTracked,
+                                                                   new[]{ memberToMove });
+                        var fieldToMoveTracked = syntaxRoot.GetCurrentNodes (member).Last ();
+                        syntaxRoot = syntaxRoot.RemoveNode (fieldToMoveTracked,
+                                                            SyntaxRemoveOptions.KeepNoTrivia);
+                        if (fileHeader.Any ())
+                                {
+                                        var oldFirstToken
+                                            = syntaxRoot.GetCurrentNode (firstToken.Parent)
+                                                  .ChildTokens ()
+                                                  .First ();
+                                        syntaxRoot = syntaxRoot.ReplaceToken (
+                                            oldFirstToken,
+                                            oldFirstToken.WithLeadingTrivia (
+                                                StripFileHeader (oldFirstToken.LeadingTrivia)));
+                                        var newFirstToken = syntaxRoot.GetFirstToken ();
+                                        syntaxRoot = syntaxRoot.ReplaceToken (
+                                            newFirstToken,
+                                            newFirstToken.WithLeadingTrivia (
+                                                fileHeader.AddRange (newFirstToken.LeadingTrivia)));
+                                }
 
                         return syntaxRoot;
                 }
 
-                private static SyntaxTriviaList StripFileHeader(SyntaxTriviaList newLeadingTrivia)
+                private static SyntaxTriviaList
+                StripFileHeader (SyntaxTriviaList newLeadingTrivia)
                 {
-                        var fileHeader = GetFileHeader(newLeadingTrivia);
-                        return SyntaxTriviaList.Empty.AddRange(
-                            newLeadingTrivia.Skip(fileHeader.Count));
+                        var fileHeader = GetFileHeader (newLeadingTrivia);
+                        return SyntaxTriviaList.Empty.AddRange (
+                            newLeadingTrivia.Skip (fileHeader.Count));
                 }
 
-                private static SyntaxTriviaList GetFileHeader(SyntaxTriviaList newLeadingTrivia)
+                private static SyntaxTriviaList
+                GetFileHeader (SyntaxTriviaList newLeadingTrivia)
                 {
                         var onBlankLine = false;
                         var hasHeader = false;
-                        var fileHeader = new List<SyntaxTrivia>();
+                        var fileHeader = new List<SyntaxTrivia> ();
                         for (var i = 0; i < newLeadingTrivia.Count; i++)
-                        {
-                                bool done = false;
-                                switch (newLeadingTrivia [i]
-                                            .Kind())
                                 {
-                                case SyntaxKind.SingleLineCommentTrivia:
-                                case SyntaxKind.MultiLineCommentTrivia:
-                                        fileHeader.Add(newLeadingTrivia[i]);
-                                        onBlankLine = false;
-                                        hasHeader = true;
-                                        break;
+                                        bool done = false;
+                                        switch (newLeadingTrivia [i]
+                                                    .Kind ())
+                                                {
+                                                case SyntaxKind.SingleLineCommentTrivia:
+                                                case SyntaxKind.MultiLineCommentTrivia:
+                                                        fileHeader.Add (newLeadingTrivia[i]);
+                                                        onBlankLine = false;
+                                                        hasHeader = true;
+                                                        break;
 
-                                case SyntaxKind.WhitespaceTrivia:
-                                        fileHeader.Add(newLeadingTrivia[i]);
-                                        break;
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        fileHeader.Add (newLeadingTrivia[i]);
+                                                        break;
 
-                                case SyntaxKind.EndOfLineTrivia:
-                                        fileHeader.Add(newLeadingTrivia[i]);
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        fileHeader.Add (newLeadingTrivia[i]);
 
-                                        if (onBlankLine)
-                                        {
-                                                done = true;
-                                        }
-                                        else
-                                        {
-                                                onBlankLine = true;
-                                        }
+                                                        if (onBlankLine)
+                                                                {
+                                                                        done = true;
+                                                                }
+                                                        else
+                                                                {
+                                                                        onBlankLine = true;
+                                                                }
 
-                                        break;
+                                                        break;
 
-                                default:
-                                        done = true;
-                                        break;
+                                                default:
+                                                        done = true;
+                                                        break;
+                                                }
+
+                                        if (done)
+                                                {
+                                                        break;
+                                                }
                                 }
-
-                                if (done)
-                                {
-                                        break;
-                                }
-                        }
 
                         return hasHeader ? SyntaxTriviaList.Empty
-                            .AddRange(fileHeader)
+                            .AddRange (fileHeader)
                             : SyntaxTriviaList.Empty;
                 }
 
-                private static bool HasLeadingBlankLines(SyntaxNode node)
+                private static bool
+                HasLeadingBlankLines (SyntaxNode node)
                 {
-                        var firstTriviaIgnoringWhitespace = node.GetLeadingTrivia().FirstOrDefault(
-                            x => !x.IsKind(SyntaxKind.WhitespaceTrivia));
-                        return firstTriviaIgnoringWhitespace.IsKind(SyntaxKind.EndOfLineTrivia);
+                        var firstTriviaIgnoringWhitespace
+                            = node.GetLeadingTrivia ().FirstOrDefault (
+                                x => !x.IsKind (SyntaxKind.WhitespaceTrivia));
+                        return firstTriviaIgnoringWhitespace.IsKind (SyntaxKind.EndOfLineTrivia);
                 }
 
-                private static SyntaxTriviaList GetLeadingTriviaWithoutLeadingBlankLines(
-                    SyntaxNode node)
+                private static SyntaxTriviaList
+                GetLeadingTriviaWithoutLeadingBlankLines (SyntaxNode node)
                 {
-                        var leadingTrivia = node.GetLeadingTrivia();
+                        var leadingTrivia = node.GetLeadingTrivia ();
 
                         var skipIndex = 0;
                         for (var i = 0; i < leadingTrivia.Count; i++)
-                        {
-                                var currentTrivia = leadingTrivia[i];
-                                if (currentTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
                                 {
-                                        skipIndex = i + 1;
+                                        var currentTrivia = leadingTrivia[i];
+                                        if (currentTrivia.IsKind (SyntaxKind.EndOfLineTrivia))
+                                                {
+                                                        skipIndex = i + 1;
+                                                }
+                                        else if (!currentTrivia.IsKind (
+                                                     SyntaxKind.WhitespaceTrivia))
+                                                {
+                                                        // Preceded by whitespace
+                                                        skipIndex
+                                                            = i > 0
+                                                                      && leadingTrivia [i - 1]
+                                                                             .IsKind (
+                                                                                 SyntaxKind
+                                                                                     .WhitespaceTrivia)
+                                                                  ? i - 1
+                                                                  : i;
+                                                        break;
+                                                }
                                 }
-                                else if (!currentTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                                {
-                                        // Preceded by whitespace
-                                        skipIndex =
-                                            i > 0 && leadingTrivia [i - 1]
-                                                         .IsKind(SyntaxKind.WhitespaceTrivia)
-                                                ? i - 1
-                                                : i;
-                                        break;
-                                }
-                        }
 
-                        return SyntaxFactory.TriviaList(leadingTrivia.Skip(skipIndex));
+                        return SyntaxFactory.TriviaList (leadingTrivia.Skip (skipIndex));
                 }
 
                 private class FixAll : DocumentBasedFixAllProvider
                 {
-                        public static FixAllProvider Instance
-                        {
-                                get;
-                        }
-                        = new FixAll();
+                        public static FixAllProvider Instance { get; }
+                        = new FixAll ();
 
-                        protected override string CodeActionTitle =>
-                            OrderingResources.ElementOrderCodeFix;
+                        protected override string
+                            CodeActionTitle => OrderingResources.ElementOrderCodeFix;
 
-                        protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext, Document document,
-                            ImmutableArray<Diagnostic> diagnostics)
+                        protected override async Task<SyntaxNode>
+                        FixAllInDocumentAsync (FixAllContext fixAllContext, Document document,
+                                               ImmutableArray<Diagnostic> diagnostics)
                         {
                                 if (diagnostics.IsEmpty)
-                                {
-                                        return null;
-                                }
+                                        {
+                                                return null;
+                                        }
 
-                                var settings = SettingsHelper.GetStyleCopSettings(
+                                var settings = SettingsHelper.GetStyleCopSettings (
                                     document.Project.AnalyzerOptions,
                                     fixAllContext.CancellationToken);
                                 var elementOrder = settings.OrderingRules.ElementOrder;
-                                var syntaxRoot =
-                                    await document.GetSyntaxRootAsync().ConfigureAwait(false);
+                                var syntaxRoot
+                                    = await document.GetSyntaxRootAsync ().ConfigureAwait (false);
 
-                                var trackedDiagnosticMembers = new List<MemberDeclarationSyntax>();
+                                var trackedDiagnosticMembers = new List<MemberDeclarationSyntax> ();
                                 foreach (var diagnostic in diagnostics)
-                                {
-                                        var memberDeclaration =
-                                            syntaxRoot.FindNode(diagnostic.Location.SourceSpan)
-                                                .FirstAncestorOrSelf<MemberDeclarationSyntax>();
-                                        if (memberDeclaration == null)
                                         {
-                                                continue;
+                                                var memberDeclaration
+                                                    = syntaxRoot
+                                                          .FindNode (diagnostic.Location.SourceSpan)
+                                                          .FirstAncestorOrSelf<
+                                                              MemberDeclarationSyntax> ();
+                                                if (memberDeclaration == null)
+                                                        {
+                                                                continue;
+                                                        }
+
+                                                trackedDiagnosticMembers.Add (memberDeclaration);
                                         }
 
-                                        trackedDiagnosticMembers.Add(memberDeclaration);
-                                }
-
-                                syntaxRoot = syntaxRoot.TrackNodes(trackedDiagnosticMembers);
+                                syntaxRoot = syntaxRoot.TrackNodes (trackedDiagnosticMembers);
 
                                 foreach (var member in trackedDiagnosticMembers)
-                                {
-                                        var memberDeclaration = syntaxRoot.GetCurrentNode(member);
-                                        syntaxRoot =
-                                            UpdateSyntaxRoot(memberDeclaration, elementOrder,
-                                                             syntaxRoot, settings.Indentation);
-                                }
+                                        {
+                                                var memberDeclaration
+                                                    = syntaxRoot.GetCurrentNode (member);
+                                                syntaxRoot = UpdateSyntaxRoot (
+                                                    memberDeclaration, elementOrder, syntaxRoot,
+                                                    settings.Indentation);
+                                        }
 
                                 return syntaxRoot;
                         }

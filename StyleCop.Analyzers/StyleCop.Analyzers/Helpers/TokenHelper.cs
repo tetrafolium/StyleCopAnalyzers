@@ -22,39 +22,43 @@ namespace StyleCop.Analyzers.Helpers
                 /// are preceded solely by whitespace.</param> <returns> <see langword="true"/> if
                 /// <paramref name="token"/> is first in line; otherwise, <see langword="false"/>.
                 /// </returns>
-                internal static bool IsFirstInLine(this SyntaxToken token,
-                                                   bool allowNonWhitespaceTrivia = true)
+                internal static bool
+                IsFirstInLine (this SyntaxToken token, bool allowNonWhitespaceTrivia = true)
                 {
-                        var fullLineSpan = token.SyntaxTree.GetLineSpan(token.FullSpan);
+                        var fullLineSpan = token.SyntaxTree.GetLineSpan (token.FullSpan);
 
                         bool firstInLine;
-                        if (token.SyntaxTree == null ||
-                            fullLineSpan.StartLinePosition.Character == 0)
-                        {
-                                firstInLine = true;
-                        }
+                        if (token.SyntaxTree == null
+                            || fullLineSpan.StartLinePosition.Character == 0)
+                                {
+                                        firstInLine = true;
+                                }
                         else
-                        {
-                                var tokenLineSpan = token.SyntaxTree.GetLineSpan(token.Span);
-                                firstInLine = tokenLineSpan.StartLinePosition.Line !=
-                                              fullLineSpan.StartLinePosition.Line;
-                        }
+                                {
+                                        var tokenLineSpan
+                                            = token.SyntaxTree.GetLineSpan (token.Span);
+                                        firstInLine = tokenLineSpan.StartLinePosition.Line
+                                                      != fullLineSpan.StartLinePosition.Line;
+                                }
 
                         if (firstInLine && !allowNonWhitespaceTrivia)
-                        {
-                                foreach (var trivia in token.LeadingTrivia.Reverse())
                                 {
-                                        if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                                        {
-                                                if (!trivia.HasBuiltinEndLine())
+                                        foreach (var trivia in token.LeadingTrivia.Reverse ())
                                                 {
-                                                        firstInLine = false;
-                                                }
+                                                        if (!trivia.IsKind (
+                                                                SyntaxKind.WhitespaceTrivia))
+                                                                {
+                                                                        if (!trivia
+                                                                                 .HasBuiltinEndLine ())
+                                                                                {
+                                                                                        firstInLine
+                                                                                            = false;
+                                                                                }
 
-                                                break;
-                                        }
+                                                                        break;
+                                                                }
+                                                }
                                 }
-                        }
 
                         return firstInLine;
                 }
@@ -68,18 +72,19 @@ namespace StyleCop.Analyzers.Helpers
                 /// <see langword="true"/> if <paramref name="token"/> is an interpolated unary
                 /// expression; otherwise, <see langword="false"/>.
                 /// </returns>
-                internal static bool IsInterpolatedUnaryExpression(this SyntaxToken token)
+                internal static bool
+                IsInterpolatedUnaryExpression (this SyntaxToken token)
                 {
-                        SyntaxNode parentNode =
-                            (token.Parent.IsKind(SyntaxKind.UnaryMinusExpression) ||
-                             token.Parent.IsKind(SyntaxKind.UnaryPlusExpression))
-                                ? token.Parent.Parent
-                                : token.Parent;
+                        SyntaxNode parentNode
+                            = (token.Parent.IsKind (SyntaxKind.UnaryMinusExpression)
+                               || token.Parent.IsKind (SyntaxKind.UnaryPlusExpression))
+                                  ? token.Parent.Parent
+                                  : token.Parent;
 
-                        if (parentNode.IsKind(SyntaxKind.Interpolation))
-                        {
-                                return true;
-                        }
+                        if (parentNode.IsKind (SyntaxKind.Interpolation))
+                                {
+                                        return true;
+                                }
 
                         return false;
                 }
@@ -89,29 +94,29 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="token">The token to process.</param>
                 /// <returns>true if token is last in line, otherwise false.</returns>
-                internal static bool IsLastInLine(this SyntaxToken token)
+                internal static bool
+                IsLastInLine (this SyntaxToken token)
                 {
-                        var fullLineSpan = token.SyntaxTree.GetLineSpan(token.FullSpan);
+                        var fullLineSpan = token.SyntaxTree.GetLineSpan (token.FullSpan);
 
                         if (token.SyntaxTree == null || fullLineSpan.EndLinePosition.Character == 0)
-                        {
-                                return true;
-                        }
+                                {
+                                        return true;
+                                }
 
-                        var tokenLineSpan = token.SyntaxTree.GetLineSpan(token.Span);
+                        var tokenLineSpan = token.SyntaxTree.GetLineSpan (token.Span);
 
-                        if (tokenLineSpan.EndLinePosition.Line !=
-                                fullLineSpan.EndLinePosition.Line ||
-                            token.SyntaxTree.Length == token.FullSpan.End)
-                        {
-                                return true;
-                        }
+                        if (tokenLineSpan.EndLinePosition.Line != fullLineSpan.EndLinePosition.Line
+                            || token.SyntaxTree.Length == token.FullSpan.End)
+                                {
+                                        return true;
+                                }
 
                         // Use the slow path because we cant be sure if a multi line trivia is
                         // following this token.
-                        var nextToken = token.GetNextToken();
-                        return nextToken.IsKind(SyntaxKind.None) ||
-                               token.GetEndLine() < nextToken.GetLine();
+                        var nextToken = token.GetNextToken ();
+                        return nextToken.IsKind (SyntaxKind.None)
+                               || token.GetEndLine () < nextToken.GetLine ();
                 }
 
                 /// <summary>
@@ -122,17 +127,18 @@ namespace StyleCop.Analyzers.Helpers
                 /// <param name="cancellationToken">The cancellation token that the operation will
                 /// observe.</param> <returns>true if token is preceded by a whitespace, otherwise
                 /// false.</returns>
-                internal static bool IsPrecededByWhitespace(this SyntaxToken token,
-                                                            CancellationToken cancellationToken)
+                internal static bool
+                IsPrecededByWhitespace (this SyntaxToken token, CancellationToken cancellationToken)
                 {
                         // Perf: Directly access the text instead of the trivia.
                         int pos = token.Span.Start - 1;
                         if (pos < 0 || token.SyntaxTree == null)
-                        {
-                                return false;
-                        }
+                                {
+                                        return false;
+                                }
 
-                        return char.IsWhiteSpace(token.SyntaxTree.GetText(cancellationToken)[pos]);
+                        return char.IsWhiteSpace (
+                            token.SyntaxTree.GetText (cancellationToken)[pos]);
                 }
 
                 /// <summary>
@@ -142,31 +148,32 @@ namespace StyleCop.Analyzers.Helpers
                 /// <param name="token">The token to process.</param>
                 /// <returns>true if the token is the first token in a line and it is only preceded
                 /// by whitespace.</returns>
-                internal static bool IsOnlyPrecededByWhitespaceInLine(this SyntaxToken token)
+                internal static bool
+                IsOnlyPrecededByWhitespaceInLine (this SyntaxToken token)
                 {
-                        SyntaxToken precedingToken = token.GetPreviousToken();
+                        SyntaxToken precedingToken = token.GetPreviousToken ();
 
-                        if (!precedingToken.IsKind(SyntaxKind.None) &&
-                            (precedingToken.GetLine() == token.GetLine()))
-                        {
-                                return false;
-                        }
-
-                        var precedingTriviaList = TriviaHelper.MergeTriviaLists(
-                            precedingToken.TrailingTrivia, token.LeadingTrivia);
-                        for (var i = precedingTriviaList.Count - 1; i >= 0; i--)
-                        {
-                                switch (precedingTriviaList [i]
-                                            .Kind())
+                        if (!precedingToken.IsKind (SyntaxKind.None)
+                            && (precedingToken.GetLine () == token.GetLine ()))
                                 {
-                                case SyntaxKind.WhitespaceTrivia:
-                                        break;
-                                case SyntaxKind.EndOfLineTrivia:
-                                        return true;
-                                default:
                                         return false;
                                 }
-                        }
+
+                        var precedingTriviaList = TriviaHelper.MergeTriviaLists (
+                            precedingToken.TrailingTrivia, token.LeadingTrivia);
+                        for (var i = precedingTriviaList.Count - 1; i >= 0; i--)
+                                {
+                                        switch (precedingTriviaList [i]
+                                                    .Kind ())
+                                                {
+                                                case SyntaxKind.WhitespaceTrivia:
+                                                        break;
+                                                case SyntaxKind.EndOfLineTrivia:
+                                                        return true;
+                                                default:
+                                                        return false;
+                                                }
+                                }
 
                         return true;
                 }
@@ -177,17 +184,19 @@ namespace StyleCop.Analyzers.Helpers
                 /// </summary>
                 /// <param name="token">The token to process.</param>
                 /// <returns>true if token is followed by a whitespace, otherwise false.</returns>
-                internal static bool IsFollowedByWhitespace(this SyntaxToken token)
+                internal static bool
+                IsFollowedByWhitespace (this SyntaxToken token)
                 {
                         SyntaxTriviaList triviaList = token.TrailingTrivia;
                         if (triviaList.Count > 0)
-                        {
-                                return triviaList.First().IsKind(SyntaxKind.WhitespaceTrivia);
-                        }
+                                {
+                                        return triviaList.First ().IsKind (
+                                            SyntaxKind.WhitespaceTrivia);
+                                }
 
-                        triviaList = token.GetNextToken().LeadingTrivia;
-                        return triviaList.Count > 0 &&
-                               triviaList.First().IsKind(SyntaxKind.WhitespaceTrivia);
+                        triviaList = token.GetNextToken ().LeadingTrivia;
+                        return triviaList.Count > 0
+                               && triviaList.First ().IsKind (SyntaxKind.WhitespaceTrivia);
                 }
         }
 }

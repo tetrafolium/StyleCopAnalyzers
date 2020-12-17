@@ -50,7 +50,7 @@ namespace StyleCop.Analyzers.NamingRules
         /// for Win32 or COM wrappers. StyleCop will ignore this violation if the item is placed
         /// within a <c>NativeMethods</c> class.</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1305FieldNamesMustNotUseHungarianNotation : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -58,31 +58,31 @@ namespace StyleCop.Analyzers.NamingRules
                 /// cref="SA1305FieldNamesMustNotUseHungarianNotation"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1305";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1305.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(NamingResources.SA1305Title), NamingResources.ResourceManager,
-                    typeof(NamingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SA1305MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SA1305Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1305.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (NamingResources.SA1305Title), NamingResources.ResourceManager,
+                    typeof (NamingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (NamingResources.SA1305MessageFormat),
+                                                     NamingResources.ResourceManager,
+                                                     typeof (NamingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (NamingResources.SA1305Description),
+                                                     NamingResources.ResourceManager,
+                                                     typeof (NamingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault, Description,
                     HelpLink);
 
-                private static readonly ImmutableArray<string> CommonPrefixes =
-                    ImmutableArray.Create("as", "at", "by", "do", "go", "if", "in", "is", "it",
-                                          "no", "of", "on", "or", "to");
+                private static readonly ImmutableArray<string> CommonPrefixes
+                    = ImmutableArray.Create ("as", "at", "by", "do", "go", "if", "in", "is", "it",
+                                             "no", "of", "on", "or", "to");
 
-                private static readonly Regex HungarianRegex =
-                    new Regex(@"^(?<notation>[a-z]{1,2})[A-Z]");
+                private static readonly Regex HungarianRegex
+                    = new Regex (@"^(?<notation>[a-z]{1,2})[A-Z]");
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     VariableDeclarationAction = Analyzer.HandleVariableDeclaration;
@@ -106,206 +106,216 @@ namespace StyleCop.Analyzers.NamingRules
                     SingleVariableDesignationAction = Analyzer.HandleSingleVariableDesignation;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(VariableDeclarationAction,
-                                                         SyntaxKind.VariableDeclaration);
-                        context.RegisterSyntaxNodeAction(ParameterDeclarationAction,
-                                                         SyntaxKind.Parameter);
-                        context.RegisterSyntaxNodeAction(CatchDeclarationAction,
-                                                         SyntaxKind.CatchDeclaration);
-                        context.RegisterSyntaxNodeAction(QueryContinuationAction,
-                                                         SyntaxKind.QueryContinuation);
-                        context.RegisterSyntaxNodeAction(FromClauseAction, SyntaxKind.FromClause);
-                        context.RegisterSyntaxNodeAction(LetClauseAction, SyntaxKind.LetClause);
-                        context.RegisterSyntaxNodeAction(JoinClauseAction, SyntaxKind.JoinClause);
-                        context.RegisterSyntaxNodeAction(JoinIntoClauseAction,
-                                                         SyntaxKind.JoinIntoClause);
-                        context.RegisterSyntaxNodeAction(ForEachStatementAction,
-                                                         SyntaxKind.ForEachStatement);
-                        context.RegisterSyntaxNodeAction(SingleVariableDesignationAction,
-                                                         SyntaxKindEx.SingleVariableDesignation);
+                        context.RegisterSyntaxNodeAction (VariableDeclarationAction,
+                                                          SyntaxKind.VariableDeclaration);
+                        context.RegisterSyntaxNodeAction (ParameterDeclarationAction,
+                                                          SyntaxKind.Parameter);
+                        context.RegisterSyntaxNodeAction (CatchDeclarationAction,
+                                                          SyntaxKind.CatchDeclaration);
+                        context.RegisterSyntaxNodeAction (QueryContinuationAction,
+                                                          SyntaxKind.QueryContinuation);
+                        context.RegisterSyntaxNodeAction (FromClauseAction, SyntaxKind.FromClause);
+                        context.RegisterSyntaxNodeAction (LetClauseAction, SyntaxKind.LetClause);
+                        context.RegisterSyntaxNodeAction (JoinClauseAction, SyntaxKind.JoinClause);
+                        context.RegisterSyntaxNodeAction (JoinIntoClauseAction,
+                                                          SyntaxKind.JoinIntoClause);
+                        context.RegisterSyntaxNodeAction (ForEachStatementAction,
+                                                          SyntaxKind.ForEachStatement);
+                        context.RegisterSyntaxNodeAction (SingleVariableDesignationAction,
+                                                          SyntaxKindEx.SingleVariableDesignation);
                 }
 
                 private static class Analyzer
                 {
-                        public static void HandleVariableDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                        public static void
+                        HandleVariableDeclaration (SyntaxNodeAnalysisContext context,
+                                                   StyleCopSettings settings)
                         {
                                 var syntax = (VariableDeclarationSyntax) context.Node;
 
-                                if (syntax.Parent.IsKind(SyntaxKind.EventFieldDeclaration))
-                                {
-                                        return;
-                                }
-
-                                if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax))
-                                {
-                                        return;
-                                }
-
-                                var declarationType =
-                                    syntax.Parent.IsKind(SyntaxKind.FieldDeclaration) ? "field"
-                                                                                      : "variable";
-                                foreach (var variableDeclarator in syntax.Variables)
-                                {
-                                        if (variableDeclarator == null)
+                                if (syntax.Parent.IsKind (SyntaxKind.EventFieldDeclaration))
                                         {
-                                                continue;
+                                                return;
                                         }
 
-                                        var identifier = variableDeclarator.Identifier;
-                                        CheckIdentifier(context, identifier, settings,
-                                                        declarationType);
-                                }
+                                if (NamedTypeHelpers.IsContainedInNativeMethodsClass (syntax))
+                                        {
+                                                return;
+                                        }
+
+                                var declarationType
+                                    = syntax.Parent.IsKind (SyntaxKind.FieldDeclaration)
+                                          ? "field"
+                                          : "variable";
+                                foreach (var variableDeclarator in syntax.Variables)
+                                        {
+                                                if (variableDeclarator == null)
+                                                        {
+                                                                continue;
+                                                        }
+
+                                                var identifier = variableDeclarator.Identifier;
+                                                CheckIdentifier (context, identifier, settings,
+                                                                 declarationType);
+                                        }
                         }
 
-                        public static void HandleParameterDeclaration(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                        public static void
+                        HandleParameterDeclaration (SyntaxNodeAnalysisContext context,
+                                                    StyleCopSettings settings)
                         {
                                 var parameter = (ParameterSyntax) context.Node;
 
-                                if (NamedTypeHelpers.IsContainedInNativeMethodsClass(parameter))
-                                {
-                                        return;
-                                }
+                                if (NamedTypeHelpers.IsContainedInNativeMethodsClass (parameter))
+                                        {
+                                                return;
+                                        }
 
                                 // Only parameters from method declarations can be exempt from this
                                 // rule
                                 if (parameter?.Parent?.Parent is MemberDeclarationSyntax
                                         memberDeclaration)
-                                {
-                                        var semanticModel = context.SemanticModel;
-                                        var symbol =
-                                            semanticModel.GetDeclaredSymbol(memberDeclaration);
-                                        if (symbol != null)
                                         {
-                                                if (symbol.IsOverride ||
-                                                    NamedTypeHelpers
-                                                        .IsImplementingAnInterfaceMember(symbol))
-                                                {
-                                                        return;
-                                                }
+                                                var semanticModel = context.SemanticModel;
+                                                var symbol = semanticModel.GetDeclaredSymbol (
+                                                    memberDeclaration);
+                                                if (symbol != null)
+                                                        {
+                                                                if (symbol.IsOverride
+                                                                    || NamedTypeHelpers
+                                                                           .IsImplementingAnInterfaceMember (
+                                                                               symbol))
+                                                                        {
+                                                                                return;
+                                                                        }
+                                                        }
                                         }
-                                }
 
-                                CheckIdentifier(context, parameter.Identifier, settings,
-                                                "parameter");
+                                CheckIdentifier (context, parameter.Identifier, settings,
+                                                 "parameter");
                         }
 
-                        public static void HandleCatchDeclaration(SyntaxNodeAnalysisContext context,
-                                                                  StyleCopSettings settings)
+                        public static void
+                        HandleCatchDeclaration (SyntaxNodeAnalysisContext context,
+                                                StyleCopSettings settings)
                         {
-                                CheckIdentifier(context,
-                                                ((CatchDeclarationSyntax) context.Node).Identifier,
-                                                settings);
+                                CheckIdentifier (context,
+                                                 ((CatchDeclarationSyntax) context.Node).Identifier,
+                                                 settings);
                         }
 
-                        public static void HandleQueryContinuation(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                        public static void
+                        HandleQueryContinuation (SyntaxNodeAnalysisContext context,
+                                                 StyleCopSettings settings)
                         {
-                                CheckIdentifier(context,
-                                                ((QueryContinuationSyntax) context.Node).Identifier,
-                                                settings);
+                                CheckIdentifier (
+                                    context, ((QueryContinuationSyntax) context.Node).Identifier,
+                                    settings);
                         }
 
-                        public static void HandleFromClause(SyntaxNodeAnalysisContext context,
-                                                            StyleCopSettings settings)
+                        public static void
+                        HandleFromClause (SyntaxNodeAnalysisContext context,
+                                          StyleCopSettings settings)
                         {
-                                CheckIdentifier(context,
-                                                ((FromClauseSyntax) context.Node).Identifier,
-                                                settings);
+                                CheckIdentifier (context,
+                                                 ((FromClauseSyntax) context.Node).Identifier,
+                                                 settings);
                         }
 
-                        public static void HandleLetClause(SyntaxNodeAnalysisContext context,
-                                                           StyleCopSettings settings)
+                        public static void
+                        HandleLetClause (SyntaxNodeAnalysisContext context,
+                                         StyleCopSettings settings)
                         {
-                                CheckIdentifier(
+                                CheckIdentifier (
                                     context, ((LetClauseSyntax) context.Node).Identifier, settings);
                         }
 
-                        public static void HandleJoinClause(SyntaxNodeAnalysisContext context,
-                                                            StyleCopSettings settings)
+                        public static void
+                        HandleJoinClause (SyntaxNodeAnalysisContext context,
+                                          StyleCopSettings settings)
                         {
-                                CheckIdentifier(context,
-                                                ((JoinClauseSyntax) context.Node).Identifier,
-                                                settings);
+                                CheckIdentifier (context,
+                                                 ((JoinClauseSyntax) context.Node).Identifier,
+                                                 settings);
                         }
 
-                        public static void HandleJoinIntoClause(SyntaxNodeAnalysisContext context,
-                                                                StyleCopSettings settings)
+                        public static void
+                        HandleJoinIntoClause (SyntaxNodeAnalysisContext context,
+                                              StyleCopSettings settings)
                         {
-                                CheckIdentifier(context,
-                                                ((JoinIntoClauseSyntax) context.Node).Identifier,
-                                                settings);
+                                CheckIdentifier (context,
+                                                 ((JoinIntoClauseSyntax) context.Node).Identifier,
+                                                 settings);
                         }
 
-                        public static void HandleForEachStatement(SyntaxNodeAnalysisContext context,
-                                                                  StyleCopSettings settings)
+                        public static void
+                        HandleForEachStatement (SyntaxNodeAnalysisContext context,
+                                                StyleCopSettings settings)
                         {
-                                CheckIdentifier(context,
-                                                ((ForEachStatementSyntax) context.Node).Identifier,
-                                                settings);
+                                CheckIdentifier (context,
+                                                 ((ForEachStatementSyntax) context.Node).Identifier,
+                                                 settings);
                         }
 
-                        public static void HandleSingleVariableDesignation(
-                            SyntaxNodeAnalysisContext context, StyleCopSettings settings)
+                        public static void
+                        HandleSingleVariableDesignation (SyntaxNodeAnalysisContext context,
+                                                         StyleCopSettings settings)
                         {
-                                CheckIdentifier(
+                                CheckIdentifier (
                                     context,
                                     ((SingleVariableDesignationSyntaxWrapper) context.Node)
                                         .Identifier,
                                     settings);
                         }
 
-                        private static void CheckIdentifier(SyntaxNodeAnalysisContext context,
-                                                            SyntaxToken identifier,
-                                                            StyleCopSettings settings,
-                                                            string declarationType = "variable")
+                        private static void
+                        CheckIdentifier (SyntaxNodeAnalysisContext context, SyntaxToken identifier,
+                                         StyleCopSettings settings,
+                                         string declarationType = "variable")
                         {
                                 if (identifier.IsMissing)
-                                {
-                                        return;
-                                }
+                                        {
+                                                return;
+                                        }
 
                                 string name = identifier.ValueText;
-                                if (string.IsNullOrEmpty(name))
-                                {
-                                        return;
-                                }
+                                if (string.IsNullOrEmpty (name))
+                                        {
+                                                return;
+                                        }
 
-                                var match = HungarianRegex.Match(name);
+                                var match = HungarianRegex.Match (name);
                                 if (!match.Success)
-                                {
-                                        return;
-                                }
+                                        {
+                                                return;
+                                        }
 
                                 var notationValue = match.Groups["notation"].Value;
-                                if (settings.NamingRules.AllowCommonHungarianPrefixes &&
-                                    CommonPrefixes.Contains(notationValue))
-                                {
-                                        return;
-                                }
+                                if (settings.NamingRules.AllowCommonHungarianPrefixes
+                                    && CommonPrefixes.Contains (notationValue))
+                                        {
+                                                return;
+                                        }
 
-                                if (settings.NamingRules.AllowedHungarianPrefixes.Contains(
+                                if (settings.NamingRules.AllowedHungarianPrefixes.Contains (
                                         notationValue))
-                                {
-                                        return;
-                                }
+                                        {
+                                                return;
+                                        }
 
                                 // Variable names should begin with lower-case letter
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, identifier.GetLocation(), declarationType, name));
+                                context.ReportDiagnostic (Diagnostic.Create (
+                                    Descriptor, identifier.GetLocation (), declarationType, name));
                         }
                 }
         }

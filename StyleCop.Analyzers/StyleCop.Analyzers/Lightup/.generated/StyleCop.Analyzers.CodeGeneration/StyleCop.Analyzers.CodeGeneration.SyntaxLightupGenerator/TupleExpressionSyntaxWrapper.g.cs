@@ -12,12 +12,12 @@ namespace StyleCop.Analyzers.Lightup
         internal readonly partial struct TupleExpressionSyntaxWrapper
             : ISyntaxWrapper<ExpressionSyntax>
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.TupleExpressionSyntax";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.CSharp.Syntax.TupleExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, SyntaxToken> OpenParenTokenAccessor;
-                private static readonly Func<ExpressionSyntax, SeparatedSyntaxList<ArgumentSyntax>>
+                private static readonly Func<ExpressionSyntax, SeparatedSyntaxList<ArgumentSyntax> >
                     ArgumentsAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken> CloseParenTokenAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
@@ -29,109 +29,100 @@ namespace StyleCop.Analyzers.Lightup
 
                 private readonly ExpressionSyntax node;
 
-                static TupleExpressionSyntaxWrapper()
+                static TupleExpressionSyntaxWrapper ()
                 {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(TupleExpressionSyntaxWrapper));
-                        OpenParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(OpenParenToken));
+                        WrappedType = SyntaxWrapperHelper.GetWrappedType (
+                            typeof (TupleExpressionSyntaxWrapper));
+                        OpenParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken> (
+                                      WrappedType, nameof (OpenParenToken));
                         ArgumentsAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            ExpressionSyntax, SeparatedSyntaxList<ArgumentSyntax>>(
-                            WrappedType, nameof(Arguments));
-                        CloseParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(CloseParenToken));
-                        WithOpenParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(OpenParenToken));
+                            ExpressionSyntax, SeparatedSyntaxList<ArgumentSyntax> > (
+                            WrappedType, nameof (Arguments));
+                        CloseParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken> (
+                                      WrappedType, nameof (CloseParenToken));
+                        WithOpenParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken> (
+                                      WrappedType, nameof (OpenParenToken));
                         WithArgumentsAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, SeparatedSyntaxList<ArgumentSyntax>>(
-                            WrappedType, nameof(Arguments));
-                        WithCloseParenTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(CloseParenToken));
+                            ExpressionSyntax, SeparatedSyntaxList<ArgumentSyntax> > (
+                            WrappedType, nameof (Arguments));
+                        WithCloseParenTokenAccessor
+                            = LightupHelpers
+                                  .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken> (
+                                      WrappedType, nameof (CloseParenToken));
                 }
 
-                private TupleExpressionSyntaxWrapper(ExpressionSyntax node)
-                {
-                        this.node = node;
-                }
+                private TupleExpressionSyntaxWrapper (ExpressionSyntax node) { this.node = node; }
 
                 public ExpressionSyntax SyntaxNode => this.node;
 
                 public SyntaxToken OpenParenToken
                 {
-                        get
-                        {
-                                return OpenParenTokenAccessor(this.SyntaxNode);
-                        }
+                        get { return OpenParenTokenAccessor (this.SyntaxNode); }
                 }
 
                 public SeparatedSyntaxList<ArgumentSyntax> Arguments
                 {
-                        get
-                        {
-                                return ArgumentsAccessor(this.SyntaxNode);
-                        }
+                        get { return ArgumentsAccessor (this.SyntaxNode); }
                 }
 
                 public SyntaxToken CloseParenToken
                 {
-                        get
-                        {
-                                return CloseParenTokenAccessor(this.SyntaxNode);
-                        }
+                        get { return CloseParenTokenAccessor (this.SyntaxNode); }
                 }
 
-                public static explicit operator TupleExpressionSyntaxWrapper(SyntaxNode node)
+                public static explicit operator TupleExpressionSyntaxWrapper (SyntaxNode node)
                 {
                         if (node == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(node))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (node))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new TupleExpressionSyntaxWrapper((ExpressionSyntax) node);
+                        return new TupleExpressionSyntaxWrapper ((ExpressionSyntax) node);
                 }
 
-                public static implicit operator ExpressionSyntax(
-                    TupleExpressionSyntaxWrapper wrapper)
+                public static implicit
+                operator ExpressionSyntax (TupleExpressionSyntaxWrapper wrapper)
                 {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node)
+                public static bool
+                IsInstance (SyntaxNode node)
                 {
-                        return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+                        return node != null && LightupHelpers.CanWrapNode (node, WrappedType);
                 }
 
-                public TupleExpressionSyntaxWrapper WithOpenParenToken(SyntaxToken openParenToken)
+                public TupleExpressionSyntaxWrapper
+                WithOpenParenToken (SyntaxToken openParenToken)
                 {
-                        return new TupleExpressionSyntaxWrapper(
-                            WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
+                        return new TupleExpressionSyntaxWrapper (
+                            WithOpenParenTokenAccessor (this.SyntaxNode, openParenToken));
                 }
 
-                public TupleExpressionSyntaxWrapper WithArguments(
-                    SeparatedSyntaxList<ArgumentSyntax> arguments)
+                public TupleExpressionSyntaxWrapper
+                WithArguments (SeparatedSyntaxList<ArgumentSyntax> arguments)
                 {
-                        return new TupleExpressionSyntaxWrapper(
-                            WithArgumentsAccessor(this.SyntaxNode, arguments));
+                        return new TupleExpressionSyntaxWrapper (
+                            WithArgumentsAccessor (this.SyntaxNode, arguments));
                 }
 
-                public TupleExpressionSyntaxWrapper WithCloseParenToken(SyntaxToken closeParenToken)
+                public TupleExpressionSyntaxWrapper
+                WithCloseParenToken (SyntaxToken closeParenToken)
                 {
-                        return new TupleExpressionSyntaxWrapper(
-                            WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
+                        return new TupleExpressionSyntaxWrapper (
+                            WithCloseParenTokenAccessor (this.SyntaxNode, closeParenToken));
                 }
         }
 }

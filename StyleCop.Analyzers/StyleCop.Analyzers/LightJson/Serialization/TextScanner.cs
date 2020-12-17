@@ -18,10 +18,7 @@ namespace LightJson.Serialization
                 /// Initializes a new instance of the <see cref="TextScanner"/> class.
                 /// </summary>
                 /// <param name="reader">The TextReader to read the text.</param>
-                public TextScanner(TextReader reader)
-                {
-                        this.reader = reader;
-                }
+                public TextScanner (TextReader reader) { this.reader = reader; }
 
                 /// <summary>
                 /// Gets the position of the scanner within the text.
@@ -29,17 +26,14 @@ namespace LightJson.Serialization
                 /// <value>The position of the scanner within the text.</value>
                 public TextPosition Position
                 {
-                        get
-                        {
-                                return this.position;
-                        }
+                        get { return this.position; }
                 }
 
                 /// <summary>
                 /// Reads the next character in the stream without changing the current position.
                 /// </summary>
                 /// <returns>The next character in the stream.</returns>
-                public char Peek() =>(char) this.Peek(throwAtEndOfFile : true);
+                public char Peek () =>(char) this.Peek (throwAtEndOfFile : true);
 
                 /// <summary>
                 /// Reads the next character in the stream without changing the current position.
@@ -49,73 +43,76 @@ namespace LightJson.Serialization
                 /// <returns>The next character in the stream, or -1 if the end of the file is
                 /// reached with <paramref name="throwAtEndOfFile"/> set to <see
                 /// langword="false"/>.</returns>
-                public int Peek(bool throwAtEndOfFile)
+                public int
+                Peek (bool throwAtEndOfFile)
                 {
-                        var next = this.reader.Peek();
+                        var next = this.reader.Peek ();
 
                         if (next == -1 && throwAtEndOfFile)
-                        {
-                                throw new JsonParseException(ErrorType.IncompleteMessage,
-                                                             this.position);
-                        }
+                                {
+                                        throw new JsonParseException (ErrorType.IncompleteMessage,
+                                                                      this.position);
+                                }
                         else
-                        {
-                                return next;
-                        }
+                                {
+                                        return next;
+                                }
                 }
 
                 /// <summary>
                 /// Reads the next character in the stream, advancing the text position.
                 /// </summary>
                 /// <returns>The next character in the stream.</returns>
-                public char Read()
+                public char
+                Read ()
                 {
-                        var next = this.reader.Read();
+                        var next = this.reader.Read ();
 
                         if (next == -1)
-                        {
-                                throw new JsonParseException(ErrorType.IncompleteMessage,
-                                                             this.position);
-                        }
+                                {
+                                        throw new JsonParseException (ErrorType.IncompleteMessage,
+                                                                      this.position);
+                                }
                         else
-                        {
-                                if (next == '\n')
                                 {
-                                        this.position.Line += 1;
-                                        this.position.Column = 0;
-                                }
-                                else
-                                {
-                                        this.position.Column += 1;
-                                }
+                                        if (next == '\n')
+                                                {
+                                                        this.position.Line += 1;
+                                                        this.position.Column = 0;
+                                                }
+                                        else
+                                                {
+                                                        this.position.Column += 1;
+                                                }
 
-                                return (char) next;
-                        }
+                                        return (char) next;
+                                }
                 }
 
                 /// <summary>
                 /// Advances the scanner to next non-whitespace character.
                 /// </summary>
-                public void SkipWhitespace()
+                public void
+                SkipWhitespace ()
                 {
                         while (true)
-                        {
-                                char next = this.Peek();
-                                if (char.IsWhiteSpace(next))
                                 {
-                                        this.Read();
-                                        continue;
+                                        char next = this.Peek ();
+                                        if (char.IsWhiteSpace (next))
+                                                {
+                                                        this.Read ();
+                                                        continue;
+                                                }
+                                        else if (next == '/')
+                                                {
+                                                        this.SkipComment ();
+                                                        continue;
+                                                }
+                                        else
+                                                {
+                                                        break;
+                                                }
                                 }
-                                else if (next == '/')
-                                {
-                                        this.SkipComment();
-                                        continue;
-                                }
-                                else
-                                {
-                                        break;
-                                }
-                        }
                 }
 
                 /// <summary>
@@ -123,15 +120,16 @@ namespace LightJson.Serialization
                 /// If the characters do not match, an exception will be thrown.
                 /// </summary>
                 /// <param name="next">The expected character.</param>
-                public void Assert(char next)
+                public void
+                Assert (char next)
                 {
                         var errorPosition = this.position;
-                        if (this.Read() != next)
-                        {
-                                throw new JsonParseException(
-                                    string.Format("Parser expected '{0}'", next),
-                                    ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
-                        }
+                        if (this.Read () != next)
+                                {
+                                        throw new JsonParseException (
+                                            string.Format ("Parser expected '{0}'", next),
+                                            ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
+                                }
                 }
 
                 /// <summary>
@@ -139,97 +137,101 @@ namespace LightJson.Serialization
                 /// If the strings do not match, an exception will be thrown.
                 /// </summary>
                 /// <param name="next">The expected string.</param>
-                public void Assert(string next)
+                public void
+                Assert (string next)
                 {
                         for (var i = 0; i < next.Length; i += 1)
-                        {
-                                this.Assert(next[i]);
-                        }
+                                {
+                                        this.Assert (next[i]);
+                                }
                 }
 
-                private void SkipComment()
+                private void
+                SkipComment ()
                 {
                         // First character is the first slash
-                        this.Read();
-                        switch (this.Peek())
-                        {
-                        case '/':
-                                this.SkipLineComment();
-                                return;
-
-                        case '*':
-                                this.SkipBlockComment();
-                                return;
-
-                        default:
-                                throw new JsonParseException(
-                                    string.Format("Parser expected '{0}'", this.Peek()),
-                                    ErrorType.InvalidOrUnexpectedCharacter, this.position);
-                        }
-                }
-
-                private void SkipLineComment()
-                {
-                        // First character is the second '/' of the opening '//'
-                        this.Read();
-
-                        while (true)
-                        {
-                                switch (this.reader.Peek())
+                        this.Read ();
+                        switch (this.Peek ())
                                 {
-                                case '\n':
-                                        // Reached the end of the line
-                                        this.Read();
+                                case '/':
+                                        this.SkipLineComment ();
                                         return;
 
-                                case -1:
-                                        // Reached the end of the file
+                                case '*':
+                                        this.SkipBlockComment ();
                                         return;
 
                                 default:
-                                        this.Read();
-                                        continue;
+                                        throw new JsonParseException (
+                                            string.Format ("Parser expected '{0}'", this.Peek ()),
+                                            ErrorType.InvalidOrUnexpectedCharacter, this.position);
                                 }
-                        }
                 }
 
-                private void SkipBlockComment()
+                private void
+                SkipLineComment ()
+                {
+                        // First character is the second '/' of the opening '//'
+                        this.Read ();
+
+                        while (true)
+                                {
+                                        switch (this.reader.Peek ())
+                                                {
+                                                case '\n':
+                                                        // Reached the end of the line
+                                                        this.Read ();
+                                                        return;
+
+                                                case -1:
+                                                        // Reached the end of the file
+                                                        return;
+
+                                                default:
+                                                        this.Read ();
+                                                        continue;
+                                                }
+                                }
+                }
+
+                private void
+                SkipBlockComment ()
                 {
                         // First character is the '*' of the opening '/*'
-                        this.Read();
+                        this.Read ();
 
                         bool foundStar = false;
                         while (true)
-                        {
-                                switch (this.reader.Peek())
                                 {
-                                case '*':
-                                        this.Read();
-                                        foundStar = true;
-                                        continue;
+                                        switch (this.reader.Peek ())
+                                                {
+                                                case '*':
+                                                        this.Read ();
+                                                        foundStar = true;
+                                                        continue;
 
-                                case '/':
-                                        this.Read();
-                                        if (foundStar)
-                                        {
-                                                return;
-                                        }
-                                        else
-                                        {
-                                                foundStar = false;
-                                                continue;
-                                        }
+                                                case '/':
+                                                        this.Read ();
+                                                        if (foundStar)
+                                                                {
+                                                                        return;
+                                                                }
+                                                        else
+                                                                {
+                                                                        foundStar = false;
+                                                                        continue;
+                                                                }
 
-                                case -1:
-                                        // Reached the end of the file
-                                        return;
+                                                case -1:
+                                                        // Reached the end of the file
+                                                        return;
 
-                                default:
-                                        this.Read();
-                                        foundStar = false;
-                                        continue;
+                                                default:
+                                                        this.Read ();
+                                                        foundStar = false;
+                                                        continue;
+                                                }
                                 }
-                        }
                 }
         }
 }

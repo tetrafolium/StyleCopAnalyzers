@@ -10,7 +10,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// <summary>
                 /// Initializes a new instance of the <see cref="SpacingSettings"/> class.
                 /// </summary>
-                protected internal SpacingSettings()
+                protected internal
+                SpacingSettings ()
                 {
                 }
 
@@ -19,7 +20,9 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
                 /// </summary>
                 /// <param name="spacingSettingsObject">The JSON object containing the
                 /// settings.</param>
-                protected internal SpacingSettings(JsonObject spacingSettingsObject) : this()
+                protected internal
+                SpacingSettings (JsonObject spacingSettingsObject)
+                    : this()
                 {
                         // Currently unused
                         _ = spacingSettingsObject;

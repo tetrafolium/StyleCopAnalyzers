@@ -51,16 +51,18 @@ namespace StyleCop.Analyzers.Helpers
                     }
                         .ToImmutableDictionary();
 
-                public static bool IsPredefinedType(SpecialType specialType)
+                public static bool
+                IsPredefinedType (SpecialType specialType)
                 {
-                        return PredefinedSpecialTypes.ContainsKey(specialType);
+                        return PredefinedSpecialTypes.ContainsKey (specialType);
                 }
 
-                public static bool TryGetPredefinedType(
-                    SpecialType specialType, out PredefinedTypeSyntax predefinedTypeSyntax)
+                public static bool
+                TryGetPredefinedType (SpecialType specialType,
+                                      out PredefinedTypeSyntax predefinedTypeSyntax)
                 {
-                        return PredefinedSpecialTypes.TryGetValue(specialType,
-                                                                  out predefinedTypeSyntax);
+                        return PredefinedSpecialTypes.TryGetValue (specialType,
+                                                                   out predefinedTypeSyntax);
                 }
         }
 }

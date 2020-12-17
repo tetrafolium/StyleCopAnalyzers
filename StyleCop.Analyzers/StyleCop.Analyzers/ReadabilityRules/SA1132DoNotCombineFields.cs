@@ -13,7 +13,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <summary>
         /// Two or more fields were declared in the same field declaration syntax.
         /// </summary>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1132DoNotCombineFields : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -21,65 +21,64 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1132";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1132.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(ReadabilityResources.SA1132Title), ReadabilityResources.ResourceManager,
-                    typeof(ReadabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1132MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1132Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1132.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (ReadabilityResources.SA1132Title), ReadabilityResources.ResourceManager,
+                    typeof (ReadabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1132MessageFormat),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (ReadabilityResources.SA1132Description),
+                        ReadabilityResources.ResourceManager, typeof (ReadabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxNodeAnalysisContext>
-                    BaseFieldDeclarationAction = HandleBaseFieldDeclaration;
+                private static readonly Action<SyntaxNodeAnalysisContext> BaseFieldDeclarationAction
+                    = HandleBaseFieldDeclaration;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(BaseFieldDeclarationAction,
-                                                         SyntaxKinds.BaseFieldDeclaration);
+                        context.RegisterSyntaxNodeAction (BaseFieldDeclarationAction,
+                                                          SyntaxKinds.BaseFieldDeclaration);
                 }
 
-                private static void HandleBaseFieldDeclaration(SyntaxNodeAnalysisContext context)
+                private static void
+                HandleBaseFieldDeclaration (SyntaxNodeAnalysisContext context)
                 {
                         var fieldDeclaration = (BaseFieldDeclarationSyntax) context.Node;
                         var variables = fieldDeclaration.Declaration.Variables;
 
                         if (variables.Count < 2 || fieldDeclaration.SemicolonToken.IsMissing)
-                        {
-                                return;
-                        }
-
-                        foreach (VariableDeclaratorSyntax variable in variables)
-                        {
-                                if (variable.IsMissing || variable.Identifier.IsMissing)
                                 {
                                         return;
                                 }
-                        }
 
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, fieldDeclaration.GetLocation()));
+                        foreach (VariableDeclaratorSyntax variable in variables)
+                                {
+                                        if (variable.IsMissing || variable.Identifier.IsMissing)
+                                                {
+                                                        return;
+                                                }
+                                }
+
+                        context.ReportDiagnostic (
+                            Diagnostic.Create (Descriptor, fieldDeclaration.GetLocation ()));
                 }
         }
 }

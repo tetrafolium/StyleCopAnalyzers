@@ -9,17 +9,17 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct ICoalesceAssignmentOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.ICoalesceAssignmentOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.ICoalesceAssignmentOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
-                static ICoalesceAssignmentOperationWrapper()
+                static ICoalesceAssignmentOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(ICoalesceAssignmentOperationWrapper));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (ICoalesceAssignmentOperationWrapper));
                 }
 
-                private ICoalesceAssignmentOperationWrapper(IOperation operation)
+                private ICoalesceAssignmentOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
@@ -28,32 +28,35 @@ namespace StyleCop.Analyzers.Lightup
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IOperation Target =>((IAssignmentOperationWrapper) this).Target;
                 public IOperation Value =>((IAssignmentOperationWrapper) this).Value;
-                public static explicit operator ICoalesceAssignmentOperationWrapper(
-                    IAssignmentOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-                public static implicit operator IAssignmentOperationWrapper(
-                    ICoalesceAssignmentOperationWrapper wrapper) =>
-                    IAssignmentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
-                public static ICoalesceAssignmentOperationWrapper FromOperation(
-                    IOperation operation)
+                public static explicit operator ICoalesceAssignmentOperationWrapper (
+                    IAssignmentOperationWrapper wrapper) => FromOperation (wrapper
+                                                                               .WrappedOperation);
+                public static implicit operator IAssignmentOperationWrapper (
+                    ICoalesceAssignmentOperationWrapper
+                        wrapper) => IAssignmentOperationWrapper
+                                        .FromUpcast (wrapper.WrappedOperation);
+                public static ICoalesceAssignmentOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new ICoalesceAssignmentOperationWrapper(operation);
+                        return new ICoalesceAssignmentOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }

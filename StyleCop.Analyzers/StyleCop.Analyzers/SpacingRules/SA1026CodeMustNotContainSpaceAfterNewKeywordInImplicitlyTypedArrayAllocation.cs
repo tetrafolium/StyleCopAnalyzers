@@ -25,7 +25,7 @@ namespace StyleCop.Analyzers.SpacingRules
         /// var a = new[] { 1, 10, 100, 1000 };
         /// </code>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1026CodeMustNotContainSpaceAfterNewKeywordInImplicitlyTypedArrayAllocation
             : DiagnosticAnalyzer
         {
@@ -36,21 +36,21 @@ namespace StyleCop.Analyzers.SpacingRules
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1026";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1026.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1026Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1026MessageFormat),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1026Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1026.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (SpacingResources.SA1026Title), SpacingResources.ResourceManager,
+                    typeof (SpacingResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (nameof (SpacingResources.SA1026MessageFormat),
+                                                     SpacingResources.ResourceManager,
+                                                     typeof (SpacingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (SpacingResources.SA1026Description),
+                                                     SpacingResources.ResourceManager,
+                                                     typeof (SpacingResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                     HelpLink);
@@ -58,59 +58,57 @@ namespace StyleCop.Analyzers.SpacingRules
                 private static readonly Action<SyntaxNodeAnalysisContext>
                     ImplicitArrayCreationExpressionAction = HandleImplicitArrayCreationExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ImplicitStackAllocArrayCreationExpressionAction =
-                        HandleImplicitStackAllocArrayCreationExpression;
+                    ImplicitStackAllocArrayCreationExpressionAction
+                    = HandleImplicitStackAllocArrayCreationExpression;
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(
+                        context.RegisterSyntaxNodeAction (
                             ImplicitArrayCreationExpressionAction,
                             SyntaxKind.ImplicitArrayCreationExpression);
-                        context.RegisterSyntaxNodeAction(
+                        context.RegisterSyntaxNodeAction (
                             ImplicitStackAllocArrayCreationExpressionAction,
                             SyntaxKindEx.ImplicitStackAllocArrayCreationExpression);
                 }
 
-                private static void HandleImplicitArrayCreationExpression(
-                    SyntaxNodeAnalysisContext context)
+                private static void
+                HandleImplicitArrayCreationExpression (SyntaxNodeAnalysisContext context)
                 {
                         var arrayCreation = (ImplicitArrayCreationExpressionSyntax) context.Node;
                         var newKeywordToken = arrayCreation.NewKeyword;
 
-                        if (newKeywordToken.IsFollowedByWhitespace() ||
-                            newKeywordToken.IsLastInLine())
-                        {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, newKeywordToken.GetLocation(),
-                                    TokenSpacingProperties.RemoveFollowing, "new"));
-                        }
+                        if (newKeywordToken.IsFollowedByWhitespace ()
+                            || newKeywordToken.IsLastInLine ())
+                                {
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor, newKeywordToken.GetLocation (),
+                                            TokenSpacingProperties.RemoveFollowing, "new"));
+                                }
                 }
 
-                private static void HandleImplicitStackAllocArrayCreationExpression(
-                    SyntaxNodeAnalysisContext context)
+                private static void
+                HandleImplicitStackAllocArrayCreationExpression (SyntaxNodeAnalysisContext context)
                 {
-                        var arrayCreation =
-                            (ImplicitStackAllocArrayCreationExpressionSyntaxWrapper) context.Node;
+                        var arrayCreation
+                            = (ImplicitStackAllocArrayCreationExpressionSyntaxWrapper) context.Node;
                         var stackAllocKeywordToken = arrayCreation.StackAllocKeyword;
 
-                        if (stackAllocKeywordToken.IsFollowedByWhitespace() ||
-                            stackAllocKeywordToken.IsLastInLine())
-                        {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, stackAllocKeywordToken.GetLocation(),
-                                    TokenSpacingProperties.RemoveFollowing, "stackalloc"));
-                        }
+                        if (stackAllocKeywordToken.IsFollowedByWhitespace ()
+                            || stackAllocKeywordToken.IsLastInLine ())
+                                {
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor, stackAllocKeywordToken.GetLocation (),
+                                            TokenSpacingProperties.RemoveFollowing, "stackalloc"));
+                                }
                 }
         }
 }

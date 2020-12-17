@@ -7,7 +7,7 @@ namespace StyleCop.Analyzers.Lightup
 
         internal static class SymbolDisplayMemberOptionsEx
         {
-                public const SymbolDisplayMemberOptions IncludeRef =
-                    (SymbolDisplayMemberOptions) 128;
+                public const SymbolDisplayMemberOptions IncludeRef
+                    = (SymbolDisplayMemberOptions) 128;
         }
 }

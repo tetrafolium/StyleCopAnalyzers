@@ -24,7 +24,7 @@ namespace StyleCop.Analyzers.SpacingRules
         /// symbol, an end of line or a single whitespace (but not whitespace and an open
         /// parenthesis).</para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1015ClosingGenericBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -32,190 +32,200 @@ namespace StyleCop.Analyzers.SpacingRules
                 /// cref="SA1015ClosingGenericBracketsMustBeSpacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1015";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1015.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(SpacingResources.SA1015Title), SpacingResources.ResourceManager,
-                    typeof(SpacingResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1015Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1015.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (SpacingResources.SA1015Title), SpacingResources.ResourceManager,
+                    typeof (SpacingResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (nameof (SpacingResources.SA1015Description),
+                                                     SpacingResources.ResourceManager,
+                                                     typeof (SpacingResources));
 
-                private static readonly LocalizableString MessageNotPreceded =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1015MessageNotPreceded),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
-                private static readonly LocalizableString MessageNotFollowed =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1015MessageNotFollowed),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
-                private static readonly LocalizableString MessageFollowed =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1015MessageFollowed),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                private static readonly LocalizableString MessageNotPreceded
+                    = new LocalizableResourceString (
+                        nameof (SpacingResources.SA1015MessageNotPreceded),
+                        SpacingResources.ResourceManager, typeof (SpacingResources));
+                private static readonly LocalizableString MessageNotFollowed
+                    = new LocalizableResourceString (
+                        nameof (SpacingResources.SA1015MessageNotFollowed),
+                        SpacingResources.ResourceManager, typeof (SpacingResources));
+                private static readonly LocalizableString MessageFollowed
+                    = new LocalizableResourceString (
+                        nameof (SpacingResources.SA1015MessageFollowed),
+                        SpacingResources.ResourceManager, typeof (SpacingResources));
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-                internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-                    new DiagnosticDescriptor(
+                internal static readonly DiagnosticDescriptor DescriptorNotPreceded
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
 
-                internal static readonly DiagnosticDescriptor DescriptorNotFollowed =
-                    new DiagnosticDescriptor(
+                internal static readonly DiagnosticDescriptor DescriptorNotFollowed
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
 
-                internal static readonly DiagnosticDescriptor DescriptorFollowed =
-                    new DiagnosticDescriptor(
+                internal static readonly DiagnosticDescriptor DescriptorFollowed
+                    = new DiagnosticDescriptor (
                         DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules,
                         DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
                         HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(DescriptorNotPreceded);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (DescriptorNotPreceded);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxTreeAction(SyntaxTreeAction);
+                        context.RegisterSyntaxTreeAction (SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                private static void
+                HandleSyntaxTree (SyntaxTreeAnalysisContext context)
                 {
-                        SyntaxNode root =
-                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-                        foreach (var token in root.DescendantTokens())
-                        {
-                                if (token.IsKind(SyntaxKind.GreaterThanToken))
+                        SyntaxNode root
+                            = context.Tree.GetCompilationUnitRoot (context.CancellationToken);
+                        foreach (var token in root.DescendantTokens ())
                                 {
-                                        HandleGreaterThanToken(context, token);
+                                        if (token.IsKind (SyntaxKind.GreaterThanToken))
+                                                {
+                                                        HandleGreaterThanToken (context, token);
+                                                }
                                 }
-                        }
                 }
 
-                private static void HandleGreaterThanToken(SyntaxTreeAnalysisContext context,
-                                                           SyntaxToken token)
+                private static void
+                HandleGreaterThanToken (SyntaxTreeAnalysisContext context, SyntaxToken token)
                 {
                         if (token.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        switch (token.Parent.Kind())
-                        {
-                        case SyntaxKind.TypeArgumentList:
-                        case SyntaxKind.TypeParameterList:
-                                break;
+                        switch (token.Parent.Kind ())
+                                {
+                                case SyntaxKind.TypeArgumentList:
+                                case SyntaxKind.TypeParameterList:
+                                        break;
 
-                        default:
-                                // not a generic bracket
-                                return;
-                        }
+                                default:
+                                        // not a generic bracket
+                                        return;
+                                }
 
-                        bool firstInLine = token.IsFirstInLine();
-                        bool lastInLine = token.IsLastInLine();
-                        bool precededBySpace =
-                            firstInLine || token.IsPrecededByWhitespace(context.CancellationToken);
-                        bool followedBySpace = token.IsFollowedByWhitespace();
+                        bool firstInLine = token.IsFirstInLine ();
+                        bool lastInLine = token.IsLastInLine ();
+                        bool precededBySpace
+                            = firstInLine
+                              || token.IsPrecededByWhitespace (context.CancellationToken);
+                        bool followedBySpace = token.IsFollowedByWhitespace ();
                         bool allowTrailingNoSpace;
                         bool allowTrailingSpace;
 
                         if (!lastInLine)
-                        {
-                                SyntaxToken nextToken = token.GetNextToken();
-                                switch (nextToken.Kind())
                                 {
-                                case SyntaxKind.OpenParenToken:
-                                // DotToken isn't listed above, but it's required for
-                                // reasonable member access formatting
-                                case SyntaxKind.DotToken:
-                                // CommaToken isn't listed above, but it's required for
-                                // reasonable nested generic type arguments formatting
-                                case SyntaxKind.CommaToken:
-                                // OpenBracketToken isn't listed above, but it's required
-                                // for reasonable array type formatting
-                                case SyntaxKind.OpenBracketToken:
-                                // SemicolonToken isn't listed above, but it's required for
-                                // reasonable using alias declaration formatting
-                                case SyntaxKind.SemicolonToken:
-                                case SyntaxKind.ColonToken when nextToken.Parent.IsKind(
-                                    SyntaxKindEx.CasePatternSwitchLabel):
-                                        allowTrailingNoSpace = true;
-                                        allowTrailingSpace = false;
-                                        break;
+                                        SyntaxToken nextToken = token.GetNextToken ();
+                                        switch (nextToken.Kind ())
+                                                {
+                                                case SyntaxKind.OpenParenToken:
+                                                // DotToken isn't listed above, but it's required
+                                                // for reasonable member access formatting
+                                                case SyntaxKind.DotToken:
+                                                // CommaToken isn't listed above, but it's required
+                                                // for reasonable nested generic type arguments
+                                                // formatting
+                                                case SyntaxKind.CommaToken:
+                                                // OpenBracketToken isn't listed above, but it's
+                                                // required for reasonable array type formatting
+                                                case SyntaxKind.OpenBracketToken:
+                                                // SemicolonToken isn't listed above, but it's
+                                                // required for reasonable using alias declaration
+                                                // formatting
+                                                case SyntaxKind.SemicolonToken:
+                                                case SyntaxKind.ColonToken when nextToken.Parent
+                                                    .IsKind (SyntaxKindEx.CasePatternSwitchLabel):
+                                                        allowTrailingNoSpace = true;
+                                                        allowTrailingSpace = false;
+                                                        break;
 
-                                case SyntaxKind.CloseParenToken:
-                                case SyntaxKind.GreaterThanToken:
-                                        allowTrailingNoSpace = true;
-                                        allowTrailingSpace = true;
-                                        break;
+                                                case SyntaxKind.CloseParenToken:
+                                                case SyntaxKind.GreaterThanToken:
+                                                        allowTrailingNoSpace = true;
+                                                        allowTrailingSpace = true;
+                                                        break;
 
-                                case SyntaxKind.QuestionToken:
-                                        allowTrailingNoSpace =
-                                            nextToken.Parent.IsKind(SyntaxKind.NullableType);
-                                        allowTrailingSpace = true;
-                                        break;
+                                                case SyntaxKind.QuestionToken:
+                                                        allowTrailingNoSpace
+                                                            = nextToken.Parent.IsKind (
+                                                                SyntaxKind.NullableType);
+                                                        allowTrailingSpace = true;
+                                                        break;
 
-                                default:
-                                        allowTrailingNoSpace = false;
-                                        allowTrailingSpace = true;
-                                        break;
+                                                default:
+                                                        allowTrailingNoSpace = false;
+                                                        allowTrailingSpace = true;
+                                                        break;
+                                                }
                                 }
-                        }
                         else
-                        {
-                                allowTrailingNoSpace = true;
-                                allowTrailingSpace = true;
-                        }
+                                {
+                                        allowTrailingNoSpace = true;
+                                        allowTrailingSpace = true;
+                                }
 
                         if (!firstInLine && precededBySpace)
-                        {
-                                // Closing generic bracket should{ not} be {preceded} by a space.
-                                var properties = TokenSpacingProperties.RemovePreceding;
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    DescriptorNotPreceded, token.GetLocation(), properties));
-                        }
+                                {
+                                        // Closing generic bracket should{ not} be {preceded} by a
+                                        // space.
+                                        var properties = TokenSpacingProperties.RemovePreceding;
+                                        context.ReportDiagnostic (
+                                            Diagnostic.Create (DescriptorNotPreceded,
+                                                               token.GetLocation (), properties));
+                                }
 
                         if (!lastInLine)
-                        {
-                                if (!allowTrailingNoSpace && !followedBySpace)
                                 {
-                                        // Closing generic bracket should{} be {followed} by a
-                                        // space.
-                                        var properties = TokenSpacingProperties.InsertFollowing;
+                                        if (!allowTrailingNoSpace && !followedBySpace)
+                                                {
+                                                        // Closing generic bracket should{} be
+                                                        // {followed} by a space.
+                                                        var properties = TokenSpacingProperties
+                                                                             .InsertFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            DescriptorFollowed, token.GetLocation(), properties));
+                                                        context.ReportDiagnostic (
+                                                            Diagnostic.Create (DescriptorFollowed,
+                                                                               token.GetLocation (),
+                                                                               properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                                }
-                                else if (!allowTrailingSpace && followedBySpace)
-                                {
-                                        // Closing generic bracket should{ not} be {followed} by a
-                                        // space.
-                                        var properties = TokenSpacingProperties.RemoveFollowing;
+                                                }
+                                        else if (!allowTrailingSpace && followedBySpace)
+                                                {
+                                                        // Closing generic bracket should{ not} be
+                                                        // {followed} by a space.
+                                                        var properties = TokenSpacingProperties
+                                                                             .RemoveFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
-                                        context.ReportDiagnostic(
-                                            Diagnostic.Create(DescriptorNotFollowed,
-                                                              token.GetLocation(), properties));
+                                                        context.ReportDiagnostic (
+                                                            Diagnostic.Create (
+                                                                DescriptorNotFollowed,
+                                                                token.GetLocation (), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                                }
                                 }
-                        }
                 }
         }
 }

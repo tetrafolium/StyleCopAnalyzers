@@ -22,7 +22,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// encoding used when creating new C# source files within Visual Studio.
         /// </para>
         /// </remarks>
-        [DiagnosticAnalyzer(LanguageNames.CSharp)]
+        [DiagnosticAnalyzer (LanguageNames.CSharp)]
         internal class SA1412StoreFilesAsUtf8 : DiagnosticAnalyzer
         {
                 /// <summary>
@@ -30,29 +30,31 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// <see cref="SA1412StoreFilesAsUtf8"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1412";
-                private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1412.md";
-                private static readonly LocalizableString Title = new LocalizableResourceString(
-                    nameof(MaintainabilityResources.SA1412Title),
-                    MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1412MessageFormat),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-                private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1412Description),
-                        MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+                private const string HelpLink
+                    = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1412.md";
+                private static readonly LocalizableString Title = new LocalizableResourceString (
+                    nameof (MaintainabilityResources.SA1412Title),
+                    MaintainabilityResources.ResourceManager, typeof (MaintainabilityResources));
+                private static readonly LocalizableString MessageFormat
+                    = new LocalizableResourceString (
+                        nameof (MaintainabilityResources.SA1412MessageFormat),
+                        MaintainabilityResources.ResourceManager,
+                        typeof (MaintainabilityResources));
+                private static readonly LocalizableString Description
+                    = new LocalizableResourceString (
+                        nameof (MaintainabilityResources.SA1412Description),
+                        MaintainabilityResources.ResourceManager,
+                        typeof (MaintainabilityResources));
 
-                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+                private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor (
                     DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules,
                     DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault, Description,
                     HelpLink);
 
-                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction
+                    = HandleSyntaxTree;
 
-                private static readonly byte[] Utf8Preamble = Encoding.UTF8.GetPreamble();
+                private static readonly byte[] Utf8Preamble = Encoding.UTF8.GetPreamble ();
 
                 /// <summary>
                 /// Gets the key for the detected encoding name in the <see
@@ -62,70 +64,67 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 /// The key for the detected encoding name in the <see
                 /// cref="Diagnostic.Properties"/> collection.
                 /// </value>
-                public static string EncodingProperty
-                {
-                        get;
-                }
+                public static string EncodingProperty { get; }
                 = "Encoding";
 
                 /// <inheritdoc/>
-                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-                {
-                        get;
-                }
-                = ImmutableArray.Create(Descriptor);
+                public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+                = ImmutableArray.Create (Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxTreeAction(SyntaxTreeAction);
+                        context.RegisterSyntaxTreeAction (SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                private static void
+                HandleSyntaxTree (SyntaxTreeAnalysisContext context)
                 {
-                        if (context.Tree.IsWhitespaceOnly(context.CancellationToken))
-                        {
-                                // Handling of empty documents is now the responsibility of the
-                                // analyzers
-                                return;
-                        }
-
-                        byte[] preamble = context.Tree.Encoding.GetPreamble();
-
-                        if (!IsUtf8Preamble(preamble))
-                        {
-                                ImmutableDictionary<string, string> properties =
-                                    ImmutableDictionary<string, string>.Empty.SetItem(
-                                        EncodingProperty,
-                                        context.Tree.Encoding?.WebName ?? "<null>");
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor,
-                                    Location.Create(context.Tree, TextSpan.FromBounds(0, 0)),
-                                    properties));
-                        }
-                }
-
-                private static bool IsUtf8Preamble(byte[] preamble)
-                {
-                        if (preamble == null || preamble.Length != Utf8Preamble.Length)
-                        {
-                                return false;
-                        }
-                        else
-                        {
-                                for (int i = 0; i < Utf8Preamble.Length; i++)
+                        if (context.Tree.IsWhitespaceOnly (context.CancellationToken))
                                 {
-                                        if (Utf8Preamble[i] != preamble[i])
-                                        {
-                                                return false;
-                                        }
+                                        // Handling of empty documents is now the responsibility of
+                                        // the analyzers
+                                        return;
                                 }
 
-                                return true;
-                        }
+                        byte[] preamble = context.Tree.Encoding.GetPreamble ();
+
+                        if (!IsUtf8Preamble (preamble))
+                                {
+                                        ImmutableDictionary<string, string> properties
+                                            = ImmutableDictionary<string, string>.Empty.SetItem (
+                                                EncodingProperty,
+                                                context.Tree.Encoding?.WebName ?? "<null>");
+                                        context.ReportDiagnostic (Diagnostic.Create (
+                                            Descriptor,
+                                            Location.Create (context.Tree,
+                                                             TextSpan.FromBounds (0, 0)),
+                                            properties));
+                                }
+                }
+
+                private static bool IsUtf8Preamble (byte[] preamble)
+                {
+                        if (preamble == null || preamble.Length != Utf8Preamble.Length)
+                                {
+                                        return false;
+                                }
+                        else
+                                {
+                                        for (int i = 0; i < Utf8Preamble.Length; i++)
+                                                {
+                                                        if (Utf8Preamble[i] != preamble[i])
+                                                                {
+                                                                        return false;
+                                                                }
+                                                }
+
+                                        return true;
+                                }
                 }
         }
 }

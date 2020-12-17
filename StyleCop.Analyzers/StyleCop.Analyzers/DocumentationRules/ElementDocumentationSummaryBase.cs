@@ -38,7 +38,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                 private readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     eventDeclarationAction;
 
-                protected ElementDocumentationSummaryBase()
+                protected ElementDocumentationSummaryBase ()
                 {
                         this.typeDeclarationAction = this.HandleTypeDeclaration;
                         this.methodDeclarationAction = this.HandleMethodDeclaration;
@@ -52,29 +52,30 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(this.typeDeclarationAction,
-                                                         SyntaxKinds.BaseTypeDeclaration);
-                        context.RegisterSyntaxNodeAction(this.methodDeclarationAction,
-                                                         SyntaxKind.MethodDeclaration);
-                        context.RegisterSyntaxNodeAction(this.constructorDeclarationAction,
-                                                         SyntaxKind.ConstructorDeclaration);
-                        context.RegisterSyntaxNodeAction(this.destructorDeclarationAction,
-                                                         SyntaxKind.DestructorDeclaration);
-                        context.RegisterSyntaxNodeAction(this.propertyDeclarationAction,
-                                                         SyntaxKind.PropertyDeclaration);
-                        context.RegisterSyntaxNodeAction(this.indexerDeclarationAction,
-                                                         SyntaxKind.IndexerDeclaration);
-                        context.RegisterSyntaxNodeAction(this.fieldDeclarationAction,
-                                                         SyntaxKinds.BaseFieldDeclaration);
-                        context.RegisterSyntaxNodeAction(this.delegateDeclarationAction,
-                                                         SyntaxKind.DelegateDeclaration);
-                        context.RegisterSyntaxNodeAction(this.eventDeclarationAction,
-                                                         SyntaxKind.EventDeclaration);
+                        context.RegisterSyntaxNodeAction (this.typeDeclarationAction,
+                                                          SyntaxKinds.BaseTypeDeclaration);
+                        context.RegisterSyntaxNodeAction (this.methodDeclarationAction,
+                                                          SyntaxKind.MethodDeclaration);
+                        context.RegisterSyntaxNodeAction (this.constructorDeclarationAction,
+                                                          SyntaxKind.ConstructorDeclaration);
+                        context.RegisterSyntaxNodeAction (this.destructorDeclarationAction,
+                                                          SyntaxKind.DestructorDeclaration);
+                        context.RegisterSyntaxNodeAction (this.propertyDeclarationAction,
+                                                          SyntaxKind.PropertyDeclaration);
+                        context.RegisterSyntaxNodeAction (this.indexerDeclarationAction,
+                                                          SyntaxKind.IndexerDeclaration);
+                        context.RegisterSyntaxNodeAction (this.fieldDeclarationAction,
+                                                          SyntaxKinds.BaseFieldDeclaration);
+                        context.RegisterSyntaxNodeAction (this.delegateDeclarationAction,
+                                                          SyntaxKind.DelegateDeclaration);
+                        context.RegisterSyntaxNodeAction (this.eventDeclarationAction,
+                                                          SyntaxKind.EventDeclaration);
                 }
 
                 /// <summary>
@@ -94,260 +95,278 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// included an <c>&lt;include&gt;</c> element.</param> <param
                 /// name="diagnosticLocations">The location(s) where diagnostics, if any, should be
                 /// reported.</param>
-                protected abstract void HandleXmlElement(
-                    SyntaxNodeAnalysisContext context, bool needsComment,
-                    DocumentationCommentTriviaSyntax documentation, XmlNodeSyntax syntax,
-                    XElement completeDocumentation, params Location[] diagnosticLocations);
+                protected abstract void
+                HandleXmlElement (SyntaxNodeAnalysisContext context, bool needsComment,
+                                  DocumentationCommentTriviaSyntax documentation,
+                                  XmlNodeSyntax syntax, XElement completeDocumentation,
+                                  params Location[] diagnosticLocations);
 
-                private void HandleTypeDeclaration(SyntaxNodeAnalysisContext context,
-                                                   StyleCopSettings settings)
+                private void
+                HandleTypeDeclaration (SyntaxNodeAnalysisContext context, StyleCopSettings settings)
                 {
                         var node = (BaseTypeDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        if (node.Modifiers.Any(SyntaxKind.PartialKeyword))
-                        {
-                                // partial elements are handled by
-                                // PartialElementDocumentationSummaryBase
-                                return;
-                        }
+                        if (node.Modifiers.Any (SyntaxKind.PartialKeyword))
+                                {
+                                        // partial elements are handled by
+                                        // PartialElementDocumentationSummaryBase
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.Identifier.GetLocation ());
                 }
 
-                private void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context,
-                                                       StyleCopSettings settings)
+                private void
+                HandleDelegateDeclaration (SyntaxNodeAnalysisContext context,
+                                           StyleCopSettings settings)
                 {
                         var node = (DelegateDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.Identifier.GetLocation ());
                 }
 
-                private void HandleMethodDeclaration(SyntaxNodeAnalysisContext context,
-                                                     StyleCopSettings settings)
+                private void
+                HandleMethodDeclaration (SyntaxNodeAnalysisContext context,
+                                         StyleCopSettings settings)
                 {
                         var node = (MethodDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        if (node.Modifiers.Any(SyntaxKind.PartialKeyword))
-                        {
-                                // partial elements are handled by
-                                // PartialElementDocumentationSummaryBase
-                                return;
-                        }
+                        if (node.Modifiers.Any (SyntaxKind.PartialKeyword))
+                                {
+                                        // partial elements are handled by
+                                        // PartialElementDocumentationSummaryBase
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.Identifier.GetLocation ());
                 }
 
-                private void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context,
-                                                          StyleCopSettings settings)
+                private void
+                HandleConstructorDeclaration (SyntaxNodeAnalysisContext context,
+                                              StyleCopSettings settings)
                 {
                         var node = (ConstructorDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.Identifier.GetLocation ());
                 }
 
-                private void HandleDestructorDeclaration(SyntaxNodeAnalysisContext context,
-                                                         StyleCopSettings settings)
+                private void
+                HandleDestructorDeclaration (SyntaxNodeAnalysisContext context,
+                                             StyleCopSettings settings)
                 {
                         var node = (DestructorDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.Identifier.GetLocation ());
                 }
 
-                private void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context,
-                                                       StyleCopSettings settings)
+                private void
+                HandlePropertyDeclaration (SyntaxNodeAnalysisContext context,
+                                           StyleCopSettings settings)
                 {
                         var node = (PropertyDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.Identifier.GetLocation ());
                 }
 
-                private void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context,
-                                                      StyleCopSettings settings)
+                private void
+                HandleIndexerDeclaration (SyntaxNodeAnalysisContext context,
+                                          StyleCopSettings settings)
                 {
                         var node = (IndexerDeclarationSyntax) context.Node;
                         if (node.ThisKeyword.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.ThisKeyword.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.ThisKeyword.GetLocation ());
                 }
 
-                private void HandleFieldDeclaration(SyntaxNodeAnalysisContext context,
-                                                    StyleCopSettings settings)
+                private void
+                HandleFieldDeclaration (SyntaxNodeAnalysisContext context,
+                                        StyleCopSettings settings)
                 {
                         var node = (BaseFieldDeclarationSyntax) context.Node;
                         if (node.Declaration == null)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
                         Location[] locations = new Location[node.Declaration.Variables.Count];
 
                         int insertionIndex = 0;
 
                         foreach (var variable in node.Declaration.Variables)
-                        {
-                                var identifier = variable.Identifier;
-                                if (!identifier.IsMissing)
                                 {
-                                        locations[insertionIndex++] = identifier.GetLocation();
+                                        var identifier = variable.Identifier;
+                                        if (!identifier.IsMissing)
+                                                {
+                                                        locations[insertionIndex++]
+                                                            = identifier.GetLocation ();
+                                                }
                                 }
-                        }
 
                         // PERF: Most of the time locations will have the correct size.
                         // The only case where it might be smaller is in invalid syntax like
                         // int i,;
-                        Array.Resize(ref locations, insertionIndex);
+                        Array.Resize (ref locations, insertionIndex);
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node, locations);
+                        this.HandleDeclaration (context, needsComment, node, locations);
                 }
 
-                private void HandleEventDeclaration(SyntaxNodeAnalysisContext context,
-                                                    StyleCopSettings settings)
+                private void
+                HandleEventDeclaration (SyntaxNodeAnalysisContext context,
+                                        StyleCopSettings settings)
                 {
                         var node = (EventDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.Identifier.GetLocation ());
                 }
 
-                private void HandleDeclaration(SyntaxNodeAnalysisContext context, bool needsComment,
-                                               SyntaxNode node, params Location[] locations)
+                private void
+                HandleDeclaration (SyntaxNodeAnalysisContext context, bool needsComment,
+                                   SyntaxNode node, params Location[] locations)
                 {
-                        var documentation = node.GetDocumentationCommentTriviaSyntax();
+                        var documentation = node.GetDocumentationCommentTriviaSyntax ();
                         if (documentation == null)
-                        {
-                                // missing documentation is reported by SA1600, SA1601, and SA1602
-                                return;
-                        }
+                                {
+                                        // missing documentation is reported by SA1600, SA1601, and
+                                        // SA1602
+                                        return;
+                                }
 
                         XElement completeDocumentation = null;
-                        var relevantXmlElement = documentation.Content.GetFirstXmlElement(
+                        var relevantXmlElement = documentation.Content.GetFirstXmlElement (
                             XmlCommentHelper.SummaryXmlTag);
                         if (relevantXmlElement == null)
-                        {
-                                relevantXmlElement = documentation.Content.GetFirstXmlElement(
-                                    XmlCommentHelper.IncludeXmlTag);
-                                if (relevantXmlElement != null)
                                 {
-                                        var declaration = context.SemanticModel.GetDeclaredSymbol(
-                                            node, context.CancellationToken);
-                                        if (declaration == null)
-                                        {
-                                                return;
-                                        }
+                                        relevantXmlElement
+                                            = documentation.Content.GetFirstXmlElement (
+                                                XmlCommentHelper.IncludeXmlTag);
+                                        if (relevantXmlElement != null)
+                                                {
+                                                        var declaration
+                                                            = context.SemanticModel
+                                                                  .GetDeclaredSymbol (
+                                                                      node,
+                                                                      context.CancellationToken);
+                                                        if (declaration == null)
+                                                                {
+                                                                        return;
+                                                                }
 
-                                        var rawDocumentation =
-                                            declaration.GetDocumentationCommentXml(
-                                                expandIncludes
-                                                : true, cancellationToken
-                                                : context.CancellationToken);
-                                        completeDocumentation =
-                                            XElement.Parse(rawDocumentation, LoadOptions.None);
+                                                        var rawDocumentation
+                                                            = declaration
+                                                                  .GetDocumentationCommentXml (
+                                                                      expandIncludes
+                                                                      : true, cancellationToken
+                                                                      : context.CancellationToken);
+                                                        completeDocumentation = XElement.Parse (
+                                                            rawDocumentation, LoadOptions.None);
+                                                }
                                 }
-                        }
 
-                        this.HandleXmlElement(context, needsComment, documentation,
-                                              relevantXmlElement, completeDocumentation, locations);
+                        this.HandleXmlElement (context, needsComment, documentation,
+                                               relevantXmlElement, completeDocumentation,
+                                               locations);
                 }
         }
 }

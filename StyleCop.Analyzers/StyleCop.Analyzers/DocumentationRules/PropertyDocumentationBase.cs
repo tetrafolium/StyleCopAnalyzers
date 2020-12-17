@@ -27,7 +27,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                 private readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
                     propertyDeclarationAction;
 
-                protected PropertyDocumentationBase()
+                protected PropertyDocumentationBase ()
                 {
                         this.propertyDeclarationAction = this.HandlePropertyDeclaration;
                 }
@@ -36,19 +36,17 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// Gets the XML tag within the property documentation that should be handled.
                 /// </summary>
                 /// <value>The XML tag to handle.</value>
-                protected abstract string XmlTagToHandle
-                {
-                        get;
-                }
+                protected abstract string XmlTagToHandle { get; }
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context)
+                public override void
+                Initialize (AnalysisContext context)
                 {
-                        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-                        context.EnableConcurrentExecution();
+                        context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+                        context.EnableConcurrentExecution ();
 
-                        context.RegisterSyntaxNodeAction(this.propertyDeclarationAction,
-                                                         SyntaxKind.PropertyDeclaration);
+                        context.RegisterSyntaxNodeAction (this.propertyDeclarationAction,
+                                                          SyntaxKind.PropertyDeclaration);
                 }
 
                 /// <summary>
@@ -67,80 +65,93 @@ namespace StyleCop.Analyzers.DocumentationRules
                 /// included an <c>&lt;include&gt;</c> element.</param> <param
                 /// name="diagnosticLocation">The location where diagnostics, if any, should be
                 /// reported.</param>
-                protected abstract void HandleXmlElement(SyntaxNodeAnalysisContext context,
-                                                         bool needsComment, XmlNodeSyntax syntax,
-                                                         XElement completeDocumentation,
-                                                         Location diagnosticLocation);
+                protected abstract void HandleXmlElement (SyntaxNodeAnalysisContext context,
+                                                          bool needsComment, XmlNodeSyntax syntax,
+                                                          XElement completeDocumentation,
+                                                          Location diagnosticLocation);
 
-                private void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context,
-                                                       StyleCopSettings settings)
+                private void
+                HandlePropertyDeclaration (SyntaxNodeAnalysisContext context,
+                                           StyleCopSettings settings)
                 {
                         var node = (PropertyDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing)
-                        {
-                                return;
-                        }
+                                {
+                                        return;
+                                }
 
-                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
+                        Accessibility declaredAccessibility = node.GetDeclaredAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
+                        Accessibility effectiveAccessibility = node.GetEffectiveAccessibility (
                             context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
+                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment (
+                            settings.DocumentationRules, node.Kind (), node.Parent.Kind (),
                             declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                        this.HandleDeclaration (context, needsComment, node,
+                                                node.Identifier.GetLocation ());
                 }
 
-                private void HandleDeclaration(SyntaxNodeAnalysisContext context, bool needsComment,
-                                               SyntaxNode node, Location location)
+                private void
+                HandleDeclaration (SyntaxNodeAnalysisContext context, bool needsComment,
+                                   SyntaxNode node, Location location)
                 {
-                        var documentation = node.GetDocumentationCommentTriviaSyntax();
+                        var documentation = node.GetDocumentationCommentTriviaSyntax ();
                         if (documentation == null)
-                        {
-                                // missing documentation is reported by SA1600, SA1601, and SA1602
-                                return;
-                        }
+                                {
+                                        // missing documentation is reported by SA1600, SA1601, and
+                                        // SA1602
+                                        return;
+                                }
 
-                        if (documentation.Content.GetFirstXmlElement(
-                                XmlCommentHelper.InheritdocXmlTag) != null)
-                        {
-                                // Ignore nodes with an <inheritdoc/> tag.
-                                return;
-                        }
+                        if (documentation.Content.GetFirstXmlElement (
+                                XmlCommentHelper.InheritdocXmlTag)
+                            != null)
+                                {
+                                        // Ignore nodes with an <inheritdoc/> tag.
+                                        return;
+                                }
 
                         XElement completeDocumentation = null;
 
-                        var relevantXmlElement =
-                            documentation.Content.GetFirstXmlElement(this.XmlTagToHandle);
+                        var relevantXmlElement
+                            = documentation.Content.GetFirstXmlElement (this.XmlTagToHandle);
                         if (relevantXmlElement == null)
-                        {
-                                relevantXmlElement = documentation.Content.GetFirstXmlElement(
-                                    XmlCommentHelper.IncludeXmlTag);
-                                if (relevantXmlElement != null)
                                 {
-                                        var declaration = context.SemanticModel.GetDeclaredSymbol(
-                                            node, context.CancellationToken);
-                                        var rawDocumentation =
-                                            declaration?.GetDocumentationCommentXml(
-                                                expandIncludes
-                                                : true, cancellationToken
-                                                : context.CancellationToken);
-                                        completeDocumentation =
-                                            XElement.Parse(rawDocumentation, LoadOptions.None);
-                                        if (completeDocumentation.Nodes().OfType<XElement>().Any(
-                                                element => element.Name ==
-                                                           XmlCommentHelper.InheritdocXmlTag))
-                                        {
-                                                // Ignore nodes with an <inheritdoc/> tag in the
-                                                // included XML.
-                                                return;
-                                        }
+                                        relevantXmlElement
+                                            = documentation.Content.GetFirstXmlElement (
+                                                XmlCommentHelper.IncludeXmlTag);
+                                        if (relevantXmlElement != null)
+                                                {
+                                                        var declaration
+                                                            = context.SemanticModel
+                                                                  .GetDeclaredSymbol (
+                                                                      node,
+                                                                      context.CancellationToken);
+                                                        var rawDocumentation
+                                                            = declaration?
+                                                                  .GetDocumentationCommentXml (
+                                                                      expandIncludes
+                                                                      : true, cancellationToken
+                                                                      : context.CancellationToken);
+                                                        completeDocumentation = XElement.Parse (
+                                                            rawDocumentation, LoadOptions.None);
+                                                        if (completeDocumentation.Nodes ()
+                                                                .OfType<XElement> ()
+                                                                .Any (
+                                                                    element => element.Name
+                                                                               == XmlCommentHelper
+                                                                                      .InheritdocXmlTag))
+                                                                {
+                                                                        // Ignore nodes with an
+                                                                        // <inheritdoc/> tag in the
+                                                                        // included XML.
+                                                                        return;
+                                                                }
+                                                }
                                 }
-                        }
 
-                        this.HandleXmlElement(context, needsComment, relevantXmlElement,
-                                              completeDocumentation, location);
+                        this.HandleXmlElement (context, needsComment, relevantXmlElement,
+                                               completeDocumentation, location);
                 }
         }
 }

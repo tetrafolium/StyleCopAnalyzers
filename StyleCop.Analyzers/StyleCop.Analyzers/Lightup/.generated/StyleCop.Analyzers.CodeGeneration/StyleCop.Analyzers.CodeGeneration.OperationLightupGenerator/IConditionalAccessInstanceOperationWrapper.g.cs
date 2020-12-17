@@ -9,44 +9,45 @@ namespace StyleCop.Analyzers.Lightup
 
         internal readonly struct IConditionalAccessInstanceOperationWrapper : IOperationWrapper
         {
-                internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IConditionalAccessInstanceOperation";
+                internal const string WrappedTypeName
+                    = "Microsoft.CodeAnalysis.Operations.IConditionalAccessInstanceOperation";
                 private static readonly Type WrappedType;
                 private readonly IOperation operation;
-                static IConditionalAccessInstanceOperationWrapper()
+                static IConditionalAccessInstanceOperationWrapper ()
                 {
-                        WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IConditionalAccessInstanceOperationWrapper));
+                        WrappedType = OperationWrapperHelper.GetWrappedType (
+                            typeof (IConditionalAccessInstanceOperationWrapper));
                 }
 
-                private IConditionalAccessInstanceOperationWrapper(IOperation operation)
+                private IConditionalAccessInstanceOperationWrapper (IOperation operation)
                 {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
-                public static IConditionalAccessInstanceOperationWrapper FromOperation(
-                    IOperation operation)
+                public static IConditionalAccessInstanceOperationWrapper
+                FromOperation (IOperation operation)
                 {
                         if (operation == null)
-                        {
-                                return default;
-                        }
+                                {
+                                        return default;
+                                }
 
-                        if (!IsInstance(operation))
-                        {
-                                throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
-                        }
+                        if (!IsInstance (operation))
+                                {
+                                        throw new InvalidCastException (
+                                            $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                }
 
-                        return new IConditionalAccessInstanceOperationWrapper(operation);
+                        return new IConditionalAccessInstanceOperationWrapper (operation);
                 }
 
-                public static bool IsInstance(IOperation operation)
+                public static bool
+                IsInstance (IOperation operation)
                 {
-                        return operation != null &&
-                               LightupHelpers.CanWrapOperation(operation, WrappedType);
+                        return operation != null
+                               && LightupHelpers.CanWrapOperation (operation, WrappedType);
                 }
         }
 }
