@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Settings.ObjectModel {
+namespace StyleCop.Analyzers.Settings.ObjectModel
+{
         using LightJson;
 
-        internal class ReadabilitySettings {
+        internal class ReadabilitySettings
+        {
                 /// <summary>
                 /// This is the backing field for the <see cref="AllowBuiltInTypeAliases"/>
                 /// property.
@@ -22,7 +24,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// <param name="readabilitySettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal ReadabilitySettings(JsonObject readabilitySettingsObject)
-                    : this() {
+                  : this()
+                {
                         foreach (var kvp in readabilitySettingsObject) {
                                 switch (kvp.Key) {
                                         case "allowBuiltInTypeAliases":

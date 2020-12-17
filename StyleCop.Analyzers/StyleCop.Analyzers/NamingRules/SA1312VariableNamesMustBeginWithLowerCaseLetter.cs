@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.NamingRules {
+namespace StyleCop.Analyzers.NamingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -26,62 +27,64 @@ namespace StyleCop.Analyzers.NamingRules {
         /// within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1312VariableNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer {
+        internal class SA1312VariableNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1312VariableNamesMustBeginWithLowerCaseLetter"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1312";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1312.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1312.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(NamingResources.SA1312Title),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1312Title),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SA1312MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1312MessageFormat),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SA1312Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1312Description),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.NamingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.NamingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    VariableDeclarationAction = HandleVariableDeclaration;
+                  VariableDeclarationAction = HandleVariableDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> CatchDeclarationAction =
-                    HandleCatchDeclaration;
+                  HandleCatchDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> QueryContinuationAction =
-                    HandleQueryContinuation;
+                  HandleQueryContinuation;
                 private static readonly Action<SyntaxNodeAnalysisContext> FromClauseAction =
-                    HandleFromClause;
+                  HandleFromClause;
                 private static readonly Action<SyntaxNodeAnalysisContext> LetClauseAction =
-                    HandleLetClause;
+                  HandleLetClause;
                 private static readonly Action<SyntaxNodeAnalysisContext> JoinClauseAction =
-                    HandleJoinClause;
+                  HandleJoinClause;
                 private static readonly Action<SyntaxNodeAnalysisContext> JoinIntoClauseAction =
-                    HandleJoinIntoClause;
+                  HandleJoinIntoClause;
                 private static readonly Action<SyntaxNodeAnalysisContext> ForEachStatementAction =
-                    HandleForEachStatement;
+                  HandleForEachStatement;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    SingleVariableDesignationAction = HandleSingleVariableDesignation;
+                  SingleVariableDesignationAction = HandleSingleVariableDesignation;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -102,7 +105,8 @@ namespace StyleCop.Analyzers.NamingRules {
                                                          SyntaxKindEx.SingleVariableDesignation);
                 }
 
-                private static void HandleVariableDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleVariableDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         VariableDeclarationSyntax syntax = (VariableDeclarationSyntax) context.Node;
                         if (syntax.Parent.IsKind(SyntaxKind.FieldDeclaration) ||
                             syntax.Parent.IsKind(SyntaxKind.EventFieldDeclaration)) {
@@ -111,7 +115,7 @@ namespace StyleCop.Analyzers.NamingRules {
                         }
 
                         LocalDeclarationStatementSyntax parentDeclaration =
-                            syntax.Parent as LocalDeclarationStatementSyntax;
+                          syntax.Parent as LocalDeclarationStatementSyntax;
                         if (parentDeclaration?.IsConst ?? false) {
                                 // this diagnostic does not apply to locals constants
                                 return;
@@ -127,46 +131,55 @@ namespace StyleCop.Analyzers.NamingRules {
                         }
                 }
 
-                private static void HandleCatchDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleCatchDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         CheckIdentifier(context,
                                         ((CatchDeclarationSyntax) context.Node).Identifier);
                 }
 
-                private static void HandleQueryContinuation(SyntaxNodeAnalysisContext context) {
+                private static void HandleQueryContinuation(SyntaxNodeAnalysisContext context)
+                {
                         CheckIdentifier(context,
                                         ((QueryContinuationSyntax) context.Node).Identifier);
                 }
 
-                private static void HandleFromClause(SyntaxNodeAnalysisContext context) {
+                private static void HandleFromClause(SyntaxNodeAnalysisContext context)
+                {
                         CheckIdentifier(context, ((FromClauseSyntax) context.Node).Identifier);
                 }
 
-                private static void HandleLetClause(SyntaxNodeAnalysisContext context) {
+                private static void HandleLetClause(SyntaxNodeAnalysisContext context)
+                {
                         CheckIdentifier(context, ((LetClauseSyntax) context.Node).Identifier);
                 }
 
-                private static void HandleJoinClause(SyntaxNodeAnalysisContext context) {
+                private static void HandleJoinClause(SyntaxNodeAnalysisContext context)
+                {
                         CheckIdentifier(context, ((JoinClauseSyntax) context.Node).Identifier);
                 }
 
-                private static void HandleJoinIntoClause(SyntaxNodeAnalysisContext context) {
+                private static void HandleJoinIntoClause(SyntaxNodeAnalysisContext context)
+                {
                         CheckIdentifier(context, ((JoinIntoClauseSyntax) context.Node).Identifier);
                 }
 
-                private static void HandleForEachStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleForEachStatement(SyntaxNodeAnalysisContext context)
+                {
                         CheckIdentifier(context,
                                         ((ForEachStatementSyntax) context.Node).Identifier);
                 }
 
                 private static void HandleSingleVariableDesignation(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         CheckIdentifier(
-                            context,
-                            ((SingleVariableDesignationSyntaxWrapper) context.Node).Identifier);
+                          context,
+                          ((SingleVariableDesignationSyntaxWrapper) context.Node).Identifier);
                 }
 
                 private static void CheckIdentifier(SyntaxNodeAnalysisContext context,
-                                                    SyntaxToken identifier) {
+                                                    SyntaxToken identifier)
+                {
                         if (identifier.IsMissing) {
                                 return;
                         }
@@ -182,7 +195,7 @@ namespace StyleCop.Analyzers.NamingRules {
 
                         // Variable names should begin with lower-case letter
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
+                          Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
                 }
         }
 }

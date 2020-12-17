@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.NamingRules {
+namespace StyleCop.Analyzers.NamingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -30,53 +31,56 @@ namespace StyleCop.Analyzers.NamingRules {
         /// within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1313ParameterNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer {
+        internal class SA1313ParameterNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1313ParameterNamesMustBeginWithLowerCaseLetter"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1313";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1313.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1313.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(NamingResources.SA1313Title),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1313Title),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SA1313MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1313MessageFormat),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SA1313Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1313Description),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.NamingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.NamingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> ParameterAction =
-                    HandleParameter;
+                  HandleParameter;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxNodeAction(ParameterAction, SyntaxKind.Parameter);
                 }
 
-                private static void HandleParameter(SyntaxNodeAnalysisContext context) {
+                private static void HandleParameter(SyntaxNodeAnalysisContext context)
+                {
                         ParameterSyntax syntax = (ParameterSyntax) context.Node;
                         if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax)) {
                                 return;
@@ -108,10 +112,11 @@ namespace StyleCop.Analyzers.NamingRules {
 
                         // Parameter names should begin with lower-case letter
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
+                          Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
                 }
 
-                private static bool IsInLambda(ParameterSyntax syntax) {
+                private static bool IsInLambda(ParameterSyntax syntax)
+                {
                         if (syntax.Parent.IsKind(SyntaxKind.SimpleLambdaExpression)) {
                                 return true;
                         }
@@ -125,7 +130,8 @@ namespace StyleCop.Analyzers.NamingRules {
                 }
 
                 private static bool NameMatchesAbstraction(ParameterSyntax syntax,
-                                                           SemanticModel semanticModel) {
+                                                           SemanticModel semanticModel)
+                {
                         if (!(syntax.Parent is ParameterListSyntax parameterList)) {
                                 // This occurs for simple lambda expressions (without parentheses)
                                 return false;
@@ -159,12 +165,12 @@ namespace StyleCop.Analyzers.NamingRules {
                                 var implementedInterfaces = containingType.Interfaces;
                                 foreach (var implementedInterface in implementedInterfaces) {
                                         foreach (var member in implementedInterface
-                                                     .GetMembers(methodSymbol.Name)
-                                                     .OfType<IMethodSymbol>()) {
+                                                   .GetMembers(methodSymbol.Name)
+                                                   .OfType<IMethodSymbol>()) {
                                                 if (methodSymbol.Equals(
-                                                        containingType
-                                                            .FindImplementationForInterfaceMember(
-                                                                member))) {
+                                                      containingType
+                                                        .FindImplementationForInterfaceMember(
+                                                          member))) {
                                                         return member.Parameters[index].Name ==
                                                                syntax.Identifier.ValueText;
                                                 }

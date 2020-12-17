@@ -1,26 +1,30 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IRelationalCaseClauseOperationWrapper : IOperationWrapper {
+        internal readonly struct IRelationalCaseClauseOperationWrapper : IOperationWrapper
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IRelationalCaseClauseOperation";
+                  "Microsoft.CodeAnalysis.Operations.IRelationalCaseClauseOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> ValueAccessor;
                 private readonly IOperation operation;
-                static IRelationalCaseClauseOperationWrapper() {
+                static IRelationalCaseClauseOperationWrapper()
+                {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IRelationalCaseClauseOperationWrapper));
+                          typeof(IRelationalCaseClauseOperationWrapper));
                         ValueAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Value));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                            WrappedType, nameof(Value));
                 }
 
-                private IRelationalCaseClauseOperationWrapper(IOperation operation) {
+                private IRelationalCaseClauseOperationWrapper(IOperation operation)
+                {
                         this.operation = operation;
                 }
 
@@ -28,29 +32,31 @@ namespace StyleCop.Analyzers.Lightup {
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public IOperation Value => ValueAccessor(this.WrappedOperation);
                 public object Relation => throw new NotImplementedException(
-                    "Property 'IRelationalCaseClauseOperation.Relation' has unsupported type 'BinaryOperatorKind'");
+                  "Property 'IRelationalCaseClauseOperation.Relation' has unsupported type 'BinaryOperatorKind'");
                 public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
                 public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
                 public static explicit operator IRelationalCaseClauseOperationWrapper(
-                    ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
+                  ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
                 public static implicit operator ICaseClauseOperationWrapper(
-                    IRelationalCaseClauseOperationWrapper wrapper) =>
-                    ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+                  IRelationalCaseClauseOperationWrapper wrapper) =>
+                  ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
                 public static IRelationalCaseClauseOperationWrapper FromOperation(
-                    IOperation operation) {
+                  IOperation operation)
+                {
                         if (operation == null) {
                                 return default;
                         }
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IRelationalCaseClauseOperationWrapper(operation);
                 }
 
-                public static bool IsInstance(IOperation operation) {
+                public static bool IsInstance(IOperation operation)
+                {
                         return operation != null &&
                                LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }

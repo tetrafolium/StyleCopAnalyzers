@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Linq;
@@ -24,62 +25,63 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// readability of the code.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1400AccessModifierMustBeDeclared : DiagnosticAnalyzer {
+        internal class SA1400AccessModifierMustBeDeclared : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1400AccessModifierMustBeDeclared"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1400";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1400.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1400.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1400Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1400Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1400MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1400MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1400Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1400Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
+                  BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    DelegateDeclarationAction = HandleDelegateDeclaration;
+                  DelegateDeclarationAction = HandleDelegateDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> EventDeclarationAction =
-                    HandleEventDeclaration;
+                  HandleEventDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction =
-                    HandleMethodDeclaration;
+                  HandleMethodDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    PropertyDeclarationAction = HandlePropertyDeclaration;
+                  PropertyDeclarationAction = HandlePropertyDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    BaseFieldDeclarationAction = HandleBaseFieldDeclaration;
+                  BaseFieldDeclarationAction = HandleBaseFieldDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction =
-                    HandleIndexerDeclaration;
+                  HandleIndexerDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ConstructorDeclarationAction = HandleConstructorDeclaration;
+                  ConstructorDeclarationAction = HandleConstructorDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -101,17 +103,20 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                                          SyntaxKind.ConstructorDeclaration);
                 }
 
-                private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (BaseTypeDeclarationSyntax) context.Node;
                         CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
                 }
 
-                private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (DelegateDeclarationSyntax) context.Node;
                         CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
                 }
 
-                private static void HandleEventDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleEventDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (EventDeclarationSyntax) context.Node;
                         if (syntax.ExplicitInterfaceSpecifier != null) {
                                 return;
@@ -124,7 +129,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
                 }
 
-                private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (MethodDeclarationSyntax) context.Node;
                         if (syntax.ExplicitInterfaceSpecifier != null) {
                                 return;
@@ -137,7 +143,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
                 }
 
-                private static void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (PropertyDeclarationSyntax) context.Node;
                         if (syntax.ExplicitInterfaceSpecifier != null) {
                                 return;
@@ -150,7 +157,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
                 }
 
-                private static void HandleBaseFieldDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleBaseFieldDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (BaseFieldDeclarationSyntax) context.Node;
                         if (syntax.Parent.IsKind(SyntaxKind.InterfaceDeclaration)) {
                                 // this can occur for event field declarations
@@ -163,17 +171,17 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         }
 
                         VariableDeclaratorSyntax declarator =
-                            declarationSyntax.Variables.FirstOrDefault(i =>
-                                                                           !i.Identifier.IsMissing);
+                          declarationSyntax.Variables.FirstOrDefault(i => !i.Identifier.IsMissing);
                         if (declarator == null) {
                                 return;
                         }
 
-                        CheckAccessModifiers(context, declarator.Identifier, syntax.Modifiers,
-                                             declarator);
+                        CheckAccessModifiers(
+                          context, declarator.Identifier, syntax.Modifiers, declarator);
                 }
 
-                private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (IndexerDeclarationSyntax) context.Node;
                         if (syntax.ExplicitInterfaceSpecifier != null) {
                                 return;
@@ -186,8 +194,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         CheckAccessModifiers(context, syntax.ThisKeyword, syntax.Modifiers);
                 }
 
-                private static void HandleConstructorDeclaration(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (ConstructorDeclarationSyntax) context.Node;
                         CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
                 }
@@ -195,7 +203,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 private static void CheckAccessModifiers(SyntaxNodeAnalysisContext context,
                                                          SyntaxToken identifier,
                                                          SyntaxTokenList modifiers,
-                                                         SyntaxNode declarationNode = null) {
+                                                         SyntaxNode declarationNode = null)
+                {
                         if (identifier.IsMissing) {
                                 return;
                         }
@@ -227,14 +236,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
 
                         // missing access modifier
                         ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(
-                            declarationNode ?? context.Node, context.CancellationToken);
+                          declarationNode ?? context.Node, context.CancellationToken);
                         string name = symbol?.Name;
                         if (string.IsNullOrEmpty(name)) {
                                 return;
                         }
 
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
+                          Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
                 }
         }
 }

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.LayoutRules {
+namespace StyleCop.Analyzers.LayoutRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -39,7 +40,8 @@ namespace StyleCop.Analyzers.LayoutRules {
         /// blank multiple lines in a row.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1507CodeMustNotContainMultipleBlankLinesInARow : DiagnosticAnalyzer {
+        internal class SA1507CodeMustNotContainMultipleBlankLinesInARow : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1507CodeMustNotContainMultipleBlankLinesInARow"/> analyzer.
@@ -47,48 +49,50 @@ namespace StyleCop.Analyzers.LayoutRules {
                 public const string DiagnosticId = "SA1507";
 
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1507.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1507.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1507Title),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1507Title),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1507MessageFormat),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1507MessageFormat),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1507Description),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1507Description),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
 
-#pragma warning disable SA1202  // Elements should be ordered by access
+#pragma warning disable SA1202 // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.LayoutRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
-#pragma warning restore SA1202  // Elements should be ordered by access
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.LayoutRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
+#pragma warning restore SA1202 // Elements should be ordered by access
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                  HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context) {
+                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                {
                         if (context.Tree.IsWhitespaceOnly(context.CancellationToken)) {
                                 // Handling of empty documents is now the responsibility of the
                                 // analyzers
@@ -109,7 +113,7 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
                                 for (int i = 0; i < leadingTrivia.Count; i++) {
                                         switch (leadingTrivia [i]
-                                                    .Kind()) {
+                                                  .Kind()) {
                                                 case SyntaxKind.WhitespaceTrivia:
                                                         break;
 
@@ -120,16 +124,22 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                                                 default:
                                                         ReportDiagnosticIfNecessary(
-                                                            context, leadingTrivia, blankLineIndex,
-                                                            blankLineEndIndex, blankLineCount);
+                                                          context,
+                                                          leadingTrivia,
+                                                          blankLineIndex,
+                                                          blankLineEndIndex,
+                                                          blankLineCount);
                                                         blankLineIndex = i + 1;
                                                         blankLineCount = 0;
                                                         break;
                                         }
                                 }
 
-                                ReportDiagnosticIfNecessary(context, leadingTrivia, blankLineIndex,
-                                                            blankLineEndIndex, blankLineCount);
+                                ReportDiagnosticIfNecessary(context,
+                                                            leadingTrivia,
+                                                            blankLineIndex,
+                                                            blankLineEndIndex,
+                                                            blankLineCount);
                         }
                 }
 
@@ -137,7 +147,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                                                                 SyntaxTriviaList leadingTrivia,
                                                                 int blankLineIndex,
                                                                 int blankLineEndIndex,
-                                                                int blankLineCount) {
+                                                                int blankLineCount)
+                {
                         if (blankLineIndex < 0 || blankLineEndIndex <= blankLineIndex) {
                                 // nothing to report
                                 return;
@@ -146,9 +157,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                         if (blankLineIndex > 0) {
                                 var triviaBeforeBlankLines = leadingTrivia[blankLineIndex - 1];
                                 if (triviaBeforeBlankLines.IsKind(
-                                        SyntaxKind.SingleLineCommentTrivia) ||
+                                      SyntaxKind.SingleLineCommentTrivia) ||
                                     triviaBeforeBlankLines.IsKind(
-                                        SyntaxKind.MultiLineCommentTrivia)) {
+                                      SyntaxKind.MultiLineCommentTrivia)) {
                                         // when blank lines appear after a comment, skip the first
                                         // one because that's part of the end of the comment trivia.
                                         blankLineIndex++;
@@ -167,8 +178,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         }
 
                         TextSpan span =
-                            TextSpan.FromBounds(leadingTrivia[blankLineIndex].SpanStart,
-                                                leadingTrivia[blankLineEndIndex].Span.End);
+                          TextSpan.FromBounds(leadingTrivia[blankLineIndex].SpanStart,
+                                              leadingTrivia[blankLineEndIndex].Span.End);
                         Location location = Location.Create(context.Tree, span);
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
                 }

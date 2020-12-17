@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IIncrementOrDecrementOperationWrapper : IOperationWrapper {
+        internal readonly struct IIncrementOrDecrementOperationWrapper : IOperationWrapper
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IIncrementOrDecrementOperation";
+                  "Microsoft.CodeAnalysis.Operations.IIncrementOrDecrementOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, bool> IsPostfixAccessor;
                 private static readonly Func<IOperation, bool> IsLiftedAccessor;
@@ -16,28 +18,29 @@ namespace StyleCop.Analyzers.Lightup {
                 private static readonly Func<IOperation, IOperation> TargetAccessor;
                 private static readonly Func<IOperation, IMethodSymbol> OperatorMethodAccessor;
                 private readonly IOperation operation;
-                static IIncrementOrDecrementOperationWrapper() {
+                static IIncrementOrDecrementOperationWrapper()
+                {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IIncrementOrDecrementOperationWrapper));
+                          typeof(IIncrementOrDecrementOperationWrapper));
                         IsPostfixAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                                WrappedType, nameof(IsPostfix));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                            WrappedType, nameof(IsPostfix));
                         IsLiftedAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                                WrappedType, nameof(IsLifted));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                            WrappedType, nameof(IsLifted));
                         IsCheckedAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                                WrappedType, nameof(IsChecked));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                            WrappedType, nameof(IsChecked));
                         TargetAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Target));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                            WrappedType, nameof(Target));
                         OperatorMethodAccessor =
-                            LightupHelpers
-                                .CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
-                                    WrappedType, nameof(OperatorMethod));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                            WrappedType, nameof(OperatorMethod));
                 }
 
-                private IIncrementOrDecrementOperationWrapper(IOperation operation) {
+                private IIncrementOrDecrementOperationWrapper(IOperation operation)
+                {
                         this.operation = operation;
                 }
 
@@ -48,22 +51,24 @@ namespace StyleCop.Analyzers.Lightup {
                 public bool IsChecked => IsCheckedAccessor(this.WrappedOperation);
                 public IOperation Target => TargetAccessor(this.WrappedOperation);
                 public IMethodSymbol OperatorMethod =>
-                    OperatorMethodAccessor(this.WrappedOperation);
+                  OperatorMethodAccessor(this.WrappedOperation);
                 public static IIncrementOrDecrementOperationWrapper FromOperation(
-                    IOperation operation) {
+                  IOperation operation)
+                {
                         if (operation == null) {
                                 return default;
                         }
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IIncrementOrDecrementOperationWrapper(operation);
                 }
 
-                public static bool IsInstance(IOperation operation) {
+                public static bool IsInstance(IOperation operation)
+                {
                         return operation != null &&
                                LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }

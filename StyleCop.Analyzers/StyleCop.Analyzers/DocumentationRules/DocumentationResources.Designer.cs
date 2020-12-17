@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Reflection;
 
@@ -20,31 +21,36 @@ namespace StyleCop.Analyzers.DocumentationRules {
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
-            "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+          "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class DocumentationResources {
+        internal class DocumentationResources
+        {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                    "Microsoft.Performance",
-                    "CA1811:AvoidUncalledPrivateCode")]
-                internal DocumentationResources() {}
+                  "Microsoft.Performance",
+                  "CA1811:AvoidUncalledPrivateCode")]
+                internal
+                DocumentationResources()
+                {}
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
-                internal static global::System.Resources.ResourceManager ResourceManager {
-                        get {
+                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                internal static global::System.Resources.ResourceManager ResourceManager
+                {
+                        get
+                        {
                                 if (object.ReferenceEquals(resourceMan, null)) {
                                         global::System.Resources.ResourceManager
-                                            temp = new global::System.Resources.ResourceManager(
-                                            "StyleCop.Analyzers.DocumentationRules.DocumentationResources",
-                                            typeof(DocumentationResources).GetTypeInfo().Assembly);
+                                          temp = new global::System.Resources.ResourceManager(
+                                          "StyleCop.Analyzers.DocumentationRules.DocumentationResources",
+                                          typeof(DocumentationResources).GetTypeInfo().Assembly);
                                         resourceMan = temp;
                                 }
                                 return resourceMan;
@@ -56,8 +62,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
-                internal static global::System.Globalization.CultureInfo Culture {
+                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                internal static global::System.Globalization.CultureInfo Culture
+                {
                         get { return resourceCulture; }
                         set { resourceCulture = value; }
                 }
@@ -65,8 +72,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Generate constructor documentation.
                 /// </summary>
-                internal static string ConstructorDocumentationCodeFix {
-                        get {
+                internal static string ConstructorDocumentationCodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("ConstructorDocumentationCodeFix",
                                                                  resourceCulture);
                         }
@@ -75,8 +84,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Generate destructor documentation.
                 /// </summary>
-                internal static string DestructorDocumentationCodeFix {
-                        get {
+                internal static string DestructorDocumentationCodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("DestructorDocumentationCodeFix",
                                                                  resourceCulture);
                         }
@@ -85,8 +96,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Finalizes an instance of the .
                 /// </summary>
-                internal static string DestructorStandardTextFirstPart {
-                        get {
+                internal static string DestructorStandardTextFirstPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("DestructorStandardTextFirstPart",
                                                                  resourceCulture);
                         }
@@ -95,8 +108,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to  class..
                 /// </summary>
-                internal static string DestructorStandardTextSecondPart {
-                        get {
+                internal static string DestructorStandardTextSecondPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("DestructorStandardTextSecondPart",
                                                                  resourceCulture);
                         }
@@ -105,8 +120,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Inherit documentation.
                 /// </summary>
-                internal static string InheritdocCodeFix {
-                        get {
+                internal static string InheritdocCodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("InheritdocCodeFix",
                                                                  resourceCulture);
                         }
@@ -115,8 +132,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Generate method documentation.
                 /// </summary>
-                internal static string MethodDocumentationCodeFix {
-                        get {
+                internal static string MethodDocumentationCodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("MethodDocumentationCodeFix",
                                                                  resourceCulture);
                         }
@@ -125,28 +144,34 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Initializes a new instance of the .
                 /// </summary>
-                internal static string NonPrivateConstructorStandardTextFirstPart {
-                        get {
+                internal static string NonPrivateConstructorStandardTextFirstPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString(
-                                    "NonPrivateConstructorStandardTextFirstPart", resourceCulture);
+                                  "NonPrivateConstructorStandardTextFirstPart", resourceCulture);
                         }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to  {0}.
                 /// </summary>
-                internal static string NonPrivateConstructorStandardTextSecondPart {
-                        get {
+                internal static string NonPrivateConstructorStandardTextSecondPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString(
-                                    "NonPrivateConstructorStandardTextSecondPart", resourceCulture);
+                                  "NonPrivateConstructorStandardTextSecondPart", resourceCulture);
                         }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to The parameter is not used..
                 /// </summary>
-                internal static string ParameterNotUsed {
-                        get {
+                internal static string ParameterNotUsed
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("ParameterNotUsed",
                                                                  resourceCulture);
                         }
@@ -155,28 +180,34 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Prevents a default instance of the .
                 /// </summary>
-                internal static string PrivateConstructorStandardTextFirstPart {
-                        get {
+                internal static string PrivateConstructorStandardTextFirstPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString(
-                                    "PrivateConstructorStandardTextFirstPart", resourceCulture);
+                                  "PrivateConstructorStandardTextFirstPart", resourceCulture);
                         }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to  {0} from being created.
                 /// </summary>
-                internal static string PrivateConstructorStandardTextSecondPart {
-                        get {
+                internal static string PrivateConstructorStandardTextSecondPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString(
-                                    "PrivateConstructorStandardTextSecondPart", resourceCulture);
+                                  "PrivateConstructorStandardTextSecondPart", resourceCulture);
                         }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Add standard text.
                 /// </summary>
-                internal static string PropertySummaryStartTextCodeFix {
-                        get {
+                internal static string PropertySummaryStartTextCodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("PropertySummaryStartTextCodeFix",
                                                                  resourceCulture);
                         }
@@ -186,8 +217,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A C# code element is missing a
                 ///   documentation header..
                 /// </summary>
-                internal static string SA1600Description {
-                        get {
+                internal static string SA1600Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1600Description",
                                                                  resourceCulture);
                         }
@@ -196,8 +229,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Elements should be documented.
                 /// </summary>
-                internal static string SA1600MessageFormat {
-                        get {
+                internal static string SA1600MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1600MessageFormat",
                                                                  resourceCulture);
                         }
@@ -206,7 +241,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Elements should be documented.
                 /// </summary>
-                internal static string SA1600Title {
+                internal static string SA1600Title
+                {
                         get { return ResourceManager.GetString("SA1600Title", resourceCulture); }
                 }
 
@@ -214,8 +250,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A C# partial element is missing a
                 ///   documentation header..
                 /// </summary>
-                internal static string SA1601Description {
-                        get {
+                internal static string SA1601Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1601Description",
                                                                  resourceCulture);
                         }
@@ -224,8 +262,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Partial elements should be documented.
                 /// </summary>
-                internal static string SA1601MessageFormat {
-                        get {
+                internal static string SA1601MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1601MessageFormat",
                                                                  resourceCulture);
                         }
@@ -234,7 +274,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Partial elements should be documented.
                 /// </summary>
-                internal static string SA1601Title {
+                internal static string SA1601Title
+                {
                         get { return ResourceManager.GetString("SA1601Title", resourceCulture); }
                 }
 
@@ -242,8 +283,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to An item within a C# enumeration is
                 ///   missing an Xml documentation header..
                 /// </summary>
-                internal static string SA1602Description {
-                        get {
+                internal static string SA1602Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1602Description",
                                                                  resourceCulture);
                         }
@@ -252,8 +295,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Enumeration items should be documented.
                 /// </summary>
-                internal static string SA1602MessageFormat {
-                        get {
+                internal static string SA1602MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1602MessageFormat",
                                                                  resourceCulture);
                         }
@@ -262,7 +307,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Enumeration items should be documented.
                 /// </summary>
-                internal static string SA1602Title {
+                internal static string SA1602Title
+                {
                         get { return ResourceManager.GetString("SA1602Title", resourceCulture); }
                 }
 
@@ -270,8 +316,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The XML within a C# element’s document
                 ///   header is badly formed..
                 /// </summary>
-                internal static string SA1603Description {
-                        get {
+                internal static string SA1603Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1603Description",
                                                                  resourceCulture);
                         }
@@ -281,8 +329,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The documentation header is composed of
                 ///   invalid XML: {0}.
                 /// </summary>
-                internal static string SA1603MessageFormat {
-                        get {
+                internal static string SA1603MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1603MessageFormat",
                                                                  resourceCulture);
                         }
@@ -291,7 +341,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Documentation should contain valid XML.
                 /// </summary>
-                internal static string SA1603Title {
+                internal static string SA1603Title
+                {
                         get { return ResourceManager.GetString("SA1603Title", resourceCulture); }
                 }
 
@@ -299,8 +350,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The XML header documentation for a C#
                 ///   element is missing a &lt;summary&gt; tag..
                 /// </summary>
-                internal static string SA1604Description {
-                        get {
+                internal static string SA1604Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1604Description",
                                                                  resourceCulture);
                         }
@@ -310,8 +363,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should have
                 ///   summary.
                 /// </summary>
-                internal static string SA1604MessageFormat {
-                        get {
+                internal static string SA1604MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1604MessageFormat",
                                                                  resourceCulture);
                         }
@@ -321,7 +376,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should have
                 ///   summary.
                 /// </summary>
-                internal static string SA1604Title {
+                internal static string SA1604Title
+                {
                         get { return ResourceManager.GetString("SA1604Title", resourceCulture); }
                 }
 
@@ -330,8 +386,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   tag within the documentation header for a C# code element is missing or
                 ///   empty..
                 /// </summary>
-                internal static string SA1605Description {
-                        get {
+                internal static string SA1605Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1605Description",
                                                                  resourceCulture);
                         }
@@ -341,8 +399,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Partial element documentation should
                 ///   have summary.
                 /// </summary>
-                internal static string SA1605MessageFormat {
-                        get {
+                internal static string SA1605MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1605MessageFormat",
                                                                  resourceCulture);
                         }
@@ -352,7 +412,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Partial element documentation should
                 ///   have summary.
                 /// </summary>
-                internal static string SA1605Title {
+                internal static string SA1605Title
+                {
                         get { return ResourceManager.GetString("SA1605Title", resourceCulture); }
                 }
 
@@ -360,8 +421,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The &lt;summary&gt; tag within the
                 ///   documentation header for a C# code element is empty..
                 /// </summary>
-                internal static string SA1606Description {
-                        get {
+                internal static string SA1606Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1606Description",
                                                                  resourceCulture);
                         }
@@ -371,8 +434,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should have
                 ///   summary text.
                 /// </summary>
-                internal static string SA1606MessageFormat {
-                        get {
+                internal static string SA1606MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1606MessageFormat",
                                                                  resourceCulture);
                         }
@@ -382,7 +447,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should have
                 ///   summary text.
                 /// </summary>
-                internal static string SA1606Title {
+                internal static string SA1606Title
+                {
                         get { return ResourceManager.GetString("SA1606Title", resourceCulture); }
                 }
 
@@ -390,8 +456,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The &lt;summary&gt; or &lt;content&gt;
                 ///   tag within the documentation header for a C# code element is empty..
                 /// </summary>
-                internal static string SA1607Description {
-                        get {
+                internal static string SA1607Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1607Description",
                                                                  resourceCulture);
                         }
@@ -401,8 +469,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Partial element documentation should
                 ///   have summary text.
                 /// </summary>
-                internal static string SA1607MessageFormat {
-                        get {
+                internal static string SA1607MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1607MessageFormat",
                                                                  resourceCulture);
                         }
@@ -412,7 +482,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Partial element documentation should
                 ///   have summary text.
                 /// </summary>
-                internal static string SA1607Title {
+                internal static string SA1607Title
+                {
                         get { return ResourceManager.GetString("SA1607Title", resourceCulture); }
                 }
 
@@ -421,8 +492,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   element&apos;s XML header documentation contains the default text generated by
                 ///   Visual Studio during the creation of the element..
                 /// </summary>
-                internal static string SA1608Description {
-                        get {
+                internal static string SA1608Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1608Description",
                                                                  resourceCulture);
                         }
@@ -432,8 +505,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should not have
                 ///   default summary.
                 /// </summary>
-                internal static string SA1608MessageFormat {
-                        get {
+                internal static string SA1608MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1608MessageFormat",
                                                                  resourceCulture);
                         }
@@ -443,7 +518,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should not have
                 ///   default summary.
                 /// </summary>
-                internal static string SA1608Title {
+                internal static string SA1608Title
+                {
                         get { return ResourceManager.GetString("SA1608Title", resourceCulture); }
                 }
 
@@ -451,8 +527,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The XML header documentation for a C#
                 ///   property does not contain a &lt;value&gt; tag..
                 /// </summary>
-                internal static string SA1609Description {
-                        get {
+                internal static string SA1609Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1609Description",
                                                                  resourceCulture);
                         }
@@ -462,8 +540,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Property documentation should have
                 ///   value.
                 /// </summary>
-                internal static string SA1609MessageFormat {
-                        get {
+                internal static string SA1609MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1609MessageFormat",
                                                                  resourceCulture);
                         }
@@ -472,8 +552,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Document value from summary.
                 /// </summary>
-                internal static string SA1609SA1610CodeFix {
-                        get {
+                internal static string SA1609SA1610CodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1609SA1610CodeFix",
                                                                  resourceCulture);
                         }
@@ -483,7 +565,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Property documentation should have
                 ///   value.
                 /// </summary>
-                internal static string SA1609Title {
+                internal static string SA1609Title
+                {
                         get { return ResourceManager.GetString("SA1609Title", resourceCulture); }
                 }
 
@@ -491,8 +574,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The XML header documentation for a C#
                 ///   property contains an empty &lt;value&gt; tag..
                 /// </summary>
-                internal static string SA1610Description {
-                        get {
+                internal static string SA1610Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1610Description",
                                                                  resourceCulture);
                         }
@@ -502,8 +587,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Property documentation should have
                 ///   value text.
                 /// </summary>
-                internal static string SA1610MessageFormat {
-                        get {
+                internal static string SA1610MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1610MessageFormat",
                                                                  resourceCulture);
                         }
@@ -513,7 +600,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Property documentation should have
                 ///   value text.
                 /// </summary>
-                internal static string SA1610Title {
+                internal static string SA1610Title
+                {
                         get { return ResourceManager.GetString("SA1610Title", resourceCulture); }
                 }
 
@@ -521,8 +609,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A C# method, constructor, delegate or
                 ///   indexer element is missing documentation for one or more of its parameters..
                 /// </summary>
-                internal static string SA1611Description {
-                        get {
+                internal static string SA1611Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1611Description",
                                                                  resourceCulture);
                         }
@@ -532,8 +622,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The documentation for parameter
                 ///   &apos;{0}&apos; is missing.
                 /// </summary>
-                internal static string SA1611MessageFormat {
-                        get {
+                internal static string SA1611MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1611MessageFormat",
                                                                  resourceCulture);
                         }
@@ -543,7 +635,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element parameters should be
                 ///   documented.
                 /// </summary>
-                internal static string SA1611Title {
+                internal static string SA1611Title
+                {
                         get { return ResourceManager.GetString("SA1611Title", resourceCulture); }
                 }
 
@@ -552,8 +645,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   parameters to a C# method, constructor, delegate or indexer element does not
                 ///   match the actual parameters on the element..
                 /// </summary>
-                internal static string SA1612Description {
-                        get {
+                internal static string SA1612Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1612Description",
                                                                  resourceCulture);
                         }
@@ -563,11 +658,13 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The parameter &apos;{0}&apos; does not
                 ///   exist.
                 /// </summary>
-                internal static string SA1612MissingParamForDocumentationMessageFormat {
-                        get {
+                internal static string SA1612MissingParamForDocumentationMessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString(
-                                    "SA1612MissingParamForDocumentationMessageFormat",
-                                    resourceCulture);
+                                  "SA1612MissingParamForDocumentationMessageFormat",
+                                  resourceCulture);
                         }
                 }
 
@@ -575,10 +672,12 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The parameter documentation for
                 ///   &apos;{0}&apos; should be at position {1}.
                 /// </summary>
-                internal static string SA1612ParamWrongOrderMessageFormat {
-                        get {
+                internal static string SA1612ParamWrongOrderMessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString(
-                                    "SA1612ParamWrongOrderMessageFormat", resourceCulture);
+                                  "SA1612ParamWrongOrderMessageFormat", resourceCulture);
                         }
                 }
 
@@ -586,7 +685,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element parameter documentation should
                 ///   match element parameters.
                 /// </summary>
-                internal static string SA1612Title {
+                internal static string SA1612Title
+                {
                         get { return ResourceManager.GetString("SA1612Title", resourceCulture); }
                 }
 
@@ -595,8 +695,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   element&apos;s documentation header is missing a name attribute containing the
                 ///   name of the parameter..
                 /// </summary>
-                internal static string SA1613Description {
-                        get {
+                internal static string SA1613Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1613Description",
                                                                  resourceCulture);
                         }
@@ -606,8 +708,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element parameter documentation should
                 ///   declare parameter name.
                 /// </summary>
-                internal static string SA1613MessageFormat {
-                        get {
+                internal static string SA1613MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1613MessageFormat",
                                                                  resourceCulture);
                         }
@@ -617,7 +721,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element parameter documentation should
                 ///   declare parameter name.
                 /// </summary>
-                internal static string SA1613Title {
+                internal static string SA1613Title
+                {
                         get { return ResourceManager.GetString("SA1613Title", resourceCulture); }
                 }
 
@@ -625,8 +730,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A &lt;param&gt; tag within a C#
                 ///   element&apos;s documentation header is empty..
                 /// </summary>
-                internal static string SA1614Description {
-                        get {
+                internal static string SA1614Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1614Description",
                                                                  resourceCulture);
                         }
@@ -636,8 +743,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element parameter documentation should
                 ///   have text.
                 /// </summary>
-                internal static string SA1614MessageFormat {
-                        get {
+                internal static string SA1614MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1614MessageFormat",
                                                                  resourceCulture);
                         }
@@ -647,7 +756,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element parameter documentation should
                 ///   have text.
                 /// </summary>
-                internal static string SA1614Title {
+                internal static string SA1614Title
+                {
                         get { return ResourceManager.GetString("SA1614Title", resourceCulture); }
                 }
 
@@ -655,8 +765,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A C# element is missing documentation
                 ///   for its return value..
                 /// </summary>
-                internal static string SA1615Description {
-                        get {
+                internal static string SA1615Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1615Description",
                                                                  resourceCulture);
                         }
@@ -666,8 +778,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element return value should be
                 ///   documented.
                 /// </summary>
-                internal static string SA1615MessageFormat {
-                        get {
+                internal static string SA1615MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1615MessageFormat",
                                                                  resourceCulture);
                         }
@@ -676,8 +790,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Document return value.
                 /// </summary>
-                internal static string SA1615SA1616CodeFix {
-                        get {
+                internal static string SA1615SA1616CodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1615SA1616CodeFix",
                                                                  resourceCulture);
                         }
@@ -687,7 +803,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element return value should be
                 ///   documented.
                 /// </summary>
-                internal static string SA1615Title {
+                internal static string SA1615Title
+                {
                         get { return ResourceManager.GetString("SA1615Title", resourceCulture); }
                 }
 
@@ -695,8 +812,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The &lt;returns&gt; tag within a C#
                 ///   element&apos;s documentation header is empty..
                 /// </summary>
-                internal static string SA1616Description {
-                        get {
+                internal static string SA1616Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1616Description",
                                                                  resourceCulture);
                         }
@@ -706,8 +825,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element return value documentation
                 ///   should have text.
                 /// </summary>
-                internal static string SA1616MessageFormat {
-                        get {
+                internal static string SA1616MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1616MessageFormat",
                                                                  resourceCulture);
                         }
@@ -717,14 +838,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element return value documentation
                 ///   should have text.
                 /// </summary>
-                internal static string SA1616Title {
+                internal static string SA1616Title
+                {
                         get { return ResourceManager.GetString("SA1616Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Remove &lt;returns&gt; XML comment.
                 /// </summary>
-                internal static string SA1617CodeFix {
+                internal static string SA1617CodeFix
+                {
                         get { return ResourceManager.GetString("SA1617CodeFix", resourceCulture); }
                 }
 
@@ -733,8 +856,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   return value, or returns void, but the documentation header for the element
                 ///   contains a &lt;returns&gt; tag..
                 /// </summary>
-                internal static string SA1617Description {
-                        get {
+                internal static string SA1617Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1617Description",
                                                                  resourceCulture);
                         }
@@ -744,8 +869,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Void return value should not be
                 ///   documented.
                 /// </summary>
-                internal static string SA1617MessageFormat {
-                        get {
+                internal static string SA1617MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1617MessageFormat",
                                                                  resourceCulture);
                         }
@@ -755,7 +882,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Void return value should not be
                 ///   documented.
                 /// </summary>
-                internal static string SA1617Title {
+                internal static string SA1617Title
+                {
                         get { return ResourceManager.GetString("SA1617Title", resourceCulture); }
                 }
 
@@ -763,8 +891,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A generic C# element is missing
                 ///   documentation for one or more of its generic type parameters..
                 /// </summary>
-                internal static string SA1618Description {
-                        get {
+                internal static string SA1618Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1618Description",
                                                                  resourceCulture);
                         }
@@ -774,8 +904,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The documentation for type parameter
                 ///   &apos;{0}&apos; is missing.
                 /// </summary>
-                internal static string SA1618MessageFormat {
-                        get {
+                internal static string SA1618MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1618MessageFormat",
                                                                  resourceCulture);
                         }
@@ -785,7 +917,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Generic type parameters should be
                 ///   documented.
                 /// </summary>
-                internal static string SA1618Title {
+                internal static string SA1618Title
+                {
                         get { return ResourceManager.GetString("SA1618Title", resourceCulture); }
                 }
 
@@ -794,8 +927,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   missing documentation for one or more of its generic type parameters, and the
                 ///   documentation for the element contains a &lt;summary&gt; tag..
                 /// </summary>
-                internal static string SA1619Description {
-                        get {
+                internal static string SA1619Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1619Description",
                                                                  resourceCulture);
                         }
@@ -805,8 +940,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The documentation for type parameter
                 ///   &apos;{0}&apos; is missing.
                 /// </summary>
-                internal static string SA1619MessageFormat {
-                        get {
+                internal static string SA1619MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1619MessageFormat",
                                                                  resourceCulture);
                         }
@@ -816,7 +953,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Generic type parameters should be
                 ///   documented partial class.
                 /// </summary>
-                internal static string SA1619Title {
+                internal static string SA1619Title
+                {
                         get { return ResourceManager.GetString("SA1619Title", resourceCulture); }
                 }
 
@@ -825,8 +963,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Xml header documentation for a generic C# element do not match the generic
                 ///   type parameters on the element..
                 /// </summary>
-                internal static string SA1620Description {
-                        get {
+                internal static string SA1620Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1620Description",
                                                                  resourceCulture);
                         }
@@ -836,8 +976,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The type parameter &apos;{0}&apos; does
                 ///   not exist..
                 /// </summary>
-                internal static string SA1620MissingMessageFormat {
-                        get {
+                internal static string SA1620MissingMessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1620MissingMessageFormat",
                                                                  resourceCulture);
                         }
@@ -847,7 +989,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Generic type parameter documentation
                 ///   should match type parameters.
                 /// </summary>
-                internal static string SA1620Title {
+                internal static string SA1620Title
+                {
                         get { return ResourceManager.GetString("SA1620Title", resourceCulture); }
                 }
 
@@ -855,8 +998,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The type parameter documentation for
                 ///   &apos;{0}&apos; should be at position {1}..
                 /// </summary>
-                internal static string SA1620WrongOrderMessageFormat {
-                        get {
+                internal static string SA1620WrongOrderMessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1620WrongOrderMessageFormat",
                                                                  resourceCulture);
                         }
@@ -867,8 +1012,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   header documentation for a generic C# element is missing a name attribute, or
                 ///   contains an empty name attribute..
                 /// </summary>
-                internal static string SA1621Description {
-                        get {
+                internal static string SA1621Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1621Description",
                                                                  resourceCulture);
                         }
@@ -878,8 +1025,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Generic type parameter documentation
                 ///   should declare parameter name..
                 /// </summary>
-                internal static string SA1621MessageFormat {
-                        get {
+                internal static string SA1621MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1621MessageFormat",
                                                                  resourceCulture);
                         }
@@ -889,7 +1038,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Generic type parameter documentation
                 ///   should declare parameter name.
                 /// </summary>
-                internal static string SA1621Title {
+                internal static string SA1621Title
+                {
                         get { return ResourceManager.GetString("SA1621Title", resourceCulture); }
                 }
 
@@ -897,8 +1047,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A &lt;typeparam&gt; tag within the Xml
                 ///   header documentation for a generic C# element is empty..
                 /// </summary>
-                internal static string SA1622Description {
-                        get {
+                internal static string SA1622Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1622Description",
                                                                  resourceCulture);
                         }
@@ -908,8 +1060,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Generic type parameter documentation
                 ///   should have text..
                 /// </summary>
-                internal static string SA1622MessageFormat {
-                        get {
+                internal static string SA1622MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1622MessageFormat",
                                                                  resourceCulture);
                         }
@@ -919,7 +1073,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Generic type parameter documentation
                 ///   should have text.
                 /// </summary>
-                internal static string SA1622Title {
+                internal static string SA1622Title
+                {
                         get { return ResourceManager.GetString("SA1622Title", resourceCulture); }
                 }
 
@@ -928,8 +1083,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   property’s &lt;summary&gt; tag does not match the accessors within the
                 ///   property..
                 /// </summary>
-                internal static string SA1623Description {
-                        get {
+                internal static string SA1623Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1623Description",
                                                                  resourceCulture);
                         }
@@ -939,8 +1096,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The property&apos;s documentation
                 ///   summary text should begin with: &apos;{0}&apos;.
                 /// </summary>
-                internal static string SA1623MessageFormat {
-                        get {
+                internal static string SA1623MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1623MessageFormat",
                                                                  resourceCulture);
                         }
@@ -950,7 +1109,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Property summary documentation should
                 ///   match accessors.
                 /// </summary>
-                internal static string SA1623Title {
+                internal static string SA1623Title
+                {
                         get { return ResourceManager.GetString("SA1623Title", resourceCulture); }
                 }
 
@@ -959,8 +1119,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   property’s &lt;summary&gt; tag takes into account all of the accessors within
                 ///   the property, but one of the accessors has limited access..
                 /// </summary>
-                internal static string SA1624Description {
-                        get {
+                internal static string SA1624Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1624Description",
                                                                  resourceCulture);
                         }
@@ -971,8 +1133,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   visible {0} accessor, the documentation summary text should begin with
                 ///   &apos;{1}&apos;..
                 /// </summary>
-                internal static string SA1624MessageFormat {
-                        get {
+                internal static string SA1624MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1624MessageFormat",
                                                                  resourceCulture);
                         }
@@ -982,7 +1146,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Property summary documentation should
                 ///   omit accessor with restricted access.
                 /// </summary>
-                internal static string SA1624Title {
+                internal static string SA1624Title
+                {
                         get { return ResourceManager.GetString("SA1624Title", resourceCulture); }
                 }
 
@@ -992,8 +1157,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   been copied and pasted. This can sometimes indicate invalid or poorly written
                 ///   documentation..
                 /// </summary>
-                internal static string SA1625Description {
-                        get {
+                internal static string SA1625Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1625Description",
                                                                  resourceCulture);
                         }
@@ -1003,8 +1170,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should not be
                 ///   copied and pasted.
                 /// </summary>
-                internal static string SA1625MessageFormat {
-                        get {
+                internal static string SA1625MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1625MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1014,14 +1183,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should not be
                 ///   copied and pasted.
                 /// </summary>
-                internal static string SA1625Title {
+                internal static string SA1625Title
+                {
                         get { return ResourceManager.GetString("SA1625Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Convert to line comment.
                 /// </summary>
-                internal static string SA1626CodeFix {
+                internal static string SA1626CodeFix
+                {
                         get { return ResourceManager.GetString("SA1626CodeFix", resourceCulture); }
                 }
 
@@ -1029,8 +1200,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The C# code contains a single-line
                 ///   comment which begins with three forward slashes in a row..
                 /// </summary>
-                internal static string SA1626Description {
-                        get {
+                internal static string SA1626Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1626Description",
                                                                  resourceCulture);
                         }
@@ -1040,8 +1213,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Single-line comments should not use
                 ///   documentation style slashes.
                 /// </summary>
-                internal static string SA1626MessageFormat {
-                        get {
+                internal static string SA1626MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1626MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1051,7 +1226,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Single-line comments should not use
                 ///   documentation style slashes.
                 /// </summary>
-                internal static string SA1626Title {
+                internal static string SA1626Title
+                {
                         get { return ResourceManager.GetString("SA1626Title", resourceCulture); }
                 }
 
@@ -1059,8 +1235,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The XML header documentation for a C#
                 ///   code element contains an empty tag..
                 /// </summary>
-                internal static string SA1627Description {
-                        get {
+                internal static string SA1627Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1627Description",
                                                                  resourceCulture);
                         }
@@ -1070,8 +1248,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The documentation text within the
                 ///   &apos;{0}&apos; tag should not be empty.
                 /// </summary>
-                internal static string SA1627MessageFormat {
-                        get {
+                internal static string SA1627MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1627MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1080,7 +1260,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Documentation text should not be empty.
                 /// </summary>
-                internal static string SA1627Title {
+                internal static string SA1627Title
+                {
                         get { return ResourceManager.GetString("SA1627Title", resourceCulture); }
                 }
 
@@ -1088,8 +1269,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A section of the XML header
                 ///   documentation for a C# element does not begin with a capital letter..
                 /// </summary>
-                internal static string SA1628Description {
-                        get {
+                internal static string SA1628Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1628Description",
                                                                  resourceCulture);
                         }
@@ -1098,8 +1281,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1628MessageFormat {
-                        get {
+                internal static string SA1628MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1628MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1109,14 +1294,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Documentation text should begin with a
                 ///   capital letter.
                 /// </summary>
-                internal static string SA1628Title {
+                internal static string SA1628Title
+                {
                         get { return ResourceManager.GetString("SA1628Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Add period.
                 /// </summary>
-                internal static string SA1629CodeFix {
+                internal static string SA1629CodeFix
+                {
                         get { return ResourceManager.GetString("SA1629CodeFix", resourceCulture); }
                 }
 
@@ -1124,8 +1311,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A section of the XML header
                 ///   documentation for a C# element does not end with a period..
                 /// </summary>
-                internal static string SA1629Description {
-                        get {
+                internal static string SA1629Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1629Description",
                                                                  resourceCulture);
                         }
@@ -1135,8 +1324,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Documentation text should end with a
                 ///   period.
                 /// </summary>
-                internal static string SA1629MessageFormat {
-                        get {
+                internal static string SA1629MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1629MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1146,7 +1337,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Documentation text should end with a
                 ///   period.
                 /// </summary>
-                internal static string SA1629Title {
+                internal static string SA1629Title
+                {
                         get { return ResourceManager.GetString("SA1629Title", resourceCulture); }
                 }
 
@@ -1154,8 +1346,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A section of the XML header
                 ///   documentation for a C# element does not contain any whitespace between words..
                 /// </summary>
-                internal static string SA1630Description {
-                        get {
+                internal static string SA1630Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1630Description",
                                                                  resourceCulture);
                         }
@@ -1164,8 +1358,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1630MessageFormat {
-                        get {
+                internal static string SA1630MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1630MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1175,7 +1371,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Documentation text should contain
                 ///   whitespace.
                 /// </summary>
-                internal static string SA1630Title {
+                internal static string SA1630Title
+                {
                         get { return ResourceManager.GetString("SA1630Title", resourceCulture); }
                 }
 
@@ -1183,8 +1380,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A section of the Xml header
                 ///   documentation for a C# element does not contain enough alphabetic characters..
                 /// </summary>
-                internal static string SA1631Description {
-                        get {
+                internal static string SA1631Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1631Description",
                                                                  resourceCulture);
                         }
@@ -1193,8 +1392,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1631MessageFormat {
-                        get {
+                internal static string SA1631MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1631MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1204,7 +1405,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Documentation should meet character
                 ///   percentage.
                 /// </summary>
-                internal static string SA1631Title {
+                internal static string SA1631Title
+                {
                         get { return ResourceManager.GetString("SA1631Title", resourceCulture); }
                 }
 
@@ -1212,8 +1414,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A section of the Xml header
                 ///   documentation for a C# element is too short..
                 /// </summary>
-                internal static string SA1632Description {
-                        get {
+                internal static string SA1632Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1632Description",
                                                                  resourceCulture);
                         }
@@ -1222,8 +1426,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1632MessageFormat {
-                        get {
+                internal static string SA1632MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1632MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1233,14 +1439,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Documentation text should meet minimum
                 ///   character length.
                 /// </summary>
-                internal static string SA1632Title {
+                internal static string SA1632Title
+                {
                         get { return ResourceManager.GetString("SA1632Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Add file header.
                 /// </summary>
-                internal static string SA1633CodeFix {
+                internal static string SA1633CodeFix
+                {
                         get { return ResourceManager.GetString("SA1633CodeFix", resourceCulture); }
                 }
 
@@ -1248,8 +1456,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A C# code file is missing a standard
                 ///   file header..
                 /// </summary>
-                internal static string SA1633Description {
-                        get {
+                internal static string SA1633Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1633Description",
                                                                  resourceCulture);
                         }
@@ -1258,8 +1468,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to The file header XML is invalid..
                 /// </summary>
-                internal static string SA1633MessageFormatMalformed {
-                        get {
+                internal static string SA1633MessageFormatMalformed
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1633MessageFormatMalformed",
                                                                  resourceCulture);
                         }
@@ -1269,8 +1481,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header is missing or not
                 ///   located at the top of the file..
                 /// </summary>
-                internal static string SA1633MessageFormatMissing {
-                        get {
+                internal static string SA1633MessageFormatMissing
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1633MessageFormatMissing",
                                                                  resourceCulture);
                         }
@@ -1279,7 +1493,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File should have header.
                 /// </summary>
-                internal static string SA1633Title {
+                internal static string SA1633Title
+                {
                         get { return ResourceManager.GetString("SA1633Title", resourceCulture); }
                 }
 
@@ -1287,8 +1502,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header at the top of a C# code
                 ///   file is missing a copyright tag..
                 /// </summary>
-                internal static string SA1634Description {
-                        get {
+                internal static string SA1634Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1634Description",
                                                                  resourceCulture);
                         }
@@ -1298,8 +1515,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header should contain a
                 ///   copyright tag..
                 /// </summary>
-                internal static string SA1634MessageFormat {
-                        get {
+                internal static string SA1634MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1634MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1308,7 +1527,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File header should show copyright.
                 /// </summary>
-                internal static string SA1634Title {
+                internal static string SA1634Title
+                {
                         get { return ResourceManager.GetString("SA1634Title", resourceCulture); }
                 }
 
@@ -1316,8 +1536,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header at the top of a C# code
                 ///   file is missing copyright text..
                 /// </summary>
-                internal static string SA1635Description {
-                        get {
+                internal static string SA1635Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1635Description",
                                                                  resourceCulture);
                         }
@@ -1326,8 +1548,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File header should have copyright text.
                 /// </summary>
-                internal static string SA1635MessageFormat {
-                        get {
+                internal static string SA1635MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1635MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1336,7 +1560,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File header should have copyright text.
                 /// </summary>
-                internal static string SA1635Title {
+                internal static string SA1635Title
+                {
                         get { return ResourceManager.GetString("SA1635Title", resourceCulture); }
                 }
 
@@ -1344,8 +1569,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header at the top of a C# code
                 ///   file does not contain the appropriate copyright text..
                 /// </summary>
-                internal static string SA1636Description {
-                        get {
+                internal static string SA1636Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1636Description",
                                                                  resourceCulture);
                         }
@@ -1355,8 +1582,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header copyright text should
                 ///   match the copyright text from the settings..
                 /// </summary>
-                internal static string SA1636MessageFormat {
-                        get {
+                internal static string SA1636MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1636MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1366,7 +1595,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to File header copyright text should
                 ///   match.
                 /// </summary>
-                internal static string SA1636Title {
+                internal static string SA1636Title
+                {
                         get { return ResourceManager.GetString("SA1636Title", resourceCulture); }
                 }
 
@@ -1374,8 +1604,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header at the top of a C# code
                 ///   file is missing the file name..
                 /// </summary>
-                internal static string SA1637Description {
-                        get {
+                internal static string SA1637Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1637Description",
                                                                  resourceCulture);
                         }
@@ -1384,8 +1616,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File header should contain file name..
                 /// </summary>
-                internal static string SA1637MessageFormat {
-                        get {
+                internal static string SA1637MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1637MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1394,7 +1628,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File header should contain file name.
                 /// </summary>
-                internal static string SA1637Title {
+                internal static string SA1637Title
+                {
                         get { return ResourceManager.GetString("SA1637Title", resourceCulture); }
                 }
 
@@ -1403,8 +1638,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   of the file header at the top of a C# code file does not contain the name of
                 ///   the file..
                 /// </summary>
-                internal static string SA1638Description {
-                        get {
+                internal static string SA1638Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1638Description",
                                                                  resourceCulture);
                         }
@@ -1414,8 +1651,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to File header file name documentation
                 ///   should match file name..
                 /// </summary>
-                internal static string SA1638MessageFormat {
-                        get {
+                internal static string SA1638MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1638MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1425,7 +1664,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to File header file name documentation
                 ///   should match file name.
                 /// </summary>
-                internal static string SA1638Title {
+                internal static string SA1638Title
+                {
                         get { return ResourceManager.GetString("SA1638Title", resourceCulture); }
                 }
 
@@ -1433,8 +1673,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header at the top of a C# code
                 ///   file does not contain a filled-in summary tag..
                 /// </summary>
-                internal static string SA1639Description {
-                        get {
+                internal static string SA1639Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1639Description",
                                                                  resourceCulture);
                         }
@@ -1443,8 +1685,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File header should have summary.
                 /// </summary>
-                internal static string SA1639MessageFormat {
-                        get {
+                internal static string SA1639MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1639MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1453,7 +1697,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File header should have summary.
                 /// </summary>
-                internal static string SA1639Title {
+                internal static string SA1639Title
+                {
                         get { return ResourceManager.GetString("SA1639Title", resourceCulture); }
                 }
 
@@ -1461,8 +1706,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header at the top of a C# code
                 ///   file does not contain company name text..
                 /// </summary>
-                internal static string SA1640Description {
-                        get {
+                internal static string SA1640Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1640Description",
                                                                  resourceCulture);
                         }
@@ -1472,8 +1719,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The copyright tag should contain a
                 ///   non-empty company attribute..
                 /// </summary>
-                internal static string SA1640MessageFormat {
-                        get {
+                internal static string SA1640MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1640MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1483,7 +1732,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to File header should have valid company
                 ///   text.
                 /// </summary>
-                internal static string SA1640Title {
+                internal static string SA1640Title
+                {
                         get { return ResourceManager.GetString("SA1640Title", resourceCulture); }
                 }
 
@@ -1491,8 +1741,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header at the top of a C# code
                 ///   file does not contain the appropriate company name text..
                 /// </summary>
-                internal static string SA1641Description {
-                        get {
+                internal static string SA1641Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1641Description",
                                                                  resourceCulture);
                         }
@@ -1502,8 +1754,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file header company name should
                 ///   match the company name from the settings..
                 /// </summary>
-                internal static string SA1641MessageFormat {
-                        get {
+                internal static string SA1641MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1641MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1513,7 +1767,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to File header company name text should
                 ///   match.
                 /// </summary>
-                internal static string SA1641Title {
+                internal static string SA1641Title
+                {
                         get { return ResourceManager.GetString("SA1641Title", resourceCulture); }
                 }
 
@@ -1521,8 +1776,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The XML documentation header for a C#
                 ///   constructor does not contain the appropriate summary text..
                 /// </summary>
-                internal static string SA1642Description {
-                        get {
+                internal static string SA1642Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1642Description",
                                                                  resourceCulture);
                         }
@@ -1532,8 +1789,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Constructor summary documentation
                 ///   should begin with standard text.
                 /// </summary>
-                internal static string SA1642MessageFormat {
-                        get {
+                internal static string SA1642MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1642MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1542,8 +1801,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Add standard text.
                 /// </summary>
-                internal static string SA1642SA1643CodeFix {
-                        get {
+                internal static string SA1642SA1643CodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1642SA1643CodeFix",
                                                                  resourceCulture);
                         }
@@ -1553,7 +1814,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Constructor summary documentation
                 ///   should begin with standard text.
                 /// </summary>
-                internal static string SA1642Title {
+                internal static string SA1642Title
+                {
                         get { return ResourceManager.GetString("SA1642Title", resourceCulture); }
                 }
 
@@ -1561,8 +1823,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The XML documentation header for a C#
                 ///   finalizer does not contain the appropriate summary text..
                 /// </summary>
-                internal static string SA1643Description {
-                        get {
+                internal static string SA1643Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1643Description",
                                                                  resourceCulture);
                         }
@@ -1572,8 +1836,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Destructor summary documentation should
                 ///   begin with standard text.
                 /// </summary>
-                internal static string SA1643MessageFormat {
-                        get {
+                internal static string SA1643MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1643MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1583,7 +1849,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Destructor summary documentation should
                 ///   begin with standard text.
                 /// </summary>
-                internal static string SA1643Title {
+                internal static string SA1643Title
+                {
                         get { return ResourceManager.GetString("SA1643Title", resourceCulture); }
                 }
 
@@ -1591,8 +1858,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to A section within the XML documentation
                 ///   header for a C# element contains blank lines..
                 /// </summary>
-                internal static string SA1644Description {
-                        get {
+                internal static string SA1644Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1644Description",
                                                                  resourceCulture);
                         }
@@ -1601,8 +1870,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1644MessageFormat {
-                        get {
+                internal static string SA1644MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1644MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1612,7 +1883,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Documentation headers should not
                 ///   contain blank lines.
                 /// </summary>
-                internal static string SA1644Title {
+                internal static string SA1644Title
+                {
                         get { return ResourceManager.GetString("SA1644Title", resourceCulture); }
                 }
 
@@ -1620,8 +1892,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to An included XML documentation file does
                 ///   not exist..
                 /// </summary>
-                internal static string SA1645Description {
-                        get {
+                internal static string SA1645Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1645Description",
                                                                  resourceCulture);
                         }
@@ -1630,8 +1904,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1645MessageFormat {
-                        get {
+                internal static string SA1645MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1645MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1641,7 +1917,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Included documentation file does not
                 ///   exist.
                 /// </summary>
-                internal static string SA1645Title {
+                internal static string SA1645Title
+                {
                         get { return ResourceManager.GetString("SA1645Title", resourceCulture); }
                 }
 
@@ -1649,8 +1926,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to An included XML documentation link
                 ///   contains an invalid path..
                 /// </summary>
-                internal static string SA1646Description {
-                        get {
+                internal static string SA1646Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1646Description",
                                                                  resourceCulture);
                         }
@@ -1659,8 +1938,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1646MessageFormat {
-                        get {
+                internal static string SA1646MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1646MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1670,7 +1951,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Included documentation XPath does not
                 ///   exist.
                 /// </summary>
-                internal static string SA1646Title {
+                internal static string SA1646Title
+                {
                         get { return ResourceManager.GetString("SA1646Title", resourceCulture); }
                 }
 
@@ -1678,8 +1960,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to An include tag within an XML
                 ///   documentation header does not contain valid file and path attribute..
                 /// </summary>
-                internal static string SA1647Description {
-                        get {
+                internal static string SA1647Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1647Description",
                                                                  resourceCulture);
                         }
@@ -1688,8 +1972,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1647MessageFormat {
-                        get {
+                internal static string SA1647MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1647MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1699,7 +1985,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Include node does not contain valid
                 ///   file and path.
                 /// </summary>
-                internal static string SA1647Title {
+                internal static string SA1647Title
+                {
                         get { return ResourceManager.GetString("SA1647Title", resourceCulture); }
                 }
 
@@ -1708,8 +1995,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   element that doesn&apos;t inherit from a base class or implement an
                 ///   interface..
                 /// </summary>
-                internal static string SA1648Description {
-                        get {
+                internal static string SA1648Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1648Description",
                                                                  resourceCulture);
                         }
@@ -1719,8 +2008,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to inheritdoc should be used with
                 ///   inheriting class.
                 /// </summary>
-                internal static string SA1648MessageFormat {
-                        get {
+                internal static string SA1648MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1648MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1730,14 +2021,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to inheritdoc should be used with
                 ///   inheriting class.
                 /// </summary>
-                internal static string SA1648Title {
+                internal static string SA1648Title
+                {
                         get { return ResourceManager.GetString("SA1648Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Rename file to match first type name.
                 /// </summary>
-                internal static string SA1649CodeFix {
+                internal static string SA1649CodeFix
+                {
                         get { return ResourceManager.GetString("SA1649CodeFix", resourceCulture); }
                 }
 
@@ -1745,8 +2038,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The file name of a C# code file does
                 ///   not match the first type declared in the file..
                 /// </summary>
-                internal static string SA1649Description {
-                        get {
+                internal static string SA1649Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1649Description",
                                                                  resourceCulture);
                         }
@@ -1755,8 +2050,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File name should match first type name.
                 /// </summary>
-                internal static string SA1649MessageFormat {
-                        get {
+                internal static string SA1649MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1649MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1765,7 +2062,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to File name should match first type name.
                 /// </summary>
-                internal static string SA1649Title {
+                internal static string SA1649Title
+                {
                         get { return ResourceManager.GetString("SA1649Title", resourceCulture); }
                 }
 
@@ -1773,8 +2071,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The element documentation for the
                 ///   element contains one or more spelling mistakes or unrecognized words..
                 /// </summary>
-                internal static string SA1650Description {
-                        get {
+                internal static string SA1650Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1650Description",
                                                                  resourceCulture);
                         }
@@ -1783,8 +2083,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to TODO: Message format.
                 /// </summary>
-                internal static string SA1650MessageFormat {
-                        get {
+                internal static string SA1650MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1650MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1794,14 +2096,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Element documentation should be spelled
                 ///   correctly.
                 /// </summary>
-                internal static string SA1650Title {
+                internal static string SA1650Title
+                {
                         get { return ResourceManager.GetString("SA1650Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Finalize placeholder text.
                 /// </summary>
-                internal static string SA1651CodeFix {
+                internal static string SA1651CodeFix
+                {
                         get { return ResourceManager.GetString("SA1651CodeFix", resourceCulture); }
                 }
 
@@ -1809,8 +2113,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to The element documentation contains a
                 ///   &lt;placeholder&gt; element..
                 /// </summary>
-                internal static string SA1651Description {
-                        get {
+                internal static string SA1651Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1651Description",
                                                                  resourceCulture);
                         }
@@ -1819,8 +2125,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Do not use placeholder elements.
                 /// </summary>
-                internal static string SA1651MessageFormat {
-                        get {
+                internal static string SA1651MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1651MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1829,15 +2137,18 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Do not use placeholder elements.
                 /// </summary>
-                internal static string SA1651Title {
+                internal static string SA1651Title
+                {
                         get { return ResourceManager.GetString("SA1651Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Gets.
                 /// </summary>
-                internal static string StartingTextGets {
-                        get {
+                internal static string StartingTextGets
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("StartingTextGets",
                                                                  resourceCulture);
                         }
@@ -1846,8 +2157,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Gets or sets.
                 /// </summary>
-                internal static string StartingTextGetsOrSets {
-                        get {
+                internal static string StartingTextGetsOrSets
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("StartingTextGetsOrSets",
                                                                  resourceCulture);
                         }
@@ -1857,8 +2170,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to Gets or sets a value indicating
                 ///   whether.
                 /// </summary>
-                internal static string StartingTextGetsOrSetsWhether {
-                        get {
+                internal static string StartingTextGetsOrSetsWhether
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("StartingTextGetsOrSetsWhether",
                                                                  resourceCulture);
                         }
@@ -1867,8 +2182,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Gets a value indicating whether.
                 /// </summary>
-                internal static string StartingTextGetsWhether {
-                        get {
+                internal static string StartingTextGetsWhether
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("StartingTextGetsWhether",
                                                                  resourceCulture);
                         }
@@ -1877,8 +2194,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Returns.
                 /// </summary>
-                internal static string StartingTextReturns {
-                        get {
+                internal static string StartingTextReturns
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("StartingTextReturns",
                                                                  resourceCulture);
                         }
@@ -1887,8 +2206,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Returns a value indicating whether.
                 /// </summary>
-                internal static string StartingTextReturnsWhether {
-                        get {
+                internal static string StartingTextReturnsWhether
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("StartingTextReturnsWhether",
                                                                  resourceCulture);
                         }
@@ -1897,8 +2218,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Sets.
                 /// </summary>
-                internal static string StartingTextSets {
-                        get {
+                internal static string StartingTextSets
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("StartingTextSets",
                                                                  resourceCulture);
                         }
@@ -1907,8 +2230,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Sets a value indicating whether.
                 /// </summary>
-                internal static string StartingTextSetsWhether {
-                        get {
+                internal static string StartingTextSetsWhether
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("StartingTextSetsWhether",
                                                                  resourceCulture);
                         }
@@ -1917,28 +2242,34 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Initializes static members of the .
                 /// </summary>
-                internal static string StaticConstructorStandardTextFirstPart {
-                        get {
+                internal static string StaticConstructorStandardTextFirstPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString(
-                                    "StaticConstructorStandardTextFirstPart", resourceCulture);
+                                  "StaticConstructorStandardTextFirstPart", resourceCulture);
                         }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to  {0}.
                 /// </summary>
-                internal static string StaticConstructorStandardTextSecondPart {
-                        get {
+                internal static string StaticConstructorStandardTextSecondPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString(
-                                    "StaticConstructorStandardTextSecondPart", resourceCulture);
+                                  "StaticConstructorStandardTextSecondPart", resourceCulture);
                         }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to A .
                 /// </summary>
-                internal static string TaskReturnElementFirstPart {
-                        get {
+                internal static string TaskReturnElementFirstPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("TaskReturnElementFirstPart",
                                                                  resourceCulture);
                         }
@@ -1948,8 +2279,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 ///   Looks up a localized string similar to  representing the result of the
                 ///   asynchronous operation..
                 /// </summary>
-                internal static string TaskReturnElementSecondPart {
-                        get {
+                internal static string TaskReturnElementSecondPart
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("TaskReturnElementSecondPart",
                                                                  resourceCulture);
                         }
@@ -1958,14 +2291,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// <summary>
                 ///   Looks up a localized string similar to class.
                 /// </summary>
-                internal static string TypeTextClass {
+                internal static string TypeTextClass
+                {
                         get { return ResourceManager.GetString("TypeTextClass", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to struct.
                 /// </summary>
-                internal static string TypeTextStruct {
+                internal static string TypeTextStruct
+                {
                         get { return ResourceManager.GetString("TypeTextStruct", resourceCulture); }
                 }
         }

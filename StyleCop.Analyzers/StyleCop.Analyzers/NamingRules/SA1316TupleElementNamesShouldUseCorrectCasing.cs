@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.NamingRules {
+namespace StyleCop.Analyzers.NamingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -14,7 +15,8 @@ namespace StyleCop.Analyzers.NamingRules {
         /// Field names within a tuple declaration should have the correct casing.
         /// </summary>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1316TupleElementNamesShouldUseCorrectCasing : DiagnosticAnalyzer {
+        internal class SA1316TupleElementNamesShouldUseCorrectCasing : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1316TupleElementNamesShouldUseCorrectCasing"/> analyzer.
@@ -27,41 +29,42 @@ namespace StyleCop.Analyzers.NamingRules {
                 internal const string ExpectedTupleElementNameKey = "ExpectedTupleElementName";
 
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1316.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1316.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(NamingResources.SA1316Title),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1316Title),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SA1316MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1316MessageFormat),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SA1316Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1316Description),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.NamingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.NamingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> TupleTypeAction =
-                    HandleTupleTypeAction;
+                  HandleTupleTypeAction;
                 private static readonly Action<SyntaxNodeAnalysisContext> TupleExpressionAction =
-                    HandleTupleExpressionAction;
+                  HandleTupleExpressionAction;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -70,13 +73,14 @@ namespace StyleCop.Analyzers.NamingRules {
                                                          SyntaxKindEx.TupleExpression);
                 }
 
-                private static void HandleTupleTypeAction(SyntaxNodeAnalysisContext context) {
+                private static void HandleTupleTypeAction(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
 
                         var settings =
-                            context.Options.GetStyleCopSettings(context.CancellationToken);
+                          context.Options.GetStyleCopSettings(context.CancellationToken);
                         var tupleType = (TupleTypeSyntaxWrapper) context.Node;
 
                         foreach (var tupleElement in tupleType.Elements) {
@@ -84,13 +88,14 @@ namespace StyleCop.Analyzers.NamingRules {
                         }
                 }
 
-                private static void HandleTupleExpressionAction(SyntaxNodeAnalysisContext context) {
+                private static void HandleTupleExpressionAction(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsInferredTupleElementNames()) {
                                 return;
                         }
 
                         var settings =
-                            context.Options.GetStyleCopSettings(context.CancellationToken);
+                          context.Options.GetStyleCopSettings(context.CancellationToken);
                         if (!settings.NamingRules.IncludeInferredTupleElementNames) {
                                 return;
                         }
@@ -98,30 +103,38 @@ namespace StyleCop.Analyzers.NamingRules {
                         var tupleExpression = (TupleExpressionSyntaxWrapper) context.Node;
                         foreach (var argument in tupleExpression.Arguments) {
                                 var inferredMemberName = SyntaxFactsEx.TryGetInferredMemberName(
-                                    argument.NameColon?.Name ?? argument.Expression);
+                                  argument.NameColon?.Name ?? argument.Expression);
                                 if (inferredMemberName != null) {
-                                        CheckName(context, settings, inferredMemberName,
-                                                  argument.Expression.GetLocation(), false);
+                                        CheckName(context,
+                                                  settings,
+                                                  inferredMemberName,
+                                                  argument.Expression.GetLocation(),
+                                                  false);
                                 }
                         }
                 }
 
                 private static void CheckTupleElement(SyntaxNodeAnalysisContext context,
                                                       StyleCopSettings settings,
-                                                      TupleElementSyntaxWrapper tupleElement) {
+                                                      TupleElementSyntaxWrapper tupleElement)
+                {
                         if (tupleElement.Identifier == default) {
                                 return;
                         }
 
-                        CheckName(context, settings, tupleElement.Identifier.ValueText,
-                                  tupleElement.Identifier.GetLocation(), true);
+                        CheckName(context,
+                                  settings,
+                                  tupleElement.Identifier.ValueText,
+                                  tupleElement.Identifier.GetLocation(),
+                                  true);
                 }
 
                 private static void CheckName(SyntaxNodeAnalysisContext context,
                                               StyleCopSettings settings,
                                               string tupleElementName,
                                               Location location,
-                                              bool prepareCodeFix) {
+                                              bool prepareCodeFix)
+                {
                         if (tupleElementName == "_") {
                                 return;
                         }
@@ -147,16 +160,17 @@ namespace StyleCop.Analyzers.NamingRules {
 
                         if (reportDiagnostic) {
                                 var diagnosticProperties =
-                                    ImmutableDictionary.CreateBuilder<string, string>();
+                                  ImmutableDictionary.CreateBuilder<string, string>();
 
                                 if (prepareCodeFix) {
                                         diagnosticProperties.Add(ExpectedTupleElementNameKey,
                                                                  fixedName);
                                 }
 
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, location,
-                                    diagnosticProperties.ToImmutableDictionary()));
+                                context.ReportDiagnostic(
+                                  Diagnostic.Create(Descriptor,
+                                                    location,
+                                                    diagnosticProperties.ToImmutableDictionary()));
                         }
                 }
         }

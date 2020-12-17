@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -18,60 +19,62 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// one namespace.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1403FileMayOnlyContainASingleNamespace : DiagnosticAnalyzer {
+        internal class SA1403FileMayOnlyContainASingleNamespace : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1403FileMayOnlyContainASingleNamespace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1403";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1403.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1403.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1403Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1403Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1403MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1403MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1403Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1403Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                  HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context) {
+                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                {
                         var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
 
                         var descentNodes = syntaxRoot.DescendantNodes(
-                            descendIntoChildren
-                            : node => node != null && !node.IsKind(SyntaxKind.ClassDeclaration));
+                          descendIntoChildren
+                          : node => node != null && !node.IsKind(SyntaxKind.ClassDeclaration));
 
                         bool foundNode = false;
 
@@ -79,11 +82,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                 if (node.IsKind(SyntaxKind.NamespaceDeclaration)) {
                                         if (foundNode) {
                                                 var location =
-                                                    NamedTypeHelpers.GetNameOrIdentifierLocation(
-                                                        node);
+                                                  NamedTypeHelpers.GetNameOrIdentifierLocation(
+                                                    node);
                                                 if (location != null) {
-                                                        context.ReportDiagnostic(Diagnostic.Create(
-                                                            Descriptor, location));
+                                                        context.ReportDiagnostic(
+                                                          Diagnostic.Create(Descriptor, location));
                                                 }
                                         } else {
                                                 foundNode = true;

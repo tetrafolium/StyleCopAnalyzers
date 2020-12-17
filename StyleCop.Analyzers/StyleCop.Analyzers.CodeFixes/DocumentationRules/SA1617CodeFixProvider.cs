@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System.Collections.Generic;
         using System.Collections.Immutable;
         using System.Composition;
@@ -22,29 +23,31 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1617CodeFixProvider))]
         [Shared]
-        internal class SA1617CodeFixProvider : CodeFixProvider {
+        internal class SA1617CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() {
+                public override FixAllProvider GetFixAllProvider()
+                {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 if (!diagnostic.Properties.ContainsKey(
-                                        SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey)) {
+                                      SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey)) {
                                         context.RegisterCodeFix(
-                                            CodeAction.Create(
-                                                DocumentationResources.SA1617CodeFix,
-                                                cancellationToken => GetTransformedDocumentAsync(
-                                                    context.Document, diagnostic,
-                                                    cancellationToken),
-                                                nameof(SA1617CodeFixProvider)),
-                                            diagnostic);
+                                          CodeAction.Create(
+                                            DocumentationResources.SA1617CodeFix,
+                                            cancellationToken => GetTransformedDocumentAsync(
+                                              context.Document, diagnostic, cancellationToken),
+                                            nameof(SA1617CodeFixProvider)),
+                                          diagnostic);
                                 }
                         }
 
@@ -52,17 +55,18 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    Diagnostic diagnostic,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  Diagnostic diagnostic,
+                  CancellationToken cancellationToken)
+                {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
-                                       .ConfigureAwait(false);
+                                     .ConfigureAwait(false);
                         var node = root.FindNode(diagnostic.Location.SourceSpan);
                         var documentation = node.GetDocumentationCommentTriviaSyntax();
 
                         // Check if the return value is documented
-                        var returnsElement = documentation.Content.GetFirstXmlElement(
-                            XmlCommentHelper.ReturnsXmlTag);
+                        var returnsElement =
+                          documentation.Content.GetFirstXmlElement(XmlCommentHelper.ReturnsXmlTag);
 
                         if (returnsElement == null) {
                                 return document;
@@ -89,7 +93,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         var newSyntaxRoot =
-                            root.RemoveNodes(nodesToFix, SyntaxRemoveOptions.KeepLeadingTrivia);
+                          root.RemoveNodes(nodesToFix, SyntaxRemoveOptions.KeepLeadingTrivia);
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

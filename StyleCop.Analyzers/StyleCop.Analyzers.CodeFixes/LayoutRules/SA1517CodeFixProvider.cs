@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.LayoutRules {
+namespace StyleCop.Analyzers.LayoutRules
+{
         using System.Collections.Immutable;
         using System.Composition;
         using System.Threading;
@@ -17,55 +18,60 @@ namespace StyleCop.Analyzers.LayoutRules {
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1517CodeFixProvider))]
         [Shared]
-        internal class SA1517CodeFixProvider : CodeFixProvider {
+        internal class SA1517CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                    SA1517CodeMustNotContainBlankLinesAtStartOfFile.DiagnosticId);
+                  SA1517CodeMustNotContainBlankLinesAtStartOfFile.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        LayoutResources.SA1517CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, cancellationToken),
-                                        nameof(SA1517CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(LayoutResources.SA1517CodeFix,
+                                                    cancellationToken =>
+                                                      GetTransformedDocumentAsync(
+                                                        context.Document, cancellationToken),
+                                                    nameof(SA1517CodeFixProvider)),
+                                  diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    CancellationToken token) {
+                  Document document,
+                  CancellationToken token)
+                {
                         var newSyntaxRoot = await GetTransformedSyntaxRootAsync(document, token)
-                                                .ConfigureAwait(false);
+                                              .ConfigureAwait(false);
 
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
                 private static async Task<SyntaxNode> GetTransformedSyntaxRootAsync(
-                    Document document,
-                    CancellationToken token) {
+                  Document document,
+                  CancellationToken token)
+                {
                         var syntaxRoot =
-                            await document.GetSyntaxRootAsync(token).ConfigureAwait(false);
+                          await document.GetSyntaxRootAsync(token).ConfigureAwait(false);
 
                         var firstToken = syntaxRoot.GetFirstToken(includeZeroWidth : true);
                         var leadingTrivia = firstToken.LeadingTrivia;
                         var newTriviaList = SyntaxFactory.TriviaList();
 
                         var firstNonBlankLineTriviaIndex =
-                            TriviaHelper.IndexOfFirstNonBlankLineTrivia(leadingTrivia);
+                          TriviaHelper.IndexOfFirstNonBlankLineTrivia(leadingTrivia);
 
                         if (firstNonBlankLineTriviaIndex != -1) {
                                 for (var index = firstNonBlankLineTriviaIndex;
-                                     index < leadingTrivia.Count; index++) {
+                                     index < leadingTrivia.Count;
+                                     index++) {
                                         newTriviaList = newTriviaList.Add(leadingTrivia[index]);
                                 }
                         }
@@ -75,22 +81,24 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return newSyntaxRoot;
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
+                private class FixAll : DocumentBasedFixAllProvider
+                {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
                         protected override string CodeActionTitle => LayoutResources.SA1517CodeFix;
 
                         protected override Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext,
-                            Document document,
-                            ImmutableArray<Diagnostic> diagnostics) {
+                          FixAllContext fixAllContext,
+                          Document document,
+                          ImmutableArray<Diagnostic> diagnostics)
+                        {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
                                 return GetTransformedSyntaxRootAsync(
-                                    document, fixAllContext.CancellationToken);
+                                  document, fixAllContext.CancellationToken);
                         }
                 }
         }

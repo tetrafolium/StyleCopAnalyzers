@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Settings.ObjectModel {
+namespace StyleCop.Analyzers.Settings.ObjectModel
+{
         using System.Collections.Generic;
         using System.Collections.Immutable;
         using System.Text.RegularExpressions;
         using LightJson;
 
-        internal class DocumentationSettings {
+        internal class DocumentationSettings
+        {
                 /// <summary>
                 /// The default value for the <see cref="CompanyName"/> property.
                 /// </summary>
@@ -17,7 +19,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// The default value for the <see cref="GetCopyrightText(string)"/> method.
                 /// </summary>
                 internal const string DefaultCopyrightText =
-                    "Copyright (c) {companyName}. All rights reserved.";
+                  "Copyright (c) {companyName}. All rights reserved.";
 
                 /// <summary>
                 /// The default value for the <see cref="DocumentationCulture"/> property.
@@ -28,7 +30,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// The default value for the <see cref="ExcludeFromPunctuationCheck"/> property.
                 /// </summary>
                 internal static readonly ImmutableArray<string> DefaultExcludeFromPunctuationCheck =
-                    ImmutableArray.Create("seealso");
+                  ImmutableArray.Create("seealso");
 
                 /// <summary>
                 /// This is the backing field for the <see cref="CompanyName"/> property.
@@ -108,7 +110,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// Initializes a new instance of the <see cref="DocumentationSettings"/> class
                 /// during JSON deserialization.
                 /// </summary>
-                protected internal DocumentationSettings() {
+                protected internal DocumentationSettings()
+                {
                         this.companyName = DefaultCompanyName;
                         this.copyrightText = DefaultCopyrightText;
                         this.headerDecoration = null;
@@ -134,7 +137,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// <param name="documentationSettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal DocumentationSettings(JsonObject documentationSettingsObject)
-                    : this() {
+                  : this()
+                {
                         foreach (var kvp in documentationSettingsObject) {
                                 switch (kvp.Key) {
                                         case "documentExposedElements":
@@ -143,7 +147,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
 
                                         case "documentInternalElements":
                                                 this.documentInternalElements =
-                                                    kvp.ToBooleanValue();
+                                                  kvp.ToBooleanValue();
                                                 break;
 
                                         case "documentPrivateElements":
@@ -192,7 +196,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
 
                                         case "fileNamingConvention":
                                                 this.fileNamingConvention =
-                                                    kvp.ToEnumValue<FileNamingConvention>();
+                                                  kvp.ToEnumValue<FileNamingConvention>();
                                                 break;
 
                                         case "documentationCulture":
@@ -202,13 +206,13 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                                         case "excludeFromPunctuationCheck":
                                                 kvp.AssertIsArray();
                                                 var excludedTags =
-                                                    ImmutableArray.CreateBuilder<string>();
+                                                  ImmutableArray.CreateBuilder<string>();
                                                 foreach (var value in kvp.Value.AsJsonArray) {
                                                         excludedTags.Add(value.AsString);
                                                 }
 
                                                 this.excludeFromPunctuationCheck =
-                                                    excludedTags.ToImmutable();
+                                                  excludedTags.ToImmutable();
                                                 break;
 
                                         default:
@@ -217,19 +221,23 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                         }
                 }
 
-                public string CompanyName {
+                public string CompanyName
+                {
                         get { return this.companyName; }
                 }
 
-                public string HeaderDecoration {
+                public string HeaderDecoration
+                {
                         get { return this.headerDecoration; }
                 }
 
-                public ImmutableDictionary<string, string> Variables {
+                public ImmutableDictionary<string, string> Variables
+                {
                         get { return this.variables.ToImmutable(); }
                 }
 
-                public bool XmlHeader {
+                public bool XmlHeader
+                {
                         get { return this.xmlHeader; }
                 }
 
@@ -248,9 +256,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 public string DocumentationCulture => this.documentationCulture;
 
                 public ImmutableArray<string> ExcludeFromPunctuationCheck =>
-                    this.excludeFromPunctuationCheck;
+                  this.excludeFromPunctuationCheck;
 
-                public string GetCopyrightText(string fileName) {
+                public string GetCopyrightText(string fileName)
+                {
                         string copyrightText = this.copyrightTextCache;
                         if (copyrightText != null) {
                                 return copyrightText;
@@ -267,10 +276,12 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                         return this.copyrightTextCache;
                 }
 
-                private KeyValuePair<string, bool> BuildCopyrightText(string fileName) {
+                private KeyValuePair<string, bool> BuildCopyrightText(string fileName)
+                {
                         bool canCache = true;
 
-                        string Evaluator(Match match) {
+                        string Evaluator(Match match)
+                        {
                                 string key = match.Groups["Property"].Value;
                                 switch (key) {
                                         case "companyName":
@@ -301,7 +312,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                         }
 
                         string pattern =
-                            Regex.Escape("{") + "(?<Property>[a-zA-Z0-9]+)" + Regex.Escape("}");
+                          Regex.Escape("{") + "(?<Property>[a-zA-Z0-9]+)" + Regex.Escape("}");
                         string expanded = Regex.Replace(this.copyrightText, pattern, Evaluator);
                         return new KeyValuePair<string, bool>(expanded, canCache);
                 }

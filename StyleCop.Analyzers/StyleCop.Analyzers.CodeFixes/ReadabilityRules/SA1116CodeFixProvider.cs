@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System.Collections.Immutable;
         using System.Composition;
         using System.Threading;
@@ -24,46 +25,50 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1116CodeFixProvider))]
         [Shared]
-        internal class SA1116CodeFixProvider : CodeFixProvider {
+        internal class SA1116CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                    SA1116SplitParametersMustStartOnLineAfterDeclaration.DiagnosticId);
+                  SA1116SplitParametersMustStartOnLineAfterDeclaration.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() {
+                public override FixAllProvider GetFixAllProvider()
+                {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        ReadabilityResources.SA1116CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1116CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(
+                                    ReadabilityResources.SA1116CodeFix,
+                                    cancellationToken => GetTransformedDocumentAsync(
+                                      context.Document, diagnostic, cancellationToken),
+                                    nameof(SA1116CodeFixProvider)),
+                                  diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    Diagnostic diagnostic,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  Diagnostic diagnostic,
+                  CancellationToken cancellationToken)
+                {
                         SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken)
-                                              .ConfigureAwait(false);
+                                            .ConfigureAwait(false);
                         SyntaxToken originalToken =
-                            root.FindToken(diagnostic.Location.SourceSpan.Start);
+                          root.FindToken(diagnostic.Location.SourceSpan.Start);
 
                         SyntaxTree tree = root.SyntaxTree;
                         SourceText sourceText =
-                            await tree.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                          await tree.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         TextLine sourceLine =
-                            sourceText.Lines.GetLineFromPosition(originalToken.SpanStart);
+                          sourceText.Lines.GetLineFromPosition(originalToken.SpanStart);
 
                         string lineText = sourceText.ToString(sourceLine.Span);
                         int indentLength;
@@ -74,15 +79,15 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
 
                         var settings = SettingsHelper.GetStyleCopSettings(
-                            document.Project.AnalyzerOptions, cancellationToken);
+                          document.Project.AnalyzerOptions, cancellationToken);
                         SyntaxTriviaList newTrivia = SyntaxFactory.TriviaList(
-                            SyntaxFactory.CarriageReturnLineFeed,
-                            SyntaxFactory.Whitespace(lineText.Substring(0, indentLength) +
-                                                     IndentationHelper.GenerateIndentationString(
-                                                         settings.Indentation, 1)));
+                          SyntaxFactory.CarriageReturnLineFeed,
+                          SyntaxFactory.Whitespace(
+                            lineText.Substring(0, indentLength) +
+                            IndentationHelper.GenerateIndentationString(settings.Indentation, 1)));
 
                         SyntaxToken updatedToken = originalToken.WithLeadingTrivia(
-                            originalToken.LeadingTrivia.AddRange(newTrivia));
+                          originalToken.LeadingTrivia.AddRange(newTrivia));
                         SyntaxNode updatedRoot = root.ReplaceToken(originalToken, updatedToken);
                         return document.WithSyntaxRoot(updatedRoot);
                 }

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -9,255 +10,280 @@ namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct LocalFunctionStatementSyntaxWrapper
-            : ISyntaxWrapper<StatementSyntax> {
+          : ISyntaxWrapper<StatementSyntax>
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.LocalFunctionStatementSyntax";
+                  "Microsoft.CodeAnalysis.CSharp.Syntax.LocalFunctionStatementSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<StatementSyntax, SyntaxTokenList> ModifiersAccessor;
                 private static readonly Func<StatementSyntax, TypeSyntax> ReturnTypeAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken> IdentifierAccessor;
                 private static readonly Func<StatementSyntax, TypeParameterListSyntax>
-                    TypeParameterListAccessor;
+                  TypeParameterListAccessor;
                 private static readonly Func<StatementSyntax, ParameterListSyntax>
-                    ParameterListAccessor;
+                  ParameterListAccessor;
                 private static readonly
-                    Func<StatementSyntax, SyntaxList<TypeParameterConstraintClauseSyntax>>
-                        ConstraintClausesAccessor;
+                  Func<StatementSyntax, SyntaxList<TypeParameterConstraintClauseSyntax>>
+                    ConstraintClausesAccessor;
                 private static readonly Func<StatementSyntax, BlockSyntax> BodyAccessor;
                 private static readonly Func<StatementSyntax, ArrowExpressionClauseSyntax>
-                    ExpressionBodyAccessor;
+                  ExpressionBodyAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken> SemicolonTokenAccessor;
                 private static readonly
-                    Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax>
-                        WithAttributeListsAccessor;
+                  Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax>
+                    WithAttributeListsAccessor;
                 private static readonly Func<StatementSyntax, SyntaxTokenList, StatementSyntax>
-                    WithModifiersAccessor;
+                  WithModifiersAccessor;
                 private static readonly Func<StatementSyntax, TypeSyntax, StatementSyntax>
-                    WithReturnTypeAccessor;
+                  WithReturnTypeAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax>
-                    WithIdentifierAccessor;
+                  WithIdentifierAccessor;
                 private static readonly
-                    Func<StatementSyntax, TypeParameterListSyntax, StatementSyntax>
-                        WithTypeParameterListAccessor;
+                  Func<StatementSyntax, TypeParameterListSyntax, StatementSyntax>
+                    WithTypeParameterListAccessor;
                 private static readonly Func<StatementSyntax, ParameterListSyntax, StatementSyntax>
-                    WithParameterListAccessor;
+                  WithParameterListAccessor;
                 private static readonly Func<StatementSyntax,
                                              SyntaxList<TypeParameterConstraintClauseSyntax>,
                                              StatementSyntax> WithConstraintClausesAccessor;
                 private static readonly Func<StatementSyntax, BlockSyntax, StatementSyntax>
-                    WithBodyAccessor;
+                  WithBodyAccessor;
                 private static readonly
-                    Func<StatementSyntax, ArrowExpressionClauseSyntax, StatementSyntax>
-                        WithExpressionBodyAccessor;
+                  Func<StatementSyntax, ArrowExpressionClauseSyntax, StatementSyntax>
+                    WithExpressionBodyAccessor;
                 private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax>
-                    WithSemicolonTokenAccessor;
+                  WithSemicolonTokenAccessor;
 
                 private readonly StatementSyntax node;
 
-                static LocalFunctionStatementSyntaxWrapper() {
+                static LocalFunctionStatementSyntaxWrapper()
+                {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(LocalFunctionStatementSyntaxWrapper));
+                          typeof(LocalFunctionStatementSyntaxWrapper));
                         ModifiersAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<StatementSyntax, SyntaxTokenList>(
-                                    WrappedType, nameof(Modifiers));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<StatementSyntax, SyntaxTokenList>(
+                              WrappedType, nameof(Modifiers));
                         ReturnTypeAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<StatementSyntax, TypeSyntax>(
-                                    WrappedType, nameof(ReturnType));
+                          LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax, TypeSyntax>(
+                            WrappedType, nameof(ReturnType));
                         IdentifierAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<StatementSyntax, SyntaxToken>(
-                                    WrappedType, nameof(Identifier));
+                          LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax, SyntaxToken>(
+                            WrappedType, nameof(Identifier));
                         TypeParameterListAccessor =
-                            LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax,
-                                                                        TypeParameterListSyntax>(
-                                WrappedType, nameof(TypeParameterList));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<StatementSyntax, TypeParameterListSyntax>(
+                              WrappedType, nameof(TypeParameterList));
                         ParameterListAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<StatementSyntax, ParameterListSyntax>(
-                                    WrappedType, nameof(ParameterList));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<StatementSyntax, ParameterListSyntax>(
+                              WrappedType, nameof(ParameterList));
                         ConstraintClausesAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            StatementSyntax, SyntaxList<TypeParameterConstraintClauseSyntax>>(
-                            WrappedType, nameof(ConstraintClauses));
+                          StatementSyntax,
+                          SyntaxList<TypeParameterConstraintClauseSyntax>>(
+                          WrappedType, nameof(ConstraintClauses));
                         BodyAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<StatementSyntax, BlockSyntax>(
-                                    WrappedType, nameof(Body));
-                        ExpressionBodyAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            StatementSyntax, ArrowExpressionClauseSyntax>(WrappedType,
-                                                                          nameof(ExpressionBody));
+                          LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax, BlockSyntax>(
+                            WrappedType, nameof(Body));
+                        ExpressionBodyAccessor =
+                          LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax,
+                                                                      ArrowExpressionClauseSyntax>(
+                            WrappedType, nameof(ExpressionBody));
                         SemicolonTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<StatementSyntax, SyntaxToken>(
-                                    WrappedType, nameof(SemicolonToken));
+                          LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax, SyntaxToken>(
+                            WrappedType, nameof(SemicolonToken));
                         WithAttributeListsAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                StatementSyntax, SyntaxList<AttributeListSyntax>>(
-                                WrappedType, nameof(AttributeLists));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<StatementSyntax,
+                                                              SyntaxList<AttributeListSyntax>>(
+                              WrappedType, nameof(AttributeLists));
                         WithModifiersAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxTokenList>(
-                                    WrappedType, nameof(Modifiers));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxTokenList>(
+                              WrappedType, nameof(Modifiers));
                         WithReturnTypeAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<StatementSyntax, TypeSyntax>(
-                                    WrappedType, nameof(ReturnType));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<StatementSyntax, TypeSyntax>(
+                              WrappedType, nameof(ReturnType));
                         WithIdentifierAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
-                                    WrappedType, nameof(Identifier));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
+                              WrappedType, nameof(Identifier));
                         WithTypeParameterListAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                StatementSyntax, TypeParameterListSyntax>(
-                                WrappedType, nameof(TypeParameterList));
+                          LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax,
+                                                                          TypeParameterListSyntax>(
+                            WrappedType, nameof(TypeParameterList));
                         WithParameterListAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax,
-                                                                            ParameterListSyntax>(
-                                WrappedType, nameof(ParameterList));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<StatementSyntax, ParameterListSyntax>(
+                              WrappedType, nameof(ParameterList));
                         WithConstraintClausesAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                StatementSyntax, SyntaxList<TypeParameterConstraintClauseSyntax>>(
-                                WrappedType, nameof(ConstraintClauses));
+                          LightupHelpers.CreateSyntaxWithPropertyAccessor<
+                            StatementSyntax,
+                            SyntaxList<TypeParameterConstraintClauseSyntax>>(
+                            WrappedType, nameof(ConstraintClauses));
                         WithBodyAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<StatementSyntax, BlockSyntax>(
-                                    WrappedType, nameof(Body));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<StatementSyntax, BlockSyntax>(
+                              WrappedType, nameof(Body));
                         WithExpressionBodyAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                StatementSyntax, ArrowExpressionClauseSyntax>(
-                                WrappedType, nameof(ExpressionBody));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<StatementSyntax,
+                                                              ArrowExpressionClauseSyntax>(
+                              WrappedType, nameof(ExpressionBody));
                         WithSemicolonTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
-                                    WrappedType, nameof(SemicolonToken));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
+                              WrappedType, nameof(SemicolonToken));
                 }
 
-                private LocalFunctionStatementSyntaxWrapper(StatementSyntax node) {
+                private LocalFunctionStatementSyntaxWrapper(StatementSyntax node)
+                {
                         this.node = node;
                 }
 
                 public StatementSyntax SyntaxNode => this.node;
 
-                public SyntaxList<AttributeListSyntax> AttributeLists {
+                public SyntaxList<AttributeListSyntax> AttributeLists
+                {
                         get { return this.SyntaxNode.AttributeLists(); }
                 }
 
-                public SyntaxTokenList Modifiers {
+                public SyntaxTokenList Modifiers
+                {
                         get { return ModifiersAccessor(this.SyntaxNode); }
                 }
 
-                public TypeSyntax ReturnType {
+                public TypeSyntax ReturnType
+                {
                         get { return ReturnTypeAccessor(this.SyntaxNode); }
                 }
 
-                public SyntaxToken Identifier {
+                public SyntaxToken Identifier
+                {
                         get { return IdentifierAccessor(this.SyntaxNode); }
                 }
 
-                public TypeParameterListSyntax TypeParameterList {
+                public TypeParameterListSyntax TypeParameterList
+                {
                         get { return TypeParameterListAccessor(this.SyntaxNode); }
                 }
 
-                public ParameterListSyntax ParameterList {
+                public ParameterListSyntax ParameterList
+                {
                         get { return ParameterListAccessor(this.SyntaxNode); }
                 }
 
-                public SyntaxList<TypeParameterConstraintClauseSyntax> ConstraintClauses {
+                public SyntaxList<TypeParameterConstraintClauseSyntax> ConstraintClauses
+                {
                         get { return ConstraintClausesAccessor(this.SyntaxNode); }
                 }
 
-                public BlockSyntax Body {
+                public BlockSyntax Body
+                {
                         get { return BodyAccessor(this.SyntaxNode); }
                 }
 
-                public ArrowExpressionClauseSyntax ExpressionBody {
+                public ArrowExpressionClauseSyntax ExpressionBody
+                {
                         get { return ExpressionBodyAccessor(this.SyntaxNode); }
                 }
 
-                public SyntaxToken SemicolonToken {
+                public SyntaxToken SemicolonToken
+                {
                         get { return SemicolonTokenAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit operator LocalFunctionStatementSyntaxWrapper(
-                    SyntaxNode node) {
+                public static explicit operator LocalFunctionStatementSyntaxWrapper(SyntaxNode node)
+                {
                         if (node == null) {
                                 return default;
                         }
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new LocalFunctionStatementSyntaxWrapper((StatementSyntax) node);
                 }
 
                 public static implicit operator StatementSyntax(
-                    LocalFunctionStatementSyntaxWrapper wrapper) {
+                  LocalFunctionStatementSyntaxWrapper wrapper)
+                {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node) {
+                public static bool IsInstance(SyntaxNode node)
+                {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
                 public LocalFunctionStatementSyntaxWrapper WithAttributeLists(
-                    SyntaxList<AttributeListSyntax> attributeLists) {
+                  SyntaxList<AttributeListSyntax> attributeLists)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
+                          WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper WithModifiers(
-                    SyntaxTokenList modifiers) {
+                public LocalFunctionStatementSyntaxWrapper WithModifiers(SyntaxTokenList modifiers)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithModifiersAccessor(this.SyntaxNode, modifiers));
+                          WithModifiersAccessor(this.SyntaxNode, modifiers));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper WithReturnType(TypeSyntax returnType) {
+                public LocalFunctionStatementSyntaxWrapper WithReturnType(TypeSyntax returnType)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithReturnTypeAccessor(this.SyntaxNode, returnType));
+                          WithReturnTypeAccessor(this.SyntaxNode, returnType));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper WithIdentifier(SyntaxToken identifier) {
+                public LocalFunctionStatementSyntaxWrapper WithIdentifier(SyntaxToken identifier)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithIdentifierAccessor(this.SyntaxNode, identifier));
+                          WithIdentifierAccessor(this.SyntaxNode, identifier));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper WithTypeParameterList(
-                    TypeParameterListSyntax typeParameterList) {
+                  TypeParameterListSyntax typeParameterList)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithTypeParameterListAccessor(this.SyntaxNode, typeParameterList));
+                          WithTypeParameterListAccessor(this.SyntaxNode, typeParameterList));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper WithParameterList(
-                    ParameterListSyntax parameterList) {
+                  ParameterListSyntax parameterList)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithParameterListAccessor(this.SyntaxNode, parameterList));
+                          WithParameterListAccessor(this.SyntaxNode, parameterList));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper WithConstraintClauses(
-                    SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses) {
+                  SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithConstraintClausesAccessor(this.SyntaxNode, constraintClauses));
+                          WithConstraintClausesAccessor(this.SyntaxNode, constraintClauses));
                 }
 
-                public LocalFunctionStatementSyntaxWrapper WithBody(BlockSyntax body) {
+                public LocalFunctionStatementSyntaxWrapper WithBody(BlockSyntax body)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithBodyAccessor(this.SyntaxNode, body));
+                          WithBodyAccessor(this.SyntaxNode, body));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper WithExpressionBody(
-                    ArrowExpressionClauseSyntax expressionBody) {
+                  ArrowExpressionClauseSyntax expressionBody)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithExpressionBodyAccessor(this.SyntaxNode, expressionBody));
+                          WithExpressionBodyAccessor(this.SyntaxNode, expressionBody));
                 }
 
                 public LocalFunctionStatementSyntaxWrapper WithSemicolonToken(
-                    SyntaxToken semicolonToken) {
+                  SyntaxToken semicolonToken)
+                {
                         return new LocalFunctionStatementSyntaxWrapper(
-                            WithSemicolonTokenAccessor(this.SyntaxNode, semicolonToken));
+                          WithSemicolonTokenAccessor(this.SyntaxNode, semicolonToken));
                 }
         }
 }

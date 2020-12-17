@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class SyntaxKindEx {
+        internal static class SyntaxKindEx
+        {
                 public const SyntaxKind DotDotToken = (SyntaxKind) 8222;
                 public const SyntaxKind QuestionQuestionEqualsToken = (SyntaxKind) 8284;
                 public const SyntaxKind ManagedKeyword = (SyntaxKind) 8445;
@@ -48,7 +50,7 @@ namespace StyleCop.Analyzers.Lightup {
                 public const SyntaxKind RefType = (SyntaxKind) 9051;
                 public const SyntaxKind ThrowExpression = (SyntaxKind) 9052;
                 public const SyntaxKind ImplicitStackAllocArrayCreationExpression =
-                    (SyntaxKind) 9053;
+                  (SyntaxKind) 9053;
                 public const SyntaxKind SuppressNullableWarningExpression = (SyntaxKind) 9054;
                 public const SyntaxKind NullableDirectiveTrivia = (SyntaxKind) 9055;
                 public const SyntaxKind FunctionPointerType = (SyntaxKind) 9056;
@@ -57,6 +59,6 @@ namespace StyleCop.Analyzers.Lightup {
                 public const SyntaxKind WithInitializerExpression = (SyntaxKind) 9062;
                 public const SyntaxKind RecordDeclaration = (SyntaxKind) 9063;
                 public const SyntaxKind FunctionPointerUnmanagedCallingConventionList =
-                    (SyntaxKind) 9066;
+                  (SyntaxKind) 9066;
         }
 }

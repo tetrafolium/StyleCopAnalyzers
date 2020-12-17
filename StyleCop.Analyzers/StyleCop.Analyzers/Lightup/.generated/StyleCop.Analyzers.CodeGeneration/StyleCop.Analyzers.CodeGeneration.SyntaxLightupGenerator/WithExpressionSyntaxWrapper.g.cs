@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -9,104 +10,118 @@ namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct WithExpressionSyntaxWrapper
-            : ISyntaxWrapper<ExpressionSyntax> {
+          : ISyntaxWrapper<ExpressionSyntax>
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.WithExpressionSyntax";
+                  "Microsoft.CodeAnalysis.CSharp.Syntax.WithExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax> ExpressionAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken> WithKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, InitializerExpressionSyntax>
-                    InitializerAccessor;
+                  InitializerAccessor;
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax, ExpressionSyntax>
-                    WithExpressionAccessor;
+                  WithExpressionAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                    WithWithKeywordAccessor;
+                  WithWithKeywordAccessor;
                 private static readonly
-                    Func<ExpressionSyntax, InitializerExpressionSyntax, ExpressionSyntax>
-                        WithInitializerAccessor;
+                  Func<ExpressionSyntax, InitializerExpressionSyntax, ExpressionSyntax>
+                    WithInitializerAccessor;
 
                 private readonly ExpressionSyntax node;
 
-                static WithExpressionSyntaxWrapper() {
+                static WithExpressionSyntaxWrapper()
+                {
                         WrappedType =
-                            SyntaxWrapperHelper.GetWrappedType(typeof(WithExpressionSyntaxWrapper));
+                          SyntaxWrapperHelper.GetWrappedType(typeof(WithExpressionSyntaxWrapper));
                         ExpressionAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                                    WrappedType, nameof(Expression));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                              WrappedType, nameof(Expression));
                         WithKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(WithKeyword));
-                        InitializerAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<
-                            ExpressionSyntax, InitializerExpressionSyntax>(WrappedType,
-                                                                           nameof(Initializer));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                              WrappedType, nameof(WithKeyword));
+                        InitializerAccessor =
+                          LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax,
+                                                                      InitializerExpressionSyntax>(
+                            WrappedType, nameof(Initializer));
                         WithExpressionAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                                                            ExpressionSyntax>(
-                                WrappedType, nameof(Expression));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                              WrappedType, nameof(Expression));
                         WithWithKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(WithKeyword));
-                        WithInitializerAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                            ExpressionSyntax, InitializerExpressionSyntax>(WrappedType,
-                                                                           nameof(Initializer));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                              WrappedType, nameof(WithKeyword));
+                        WithInitializerAccessor =
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
+                                                              InitializerExpressionSyntax>(
+                              WrappedType, nameof(Initializer));
                 }
 
                 private WithExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
 
                 public ExpressionSyntax SyntaxNode => this.node;
 
-                public ExpressionSyntax Expression {
+                public ExpressionSyntax Expression
+                {
                         get { return ExpressionAccessor(this.SyntaxNode); }
                 }
 
-                public SyntaxToken WithKeyword {
+                public SyntaxToken WithKeyword
+                {
                         get { return WithKeywordAccessor(this.SyntaxNode); }
                 }
 
-                public InitializerExpressionSyntax Initializer {
+                public InitializerExpressionSyntax Initializer
+                {
                         get { return InitializerAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit operator WithExpressionSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator WithExpressionSyntaxWrapper(SyntaxNode node)
+                {
                         if (node == null) {
                                 return default;
                         }
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new WithExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
                 public static implicit operator ExpressionSyntax(
-                    WithExpressionSyntaxWrapper wrapper) {
+                  WithExpressionSyntaxWrapper wrapper)
+                {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node) {
+                public static bool IsInstance(SyntaxNode node)
+                {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public WithExpressionSyntaxWrapper WithExpression(ExpressionSyntax expression) {
+                public WithExpressionSyntaxWrapper WithExpression(ExpressionSyntax expression)
+                {
                         return new WithExpressionSyntaxWrapper(
-                            WithExpressionAccessor(this.SyntaxNode, expression));
+                          WithExpressionAccessor(this.SyntaxNode, expression));
                 }
 
-                public WithExpressionSyntaxWrapper WithWithKeyword(SyntaxToken withKeyword) {
+                public WithExpressionSyntaxWrapper WithWithKeyword(SyntaxToken withKeyword)
+                {
                         return new WithExpressionSyntaxWrapper(
-                            WithWithKeywordAccessor(this.SyntaxNode, withKeyword));
+                          WithWithKeywordAccessor(this.SyntaxNode, withKeyword));
                 }
 
                 public WithExpressionSyntaxWrapper WithInitializer(
-                    InitializerExpressionSyntax initializer) {
+                  InitializerExpressionSyntax initializer)
+                {
                         return new WithExpressionSyntaxWrapper(
-                            WithInitializerAccessor(this.SyntaxNode, initializer));
+                          WithInitializerAccessor(this.SyntaxNode, initializer));
                 }
         }
 }

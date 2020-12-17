@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Diagnostics;
@@ -24,48 +25,49 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1405DebugAssertMustProvideMessageText
-            : SystemDiagnosticsDebugDiagnosticBase {
+          : SystemDiagnosticsDebugDiagnosticBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1405DebugAssertMustProvideMessageText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1405";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1405.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1405.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1405Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1405Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1405MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1405MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1405Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1405Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    InvocationExpressionAction = HandleInvocationExpression;
+                  InvocationExpressionAction = HandleInvocationExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -73,7 +75,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                                          SyntaxKind.InvocationExpression);
                 }
 
-                private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
+                {
                         HandleInvocationExpression(context, nameof(Debug.Assert), 1, Descriptor);
                 }
         }

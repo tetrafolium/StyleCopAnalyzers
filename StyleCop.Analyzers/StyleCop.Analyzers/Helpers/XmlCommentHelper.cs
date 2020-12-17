@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System.Linq;
         using System.Text;
         using System.Text.RegularExpressions;
@@ -13,7 +14,8 @@ namespace StyleCop.Analyzers.Helpers {
         /// <summary>
         /// Provides helper methods to work with XML comments.
         /// </summary>
-        internal static class XmlCommentHelper {
+        internal static class XmlCommentHelper
+        {
                 internal const string SummaryXmlTag = "summary";
                 internal const string ContentXmlTag = "content";
                 internal const string InheritdocXmlTag = "inheritdoc";
@@ -57,8 +59,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="xmlComment">The XML comment that should be checked.</param>
                 /// <returns>true, if the comment should be considered empty, false
                 /// otherwise.</returns>
-                internal static bool IsConsideredEmpty(
-                    DocumentationCommentTriviaSyntax xmlComment) {
+                internal static bool IsConsideredEmpty(DocumentationCommentTriviaSyntax xmlComment)
+                {
                         if (xmlComment == null) {
                                 return true;
                         }
@@ -82,7 +84,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// considered or assumed non-empty.</param> <returns>true, if the comment should be
                 /// considered empty, false otherwise.</returns>
                 internal static bool IsConsideredEmpty(XmlNodeSyntax xmlSyntax,
-                                                       bool considerEmptyElements = false) {
+                                                       bool considerEmptyElements = false)
+                {
                         if (xmlSyntax is XmlTextSyntax text) {
                                 foreach (SyntaxToken token in text.TextTokens) {
                                         if (!string.IsNullOrWhiteSpace(token.ToString())) {
@@ -129,7 +132,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="node">The XML node that should be checked.</param>
                 /// <returns>true, if the comment should be considered empty, false
                 /// otherwise.</returns>
-                internal static bool IsConsideredEmpty(XNode node) {
+                internal static bool IsConsideredEmpty(XNode node)
+                {
                         if (node is XText text) {
                                 return string.IsNullOrWhiteSpace(text.Value);
                         }
@@ -154,8 +158,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="node">The XML content to search.</param>
                 /// <returns>The first <see cref="XmlTextSyntax"/> which is not simply empty or
                 /// whitespace, or <see langword="null"/> if no such element exists.</returns>
-                internal static XmlTextSyntax TryGetFirstTextElementWithContent(
-                    XmlNodeSyntax node) {
+                internal static XmlTextSyntax TryGetFirstTextElementWithContent(XmlNodeSyntax node)
+                {
                         if (node is XmlEmptyElementSyntax) {
                                 return null;
                         } else if (node is XmlTextSyntax xmlText) {
@@ -163,7 +167,7 @@ namespace StyleCop.Analyzers.Helpers {
                         } else if (node is XmlElementSyntax xmlElement) {
                                 foreach (var child in xmlElement.Content) {
                                         var nestedContent =
-                                            TryGetFirstTextElementWithContent(child);
+                                          TryGetFirstTextElementWithContent(child);
                                         if (nestedContent != null) {
                                                 return nestedContent;
                                         }
@@ -184,13 +188,14 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <paramref name="commentTrivia"/> is considered empty; otherwise, <see
                 /// langword="false"/>.
                 /// </returns>
-                internal static bool IsMissingOrEmpty(SyntaxTrivia commentTrivia) {
+                internal static bool IsMissingOrEmpty(SyntaxTrivia commentTrivia)
+                {
                         if (!commentTrivia.HasStructure) {
                                 return true;
                         }
 
                         if (commentTrivia.GetStructure()
-                                is DocumentationCommentTriviaSyntax structuredTrivia) {
+                              is DocumentationCommentTriviaSyntax structuredTrivia) {
                                 return IsConsideredEmpty(structuredTrivia);
                         }
 
@@ -202,7 +207,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </summary>
                 /// <param name="node">The syntax node that should be checked.</param>
                 /// <returns>true if the node has documentation, false otherwise.</returns>
-                internal static bool HasDocumentation(SyntaxNode node) {
+                internal static bool HasDocumentation(SyntaxNode node)
+                {
                         var commentTrivia = node.GetDocumentationCommentTriviaSyntax();
 
                         return commentTrivia != null &&
@@ -210,7 +216,8 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 internal static string GetText(XmlNodeSyntax nodeSyntax,
-                                               bool normalizeWhitespace = false) {
+                                               bool normalizeWhitespace = false)
+                {
                         if (nodeSyntax is XmlTextSyntax xmlTextSyntax) {
                                 return GetText(xmlTextSyntax, normalizeWhitespace);
                         }
@@ -232,12 +239,13 @@ namespace StyleCop.Analyzers.Helpers {
                         return null;
                 }
 
-                internal static string GetText(XmlTextSyntax textElement) {
+                internal static string GetText(XmlTextSyntax textElement)
+                {
                         return GetText(textElement, false);
                 }
 
-                internal static string GetText(XmlTextSyntax textElement,
-                                               bool normalizeWhitespace) {
+                internal static string GetText(XmlTextSyntax textElement, bool normalizeWhitespace)
+                {
                         if (textElement == null) {
                                 return null;
                         }
@@ -257,43 +265,47 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 internal static T GetFirstAttributeOrDefault<T>(XmlNodeSyntax nodeSyntax) where T
-                    : XmlAttributeSyntax {
+                  : XmlAttributeSyntax
+                {
                         if (nodeSyntax is XmlEmptyElementSyntax emptyElementSyntax) {
                                 return emptyElementSyntax.Attributes.OfType<T>().FirstOrDefault();
                         }
 
                         if (nodeSyntax is XmlElementSyntax elementSyntax) {
                                 return elementSyntax.StartTag?.Attributes.OfType<T>()
-                                    .FirstOrDefault();
+                                  .FirstOrDefault();
                         }
 
                         return null;
                 }
 
-                internal static bool IsInlineElement(this XmlNodeSyntax nodeSyntax) {
+                internal static bool IsInlineElement(this XmlNodeSyntax nodeSyntax)
+                {
                         if (nodeSyntax is XmlEmptyElementSyntax emptyElementSyntax) {
                                 return IsInlineElement(
-                                    emptyElementSyntax.Name?.LocalName.ValueText);
+                                  emptyElementSyntax.Name?.LocalName.ValueText);
                         }
 
                         if (nodeSyntax is XmlElementSyntax elementSyntax) {
                                 return IsInlineElement(
-                                    elementSyntax.StartTag?.Name?.LocalName.ValueText);
+                                  elementSyntax.StartTag?.Name?.LocalName.ValueText);
                         }
 
                         return false;
                 }
 
-                internal static bool IsBlockElement(this XmlNodeSyntax nodeSyntax) {
+                internal static bool IsBlockElement(this XmlNodeSyntax nodeSyntax)
+                {
                         if (nodeSyntax is XmlElementSyntax elementSyntax) {
                                 return IsBlockElement(
-                                    elementSyntax.StartTag?.Name?.LocalName.ValueText);
+                                  elementSyntax.StartTag?.Name?.LocalName.ValueText);
                         }
 
                         return false;
                 }
 
-                private static bool IsInlineElement(string localName) {
+                private static bool IsInlineElement(string localName)
+                {
                         switch (localName) {
                                 case CXmlTag:
                                 case ParamRefXmlTag:
@@ -306,7 +318,8 @@ namespace StyleCop.Analyzers.Helpers {
                         }
                 }
 
-                private static bool IsBlockElement(string localName) {
+                private static bool IsBlockElement(string localName)
+                {
                         switch (localName) {
                                 case CodeXmlTag:
                                 case ListXmlTag:

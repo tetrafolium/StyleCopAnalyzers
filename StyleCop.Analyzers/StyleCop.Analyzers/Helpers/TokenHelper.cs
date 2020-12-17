@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System.Threading;
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
@@ -9,7 +10,8 @@ namespace StyleCop.Analyzers.Helpers {
         /// <summary>
         /// Provides helper methods to work with token.
         /// </summary>
-        internal static class TokenHelper {
+        internal static class TokenHelper
+        {
                 /// <summary>
                 /// Gets a value indicating whether the <paramref name="token"/> is first in line.
                 /// </summary>
@@ -21,7 +23,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <paramref name="token"/> is first in line; otherwise, <see langword="false"/>.
                 /// </returns>
                 internal static bool IsFirstInLine(this SyntaxToken token,
-                                                   bool allowNonWhitespaceTrivia = true) {
+                                                   bool allowNonWhitespaceTrivia = true)
+                {
                         var fullLineSpan = token.SyntaxTree.GetLineSpan(token.FullSpan);
 
                         bool firstInLine;
@@ -58,12 +61,13 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <see langword="true"/> if <paramref name="token"/> is an interpolated unary
                 /// expression; otherwise, <see langword="false"/>.
                 /// </returns>
-                internal static bool IsInterpolatedUnaryExpression(this SyntaxToken token) {
+                internal static bool IsInterpolatedUnaryExpression(this SyntaxToken token)
+                {
                         SyntaxNode parentNode =
-                            (token.Parent.IsKind(SyntaxKind.UnaryMinusExpression) ||
-                             token.Parent.IsKind(SyntaxKind.UnaryPlusExpression))
-                                ? token.Parent.Parent
-                                : token.Parent;
+                          (token.Parent.IsKind(SyntaxKind.UnaryMinusExpression) ||
+                           token.Parent.IsKind(SyntaxKind.UnaryPlusExpression))
+                            ? token.Parent.Parent
+                            : token.Parent;
 
                         if (parentNode.IsKind(SyntaxKind.Interpolation)) {
                                 return true;
@@ -77,7 +81,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </summary>
                 /// <param name="token">The token to process.</param>
                 /// <returns>true if token is last in line, otherwise false.</returns>
-                internal static bool IsLastInLine(this SyntaxToken token) {
+                internal static bool IsLastInLine(this SyntaxToken token)
+                {
                         var fullLineSpan = token.SyntaxTree.GetLineSpan(token.FullSpan);
 
                         if (token.SyntaxTree == null ||
@@ -88,7 +93,7 @@ namespace StyleCop.Analyzers.Helpers {
                         var tokenLineSpan = token.SyntaxTree.GetLineSpan(token.Span);
 
                         if (tokenLineSpan.EndLinePosition.Line !=
-                                fullLineSpan.EndLinePosition.Line ||
+                              fullLineSpan.EndLinePosition.Line ||
                             token.SyntaxTree.Length == token.FullSpan.End) {
                                 return true;
                         }
@@ -109,7 +114,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// observe.</param> <returns>true if token is preceded by a whitespace, otherwise
                 /// false.</returns>
                 internal static bool IsPrecededByWhitespace(this SyntaxToken token,
-                                                            CancellationToken cancellationToken) {
+                                                            CancellationToken cancellationToken)
+                {
                         // Perf: Directly access the text instead of the trivia.
                         int pos = token.Span.Start - 1;
                         if (pos < 0 || token.SyntaxTree == null) {
@@ -126,7 +132,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="token">The token to process.</param>
                 /// <returns>true if the token is the first token in a line and it is only preceded
                 /// by whitespace.</returns>
-                internal static bool IsOnlyPrecededByWhitespaceInLine(this SyntaxToken token) {
+                internal static bool IsOnlyPrecededByWhitespaceInLine(this SyntaxToken token)
+                {
                         SyntaxToken precedingToken = token.GetPreviousToken();
 
                         if (!precedingToken.IsKind(SyntaxKind.None) &&
@@ -135,10 +142,10 @@ namespace StyleCop.Analyzers.Helpers {
                         }
 
                         var precedingTriviaList = TriviaHelper.MergeTriviaLists(
-                            precedingToken.TrailingTrivia, token.LeadingTrivia);
+                          precedingToken.TrailingTrivia, token.LeadingTrivia);
                         for (var i = precedingTriviaList.Count - 1; i >= 0; i--) {
                                 switch (precedingTriviaList [i]
-                                            .Kind()) {
+                                          .Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 break;
                                         case SyntaxKind.EndOfLineTrivia:
@@ -157,7 +164,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </summary>
                 /// <param name="token">The token to process.</param>
                 /// <returns>true if token is followed by a whitespace, otherwise false.</returns>
-                internal static bool IsFollowedByWhitespace(this SyntaxToken token) {
+                internal static bool IsFollowedByWhitespace(this SyntaxToken token)
+                {
                         SyntaxTriviaList triviaList = token.TrailingTrivia;
                         if (triviaList.Count > 0) {
                                 return triviaList.First().IsKind(SyntaxKind.WhitespaceTrivia);

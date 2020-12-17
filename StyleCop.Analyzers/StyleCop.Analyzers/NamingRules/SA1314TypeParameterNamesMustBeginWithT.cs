@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.NamingRules {
+namespace StyleCop.Analyzers.NamingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -18,46 +19,48 @@ namespace StyleCop.Analyzers.NamingRules {
         /// example, <c>T</c> or <c>TKey</c>.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1314TypeParameterNamesMustBeginWithT : DiagnosticAnalyzer {
+        internal class SA1314TypeParameterNamesMustBeginWithT : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1314TypeParameterNamesMustBeginWithT"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1314";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1314.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1314.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(NamingResources.SA1314Title),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1314Title),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SA1314MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1314MessageFormat),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SA1314Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1314Description),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.NamingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.NamingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> TypeParameterAction =
-                    HandleTypeParameter;
+                  HandleTypeParameter;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -65,7 +68,8 @@ namespace StyleCop.Analyzers.NamingRules {
                                                          SyntaxKind.TypeParameter);
                 }
 
-                private static void HandleTypeParameter(SyntaxNodeAnalysisContext context) {
+                private static void HandleTypeParameter(SyntaxNodeAnalysisContext context)
+                {
                         var typeParameter = (TypeParameterSyntax) context.Node;
                         if (typeParameter.Identifier.IsMissing) {
                                 return;
@@ -74,7 +78,7 @@ namespace StyleCop.Analyzers.NamingRules {
                         string name = typeParameter.Identifier.ValueText;
                         if (name != null && !name.StartsWith("T", StringComparison.Ordinal)) {
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, typeParameter.Identifier.GetLocation()));
+                                  Descriptor, typeParameter.Identifier.GetLocation()));
                         }
                 }
         }

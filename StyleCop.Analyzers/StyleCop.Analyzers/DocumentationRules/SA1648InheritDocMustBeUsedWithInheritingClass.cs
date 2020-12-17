@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Linq;
@@ -19,68 +20,69 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// <seealso
         /// href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1648.md">SA1648</seealso>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1648InheritDocMustBeUsedWithInheritingClass : DiagnosticAnalyzer {
+        internal class SA1648InheritDocMustBeUsedWithInheritingClass : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1648InheritDocMustBeUsedWithInheritingClass"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1648";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1648.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1648.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1648Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1648Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1648MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1648MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1648Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1648Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> HandledTypeLikeDeclarationKinds =
-                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                                          SyntaxKind.StructDeclaration,
-                                          SyntaxKind.InterfaceDeclaration,
-                                          SyntaxKind.EnumDeclaration,
-                                          SyntaxKind.DelegateDeclaration);
+                  ImmutableArray.Create(SyntaxKind.ClassDeclaration,
+                                        SyntaxKind.StructDeclaration,
+                                        SyntaxKind.InterfaceDeclaration,
+                                        SyntaxKind.EnumDeclaration,
+                                        SyntaxKind.DelegateDeclaration);
 
                 private static readonly ImmutableArray<SyntaxKind> MemberDeclarationKinds =
-                    ImmutableArray.Create(SyntaxKind.ConstructorDeclaration,
-                                          SyntaxKind.DestructorDeclaration,
-                                          SyntaxKind.EventDeclaration,
-                                          SyntaxKind.MethodDeclaration,
-                                          SyntaxKind.PropertyDeclaration,
-                                          SyntaxKind.EventFieldDeclaration,
-                                          SyntaxKind.FieldDeclaration,
-                                          SyntaxKind.IndexerDeclaration,
-                                          SyntaxKind.OperatorDeclaration,
-                                          SyntaxKind.ConversionOperatorDeclaration);
+                  ImmutableArray.Create(SyntaxKind.ConstructorDeclaration,
+                                        SyntaxKind.DestructorDeclaration,
+                                        SyntaxKind.EventDeclaration,
+                                        SyntaxKind.MethodDeclaration,
+                                        SyntaxKind.PropertyDeclaration,
+                                        SyntaxKind.EventFieldDeclaration,
+                                        SyntaxKind.FieldDeclaration,
+                                        SyntaxKind.IndexerDeclaration,
+                                        SyntaxKind.OperatorDeclaration,
+                                        SyntaxKind.ConversionOperatorDeclaration);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    BaseTypeLikeDeclarationAction = HandleBaseTypeLikeDeclaration;
+                  BaseTypeLikeDeclarationAction = HandleBaseTypeLikeDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> MemberDeclarationAction =
-                    HandleMemberDeclaration;
+                  HandleMemberDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -90,10 +92,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          MemberDeclarationKinds);
                 }
 
-                private static void HandleBaseTypeLikeDeclaration(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandleBaseTypeLikeDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         BaseTypeDeclarationSyntax baseType =
-                            context.Node as BaseTypeDeclarationSyntax;
+                          context.Node as BaseTypeDeclarationSyntax;
 
                         // baseType can be null here if we are looking at a delegate declaration
                         if (baseType != null && baseType.BaseList != null &&
@@ -102,7 +104,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         DocumentationCommentTriviaSyntax documentation =
-                            context.Node.GetDocumentationCommentTriviaSyntax();
+                          context.Node.GetDocumentationCommentTriviaSyntax();
                         if (documentation == null) {
                                 return;
                         }
@@ -110,24 +112,23 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         Location location;
 
                         if (documentation.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag)
-                                is XmlEmptyElementSyntax includeElement) {
+                              is XmlEmptyElementSyntax includeElement) {
                                 var declaration = context.SemanticModel.GetDeclaredSymbol(
-                                    baseType, context.CancellationToken);
+                                  baseType, context.CancellationToken);
                                 if (declaration == null) {
                                         return;
                                 }
 
                                 var rawDocumentation = declaration.GetDocumentationCommentXml(
-                                    expandIncludes
-                                    : true, cancellationToken
-                                    : context.CancellationToken);
+                                  expandIncludes
+                                  : true, cancellationToken
+                                  : context.CancellationToken);
                                 var completeDocumentation =
-                                    XElement.Parse(rawDocumentation, LoadOptions.None);
+                                  XElement.Parse(rawDocumentation, LoadOptions.None);
 
                                 var inheritDocElement =
-                                    completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
-                                        element =>
-                                            element.Name == XmlCommentHelper.InheritdocXmlTag);
+                                  completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
+                                    element => element.Name == XmlCommentHelper.InheritdocXmlTag);
                                 if (inheritDocElement == null) {
                                         return;
                                 }
@@ -139,8 +140,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 location = includeElement.GetLocation();
                         } else {
                                 XmlNodeSyntax inheritDocElement =
-                                    documentation.Content.GetFirstXmlElement(
-                                        XmlCommentHelper.InheritdocXmlTag);
+                                  documentation.Content.GetFirstXmlElement(
+                                    XmlCommentHelper.InheritdocXmlTag);
                                 if (inheritDocElement == null) {
                                         return;
                                 }
@@ -155,9 +156,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
                 }
 
-                private static void HandleMemberDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleMemberDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         MemberDeclarationSyntax memberSyntax =
-                            (MemberDeclarationSyntax) context.Node;
+                          (MemberDeclarationSyntax) context.Node;
 
                         var modifiers = memberSyntax.GetModifiers();
 
@@ -166,7 +168,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         DocumentationCommentTriviaSyntax documentation =
-                            memberSyntax.GetDocumentationCommentTriviaSyntax();
+                          memberSyntax.GetDocumentationCommentTriviaSyntax();
                         if (documentation == null) {
                                 return;
                         }
@@ -174,37 +176,36 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         Location location;
 
                         ISymbol declaredSymbol = context.SemanticModel.GetDeclaredSymbol(
-                            memberSyntax, context.CancellationToken);
+                          memberSyntax, context.CancellationToken);
                         if (declaredSymbol == null &&
                             memberSyntax.IsKind(SyntaxKind.EventFieldDeclaration)) {
                                 var eventFieldDeclarationSyntax =
-                                    (EventFieldDeclarationSyntax) memberSyntax;
+                                  (EventFieldDeclarationSyntax) memberSyntax;
                                 VariableDeclaratorSyntax firstVariable =
-                                    eventFieldDeclarationSyntax.Declaration?.Variables
-                                        .FirstOrDefault();
+                                  eventFieldDeclarationSyntax.Declaration?.Variables
+                                    .FirstOrDefault();
                                 if (firstVariable != null) {
                                         declaredSymbol = context.SemanticModel.GetDeclaredSymbol(
-                                            firstVariable, context.CancellationToken);
+                                          firstVariable, context.CancellationToken);
                                 }
                         }
 
                         if (documentation.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag)
-                                is XmlEmptyElementSyntax includeElement) {
+                              is XmlEmptyElementSyntax includeElement) {
                                 if (declaredSymbol == null) {
                                         return;
                                 }
 
                                 var rawDocumentation = declaredSymbol.GetDocumentationCommentXml(
-                                    expandIncludes
-                                    : true, cancellationToken
-                                    : context.CancellationToken);
+                                  expandIncludes
+                                  : true, cancellationToken
+                                  : context.CancellationToken);
                                 var completeDocumentation =
-                                    XElement.Parse(rawDocumentation, LoadOptions.None);
+                                  XElement.Parse(rawDocumentation, LoadOptions.None);
 
                                 var inheritDocElement =
-                                    completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
-                                        element =>
-                                            element.Name == XmlCommentHelper.InheritdocXmlTag);
+                                  completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
+                                    element => element.Name == XmlCommentHelper.InheritdocXmlTag);
                                 if (inheritDocElement == null) {
                                         return;
                                 }
@@ -216,8 +217,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 location = includeElement.GetLocation();
                         } else {
                                 XmlNodeSyntax inheritDocElement =
-                                    documentation.Content.GetFirstXmlElement(
-                                        XmlCommentHelper.InheritdocXmlTag);
+                                  documentation.Content.GetFirstXmlElement(
+                                    XmlCommentHelper.InheritdocXmlTag);
                                 if (inheritDocElement == null) {
                                         return;
                                 }
@@ -238,7 +239,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
                 }
 
-                private static bool HasXmlCrefAttribute(XmlNodeSyntax inheritDocElement) {
+                private static bool HasXmlCrefAttribute(XmlNodeSyntax inheritDocElement)
+                {
                         XmlElementSyntax xmlElementSyntax = inheritDocElement as XmlElementSyntax;
             if (xmlElementSyntax?.StartTag?.Attributes.Any(SyntaxKind.XmlCrefAttribute) ?? false)
             {
@@ -246,7 +248,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
             }
 
             XmlEmptyElementSyntax xmlEmptyElementSyntax =
-                inheritDocElement as XmlEmptyElementSyntax;
+              inheritDocElement as XmlEmptyElementSyntax;
             if (xmlEmptyElementSyntax?.Attributes.Any(SyntaxKind.XmlCrefAttribute) ?? false)
             {
                     return true;
@@ -255,7 +257,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
             return false;
                 }
 
-                private static bool HasXmlCrefAttribute(XElement inheritDocElement) {
+                private static bool HasXmlCrefAttribute(XElement inheritDocElement)
+                {
                         return inheritDocElement.Attribute(XmlCommentHelper.CrefArgumentName) !=
                                null;
                 }

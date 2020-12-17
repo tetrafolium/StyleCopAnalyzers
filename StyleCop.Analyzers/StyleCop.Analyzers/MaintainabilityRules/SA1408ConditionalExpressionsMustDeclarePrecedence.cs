@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -53,52 +54,53 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// removes the need for the reader to make assumptions about the code.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1408ConditionalExpressionsMustDeclarePrecedence : DiagnosticAnalyzer {
+        internal class SA1408ConditionalExpressionsMustDeclarePrecedence : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1408ConditionalExpressionsMustDeclarePrecedence"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1408";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1408.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1408.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1408Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1408Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1408MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1408MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1408Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1408Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> HandledBinaryExpressionKinds =
-                    ImmutableArray.Create(SyntaxKind.LogicalAndExpression,
-                                          SyntaxKind.LogicalOrExpression);
+                  ImmutableArray.Create(SyntaxKind.LogicalAndExpression,
+                                        SyntaxKind.LogicalOrExpression);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> BinaryExpressionAction =
-                    HandleBinaryExpression;
+                  HandleBinaryExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -106,7 +108,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                                          HandledBinaryExpressionKinds);
                 }
 
-                private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context)
+                {
                         BinaryExpressionSyntax binSyntax = (BinaryExpressionSyntax) context.Node;
 
                         if (binSyntax.Left is BinaryExpressionSyntax left) {
@@ -116,7 +119,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                         if (!IsSameFamily(binSyntax.OperatorToken,
                                                           left.OperatorToken)) {
                                                 context.ReportDiagnostic(Diagnostic.Create(
-                                                    Descriptor, left.GetLocation()));
+                                                  Descriptor, left.GetLocation()));
                                         }
                                 }
                         }
@@ -124,19 +127,20 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         if (binSyntax.Right is BinaryExpressionSyntax right) {
                                 // Check if the operations are of the same kind
                                 if (right.OperatorToken.IsKind(
-                                        SyntaxKind.AmpersandAmpersandToken) ||
+                                      SyntaxKind.AmpersandAmpersandToken) ||
                                     right.OperatorToken.IsKind(SyntaxKind.BarBarToken)) {
                                         if (!IsSameFamily(binSyntax.OperatorToken,
                                                           right.OperatorToken)) {
                                                 context.ReportDiagnostic(Diagnostic.Create(
-                                                    Descriptor, right.GetLocation()));
+                                                  Descriptor, right.GetLocation()));
                                         }
                                 }
                         }
                 }
 
                 private static bool IsSameFamily(SyntaxToken operatorToken1,
-                                                 SyntaxToken operatorToken2) {
+                                                 SyntaxToken operatorToken2)
+                {
                         return (operatorToken1.IsKind(SyntaxKind.AmpersandAmpersandToken) &&
                                 operatorToken2.IsKind(SyntaxKind.AmpersandAmpersandToken)) ||
                                (operatorToken1.IsKind(SyntaxKind.BarBarToken) &&

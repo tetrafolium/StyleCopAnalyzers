@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -18,51 +19,53 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// Syntactically, this results in an extra, empty statement in the code.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1106CodeMustNotContainEmptyStatements : DiagnosticAnalyzer {
+        internal class SA1106CodeMustNotContainEmptyStatements : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1106CodeMustNotContainEmptyStatements"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1106";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1106.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1106.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1106Title),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1106Title),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1106MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1106MessageFormat),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1106Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1106Description),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.ReadabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink,
-                                             WellKnownDiagnosticTags.Unnecessary);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.ReadabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink,
+                                           WellKnownDiagnosticTags.Unnecessary);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> EmptyStatementAction =
-                    HandleEmptyStatement;
+                  HandleEmptyStatement;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
+                  BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    NamespaceDeclarationAction = HandleNamespaceDeclaration;
+                  NamespaceDeclarationAction = HandleNamespaceDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -74,26 +77,29 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.NamespaceDeclaration);
                 }
 
-                private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var declaration = (BaseTypeDeclarationSyntax) context.Node;
 
                         if (declaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken) &&
                             !declaration.OpenBraceToken.IsKind(SyntaxKind.None)) {
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, declaration.SemicolonToken.GetLocation()));
+                                  Descriptor, declaration.SemicolonToken.GetLocation()));
                         }
                 }
 
-                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var declaration = (NamespaceDeclarationSyntax) context.Node;
 
                         if (declaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken)) {
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, declaration.SemicolonToken.GetLocation()));
+                                  Descriptor, declaration.SemicolonToken.GetLocation()));
                         }
                 }
 
-                private static void HandleEmptyStatement(SyntaxNodeAnalysisContext context) {
+                private static void HandleEmptyStatement(SyntaxNodeAnalysisContext context)
+                {
                         EmptyStatementSyntax syntax = (EmptyStatementSyntax) context.Node;
 
                         if (syntax.Parent is LabeledStatementSyntax labeledStatementSyntax) {
@@ -101,7 +107,7 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                         for (int i = blockSyntax.Statements.Count - 1; i >= 0;
                                              i--) {
                                                 StatementSyntax statement =
-                                                    blockSyntax.Statements[i];
+                                                  blockSyntax.Statements[i];
 
                                                 // allow an empty statement to be used for a label,
                                                 // but only if no non-empty statements exist before
@@ -120,7 +126,7 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                         // Code should not contain empty statements
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, syntax.GetLocation()));
+                          Diagnostic.Create(Descriptor, syntax.GetLocation()));
                 }
         }
 }

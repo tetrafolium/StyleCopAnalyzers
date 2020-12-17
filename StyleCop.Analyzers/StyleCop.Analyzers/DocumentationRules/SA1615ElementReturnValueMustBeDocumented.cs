@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Linq;
@@ -24,49 +25,50 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// a <c>&lt;returns&gt;</c> tag.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1615ElementReturnValueMustBeDocumented : DiagnosticAnalyzer {
+        internal class SA1615ElementReturnValueMustBeDocumented : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1615ElementReturnValueMustBeDocumented"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1615";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1615.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1615.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1615Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1615Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1615MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1615MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1615Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1615Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
-                    MethodDeclarationAction = HandleMethodDeclaration;
+                  MethodDeclarationAction = HandleMethodDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
-                    DelegateDeclarationAction = HandleDelegateDeclaration;
+                  DelegateDeclarationAction = HandleDelegateDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -77,36 +79,45 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context,
-                                                            StyleCopSettings settings) {
+                                                            StyleCopSettings settings)
+                {
                         var node = (MethodDeclarationSyntax) context.Node;
 
                         Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
-                            context.SemanticModel, context.CancellationToken);
+                          context.SemanticModel, context.CancellationToken);
                         Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
-                            context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
-                            declaredAccessibility, effectiveAccessibility);
+                          context.SemanticModel, context.CancellationToken);
+                        bool needsComment =
+                          SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules,
+                                                                      node.Kind(),
+                                                                      node.Parent.Kind(),
+                                                                      declaredAccessibility,
+                                                                      effectiveAccessibility);
                         HandleDeclaration(context, needsComment, node.ReturnType);
                 }
 
                 private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context,
-                                                              StyleCopSettings settings) {
+                                                              StyleCopSettings settings)
+                {
                         var node = (DelegateDeclarationSyntax) context.Node;
 
                         Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
-                            context.SemanticModel, context.CancellationToken);
+                          context.SemanticModel, context.CancellationToken);
                         Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
-                            context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
-                            declaredAccessibility, effectiveAccessibility);
+                          context.SemanticModel, context.CancellationToken);
+                        bool needsComment =
+                          SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules,
+                                                                      node.Kind(),
+                                                                      node.Parent.Kind(),
+                                                                      declaredAccessibility,
+                                                                      effectiveAccessibility);
                         HandleDeclaration(context, needsComment, node.ReturnType);
                 }
 
                 private static void HandleDeclaration(SyntaxNodeAnalysisContext context,
                                                       bool needsComment,
-                                                      TypeSyntax returnType) {
+                                                      TypeSyntax returnType)
+                {
                         if (!needsComment) {
                                 // Documentation is optional for this element.
                                 return;
@@ -119,54 +130,53 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         var documentationStructure =
-                            context.Node.GetDocumentationCommentTriviaSyntax();
+                          context.Node.GetDocumentationCommentTriviaSyntax();
 
                         if (documentationStructure == null) {
                                 return;
                         }
 
                         if (documentationStructure.Content.GetFirstXmlElement(
-                                XmlCommentHelper.InheritdocXmlTag) != null) {
+                              XmlCommentHelper.InheritdocXmlTag) != null) {
                                 // Don't report if the documentation is inherited.
                                 return;
                         }
 
                         var relevantXmlElement = documentationStructure.Content.GetFirstXmlElement(
-                            XmlCommentHelper.ReturnsXmlTag);
+                          XmlCommentHelper.ReturnsXmlTag);
                         if (relevantXmlElement != null) {
                                 // A <returns> element was located.
                                 return;
                         }
 
                         relevantXmlElement = documentationStructure.Content.GetFirstXmlElement(
-                            XmlCommentHelper.IncludeXmlTag);
+                          XmlCommentHelper.IncludeXmlTag);
                         if (relevantXmlElement != null) {
                                 var declaration = context.SemanticModel.GetDeclaredSymbol(
-                                    context.Node, context.CancellationToken);
+                                  context.Node, context.CancellationToken);
                                 var rawDocumentation = declaration?.GetDocumentationCommentXml(
-                                    expandIncludes
-                                    : true, cancellationToken
-                                    : context.CancellationToken);
+                                  expandIncludes
+                                  : true, cancellationToken
+                                  : context.CancellationToken);
                                 XElement completeDocumentation =
-                                    XElement.Parse(rawDocumentation, LoadOptions.None);
+                                  XElement.Parse(rawDocumentation, LoadOptions.None);
                                 if (completeDocumentation.Nodes().OfType<XElement>().Any(
-                                        element =>
-                                            element.Name == XmlCommentHelper.InheritdocXmlTag)) {
+                                      element =>
+                                        element.Name == XmlCommentHelper.InheritdocXmlTag)) {
                                         // Ignore nodes with an <inheritdoc/> tag in the included
                                         // XML.
                                         return;
                                 }
 
                                 if (completeDocumentation.Nodes().OfType<XElement>().Any(
-                                        element =>
-                                            element.Name == XmlCommentHelper.ReturnsXmlTag)) {
+                                      element => element.Name == XmlCommentHelper.ReturnsXmlTag)) {
                                         // A <returns> element was located.
                                         return;
                                 }
                         }
 
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, returnType.GetLocation()));
+                          Diagnostic.Create(Descriptor, returnType.GetLocation()));
                 }
         }
 }

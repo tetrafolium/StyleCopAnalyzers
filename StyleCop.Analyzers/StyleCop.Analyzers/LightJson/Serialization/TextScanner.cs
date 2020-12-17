@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace LightJson.Serialization {
+namespace LightJson.Serialization
+{
         using System.IO;
         using ErrorType = JsonParseException.ErrorType;
 
         /// <summary>
         /// Represents a text scanner that reads one character at a time.
         /// </summary>
-        internal sealed class TextScanner {
+        internal sealed class TextScanner
+        {
                 private readonly TextReader reader;
                 private TextPosition position;
 
@@ -22,7 +24,8 @@ namespace LightJson.Serialization {
                 /// Gets the position of the scanner within the text.
                 /// </summary>
                 /// <value>The position of the scanner within the text.</value>
-                public TextPosition Position {
+                public TextPosition Position
+                {
                         get { return this.position; }
                 }
 
@@ -40,7 +43,8 @@ namespace LightJson.Serialization {
                 /// <returns>The next character in the stream, or -1 if the end of the file is
                 /// reached with <paramref name="throwAtEndOfFile"/> set to <see
                 /// langword="false"/>.</returns>
-                public int Peek(bool throwAtEndOfFile) {
+                public int Peek(bool throwAtEndOfFile)
+                {
                         var next = this.reader.Peek();
 
                         if (next == -1 && throwAtEndOfFile) {
@@ -55,7 +59,8 @@ namespace LightJson.Serialization {
                 /// Reads the next character in the stream, advancing the text position.
                 /// </summary>
                 /// <returns>The next character in the stream.</returns>
-                public char Read() {
+                public char Read()
+                {
                         var next = this.reader.Read();
 
                         if (next == -1) {
@@ -76,7 +81,8 @@ namespace LightJson.Serialization {
                 /// <summary>
                 /// Advances the scanner to next non-whitespace character.
                 /// </summary>
-                public void SkipWhitespace() {
+                public void SkipWhitespace()
+                {
                         while (true) {
                                 char next = this.Peek();
                                 if (char.IsWhiteSpace(next)) {
@@ -96,12 +102,14 @@ namespace LightJson.Serialization {
                 /// If the characters do not match, an exception will be thrown.
                 /// </summary>
                 /// <param name="next">The expected character.</param>
-                public void Assert(char next) {
+                public void Assert(char next)
+                {
                         var errorPosition = this.position;
                         if (this.Read() != next) {
                                 throw new JsonParseException(
-                                    string.Format("Parser expected '{0}'", next),
-                                    ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
+                                  string.Format("Parser expected '{0}'", next),
+                                  ErrorType.InvalidOrUnexpectedCharacter,
+                                  errorPosition);
                         }
                 }
 
@@ -110,13 +118,15 @@ namespace LightJson.Serialization {
                 /// If the strings do not match, an exception will be thrown.
                 /// </summary>
                 /// <param name="next">The expected string.</param>
-                public void Assert(string next) {
+                public void Assert(string next)
+                {
                         for (var i = 0; i < next.Length; i += 1) {
                                 this.Assert(next[i]);
                         }
                 }
 
-                private void SkipComment() {
+                private void SkipComment()
+                {
                         // First character is the first slash
                         this.Read();
                         switch (this.Peek()) {
@@ -130,12 +140,14 @@ namespace LightJson.Serialization {
 
                                 default:
                                         throw new JsonParseException(
-                                            string.Format("Parser expected '{0}'", this.Peek()),
-                                            ErrorType.InvalidOrUnexpectedCharacter, this.position);
+                                          string.Format("Parser expected '{0}'", this.Peek()),
+                                          ErrorType.InvalidOrUnexpectedCharacter,
+                                          this.position);
                         }
                 }
 
-                private void SkipLineComment() {
+                private void SkipLineComment()
+                {
                         // First character is the second '/' of the opening '//'
                         this.Read();
 
@@ -157,7 +169,8 @@ namespace LightJson.Serialization {
                         }
                 }
 
-                private void SkipBlockComment() {
+                private void SkipBlockComment()
+                {
                         // First character is the '*' of the opening '/*'
                         this.Read();
 

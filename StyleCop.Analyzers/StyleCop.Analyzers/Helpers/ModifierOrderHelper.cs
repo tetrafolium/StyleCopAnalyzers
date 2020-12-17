@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.OrderingRules {
+namespace StyleCop.Analyzers.OrderingRules
+{
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class ModifierOrderHelper {
+        internal static class ModifierOrderHelper
+        {
                 /// <summary>
                 /// Represents modifier type for implementing SA1206 rule.
                 /// </summary>
@@ -39,7 +41,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                         Other,
                 }
 
-                internal static ModifierType GetModifierType(SyntaxToken modifier) {
+                internal static ModifierType GetModifierType(SyntaxToken modifier)
+                {
                         var result = default(ModifierType);
 
                         switch (modifier.Kind()) {

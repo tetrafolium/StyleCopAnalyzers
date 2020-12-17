@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -55,7 +56,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists
-            : DiagnosticAnalyzer {
+          : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists"/>
@@ -63,39 +65,40 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1100";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1100.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1100.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1100Title),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1100Title),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1100MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1100MessageFormat),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1100Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1100Description),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.ReadabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.ReadabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> BaseExpressionAction =
-                    HandleBaseExpression;
+                  HandleBaseExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -103,11 +106,12 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.BaseExpression);
                 }
 
-                private static void HandleBaseExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleBaseExpression(SyntaxNodeAnalysisContext context)
+                {
                         var baseExpressionSyntax = (BaseExpressionSyntax) context.Node;
                         var parent = baseExpressionSyntax.Parent;
                         var targetSymbol =
-                            context.SemanticModel.GetSymbolInfo(parent, context.CancellationToken);
+                          context.SemanticModel.GetSymbolInfo(parent, context.CancellationToken);
                         if (targetSymbol.Symbol == null) {
                                 return;
                         }
@@ -118,30 +122,31 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 // make sure to evaluate the complete invocation expression if this
                                 // is a call, or overload resolution will fail
                                 speculativeExpression = memberAccessExpression.WithExpression(
-                                    SyntaxFactory.ThisExpression());
+                                  SyntaxFactory.ThisExpression());
                                 if (memberAccessExpression.Parent is InvocationExpressionSyntax
-                                        invocationExpression) {
+                                      invocationExpression) {
                                         speculativeExpression = invocationExpression.WithExpression(
-                                            speculativeExpression);
+                                          speculativeExpression);
                                 }
                         } else if (parent is ElementAccessExpressionSyntax
-                                       elementAccessExpression) {
+                                     elementAccessExpression) {
                                 speculativeExpression = elementAccessExpression.WithExpression(
-                                    SyntaxFactory.ThisExpression());
+                                  SyntaxFactory.ThisExpression());
                         } else {
                                 return;
                         }
 
                         var speculativeSymbol = context.SemanticModel.GetSpeculativeSymbolInfo(
-                            parent.SpanStart, speculativeExpression,
-                            SpeculativeBindingOption.BindAsExpression);
+                          parent.SpanStart,
+                          speculativeExpression,
+                          SpeculativeBindingOption.BindAsExpression);
                         if (!targetSymbol.Symbol.Equals(speculativeSymbol.Symbol)) {
                                 return;
                         }
 
                         // Do not prefix calls with base unless local implementation exists
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, baseExpressionSyntax.GetLocation()));
+                          Diagnostic.Create(Descriptor, baseExpressionSyntax.GetLocation()));
                 }
         }
 }

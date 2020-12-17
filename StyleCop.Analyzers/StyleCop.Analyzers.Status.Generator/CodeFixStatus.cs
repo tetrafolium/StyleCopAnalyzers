@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Status.Generator {
+namespace StyleCop.Analyzers.Status.Generator
+{
         /// <summary>
         /// This enum is used to indicate whether or not a code fix is implemented.
         /// </summary>

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.LayoutRules {
+namespace StyleCop.Analyzers.LayoutRules
+{
         using System;
         using System.Collections.Generic;
         using System.Collections.Immutable;
@@ -73,64 +74,67 @@ namespace StyleCop.Analyzers.LayoutRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1512SingleLineCommentsMustNotBeFollowedByBlankLine : DiagnosticAnalyzer {
+        internal class SA1512SingleLineCommentsMustNotBeFollowedByBlankLine : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1512SingleLineCommentsMustNotBeFollowedByBlankLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1512";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1512.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1512.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1512Title),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1512Title),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1512MessageFormat),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1512MessageFormat),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1512Description),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1512Description),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.LayoutRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.LayoutRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<CompilationStartAnalysisContext>
-                    CompilationStartAction = HandleCompilationStart;
+                  CompilationStartAction = HandleCompilationStart;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void HandleCompilationStart(
-                    CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(CompilationStartAnalysisContext context)
+                {
                         context.RegisterSyntaxTreeAction(
-                            c => HandleSyntaxTreeAnalysis(c, context.Compilation));
+                          c => HandleSyntaxTreeAnalysis(c, context.Compilation));
                 }
 
                 private static void HandleSyntaxTreeAnalysis(SyntaxTreeAnalysisContext context,
-                                                             Compilation compilation) {
+                                                             Compilation compilation)
+                {
                         var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
 
                         foreach (var trivia in syntaxRoot.DescendantTrivia().Where(
-                                     trivia => trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))) {
+                                   trivia => trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))) {
                                 if (trivia.ToString().StartsWith("////",
                                                                  StringComparison.Ordinal)) {
                                         // ignore commented out code
@@ -141,7 +145,7 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                                 // PERF: Explicitly cast to IReadOnlyList so we only box once.
                                 var triviaList =
-                                    TriviaHelper.GetContainingTriviaList(trivia, out triviaIndex);
+                                  TriviaHelper.GetContainingTriviaList(trivia, out triviaIndex);
 
                                 if (!IsOnOwnLine(triviaList, triviaIndex)) {
                                         // ignore comments after other code elements.
@@ -154,14 +158,14 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 }
 
                                 var trailingBlankLineCount =
-                                    GetTrailingBlankLineCount(triviaList, ref triviaIndex);
+                                  GetTrailingBlankLineCount(triviaList, ref triviaIndex);
                                 if (trailingBlankLineCount == 0) {
                                         // ignore comments that are not followed by a blank line
                                         continue;
                                 } else if (trailingBlankLineCount > 1) {
                                         if (!compilation.IsAnalyzerSuppressed(
-                                                SA1507CodeMustNotContainMultipleBlankLinesInARow
-                                                    .Descriptor)) {
+                                              SA1507CodeMustNotContainMultipleBlankLinesInARow
+                                                .Descriptor)) {
                                                 // ignore comments that are followed by multiple
                                                 // blank lines -> the multiple blank lines will be
                                                 // reported by SA1507
@@ -170,13 +174,13 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 } else {
                                         if (triviaIndex < triviaList.Count) {
                                                 switch (triviaList [triviaIndex]
-                                                            .Kind()) {
+                                                          .Kind()) {
                                                         case SyntaxKind.SingleLineCommentTrivia:
                                                         case SyntaxKind
-                                                            .SingleLineDocumentationCommentTrivia:
+                                                          .SingleLineDocumentationCommentTrivia:
                                                         case SyntaxKind.MultiLineCommentTrivia:
                                                         case SyntaxKind
-                                                            .MultiLineDocumentationCommentTrivia:
+                                                          .MultiLineDocumentationCommentTrivia:
                                                                 // ignore a single blank line in
                                                                 // between two comments.
                                                                 continue;
@@ -185,17 +189,18 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 }
 
                                 var diagnosticSpan =
-                                    TextSpan.FromBounds(trivia.SpanStart, trivia.SpanStart + 2);
+                                  TextSpan.FromBounds(trivia.SpanStart, trivia.SpanStart + 2);
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, Location.Create(context.Tree, diagnosticSpan)));
+                                  Descriptor, Location.Create(context.Tree, diagnosticSpan)));
                         }
                 }
 
                 private static bool IsOnOwnLine<T>(T triviaList, int triviaIndex) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                  : IReadOnlyList<SyntaxTrivia>
+                {
                         while (triviaIndex >= 0) {
                                 if (triviaList [triviaIndex]
-                                        .IsKind(SyntaxKind.EndOfLineTrivia)) {
+                                      .IsKind(SyntaxKind.EndOfLineTrivia)) {
                                         return true;
                                 }
 
@@ -206,7 +211,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static bool IsPartOfFileHeader<T>(T triviaList, int triviaIndex) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                  : IReadOnlyList<SyntaxTrivia>
+                {
                         if (triviaList[0].FullSpan.Start > 0) {
                                 return false;
                         }
@@ -215,7 +221,7 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         for (var i = 0; i < triviaList.Count; i++) {
                                 switch (triviaList [i]
-                                            .Kind()) {
+                                          .Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 break;
                                         case SyntaxKind.EndOfLineTrivia:
@@ -238,12 +244,13 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                 private static int GetTrailingBlankLineCount<T>(T triviaList,
                                                                 ref int triviaIndex) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                  : IReadOnlyList<SyntaxTrivia>
+                {
                         int eolCount = 0;
 
                         for (var i = triviaIndex + 1; i < triviaList.Count; i++) {
                                 switch (triviaList [i]
-                                            .Kind()) {
+                                          .Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 // ignore whitespace
                                                 break;

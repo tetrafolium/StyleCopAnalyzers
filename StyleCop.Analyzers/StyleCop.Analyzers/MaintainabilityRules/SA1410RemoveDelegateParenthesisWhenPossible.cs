@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -31,49 +32,50 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1410RemoveDelegateParenthesisWhenPossible : DiagnosticAnalyzer {
+        internal class SA1410RemoveDelegateParenthesisWhenPossible : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1410RemoveDelegateParenthesisWhenPossible"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1410";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1410.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1410.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1410Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1410Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1410MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1410MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1410Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1410Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink,
-                                             WellKnownDiagnosticTags.Unnecessary);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink,
+                                           WellKnownDiagnosticTags.Unnecessary);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
+                  AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -82,7 +84,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static void HandleAnonymousMethodExpression(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         var syntax = (AnonymousMethodExpressionSyntax) context.Node;
 
                         // ignore if no parameter list exists
@@ -105,8 +108,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                         case SyntaxKind.ObjectCreationExpression:
                                         case SyntaxKind.InvocationExpression:
                                                 if (HasAmbiguousOverload(
-                                                        context, syntax,
-                                                        argumentListSyntax.Parent)) {
+                                                      context, syntax, argumentListSyntax.Parent)) {
                                                         return;
                                                 }
 
@@ -116,19 +118,21 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
 
                         // Remove delegate parenthesis when possible
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, syntax.ParameterList.GetLocation()));
+                          Diagnostic.Create(Descriptor, syntax.ParameterList.GetLocation()));
                 }
 
                 private static bool HasAmbiguousOverload(
-                    SyntaxNodeAnalysisContext context,
-                    AnonymousMethodExpressionSyntax anonymousMethodExpression,
-                    SyntaxNode methodCallSyntax) {
+                  SyntaxNodeAnalysisContext context,
+                  AnonymousMethodExpressionSyntax anonymousMethodExpression,
+                  SyntaxNode methodCallSyntax)
+                {
                         var nodeForSpeculation = methodCallSyntax.ReplaceNode(
-                            anonymousMethodExpression,
-                            anonymousMethodExpression.WithParameterList(null));
+                          anonymousMethodExpression,
+                          anonymousMethodExpression.WithParameterList(null));
                         var speculativeSymbolInfo = context.SemanticModel.GetSpeculativeSymbolInfo(
-                            methodCallSyntax.SpanStart, nodeForSpeculation,
-                            SpeculativeBindingOption.BindAsExpression);
+                          methodCallSyntax.SpanStart,
+                          nodeForSpeculation,
+                          SpeculativeBindingOption.BindAsExpression);
                         return speculativeSymbolInfo.Symbol == null;
                 }
         }

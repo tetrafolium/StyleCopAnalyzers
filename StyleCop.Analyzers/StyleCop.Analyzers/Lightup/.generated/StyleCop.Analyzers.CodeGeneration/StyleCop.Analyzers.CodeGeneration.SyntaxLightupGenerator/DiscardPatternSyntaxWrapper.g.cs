@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -9,84 +10,94 @@ namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct DiscardPatternSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
+          : ISyntaxWrapper<CSharpSyntaxNode>
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.DiscardPatternSyntax";
+                  "Microsoft.CodeAnalysis.CSharp.Syntax.DiscardPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> UnderscoreTokenAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
-                    WithUnderscoreTokenAccessor;
+                  WithUnderscoreTokenAccessor;
 
                 private readonly CSharpSyntaxNode node;
 
-                static DiscardPatternSyntaxWrapper() {
+                static DiscardPatternSyntaxWrapper()
+                {
                         WrappedType =
-                            SyntaxWrapperHelper.GetWrappedType(typeof(DiscardPatternSyntaxWrapper));
+                          SyntaxWrapperHelper.GetWrappedType(typeof(DiscardPatternSyntaxWrapper));
                         UnderscoreTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(UnderscoreToken));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                              WrappedType, nameof(UnderscoreToken));
                         WithUnderscoreTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(UnderscoreToken));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                              WrappedType, nameof(UnderscoreToken));
                 }
 
                 private DiscardPatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
-                public SyntaxToken UnderscoreToken {
+                public SyntaxToken UnderscoreToken
+                {
                         get { return UnderscoreTokenAccessor(this.SyntaxNode); }
                 }
 
                 public static explicit operator DiscardPatternSyntaxWrapper(
-                    PatternSyntaxWrapper node) {
+                  PatternSyntaxWrapper node)
+                {
                         return (DiscardPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
                 public static explicit operator DiscardPatternSyntaxWrapper(
-                    ExpressionOrPatternSyntaxWrapper node) {
+                  ExpressionOrPatternSyntaxWrapper node)
+                {
                         return (DiscardPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator DiscardPatternSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator DiscardPatternSyntaxWrapper(SyntaxNode node)
+                {
                         if (node == null) {
                                 return default;
                         }
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new DiscardPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator PatternSyntaxWrapper(
-                    DiscardPatternSyntaxWrapper wrapper) {
+                  DiscardPatternSyntaxWrapper wrapper)
+                {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
                 public static implicit operator ExpressionOrPatternSyntaxWrapper(
-                    DiscardPatternSyntaxWrapper wrapper) {
+                  DiscardPatternSyntaxWrapper wrapper)
+                {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
                 public static implicit operator CSharpSyntaxNode(
-                    DiscardPatternSyntaxWrapper wrapper) {
+                  DiscardPatternSyntaxWrapper wrapper)
+                {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node) {
+                public static bool IsInstance(SyntaxNode node)
+                {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public DiscardPatternSyntaxWrapper WithUnderscoreToken(
-                    SyntaxToken underscoreToken) {
+                public DiscardPatternSyntaxWrapper WithUnderscoreToken(SyntaxToken underscoreToken)
+                {
                         return new DiscardPatternSyntaxWrapper(
-                            WithUnderscoreTokenAccessor(this.SyntaxNode, underscoreToken));
+                          WithUnderscoreTokenAccessor(this.SyntaxNode, underscoreToken));
                 }
         }
 }

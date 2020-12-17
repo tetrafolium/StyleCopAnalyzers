@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Linq;
@@ -26,38 +27,39 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// character on the line.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1008OpeningParenthesisMustBeSpacedCorrectly : DiagnosticAnalyzer {
+        internal class SA1008OpeningParenthesisMustBeSpacedCorrectly : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1008OpeningParenthesisMustBeSpacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1008";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1008.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1008.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1008Title),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1008Title),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1008Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1008Description),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly LocalizableString MessageNotPreceded =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1008MessageNotPreceded),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1008MessageNotPreceded),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessagePreceded =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1008MessagePreceded),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1008MessagePreceded),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageNotFollowed =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1008MessageNotFollowed),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1008MessageNotFollowed),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                  HandleSyntaxTree;
 
                 /// <summary>
                 /// Gets the diagnostic descriptor for an opening parenthesis that should not be
@@ -112,25 +114,28 @@ namespace StyleCop.Analyzers.SpacingRules {
                 = ImmutableArray.Create(DescriptorNotPreceded);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context) {
+                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                {
                         SyntaxNode root =
-                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                          context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens(descendIntoTrivia
                                                                     : true)
-                                     .Where(t => t.IsKind(SyntaxKind.OpenParenToken))) {
+                                   .Where(t => t.IsKind(SyntaxKind.OpenParenToken))) {
                                 HandleOpenParenToken(context, token);
                         }
                 }
 
                 private static void HandleOpenParenToken(SyntaxTreeAnalysisContext context,
-                                                         SyntaxToken token) {
+                                                         SyntaxToken token)
+                {
                         if (token.IsMissing) {
                                 return;
                         }
@@ -181,7 +186,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                         }
 
                         var leadingTriviaList = TriviaHelper.MergeTriviaLists(
-                            prevToken.TrailingTrivia, token.LeadingTrivia);
+                          prevToken.TrailingTrivia, token.LeadingTrivia);
 
                         var isFirstOnLine = false;
                         if (prevToken.GetLineSpan().EndLinePosition.Line <
@@ -189,7 +194,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 var done = false;
                                 for (var i = leadingTriviaList.Count - 1; !done && (i >= 0); i--) {
                                         switch (leadingTriviaList [i]
-                                                    .Kind()) {
+                                                  .Kind()) {
                                                 case SyntaxKind.WhitespaceTrivia:
                                                         break;
 
@@ -233,8 +238,8 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                                 case SyntaxKindEx.ParenthesizedPattern:
                                         var partOfCastExpression =
-                                            prevToken.IsKind(SyntaxKind.CloseParenToken) &&
-                                            prevToken.Parent.IsKind(SyntaxKind.CastExpression);
+                                          prevToken.IsKind(SyntaxKind.CloseParenToken) &&
+                                          prevToken.Parent.IsKind(SyntaxKind.CastExpression);
                                         haveLeadingSpace = !partOfCastExpression;
                                         break;
 
@@ -258,18 +263,18 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 case SyntaxKindEx.TupleExpression:
                                         if (prevToken.Parent.IsKind(SyntaxKind.Interpolation) ||
                                             token.Parent.Parent.IsKind(
-                                                SyntaxKindEx.RangeExpression)) {
+                                              SyntaxKindEx.RangeExpression)) {
                                                 haveLeadingSpace = false;
                                                 break;
                                         }
 
                                         partOfUnaryExpression =
-                                            prevToken.Parent is PrefixUnaryExpressionSyntax;
+                                          prevToken.Parent is PrefixUnaryExpressionSyntax;
                                         startOfIndexer =
-                                            prevToken.IsKind(SyntaxKind.OpenBracketToken);
+                                          prevToken.IsKind(SyntaxKind.OpenBracketToken);
                                         partOfCastExpression =
-                                            prevToken.IsKind(SyntaxKind.CloseParenToken) &&
-                                            prevToken.Parent.IsKind(SyntaxKind.CastExpression);
+                                          prevToken.IsKind(SyntaxKind.CloseParenToken) &&
+                                          prevToken.Parent.IsKind(SyntaxKind.CastExpression);
 
                                         haveLeadingSpace = !partOfUnaryExpression &&
                                                            !startOfIndexer && !partOfCastExpression;
@@ -277,15 +282,15 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                                 case SyntaxKind.CastExpression:
                                         partOfUnaryExpression =
-                                            prevToken.Parent is PrefixUnaryExpressionSyntax;
+                                          prevToken.Parent is PrefixUnaryExpressionSyntax;
                                         startOfIndexer =
-                                            prevToken.IsKind(SyntaxKind.OpenBracketToken);
+                                          prevToken.IsKind(SyntaxKind.OpenBracketToken);
                                         var consecutiveCast =
-                                            prevToken.IsKind(SyntaxKind.CloseParenToken) &&
-                                            prevToken.Parent.IsKind(SyntaxKind.CastExpression);
+                                          prevToken.IsKind(SyntaxKind.CloseParenToken) &&
+                                          prevToken.Parent.IsKind(SyntaxKind.CastExpression);
                                         var partOfInterpolation =
-                                            prevToken.IsKind(SyntaxKind.OpenBraceToken) &&
-                                            prevToken.Parent.IsKind(SyntaxKind.Interpolation);
+                                          prevToken.IsKind(SyntaxKind.OpenBraceToken) &&
+                                          prevToken.Parent.IsKind(SyntaxKind.Interpolation);
 
                                         haveLeadingSpace = !partOfUnaryExpression &&
                                                            !startOfIndexer && !consecutiveCast &&
@@ -294,7 +299,7 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                                 case SyntaxKind.ParameterList:
                                         var partOfLambdaExpression = token.Parent.Parent.IsKind(
-                                            SyntaxKind.ParenthesizedLambdaExpression);
+                                          SyntaxKind.ParenthesizedLambdaExpression);
                                         haveLeadingSpace = partOfLambdaExpression;
                                         break;
 
@@ -305,12 +310,12 @@ namespace StyleCop.Analyzers.SpacingRules {
                                         // parameters are covered by checking the previous token's
                                         // parent. Return types are handled by a helper.
                                         haveLeadingSpace =
-                                            prevToken.IsKind(SyntaxKind.CommaToken) ||
-                                            SyntaxFacts.IsKeywordKind(prevToken.Kind()) ||
-                                            prevToken.Parent.IsKind(SyntaxKind.AttributeList) ||
-                                            ((TypeSyntax) token.Parent)
-                                                .GetContainingNotEnclosingType()
-                                                .IsReturnType();
+                                          prevToken.IsKind(SyntaxKind.CommaToken) ||
+                                          SyntaxFacts.IsKeywordKind(prevToken.Kind()) ||
+                                          prevToken.Parent.IsKind(SyntaxKind.AttributeList) ||
+                                          ((TypeSyntax) token.Parent)
+                                            .GetContainingNotEnclosingType()
+                                            .IsReturnType();
                                         break;
                         }
 
@@ -319,29 +324,32 @@ namespace StyleCop.Analyzers.SpacingRules {
                         if (!prevTokenIsOpenParen && !precededByKeyword) {
                                 var hasLeadingComment = (leadingTriviaList.Count > 0) &&
                                                         leadingTriviaList.Last().IsKind(
-                                                            SyntaxKind.MultiLineCommentTrivia);
+                                                          SyntaxKind.MultiLineCommentTrivia);
                                 var hasLeadingSpace =
-                                    (leadingTriviaList.Count > 0) &&
-                                    leadingTriviaList.Last().IsKind(SyntaxKind.WhitespaceTrivia);
+                                  (leadingTriviaList.Count > 0) &&
+                                  leadingTriviaList.Last().IsKind(SyntaxKind.WhitespaceTrivia);
 
                                 if (!isFirstOnLine && !hasLeadingComment &&
                                     (haveLeadingSpace != hasLeadingSpace)) {
                                         if (haveLeadingSpace) {
                                                 context.ReportDiagnostic(Diagnostic.Create(
-                                                    DescriptorPreceded, token.GetLocation(),
-                                                    TokenSpacingProperties.InsertPreceding));
+                                                  DescriptorPreceded,
+                                                  token.GetLocation(),
+                                                  TokenSpacingProperties.InsertPreceding));
                                         } else {
                                                 context.ReportDiagnostic(Diagnostic.Create(
-                                                    DescriptorNotPreceded, token.GetLocation(),
-                                                    TokenSpacingProperties.RemovePreceding));
+                                                  DescriptorNotPreceded,
+                                                  token.GetLocation(),
+                                                  TokenSpacingProperties.RemovePreceding));
                                         }
                                 }
                         }
 
                         if (token.IsFollowedByWhitespace()) {
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    DescriptorNotFollowed, token.GetLocation(),
-                                    TokenSpacingProperties.RemoveFollowingPreserveLayout));
+                                  DescriptorNotFollowed,
+                                  token.GetLocation(),
+                                  TokenSpacingProperties.RemoveFollowingPreserveLayout));
                         }
                 }
         }

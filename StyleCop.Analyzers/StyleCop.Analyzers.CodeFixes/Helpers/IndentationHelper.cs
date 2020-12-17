@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
         using StyleCop.Analyzers.Helpers.ObjectPools;
@@ -10,13 +11,15 @@ namespace StyleCop.Analyzers.Helpers {
         /// <summary>
         /// Provides helper methods to work with indentation.
         /// </summary>
-        internal static class IndentationHelper {
+        internal static class IndentationHelper
+        {
                 /// <summary>
                 /// Gets the first token on the textline that the given token is on.
                 /// </summary>
                 /// <param name="token">The token used to determine the textline.</param>
                 /// <returns>The first token on the textline of the given token.</returns>
-                public static SyntaxToken GetFirstTokenOnTextLine(SyntaxToken token) {
+                public static SyntaxToken GetFirstTokenOnTextLine(SyntaxToken token)
+                {
                         while (true) {
                                 var precedingToken = token.GetPreviousToken();
                                 if (precedingToken.IsKind(SyntaxKind.None)) {
@@ -38,9 +41,10 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="node">The node to inspect.</param>
                 /// <returns>The number of steps that the node is indented.</returns>
                 public static int GetIndentationSteps(IndentationSettings indentationSettings,
-                                                      SyntaxNode node) {
-                        return GetIndentationSteps(indentationSettings, node.SyntaxTree,
-                                                   node.GetLeadingTrivia());
+                                                      SyntaxNode node)
+                {
+                        return GetIndentationSteps(
+                          indentationSettings, node.SyntaxTree, node.GetLeadingTrivia());
                 }
 
                 /// <summary>
@@ -50,16 +54,16 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="token">The token to inspect.</param>
                 /// <returns>The number of steps that the token is indented.</returns>
                 public static int GetIndentationSteps(IndentationSettings indentationSettings,
-                                                      SyntaxToken token) {
+                                                      SyntaxToken token)
+                {
                         // If the token does not belong to a syntax tree, it is a modified token and
                         // it is assumed that the caller makes sure that the token is the first
                         // token on a line.
-                        return token.SyntaxTree !=
-                               null
-                ? GetIndentationSteps(indentationSettings, token.SyntaxTree,
-                                                         token.LeadingTrivia)
-                            : GetIndentationStepsUnchecked(indentationSettings,
-                                                           token.LeadingTrivia);
+                        return token.SyntaxTree != null
+                ? GetIndentationSteps(indentationSettings,
+                                                                             token.SyntaxTree,
+                                                                             token.LeadingTrivia)
+                          : GetIndentationStepsUnchecked(indentationSettings, token.LeadingTrivia);
                 }
 
                 /// <summary>
@@ -70,11 +74,12 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <returns>A string containing the amount of whitespace needed for the given
                 /// indentation steps.</returns>
                 public static string GenerateIndentationString(
-                    IndentationSettings indentationSettings,
-                    int indentationSteps) {
+                  IndentationSettings indentationSettings,
+                  int indentationSteps)
+                {
                         string result;
                         var indentationCount =
-                            indentationSteps * indentationSettings.IndentationSize;
+                          indentationSteps * indentationSettings.IndentationSize;
                         if (indentationSettings.UseTabs) {
                                 var tabCount = indentationCount / indentationSettings.TabSize;
                                 var spaceCount = indentationCount % indentationSettings.TabSize;
@@ -94,15 +99,17 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <returns>A <see cref="SyntaxTrivia"/> containing the indentation
                 /// whitespace.</returns>
                 public static SyntaxTrivia GenerateWhitespaceTrivia(
-                    IndentationSettings indentationSettings,
-                    int indentationSteps) {
+                  IndentationSettings indentationSettings,
+                  int indentationSteps)
+                {
                         return SyntaxFactory.Whitespace(
-                            GenerateIndentationString(indentationSettings, indentationSteps));
+                          GenerateIndentationString(indentationSettings, indentationSteps));
                 }
 
                 private static int GetIndentationSteps(IndentationSettings indentationSettings,
                                                        SyntaxTree syntaxTree,
-                                                       SyntaxTriviaList leadingTrivia) {
+                                                       SyntaxTriviaList leadingTrivia)
+                {
                         var triviaSpan = syntaxTree.GetLineSpan(leadingTrivia.FullSpan);
 
                         // There is no indentation when the leading trivia doesn't begin at the
@@ -116,8 +123,9 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 private static int GetIndentationStepsUnchecked(
-                    IndentationSettings indentationSettings,
-                    SyntaxTriviaList leadingTrivia) {
+                  IndentationSettings indentationSettings,
+                  SyntaxTriviaList leadingTrivia)
+                {
                         var builder = StringBuilderPool.Allocate();
 
                         foreach (SyntaxTrivia trivia in leadingTrivia.Reverse()) {
@@ -132,7 +140,7 @@ namespace StyleCop.Analyzers.Helpers {
                         var indentationCount = 0;
                         for (var i = 0; i < builder.Length; i++) {
                                 indentationCount +=
-                                    builder[i] == '\t' ? tabSize - (indentationCount % tabSize) : 1;
+                                  builder[i] == '\t' ? tabSize - (indentationCount % tabSize) : 1;
                         }
 
                         StringBuilderPool.ReturnAndFree(builder);

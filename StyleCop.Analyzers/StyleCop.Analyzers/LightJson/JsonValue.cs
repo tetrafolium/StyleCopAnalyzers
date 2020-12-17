@@ -14,7 +14,8 @@ using LightJson.Serialization;
 /// </summary>
 [DebuggerDisplay("{ToString(),nq}", Type = "JsonValue({Type})")]
 [DebuggerTypeProxy(typeof(JsonValueDebugView))]
-internal struct JsonValue {
+internal struct JsonValue
+{
         /// <summary>
         /// Represents a null JsonValue.
         /// </summary>
@@ -65,7 +66,8 @@ internal struct JsonValue {
         /// value.
         /// </summary>
         /// <param name="value">The value to be wrapped.</param>
-        public JsonValue(string value) {
+        public JsonValue(string value)
+        {
                 if (value != null) {
                         this.value = default;
 
@@ -82,7 +84,8 @@ internal struct JsonValue {
         /// JsonObject.
         /// </summary>
         /// <param name="value">The value to be wrapped.</param>
-        public JsonValue(JsonObject value) {
+        public JsonValue(JsonObject value)
+        {
                 if (value != null) {
                         this.value = default;
 
@@ -99,7 +102,8 @@ internal struct JsonValue {
         /// reference value.
         /// </summary>
         /// <param name="value">The value to be wrapped.</param>
-        public JsonValue(JsonArray value) {
+        public JsonValue(JsonArray value)
+        {
                 if (value != null) {
                         this.value = default;
 
@@ -123,7 +127,8 @@ internal struct JsonValue {
         /// The internal value reference of the JsonValue.
         /// This value is used when the Json type is String, JsonObject, or JsonArray.
         /// </param>
-        private JsonValue(JsonValueType type, double value, object reference) {
+        private JsonValue(JsonValueType type, double value, object reference)
+        {
                 this.type = type;
                 this.value = value;
                 this.reference = reference;
@@ -133,7 +138,8 @@ internal struct JsonValue {
         /// Gets the type of this JsonValue.
         /// </summary>
         /// <value>The type of this JsonValue.</value>
-        public JsonValueType Type {
+        public JsonValueType Type
+        {
                 get { return this.type; }
         }
 
@@ -141,7 +147,8 @@ internal struct JsonValue {
         /// Gets a value indicating whether this JsonValue is Null.
         /// </summary>
         /// <value>A value indicating whether this JsonValue is Null.</value>
-        public bool IsNull {
+        public bool IsNull
+        {
                 get { return this.Type == JsonValueType.Null; }
         }
 
@@ -149,7 +156,8 @@ internal struct JsonValue {
         /// Gets a value indicating whether this JsonValue is a Boolean.
         /// </summary>
         /// <value>A value indicating whether this JsonValue is a Boolean.</value>
-        public bool IsBoolean {
+        public bool IsBoolean
+        {
                 get { return this.Type == JsonValueType.Boolean; }
         }
 
@@ -157,8 +165,10 @@ internal struct JsonValue {
         /// Gets a value indicating whether this JsonValue is an Integer.
         /// </summary>
         /// <value>A value indicating whether this JsonValue is an Integer.</value>
-        public bool IsInteger {
-                get {
+        public bool IsInteger
+        {
+                get
+                {
                         if (!this.IsNumber) {
                                 return false;
                         }
@@ -172,7 +182,8 @@ internal struct JsonValue {
         /// Gets a value indicating whether this JsonValue is a Number.
         /// </summary>
         /// <value>A value indicating whether this JsonValue is a Number.</value>
-        public bool IsNumber {
+        public bool IsNumber
+        {
                 get { return this.Type == JsonValueType.Number; }
         }
 
@@ -180,7 +191,8 @@ internal struct JsonValue {
         /// Gets a value indicating whether this JsonValue is a String.
         /// </summary>
         /// <value>A value indicating whether this JsonValue is a String.</value>
-        public bool IsString {
+        public bool IsString
+        {
                 get { return this.Type == JsonValueType.String; }
         }
 
@@ -188,7 +200,8 @@ internal struct JsonValue {
         /// Gets a value indicating whether this JsonValue is a JsonObject.
         /// </summary>
         /// <value>A value indicating whether this JsonValue is a JsonObject.</value>
-        public bool IsJsonObject {
+        public bool IsJsonObject
+        {
                 get { return this.Type == JsonValueType.Object; }
         }
 
@@ -196,7 +209,8 @@ internal struct JsonValue {
         /// Gets a value indicating whether this JsonValue is a JsonArray.
         /// </summary>
         /// <value>A value indicating whether this JsonValue is a JsonArray.</value>
-        public bool IsJsonArray {
+        public bool IsJsonArray
+        {
                 get { return this.Type == JsonValueType.Array; }
         }
 
@@ -204,7 +218,8 @@ internal struct JsonValue {
         /// Gets a value indicating whether this JsonValue represents a DateTime.
         /// </summary>
         /// <value>A value indicating whether this JsonValue represents a DateTime.</value>
-        public bool IsDateTime {
+        public bool IsDateTime
+        {
                 get { return this.AsDateTime != null; }
         }
 
@@ -212,8 +227,10 @@ internal struct JsonValue {
         /// Gets a value indicating whether this value is true or false.
         /// </summary>
         /// <value>This value as a Boolean type.</value>
-        public bool AsBoolean {
-                get {
+        public bool AsBoolean
+        {
+                get
+                {
                         switch (this.Type) {
                                 case JsonValueType.Boolean:
                                         return this.value == 1;
@@ -238,8 +255,10 @@ internal struct JsonValue {
         /// Gets this value as an Integer type.
         /// </summary>
         /// <value>This value as an Integer type.</value>
-        public int AsInteger {
-                get {
+        public int AsInteger
+        {
+                get
+                {
                         var value = this.AsNumber;
 
                         // Prevent overflow if the value doesn't fit.
@@ -259,8 +278,10 @@ internal struct JsonValue {
         /// Gets this value as a Number type.
         /// </summary>
         /// <value>This value as a Number type.</value>
-        public double AsNumber {
-                get {
+        public double AsNumber
+        {
+                get
+                {
                         switch (this.Type) {
                                 case JsonValueType.Boolean:
                                         return (this.value == 1) ? 1 : 0;
@@ -270,9 +291,10 @@ internal struct JsonValue {
 
                                 case JsonValueType.String:
                                         double number;
-                                        if (double.TryParse(
-                                                (string) this.reference, NumberStyles.Float,
-                                                CultureInfo.InvariantCulture, out number)) {
+                                        if (double.TryParse((string) this.reference,
+                                                            NumberStyles.Float,
+                                                            CultureInfo.InvariantCulture,
+                                                            out number)) {
                                                 return number;
                                         } else {
                                                 goto default;
@@ -288,8 +310,10 @@ internal struct JsonValue {
         /// Gets this value as a String type.
         /// </summary>
         /// <value>This value as a String type.</value>
-        public string AsString {
-                get {
+        public string AsString
+        {
+                get
+                {
                         switch (this.Type) {
                                 case JsonValueType.Boolean:
                                         return (this.value == 1) ? "true" : "false";
@@ -310,7 +334,8 @@ internal struct JsonValue {
         /// Gets this value as an JsonObject.
         /// </summary>
         /// <value>This value as an JsonObject.</value>
-        public JsonObject AsJsonObject {
+        public JsonObject AsJsonObject
+        {
                 get { return this.IsJsonObject
                     ?(JsonObject) this.reference : null; }
         }
@@ -319,7 +344,8 @@ internal struct JsonValue {
         /// Gets this value as an JsonArray.
         /// </summary>
         /// <value>This value as an JsonArray.</value>
-        public JsonArray AsJsonArray {
+        public JsonArray AsJsonArray
+        {
                 get { return this.IsJsonArray
                     ?(JsonArray) this.reference : null; }
         }
@@ -328,8 +354,10 @@ internal struct JsonValue {
         /// Gets this value as a system.DateTime.
         /// </summary>
         /// <value>This value as a system.DateTime.</value>
-        public DateTime? AsDateTime {
-                get {
+        public DateTime? AsDateTime
+        {
+                get
+                {
                         DateTime value;
 
                         if (this.IsString &&
@@ -345,8 +373,10 @@ internal struct JsonValue {
         /// Gets this (inner) value as a System.object.
         /// </summary>
         /// <value>This (inner) value as a System.object.</value>
-        public object AsObject {
-                get {
+        public object AsObject
+        {
+                get
+                {
                         switch (this.Type) {
                                 case JsonValueType.Boolean:
                                 case JsonValueType.Number:
@@ -370,22 +400,25 @@ internal struct JsonValue {
         /// <exception cref="System.InvalidOperationException">
         /// Thrown when this JsonValue is not a JsonObject.
         /// </exception>
-        public JsonValue this[string key] {
-                get {
+        public JsonValue this[string key]
+        {
+                get
+                {
                         if (this.IsJsonObject) {
                                 return ((JsonObject) this.reference)[key];
                         } else {
                                 throw new InvalidOperationException(
-                                    "This value does not represent a JsonObject.");
+                                  "This value does not represent a JsonObject.");
                         }
                 }
 
-                set {
+                set
+                {
                         if (this.IsJsonObject) {
                                 ((JsonObject) this.reference)[key] = value;
                         } else {
                                 throw new InvalidOperationException(
-                                    "This value does not represent a JsonObject.");
+                                  "This value does not represent a JsonObject.");
                         }
                 }
         }
@@ -397,22 +430,25 @@ internal struct JsonValue {
         /// <exception cref="InvalidOperationException">
         /// Thrown when this <see cref="JsonValue"/> is not a <see cref="JsonArray"/>.
         /// </exception>
-        public JsonValue this[int index] {
-                get {
+        public JsonValue this[int index]
+        {
+                get
+                {
                         if (this.IsJsonArray) {
                                 return ((JsonArray) this.reference)[index];
                         } else {
                                 throw new InvalidOperationException(
-                                    "This value does not represent a JsonArray.");
+                                  "This value does not represent a JsonArray.");
                         }
                 }
 
-                set {
+                set
+                {
                         if (this.IsJsonArray) {
                                 ((JsonArray) this.reference)[index] = value;
                         } else {
                                 throw new InvalidOperationException(
-                                    "This value does not represent a JsonArray.");
+                                  "This value does not represent a JsonArray.");
                         }
                 }
         }
@@ -461,7 +497,8 @@ internal struct JsonValue {
         /// since JSON does not define a DateTime type.</para>
         /// </remarks>
         /// <param name="value">The value to be converted.</param>
-        public static implicit operator JsonValue(DateTime? value) {
+        public static implicit operator JsonValue(DateTime? value)
+        {
                 if (value == null) {
                         return JsonValue.Null;
                 }
@@ -473,7 +510,8 @@ internal struct JsonValue {
         /// Converts the given JsonValue into an Int.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-        public static explicit operator int(JsonValue jsonValue) {
+        public static explicit operator int(JsonValue jsonValue)
+        {
                 if (jsonValue.IsInteger) {
                         return jsonValue.AsInteger;
                 } else {
@@ -489,9 +527,9 @@ internal struct JsonValue {
         /// Throws System.InvalidCastException when the inner value type of the
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
-#pragma warning disable IDE0055  // Fix formatting
+#pragma warning disable IDE0055 // Fix formatting
         public static explicit operator int ? (JsonValue jsonValue)
-#pragma warning restore IDE0055  // Fix formatting
+#pragma warning restore IDE0055 // Fix formatting
         {
                 if (jsonValue.IsNull) {
                         return null;
@@ -504,7 +542,8 @@ internal struct JsonValue {
         /// Converts the given JsonValue into a Bool.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-        public static explicit operator bool(JsonValue jsonValue) {
+        public static explicit operator bool(JsonValue jsonValue)
+        {
                 if (jsonValue.IsBoolean) {
                         return jsonValue.value == 1;
                 } else {
@@ -520,9 +559,9 @@ internal struct JsonValue {
         /// Throws System.InvalidCastException when the inner value type of the
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
-#pragma warning disable IDE0055  // Fix formatting
+#pragma warning disable IDE0055 // Fix formatting
         public static explicit operator bool ? (JsonValue jsonValue)
-#pragma warning restore IDE0055  // Fix formatting
+#pragma warning restore IDE0055 // Fix formatting
         {
                 if (jsonValue.IsNull) {
                         return null;
@@ -535,7 +574,8 @@ internal struct JsonValue {
         /// Converts the given JsonValue into a Double.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-        public static explicit operator double(JsonValue jsonValue) {
+        public static explicit operator double(JsonValue jsonValue)
+        {
                 if (jsonValue.IsNumber) {
                         return jsonValue.value;
                 } else {
@@ -551,9 +591,9 @@ internal struct JsonValue {
         /// Throws System.InvalidCastException when the inner value type of the
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
-#pragma warning disable IDE0055  // Fix formatting
+#pragma warning disable IDE0055 // Fix formatting
         public static explicit operator double ? (JsonValue jsonValue)
-#pragma warning restore IDE0055  // Fix formatting
+#pragma warning restore IDE0055 // Fix formatting
         {
                 if (jsonValue.IsNull) {
                         return null;
@@ -566,7 +606,8 @@ internal struct JsonValue {
         /// Converts the given JsonValue into a String.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-        public static explicit operator string(JsonValue jsonValue) {
+        public static explicit operator string(JsonValue jsonValue)
+        {
                 if (jsonValue.IsString || jsonValue.IsNull) {
                         return jsonValue.reference as string;
                 } else {
@@ -578,7 +619,8 @@ internal struct JsonValue {
         /// Converts the given JsonValue into a JsonObject.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-        public static explicit operator JsonObject(JsonValue jsonValue) {
+        public static explicit operator JsonObject(JsonValue jsonValue)
+        {
                 if (jsonValue.IsJsonObject || jsonValue.IsNull) {
                         return jsonValue.reference as JsonObject;
                 } else {
@@ -590,7 +632,8 @@ internal struct JsonValue {
         /// Converts the given JsonValue into a JsonArray.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-        public static explicit operator JsonArray(JsonValue jsonValue) {
+        public static explicit operator JsonArray(JsonValue jsonValue)
+        {
                 if (jsonValue.IsJsonArray || jsonValue.IsNull) {
                         return jsonValue.reference as JsonArray;
                 } else {
@@ -602,7 +645,8 @@ internal struct JsonValue {
         /// Converts the given JsonValue into a DateTime.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-        public static explicit operator DateTime(JsonValue jsonValue) {
+        public static explicit operator DateTime(JsonValue jsonValue)
+        {
                 var dateTime = jsonValue.AsDateTime;
 
                 if (dateTime.HasValue) {
@@ -616,9 +660,9 @@ internal struct JsonValue {
         /// Converts the given JsonValue into a nullable DateTime.
         /// </summary>
         /// <param name="jsonValue">The JsonValue to be converted.</param>
-#pragma warning disable IDE0055  // Fix formatting
+#pragma warning disable IDE0055 // Fix formatting
         public static explicit operator DateTime?(JsonValue jsonValue)
-#pragma warning restore IDE0055  // Fix formatting
+#pragma warning restore IDE0055 // Fix formatting
         {
                 if (jsonValue.IsDateTime || jsonValue.IsNull) {
                         return jsonValue.AsDateTime;
@@ -632,7 +676,8 @@ internal struct JsonValue {
         /// </summary>
         /// <param name="a">First JsonValue to compare.</param>
         /// <param name="b">Second JsonValue to compare.</param>
-        public static bool operator ==(JsonValue a, JsonValue b) {
+        public static bool operator ==(JsonValue a, JsonValue b)
+        {
                 return (a.Type == b.Type) && (a.value == b.value) &&
                        Equals(a.reference, b.reference);
         }
@@ -652,7 +697,8 @@ internal struct JsonValue {
         public static JsonValue Parse(string text) { return JsonReader.Parse(text); }
 
         /// <inheritdoc/>
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
                 if (obj == null) {
                         return this.IsNull;
                 }
@@ -666,7 +712,8 @@ internal struct JsonValue {
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
                 if (this.IsNull) {
                         return this.Type.GetHashCode();
                 } else {
@@ -676,14 +723,17 @@ internal struct JsonValue {
         }
 
         [ExcludeFromCodeCoverage]
-        private class JsonValueDebugView {
+        private class JsonValueDebugView
+        {
                 private readonly JsonValue jsonValue;
 
                 public JsonValueDebugView(JsonValue jsonValue) { this.jsonValue = jsonValue; }
 
                 [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-                public JsonObject ObjectView {
-                        get {
+                public JsonObject ObjectView
+                {
+                        get
+                        {
                                 if (this.jsonValue.IsJsonObject) {
                                         return (JsonObject) this.jsonValue.reference;
                                 } else {
@@ -693,8 +743,10 @@ internal struct JsonValue {
                 }
 
                 [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-                public JsonArray ArrayView {
-                        get {
+                public JsonArray ArrayView
+                {
+                        get
+                        {
                                 if (this.jsonValue.IsJsonArray) {
                                         return (JsonArray) this.jsonValue.reference;
                                 } else {
@@ -703,12 +755,15 @@ internal struct JsonValue {
                         }
                 }
 
-                public JsonValueType Type {
+                public JsonValueType Type
+                {
                         get { return this.jsonValue.Type; }
                 }
 
-                public object Value {
-                        get {
+                public object Value
+                {
+                        get
+                        {
                                 if (this.jsonValue.IsJsonObject) {
                                         return (JsonObject) this.jsonValue.reference;
                                 } else if (this.jsonValue.IsJsonArray) {

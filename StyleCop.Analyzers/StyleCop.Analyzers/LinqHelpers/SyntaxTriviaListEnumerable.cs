@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace System.Linq {
+namespace System.Linq
+{
         using System.Collections.Generic;
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
@@ -10,7 +11,8 @@ namespace System.Linq {
         /// This class supports a subset of LINQ operations on <see cref="SyntaxTriviaList"/>
         /// without requiring boxing of operands as an <see cref="IEnumerable{T}"/>.
         /// </summary>
-        internal static class SyntaxTriviaListEnumerable {
+        internal static class SyntaxTriviaListEnumerable
+        {
                 /// <summary>
                 /// Determines if a <see cref="SyntaxTriviaList"/> contains a specific <see
                 /// cref="SyntaxTrivia"/>.
@@ -25,7 +27,8 @@ namespace System.Linq {
                 /// <see langword="true"/> if <paramref name="list"/> contains <paramref
                 /// name="trivia"/>; otherwise, <see langword="false"/>.
                 /// </returns>
-                internal static bool Contains(this SyntaxTriviaList list, SyntaxTrivia trivia) {
+                internal static bool Contains(this SyntaxTriviaList list, SyntaxTrivia trivia)
+                {
                         return list.IndexOf(trivia) != -1;
                 }
 
@@ -43,7 +46,8 @@ namespace System.Linq {
                 /// any trivia matching the specified predicate; otherwise, <see langword="false"/>.
                 /// </returns>
                 internal static bool Any(this SyntaxTriviaList list,
-                                         Func<SyntaxTrivia, bool> predicate) {
+                                         Func<SyntaxTrivia, bool> predicate)
+                {
                         if (predicate == null) {
                                 throw new ArgumentNullException(nameof(predicate));
                         }
@@ -72,7 +76,8 @@ namespace System.Linq {
                 /// list is empty, this method returns <see langword="true"/>.
                 /// </returns>
                 internal static bool All(this SyntaxTriviaList list,
-                                         Func<SyntaxTrivia, bool> predicate) {
+                                         Func<SyntaxTrivia, bool> predicate)
+                {
                         if (predicate == null) {
                                 throw new ArgumentNullException(nameof(predicate));
                         }
@@ -95,7 +100,8 @@ namespace System.Linq {
                 /// specified <paramref name="kind"/>; otherwise, a default <see
                 /// cref="SyntaxTrivia"/> instance if no matching trivia was found.</returns>
                 internal static SyntaxTrivia LastOrDefault(this SyntaxTriviaList list,
-                                                           SyntaxKind kind) {
+                                                           SyntaxKind kind)
+                {
                         foreach (var trivia in list.Reverse()) {
                                 if (trivia.IsKind(kind)) {
                                         return trivia;

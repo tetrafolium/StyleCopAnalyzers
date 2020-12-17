@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers {
+namespace StyleCop.Analyzers
+{
         /// <summary>
         /// Class defining the analyzer category constants.
         /// </summary>
-        internal static class AnalyzerCategory {
+        internal static class AnalyzerCategory
+        {
                 /// <summary>
                 /// Category definition for documentation rules.
                 /// </summary>

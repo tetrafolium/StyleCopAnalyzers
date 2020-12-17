@@ -2,9 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 // There are no start actions in this file. This warning should not be reported.
-#pragma warning disable RS1012  // Start action has no registered actions.
+#pragma warning disable RS1012 // Start action has no registered actions.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System;
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.Diagnostics;
@@ -12,7 +13,8 @@ namespace StyleCop.Analyzers.Helpers {
         /// <summary>
         /// Provides helper methods to work with diagnostics options.
         /// </summary>
-        internal static class DiagnosticOptionsHelper {
+        internal static class DiagnosticOptionsHelper
+        {
                 /// <summary>
                 /// Determines if the diagnostic identified by the given identifier is currently
                 /// suppressed.
@@ -22,7 +24,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
                 internal static bool IsAnalyzerSuppressed(this SyntaxNodeAnalysisContext context,
-                                                          DiagnosticDescriptor descriptor) {
+                                                          DiagnosticDescriptor descriptor)
+                {
                         return context.SemanticModel.Compilation.IsAnalyzerSuppressed(descriptor);
                 }
 
@@ -35,8 +38,9 @@ namespace StyleCop.Analyzers.Helpers {
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
                 internal static bool IsAnalyzerSuppressed(
-                    this CompilationStartAnalysisContext context,
-                    DiagnosticDescriptor descriptor) {
+                  this CompilationStartAnalysisContext context,
+                  DiagnosticDescriptor descriptor)
+                {
                         return context.Compilation.IsAnalyzerSuppressed(descriptor);
                 }
 
@@ -49,7 +53,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// diagnostic descriptor to check.</param> <returns>True if the diagnostic is
                 /// currently suppressed.</returns>
                 internal static bool IsAnalyzerSuppressed(this Compilation compilation,
-                                                          DiagnosticDescriptor descriptor) {
+                                                          DiagnosticDescriptor descriptor)
+                {
                         return compilation.Options.IsAnalyzerSuppressed(descriptor);
                 }
 
@@ -62,14 +67,15 @@ namespace StyleCop.Analyzers.Helpers {
                 /// name="descriptor">The diagnostic descriptor to check.</param> <returns>True if
                 /// the diagnostic is currently suppressed.</returns>
                 internal static bool IsAnalyzerSuppressed(
-                    this CompilationOptions compilationOptions,
-                    DiagnosticDescriptor descriptor) {
+                  this CompilationOptions compilationOptions,
+                  DiagnosticDescriptor descriptor)
+                {
                         switch (descriptor.GetEffectiveSeverity(compilationOptions)) {
                                 case ReportDiagnostic.Suppress:
                                         return true;
                                 case ReportDiagnostic.Default:
                                         throw new InvalidOperationException(
-                                            "This should be unreachable.");
+                                          "This should be unreachable.");
                                 default:
                                         return false;
                         }
@@ -87,9 +93,10 @@ namespace StyleCop.Analyzers.Helpers {
                 /// determined.</para>
                 /// </returns>
                 internal static DocumentationMode GetDocumentationMode(
-                    this SyntaxNodeAnalysisContext context) {
+                  this SyntaxNodeAnalysisContext context)
+                {
                         return context.Node.SyntaxTree?.Options
-                            .DocumentationMode ?? DocumentationMode.Diagnose;
+                          .DocumentationMode ?? DocumentationMode.Diagnose;
                 }
         }
 }

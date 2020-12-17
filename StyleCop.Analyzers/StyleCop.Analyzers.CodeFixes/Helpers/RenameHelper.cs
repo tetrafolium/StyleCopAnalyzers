@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System.Collections.Immutable;
         using System.Linq;
         using System.Threading;
@@ -13,35 +14,38 @@ namespace StyleCop.Analyzers.Helpers {
         using Microsoft.CodeAnalysis.Rename;
         using StyleCop.Analyzers.Lightup;
 
-        internal static class RenameHelper {
+        internal static class RenameHelper
+        {
                 public static async Task<Solution> RenameSymbolAsync(
-                    Document document,
-                    SyntaxNode root,
-                    SyntaxToken declarationToken,
-                    string newName,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  SyntaxNode root,
+                  SyntaxToken declarationToken,
+                  string newName,
+                  CancellationToken cancellationToken)
+                {
                         var annotatedRoot = root.ReplaceToken(
-                            declarationToken,
-                            declarationToken.WithAdditionalAnnotations(RenameAnnotation.Create()));
+                          declarationToken,
+                          declarationToken.WithAdditionalAnnotations(RenameAnnotation.Create()));
                         var annotatedSolution = document.Project.Solution.WithDocumentSyntaxRoot(
-                            document.Id, annotatedRoot);
+                          document.Id, annotatedRoot);
                         var annotatedDocument = annotatedSolution.GetDocument(document.Id);
 
                         annotatedRoot =
-                            await annotatedDocument.GetSyntaxRootAsync(cancellationToken)
-                                .ConfigureAwait(false);
+                          await annotatedDocument.GetSyntaxRootAsync(cancellationToken)
+                            .ConfigureAwait(false);
                         var annotatedToken = annotatedRoot.FindToken(declarationToken.SpanStart);
 
                         var semanticModel =
-                            await annotatedDocument.GetSemanticModelAsync(cancellationToken)
-                                .ConfigureAwait(false);
-                        var symbol = semanticModel.GetDeclaredSymbol(annotatedToken.Parent,
-                                                                     cancellationToken);
+                          await annotatedDocument.GetSemanticModelAsync(cancellationToken)
+                            .ConfigureAwait(false);
+                        var symbol =
+                          semanticModel.GetDeclaredSymbol(annotatedToken.Parent, cancellationToken);
 
-                        var newSolution = await Renamer
-                                              .RenameSymbolAsync(annotatedSolution, symbol, newName,
-                                                                 null, cancellationToken)
-                                              .ConfigureAwait(false);
+                        var newSolution =
+                          await Renamer
+                            .RenameSymbolAsync(
+                              annotatedSolution, symbol, newName, null, cancellationToken)
+                            .ConfigureAwait(false);
 
                         // TODO: return annotatedSolution instead of newSolution if newSolution
                         // contains any new errors (for any project)
@@ -49,10 +53,11 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 public static async Task<bool> IsValidNewMemberNameAsync(
-                    SemanticModel semanticModel,
-                    ISymbol symbol,
-                    string name,
-                    CancellationToken cancellationToken) {
+                  SemanticModel semanticModel,
+                  ISymbol symbol,
+                  string name,
+                  CancellationToken cancellationToken)
+                {
                         if (symbol.Kind == SymbolKind.NamedType) {
                                 TypeKind typeKind = ((INamedTypeSymbol) symbol).TypeKind;
 
@@ -60,7 +65,7 @@ namespace StyleCop.Analyzers.Helpers {
                                 // any of its members.
                                 if (typeKind == TypeKind.Class || typeKind == TypeKind.Struct) {
                                         var members =
-                                            (symbol as INamedTypeSymbol) ?.GetMembers(name);
+                                          (symbol as INamedTypeSymbol) ?.GetMembers(name);
                                         if (members.HasValue && !members.Value.IsDefaultOrEmpty) {
                                                 return false;
                                         }
@@ -73,7 +78,7 @@ namespace StyleCop.Analyzers.Helpers {
                                 // If the symbol is a type parameter, the name can't be the same as
                                 // any type parameters of the containing type.
                                 if (containingSymbol?.ContainingSymbol is INamedTypeSymbol
-                                        parentSymbol &&
+                                      parentSymbol &&
                                     parentSymbol.TypeParameters.Any(t => t.Name == name)) {
                                         return false;
                                 }
@@ -83,18 +88,18 @@ namespace StyleCop.Analyzers.Helpers {
                         }
 
                         if (containingSymbol is INamespaceOrTypeSymbol
-                                containingNamespaceOrTypeSymbol) {
+                              containingNamespaceOrTypeSymbol) {
                                 if (containingNamespaceOrTypeSymbol.Kind == SymbolKind.Namespace) {
                                         // Make sure to use the compilation namespace so interfaces
                                         // in referenced assemblies are considered
                                         containingNamespaceOrTypeSymbol =
-                                            semanticModel.Compilation.GetCompilationNamespace(
-                                                (INamespaceSymbol) containingNamespaceOrTypeSymbol);
+                                          semanticModel.Compilation.GetCompilationNamespace(
+                                            (INamespaceSymbol) containingNamespaceOrTypeSymbol);
                                 } else if (containingNamespaceOrTypeSymbol.Kind ==
                                            SymbolKind.NamedType) {
                                         TypeKind typeKind =
-                                            ((INamedTypeSymbol) containingNamespaceOrTypeSymbol)
-                                                .TypeKind;
+                                          ((INamedTypeSymbol) containingNamespaceOrTypeSymbol)
+                                            .TypeKind;
 
                                         // If the containing type is a class or struct, the name
                                         // can't be the same as the name of the containing type.
@@ -109,7 +114,7 @@ namespace StyleCop.Analyzers.Helpers {
                                 // same type. At this point no special consideration is given to
                                 // overloaded methods.
                                 ImmutableArray<ISymbol> siblings =
-                                    containingNamespaceOrTypeSymbol.GetMembers(name);
+                                  containingNamespaceOrTypeSymbol.GetMembers(name);
                                 if (!siblings.IsDefaultOrEmpty) {
                                         return false;
                                 }
@@ -125,19 +130,19 @@ namespace StyleCop.Analyzers.Helpers {
                                 IMethodSymbol outermostMethod = methodSymbol;
                                 while (outermostMethod.ContainingSymbol.Kind == SymbolKind.Method) {
                                         outermostMethod =
-                                            (IMethodSymbol) outermostMethod.ContainingSymbol;
+                                          (IMethodSymbol) outermostMethod.ContainingSymbol;
                                         if (outermostMethod.Parameters.Any(i => i.Name == name) ||
-                                            outermostMethod.TypeParameters.Any(i => i.Name ==
-                                                                                    name)) {
+                                            outermostMethod.TypeParameters.Any(i =>
+                                                                                 i.Name == name)) {
                                                 return false;
                                         }
                                 }
 
                                 foreach (var syntaxReference in outermostMethod
-                                             .DeclaringSyntaxReferences) {
+                                           .DeclaringSyntaxReferences) {
                                         SyntaxNode syntaxNode =
-                                            await syntaxReference.GetSyntaxAsync(cancellationToken)
-                                                .ConfigureAwait(false);
+                                          await syntaxReference.GetSyntaxAsync(cancellationToken)
+                                            .ConfigureAwait(false);
                                         LocalNameFinder localNameFinder = new LocalNameFinder(name);
                                         localNameFinder.Visit(syntaxNode);
                                         if (localNameFinder.Found) {
@@ -151,7 +156,8 @@ namespace StyleCop.Analyzers.Helpers {
                         }
                 }
 
-                public static SyntaxNode GetParentDeclaration(SyntaxToken token) {
+                public static SyntaxNode GetParentDeclaration(SyntaxToken token)
+                {
                         SyntaxNode parent = token.Parent;
 
                         while (parent != null) {
@@ -176,7 +182,7 @@ namespace StyleCop.Analyzers.Helpers {
 
                                         default:
                                                 if (parent is MemberDeclarationSyntax
-                                                        declarationParent) {
+                                                      declarationParent) {
                                                         return declarationParent;
                                                 }
 
@@ -189,28 +195,31 @@ namespace StyleCop.Analyzers.Helpers {
                         return null;
                 }
 
-                private class LocalNameFinder : CSharpSyntaxWalker {
+                private class LocalNameFinder : CSharpSyntaxWalker
+                {
                         private readonly string name;
 
                         public LocalNameFinder(string name) { this.name = name; }
 
-                        public bool Found {
+                        public bool Found
+                        {
                                 get;
                                 private set;
                         }
 
-                        public override void Visit(SyntaxNode node) {
+                        public override void Visit(SyntaxNode node)
+                        {
                                 switch (node.Kind()) {
                                         case SyntaxKindEx.LocalFunctionStatement:
                                                 this.Found |=
-                                                    ((LocalFunctionStatementSyntaxWrapper) node)
-                                                        .Identifier.ValueText == this.name;
+                                                  ((LocalFunctionStatementSyntaxWrapper) node)
+                                                    .Identifier.ValueText == this.name;
                                                 break;
 
                                         case SyntaxKindEx.SingleVariableDesignation:
                                                 this.Found |=
-                                                    ((SingleVariableDesignationSyntaxWrapper) node)
-                                                        .Identifier.ValueText == this.name;
+                                                  ((SingleVariableDesignationSyntaxWrapper) node)
+                                                    .Identifier.ValueText == this.name;
                                                 break;
 
                                         default:
@@ -220,66 +229,77 @@ namespace StyleCop.Analyzers.Helpers {
                                 base.Visit(node);
                         }
 
-                        public override void VisitVariableDeclarator(
-                            VariableDeclaratorSyntax node) {
+                        public override void VisitVariableDeclarator(VariableDeclaratorSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitVariableDeclarator(node);
                         }
 
-                        public override void VisitParameter(ParameterSyntax node) {
+                        public override void VisitParameter(ParameterSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitParameter(node);
                         }
 
-                        public override void VisitTypeParameter(TypeParameterSyntax node) {
+                        public override void VisitTypeParameter(TypeParameterSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitTypeParameter(node);
                         }
 
-                        public override void VisitCatchDeclaration(CatchDeclarationSyntax node) {
+                        public override void VisitCatchDeclaration(CatchDeclarationSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitCatchDeclaration(node);
                         }
 
-                        public override void VisitQueryContinuation(QueryContinuationSyntax node) {
+                        public override void VisitQueryContinuation(QueryContinuationSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitQueryContinuation(node);
                         }
 
-                        public override void VisitFromClause(FromClauseSyntax node) {
+                        public override void VisitFromClause(FromClauseSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitFromClause(node);
                         }
 
-                        public override void VisitLetClause(LetClauseSyntax node) {
+                        public override void VisitLetClause(LetClauseSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitLetClause(node);
                         }
 
-                        public override void VisitJoinClause(JoinClauseSyntax node) {
+                        public override void VisitJoinClause(JoinClauseSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitJoinClause(node);
                         }
 
-                        public override void VisitJoinIntoClause(JoinIntoClauseSyntax node) {
+                        public override void VisitJoinIntoClause(JoinIntoClauseSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitJoinIntoClause(node);
                         }
 
-                        public override void VisitForEachStatement(ForEachStatementSyntax node) {
+                        public override void VisitForEachStatement(ForEachStatementSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitForEachStatement(node);
                         }
 
-                        public override void VisitLabeledStatement(LabeledStatementSyntax node) {
+                        public override void VisitLabeledStatement(LabeledStatementSyntax node)
+                        {
                                 this.Found |= node.Identifier.ValueText == this.name;
                                 base.VisitLabeledStatement(node);
                         }
 
                         public override void VisitAnonymousObjectMemberDeclarator(
-                            AnonymousObjectMemberDeclaratorSyntax node) {
+                          AnonymousObjectMemberDeclaratorSyntax node)
+                        {
                                 this.Found |=
-                                    node.NameEquals?.Name?.Identifier.ValueText == this.name;
+                                  node.NameEquals?.Name?.Identifier.ValueText == this.name;
                                 base.VisitAnonymousObjectMemberDeclarator(node);
                         }
                 }

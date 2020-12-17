@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -21,65 +22,67 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         [NoCodeFix("The \"Encapsulate Field\" fix is provided by Visual Studio.")]
-        internal class SA1401FieldsMustBePrivate : DiagnosticAnalyzer {
+        internal class SA1401FieldsMustBePrivate : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see cref="SA1401FieldsMustBePrivate"/>
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1401";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1401.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1401.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1401Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1401Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1401MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1401MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1401Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1401Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SymbolAnalysisContext> AnalyzeFieldAction =
-                    Analyzer.AnalyzeField;
+                  Analyzer.AnalyzeField;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSymbolAction(AnalyzeFieldAction, SymbolKind.Field);
                 }
 
-                private static class Analyzer {
-                        public static void AnalyzeField(
-                            SymbolAnalysisContext symbolAnalysisContext) {
+                private static class Analyzer
+                {
+                        public static void AnalyzeField(SymbolAnalysisContext symbolAnalysisContext)
+                        {
                                 var fieldDeclarationSyntax =
-                                    (IFieldSymbol) symbolAnalysisContext.Symbol;
+                                  (IFieldSymbol) symbolAnalysisContext.Symbol;
                                 if (!IsFieldPrivate(fieldDeclarationSyntax) &&
                                     !IsStaticReadonly(fieldDeclarationSyntax) &&
                                     IsParentAClass(fieldDeclarationSyntax) &&
                                     !fieldDeclarationSyntax.IsConst) {
                                         foreach (var location in symbolAnalysisContext.Symbol
-                                                     .Locations) {
+                                                   .Locations) {
                                                 if (!location.IsInSource) {
                                                         // assume symbols not defined in a source
                                                         // document are "out of reach"
@@ -88,27 +91,30 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                         }
 
                                         symbolAnalysisContext.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, fieldDeclarationSyntax.Locations[0]));
+                                          Descriptor, fieldDeclarationSyntax.Locations[0]));
                                 }
                         }
 
-                        private static bool IsFieldPrivate(IFieldSymbol fieldDeclarationSyntax) {
+                        private static bool IsFieldPrivate(IFieldSymbol fieldDeclarationSyntax)
+                        {
                                 return fieldDeclarationSyntax.DeclaredAccessibility ==
                                        Accessibility.Private;
                         }
 
-                        private static bool IsStaticReadonly(IFieldSymbol fieldDeclarationSyntax) {
+                        private static bool IsStaticReadonly(IFieldSymbol fieldDeclarationSyntax)
+                        {
                                 return fieldDeclarationSyntax.IsStatic &&
                                        fieldDeclarationSyntax.IsReadOnly;
                         }
 
-                        private static bool IsParentAClass(IFieldSymbol fieldDeclarationSyntax) {
+                        private static bool IsParentAClass(IFieldSymbol fieldDeclarationSyntax)
+                        {
                                 if (fieldDeclarationSyntax.ContainingSymbol != null &&
                                     fieldDeclarationSyntax.ContainingSymbol.Kind ==
-                                        SymbolKind.NamedType) {
+                                      SymbolKind.NamedType) {
                                         return ((ITypeSymbol)
-                                                    fieldDeclarationSyntax.ContainingSymbol)
-                                                   .TypeKind == TypeKind.Class;
+                                                  fieldDeclarationSyntax.ContainingSymbol)
+                                                 .TypeKind == TypeKind.Class;
                                 }
 
                                 return false;

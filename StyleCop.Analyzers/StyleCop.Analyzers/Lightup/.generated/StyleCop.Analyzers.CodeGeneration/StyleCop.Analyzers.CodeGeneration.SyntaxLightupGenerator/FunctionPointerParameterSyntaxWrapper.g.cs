@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -9,103 +10,118 @@ namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct FunctionPointerParameterSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
+          : ISyntaxWrapper<CSharpSyntaxNode>
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerParameterSyntax";
+                  "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerParameterSyntax";
                 private static readonly Type WrappedType;
                 private static readonly
-                    Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>, CSharpSyntaxNode>
-                        WithAttributeListsAccessor;
+                  Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>, CSharpSyntaxNode>
+                    WithAttributeListsAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxTokenList, CSharpSyntaxNode>
-                    WithModifiersAccessor;
+                  WithModifiersAccessor;
                 private static readonly Func<CSharpSyntaxNode, TypeSyntax, CSharpSyntaxNode>
-                    WithTypeAccessor;
+                  WithTypeAccessor;
 
                 private readonly CSharpSyntaxNode node;
 
-                static FunctionPointerParameterSyntaxWrapper() {
+                static FunctionPointerParameterSyntaxWrapper()
+                {
                         WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(FunctionPointerParameterSyntaxWrapper));
+                          typeof(FunctionPointerParameterSyntaxWrapper));
                         WithAttributeListsAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<
-                                CSharpSyntaxNode, SyntaxList<AttributeListSyntax>>(
-                                WrappedType, nameof(AttributeLists));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
+                                                              SyntaxList<AttributeListSyntax>>(
+                              WrappedType, nameof(AttributeLists));
                         WithModifiersAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                                                            SyntaxTokenList>(
-                                WrappedType, nameof(Modifiers));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxTokenList>(
+                              WrappedType, nameof(Modifiers));
                         WithTypeAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
-                                    WrappedType, nameof(Type));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                              WrappedType, nameof(Type));
                 }
 
-                private FunctionPointerParameterSyntaxWrapper(CSharpSyntaxNode node) {
+                private FunctionPointerParameterSyntaxWrapper(CSharpSyntaxNode node)
+                {
                         this.node = node;
                 }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
-                public SyntaxList<AttributeListSyntax> AttributeLists {
+                public SyntaxList<AttributeListSyntax> AttributeLists
+                {
                         get { return ((BaseParameterSyntaxWrapper) this).AttributeLists; }
                 }
 
-                public SyntaxTokenList Modifiers {
+                public SyntaxTokenList Modifiers
+                {
                         get { return ((BaseParameterSyntaxWrapper) this).Modifiers; }
                 }
 
-                public TypeSyntax Type {
+                public TypeSyntax Type
+                {
                         get { return ((BaseParameterSyntaxWrapper) this).Type; }
                 }
 
                 public static explicit operator FunctionPointerParameterSyntaxWrapper(
-                    BaseParameterSyntaxWrapper node) {
+                  BaseParameterSyntaxWrapper node)
+                {
                         return (FunctionPointerParameterSyntaxWrapper) node.SyntaxNode;
                 }
 
                 public static explicit operator FunctionPointerParameterSyntaxWrapper(
-                    SyntaxNode node) {
+                  SyntaxNode node)
+                {
                         if (node == null) {
                                 return default;
                         }
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new FunctionPointerParameterSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator BaseParameterSyntaxWrapper(
-                    FunctionPointerParameterSyntaxWrapper wrapper) {
+                  FunctionPointerParameterSyntaxWrapper wrapper)
+                {
                         return BaseParameterSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
                 public static implicit operator CSharpSyntaxNode(
-                    FunctionPointerParameterSyntaxWrapper wrapper) {
+                  FunctionPointerParameterSyntaxWrapper wrapper)
+                {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node) {
+                public static bool IsInstance(SyntaxNode node)
+                {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
                 public FunctionPointerParameterSyntaxWrapper WithAttributeLists(
-                    SyntaxList<AttributeListSyntax> attributeLists) {
+                  SyntaxList<AttributeListSyntax> attributeLists)
+                {
                         return new FunctionPointerParameterSyntaxWrapper(
-                            WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
+                          WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
                 }
 
                 public FunctionPointerParameterSyntaxWrapper WithModifiers(
-                    SyntaxTokenList modifiers) {
+                  SyntaxTokenList modifiers)
+                {
                         return new FunctionPointerParameterSyntaxWrapper(
-                            WithModifiersAccessor(this.SyntaxNode, modifiers));
+                          WithModifiersAccessor(this.SyntaxNode, modifiers));
                 }
 
-                public FunctionPointerParameterSyntaxWrapper WithType(TypeSyntax type) {
+                public FunctionPointerParameterSyntaxWrapper WithType(TypeSyntax type)
+                {
                         return new FunctionPointerParameterSyntaxWrapper(
-                            WithTypeAccessor(this.SyntaxNode, type));
+                          WithTypeAccessor(this.SyntaxNode, type));
                 }
         }
 }

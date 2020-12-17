@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace LightJson.Serialization {
+namespace LightJson.Serialization
+{
         using System;
 
         /// <summary>
@@ -10,11 +11,14 @@ namespace LightJson.Serialization {
         /// <remarks>
         /// <para>This exception is only intended to be thrown by LightJson.</para>
         /// </remarks>
-        internal sealed class JsonParseException : Exception {
+        internal sealed class JsonParseException : Exception
+        {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class.
                 /// </summary>
-                public JsonParseException() : base(GetDefaultMessage(ErrorType.Unknown)) {}
+                public JsonParseException()
+                  : base(GetDefaultMessage(ErrorType.Unknown))
+                {}
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class with
@@ -24,7 +28,8 @@ namespace LightJson.Serialization {
                 /// <param name="position">The position in the text where the error
                 /// occurred.</param>
                 public JsonParseException(ErrorType type, TextPosition position)
-                    : this(GetDefaultMessage(type), type, position) {}
+                  : this(GetDefaultMessage(type), type, position)
+                {}
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonParseException"/> class with
@@ -35,7 +40,8 @@ namespace LightJson.Serialization {
                 /// <param name="position">The position in the text where the error
                 /// occurred.</param>
                 public JsonParseException(string message, ErrorType type, TextPosition position)
-                    : base(message) {
+                  : base(message)
+                {
                         this.Type = type;
                         this.Position = position;
                 }
@@ -71,7 +77,8 @@ namespace LightJson.Serialization {
                 /// Gets the text position where the error occurred.
                 /// </summary>
                 /// <value>The text position where the error occurred.</value>
-                public TextPosition Position {
+                public TextPosition Position
+                {
                         get;
                         private set;
                 }
@@ -80,12 +87,14 @@ namespace LightJson.Serialization {
                 /// Gets the type of error that caused the exception to be thrown.
                 /// </summary>
                 /// <value>The type of error that caused the exception to be thrown.</value>
-                public ErrorType Type {
+                public ErrorType Type
+                {
                         get;
                         private set;
                 }
 
-                private static string GetDefaultMessage(ErrorType type) {
+                private static string GetDefaultMessage(ErrorType type)
+                {
                         switch (type) {
                                 case ErrorType.IncompleteMessage:
                                         return "The string ended before a value could be parsed.";

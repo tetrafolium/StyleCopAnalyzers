@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System.Collections.Generic;
         using System.Collections.Immutable;
         using System.Composition;
@@ -15,7 +16,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SX1101CodeFixProvider))]
         [Shared]
-        internal class SX1101CodeFixProvider : CodeFixProvider {
+        internal class SX1101CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SX1101DoNotPrefixLocalMembersWithThis.DiagnosticId);
@@ -24,26 +26,28 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        ReadabilityResources.SX1101CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SX1101CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(
+                                    ReadabilityResources.SX1101CodeFix,
+                                    cancellationToken => GetTransformedDocumentAsync(
+                                      context.Document, diagnostic, cancellationToken),
+                                    nameof(SX1101CodeFixProvider)),
+                                  diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    Diagnostic diagnostic,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  Diagnostic diagnostic,
+                  CancellationToken cancellationToken)
+                {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
+                                           .ConfigureAwait(false);
 
                         if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan,
                                                   getInnermostNodeForTie
@@ -56,37 +60,39 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private static SyntaxNode GenerateReplacementNode(ThisExpressionSyntax node) {
+                private static SyntaxNode GenerateReplacementNode(ThisExpressionSyntax node)
+                {
                         var parent = (MemberAccessExpressionSyntax) node.Parent;
                         return parent.Name.WithTriviaFrom(parent);
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
+                private class FixAll : DocumentBasedFixAllProvider
+                {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
                         protected override string CodeActionTitle =>
-                            ReadabilityResources.SX1101CodeFix;
+                          ReadabilityResources.SX1101CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext,
-                            Document document,
-                            ImmutableArray<Diagnostic> diagnostics) {
+                          FixAllContext fixAllContext,
+                          Document document,
+                          ImmutableArray<Diagnostic> diagnostics)
+                        {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
                                 SyntaxNode syntaxRoot =
-                                    await document
-                                        .GetSyntaxRootAsync(fixAllContext.CancellationToken)
-                                        .ConfigureAwait(false);
+                                  await document.GetSyntaxRootAsync(fixAllContext.CancellationToken)
+                                    .ConfigureAwait(false);
 
                                 var replaceMap = new Dictionary<SyntaxNode, SyntaxNode>();
 
                                 foreach (Diagnostic diagnostic in diagnostics) {
-                                        if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan,
-                                                                  false, true)
-                                                  is ThisExpressionSyntax node) ||
+                                        if (!(syntaxRoot.FindNode(
+                                              diagnostic.Location.SourceSpan, false, true)
+                                                is ThisExpressionSyntax node) ||
                                             node.IsMissing) {
                                                 continue;
                                         }
@@ -95,9 +101,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                         = GenerateReplacementNode(node);
                                 }
 
-                                return syntaxRoot.ReplaceNodes(
-                                    replaceMap.Keys,
-                                    (originalNode, rewrittenNode) => replaceMap[originalNode]);
+                                return syntaxRoot.ReplaceNodes(replaceMap.Keys,
+                                                               (originalNode, rewrittenNode) =>
+                                                                 replaceMap[originalNode]);
                         }
                 }
         }

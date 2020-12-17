@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StyleCop.Analyzers.SpecialRules {
+namespace StyleCop.Analyzers.SpecialRules
+{
         using System;
         using System.Reflection;
 
@@ -20,31 +21,36 @@ namespace StyleCop.Analyzers.SpecialRules {
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
-            "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+          "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class SpecialResources {
+        internal class SpecialResources
+        {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                    "Microsoft.Performance",
-                    "CA1811:AvoidUncalledPrivateCode")]
-                internal SpecialResources() {}
+                  "Microsoft.Performance",
+                  "CA1811:AvoidUncalledPrivateCode")]
+                internal
+                SpecialResources()
+                {}
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
-                internal static global::System.Resources.ResourceManager ResourceManager {
-                        get {
+                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                internal static global::System.Resources.ResourceManager ResourceManager
+                {
+                        get
+                        {
                                 if (object.ReferenceEquals(resourceMan, null)) {
                                         global::System.Resources.ResourceManager temp =
-                                            new global::System.Resources.ResourceManager(
-                                                "StyleCop.Analyzers.SpecialRules.SpecialResources",
-                                                typeof(SpecialResources).GetTypeInfo().Assembly);
+                                          new global::System.Resources.ResourceManager(
+                                            "StyleCop.Analyzers.SpecialRules.SpecialResources",
+                                            typeof(SpecialResources).GetTypeInfo().Assembly);
                                         resourceMan = temp;
                                 }
                                 return resourceMan;
@@ -56,8 +62,9 @@ namespace StyleCop.Analyzers.SpecialRules {
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
-                internal static global::System.Globalization.CultureInfo Culture {
+                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                internal static global::System.Globalization.CultureInfo Culture
+                {
                         get { return resourceCulture; }
                         set { resourceCulture = value; }
                 }
@@ -68,8 +75,10 @@ namespace StyleCop.Analyzers.SpecialRules {
                 ///   enable this functionality, update the project to produce an XML documentation
                 ///   file as part of the build..
                 /// </summary>
-                internal static string SA0001Description {
-                        get {
+                internal static string SA0001Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA0001Description",
                                                                  resourceCulture);
                         }
@@ -79,8 +88,10 @@ namespace StyleCop.Analyzers.SpecialRules {
                 ///   Looks up a localized string similar to XML comment analysis is disabled due to
                 ///   project configuration.
                 /// </summary>
-                internal static string SA0001MessageFormat {
-                        get {
+                internal static string SA0001MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA0001MessageFormat",
                                                                  resourceCulture);
                         }
@@ -89,7 +100,8 @@ namespace StyleCop.Analyzers.SpecialRules {
                 /// <summary>
                 ///   Looks up a localized string similar to XML comment analysis disabled.
                 /// </summary>
-                internal static string SA0001Title {
+                internal static string SA0001Title
+                {
                         get { return ResourceManager.GetString("SA0001Title", resourceCulture); }
                 }
 
@@ -100,8 +112,10 @@ namespace StyleCop.Analyzers.SpecialRules {
                 ///
                 ///{0}.
                 /// </summary>
-                internal static string SA0002Description {
-                        get {
+                internal static string SA0002Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA0002Description",
                                                                  resourceCulture);
                         }
@@ -111,8 +125,10 @@ namespace StyleCop.Analyzers.SpecialRules {
                 ///   Looks up a localized string similar to The stylecop.json settings file could
                 ///   not be loaded.
                 /// </summary>
-                internal static string SA0002MessageFormat {
-                        get {
+                internal static string SA0002MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA0002MessageFormat",
                                                                  resourceCulture);
                         }
@@ -121,7 +137,8 @@ namespace StyleCop.Analyzers.SpecialRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Invalid settings file.
                 /// </summary>
-                internal static string SA0002Title {
+                internal static string SA0002Title
+                {
                         get { return ResourceManager.GetString("SA0002Title", resourceCulture); }
                 }
         }

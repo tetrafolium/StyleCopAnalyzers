@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Reflection;
 
@@ -20,31 +21,36 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
-            "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+          "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class ReadabilityResources {
+        internal class ReadabilityResources
+        {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                    "Microsoft.Performance",
-                    "CA1811:AvoidUncalledPrivateCode")]
-                internal ReadabilityResources() {}
+                  "Microsoft.Performance",
+                  "CA1811:AvoidUncalledPrivateCode")]
+                internal
+                ReadabilityResources()
+                {}
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
-                internal static global::System.Resources.ResourceManager ResourceManager {
-                        get {
+                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                internal static global::System.Resources.ResourceManager ResourceManager
+                {
+                        get
+                        {
                                 if (object.ReferenceEquals(resourceMan, null)) {
                                         global::System.Resources.ResourceManager
-                                            temp = new global::System.Resources.ResourceManager(
-                                            "StyleCop.Analyzers.ReadabilityRules.ReadabilityResources",
-                                            typeof(ReadabilityResources).GetTypeInfo().Assembly);
+                                          temp = new global::System.Resources.ResourceManager(
+                                          "StyleCop.Analyzers.ReadabilityRules.ReadabilityResources",
+                                          typeof(ReadabilityResources).GetTypeInfo().Assembly);
                                         resourceMan = temp;
                                 }
                                 return resourceMan;
@@ -56,8 +62,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
-                internal static global::System.Globalization.CultureInfo Culture {
+                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                internal static global::System.Globalization.CultureInfo Culture
+                {
                         get { return resourceCulture; }
                         set { resourceCulture = value; }
                 }
@@ -65,8 +72,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Fix indentation.
                 /// </summary>
-                internal static string IndentationCodeFix {
-                        get {
+                internal static string IndentationCodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("IndentationCodeFix",
                                                                  resourceCulture);
                         }
@@ -75,8 +84,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Remove region.
                 /// </summary>
-                internal static string RemoveRegionCodeFix {
-                        get {
+                internal static string RemoveRegionCodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("RemoveRegionCodeFix",
                                                                  resourceCulture);
                         }
@@ -86,7 +97,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Replace &apos;base.&apos; with
                 ///   &apos;this.&apos;.
                 /// </summary>
-                internal static string SA1100CodeFix {
+                internal static string SA1100CodeFix
+                {
                         get { return ResourceManager.GetString("SA1100CodeFix", resourceCulture); }
                 }
 
@@ -95,8 +107,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   class begins with &apos;base.&apos;, and the local class does not contain an
                 ///   override or implementation of the member..
                 /// </summary>
-                internal static string SA1100Description {
-                        get {
+                internal static string SA1100Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1100Description",
                                                                  resourceCulture);
                         }
@@ -106,8 +120,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Do not prefix calls with base unless
                 ///   local implementation exists.
                 /// </summary>
-                internal static string SA1100MessageFormat {
-                        get {
+                internal static string SA1100MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1100MessageFormat",
                                                                  resourceCulture);
                         }
@@ -117,7 +133,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Do not prefix calls with base unless
                 ///   local implementation exists.
                 /// </summary>
-                internal static string SA1100Title {
+                internal static string SA1100Title
+                {
                         get { return ResourceManager.GetString("SA1100Title", resourceCulture); }
                 }
 
@@ -125,7 +142,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Prefix reference with
                 ///   &apos;this.&apos;.
                 /// </summary>
-                internal static string SA1101CodeFix {
+                internal static string SA1101CodeFix
+                {
                         get { return ResourceManager.GetString("SA1101CodeFix", resourceCulture); }
                 }
 
@@ -134,8 +152,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   local class or a base class is not prefixed with &apos;this.&apos;, within a
                 ///   C# code file..
                 /// </summary>
-                internal static string SA1101Description {
-                        get {
+                internal static string SA1101Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1101Description",
                                                                  resourceCulture);
                         }
@@ -144,8 +164,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Prefix local calls with this.
                 /// </summary>
-                internal static string SA1101MessageFormat {
-                        get {
+                internal static string SA1101MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1101MessageFormat",
                                                                  resourceCulture);
                         }
@@ -154,14 +176,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Prefix local calls with this.
                 /// </summary>
-                internal static string SA1101Title {
+                internal static string SA1101Title
+                {
                         get { return ResourceManager.GetString("SA1101Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Remove separating lines.
                 /// </summary>
-                internal static string SA1102CodeFix {
+                internal static string SA1102CodeFix
+                {
                         get { return ResourceManager.GetString("SA1102CodeFix", resourceCulture); }
                 }
 
@@ -169,8 +193,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to A C# query clause does not begin on the
                 ///   same line as the previous clause, or on the next line..
                 /// </summary>
-                internal static string SA1102Description {
-                        get {
+                internal static string SA1102Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1102Description",
                                                                  resourceCulture);
                         }
@@ -180,8 +206,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Query clause should follow previous
                 ///   clause..
                 /// </summary>
-                internal static string SA1102MessageFormat {
-                        get {
+                internal static string SA1102MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1102MessageFormat",
                                                                  resourceCulture);
                         }
@@ -191,15 +219,18 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Query clause should follow previous
                 ///   clause.
                 /// </summary>
-                internal static string SA1102Title {
+                internal static string SA1102Title
+                {
                         get { return ResourceManager.GetString("SA1102Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Place on multiple lines.
                 /// </summary>
-                internal static string SA1103CodeFixMultipleLines {
-                        get {
+                internal static string SA1103CodeFixMultipleLines
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1103CodeFixMultipleLines",
                                                                  resourceCulture);
                         }
@@ -208,8 +239,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Place on single line.
                 /// </summary>
-                internal static string SA1103CodeFixSingleLine {
-                        get {
+                internal static string SA1103CodeFixSingleLine
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1103CodeFixSingleLine",
                                                                  resourceCulture);
                         }
@@ -220,8 +253,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   expression are not all placed on the same line, and each clause is not placed
                 ///   on its own line..
                 /// </summary>
-                internal static string SA1103Description {
-                        get {
+                internal static string SA1103Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1103Description",
                                                                  resourceCulture);
                         }
@@ -231,8 +266,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Query clauses should be on separate
                 ///   lines or all on one line.
                 /// </summary>
-                internal static string SA1103MessageFormat {
-                        get {
+                internal static string SA1103MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1103MessageFormat",
                                                                  resourceCulture);
                         }
@@ -242,7 +279,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Query clauses should be on separate
                 ///   lines or all on one line.
                 /// </summary>
-                internal static string SA1103Title {
+                internal static string SA1103Title
+                {
                         get { return ResourceManager.GetString("SA1103Title", resourceCulture); }
                 }
 
@@ -251,8 +289,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   begins on the same line as the previous clause, when the previous clause spans
                 ///   across multiple lines..
                 /// </summary>
-                internal static string SA1104Description {
-                        get {
+                internal static string SA1104Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1104Description",
                                                                  resourceCulture);
                         }
@@ -262,8 +302,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Query clause should begin on new line
                 ///   when previous clause spans multiple lines.
                 /// </summary>
-                internal static string SA1104MessageFormat {
-                        get {
+                internal static string SA1104MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1104MessageFormat",
                                                                  resourceCulture);
                         }
@@ -272,8 +314,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Insert new line.
                 /// </summary>
-                internal static string SA1104SA1105CodeFix {
-                        get {
+                internal static string SA1104SA1105CodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1104SA1105CodeFix",
                                                                  resourceCulture);
                         }
@@ -283,7 +327,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Query clause should begin on new line
                 ///   when previous clause spans multiple lines.
                 /// </summary>
-                internal static string SA1104Title {
+                internal static string SA1104Title
+                {
                         get { return ResourceManager.GetString("SA1104Title", resourceCulture); }
                 }
 
@@ -291,8 +336,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to A clause within a C# query expression
                 ///   spans across multiple lines, and does not begin on its own line..
                 /// </summary>
-                internal static string SA1105Description {
-                        get {
+                internal static string SA1105Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1105Description",
                                                                  resourceCulture);
                         }
@@ -302,8 +349,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Query clauses spanning multiple lines
                 ///   should begin on own line.
                 /// </summary>
-                internal static string SA1105MessageFormat {
-                        get {
+                internal static string SA1105MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1105MessageFormat",
                                                                  resourceCulture);
                         }
@@ -313,14 +362,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Query clauses spanning multiple lines
                 ///   should begin on own line.
                 /// </summary>
-                internal static string SA1105Title {
+                internal static string SA1105Title
+                {
                         get { return ResourceManager.GetString("SA1105Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Remove empty statement.
                 /// </summary>
-                internal static string SA1106CodeFix {
+                internal static string SA1106CodeFix
+                {
                         get { return ResourceManager.GetString("SA1106CodeFix", resourceCulture); }
                 }
 
@@ -328,8 +379,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The C# code contains an extra
                 ///   semicolon..
                 /// </summary>
-                internal static string SA1106Description {
-                        get {
+                internal static string SA1106Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1106Description",
                                                                  resourceCulture);
                         }
@@ -339,8 +392,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Code should not contain empty
                 ///   statements.
                 /// </summary>
-                internal static string SA1106MessageFormat {
-                        get {
+                internal static string SA1106MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1106MessageFormat",
                                                                  resourceCulture);
                         }
@@ -350,14 +405,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Code should not contain empty
                 ///   statements.
                 /// </summary>
-                internal static string SA1106Title {
+                internal static string SA1106Title
+                {
                         get { return ResourceManager.GetString("SA1106Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Enter new line.
                 /// </summary>
-                internal static string SA1107CodeFix {
+                internal static string SA1107CodeFix
+                {
                         get { return ResourceManager.GetString("SA1107CodeFix", resourceCulture); }
                 }
 
@@ -365,8 +422,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The C# code contains more than one
                 ///   statement on a single line..
                 /// </summary>
-                internal static string SA1107Description {
-                        get {
+                internal static string SA1107Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1107Description",
                                                                  resourceCulture);
                         }
@@ -376,8 +435,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Code should not contain multiple
                 ///   statements on one line.
                 /// </summary>
-                internal static string SA1107MessageFormat {
-                        get {
+                internal static string SA1107MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1107MessageFormat",
                                                                  resourceCulture);
                         }
@@ -387,7 +448,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Code should not contain multiple
                 ///   statements on one line.
                 /// </summary>
-                internal static string SA1107Title {
+                internal static string SA1107Title
+                {
                         get { return ResourceManager.GetString("SA1107Title", resourceCulture); }
                 }
 
@@ -396,8 +458,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   between the declaration of the statement and the opening brace of the
                 ///   statement..
                 /// </summary>
-                internal static string SA1108Description {
-                        get {
+                internal static string SA1108Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1108Description",
                                                                  resourceCulture);
                         }
@@ -407,8 +471,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Block statements should not contain
                 ///   embedded comments.
                 /// </summary>
-                internal static string SA1108MessageFormat {
-                        get {
+                internal static string SA1108MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1108MessageFormat",
                                                                  resourceCulture);
                         }
@@ -418,7 +484,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Block statements should not contain
                 ///   embedded comments.
                 /// </summary>
-                internal static string SA1108Title {
+                internal static string SA1108Title
+                {
                         get { return ResourceManager.GetString("SA1108Title", resourceCulture); }
                 }
 
@@ -427,8 +494,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   between the declaration of the statement and the opening brace of the
                 ///   statement..
                 /// </summary>
-                internal static string SA1109Description {
-                        get {
+                internal static string SA1109Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1109Description",
                                                                  resourceCulture);
                         }
@@ -437,8 +506,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to .
                 /// </summary>
-                internal static string SA1109MessageFormat {
-                        get {
+                internal static string SA1109MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1109MessageFormat",
                                                                  resourceCulture);
                         }
@@ -448,7 +519,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Block statements should not contain
                 ///   embedded regions.
                 /// </summary>
-                internal static string SA1109Title {
+                internal static string SA1109Title
+                {
                         get { return ResourceManager.GetString("SA1109Title", resourceCulture); }
                 }
 
@@ -456,8 +528,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The opening parenthesis or bracket is
                 ///   not placed on the same line as the method/indexer/attribute/array name..
                 /// </summary>
-                internal static string SA1110Description {
-                        get {
+                internal static string SA1110Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1110Description",
                                                                  resourceCulture);
                         }
@@ -467,8 +541,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Opening parenthesis or bracket should
                 ///   be on declaration line.
                 /// </summary>
-                internal static string SA1110MessageFormat {
-                        get {
+                internal static string SA1110MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1110MessageFormat",
                                                                  resourceCulture);
                         }
@@ -478,7 +554,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Opening parenthesis or bracket should
                 ///   be on declaration line.
                 /// </summary>
-                internal static string SA1110Title {
+                internal static string SA1110Title
+                {
                         get { return ResourceManager.GetString("SA1110Title", resourceCulture); }
                 }
 
@@ -488,8 +565,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   method/indexer/attribute/array/constructor/delegate is not placed on the same
                 ///   line as the last parameter..
                 /// </summary>
-                internal static string SA1111Description {
-                        get {
+                internal static string SA1111Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1111Description",
                                                                  resourceCulture);
                         }
@@ -499,8 +578,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Closing parenthesis should be on line
                 ///   of last parameter.
                 /// </summary>
-                internal static string SA1111MessageFormat {
-                        get {
+                internal static string SA1111MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1111MessageFormat",
                                                                  resourceCulture);
                         }
@@ -510,7 +591,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Closing parenthesis should be on line
                 ///   of last parameter.
                 /// </summary>
-                internal static string SA1111Title {
+                internal static string SA1111Title
+                {
                         get { return ResourceManager.GetString("SA1111Title", resourceCulture); }
                 }
 
@@ -520,8 +602,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   not placed on the same line as the opening bracket when the element does not
                 ///   take any parameters..
                 /// </summary>
-                internal static string SA1112Description {
-                        get {
+                internal static string SA1112Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1112Description",
                                                                  resourceCulture);
                         }
@@ -531,8 +615,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Closing parenthesis should be on line
                 ///   of opening parenthesis.
                 /// </summary>
-                internal static string SA1112MessageFormat {
-                        get {
+                internal static string SA1112MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1112MessageFormat",
                                                                  resourceCulture);
                         }
@@ -542,7 +628,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Closing parenthesis should be on line
                 ///   of opening parenthesis.
                 /// </summary>
-                internal static string SA1112Title {
+                internal static string SA1112Title
+                {
                         get { return ResourceManager.GetString("SA1112Title", resourceCulture); }
                 }
 
@@ -551,8 +638,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   call to a C# method or indexer, or in the declaration of a method or indexer,
                 ///   is not placed on the same line as the previous parameter..
                 /// </summary>
-                internal static string SA1113Description {
-                        get {
+                internal static string SA1113Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1113Description",
                                                                  resourceCulture);
                         }
@@ -562,8 +651,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Comma should be on the same line as
                 ///   previous parameter.
                 /// </summary>
-                internal static string SA1113MessageFormat {
-                        get {
+                internal static string SA1113MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1113MessageFormat",
                                                                  resourceCulture);
                         }
@@ -573,7 +664,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Comma should be on the same line as
                 ///   previous parameter.
                 /// </summary>
-                internal static string SA1113Title {
+                internal static string SA1113Title
+                {
                         get { return ResourceManager.GetString("SA1113Title", resourceCulture); }
                 }
 
@@ -583,8 +675,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   on the same line as the opening bracket, or on the line after the opening
                 ///   bracket..
                 /// </summary>
-                internal static string SA1114Description {
-                        get {
+                internal static string SA1114Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1114Description",
                                                                  resourceCulture);
                         }
@@ -594,8 +688,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Parameter list should follow
                 ///   declaration.
                 /// </summary>
-                internal static string SA1114MessageFormat {
-                        get {
+                internal static string SA1114MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1114MessageFormat",
                                                                  resourceCulture);
                         }
@@ -605,7 +701,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Parameter list should follow
                 ///   declaration.
                 /// </summary>
-                internal static string SA1114Title {
+                internal static string SA1114Title
+                {
                         get { return ResourceManager.GetString("SA1114Title", resourceCulture); }
                 }
 
@@ -614,8 +711,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   indexer call or declaration does not begin on the same line as the previous
                 ///   parameter, or on the next line..
                 /// </summary>
-                internal static string SA1115Description {
-                        get {
+                internal static string SA1115Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1115Description",
                                                                  resourceCulture);
                         }
@@ -625,8 +724,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The parameter should begin on the line
                 ///   after the previous parameter.
                 /// </summary>
-                internal static string SA1115MessageFormat {
-                        get {
+                internal static string SA1115MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1115MessageFormat",
                                                                  resourceCulture);
                         }
@@ -635,14 +736,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Parameter should follow comma.
                 /// </summary>
-                internal static string SA1115Title {
+                internal static string SA1115Title
+                {
                         get { return ResourceManager.GetString("SA1115Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Move first argument to next line.
                 /// </summary>
-                internal static string SA1116CodeFix {
+                internal static string SA1116CodeFix
+                {
                         get { return ResourceManager.GetString("SA1116CodeFix", resourceCulture); }
                 }
 
@@ -651,8 +754,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   indexer call or declaration span across multiple lines, but the first
                 ///   parameter does not start on the line after the opening bracket..
                 /// </summary>
-                internal static string SA1116Description {
-                        get {
+                internal static string SA1116Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1116Description",
                                                                  resourceCulture);
                         }
@@ -662,8 +767,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The parameters should begin on the line
                 ///   after the declaration, whenever the parameter span across multiple lines.
                 /// </summary>
-                internal static string SA1116MessageFormat {
-                        get {
+                internal static string SA1116MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1116MessageFormat",
                                                                  resourceCulture);
                         }
@@ -673,7 +780,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Split parameters should start on line
                 ///   after declaration.
                 /// </summary>
-                internal static string SA1116Title {
+                internal static string SA1116Title
+                {
                         get { return ResourceManager.GetString("SA1116Title", resourceCulture); }
                 }
 
@@ -682,8 +790,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   indexer call or declaration are not all on the same line or each on a separate
                 ///   line..
                 /// </summary>
-                internal static string SA1117Description {
-                        get {
+                internal static string SA1117Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1117Description",
                                                                  resourceCulture);
                         }
@@ -693,8 +803,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The parameters should all be placed on
                 ///   the same line or each parameter should be placed on its own line.
                 /// </summary>
-                internal static string SA1117MessageFormat {
-                        get {
+                internal static string SA1117MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1117MessageFormat",
                                                                  resourceCulture);
                         }
@@ -704,7 +816,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Parameters should be on same line or
                 ///   separate lines.
                 /// </summary>
-                internal static string SA1117Title {
+                internal static string SA1117Title
+                {
                         get { return ResourceManager.GetString("SA1117Title", resourceCulture); }
                 }
 
@@ -715,8 +828,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   single line. Otherwise, save the contents of the parameter in a temporary
                 ///   variable and pass the temporary variable as a parameter..
                 /// </summary>
-                internal static string SA1118Description {
-                        get {
+                internal static string SA1118Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1118Description",
                                                                  resourceCulture);
                         }
@@ -725,8 +840,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to The parameter spans multiple lines.
                 /// </summary>
-                internal static string SA1118MessageFormat {
-                        get {
+                internal static string SA1118MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1118MessageFormat",
                                                                  resourceCulture);
                         }
@@ -736,14 +853,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Parameter should not span multiple
                 ///   lines.
                 /// </summary>
-                internal static string SA1118Title {
+                internal static string SA1118Title
+                {
                         get { return ResourceManager.GetString("SA1118Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Remove empty comment.
                 /// </summary>
-                internal static string SA1120CodeFix {
+                internal static string SA1120CodeFix
+                {
                         get { return ResourceManager.GetString("SA1120CodeFix", resourceCulture); }
                 }
 
@@ -751,8 +870,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The C# comment does not contain any
                 ///   comment text..
                 /// </summary>
-                internal static string SA1120Description {
-                        get {
+                internal static string SA1120Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1120Description",
                                                                  resourceCulture);
                         }
@@ -761,8 +882,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Comments should contain text.
                 /// </summary>
-                internal static string SA1120MessageFormat {
-                        get {
+                internal static string SA1120MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1120MessageFormat",
                                                                  resourceCulture);
                         }
@@ -771,14 +894,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Comments should contain text.
                 /// </summary>
-                internal static string SA1120Title {
+                internal static string SA1120Title
+                {
                         get { return ResourceManager.GetString("SA1120Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Replace with built-in type.
                 /// </summary>
-                internal static string SA1121CodeFix {
+                internal static string SA1121CodeFix
+                {
                         get { return ResourceManager.GetString("SA1121CodeFix", resourceCulture); }
                 }
 
@@ -786,8 +911,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The code uses one of the basic C#
                 ///   types, but does not use the built-in alias for the type..
                 /// </summary>
-                internal static string SA1121Description {
-                        get {
+                internal static string SA1121Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1121Description",
                                                                  resourceCulture);
                         }
@@ -796,8 +923,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use built-in type alias.
                 /// </summary>
-                internal static string SA1121MessageFormat {
-                        get {
+                internal static string SA1121MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1121MessageFormat",
                                                                  resourceCulture);
                         }
@@ -806,14 +935,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use built-in type alias.
                 /// </summary>
-                internal static string SA1121Title {
+                internal static string SA1121Title
+                {
                         get { return ResourceManager.GetString("SA1121Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Replace with string.Empty.
                 /// </summary>
-                internal static string SA1122CodeFix {
+                internal static string SA1122CodeFix
+                {
                         get { return ResourceManager.GetString("SA1122CodeFix", resourceCulture); }
                 }
 
@@ -821,8 +952,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The C# code includes an empty string,
                 ///   written as &quot;&quot;..
                 /// </summary>
-                internal static string SA1122Description {
-                        get {
+                internal static string SA1122Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1122Description",
                                                                  resourceCulture);
                         }
@@ -831,8 +964,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use string.Empty for empty strings.
                 /// </summary>
-                internal static string SA1122MessageFormat {
-                        get {
+                internal static string SA1122MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1122MessageFormat",
                                                                  resourceCulture);
                         }
@@ -841,7 +976,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use string.Empty for empty strings.
                 /// </summary>
-                internal static string SA1122Title {
+                internal static string SA1122Title
+                {
                         get { return ResourceManager.GetString("SA1122Title", resourceCulture); }
                 }
 
@@ -849,8 +985,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to The C# code contains a region within
                 ///   the body of a code element..
                 /// </summary>
-                internal static string SA1123Description {
-                        get {
+                internal static string SA1123Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1123Description",
                                                                  resourceCulture);
                         }
@@ -860,8 +998,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Region should not be located within a
                 ///   code element.
                 /// </summary>
-                internal static string SA1123MessageFormat {
-                        get {
+                internal static string SA1123MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1123MessageFormat",
                                                                  resourceCulture);
                         }
@@ -870,15 +1010,18 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Do not place regions within elements.
                 /// </summary>
-                internal static string SA1123Title {
+                internal static string SA1123Title
+                {
                         get { return ResourceManager.GetString("SA1123Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to The C# code contains a region..
                 /// </summary>
-                internal static string SA1124Description {
-                        get {
+                internal static string SA1124Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1124Description",
                                                                  resourceCulture);
                         }
@@ -887,8 +1030,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Do not use regions.
                 /// </summary>
-                internal static string SA1124MessageFormat {
-                        get {
+                internal static string SA1124MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1124MessageFormat",
                                                                  resourceCulture);
                         }
@@ -897,7 +1042,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Do not use regions.
                 /// </summary>
-                internal static string SA1124Title {
+                internal static string SA1124Title
+                {
                         get { return ResourceManager.GetString("SA1124Title", resourceCulture); }
                 }
 
@@ -906,8 +1052,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   defined not using the C# shorthand. For example, Nullable&lt;DateTime&gt; has
                 ///   been used instead of the preferred DateTime?.
                 /// </summary>
-                internal static string SA1125Description {
-                        get {
+                internal static string SA1125Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1125Description",
                                                                  resourceCulture);
                         }
@@ -916,8 +1064,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use shorthand for nullable types.
                 /// </summary>
-                internal static string SA1125MessageFormat {
-                        get {
+                internal static string SA1125MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1125MessageFormat",
                                                                  resourceCulture);
                         }
@@ -926,7 +1076,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use shorthand for nullable types.
                 /// </summary>
-                internal static string SA1125Title {
+                internal static string SA1125Title
+                {
                         get { return ResourceManager.GetString("SA1125Title", resourceCulture); }
                 }
 
@@ -936,8 +1087,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   &apos;typename.&apos; prefix to indicate the intended method call, within a C#
                 ///   code file..
                 /// </summary>
-                internal static string SA1126Description {
-                        get {
+                internal static string SA1126Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1126Description",
                                                                  resourceCulture);
                         }
@@ -946,8 +1099,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to .
                 /// </summary>
-                internal static string SA1126MessageFormat {
-                        get {
+                internal static string SA1126MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1126MessageFormat",
                                                                  resourceCulture);
                         }
@@ -956,7 +1111,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Prefix calls correctly.
                 /// </summary>
-                internal static string SA1126Title {
+                internal static string SA1126Title
+                {
                         get { return ResourceManager.GetString("SA1126Title", resourceCulture); }
                 }
 
@@ -964,7 +1120,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Place each type constraint on a new
                 ///   line.
                 /// </summary>
-                internal static string SA1127CodeFix {
+                internal static string SA1127CodeFix
+                {
                         get { return ResourceManager.GetString("SA1127CodeFix", resourceCulture); }
                 }
 
@@ -972,8 +1129,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Each type constraint clause for a
                 ///   generic type parameter should be listed on a line of code by itself..
                 /// </summary>
-                internal static string SA1127Description {
-                        get {
+                internal static string SA1127Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1127Description",
                                                                  resourceCulture);
                         }
@@ -983,8 +1142,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Generic type constraints should be on
                 ///   their own line.
                 /// </summary>
-                internal static string SA1127MessageFormat {
-                        get {
+                internal static string SA1127MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1127MessageFormat",
                                                                  resourceCulture);
                         }
@@ -994,7 +1155,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Generic type constraints should be on
                 ///   their own line.
                 /// </summary>
-                internal static string SA1127Title {
+                internal static string SA1127Title
+                {
                         get { return ResourceManager.GetString("SA1127Title", resourceCulture); }
                 }
 
@@ -1002,7 +1164,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Place constructor initializer on own
                 ///   line.
                 /// </summary>
-                internal static string SA1128CodeFix {
+                internal static string SA1128CodeFix
+                {
                         get { return ResourceManager.GetString("SA1128CodeFix", resourceCulture); }
                 }
 
@@ -1010,8 +1173,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to A constructor initializer, including
                 ///   the colon character, should be on its own line..
                 /// </summary>
-                internal static string SA1128Description {
-                        get {
+                internal static string SA1128Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1128Description",
                                                                  resourceCulture);
                         }
@@ -1021,8 +1186,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Put constructor initializers on their
                 ///   own line.
                 /// </summary>
-                internal static string SA1128MessageFormat {
-                        get {
+                internal static string SA1128MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1128MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1032,14 +1199,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Put constructor initializers on their
                 ///   own line.
                 /// </summary>
-                internal static string SA1128Title {
+                internal static string SA1128Title
+                {
                         get { return ResourceManager.GetString("SA1128Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Replace with default(T).
                 /// </summary>
-                internal static string SA1129CodeFix {
+                internal static string SA1129CodeFix
+                {
                         get { return ResourceManager.GetString("SA1129CodeFix", resourceCulture); }
                 }
 
@@ -1049,8 +1218,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   syntax &apos;new T()&apos;. To avoid confusion regarding the behavior of the
                 ///   resulting instance, the first form is preferred..
                 /// </summary>
-                internal static string SA1129Description {
-                        get {
+                internal static string SA1129Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1129Description",
                                                                  resourceCulture);
                         }
@@ -1060,8 +1231,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Do not use default value type
                 ///   constructor.
                 /// </summary>
-                internal static string SA1129MessageFormat {
-                        get {
+                internal static string SA1129MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1129MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1071,14 +1244,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Do not use default value type
                 ///   constructor.
                 /// </summary>
-                internal static string SA1129Title {
+                internal static string SA1129Title
+                {
                         get { return ResourceManager.GetString("SA1129Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Replace with lambda..
                 /// </summary>
-                internal static string SA1130CodeFix {
+                internal static string SA1130CodeFix
+                {
                         get { return ResourceManager.GetString("SA1130CodeFix", resourceCulture); }
                 }
 
@@ -1087,8 +1262,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   and easier to read than anonymous methods, so they should are preferred
                 ///   whenever the two are functionally equivalent..
                 /// </summary>
-                internal static string SA1130Description {
-                        get {
+                internal static string SA1130Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1130Description",
                                                                  resourceCulture);
                         }
@@ -1097,8 +1274,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use lambda syntax.
                 /// </summary>
-                internal static string SA1130MessageFormat {
-                        get {
+                internal static string SA1130MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1130MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1107,14 +1286,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use lambda syntax.
                 /// </summary>
-                internal static string SA1130Title {
+                internal static string SA1130Title
+                {
                         get { return ResourceManager.GetString("SA1130Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Swap operands.
                 /// </summary>
-                internal static string SA1131CodeFix {
+                internal static string SA1131CodeFix
+                {
                         get { return ResourceManager.GetString("SA1131CodeFix", resourceCulture); }
                 }
 
@@ -1123,8 +1304,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   variable and a literal, the variable should be placed on the left-hand-side to
                 ///   maximize readability..
                 /// </summary>
-                internal static string SA1131Description {
-                        get {
+                internal static string SA1131Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1131Description",
                                                                  resourceCulture);
                         }
@@ -1134,8 +1317,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Constant values should appear on the
                 ///   right-hand side of comparisons.
                 /// </summary>
-                internal static string SA1131MessageFormat {
-                        get {
+                internal static string SA1131MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1131MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1144,14 +1329,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use readable conditions.
                 /// </summary>
-                internal static string SA1131Title {
+                internal static string SA1131Title
+                {
                         get { return ResourceManager.GetString("SA1131Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Place each field on a new line.
                 /// </summary>
-                internal static string SA1132CodeFix {
+                internal static string SA1132CodeFix
+                {
                         get { return ResourceManager.GetString("SA1132CodeFix", resourceCulture); }
                 }
 
@@ -1160,8 +1347,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   own line, in order to clearly see each field of a type and allow for proper
                 ///   documentation of the behavior of each field..
                 /// </summary>
-                internal static string SA1132Description {
-                        get {
+                internal static string SA1132Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1132Description",
                                                                  resourceCulture);
                         }
@@ -1171,8 +1360,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Each field should be declared on its
                 ///   own line.
                 /// </summary>
-                internal static string SA1132MessageFormat {
-                        get {
+                internal static string SA1132MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1132MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1181,7 +1372,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Do not combine fields.
                 /// </summary>
-                internal static string SA1132Title {
+                internal static string SA1132Title
+                {
                         get { return ResourceManager.GetString("SA1132Title", resourceCulture); }
                 }
 
@@ -1189,7 +1381,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Give each attribute its own square
                 ///   brackets.
                 /// </summary>
-                internal static string SA1133CodeFix {
+                internal static string SA1133CodeFix
+                {
                         get { return ResourceManager.GetString("SA1133CodeFix", resourceCulture); }
                 }
 
@@ -1197,8 +1390,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Each attribute usage should be placed
                 ///   in its own set of square brackets for maximum readability..
                 /// </summary>
-                internal static string SA1133Description {
-                        get {
+                internal static string SA1133Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1133Description",
                                                                  resourceCulture);
                         }
@@ -1208,8 +1403,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Each attribute should be placed in its
                 ///   own set of square brackets.
                 /// </summary>
-                internal static string SA1133MessageFormat {
-                        get {
+                internal static string SA1133MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1133MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1218,14 +1415,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Do not combine attributes.
                 /// </summary>
-                internal static string SA1133Title {
+                internal static string SA1133Title
+                {
                         get { return ResourceManager.GetString("SA1133Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Place attribute on own line..
                 /// </summary>
-                internal static string SA1134CodeFix {
+                internal static string SA1134CodeFix
+                {
                         get { return ResourceManager.GetString("SA1134CodeFix", resourceCulture); }
                 }
 
@@ -1233,8 +1432,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Each attribute should be placed on its
                 ///   own line of code..
                 /// </summary>
-                internal static string SA1134Description {
-                        get {
+                internal static string SA1134Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1134Description",
                                                                  resourceCulture);
                         }
@@ -1244,8 +1445,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Each attribute should be placed on its
                 ///   own line of code.
                 /// </summary>
-                internal static string SA1134MessageFormat {
-                        get {
+                internal static string SA1134MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1134MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1254,14 +1457,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Attributes should not share line.
                 /// </summary>
-                internal static string SA1134Title {
+                internal static string SA1134Title
+                {
                         get { return ResourceManager.GetString("SA1134Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Qualify using directive.
                 /// </summary>
-                internal static string SA1135CodeFix {
+                internal static string SA1135CodeFix
+                {
                         get { return ResourceManager.GetString("SA1135CodeFix", resourceCulture); }
                 }
 
@@ -1269,8 +1474,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to All using directives should be
                 ///   qualified..
                 /// </summary>
-                internal static string SA1135Description {
-                        get {
+                internal static string SA1135Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1135Description",
                                                                  resourceCulture);
                         }
@@ -1280,8 +1487,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Using directive for namespace
                 ///   &apos;{0}&apos; should be qualified.
                 /// </summary>
-                internal static string SA1135MessageFormatNamespace {
-                        get {
+                internal static string SA1135MessageFormatNamespace
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1135MessageFormatNamespace",
                                                                  resourceCulture);
                         }
@@ -1291,8 +1500,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Using directive for type
                 ///   &apos;{0}&apos; should be qualified.
                 /// </summary>
-                internal static string SA1135MessageFormatType {
-                        get {
+                internal static string SA1135MessageFormatType
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1135MessageFormatType",
                                                                  resourceCulture);
                         }
@@ -1301,14 +1512,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Using directives should be qualified.
                 /// </summary>
-                internal static string SA1135Title {
+                internal static string SA1135Title
+                {
                         get { return ResourceManager.GetString("SA1135Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Place enum values own their own lines.
                 /// </summary>
-                internal static string SA1136CodeFix {
+                internal static string SA1136CodeFix
+                {
                         get { return ResourceManager.GetString("SA1136CodeFix", resourceCulture); }
                 }
 
@@ -1316,8 +1529,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Enum values should be placed on their
                 ///   own lines for maximum readability..
                 /// </summary>
-                internal static string SA1136Description {
-                        get {
+                internal static string SA1136Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1136Description",
                                                                  resourceCulture);
                         }
@@ -1327,8 +1542,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Enum values should be on separate
                 ///   lines.
                 /// </summary>
-                internal static string SA1136MessageFormat {
-                        get {
+                internal static string SA1136MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1136MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1338,7 +1555,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Enum values should be on separate
                 ///   lines.
                 /// </summary>
-                internal static string SA1136Title {
+                internal static string SA1136Title
+                {
                         get { return ResourceManager.GetString("SA1136Title", resourceCulture); }
                 }
 
@@ -1346,8 +1564,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Elements at the same level in the
                 ///   syntax tree should have the same indentation..
                 /// </summary>
-                internal static string SA1137Description {
-                        get {
+                internal static string SA1137Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1137Description",
                                                                  resourceCulture);
                         }
@@ -1357,8 +1577,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Elements should have the same
                 ///   indentation.
                 /// </summary>
-                internal static string SA1137MessageFormat {
-                        get {
+                internal static string SA1137MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1137MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1368,7 +1590,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Elements should have the same
                 ///   indentation.
                 /// </summary>
-                internal static string SA1137Title {
+                internal static string SA1137Title
+                {
                         get { return ResourceManager.GetString("SA1137Title", resourceCulture); }
                 }
 
@@ -1376,7 +1599,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Use literal suffix notation instead of
                 ///   casting.
                 /// </summary>
-                internal static string SA1139CodeFix {
+                internal static string SA1139CodeFix
+                {
                         get { return ResourceManager.GetString("SA1139CodeFix", resourceCulture); }
                 }
 
@@ -1385,8 +1609,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   casting, in order to improve readability, avoid bugs related to illegal casts
                 ///   and ensure that optimal IL is produced..
                 /// </summary>
-                internal static string SA1139Description {
-                        get {
+                internal static string SA1139Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1139Description",
                                                                  resourceCulture);
                         }
@@ -1396,8 +1622,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Use literal suffix notation instead of
                 ///   casting.
                 /// </summary>
-                internal static string SA1139MessageFormat {
-                        get {
+                internal static string SA1139MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1139MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1407,14 +1635,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Use literal suffix notation instead of
                 ///   casting.
                 /// </summary>
-                internal static string SA1139Title {
+                internal static string SA1139Title
+                {
                         get { return ResourceManager.GetString("SA1139Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Replace with tuple syntax.
                 /// </summary>
-                internal static string SA1141CodeFix {
+                internal static string SA1141CodeFix
+                {
                         get { return ResourceManager.GetString("SA1141CodeFix", resourceCulture); }
                 }
 
@@ -1422,8 +1652,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Use tuple syntax instead of the
                 ///   underlying ValueTuple implementation type..
                 /// </summary>
-                internal static string SA1141Description {
-                        get {
+                internal static string SA1141Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1141Description",
                                                                  resourceCulture);
                         }
@@ -1432,8 +1664,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use tuple syntax.
                 /// </summary>
-                internal static string SA1141MessageFormat {
-                        get {
+                internal static string SA1141MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1141MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1442,14 +1676,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Use tuple syntax.
                 /// </summary>
-                internal static string SA1141Title {
+                internal static string SA1141Title
+                {
                         get { return ResourceManager.GetString("SA1141Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Use tuple field name.
                 /// </summary>
-                internal static string SA1142CodeFix {
+                internal static string SA1142CodeFix
+                {
                         get { return ResourceManager.GetString("SA1142CodeFix", resourceCulture); }
                 }
 
@@ -1457,8 +1693,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to A field of a tuple was referenced by
                 ///   its metadata name when a field name is available..
                 /// </summary>
-                internal static string SA1142Description {
-                        get {
+                internal static string SA1142Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1142Description",
                                                                  resourceCulture);
                         }
@@ -1467,8 +1705,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Refer to tuple fields by name.
                 /// </summary>
-                internal static string SA1142MessageFormat {
-                        get {
+                internal static string SA1142MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SA1142MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1477,14 +1717,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// <summary>
                 ///   Looks up a localized string similar to Refer to tuple fields by name.
                 /// </summary>
-                internal static string SA1142Title {
+                internal static string SA1142Title
+                {
                         get { return ResourceManager.GetString("SA1142Title", resourceCulture); }
                 }
 
                 /// <summary>
                 ///   Looks up a localized string similar to Remove &apos;this.&apos; prefix.
                 /// </summary>
-                internal static string SX1101CodeFix {
+                internal static string SX1101CodeFix
+                {
                         get { return ResourceManager.GetString("SX1101CodeFix", resourceCulture); }
                 }
 
@@ -1492,8 +1734,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to A call to an instance member of the
                 ///   local class or a base class is prefixed with `this.`..
                 /// </summary>
-                internal static string SX1101Description {
-                        get {
+                internal static string SX1101Description
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SX1101Description",
                                                                  resourceCulture);
                         }
@@ -1503,8 +1747,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Do not prefix local calls with
                 ///   &apos;this.&apos;.
                 /// </summary>
-                internal static string SX1101MessageFormat {
-                        get {
+                internal static string SX1101MessageFormat
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SX1101MessageFormat",
                                                                  resourceCulture);
                         }
@@ -1514,7 +1760,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 ///   Looks up a localized string similar to Do not prefix local calls with
                 ///   &apos;this.&apos;.
                 /// </summary>
-                internal static string SX1101Title {
+                internal static string SX1101Title
+                {
                         get { return ResourceManager.GetString("SX1101Title", resourceCulture); }
                 }
         }

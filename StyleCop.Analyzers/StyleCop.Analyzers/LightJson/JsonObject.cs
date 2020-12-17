@@ -11,8 +11,10 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(JsonObjectDebugView))]
-internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
-                                   IEnumerable<JsonValue> {
+internal sealed class JsonObject
+  : IEnumerable<KeyValuePair<string, JsonValue>>
+  , IEnumerable<JsonValue>
+{
         private readonly IDictionary<string, JsonValue> properties;
 
         /// <summary>
@@ -24,7 +26,8 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
         /// Gets the number of properties in this JsonObject.
         /// </summary>
         /// <value>The number of properties in this JsonObject.</value>
-        public int Count {
+        public int Count
+        {
                 get { return this.properties.Count; }
         }
 
@@ -36,8 +39,10 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
         /// <para>The getter will return JsonValue.Null if the given key is not assosiated with any
         /// value.</para>
         /// </remarks>
-        public JsonValue this[string key] {
-                get {
+        public JsonValue this[string key]
+        {
+                get
+                {
                         JsonValue value;
 
                         if (this.properties.TryGetValue(key, out value)) {
@@ -64,7 +69,8 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
         /// <param name="key">The key of the property to be added.</param>
         /// <param name="value">The value of the property to be added.</param>
         /// <returns>Returns this JsonObject.</returns>
-        public JsonObject Add(string key, JsonValue value) {
+        public JsonObject Add(string key, JsonValue value)
+        {
                 this.properties.Add(key, value);
                 return this;
         }
@@ -82,7 +88,8 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
         /// Clears the contents of this collection.
         /// </summary>
         /// <returns>Returns this JsonObject.</returns>
-        public JsonObject Clear() {
+        public JsonObject Clear()
+        {
                 this.properties.Clear();
                 return this;
         }
@@ -97,7 +104,8 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
         /// <param name="oldKey">The name of the key to be changed.</param>
         /// <param name="newKey">The new name of the key.</param>
         /// <returns>Returns this JsonObject.</returns>
-        public JsonObject Rename(string oldKey, string newKey) {
+        public JsonObject Rename(string oldKey, string newKey)
+        {
                 if (oldKey == newKey) {
                         // Renaming to the same name just does nothing
                         return this;
@@ -131,7 +139,8 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
         /// Returns an enumerator that iterates through this collection.
         /// </summary>
         /// <returns>The enumerator that iterates through this collection.</returns>
-        public IEnumerator<KeyValuePair<string, JsonValue>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<string, JsonValue>> GetEnumerator()
+        {
                 return this.properties.GetEnumerator();
         }
 
@@ -139,7 +148,8 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
         /// Returns an enumerator that iterates through this collection.
         /// </summary>
         /// <returns>The enumerator that iterates through this collection.</returns>
-        IEnumerator<JsonValue> IEnumerable<JsonValue>.GetEnumerator() {
+        IEnumerator<JsonValue> IEnumerable<JsonValue>.GetEnumerator()
+        {
                 return this.properties.Values.GetEnumerator();
         }
 
@@ -147,19 +157,23 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
         /// Returns an enumerator that iterates through this collection.
         /// </summary>
         /// <returns>The enumerator that iterates through this collection.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
                 return this.GetEnumerator();
         }
 
         [ExcludeFromCodeCoverage]
-        private class JsonObjectDebugView {
+        private class JsonObjectDebugView
+        {
                 private readonly JsonObject jsonObject;
 
                 public JsonObjectDebugView(JsonObject jsonObject) { this.jsonObject = jsonObject; }
 
                 [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-                public KeyValuePair[] Keys {
-                        get {
+                public KeyValuePair[] Keys
+                {
+                        get
+                        {
                                 var keys = new KeyValuePair[this.jsonObject.Count];
 
                                 var i = 0;
@@ -175,23 +189,27 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
                 [DebuggerDisplay("{value.ToString(),nq}",
                                  Name = "{key}",
                                  Type = "JsonValue({Type})")]
-                public class KeyValuePair {
-#pragma warning disable IDE0052  // Remove unread private members
+                public class KeyValuePair
+                {
+#pragma warning disable IDE0052 // Remove unread private members
                         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
                         private readonly string key;
-#pragma warning restore IDE0052  // Remove unread private members
+#pragma warning restore IDE0052 // Remove unread private members
 
                         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
                         private readonly JsonValue value;
 
-                        public KeyValuePair(string key, JsonValue value) {
+                        public KeyValuePair(string key, JsonValue value)
+                        {
                                 this.key = key;
                                 this.value = value;
                         }
 
                         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-                        public object View {
-                                get {
+                        public object View
+                        {
+                                get
+                                {
                                         if (this.value.IsJsonObject) {
                                                 return (JsonObject) this.value;
                                         } else if (this.value.IsJsonArray) {

@@ -1,13 +1,16 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class LiteralExpressionHelpers {
+        internal static class LiteralExpressionHelpers
+        {
                 internal static string StripLiteralSuffix(
-                    this LiteralExpressionSyntax literalExpressionSyntax) {
+                  this LiteralExpressionSyntax literalExpressionSyntax)
+                {
                         var literalText = literalExpressionSyntax.Token.Text;
 
                         bool isBase16 = literalText.Length > 2 &&
@@ -42,8 +45,9 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 internal static LiteralExpressionSyntax WithLiteralSuffix(
-                    this LiteralExpressionSyntax literalExpression,
-                    SyntaxKind syntaxKindKeyword) {
+                  this LiteralExpressionSyntax literalExpression,
+                  SyntaxKind syntaxKindKeyword)
+                {
                         string textWithoutSuffix = literalExpression.StripLiteralSuffix();
 
                         string suffix;
@@ -78,8 +82,8 @@ namespace StyleCop.Analyzers.Helpers {
                         }
 
                         return literalExpression.WithToken(
-                            SyntaxFactory.ParseToken(textWithoutSuffix + suffix)
-                                .WithTriviaFrom(literalExpression.Token));
+                          SyntaxFactory.ParseToken(textWithoutSuffix + suffix)
+                            .WithTriviaFrom(literalExpression.Token));
                 }
         }
 }

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System.Collections.Generic;
         using System.Collections.Immutable;
         using System.Composition;
@@ -22,9 +23,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1101CodeFixProvider))]
         [Shared]
-        internal class SA1101CodeFixProvider : CodeFixProvider {
+        internal class SA1101CodeFixProvider : CodeFixProvider
+        {
                 private static readonly ThisExpressionSyntax ThisExpressionSyntax =
-                    SyntaxFactory.ThisExpression();
+                  SyntaxFactory.ThisExpression();
 
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
@@ -34,10 +36,11 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
 
                 /// <inheritdoc/>
-                public override async Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         var root =
-                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                .ConfigureAwait(false);
+                          await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                            .ConfigureAwait(false);
 
                         foreach (var diagnostic in context.Diagnostics) {
                                 if (!(root.FindNode(diagnostic.Location.SourceSpan,
@@ -47,55 +50,58 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 }
 
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        ReadabilityResources.SA1101CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, root, node),
-                                        nameof(SA1101CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(
+                                    ReadabilityResources.SA1101CodeFix,
+                                    cancellationToken =>
+                                      GetTransformedDocumentAsync(context.Document, root, node),
+                                    nameof(SA1101CodeFixProvider)),
+                                  diagnostic);
                         }
                 }
 
                 private static Task<Document> GetTransformedDocumentAsync(Document document,
                                                                           SyntaxNode root,
-                                                                          SimpleNameSyntax node) {
+                                                                          SimpleNameSyntax node)
+                {
                         var qualifiedExpression =
-                            SyntaxFactory
-                                .MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                                                        ThisExpressionSyntax,
-                                                        node.WithoutTrivia().WithoutFormatting())
-                                .WithTriviaFrom(node)
-                                .WithoutFormatting();
+                          SyntaxFactory
+                            .MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                                    ThisExpressionSyntax,
+                                                    node.WithoutTrivia().WithoutFormatting())
+                            .WithTriviaFrom(node)
+                            .WithoutFormatting();
 
                         var newSyntaxRoot = root.ReplaceNode(node, qualifiedExpression);
 
                         return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
+                private class FixAll : DocumentBasedFixAllProvider
+                {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
                         protected override string CodeActionTitle =>
-                            ReadabilityResources.SA1101CodeFix;
+                          ReadabilityResources.SA1101CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext,
-                            Document document,
-                            ImmutableArray<Diagnostic> diagnostics) {
+                          FixAllContext fixAllContext,
+                          Document document,
+                          ImmutableArray<Diagnostic> diagnostics)
+                        {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
                                 SyntaxNode syntaxRoot =
-                                    await document.GetSyntaxRootAsync().ConfigureAwait(false);
+                                  await document.GetSyntaxRootAsync().ConfigureAwait(false);
                                 List<SyntaxNode> nodesNeedingQualification =
-                                    new List<SyntaxNode>(diagnostics.Length);
+                                  new List<SyntaxNode>(diagnostics.Length);
 
                                 foreach (Diagnostic diagnostic in diagnostics) {
                                         if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan,
-                                                                  false, true)
-                                                  is SimpleNameSyntax node) ||
+                                                                  false,
+                                                                  true) is SimpleNameSyntax node) ||
                                             node.IsMissing) {
                                                 continue;
                                         }
@@ -104,16 +110,16 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 }
 
                                 return syntaxRoot.ReplaceNodes(
-                                    nodesNeedingQualification,
-                                    (originalNode, rewrittenNode) =>
-                                        SyntaxFactory
-                                            .MemberAccessExpression(
-                                                SyntaxKind.SimpleMemberAccessExpression,
-                                                ThisExpressionSyntax,
-                                                (SimpleNameSyntax) rewrittenNode.WithoutTrivia()
-                                                    .WithoutFormatting())
-                                            .WithTriviaFrom(rewrittenNode)
-                                            .WithoutFormatting());
+                                  nodesNeedingQualification,
+                                  (originalNode, rewrittenNode) =>
+                                    SyntaxFactory
+                                      .MemberAccessExpression(
+                                        SyntaxKind.SimpleMemberAccessExpression,
+                                        ThisExpressionSyntax,
+                                        (SimpleNameSyntax) rewrittenNode.WithoutTrivia()
+                                          .WithoutFormatting())
+                                      .WithTriviaFrom(rewrittenNode)
+                                      .WithoutFormatting());
                         }
                 }
         }

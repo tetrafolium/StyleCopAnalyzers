@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -34,47 +35,48 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1602EnumerationItemsMustBeDocumented : DiagnosticAnalyzer {
+        internal class SA1602EnumerationItemsMustBeDocumented : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1602EnumerationItemsMustBeDocumented"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1602";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1602.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1602.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1602Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1602Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1602MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1602MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1602Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1602Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
-                    EnumMemberDeclarationAction = Analyzer.HandleEnumMemberDeclaration;
+                  EnumMemberDeclarationAction = Analyzer.HandleEnumMemberDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -82,29 +84,33 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          SyntaxKind.EnumMemberDeclaration);
                 }
 
-                private static class Analyzer {
+                private static class Analyzer
+                {
                         public static void HandleEnumMemberDeclaration(
-                            SyntaxNodeAnalysisContext context,
-                            StyleCopSettings settings) {
+                          SyntaxNodeAnalysisContext context,
+                          StyleCopSettings settings)
+                        {
                                 if (context.GetDocumentationMode() == DocumentationMode.None) {
                                         return;
                                 }
 
                                 EnumMemberDeclarationSyntax declaration =
-                                    (EnumMemberDeclarationSyntax) context.Node;
+                                  (EnumMemberDeclarationSyntax) context.Node;
                                 Accessibility declaredAccessibility =
-                                    declaration.GetDeclaredAccessibility();
+                                  declaration.GetDeclaredAccessibility();
                                 Accessibility effectiveAccessibility =
-                                    declaration.GetEffectiveAccessibility(
-                                        context.SemanticModel, context.CancellationToken);
+                                  declaration.GetEffectiveAccessibility(context.SemanticModel,
+                                                                        context.CancellationToken);
                                 if (SA1600ElementsMustBeDocumented.NeedsComment(
-                                        settings.DocumentationRules, declaration.Kind(),
-                                        declaration.Parent.Kind(), declaredAccessibility,
-                                        effectiveAccessibility)) {
+                                      settings.DocumentationRules,
+                                      declaration.Kind(),
+                                      declaration.Parent.Kind(),
+                                      declaredAccessibility,
+                                      effectiveAccessibility)) {
                                         if (!XmlCommentHelper.HasDocumentation(declaration)) {
                                                 context.ReportDiagnostic(Diagnostic.Create(
-                                                    Descriptor,
-                                                    declaration.Identifier.GetLocation()));
+                                                  Descriptor,
+                                                  declaration.Identifier.GetLocation()));
                                         }
                                 }
                         }

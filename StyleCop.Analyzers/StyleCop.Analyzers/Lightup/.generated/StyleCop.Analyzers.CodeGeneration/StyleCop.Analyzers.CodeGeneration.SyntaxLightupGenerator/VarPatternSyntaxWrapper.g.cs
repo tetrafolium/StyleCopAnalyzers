@@ -1,114 +1,128 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal readonly partial struct VarPatternSyntaxWrapper
-            : ISyntaxWrapper<CSharpSyntaxNode> {
+        internal readonly partial struct VarPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.VarPatternSyntax";
+                  "Microsoft.CodeAnalysis.CSharp.Syntax.VarPatternSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken> VarKeywordAccessor;
                 private static readonly Func<CSharpSyntaxNode, CSharpSyntaxNode>
-                    DesignationAccessor;
+                  DesignationAccessor;
                 private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode>
-                    WithVarKeywordAccessor;
+                  WithVarKeywordAccessor;
                 private static readonly Func<CSharpSyntaxNode, CSharpSyntaxNode, CSharpSyntaxNode>
-                    WithDesignationAccessor;
+                  WithDesignationAccessor;
 
                 private readonly CSharpSyntaxNode node;
 
-                static VarPatternSyntaxWrapper() {
+                static VarPatternSyntaxWrapper()
+                {
                         WrappedType =
-                            SyntaxWrapperHelper.GetWrappedType(typeof(VarPatternSyntaxWrapper));
+                          SyntaxWrapperHelper.GetWrappedType(typeof(VarPatternSyntaxWrapper));
                         VarKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(VarKeyword));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                              WrappedType, nameof(VarKeyword));
                         DesignationAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
-                                    WrappedType, nameof(Designation));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                              WrappedType, nameof(Designation));
                         WithVarKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                                    WrappedType, nameof(VarKeyword));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                              WrappedType, nameof(VarKeyword));
                         WithDesignationAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode,
-                                                                            CSharpSyntaxNode>(
-                                WrappedType, nameof(Designation));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                              WrappedType, nameof(Designation));
                 }
 
                 private VarPatternSyntaxWrapper(CSharpSyntaxNode node) { this.node = node; }
 
                 public CSharpSyntaxNode SyntaxNode => this.node;
 
-                public SyntaxToken VarKeyword {
+                public SyntaxToken VarKeyword
+                {
                         get { return VarKeywordAccessor(this.SyntaxNode); }
                 }
 
-                public VariableDesignationSyntaxWrapper Designation {
-                        get {
+                public VariableDesignationSyntaxWrapper Designation
+                {
+                        get
+                        {
                                 return (VariableDesignationSyntaxWrapper)
-                                    DesignationAccessor(this.SyntaxNode);
+                                  DesignationAccessor(this.SyntaxNode);
                         }
                 }
 
-                public static explicit operator VarPatternSyntaxWrapper(PatternSyntaxWrapper node) {
+                public static explicit operator VarPatternSyntaxWrapper(PatternSyntaxWrapper node)
+                {
                         return (VarPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
                 public static explicit operator VarPatternSyntaxWrapper(
-                    ExpressionOrPatternSyntaxWrapper node) {
+                  ExpressionOrPatternSyntaxWrapper node)
+                {
                         return (VarPatternSyntaxWrapper) node.SyntaxNode;
                 }
 
-                public static explicit operator VarPatternSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator VarPatternSyntaxWrapper(SyntaxNode node)
+                {
                         if (node == null) {
                                 return default;
                         }
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new VarPatternSyntaxWrapper((CSharpSyntaxNode) node);
                 }
 
                 public static implicit operator PatternSyntaxWrapper(
-                    VarPatternSyntaxWrapper wrapper) {
+                  VarPatternSyntaxWrapper wrapper)
+                {
                         return PatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
                 public static implicit operator ExpressionOrPatternSyntaxWrapper(
-                    VarPatternSyntaxWrapper wrapper) {
+                  VarPatternSyntaxWrapper wrapper)
+                {
                         return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
                 }
 
-                public static implicit operator CSharpSyntaxNode(VarPatternSyntaxWrapper wrapper) {
+                public static implicit operator CSharpSyntaxNode(VarPatternSyntaxWrapper wrapper)
+                {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node) {
+                public static bool IsInstance(SyntaxNode node)
+                {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
-                public VarPatternSyntaxWrapper WithVarKeyword(SyntaxToken varKeyword) {
+                public VarPatternSyntaxWrapper WithVarKeyword(SyntaxToken varKeyword)
+                {
                         return new VarPatternSyntaxWrapper(
-                            WithVarKeywordAccessor(this.SyntaxNode, varKeyword));
+                          WithVarKeywordAccessor(this.SyntaxNode, varKeyword));
                 }
 
                 public VarPatternSyntaxWrapper WithDesignation(
-                    VariableDesignationSyntaxWrapper designation) {
+                  VariableDesignationSyntaxWrapper designation)
+                {
                         return new VarPatternSyntaxWrapper(
-                            WithDesignationAccessor(this.SyntaxNode, designation));
+                          WithDesignationAccessor(this.SyntaxNode, designation));
                 }
         }
 }

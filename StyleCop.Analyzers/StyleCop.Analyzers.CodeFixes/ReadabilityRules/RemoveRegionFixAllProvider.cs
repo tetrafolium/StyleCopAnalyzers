@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System.Collections.Immutable;
         using System.Linq;
         using System.Threading.Tasks;
@@ -10,13 +11,15 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
         using StyleCop.Analyzers.Helpers;
 
-        internal sealed class RemoveRegionFixAllProvider : DocumentBasedFixAllProvider {
+        internal sealed class RemoveRegionFixAllProvider : DocumentBasedFixAllProvider
+        {
                 protected override string CodeActionTitle => "Remove region";
 
-                protected override async
-                    Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
-                                                           Document document,
-                                                           ImmutableArray<Diagnostic> diagnostics) {
+                protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                  FixAllContext fixAllContext,
+                  Document document,
+                  ImmutableArray<Diagnostic> diagnostics)
+                {
                         if (diagnostics.IsEmpty) {
                                 return null;
                         }
@@ -24,13 +27,13 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         SyntaxNode root = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
                         var nodesToRemove =
-                            diagnostics
-                                .Select(d => root.FindNode(d.Location.SourceSpan, findInsideTrivia
-                                                           : true))
-                                .Where(node => node != null && !node.IsMissing)
-                                .OfType<RegionDirectiveTriviaSyntax>()
-                                .SelectMany(node => node.GetRelatedDirectives())
-                                .Where(node => !node.IsMissing);
+                          diagnostics
+                            .Select(d => root.FindNode(d.Location.SourceSpan, findInsideTrivia
+                                                       : true))
+                            .Where(node => node != null && !node.IsMissing)
+                            .OfType<RegionDirectiveTriviaSyntax>()
+                            .SelectMany(node => node.GetRelatedDirectives())
+                            .Where(node => !node.IsMissing);
 
                         return root.RemoveNodes(nodesToRemove,
                                                 SyntaxRemoveOptions.AddElasticMarker);

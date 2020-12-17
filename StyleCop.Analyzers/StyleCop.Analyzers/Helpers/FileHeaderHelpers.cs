@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System;
         using System.Linq;
         using System.Xml;
@@ -13,16 +14,18 @@ namespace StyleCop.Analyzers.Helpers {
         /// <summary>
         /// Helper class used for working with file headers.
         /// </summary>
-        internal static class FileHeaderHelpers {
+        internal static class FileHeaderHelpers
+        {
                 /// <summary>
                 /// Parses a comment-only file header.
                 /// </summary>
                 /// <param name="root">The root of the syntax tree.</param>
                 /// <returns>The copyright string, as parsed from the file header.</returns>
-                internal static FileHeader ParseFileHeader(SyntaxNode root) {
+                internal static FileHeader ParseFileHeader(SyntaxNode root)
+                {
                         var firstToken = root.GetFirstToken(includeZeroWidth : true);
                         var firstNonWhitespaceTrivia = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(
-                            firstToken.LeadingTrivia, true);
+                          firstToken.LeadingTrivia, true);
 
                         if (firstNonWhitespaceTrivia == -1) {
                                 return FileHeader.MissingFileHeader;
@@ -35,7 +38,8 @@ namespace StyleCop.Analyzers.Helpers {
                         var fileHeaderEnd = int.MinValue;
 
                         for (var i = firstNonWhitespaceTrivia;
-                             !done && (i < firstToken.LeadingTrivia.Count); i++) {
+                             !done && (i < firstToken.LeadingTrivia.Count);
+                             i++) {
                                 var trivia = firstToken.LeadingTrivia[i];
 
                                 switch (trivia.Kind()) {
@@ -47,8 +51,8 @@ namespace StyleCop.Analyzers.Helpers {
 
                                                 var commentString = trivia.ToFullString();
 
-                                                fileHeaderStart = Math.Min(trivia.FullSpan.Start,
-                                                                           fileHeaderStart);
+                                                fileHeaderStart =
+                                                  Math.Min(trivia.FullSpan.Start, fileHeaderStart);
                                                 fileHeaderEnd = trivia.FullSpan.End;
 
                                                 sb.AppendLine(commentString.Substring(2).Trim());
@@ -60,11 +64,11 @@ namespace StyleCop.Analyzers.Helpers {
                                                         var triviaString = trivia.ToFullString();
 
                                                         var startIndex =
-                                                            triviaString.IndexOf(
-                                                                "/*", StringComparison.Ordinal) +
-                                                            2;
+                                                          triviaString.IndexOf(
+                                                            "/*", StringComparison.Ordinal) +
+                                                          2;
                                                         var endIndex = triviaString.LastIndexOf(
-                                                            "*/", StringComparison.Ordinal);
+                                                          "*/", StringComparison.Ordinal);
                                                         if (endIndex == -1) {
                                                                 // While editing, it is possible to
                                                                 // have a multiline comment trivia
@@ -74,18 +78,18 @@ namespace StyleCop.Analyzers.Helpers {
                                                         }
 
                                                         var commentContext =
-                                                            triviaString
-                                                                .Substring(startIndex,
-                                                                           endIndex - startIndex)
-                                                                .Trim();
+                                                          triviaString
+                                                            .Substring(startIndex,
+                                                                       endIndex - startIndex)
+                                                            .Trim();
 
                                                         var triviaStringParts =
-                                                            commentContext.Replace("\r\n", "\n")
-                                                                .Split('\n');
+                                                          commentContext.Replace("\r\n", "\n")
+                                                            .Split('\n');
 
                                                         foreach (var part in triviaStringParts) {
                                                                 var trimmedPart =
-                                                                    part.TrimStart(' ', '*');
+                                                                  part.TrimStart(' ', '*');
                                                                 sb.AppendLine(trimmedPart);
                                                         }
 
@@ -117,8 +121,8 @@ namespace StyleCop.Analyzers.Helpers {
                                 sb.Remove(sb.Length - eolLength, eolLength);
                         }
 
-                        return new FileHeader(StringBuilderPool.ReturnAndFree(sb), fileHeaderStart,
-                                              fileHeaderEnd);
+                        return new FileHeader(
+                          StringBuilderPool.ReturnAndFree(sb), fileHeaderStart, fileHeaderEnd);
                 }
 
                 /// <summary>
@@ -126,31 +130,35 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </summary>
                 /// <param name="root">The root of the syntax tree.</param>
                 /// <returns>The parsed file header.</returns>
-                internal static XmlFileHeader ParseXmlFileHeader(SyntaxNode root) {
+                internal static XmlFileHeader ParseXmlFileHeader(SyntaxNode root)
+                {
                         var firstToken = root.GetFirstToken(includeZeroWidth : true);
                         string xmlString;
                         int fileHeaderStart;
                         int fileHeaderEnd;
 
                         var firstNonWhitespaceTrivia = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(
-                            firstToken.LeadingTrivia, true);
+                          firstToken.LeadingTrivia, true);
                         if (firstNonWhitespaceTrivia == -1) {
                                 return XmlFileHeader.MissingFileHeader;
                         }
 
                         switch (firstToken
-                                    .LeadingTrivia [firstNonWhitespaceTrivia]
-                                    .Kind()) {
+                                  .LeadingTrivia [firstNonWhitespaceTrivia]
+                                  .Kind()) {
                                 case SyntaxKind.SingleLineCommentTrivia:
-                                        xmlString = ProcessSingleLineCommentsHeader(
-                                            firstToken.LeadingTrivia, firstNonWhitespaceTrivia,
-                                            out fileHeaderStart, out fileHeaderEnd);
+                                        xmlString =
+                                          ProcessSingleLineCommentsHeader(firstToken.LeadingTrivia,
+                                                                          firstNonWhitespaceTrivia,
+                                                                          out fileHeaderStart,
+                                                                          out fileHeaderEnd);
                                         break;
 
                                 case SyntaxKind.MultiLineCommentTrivia:
                                         xmlString = ProcessMultiLineCommentsHeader(
-                                            firstToken.LeadingTrivia[firstNonWhitespaceTrivia],
-                                            out fileHeaderStart, out fileHeaderEnd);
+                                          firstToken.LeadingTrivia[firstNonWhitespaceTrivia],
+                                          out fileHeaderStart,
+                                          out fileHeaderEnd);
                                         break;
 
                                 default:
@@ -169,8 +177,8 @@ namespace StyleCop.Analyzers.Helpers {
                                         return XmlFileHeader.MalformedFileHeader;
                                 }
 
-                                return new XmlFileHeader(parsedFileHeaderXml, fileHeaderStart,
-                                                         fileHeaderEnd);
+                                return new XmlFileHeader(
+                                  parsedFileHeaderXml, fileHeaderStart, fileHeaderEnd);
                         } catch (XmlException) {
                                 return XmlFileHeader.MalformedFileHeader;
                         }
@@ -179,7 +187,8 @@ namespace StyleCop.Analyzers.Helpers {
                 private static string ProcessSingleLineCommentsHeader(SyntaxTriviaList triviaList,
                                                                       int startIndex,
                                                                       out int fileHeaderStart,
-                                                                      out int fileHeaderEnd) {
+                                                                      out int fileHeaderEnd)
+                {
                         var sb = StringBuilderPool.Allocate();
                         var endOfLineCount = 0;
                         var done = false;
@@ -207,13 +216,12 @@ namespace StyleCop.Analyzers.Helpers {
 
                                                 // ignore borders
                                                 if (commentString.StartsWith(
-                                                        "//-",
-                                                        StringComparison.OrdinalIgnoreCase)) {
+                                                      "//-", StringComparison.OrdinalIgnoreCase)) {
                                                         break;
                                                 }
 
-                                                fileHeaderStart = Math.Min(trivia.FullSpan.Start,
-                                                                           fileHeaderStart);
+                                                fileHeaderStart =
+                                                  Math.Min(trivia.FullSpan.Start, fileHeaderStart);
                                                 fileHeaderEnd = trivia.FullSpan.End;
 
                                                 sb.AppendLine(commentString.Substring(2));
@@ -237,7 +245,8 @@ namespace StyleCop.Analyzers.Helpers {
 
                 private static string ProcessMultiLineCommentsHeader(SyntaxTrivia multiLineComment,
                                                                      out int fileHeaderStart,
-                                                                     out int fileHeaderEnd) {
+                                                                     out int fileHeaderEnd)
+                {
                         var sb = StringBuilderPool.Allocate();
 
                         // wrap the XML from the file header in a single root element to make XML
@@ -249,7 +258,7 @@ namespace StyleCop.Analyzers.Helpers {
 
                         var rawCommentString = multiLineComment.ToFullString();
                         var commentText =
-                            rawCommentString.Substring(2, rawCommentString.Length - 4);
+                          rawCommentString.Substring(2, rawCommentString.Length - 4);
                         var commentLines = commentText.Replace("\r\n", "\n").Split('\n');
 
                         /* TODO: Ignore borders ??? */

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System;
         using System.Collections.Concurrent;
         using System.Linq;
@@ -10,7 +11,8 @@ namespace StyleCop.Analyzers.Helpers {
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-        internal static class SyntaxTreeHelpers {
+        internal static class SyntaxTreeHelpers
+        {
                 /// <summary>
                 /// A cache of the result of computing whether a document has using alias
                 /// directives.
@@ -21,22 +23,23 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </remarks>
                 private static Tuple<WeakReference<Compilation>,
                                      ConcurrentDictionary<SyntaxTree, bool>> usingAliasCache =
-                    Tuple.Create(new WeakReference<Compilation>(null),
-                                 default(ConcurrentDictionary<SyntaxTree, bool>));
+                  Tuple.Create(new WeakReference<Compilation>(null),
+                               default(ConcurrentDictionary<SyntaxTree, bool>));
 
                 public static ConcurrentDictionary<SyntaxTree, bool> GetOrCreateUsingAliasCache(
-                    this Compilation compilation) {
+                  this Compilation compilation)
+                {
                         var cache = usingAliasCache;
 
                         Compilation cachedCompilation;
                         if (!cache.Item1.TryGetTarget(out cachedCompilation) ||
                             cachedCompilation != compilation) {
                                 var replacementCache =
-                                    Tuple.Create(new WeakReference<Compilation>(compilation),
-                                                 new ConcurrentDictionary<SyntaxTree, bool>());
+                                  Tuple.Create(new WeakReference<Compilation>(compilation),
+                                               new ConcurrentDictionary<SyntaxTree, bool>());
                                 while (true) {
                                         var prior = Interlocked.CompareExchange(
-                                            ref usingAliasCache, replacementCache, cache);
+                                          ref usingAliasCache, replacementCache, cache);
                                         if (prior == cache) {
                                                 cache = replacementCache;
                                                 break;
@@ -63,18 +66,20 @@ namespace StyleCop.Analyzers.Helpers {
                 /// name="tree"/> only contains whitespace; otherwise, <see langword="false"/>.
                 /// </returns>
                 public static bool IsWhitespaceOnly(this SyntaxTree tree,
-                                                    CancellationToken cancellationToken) {
+                                                    CancellationToken cancellationToken)
+                {
                         var root = tree.GetRoot(cancellationToken);
                         var firstToken = root.GetFirstToken(includeZeroWidth : true);
 
                         return firstToken.IsKind(SyntaxKind.EndOfFileToken) &&
                                TriviaHelper.IndexOfFirstNonWhitespaceTrivia(
-                                   firstToken.LeadingTrivia) == -1;
+                                 firstToken.LeadingTrivia) == -1;
                 }
 
                 internal static bool ContainsUsingAlias(
-                    this SyntaxTree tree,
-                    ConcurrentDictionary<SyntaxTree, bool> cache) {
+                  this SyntaxTree tree,
+                  ConcurrentDictionary<SyntaxTree, bool> cache)
+                {
                         if (tree == null) {
                                 return false;
                         }
@@ -89,10 +94,11 @@ namespace StyleCop.Analyzers.Helpers {
                         return generated;
                 }
 
-                private static bool ContainsUsingAliasNoCache(SyntaxTree tree) {
+                private static bool ContainsUsingAliasNoCache(SyntaxTree tree)
+                {
                         var nodes = tree.GetRoot().DescendantNodes(
-                            node => node.IsKind(SyntaxKind.CompilationUnit) ||
-                                    node.IsKind(SyntaxKind.NamespaceDeclaration));
+                          node => node.IsKind(SyntaxKind.CompilationUnit) ||
+                                  node.IsKind(SyntaxKind.NamespaceDeclaration));
 
                         return nodes.OfType<UsingDirectiveSyntax>().Any(x => x.Alias != null);
                 }

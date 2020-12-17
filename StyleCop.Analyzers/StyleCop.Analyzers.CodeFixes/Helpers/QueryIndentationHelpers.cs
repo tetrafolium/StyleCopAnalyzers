@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -10,7 +11,8 @@ namespace StyleCop.Analyzers.Helpers {
         /// <summary>
         /// Helper class containing methods for determining query indentation.
         /// </summary>
-        internal static class QueryIndentationHelpers {
+        internal static class QueryIndentationHelpers
+        {
                 /// <summary>
                 /// Gets a whitespace trivia containing the proper amount of indentation for new
                 /// lines in the given query.
@@ -20,12 +22,13 @@ namespace StyleCop.Analyzers.Helpers {
                 /// from.</param> <returns>A whitespace trivia containing the proper amount of
                 /// indentation.</returns>
                 internal static SyntaxTrivia GetQueryIndentationTrivia(
-                    IndentationSettings indentationSettings,
-                    QueryExpressionSyntax queryExpression) {
+                  IndentationSettings indentationSettings,
+                  QueryExpressionSyntax queryExpression)
+                {
                         var firstTokenOnTextLine = IndentationHelper.GetFirstTokenOnTextLine(
-                            queryExpression.FromClause.FromKeyword);
+                          queryExpression.FromClause.FromKeyword);
                         var indentationSteps = IndentationHelper.GetIndentationSteps(
-                            indentationSettings, firstTokenOnTextLine);
+                          indentationSettings, firstTokenOnTextLine);
 
                         // add an extra indentation step when the first from clause is not properly
                         // indented yet
@@ -47,8 +50,9 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <returns>A whitespace trivia containing the proper amount of
                 /// indentation.</returns>
                 internal static SyntaxTrivia GetQueryIndentationTrivia(
-                    IndentationSettings indentationSettings,
-                    SyntaxToken token) {
+                  IndentationSettings indentationSettings,
+                  SyntaxToken token)
+                {
                         var currentNode = token.Parent;
                         while (!currentNode.IsKind(SyntaxKind.QueryExpression)) {
                                 currentNode = currentNode.Parent;

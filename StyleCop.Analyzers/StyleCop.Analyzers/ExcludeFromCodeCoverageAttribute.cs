@@ -3,9 +3,11 @@
 
 #if NETSTANDARD1_1
 
-namespace System.Diagnostics.CodeAnalysis {
+namespace System.Diagnostics.CodeAnalysis
+{
         [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
-        internal sealed class ExcludeFromCodeCoverageAttribute : Attribute {}
+        internal sealed class ExcludeFromCodeCoverageAttribute : Attribute
+        {}
 }
 
 #endif

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers.ObjectPools {
+namespace StyleCop.Analyzers.Helpers.ObjectPools
+{
         // This code was copied from the Roslyn code base (and slightly modified)
         using System;
         using System.Diagnostics;
@@ -27,7 +28,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
         ///    If there is no intent for reusing the object, do not use pool - just use "new".
         /// </summary>
         /// <typeparam name="T">The type of the objects in this cache.</typeparam>
-        internal class ObjectPool<T> where T : class {
+        internal class ObjectPool<T> where T : class
+        {
                 private readonly Element[] items;
 
                 // factory is stored for the lifetime of the pool. We will call this only when pool
@@ -40,9 +42,11 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                 private T firstItem;
 
                 internal ObjectPool(Func<T> factory)
-                    : this(factory, Environment.ProcessorCount * 2) {}
+                  : this(factory, Environment.ProcessorCount * 2)
+                {}
 
-                internal ObjectPool(Func<T> factory, int size) {
+                internal ObjectPool(Func<T> factory, int size)
+                {
                         Debug.Assert(size >= 1, "The object pool can't be empty");
                         this.factory = factory;
                         this.items = new Element[size - 1];
@@ -58,7 +62,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                 /// </remarks>
                 /// <returns>A (possibly) cached instance of type <typeparamref
                 /// name="T"/>.</returns>
-                internal T Allocate() {
+                internal T Allocate()
+                {
                         // PERF: Examine the first element. If that fails, AllocateSlow will look at
                         // the remaining elements. Note that the initial read is optimistically not
                         // synchronized. That is intentional. We will interlock only when we have a
@@ -83,7 +88,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                 /// Allocate.</para>
                 /// </remarks>
                 /// <param name="obj">The object to free.</param>
-                internal void Free(T obj) {
+                internal void Free(T obj)
+                {
                         if (this.firstItem == null) {
                                 // Intentionally not using interlocked here.
                                 // In a worst case scenario two objects may be stored into same
@@ -95,12 +101,14 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                         }
                 }
 
-                private T CreateInstance() {
+                private T CreateInstance()
+                {
                         var inst = this.factory();
                         return inst;
                 }
 
-                private T AllocateSlow() {
+                private T AllocateSlow()
+                {
                         var items = this.items;
 
                         for (int i = 0; i < items.Length; i++) {
@@ -110,8 +118,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                                 // objects. Not a big deal.
                                 T inst = items[i].Value;
                                 if (inst != null) {
-                                        if (inst == Interlocked.CompareExchange(ref items[i].Value,
-                                                                                null, inst)) {
+                                        if (inst == Interlocked.CompareExchange(
+                                                      ref items[i].Value, null, inst)) {
                                                 return inst;
                                         }
                                 }
@@ -120,7 +128,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                         return this.CreateInstance();
                 }
 
-                private void FreeSlow(T obj) {
+                private void FreeSlow(T obj)
+                {
                         var items = this.items;
                         for (int i = 0; i < items.Length; i++) {
                                 if (items[i].Value == null) {
@@ -135,7 +144,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools {
                 }
 
                 [DebuggerDisplay("{Value,nq}")]
-                private struct Element {
+                private struct Element
+                {
                         internal T Value;
                 }
         }

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.LayoutRules {
+namespace StyleCop.Analyzers.LayoutRules
+{
         using System.Collections.Immutable;
         using System.Composition;
         using System.Threading;
@@ -16,43 +17,47 @@ namespace StyleCop.Analyzers.LayoutRules {
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1511CodeFixProvider))]
         [Shared]
-        internal class SA1511CodeFixProvider : CodeFixProvider {
+        internal class SA1511CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                    SA1511WhileDoFooterMustNotBePrecededByBlankLine.DiagnosticId);
+                  SA1511WhileDoFooterMustNotBePrecededByBlankLine.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() {
+                public override FixAllProvider GetFixAllProvider()
+                {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        LayoutResources.SA1511CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic, cancellationToken),
-                                        nameof(SA1511CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(
+                                    LayoutResources.SA1511CodeFix,
+                                    cancellationToken => GetTransformedDocumentAsync(
+                                      context.Document, diagnostic, cancellationToken),
+                                    nameof(SA1511CodeFixProvider)),
+                                  diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    Diagnostic diagnostic,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  Diagnostic diagnostic,
+                  CancellationToken cancellationToken)
+                {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
+                                           .ConfigureAwait(false);
 
                         var whileToken = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
 
                         var newSyntaxRoot = syntaxRoot.ReplaceToken(
-                            whileToken, whileToken.WithoutLeadingBlankLines());
+                          whileToken, whileToken.WithoutLeadingBlankLines());
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
         }

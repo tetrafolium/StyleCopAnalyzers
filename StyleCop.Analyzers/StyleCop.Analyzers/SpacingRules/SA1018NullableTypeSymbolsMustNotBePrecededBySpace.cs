@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Linq;
@@ -21,46 +22,48 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// <para>A nullable type symbol should never be preceded by whitespace.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1018NullableTypeSymbolsMustNotBePrecededBySpace : DiagnosticAnalyzer {
+        internal class SA1018NullableTypeSymbolsMustNotBePrecededBySpace : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1018NullableTypeSymbolsMustNotBePrecededBySpace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1018";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1018.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1018.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1018Title),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1018Title),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1018MessageFormat),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1018MessageFormat),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1018Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1018Description),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.SpacingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> NullableTypeAction =
-                    HandleNullableType;
+                  HandleNullableType;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -68,7 +71,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                          SyntaxKind.NullableType);
                 }
 
-                private static void HandleNullableType(SyntaxNodeAnalysisContext context) {
+                private static void HandleNullableType(SyntaxNodeAnalysisContext context)
+                {
                         var nullableType = (NullableTypeSyntax) context.Node;
                         var questionToken = nullableType.QuestionToken;
 
@@ -87,11 +91,11 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                         SyntaxToken precedingToken = questionToken.GetPreviousToken();
                         var triviaList = TriviaHelper.MergeTriviaLists(
-                            precedingToken.TrailingTrivia, questionToken.LeadingTrivia);
+                          precedingToken.TrailingTrivia, questionToken.LeadingTrivia);
                         if (triviaList.Any(t => t.IsKind(SyntaxKind.WhitespaceTrivia) ||
                                                 t.IsKind(SyntaxKind.EndOfLineTrivia))) {
                                 context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, questionToken.GetLocation()));
+                                  Diagnostic.Create(Descriptor, questionToken.GetLocation()));
                         }
                 }
         }

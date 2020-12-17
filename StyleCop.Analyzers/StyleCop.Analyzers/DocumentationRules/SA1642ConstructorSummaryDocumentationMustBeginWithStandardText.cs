@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Globalization;
@@ -92,7 +93,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1642ConstructorSummaryDocumentationMustBeginWithStandardText
-            : StandardTextDiagnosticBase {
+          : StandardTextDiagnosticBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1642ConstructorSummaryDocumentationMustBeginWithStandardText"/>
@@ -100,40 +102,40 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1642";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1642.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1642.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1642Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1642Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1642MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1642MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1642Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1642Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ConstructorDeclarationAction = HandleConstructorDeclaration;
+                  ConstructorDeclarationAction = HandleConstructorDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -141,57 +143,56 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          SyntaxKind.ConstructorDeclaration);
                 }
 
-                private static void HandleConstructorDeclaration(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var constructorDeclarationSyntax =
-                            (ConstructorDeclarationSyntax) context.Node;
+                          (ConstructorDeclarationSyntax) context.Node;
 
                         var settings =
-                            context.Options.GetStyleCopSettings(context.CancellationToken);
+                          context.Options.GetStyleCopSettings(context.CancellationToken);
                         var culture =
-                            new CultureInfo(settings.DocumentationRules.DocumentationCulture);
+                          new CultureInfo(settings.DocumentationRules.DocumentationCulture);
                         var resourceManager = DocumentationResources.ResourceManager;
 
-                        bool isStruct = constructorDeclarationSyntax.Parent?.IsKind(
-                            SyntaxKind.StructDeclaration)
-                            ?? false;
+                        bool isStruct =
+                          constructorDeclarationSyntax.Parent?.IsKind(SyntaxKind.StructDeclaration)
+                          ?? false;
                         var typeKindText = resourceManager.GetString(
-                            isStruct ? nameof(DocumentationResources.TypeTextStruct)
-                            : nameof(DocumentationResources.TypeTextClass), culture);
+                          isStruct ? nameof(DocumentationResources.TypeTextStruct)
+                          : nameof(DocumentationResources.TypeTextClass), culture);
 
                         if (constructorDeclarationSyntax.Modifiers.Any(SyntaxKind.StaticKeyword)) {
                                 HandleDeclaration(
-                                    context,
-                                    string.Format(
-                                        resourceManager.GetString(
-                                            nameof(DocumentationResources
-                                                       .StaticConstructorStandardTextFirstPart),
-                                            culture),
-                                        typeKindText),
-                                    string.Format(
-                                        resourceManager.GetString(
-                                            nameof(DocumentationResources
-                                                       .StaticConstructorStandardTextSecondPart),
-                                            culture),
-                                        typeKindText),
-                                    Descriptor);
+                                  context,
+                                  string.Format(resourceManager.GetString(
+                                                  nameof(DocumentationResources
+                                                           .StaticConstructorStandardTextFirstPart),
+                                                  culture),
+                                                typeKindText),
+                                  string.Format(
+                                    resourceManager.GetString(
+                                      nameof(DocumentationResources
+                                               .StaticConstructorStandardTextSecondPart),
+                                      culture),
+                                    typeKindText),
+                                  Descriptor);
                         } else if (constructorDeclarationSyntax.Modifiers.Any(
-                                       SyntaxKind.PrivateKeyword)) {
+                                     SyntaxKind.PrivateKeyword)) {
                                 var privateConstructorMatch = HandleDeclaration(
-                                    context,
-                                    string.Format(
-                                        resourceManager.GetString(
-                                            nameof(DocumentationResources
-                                                       .PrivateConstructorStandardTextFirstPart),
-                                            culture),
-                                        typeKindText),
-                                    string.Format(
-                                        resourceManager.GetString(
-                                            nameof(DocumentationResources
-                                                       .PrivateConstructorStandardTextSecondPart),
-                                            culture),
-                                        typeKindText),
-                                    null);
+                                  context,
+                                  string.Format(
+                                    resourceManager.GetString(
+                                      nameof(DocumentationResources
+                                               .PrivateConstructorStandardTextFirstPart),
+                                      culture),
+                                    typeKindText),
+                                  string.Format(
+                                    resourceManager.GetString(
+                                      nameof(DocumentationResources
+                                               .PrivateConstructorStandardTextSecondPart),
+                                      culture),
+                                    typeKindText),
+                                  null);
 
                                 if (privateConstructorMatch == MatchResult.FoundMatch) {
                                         return;
@@ -199,38 +200,36 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                                 // also allow the non-private wording for private constructors
                                 HandleDeclaration(
-                                    context,
-                                    string.Format(
-                                        resourceManager.GetString(
-                                            nameof(DocumentationResources
-                                                       .NonPrivateConstructorStandardTextFirstPart),
-                                            culture),
-                                        typeKindText),
-                                    string.Format(
-                                        resourceManager.GetString(
-                                            nameof(
-                                                DocumentationResources
-                                                    .NonPrivateConstructorStandardTextSecondPart),
-                                            culture),
-                                        typeKindText),
-                                    Descriptor);
+                                  context,
+                                  string.Format(
+                                    resourceManager.GetString(
+                                      nameof(DocumentationResources
+                                               .NonPrivateConstructorStandardTextFirstPart),
+                                      culture),
+                                    typeKindText),
+                                  string.Format(
+                                    resourceManager.GetString(
+                                      nameof(DocumentationResources
+                                               .NonPrivateConstructorStandardTextSecondPart),
+                                      culture),
+                                    typeKindText),
+                                  Descriptor);
                         } else {
                                 HandleDeclaration(
-                                    context,
-                                    string.Format(
-                                        resourceManager.GetString(
-                                            nameof(DocumentationResources
-                                                       .NonPrivateConstructorStandardTextFirstPart),
-                                            culture),
-                                        typeKindText),
-                                    string.Format(
-                                        resourceManager.GetString(
-                                            nameof(
-                                                DocumentationResources
-                                                    .NonPrivateConstructorStandardTextSecondPart),
-                                            culture),
-                                        typeKindText),
-                                    Descriptor);
+                                  context,
+                                  string.Format(
+                                    resourceManager.GetString(
+                                      nameof(DocumentationResources
+                                               .NonPrivateConstructorStandardTextFirstPart),
+                                      culture),
+                                    typeKindText),
+                                  string.Format(
+                                    resourceManager.GetString(
+                                      nameof(DocumentationResources
+                                               .NonPrivateConstructorStandardTextSecondPart),
+                                      culture),
+                                    typeKindText),
+                                  Descriptor);
                         }
                 }
         }

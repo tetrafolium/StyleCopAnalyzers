@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Settings.ObjectModel {
+namespace StyleCop.Analyzers.Settings.ObjectModel
+{
         using System.Collections.Immutable;
         using System.Linq;
         using System.Text.RegularExpressions;
         using LightJson;
 
-        internal class NamingSettings {
+        internal class NamingSettings
+        {
                 /// <summary>
                 /// This is the backing field for the <see cref="AllowedHungarianPrefixes"/>
                 /// property.
@@ -23,7 +25,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="NamingSettings"/> class.
                 /// </summary>
-                protected internal NamingSettings() {
+                protected internal NamingSettings()
+                {
                         this.AllowCommonHungarianPrefixes = true;
                         this.allowedHungarianPrefixes = ImmutableArray.CreateBuilder<string>();
                         this.allowedNamespaceComponents = ImmutableArray.CreateBuilder<string>();
@@ -37,20 +40,22 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// </summary>
                 /// <param name="namingSettingsObject">The JSON object containing the
                 /// settings.</param>
-                protected internal NamingSettings(JsonObject namingSettingsObject) : this() {
+                protected internal NamingSettings(JsonObject namingSettingsObject)
+                  : this()
+                {
                         foreach (var kvp in namingSettingsObject) {
                                 switch (kvp.Key) {
                                         case "allowCommonHungarianPrefixes":
                                                 this.AllowCommonHungarianPrefixes =
-                                                    kvp.ToBooleanValue();
+                                                  kvp.ToBooleanValue();
                                                 break;
 
                                         case "allowedHungarianPrefixes":
                                                 kvp.AssertIsArray();
                                                 foreach (var prefixJsonValue in kvp.Value
-                                                             .AsJsonArray) {
+                                                           .AsJsonArray) {
                                                         var prefix =
-                                                            prefixJsonValue.ToStringValue(kvp.Key);
+                                                          prefixJsonValue.ToStringValue(kvp.Key);
 
                                                         if (!Regex.IsMatch(prefix,
                                                                            "^[a-z]{1,2}$")) {
@@ -65,18 +70,18 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                                         case "allowedNamespaceComponents":
                                                 kvp.AssertIsArray();
                                                 this.allowedNamespaceComponents.AddRange(
-                                                    kvp.Value.AsJsonArray.Select(
-                                                        x => x.ToStringValue(kvp.Key)));
+                                                  kvp.Value.AsJsonArray.Select(
+                                                    x => x.ToStringValue(kvp.Key)));
                                                 break;
 
                                         case "includeInferredTupleElementNames":
                                                 this.IncludeInferredTupleElementNames =
-                                                    kvp.ToBooleanValue();
+                                                  kvp.ToBooleanValue();
                                                 break;
 
                                         case "tupleElementNameCasing":
                                                 this.TupleElementNameCasing =
-                                                    kvp.ToEnumValue<TupleElementNameCase>();
+                                                  kvp.ToEnumValue<TupleElementNameCase>();
                                                 break;
 
                                         default:
@@ -88,10 +93,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 public bool AllowCommonHungarianPrefixes { get; }
 
                 public ImmutableArray<string> AllowedHungarianPrefixes =>
-                    this.allowedHungarianPrefixes.ToImmutable();
+                  this.allowedHungarianPrefixes.ToImmutable();
 
                 public ImmutableArray<string> AllowedNamespaceComponents =>
-                    this.allowedNamespaceComponents.ToImmutable();
+                  this.allowedNamespaceComponents.ToImmutable();
 
                 public bool IncludeInferredTupleElementNames { get; }
 

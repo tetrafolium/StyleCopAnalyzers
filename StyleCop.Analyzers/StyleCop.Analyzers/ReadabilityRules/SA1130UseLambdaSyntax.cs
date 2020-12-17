@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -15,7 +16,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// }</c>.
         /// </summary>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1130UseLambdaSyntax : DiagnosticAnalyzer {
+        internal class SA1130UseLambdaSyntax : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see cref="SA1130UseLambdaSyntax"/>
                 /// analyzer.
@@ -23,39 +25,40 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 public const string DiagnosticId = "SA1130";
 
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1130.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1130.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1130Title),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1130Title),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1130MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1130MessageFormat),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1130Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1130Description),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.ReadabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.ReadabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
+                  AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -71,7 +74,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// containing the delegate.</param> <returns>A parameter list for the delegate
                 /// parameters.</returns>
                 internal static ParameterListSyntax GetDelegateParameterList(ISymbol symbol,
-                                                                             int argumentIndex) {
+                                                                             int argumentIndex)
+                {
                         ImmutableArray<IParameterSymbol> parameterList;
                         int realIndex;
                         INamedTypeSymbol delegateType;
@@ -104,22 +108,24 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         var delegateParameters = delegateType.DelegateInvokeMethod.Parameters;
 
                         var syntaxParameters =
-                            GetSyntaxParametersFromSymbolParameters(delegateParameters);
+                          GetSyntaxParametersFromSymbolParameters(delegateParameters);
 
                         return SyntaxFactory.ParameterList(
-                            SyntaxFactory.SeparatedList(syntaxParameters));
+                          SyntaxFactory.SeparatedList(syntaxParameters));
                 }
 
                 private static void HandleAnonymousMethodExpression(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         bool reportDiagnostic = true;
                         var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
 
                         switch (anonymousMethod.Parent.Kind()) {
                                 case SyntaxKind.Argument:
                                         reportDiagnostic = HandleMethodInvocation(
-                                            context.SemanticModel, anonymousMethod,
-                                            (ArgumentSyntax) anonymousMethod.Parent);
+                                          context.SemanticModel,
+                                          anonymousMethod,
+                                          (ArgumentSyntax) anonymousMethod.Parent);
                                         break;
 
                                 case SyntaxKind.EqualsValueClause:
@@ -134,19 +140,20 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                         if (reportDiagnostic) {
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, anonymousMethod.DelegateKeyword.GetLocation()));
+                                  Descriptor, anonymousMethod.DelegateKeyword.GetLocation()));
                         }
                 }
 
                 private static bool HandleMethodInvocation(
-                    SemanticModel semanticModel,
-                    AnonymousMethodExpressionSyntax anonymousMethod,
-                    ArgumentSyntax argumentSyntax) {
+                  SemanticModel semanticModel,
+                  AnonymousMethodExpressionSyntax anonymousMethod,
+                  ArgumentSyntax argumentSyntax)
+                {
                         // invocation -> argument list -> argument -> anonymous method
                         if (argumentSyntax?.Parent is BaseArgumentListSyntax argumentListSyntax) {
                                 var originalInvocableExpression = argumentListSyntax.Parent;
                                 SymbolInfo originalSymbolInfo =
-                                    semanticModel.GetSymbolInfo(originalInvocableExpression);
+                                  semanticModel.GetSymbolInfo(originalInvocableExpression);
                                 Location location = originalInvocableExpression.GetLocation();
 
                                 if (originalSymbolInfo.Symbol == null) {
@@ -156,13 +163,13 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 }
 
                                 var argumentIndex =
-                                    argumentListSyntax.Arguments.IndexOf(argumentSyntax);
+                                  argumentListSyntax.Arguments.IndexOf(argumentSyntax);
 
                                 // Determine the parameter list from the method that is invoked, as
                                 // delegates without parameters are allowed, but they cannot be
                                 // replaced by a lambda without parameters.
                                 var parameterList = GetDelegateParameterList(
-                                    originalSymbolInfo.Symbol, argumentIndex);
+                                  originalSymbolInfo.Symbol, argumentIndex);
 
                                 if (parameterList == null) {
                                         // This might happen if the call was using params witha type
@@ -174,15 +181,17 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 // required to call the right overload When there is an other
                                 // overload that takes an expression.
                                 var lambdaExpression = SyntaxFactory.ParenthesizedLambdaExpression(
-                                    anonymousMethod.AsyncKeyword, parameterList,
-                                    SyntaxFactory.Token(SyntaxKind.EqualsGreaterThanToken),
-                                    anonymousMethod.Body);
+                                  anonymousMethod.AsyncKeyword,
+                                  parameterList,
+                                  SyntaxFactory.Token(SyntaxKind.EqualsGreaterThanToken),
+                                  anonymousMethod.Body);
 
                                 var invocationExpression = originalInvocableExpression.ReplaceNode(
-                                    anonymousMethod, lambdaExpression);
+                                  anonymousMethod, lambdaExpression);
                                 SymbolInfo newSymbolInfo = semanticModel.GetSpeculativeSymbolInfo(
-                                    location.SourceSpan.Start, invocationExpression,
-                                    SpeculativeBindingOption.BindAsExpression);
+                                  location.SourceSpan.Start,
+                                  invocationExpression,
+                                  SpeculativeBindingOption.BindAsExpression);
 
                                 if (!originalSymbolInfo.Symbol.Equals(newSymbolInfo.Symbol)) {
                                         return false;
@@ -194,13 +203,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private static ImmutableArray<ParameterSyntax>
                 GetSyntaxParametersFromSymbolParameters(
-                    ImmutableArray<IParameterSymbol> symbolParameters) {
+                  ImmutableArray<IParameterSymbol> symbolParameters)
+                {
                         var result =
-                            ImmutableArray.CreateBuilder<ParameterSyntax>(symbolParameters.Length);
+                          ImmutableArray.CreateBuilder<ParameterSyntax>(symbolParameters.Length);
 
                         foreach (var symbolParameter in symbolParameters) {
                                 var syntaxParameter =
-                                    GetParameterSyntaxFromParameterSymbol(symbolParameter);
+                                  GetParameterSyntaxFromParameterSymbol(symbolParameter);
                                 result.Add(syntaxParameter);
                         }
 
@@ -208,10 +218,11 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static ParameterSyntax GetParameterSyntaxFromParameterSymbol(
-                    IParameterSymbol symbolParameter) {
+                  IParameterSymbol symbolParameter)
+                {
                         return SyntaxFactory
-                            .Parameter(SyntaxFactory.Identifier(symbolParameter.Name))
-                            .WithType(SyntaxFactory.ParseTypeName(symbolParameter.Type.Name));
+                          .Parameter(SyntaxFactory.Identifier(symbolParameter.Name))
+                          .WithType(SyntaxFactory.ParseTypeName(symbolParameter.Type.Name));
                 }
         }
 }

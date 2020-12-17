@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis.CSharp;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
         using StyleCop.Analyzers.Lightup;
 
-        internal static class SyntaxKinds {
+        internal static class SyntaxKinds
+        {
                 /// <summary>
                 /// Gets a collection of <see cref="SyntaxKind"/> values which appear in the syntax
                 /// tree as a <see cref="BaseTypeDeclarationSyntax"/>.

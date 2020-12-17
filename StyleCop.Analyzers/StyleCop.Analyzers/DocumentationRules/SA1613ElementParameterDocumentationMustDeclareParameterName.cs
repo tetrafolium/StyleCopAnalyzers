@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System.Collections.Generic;
         using System.Collections.Immutable;
         using System.Linq;
@@ -26,7 +27,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1613ElementParameterDocumentationMustDeclareParameterName
-            : ElementDocumentationBase {
+          : ElementDocumentationBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1613ElementParameterDocumentationMustDeclareParameterName"/>
@@ -34,30 +36,29 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1613";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1613.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1613.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1613Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1613Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1613MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1613MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1613Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1613Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <summary>
                 /// Initializes a new instance of the <see
@@ -67,9 +68,10 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// warnings from this diagnostic. See
                 /// DotNetAnalyzers/StyleCopAnalyzers#631.</para></remarks>
                 public SA1613ElementParameterDocumentationMustDeclareParameterName()
-                    : base(matchElementName
-                           : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
-                           : false) {}
+                  : base(matchElementName
+                         : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
+                         : false)
+                {}
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -80,13 +82,14 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          StyleCopSettings settings,
                                                          bool needsComment,
                                                          IEnumerable<XmlNodeSyntax> syntaxList,
-                                                         params Location[] diagnosticLocations) {
+                                                         params Location[] diagnosticLocations)
+                {
                         foreach (var syntax in syntaxList) {
                                 var nameParameter =
-                                    XmlCommentHelper
-                                        .GetFirstAttributeOrDefault<XmlNameAttributeSyntax>(syntax);
+                                  XmlCommentHelper
+                                    .GetFirstAttributeOrDefault<XmlNameAttributeSyntax>(syntax);
                                 var parameterValue =
-                                    nameParameter?.Identifier?.Identifier.ValueText;
+                                  nameParameter?.Identifier?.Identifier.ValueText;
 
                                 if (string.IsNullOrWhiteSpace(parameterValue)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, nameParameter?.GetLocation() ?? syntax.GetLocation()));
@@ -96,21 +99,22 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 /// <inheritdoc/>
                 protected override void HandleCompleteDocumentation(
-                    SyntaxNodeAnalysisContext context,
-                    bool needsComment,
-                    XElement completeDocumentation,
-                    params Location[] diagnosticLocations) {
+                  SyntaxNodeAnalysisContext context,
+                  bool needsComment,
+                  XElement completeDocumentation,
+                  params Location[] diagnosticLocations)
+                {
                         var xmlParamTags = completeDocumentation.Nodes().OfType<XElement>().Where(
-                            e => e.Name == XmlCommentHelper.ParamXmlTag);
+                          e => e.Name == XmlCommentHelper.ParamXmlTag);
 
                         foreach (var paramTag in xmlParamTags) {
                                 var name =
-                                    paramTag.Attributes().FirstOrDefault(a => a.Name == "name")
-                                    ?.Value;
+                                  paramTag.Attributes().FirstOrDefault(a => a.Name == "name")
+                                  ?.Value;
 
                                 if (string.IsNullOrWhiteSpace(name)) {
                                         context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, diagnosticLocations.First()));
+                                          Descriptor, diagnosticLocations.First()));
                                 }
                         }
                 }

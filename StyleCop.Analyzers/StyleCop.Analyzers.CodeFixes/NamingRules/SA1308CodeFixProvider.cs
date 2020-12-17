@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.NamingRules {
+namespace StyleCop.Analyzers.NamingRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Composition;
@@ -20,21 +21,24 @@ namespace StyleCop.Analyzers.NamingRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1308CodeFixProvider))]
         [Shared]
-        internal class SA1308CodeFixProvider : CodeFixProvider {
+        internal class SA1308CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1308VariableNamesMustNotBePrefixed.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() {
+                public override FixAllProvider GetFixAllProvider()
+                {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override async Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         var document = context.Document;
                         var root = await document.GetSyntaxRootAsync(context.CancellationToken)
-                                       .ConfigureAwait(false);
+                                     .ConfigureAwait(false);
                         foreach (var diagnostic in context.Diagnostics) {
                                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
 
@@ -45,11 +49,23 @@ namespace StyleCop.Analyzers.NamingRules {
                                 // prefixes such that after the fix is applied there are no more
                                 // violations of this rule.
                                 for (int i = 0; i < token.ValueText.Length; i += 2) {
-                                        if (string.Compare("m_", 0, token.ValueText, i, 2,
+                                        if (string.Compare("m_",
+                                                           0,
+                                                           token.ValueText,
+                                                           i,
+                                                           2,
                                                            StringComparison.Ordinal) == 0 ||
-                                            string.Compare("s_", 0, token.ValueText, i, 2,
+                                            string.Compare("s_",
+                                                           0,
+                                                           token.ValueText,
+                                                           i,
+                                                           2,
                                                            StringComparison.Ordinal) == 0 ||
-                                            string.Compare("t_", 0, token.ValueText, i, 2,
+                                            string.Compare("t_",
+                                                           0,
+                                                           token.ValueText,
+                                                           i,
+                                                           2,
                                                            StringComparison.Ordinal) == 0) {
                                                 numberOfCharsToRemove += 2;
                                                 continue;
@@ -67,12 +83,12 @@ namespace StyleCop.Analyzers.NamingRules {
 
                                 var newName = token.ValueText.Substring(numberOfCharsToRemove);
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        string.Format(NamingResources.RenameToCodeFix, newName),
-                                        cancellationToken => RenameHelper.RenameSymbolAsync(
-                                            document, root, token, newName, cancellationToken),
-                                        nameof(SA1308CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(
+                                    string.Format(NamingResources.RenameToCodeFix, newName),
+                                    cancellationToken => RenameHelper.RenameSymbolAsync(
+                                      document, root, token, newName, cancellationToken),
+                                    nameof(SA1308CodeFixProvider)),
+                                  diagnostic);
                         }
                 }
         }

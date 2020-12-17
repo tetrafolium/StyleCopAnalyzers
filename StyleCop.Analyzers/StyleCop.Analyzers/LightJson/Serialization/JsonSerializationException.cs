@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace LightJson.Serialization {
+namespace LightJson.Serialization
+{
         using System;
 
         /// <summary>
@@ -10,12 +11,15 @@ namespace LightJson.Serialization {
         /// <remarks>
         /// <para>This exception is only intended to be thrown by LightJson.</para>
         /// </remarks>
-        internal sealed class JsonSerializationException : Exception {
+        internal sealed class JsonSerializationException : Exception
+        {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonSerializationException"/>
                 /// class.
                 /// </summary>
-                public JsonSerializationException() : base(GetDefaultMessage(ErrorType.Unknown)) {}
+                public JsonSerializationException()
+                  : base(GetDefaultMessage(ErrorType.Unknown))
+                {}
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonSerializationException"/> class
@@ -23,7 +27,8 @@ namespace LightJson.Serialization {
                 /// </summary>
                 /// <param name="type">The error type that describes the cause of the error.</param>
                 public JsonSerializationException(ErrorType type)
-                    : this(GetDefaultMessage(type), type) {}
+                  : this(GetDefaultMessage(type), type)
+                {}
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonSerializationException"/> class
@@ -31,7 +36,9 @@ namespace LightJson.Serialization {
                 /// </summary>
                 /// <param name="message">The message that describes the error.</param>
                 /// <param name="type">The error type that describes the cause of the error.</param>
-                public JsonSerializationException(string message, ErrorType type) : base(message) {
+                public JsonSerializationException(string message, ErrorType type)
+                  : base(message)
+                {
                         this.Type = type;
                 }
 
@@ -71,7 +78,8 @@ namespace LightJson.Serialization {
                 /// </value>
                 public ErrorType Type { get; }
 
-                private static string GetDefaultMessage(ErrorType type) {
+                private static string GetDefaultMessage(ErrorType type)
+                {
                         switch (type) {
                                 case ErrorType.InvalidNumber:
                                         return "The value been serialized contains an invalid number value (NAN, infinity).";

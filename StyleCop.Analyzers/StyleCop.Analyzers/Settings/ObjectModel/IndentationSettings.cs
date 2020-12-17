@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Settings.ObjectModel {
+namespace StyleCop.Analyzers.Settings.ObjectModel
+{
         using LightJson;
 
-        internal class IndentationSettings {
+        internal class IndentationSettings
+        {
                 /// <summary>
                 /// This is the backing field for the <see cref="IndentationSize"/> property.
                 /// </summary>
@@ -23,7 +25,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="IndentationSettings"/> class.
                 /// </summary>
-                protected internal IndentationSettings() {
+                protected internal IndentationSettings()
+                {
                         this.indentationSize = 4;
                         this.tabSize = 4;
                         this.useTabs = false;
@@ -35,7 +38,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// <param name="indentationSettingsObject">The JSON object containing the
                 /// settings.</param>
                 protected internal IndentationSettings(JsonObject indentationSettingsObject)
-                    : this() {
+                  : this()
+                {
                         foreach (var kvp in indentationSettingsObject) {
                                 switch (kvp.Key) {
                                         case "indentationSize":

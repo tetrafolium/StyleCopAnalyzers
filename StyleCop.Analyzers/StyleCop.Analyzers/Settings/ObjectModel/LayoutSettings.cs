@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Settings.ObjectModel {
+namespace StyleCop.Analyzers.Settings.ObjectModel
+{
         using LightJson;
 
-        internal class LayoutSettings {
+        internal class LayoutSettings
+        {
                 /// <summary>
                 /// This is the backing field for the <see cref="NewlineAtEndOfFile"/> property.
                 /// </summary>
@@ -18,7 +20,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="LayoutSettings"/> class.
                 /// </summary>
-                protected internal LayoutSettings() {
+                protected internal LayoutSettings()
+                {
                         this.newlineAtEndOfFile = OptionSetting.Allow;
                         this.allowConsecutiveUsings = true;
                 }
@@ -28,12 +31,14 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// </summary>
                 /// <param name="layoutSettingsObject">The JSON object containing the
                 /// settings.</param>
-                protected internal LayoutSettings(JsonObject layoutSettingsObject) : this() {
+                protected internal LayoutSettings(JsonObject layoutSettingsObject)
+                  : this()
+                {
                         foreach (var kvp in layoutSettingsObject) {
                                 switch (kvp.Key) {
                                         case "newlineAtEndOfFile":
                                                 this.newlineAtEndOfFile =
-                                                    kvp.ToEnumValue<OptionSetting>();
+                                                  kvp.ToEnumValue<OptionSetting>();
                                                 break;
 
                                         case "allowConsecutiveUsings":

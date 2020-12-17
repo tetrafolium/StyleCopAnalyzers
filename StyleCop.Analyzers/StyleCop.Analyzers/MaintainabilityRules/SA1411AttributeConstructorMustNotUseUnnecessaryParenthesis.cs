@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -28,7 +29,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis
-            : DiagnosticAnalyzer {
+          : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis"/>
@@ -36,42 +38,42 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1411";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1411.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1411.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1411Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1411Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1411MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1411MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1411Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1411Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink,
-                                             WellKnownDiagnosticTags.Unnecessary);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink,
+                                           WellKnownDiagnosticTags.Unnecessary);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    AttributeArgumentListAction = HandleAttributeArgumentList;
+                  AttributeArgumentListAction = HandleAttributeArgumentList;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -79,16 +81,17 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                                          SyntaxKind.AttributeArgumentList);
                 }
 
-                private static void HandleAttributeArgumentList(SyntaxNodeAnalysisContext context) {
+                private static void HandleAttributeArgumentList(SyntaxNodeAnalysisContext context)
+                {
                         AttributeArgumentListSyntax syntax =
-                            (AttributeArgumentListSyntax) context.Node;
+                          (AttributeArgumentListSyntax) context.Node;
                         if (syntax.Arguments.Count != 0) {
                                 return;
                         }
 
                         // Attribute constructor should not use unnecessary parenthesis
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, syntax.GetLocation()));
+                          Diagnostic.Create(Descriptor, syntax.GetLocation()));
                 }
         }
 }

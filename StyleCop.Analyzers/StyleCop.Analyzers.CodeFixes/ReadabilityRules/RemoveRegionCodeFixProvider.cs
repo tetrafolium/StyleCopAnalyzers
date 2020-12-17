@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System.Collections.Immutable;
         using System.Composition;
         using System.Threading.Tasks;
@@ -21,48 +22,52 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRegionCodeFixProvider))]
         [Shared]
-        internal class RemoveRegionCodeFixProvider : CodeFixProvider {
+        internal class RemoveRegionCodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1123DoNotPlaceRegionsWithinElements.DiagnosticId,
                                         SA1124DoNotUseRegions.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() {
+                public override FixAllProvider GetFixAllProvider()
+                {
                         // The batch fixer does not do a very good job if regions are stacked in
                         // each other
                         return new RemoveRegionFixAllProvider();
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        ReadabilityResources.RemoveRegionCodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic),
-                                        nameof(RemoveRegionCodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(
+                                    ReadabilityResources.RemoveRegionCodeFix,
+                                    cancellationToken =>
+                                      GetTransformedDocumentAsync(context.Document, diagnostic),
+                                    nameof(RemoveRegionCodeFixProvider)),
+                                  diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    Diagnostic diagnostic) {
+                  Document document,
+                  Diagnostic diagnostic)
+                {
                         var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
                         var node =
-                            syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
-                                                 : true, getInnermostNodeForTie
-                                                 : true);
+                          syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                               : true, getInnermostNodeForTie
+                                               : true);
                         if (node != null && node.IsKind(SyntaxKind.RegionDirectiveTrivia)) {
                                 var regionDirective = node as RegionDirectiveTriviaSyntax;
 
                                 var newSyntaxRoot =
-                                    syntaxRoot.RemoveNodes(regionDirective.GetRelatedDirectives(),
-                                                           SyntaxRemoveOptions.AddElasticMarker);
+                                  syntaxRoot.RemoveNodes(regionDirective.GetRelatedDirectives(),
+                                                         SyntaxRemoveOptions.AddElasticMarker);
 
                                 return document.WithSyntaxRoot(newSyntaxRoot);
                         }

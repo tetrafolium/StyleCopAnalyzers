@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -15,54 +16,56 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// variable appeared on the right-hand-side of the expression.
         /// </summary>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1131UseReadableConditions : DiagnosticAnalyzer {
+        internal class SA1131UseReadableConditions : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see cref="SA1131UseReadableConditions"/>
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1131";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1131.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1131.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1131Title),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1131Title),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1131MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1131MessageFormat),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1131Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1131Description),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.ReadabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.ReadabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> HandledBinaryExpressionKinds =
-                    ImmutableArray.Create(SyntaxKind.EqualsExpression,
-                                          SyntaxKind.NotEqualsExpression,
-                                          SyntaxKind.GreaterThanExpression,
-                                          SyntaxKind.LessThanExpression,
-                                          SyntaxKind.GreaterThanOrEqualExpression,
-                                          SyntaxKind.LessThanOrEqualExpression);
+                  ImmutableArray.Create(SyntaxKind.EqualsExpression,
+                                        SyntaxKind.NotEqualsExpression,
+                                        SyntaxKind.GreaterThanExpression,
+                                        SyntaxKind.LessThanExpression,
+                                        SyntaxKind.GreaterThanOrEqualExpression,
+                                        SyntaxKind.LessThanOrEqualExpression);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> BinaryExpressionAction =
-                    HandleBinaryExpression;
+                  HandleBinaryExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -70,7 +73,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          HandledBinaryExpressionKinds);
                 }
 
-                private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context)
+                {
                         var binaryExpression = (BinaryExpressionSyntax) context.Node;
 
                         var semanticModel = context.SemanticModel;
@@ -78,12 +82,13 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         if (IsLiteral(binaryExpression.Left, semanticModel) &&
                             !IsLiteral(binaryExpression.Right, semanticModel)) {
                                 context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, binaryExpression.GetLocation()));
+                                  Diagnostic.Create(Descriptor, binaryExpression.GetLocation()));
                         }
                 }
 
                 private static bool IsLiteral(ExpressionSyntax expression,
-                                              SemanticModel semanticModel) {
+                                              SemanticModel semanticModel)
+                {
                         // Default expressions are most of the time constants, but not for
                         // default(MyStruct).
                         if (expression.IsKind(SyntaxKind.DefaultExpression) ||
@@ -97,7 +102,7 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
 
                         if (semanticModel.GetSymbolInfo(expression)
-                                .Symbol is IFieldSymbol fieldSymbol) {
+                              .Symbol is IFieldSymbol fieldSymbol) {
                                 return fieldSymbol.IsStatic && fieldSymbol.IsReadOnly;
                         }
 

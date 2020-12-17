@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using Microsoft.CodeAnalysis;
 
         /// <summary>
@@ -10,7 +11,8 @@ namespace StyleCop.Analyzers.Lightup {
         /// </summary>
         /// <typeparam name="T">The base syntax kind which is exposed in the referenced
         /// API.</typeparam>
-        internal interface ISyntaxWrapper<T> where T : SyntaxNode {
+        internal interface ISyntaxWrapper<T> where T : SyntaxNode
+        {
                 /// <summary>
                 /// Gets the wrapped syntax node.
                 /// </summary>

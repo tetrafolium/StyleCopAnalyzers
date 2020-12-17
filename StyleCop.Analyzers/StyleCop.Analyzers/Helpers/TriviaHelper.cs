@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System;
         using System.Collections;
         using System.Collections.Generic;
@@ -12,7 +13,8 @@ namespace StyleCop.Analyzers.Helpers {
         /// <summary>
         /// Provides helper methods to work with trivia (lists).
         /// </summary>
-        internal static class TriviaHelper {
+        internal static class TriviaHelper
+        {
                 /// <summary>
                 /// Returns the index of the first non-whitespace trivia in the given trivia list.
                 /// </summary>
@@ -23,8 +25,9 @@ namespace StyleCop.Analyzers.Helpers {
                 /// list.</typeparam> <returns>The index where the non-whitespace starts, or -1 if
                 /// there is no non-whitespace trivia.</returns>
                 internal static int IndexOfFirstNonWhitespaceTrivia<T>(
-                    T triviaList,
-                    bool endOfLineIsWhitespace = true) where T : IReadOnlyList<SyntaxTrivia> {
+                  T triviaList,
+                  bool endOfLineIsWhitespace = true) where T : IReadOnlyList<SyntaxTrivia>
+                {
                         for (var index = 0; index < triviaList.Count; index++) {
                                 var currentTrivia = triviaList[index];
                                 switch (currentTrivia.Kind()) {
@@ -56,18 +59,19 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <returns>The index of the first trivia that is not part of a blank line, or -1
                 /// if there is no such trivia.</returns>
                 internal static int IndexOfFirstNonBlankLineTrivia<T>(T triviaList) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                  : IReadOnlyList<SyntaxTrivia>
+                {
                         var firstNonWhitespaceTriviaIndex =
-                            IndexOfFirstNonWhitespaceTrivia(triviaList);
+                          IndexOfFirstNonWhitespaceTrivia(triviaList);
                         var startIndex = (firstNonWhitespaceTriviaIndex == -1)
-                                             ? triviaList.Count
-                                             : firstNonWhitespaceTriviaIndex;
+                                           ? triviaList.Count
+                                           : firstNonWhitespaceTriviaIndex;
 
                         for (var index = startIndex - 1; index >= 0; index--) {
                                 // Find an end-of-line trivia, to indicate that there actually are
                                 // blank lines and not just excess whitespace.
                                 if (triviaList [index]
-                                        .IsKind(SyntaxKind.EndOfLineTrivia)) {
+                                      .IsKind(SyntaxKind.EndOfLineTrivia)) {
                                         return index == (triviaList.Count - 1) ? -1 : index + 1;
                                 }
                         }
@@ -85,8 +89,9 @@ namespace StyleCop.Analyzers.Helpers {
                 /// langword="false"/>.</param> <returns>The index where the trailing whitespace
                 /// starts, or -1 if there is no trailing whitespace.</returns>
                 internal static int IndexOfTrailingWhitespace<T>(
-                    T triviaList,
-                    bool endOfLineIsWhitespace = true) where T : IReadOnlyList<SyntaxTrivia> {
+                  T triviaList,
+                  bool endOfLineIsWhitespace = true) where T : IReadOnlyList<SyntaxTrivia>
+                {
                         var done = false;
                         int whiteSpaceStartIndex = -1;
                         var previousTriviaWasEndOfLine = false;
@@ -142,7 +147,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </exception>
                 internal static SyntaxTriviaList RemoveRange(this SyntaxTriviaList list,
                                                              int index,
-                                                             int count) {
+                                                             int count)
+                {
                         if (index < 0) {
                                 throw new ArgumentOutOfRangeException(nameof(index));
                         }
@@ -153,7 +159,7 @@ namespace StyleCop.Analyzers.Helpers {
 
                         if (index > list.Count - count) {
                                 throw new ArgumentException(
-                                    "The specified range of elements does not exist in the list.");
+                                  "The specified range of elements does not exist in the list.");
                         }
 
                         SyntaxTrivia[] trivia = new SyntaxTrivia[list.Count - count];
@@ -169,7 +175,8 @@ namespace StyleCop.Analyzers.Helpers {
                 }
 
                 internal static SyntaxTriviaList WithoutDirectiveTrivia(
-                    this SyntaxTriviaList triviaList) {
+                  this SyntaxTriviaList triviaList)
+                {
                         var resultTriviaList = new List<SyntaxTrivia>(triviaList.Count);
                         foreach (var trivia in triviaList) {
                                 if (!trivia.IsDirective) {
@@ -190,10 +197,11 @@ namespace StyleCop.Analyzers.Helpers {
                 /// name="kind"/>.</para> <para>-or-</para> <para>-1, if the list did not contain
                 /// any matching trivia.</para>
                 /// </returns>
-                internal static int LastIndexOf(this SyntaxTriviaList list, SyntaxKind kind) {
+                internal static int LastIndexOf(this SyntaxTriviaList list, SyntaxKind kind)
+                {
                         for (int i = list.Count - 1; i >= 0; i--) {
                                 if (list [i]
-                                        .IsKind(kind)) {
+                                      .IsKind(kind)) {
                                         return i;
                                 }
                         }
@@ -210,14 +218,15 @@ namespace StyleCop.Analyzers.Helpers {
                 /// to treat <see cref="SyntaxKind.EndOfLineTrivia"/> as whitespace; otherwise, <see
                 /// langword="false"/>.</param> <returns>The modified triviaList.</returns>
                 internal static SyntaxTriviaList WithoutTrailingWhitespace(
-                    this SyntaxTriviaList triviaList,
-                    bool endOfLineIsWhitespace = true) {
+                  this SyntaxTriviaList triviaList,
+                  bool endOfLineIsWhitespace = true)
+                {
                         var trailingWhitespaceIndex =
-                            IndexOfTrailingWhitespace(triviaList, endOfLineIsWhitespace);
+                          IndexOfTrailingWhitespace(triviaList, endOfLineIsWhitespace);
                         return (trailingWhitespaceIndex >= 0)
-                                   ? SyntaxFactory.TriviaList(
-                                         triviaList.Take(trailingWhitespaceIndex))
-                                   : triviaList;
+                                 ? SyntaxFactory.TriviaList(
+                                     triviaList.Take(trailingWhitespaceIndex))
+                                 : triviaList;
                 }
 
                 /// <summary>
@@ -229,13 +238,14 @@ namespace StyleCop.Analyzers.Helpers {
                 /// to treat <see cref="SyntaxKind.EndOfLineTrivia"/> as whitespace; otherwise, <see
                 /// langword="false"/>.</param> <returns>The modified triviaList.</returns>
                 internal static SyntaxTriviaList WithoutLeadingWhitespace(
-                    this SyntaxTriviaList triviaList,
-                    bool endOfLineIsWhitespace = true) {
+                  this SyntaxTriviaList triviaList,
+                  bool endOfLineIsWhitespace = true)
+                {
                         var nonWhitespaceIndex =
-                            IndexOfFirstNonWhitespaceTrivia(triviaList, endOfLineIsWhitespace);
+                          IndexOfFirstNonWhitespaceTrivia(triviaList, endOfLineIsWhitespace);
                         return (nonWhitespaceIndex >= 0)
-                                   ? SyntaxFactory.TriviaList(triviaList.Skip(nonWhitespaceIndex))
-                                   : SyntaxFactory.TriviaList();
+                                 ? SyntaxFactory.TriviaList(triviaList.Skip(nonWhitespaceIndex))
+                                 : SyntaxFactory.TriviaList();
                 }
 
                 /// <summary>
@@ -251,7 +261,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="triviaIndex">The index of the trivia in the created trivia
                 /// list.</param> <returns>The created trivia list.</returns>
                 internal static DualTriviaListHelper GetContainingTriviaList(SyntaxTrivia trivia,
-                                                                             out int triviaIndex) {
+                                                                             out int triviaIndex)
+                {
                         var token = trivia.Token;
                         SyntaxTriviaList part1;
                         SyntaxTriviaList part2;
@@ -281,7 +292,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="list2">The second part of the new list.</param>
                 /// <returns>The merged trivia list.</returns>
                 internal static DualTriviaListHelper MergeTriviaLists(SyntaxTriviaList list1,
-                                                                      SyntaxTriviaList list2) {
+                                                                      SyntaxTriviaList list2)
+                {
                         return new DualTriviaListHelper(list1, list2);
                 }
 
@@ -293,7 +305,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// lines.</param> <returns> <see langword="true"/> if the token is immediately
                 /// preceded by blank lines; otherwise, <see langword="false"/>.
                 /// </returns>
-                internal static bool IsPrecededByBlankLines(this SyntaxToken token) {
+                internal static bool IsPrecededByBlankLines(this SyntaxToken token)
+                {
                         if (!token.HasLeadingTrivia) {
                                 return false;
                         }
@@ -303,27 +316,27 @@ namespace StyleCop.Analyzers.Helpers {
                         // skip any leading whitespace
                         var index = triviaList.Count - 1;
                         while ((index >= 0) && triviaList [index]
-                                                   .IsKind(SyntaxKind.WhitespaceTrivia)) {
+                                                 .IsKind(SyntaxKind.WhitespaceTrivia)) {
                                 index--;
                         }
 
                         if ((index < 0) || !triviaList [index]
-                                                .HasBuiltinEndLine()) {
+                                              .HasBuiltinEndLine()) {
                                 return false;
                         }
 
                         var blankLineCount = -1;
                         while (index >= 0) {
                                 if (triviaList [index]
-                                        .HasBuiltinEndLine() &&
+                                      .HasBuiltinEndLine() &&
                                     !triviaList [index]
-                                         .IsKind(SyntaxKind.EndOfLineTrivia)) {
+                                       .IsKind(SyntaxKind.EndOfLineTrivia)) {
                                         blankLineCount++;
                                         return blankLineCount > 0;
                                 }
 
                                 switch (triviaList [index]
-                                            .Kind()) {
+                                          .Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 // ignore;
                                                 break;
@@ -347,14 +360,15 @@ namespace StyleCop.Analyzers.Helpers {
                 /// </summary>
                 /// <param name="token">The token to strip.</param>
                 /// <returns>A new token without leading blank lines.</returns>
-                internal static SyntaxToken WithoutLeadingBlankLines(this SyntaxToken token) {
+                internal static SyntaxToken WithoutLeadingBlankLines(this SyntaxToken token)
+                {
                         var triviaList = token.LeadingTrivia;
                         var leadingWhitespaceStart = triviaList.Count - 1;
 
                         // skip leading whitespace in front of the while keyword
                         while ((leadingWhitespaceStart > 0) &&
                                triviaList [leadingWhitespaceStart - 1]
-                                   .IsKind(SyntaxKind.WhitespaceTrivia)) {
+                                 .IsKind(SyntaxKind.WhitespaceTrivia)) {
                                 leadingWhitespaceStart--;
                         }
 
@@ -362,7 +376,7 @@ namespace StyleCop.Analyzers.Helpers {
                         var done = false;
                         while (!done && (blankLinesStart >= 0)) {
                                 switch (triviaList [blankLinesStart]
-                                            .Kind()) {
+                                          .Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
                                         case SyntaxKind.EndOfLineTrivia:
                                                 blankLinesStart--;
@@ -381,7 +395,7 @@ namespace StyleCop.Analyzers.Helpers {
                                                 // include the first end of line (as it is part of
                                                 // the non blank line trivia)
                                                 while (!triviaList [blankLinesStart]
-                                                            .HasBuiltinEndLine()) {
+                                                          .HasBuiltinEndLine()) {
                                                         blankLinesStart++;
                                                 }
 
@@ -392,12 +406,13 @@ namespace StyleCop.Analyzers.Helpers {
                         }
 
                         var newLeadingTrivia = SyntaxFactory.TriviaList(
-                            triviaList.Take(blankLinesStart)
-                                .Concat(triviaList.Skip(leadingWhitespaceStart)));
+                          triviaList.Take(blankLinesStart)
+                            .Concat(triviaList.Skip(leadingWhitespaceStart)));
                         return token.WithLeadingTrivia(newLeadingTrivia);
                 }
 
-                internal static bool HasBuiltinEndLine(this SyntaxTrivia trivia) {
+                internal static bool HasBuiltinEndLine(this SyntaxTrivia trivia)
+                {
                         return trivia.IsDirective ||
                                trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) ||
                                trivia.IsKind(SyntaxKind.EndOfLineTrivia);
@@ -411,7 +426,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// line.</param> <returns>True if the given trivia list contains one or more blank
                 /// lines.</returns>
                 internal static bool ContainsBlankLines(this IReadOnlyList<SyntaxTrivia> triviaList,
-                                                        bool startsOnNewLine = true) {
+                                                        bool startsOnNewLine = true)
+                {
                         bool onBlankLine = startsOnNewLine;
 
                         foreach (var trivia in triviaList) {
@@ -446,7 +462,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// line.</param> <returns>A new <see cref="SyntaxTriviaList"/> that is a copy of
                 /// the passed <paramref name="triviaList"/> without blank lines.</returns>
                 internal static SyntaxTriviaList WithoutBlankLines(this SyntaxTriviaList triviaList,
-                                                                   bool startsOnNewLine = true) {
+                                                                   bool startsOnNewLine = true)
+                {
                         bool onBlankLine = startsOnNewLine;
                         var newTriviaList = new List<SyntaxTrivia>();
 
@@ -463,12 +480,11 @@ namespace StyleCop.Analyzers.Helpers {
                                                         // strip all preceding white space in the
                                                         // blank line.
                                                         while (
-                                                            (newTriviaList.Count > 0) &&
-                                                            newTriviaList [newTriviaList.Count - 1]
-                                                                .IsKind(
-                                                                    SyntaxKind.WhitespaceTrivia)) {
+                                                          (newTriviaList.Count > 0) &&
+                                                          newTriviaList [newTriviaList.Count - 1]
+                                                            .IsKind(SyntaxKind.WhitespaceTrivia)) {
                                                                 newTriviaList.RemoveAt(
-                                                                    newTriviaList.Count - 1);
+                                                                  newTriviaList.Count - 1);
                                                         }
                                                 } else {
                                                         newTriviaList.Add(trivia);
@@ -489,8 +505,8 @@ namespace StyleCop.Analyzers.Helpers {
                         return SyntaxFactory.TriviaList(newTriviaList);
                 }
 
-                private static int BinarySearch(SyntaxTriviaList leadingTrivia,
-                                                SyntaxTrivia trivia) {
+                private static int BinarySearch(SyntaxTriviaList leadingTrivia, SyntaxTrivia trivia)
+                {
                         int low = 0;
                         int high = leadingTrivia.Count - 1;
                         while (low <= high) {
@@ -516,13 +532,14 @@ namespace StyleCop.Analyzers.Helpers {
                 /// Helper class that merges two SyntaxTriviaLists with (hopefully) the lowest
                 /// possible performance penalty.
                 /// </summary>
-                internal struct DualTriviaListHelper : IReadOnlyList<SyntaxTrivia> {
+                internal struct DualTriviaListHelper : IReadOnlyList<SyntaxTrivia>
+                {
                         private readonly SyntaxTriviaList part1;
                         private readonly int part1Count;
                         private readonly SyntaxTriviaList part2;
 
-                        public DualTriviaListHelper(SyntaxTriviaList part1,
-                                                    SyntaxTriviaList part2) {
+                        public DualTriviaListHelper(SyntaxTriviaList part1, SyntaxTriviaList part2)
+                        {
                                 this.part1 = part1;
                                 this.part2 = part2;
                                 this.part1Count = part1.Count;
@@ -531,8 +548,10 @@ namespace StyleCop.Analyzers.Helpers {
 
                         public int Count { get; }
 
-                        public SyntaxTrivia this[int index] {
-                                get {
+                        public SyntaxTrivia this[int index]
+                        {
+                                get
+                                {
                                         if (index < this.part1Count) {
                                                 return this.part1[index];
                                         } else if (index < this.Count) {
@@ -543,7 +562,8 @@ namespace StyleCop.Analyzers.Helpers {
                                 }
                         }
 
-                        public IEnumerator<SyntaxTrivia> GetEnumerator() {
+                        public IEnumerator<SyntaxTrivia> GetEnumerator()
+                        {
                                 foreach (var item in this.part1) {
                                         yield return item;
                                 }
@@ -559,11 +579,13 @@ namespace StyleCop.Analyzers.Helpers {
 
                         public SyntaxTrivia Last() { return this[this.Count - 1]; }
 
-                        public bool Any(SyntaxKind kind) {
+                        public bool Any(SyntaxKind kind)
+                        {
                                 return this.part1.Any(kind) || this.part2.Any(kind);
                         }
 
-                        public bool All(Func<SyntaxTrivia, bool> predicate) {
+                        public bool All(Func<SyntaxTrivia, bool> predicate)
+                        {
                                 foreach (var trivia in this.part1) {
                                         if (!predicate(trivia)) {
                                                 return false;

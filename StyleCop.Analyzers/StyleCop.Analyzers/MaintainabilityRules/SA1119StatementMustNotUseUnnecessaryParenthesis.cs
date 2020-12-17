@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Generic;
         using System.Collections.Immutable;
@@ -44,7 +45,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1119StatementMustNotUseUnnecessaryParenthesis : DiagnosticAnalyzer {
+        internal class SA1119StatementMustNotUseUnnecessaryParenthesis : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1119StatementMustNotUseUnnecessaryParenthesis"/> analyzer.
@@ -57,78 +59,78 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 /// </summary>
                 public const string ParenthesesDiagnosticId = DiagnosticId + "_p";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1119.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1119.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1119Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1119Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1119MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1119MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1119Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1119Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly DiagnosticDescriptor ParenthesisDescriptor =
-#pragma warning disable RS2000  // Add analyzer diagnostic IDs to analyzer release.
-                    new DiagnosticDescriptor(ParenthesesDiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Hidden,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink,
-                                             customTags
-                                             : new[]{WellKnownDiagnosticTags.Unnecessary,
-                                                     WellKnownDiagnosticTags.NotConfigurable});
-#pragma warning restore RS2000  // Add analyzer diagnostic IDs to analyzer release.
+#pragma warning disable RS2000 // Add analyzer diagnostic IDs to analyzer release.
+                  new DiagnosticDescriptor(ParenthesesDiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Hidden,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink,
+                                           customTags
+                                           : new[]{ WellKnownDiagnosticTags.Unnecessary,
+                                                    WellKnownDiagnosticTags.NotConfigurable });
+#pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
                 private static readonly Action<CompilationStartAnalysisContext>
-                    CompilationStartAction = HandleCompilationStart;
+                  CompilationStartAction = HandleCompilationStart;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ParenthesizedExpressionAction = HandleParenthesizedExpression;
+                  ParenthesizedExpressionAction = HandleParenthesizedExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor, ParenthesisDescriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void HandleCompilationStart(
-                    CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(CompilationStartAnalysisContext context)
+                {
                         // Only register the syntax node action if the diagnostic is enabled. This
                         // is important because otherwise the diagnostic for fading out the
                         // parenthesis is still active, even if the main diagnostic is disabled
                         if (!context.IsAnalyzerSuppressed(Descriptor)) {
                                 context.RegisterSyntaxNodeAction(
-                                    ParenthesizedExpressionAction,
-                                    SyntaxKind.ParenthesizedExpression);
+                                  ParenthesizedExpressionAction,
+                                  SyntaxKind.ParenthesizedExpression);
                         }
                 }
 
-                private static void HandleParenthesizedExpression(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandleParenthesizedExpression(SyntaxNodeAnalysisContext context)
+                {
                         var node = (ParenthesizedExpressionSyntax) context.Node;
 
                         if (node.Expression != null) {
@@ -142,14 +144,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                     !node.Expression.IsKind(SyntaxKindEx.IsPatternExpression) &&
                                     !node.Expression.IsKind(SyntaxKind.SimpleLambdaExpression) &&
                                     !node.Expression.IsKind(
-                                        SyntaxKind.ParenthesizedLambdaExpression) &&
+                                      SyntaxKind.ParenthesizedLambdaExpression) &&
                                     !node.Expression.IsKind(SyntaxKind.ArrayCreationExpression) &&
                                     !node.Expression.IsKind(SyntaxKind.CoalesceExpression) &&
                                     !node.Expression.IsKind(SyntaxKind.QueryExpression) &&
                                     !node.Expression.IsKind(SyntaxKind.AwaitExpression) &&
                                     !node.IsKind(SyntaxKind.ConstructorDeclaration)) {
                                         if (node.Expression.IsKind(
-                                                SyntaxKind.ConditionalAccessExpression) &&
+                                              SyntaxKind.ConditionalAccessExpression) &&
                                             (node.Parent is ElementAccessExpressionSyntax ||
                                              node.Parent is MemberAccessExpressionSyntax ||
                                              node.Parent is ConditionalAccessExpressionSyntax)) {
@@ -161,15 +163,15 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                         }
 
                                         if (IsSwitchOrWithExpressionExpressionOfMemberAccess(
-                                                node)) {
+                                              node)) {
                                                 return;
                                         }
 
                                         if ((node.Expression.IsKind(
-                                                 SyntaxKind.StackAllocArrayCreationExpression) ||
+                                               SyntaxKind.StackAllocArrayCreationExpression) ||
                                              node.Expression.IsKind(
-                                                 SyntaxKindEx
-                                                     .ImplicitStackAllocArrayCreationExpression)) &&
+                                               SyntaxKindEx
+                                                 .ImplicitStackAllocArrayCreationExpression)) &&
                                             node.Parent.IsKind(SyntaxKind.EqualsValueClause)) {
                                                 return;
                                         }
@@ -186,7 +188,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                             node.Parent is CheckedExpressionSyntax ||
                                             node.Parent is MemberAccessExpressionSyntax) {
                                                 if (node.Parent is MemberAccessExpressionSyntax
-                                                        memberAccess) {
+                                                      memberAccess) {
                                                         if (memberAccess.Expression != node) {
                                                                 ReportDiagnostic(context, node);
                                                         }
@@ -195,12 +197,12 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                                 }
                                         } else {
                                                 if (node.Parent is EqualsValueClauseSyntax
-                                                        equalsValue &&
+                                                      equalsValue &&
                                                     equalsValue.Value == node) {
                                                         ReportDiagnostic(context, node);
                                                 } else {
                                                         if (node.Parent is
-                                                                AssignmentExpressionSyntax) {
+                                                              AssignmentExpressionSyntax) {
                                                                 ReportDiagnostic(context, node);
                                                         }
                                                 }
@@ -209,7 +211,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                         }
                 }
 
-                private static bool IsConditionalAccessInInterpolation(ExpressionSyntax node) {
+                private static bool IsConditionalAccessInInterpolation(ExpressionSyntax node)
+                {
                         Queue<ExpressionSyntax> expressionToCheck = new Queue<ExpressionSyntax>();
                         expressionToCheck.Enqueue(node);
 
@@ -232,7 +235,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static bool IsSwitchOrWithExpressionPrecededByTypeCast(
-                    ParenthesizedExpressionSyntax node) {
+                  ParenthesizedExpressionSyntax node)
+                {
                         if (!node.Expression.IsKind(SyntaxKindEx.SwitchExpression) &&
                             !node.Expression.IsKind(SyntaxKindEx.WithExpression)) {
                                 return false;
@@ -250,30 +254,32 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static bool IsSwitchOrWithExpressionExpressionOfMemberAccess(
-                    ParenthesizedExpressionSyntax node) {
+                  ParenthesizedExpressionSyntax node)
+                {
                         if (!node.Expression.IsKind(SyntaxKindEx.SwitchExpression) &&
                             !node.Expression.IsKind(SyntaxKindEx.WithExpression)) {
                                 return false;
                         }
 
                         return node.Parent switch {
-                            MemberAccessExpressionSyntax memberAccessExpression =>
-                                memberAccessExpression.Expression == node,
-                            ConditionalAccessExpressionSyntax conditionalAccessExpression =>
-                                conditionalAccessExpression.Expression == node,
-                            ElementAccessExpressionSyntax elementAccessExpression =>
-                                elementAccessExpression.Expression == node,
-                            _ => false,
+                                MemberAccessExpressionSyntax memberAccessExpression =>
+                                  memberAccessExpression.Expression == node,
+                                ConditionalAccessExpressionSyntax conditionalAccessExpression =>
+                                  conditionalAccessExpression.Expression == node,
+                                ElementAccessExpressionSyntax elementAccessExpression =>
+                                  elementAccessExpression.Expression == node,
+                                _ => false,
                         };
                 }
 
                 private static void ReportDiagnostic(SyntaxNodeAnalysisContext context,
-                                                     ParenthesizedExpressionSyntax node) {
+                                                     ParenthesizedExpressionSyntax node)
+                {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, node.GetLocation()));
                         context.ReportDiagnostic(Diagnostic.Create(
-                            ParenthesisDescriptor, node.OpenParenToken.GetLocation()));
+                          ParenthesisDescriptor, node.OpenParenToken.GetLocation()));
                         context.ReportDiagnostic(Diagnostic.Create(
-                            ParenthesisDescriptor, node.CloseParenToken.GetLocation()));
+                          ParenthesisDescriptor, node.CloseParenToken.GetLocation()));
                 }
         }
 }

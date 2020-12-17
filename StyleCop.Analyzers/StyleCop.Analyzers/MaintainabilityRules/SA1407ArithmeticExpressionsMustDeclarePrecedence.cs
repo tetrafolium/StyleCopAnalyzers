@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -41,57 +42,58 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// removes the need for the reader to make assumptions about the code.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1407ArithmeticExpressionsMustDeclarePrecedence : DiagnosticAnalyzer {
+        internal class SA1407ArithmeticExpressionsMustDeclarePrecedence : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1407ArithmeticExpressionsMustDeclarePrecedence"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1407";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1407.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1407.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1407MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1407MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1407Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> HandledBinaryExpressionKinds =
-                    ImmutableArray.Create(SyntaxKind.AddExpression,
-                                          SyntaxKind.SubtractExpression,
-                                          SyntaxKind.MultiplyExpression,
-                                          SyntaxKind.DivideExpression,
-                                          SyntaxKind.ModuloExpression,
-                                          SyntaxKind.LeftShiftExpression,
-                                          SyntaxKind.RightShiftExpression);
+                  ImmutableArray.Create(SyntaxKind.AddExpression,
+                                        SyntaxKind.SubtractExpression,
+                                        SyntaxKind.MultiplyExpression,
+                                        SyntaxKind.DivideExpression,
+                                        SyntaxKind.ModuloExpression,
+                                        SyntaxKind.LeftShiftExpression,
+                                        SyntaxKind.RightShiftExpression);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> BinaryExpressionAction =
-                    HandleBinaryExpression;
+                  HandleBinaryExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -99,14 +101,15 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                                          HandledBinaryExpressionKinds);
                 }
 
-                private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context)
+                {
                         BinaryExpressionSyntax binSyntax = (BinaryExpressionSyntax) context.Node;
 
                         if (binSyntax.Left is BinaryExpressionSyntax left) {
                                 // Check if the operations are of the same kind
                                 if (!IsSameFamily(binSyntax.OperatorToken, left.OperatorToken)) {
                                         context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, left.GetLocation()));
+                                          Diagnostic.Create(Descriptor, left.GetLocation()));
                                 }
                         }
 
@@ -114,13 +117,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                 // Check if the operations are of the same kind
                                 if (!IsSameFamily(binSyntax.OperatorToken, right.OperatorToken)) {
                                         context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, right.GetLocation()));
+                                          Diagnostic.Create(Descriptor, right.GetLocation()));
                                 }
                         }
                 }
 
                 private static bool IsSameFamily(SyntaxToken operatorToken1,
-                                                 SyntaxToken operatorToken2) {
+                                                 SyntaxToken operatorToken2)
+                {
                         bool isSameFamily = false;
                         isSameFamily |= (operatorToken1.IsKind(SyntaxKind.PlusToken) ||
                                          operatorToken1.IsKind(SyntaxKind.MinusToken)) &&
@@ -131,10 +135,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                                         (operatorToken2.IsKind(SyntaxKind.AsteriskToken) ||
                                          operatorToken2.IsKind(SyntaxKind.SlashToken));
                         isSameFamily |=
-                            (operatorToken1.IsKind(SyntaxKind.LessThanLessThanToken) ||
-                             operatorToken1.IsKind(SyntaxKind.GreaterThanGreaterThanToken)) &&
-                            (operatorToken2.IsKind(SyntaxKind.LessThanLessThanToken) ||
-                             operatorToken2.IsKind(SyntaxKind.GreaterThanGreaterThanToken));
+                          (operatorToken1.IsKind(SyntaxKind.LessThanLessThanToken) ||
+                           operatorToken1.IsKind(SyntaxKind.GreaterThanGreaterThanToken)) &&
+                          (operatorToken2.IsKind(SyntaxKind.LessThanLessThanToken) ||
+                           operatorToken2.IsKind(SyntaxKind.GreaterThanGreaterThanToken));
 
                         return isSameFamily;
                 }

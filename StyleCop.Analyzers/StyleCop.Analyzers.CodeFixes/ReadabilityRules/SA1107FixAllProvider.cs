@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System.Collections.Immutable;
         using System.Threading.Tasks;
         using Microsoft.CodeAnalysis;
@@ -10,26 +11,28 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         using Microsoft.CodeAnalysis.Editing;
         using StyleCop.Analyzers.Helpers;
 
-        internal class SA1107FixAllProvider : DocumentBasedFixAllProvider {
+        internal class SA1107FixAllProvider : DocumentBasedFixAllProvider
+        {
                 protected override string CodeActionTitle => ReadabilityResources.SA1107CodeFix;
 
-                protected override async
-                    Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
-                                                           Document document,
-                                                           ImmutableArray<Diagnostic> diagnostics) {
+                protected override async Task<SyntaxNode> FixAllInDocumentAsync(
+                  FixAllContext fixAllContext,
+                  Document document,
+                  ImmutableArray<Diagnostic> diagnostics)
+                {
                         if (diagnostics.IsEmpty) {
                                 return null;
                         }
 
                         DocumentEditor editor =
-                            await DocumentEditor
-                                .CreateAsync(document, fixAllContext.CancellationToken)
-                                .ConfigureAwait(false);
+                          await DocumentEditor
+                            .CreateAsync(document, fixAllContext.CancellationToken)
+                            .ConfigureAwait(false);
 
                         SyntaxNode root = editor.GetChangedRoot();
 
                         ImmutableList<SyntaxNode> nodesToChange =
-                            ImmutableList.Create<SyntaxNode>();
+                          ImmutableList.Create<SyntaxNode>();
 
                         // Make sure all nodes we care about are tracked
                         foreach (var diagnostic in diagnostics) {
@@ -42,9 +45,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
 
                         foreach (var node in nodesToChange) {
-                                editor.ReplaceNode(
-                                    node, node.WithLeadingTrivia(
-                                              SyntaxFactory.ElasticCarriageReturnLineFeed));
+                                editor.ReplaceNode(node,
+                                                   node.WithLeadingTrivia(
+                                                     SyntaxFactory.ElasticCarriageReturnLineFeed));
                         }
 
                         return editor.GetChangedRoot();

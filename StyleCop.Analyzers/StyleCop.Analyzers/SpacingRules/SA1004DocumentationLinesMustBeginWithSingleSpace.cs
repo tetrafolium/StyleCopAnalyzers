@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -42,55 +43,58 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1004DocumentationLinesMustBeginWithSingleSpace : DiagnosticAnalyzer {
+        internal class SA1004DocumentationLinesMustBeginWithSingleSpace : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1004DocumentationLinesMustBeginWithSingleSpace"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1004";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1004.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1004.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1004Title),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1004Title),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1004MessageFormat),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1004MessageFormat),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1004Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1004Description),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.SpacingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                  HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context) {
+                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                {
                         SyntaxNode root =
-                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                          context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var trivia in root.DescendantTrivia(descendIntoTrivia : true)) {
                                 switch (trivia.Kind()) {
                                         case SyntaxKind.DocumentationCommentExteriorTrivia:
@@ -105,8 +109,9 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static void HandleDocumentationCommentExteriorTrivia(
-                    SyntaxTreeAnalysisContext context,
-                    SyntaxTrivia trivia) {
+                  SyntaxTreeAnalysisContext context,
+                  SyntaxTrivia trivia)
+                {
                         SyntaxToken token = trivia.Token;
                         if (token.IsMissing) {
                                 return;
@@ -133,9 +138,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                                         switch (lastLeadingTrivia.Kind()) {
                                                 case SyntaxKind.WhitespaceTrivia:
                                                         if (lastLeadingTrivia.ToFullString()
-                                                                .StartsWith(
-                                                                    " ",
-                                                                    StringComparison.Ordinal)) {
+                                                              .StartsWith(
+                                                                " ", StringComparison.Ordinal)) {
                                                                 return;
                                                         }
 
@@ -143,7 +147,7 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                                                 case SyntaxKind.DocumentationCommentExteriorTrivia:
                                                         if (lastLeadingTrivia.ToFullString()
-                                                                .EndsWith(" ")) {
+                                                              .EndsWith(" ")) {
                                                                 return;
                                                         }
 
@@ -162,19 +166,19 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 case SyntaxKind.XmlTextLiteralToken:
                                         if (token.Text.StartsWith("  ", StringComparison.Ordinal)) {
                                                 SyntaxKind grandparentKind =
-                                                    token.Parent?.Parent?.Kind() ?? SyntaxKind.None;
+                                                  token.Parent?.Parent?.Kind() ?? SyntaxKind.None;
                                                 if (grandparentKind !=
-                                                        SyntaxKind
-                                                            .SingleLineDocumentationCommentTrivia &&
+                                                      SyntaxKind
+                                                        .SingleLineDocumentationCommentTrivia &&
                                                     grandparentKind !=
-                                                        SyntaxKind
-                                                            .MultiLineDocumentationCommentTrivia) {
+                                                      SyntaxKind
+                                                        .MultiLineDocumentationCommentTrivia) {
                                                         // Allow extra indentation for nested text
                                                         // and elements.
                                                         return;
                                                 }
                                         } else if (token.Text.StartsWith(
-                                                       " ", StringComparison.Ordinal)) {
+                                                     " ", StringComparison.Ordinal)) {
                                                 return;
                                         } else if (trivia.ToFullString().EndsWith(" ")) {
                                                 // javadoc-style documentation comments without a
@@ -190,7 +194,7 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                         // Documentation line should begin with a space.
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, token.GetLocation()));
+                          Diagnostic.Create(Descriptor, token.GetLocation()));
                 }
         }
 }

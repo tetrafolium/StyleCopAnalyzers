@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -14,7 +15,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// An attribute is placed on the same line of code as another attribute or element.
         /// </summary>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1134AttributesMustNotShareLine : DiagnosticAnalyzer {
+        internal class SA1134AttributesMustNotShareLine : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// Properties key used to indicate that a code fix should be inserted before the
                 /// attribute.
@@ -33,39 +35,40 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1134";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1134.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1134.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1134Title),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1134Title),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1134MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1134MessageFormat),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1134Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1134Description),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.ReadabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.ReadabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    HandleAttributeListAction = HandleAttributeList;
+                  HandleAttributeListAction = HandleAttributeList;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -73,9 +76,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.AttributeList);
                 }
 
-                private static void HandleAttributeList(SyntaxNodeAnalysisContext context) {
+                private static void HandleAttributeList(SyntaxNodeAnalysisContext context)
+                {
                         var diagnosticProperties =
-                            ImmutableDictionary.CreateBuilder<string, string>();
+                          ImmutableDictionary.CreateBuilder<string, string>();
                         AttributeListSyntax attributeList = (AttributeListSyntax) context.Node;
                         bool violation = false;
 
@@ -114,9 +118,10 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
 
                         if (violation) {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, attributeList.OpenBracketToken.GetLocation(),
-                                    diagnosticProperties.ToImmutable()));
+                                context.ReportDiagnostic(
+                                  Diagnostic.Create(Descriptor,
+                                                    attributeList.OpenBracketToken.GetLocation(),
+                                                    diagnosticProperties.ToImmutable()));
                         }
                 }
         }

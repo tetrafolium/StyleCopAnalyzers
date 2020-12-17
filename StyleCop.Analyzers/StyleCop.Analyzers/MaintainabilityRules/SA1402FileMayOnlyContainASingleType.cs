@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System;
         using System.Collections.Generic;
         using System.Collections.Immutable;
@@ -29,48 +30,49 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// same file.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1402FileMayOnlyContainASingleType : DiagnosticAnalyzer {
+        internal class SA1402FileMayOnlyContainASingleType : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1402FileMayOnlyContainASingleType"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1402";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1402.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1402.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(MaintainabilityResources.SA1402Title),
-                                                  MaintainabilityResources.ResourceManager,
-                                                  typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1402Title),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1402MessageFormat),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(
+                    nameof(MaintainabilityResources.SA1402MessageFormat),
+                    MaintainabilityResources.ResourceManager,
+                    typeof(MaintainabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(
-                        nameof(MaintainabilityResources.SA1402Description),
-                        MaintainabilityResources.ResourceManager,
-                        typeof(MaintainabilityResources));
+                  new LocalizableResourceString(nameof(MaintainabilityResources.SA1402Description),
+                                                MaintainabilityResources.ResourceManager,
+                                                typeof(MaintainabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.MaintainabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.MaintainabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings>
-                    SyntaxTreeAction = HandleSyntaxTree;
+                  SyntaxTreeAction = HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -78,19 +80,19 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 }
 
                 private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context,
-                                                     StyleCopSettings settings) {
+                                                     StyleCopSettings settings)
+                {
                         var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
 
                         var typeNodes = GetTopLevelTypeDeclarations(syntaxRoot, settings);
 
                         string suffix;
                         var fileName =
-                            FileNameHelpers.GetFileNameAndSuffix(context.Tree.FilePath, out suffix);
+                          FileNameHelpers.GetFileNameAndSuffix(context.Tree.FilePath, out suffix);
                         var preferredTypeNode = typeNodes.FirstOrDefault(
-                            n => FileNameHelpers.GetConventionalFileName(
-                                     n, settings.DocumentationRules.FileNamingConvention) ==
-                                 fileName)
-                            ?? typeNodes.FirstOrDefault();
+                          n => FileNameHelpers.GetConventionalFileName(
+                                 n, settings.DocumentationRules.FileNamingConvention) == fileName)
+                          ?? typeNodes.FirstOrDefault();
 
                         if (preferredTypeNode == null) {
                                 return;
@@ -98,44 +100,48 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
 
                         var foundTypeName = NamedTypeHelpers.GetNameOrIdentifier(preferredTypeNode);
                         var isPartialType =
-                            NamedTypeHelpers.IsPartialDeclaration(preferredTypeNode);
+                          NamedTypeHelpers.IsPartialDeclaration(preferredTypeNode);
 
                         foreach (var typeNode in typeNodes) {
                                 if (typeNode == preferredTypeNode ||
                                     (isPartialType &&
                                      foundTypeName ==
-                                         NamedTypeHelpers.GetNameOrIdentifier(typeNode))) {
+                                       NamedTypeHelpers.GetNameOrIdentifier(typeNode))) {
                                         continue;
                                 }
 
                                 var location =
-                                    NamedTypeHelpers.GetNameOrIdentifierLocation(typeNode);
+                                  NamedTypeHelpers.GetNameOrIdentifierLocation(typeNode);
                                 if (location != null) {
                                         context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, location));
+                                          Diagnostic.Create(Descriptor, location));
                                 }
                         }
                 }
 
                 private static IEnumerable<MemberDeclarationSyntax> GetTopLevelTypeDeclarations(
-                    SyntaxNode root,
-                    StyleCopSettings settings) {
+                  SyntaxNode root,
+                  StyleCopSettings settings)
+                {
                         var allTypeDeclarations =
-                            root.DescendantNodes(descendIntoChildren
-                                                 : node => ContainsTopLevelTypeDeclarations(node))
-                                .OfType<MemberDeclarationSyntax>()
-                                .ToList();
+                          root
+                            .DescendantNodes(descendIntoChildren
+                                             : node => ContainsTopLevelTypeDeclarations(node))
+                            .OfType<MemberDeclarationSyntax>()
+                            .ToList();
                         var relevantTypeDeclarations =
-                            allTypeDeclarations.Where(x => IsRelevantType(x, settings)).ToList();
+                          allTypeDeclarations.Where(x => IsRelevantType(x, settings)).ToList();
                         return relevantTypeDeclarations;
                 }
 
-                private static bool ContainsTopLevelTypeDeclarations(SyntaxNode node) {
+                private static bool ContainsTopLevelTypeDeclarations(SyntaxNode node)
+                {
                         return node.IsKind(SyntaxKind.CompilationUnit) ||
                                node.IsKind(SyntaxKind.NamespaceDeclaration);
                 }
 
-                private static bool IsRelevantType(SyntaxNode node, StyleCopSettings settings) {
+                private static bool IsRelevantType(SyntaxNode node, StyleCopSettings settings)
+                {
                         var topLevelTypes = settings.MaintainabilityRules.TopLevelTypes;
                         var isRelevant = false;
 

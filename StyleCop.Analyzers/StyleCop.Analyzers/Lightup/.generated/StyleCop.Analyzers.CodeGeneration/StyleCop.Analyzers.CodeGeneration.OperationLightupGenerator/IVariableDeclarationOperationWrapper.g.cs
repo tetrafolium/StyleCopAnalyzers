@@ -1,63 +1,71 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IVariableDeclarationOperationWrapper : IOperationWrapper {
+        internal readonly struct IVariableDeclarationOperationWrapper : IOperationWrapper
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IVariableDeclarationOperation";
+                  "Microsoft.CodeAnalysis.Operations.IVariableDeclarationOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
-                    DeclaratorsAccessor;
+                  DeclaratorsAccessor;
                 private static readonly Func<IOperation, IOperation> InitializerAccessor;
                 private static readonly Func<IOperation, ImmutableArray<IOperation>>
-                    IgnoredDimensionsAccessor;
+                  IgnoredDimensionsAccessor;
                 private readonly IOperation operation;
-                static IVariableDeclarationOperationWrapper() {
+                static IVariableDeclarationOperationWrapper()
+                {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IVariableDeclarationOperationWrapper));
+                          typeof(IVariableDeclarationOperationWrapper));
                         DeclaratorsAccessor =
-                            LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
-                                WrappedType, nameof(Declarators));
+                          LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                            WrappedType, nameof(Declarators));
                         InitializerAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(Initializer));
-                        IgnoredDimensionsAccessor = LightupHelpers.CreateOperationPropertyAccessor<
-                            IOperation, ImmutableArray<IOperation>>(WrappedType,
-                                                                    nameof(IgnoredDimensions));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                            WrappedType, nameof(Initializer));
+                        IgnoredDimensionsAccessor =
+                          LightupHelpers
+                            .CreateOperationPropertyAccessor<IOperation,
+                                                             ImmutableArray<IOperation>>(
+                              WrappedType, nameof(IgnoredDimensions));
                 }
 
-                private IVariableDeclarationOperationWrapper(IOperation operation) {
+                private IVariableDeclarationOperationWrapper(IOperation operation)
+                {
                         this.operation = operation;
                 }
 
                 public IOperation WrappedOperation => this.operation;
                 public ITypeSymbol Type => this.WrappedOperation.Type;
                 public ImmutableArray<IOperation> Declarators =>
-                    DeclaratorsAccessor(this.WrappedOperation);
+                  DeclaratorsAccessor(this.WrappedOperation);
                 public IVariableInitializerOperationWrapper Initializer =>
-                    IVariableInitializerOperationWrapper.FromOperation(
-                        InitializerAccessor(this.WrappedOperation));
+                  IVariableInitializerOperationWrapper.FromOperation(
+                    InitializerAccessor(this.WrappedOperation));
                 public ImmutableArray<IOperation> IgnoredDimensions =>
-                    IgnoredDimensionsAccessor(this.WrappedOperation);
+                  IgnoredDimensionsAccessor(this.WrappedOperation);
                 public static IVariableDeclarationOperationWrapper FromOperation(
-                    IOperation operation) {
+                  IOperation operation)
+                {
                         if (operation == null) {
                                 return default;
                         }
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IVariableDeclarationOperationWrapper(operation);
                 }
 
-                public static bool IsInstance(IOperation operation) {
+                public static bool IsInstance(IOperation operation)
+                {
                         return operation != null &&
                                LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }

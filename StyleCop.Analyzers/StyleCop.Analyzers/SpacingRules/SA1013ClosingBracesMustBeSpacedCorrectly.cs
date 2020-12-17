@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -26,55 +27,58 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// first character on the line.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1013ClosingBracesMustBeSpacedCorrectly : DiagnosticAnalyzer {
+        internal class SA1013ClosingBracesMustBeSpacedCorrectly : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1013ClosingBracesMustBeSpacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1013";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1013.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1013.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1013Title),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1013Title),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1013MessageFormat),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1013MessageFormat),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1013Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1013Description),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.SpacingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                  HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context) {
+                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                {
                         SyntaxNode root =
-                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                          context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 if (token.IsKind(SyntaxKind.CloseBraceToken)) {
                                         HandleCloseBraceToken(context, token);
@@ -83,22 +87,26 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static void HandleCloseBraceToken(SyntaxTreeAnalysisContext context,
-                                                          SyntaxToken token) {
+                                                          SyntaxToken token)
+                {
                         if (token.IsMissing) {
                                 return;
                         }
 
                         bool precededBySpace =
-                            token.IsFirstInLine() ||
-                            token.IsPrecededByWhitespace(context.CancellationToken);
+                          token.IsFirstInLine() ||
+                          token.IsPrecededByWhitespace(context.CancellationToken);
 
                         if (token.Parent is InterpolationSyntax) {
                                 if (precededBySpace) {
                                         // Closing brace should{ not} be {preceded} by a space.
                                         var properties = TokenSpacingProperties.RemovePreceding;
                                         context.ReportDiagnostic(
-                                            Diagnostic.Create(Descriptor, token.GetLocation(),
-                                                              properties, " not", "preceded"));
+                                          Diagnostic.Create(Descriptor,
+                                                            token.GetLocation(),
+                                                            properties,
+                                                            " not",
+                                                            "preceded"));
                                 }
 
                                 return;
@@ -111,21 +119,20 @@ namespace StyleCop.Analyzers.SpacingRules {
                         if (!followedBySpace && !lastInLine) {
                                 SyntaxToken nextToken = token.GetNextToken();
                                 precedesSpecialCharacter =
-                                    nextToken.IsKind(SyntaxKind.CloseParenToken) ||
-                                    nextToken.IsKind(SyntaxKind.CommaToken) ||
-                                    nextToken.IsKind(SyntaxKind.SemicolonToken) ||
-                                    nextToken.IsKind(SyntaxKind.DotToken) ||
-                                    (nextToken.IsKind(SyntaxKind.QuestionToken) &&
-                                     nextToken.GetNextToken(includeZeroWidth
-                                                            : true)
-                                         .IsKind(SyntaxKind.DotToken)) ||
-                                    nextToken.IsKind(SyntaxKind.CloseBracketToken) ||
-                                    (nextToken.IsKind(SyntaxKind.ColonToken) &&
-                                     nextToken.Parent.IsKind(
-                                         SyntaxKindEx.CasePatternSwitchLabel)) ||
-                                    (nextToken.IsKind(SyntaxKind.ExclamationToken) &&
-                                     nextToken.Parent.IsKind(
-                                         SyntaxKindEx.SuppressNullableWarningExpression));
+                                  nextToken.IsKind(SyntaxKind.CloseParenToken) ||
+                                  nextToken.IsKind(SyntaxKind.CommaToken) ||
+                                  nextToken.IsKind(SyntaxKind.SemicolonToken) ||
+                                  nextToken.IsKind(SyntaxKind.DotToken) ||
+                                  (nextToken.IsKind(SyntaxKind.QuestionToken) &&
+                                   nextToken.GetNextToken(includeZeroWidth
+                                                          : true)
+                                     .IsKind(SyntaxKind.DotToken)) ||
+                                  nextToken.IsKind(SyntaxKind.CloseBracketToken) ||
+                                  (nextToken.IsKind(SyntaxKind.ColonToken) &&
+                                   nextToken.Parent.IsKind(SyntaxKindEx.CasePatternSwitchLabel)) ||
+                                  (nextToken.IsKind(SyntaxKind.ExclamationToken) &&
+                                   nextToken.Parent.IsKind(
+                                     SyntaxKindEx.SuppressNullableWarningExpression));
                         } else {
                                 precedesSpecialCharacter = false;
                         }
@@ -133,17 +140,21 @@ namespace StyleCop.Analyzers.SpacingRules {
                         if (!precededBySpace) {
                                 // Closing brace should{} be {preceded} by a space.
                                 var properties = TokenSpacingProperties.InsertPreceding;
-                                context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, token.GetLocation(), properties,
-                                                      string.Empty, "preceded"));
+                                context.ReportDiagnostic(Diagnostic.Create(Descriptor,
+                                                                           token.GetLocation(),
+                                                                           properties,
+                                                                           string.Empty,
+                                                                           "preceded"));
                         }
 
                         if (!lastInLine && !precedesSpecialCharacter && !followedBySpace) {
                                 // Closing brace should{} be {followed} by a space.
                                 var properties = TokenSpacingProperties.InsertFollowing;
-                                context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, token.GetLocation(), properties,
-                                                      string.Empty, "followed"));
+                                context.ReportDiagnostic(Diagnostic.Create(Descriptor,
+                                                                           token.GetLocation(),
+                                                                           properties,
+                                                                           string.Empty,
+                                                                           "followed"));
                         }
                 }
         }

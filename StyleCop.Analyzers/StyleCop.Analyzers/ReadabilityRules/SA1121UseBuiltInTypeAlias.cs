@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Collections.Concurrent;
         using System.Collections.Immutable;
@@ -121,72 +122,77 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// </list>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1121UseBuiltInTypeAlias : DiagnosticAnalyzer {
+        internal class SA1121UseBuiltInTypeAlias : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see cref="SA1121UseBuiltInTypeAlias"/>
                 /// analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1121";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1121.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1121.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1121Title),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1121Title),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1121MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1121MessageFormat),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1121Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1121Description),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.ReadabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink,
-                                             WellKnownDiagnosticTags.Unnecessary);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.ReadabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink,
+                                           WellKnownDiagnosticTags.Unnecessary);
 
                 private static readonly Action<CompilationStartAnalysisContext>
-                    CompilationStartAction = HandleCompilationStart;
+                  CompilationStartAction = HandleCompilationStart;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterCompilationStartAction(CompilationStartAction);
                 }
 
-                private static void HandleCompilationStart(
-                    CompilationStartAnalysisContext context) {
+                private static void HandleCompilationStart(CompilationStartAnalysisContext context)
+                {
                         Analyzer analyzer =
-                            new Analyzer(context.Compilation.GetOrCreateUsingAliasCache());
+                          new Analyzer(context.Compilation.GetOrCreateUsingAliasCache());
                         context.RegisterSyntaxNodeAction(analyzer.HandleIdentifierNameSyntax,
                                                          SyntaxKind.IdentifierName);
                 }
 
-                private sealed class Analyzer {
+                private sealed class Analyzer
+                {
                         private readonly ConcurrentDictionary<SyntaxTree, bool> usingAliasCache;
 
-                        public Analyzer(ConcurrentDictionary<SyntaxTree, bool> usingAliasCache) {
+                        public Analyzer(ConcurrentDictionary<SyntaxTree, bool> usingAliasCache)
+                        {
                                 this.usingAliasCache = usingAliasCache;
                         }
 
                         public void HandleIdentifierNameSyntax(SyntaxNodeAnalysisContext context,
-                                                               StyleCopSettings settings) {
+                                                               StyleCopSettings settings)
+                        {
                                 IdentifierNameSyntax identifierNameSyntax =
-                                    (IdentifierNameSyntax) context.Node;
+                                  (IdentifierNameSyntax) context.Node;
                                 if (identifierNameSyntax.IsVar) {
                                         return;
                                 }
@@ -218,10 +224,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 }
 
                                 if (identifierNameSyntax
-                                            .FirstAncestorOrSelf<UsingDirectiveSyntax>() != null &&
+                                        .FirstAncestorOrSelf<UsingDirectiveSyntax>() != null &&
                                     identifierNameSyntax
-                                            .FirstAncestorOrSelf<TypeArgumentListSyntax>() ==
-                                        null) {
+                                        .FirstAncestorOrSelf<TypeArgumentListSyntax>() == null) {
                                         return;
                                 }
 
@@ -230,7 +235,7 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 // match the name of a special type
                                 if (settings.ReadabilityRules.AllowBuiltInTypeAliases ||
                                     !identifierNameSyntax.SyntaxTree.ContainsUsingAlias(
-                                        this.usingAliasCache)) {
+                                      this.usingAliasCache)) {
                                         switch (identifierNameSyntax.Identifier.ValueText) {
                                                 case nameof(Boolean):
                                                 case nameof(Byte):
@@ -269,10 +274,9 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                 //    renamed symbol not being in the set of strings checked by the
                                 //    analyzer above.
                                 INamedTypeSymbol symbol =
-                                    semanticModel
-                                        .GetSymbolInfo(identifierNameSyntax,
-                                                       context.CancellationToken)
-                                        .Symbol as INamedTypeSymbol;
+                                  semanticModel
+                                    .GetSymbolInfo(identifierNameSyntax, context.CancellationToken)
+                                    .Symbol as INamedTypeSymbol;
 
                                 switch (symbol?.SpecialType) {
                                         case SpecialType.System_Boolean:
@@ -320,7 +324,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
 
                         private static bool IsNameInNameOfExpression(
-                            IdentifierNameSyntax identifierNameSyntax) {
+                          IdentifierNameSyntax identifierNameSyntax)
+                        {
                                 // The only time a type name can appear as an argument is for the
                                 // invocation expression created for the nameof keyword. This
                                 // assumption is the foundation of the following simple analysis
@@ -333,12 +338,12 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                                 // This covers the case nameof(System.Int32)
                                 if (identifierNameSyntax.Parent is MemberAccessExpressionSyntax
-                                        simpleMemberAccess) {
+                                      simpleMemberAccess) {
                                         // This final check ensures that we don't consider
                                         // nameof(System.Int32.ToString) the same as
                                         // nameof(System.Int32)
                                         return identifierNameSyntax.Parent.Parent.IsKind(
-                                                   SyntaxKind.Argument) &&
+                                                 SyntaxKind.Argument) &&
                                                simpleMemberAccess.Name == identifierNameSyntax;
                                 }
 

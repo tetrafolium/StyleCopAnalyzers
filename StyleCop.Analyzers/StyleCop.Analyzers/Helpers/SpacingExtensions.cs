@@ -1,36 +1,41 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System.Linq;
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class SpacingExtensions {
-                public static bool IsMissingOrDefault(this SyntaxToken token) {
+        internal static class SpacingExtensions
+        {
+                public static bool IsMissingOrDefault(this SyntaxToken token)
+                {
                         return token.IsKind(SyntaxKind.None) || token.IsMissing;
                 }
 
                 public static SyntaxToken WithoutLeadingWhitespace(
-                    this SyntaxToken token,
-                    bool removeEndOfLineTrivia = false) {
+                  this SyntaxToken token,
+                  bool removeEndOfLineTrivia = false)
+                {
                         if (!token.HasLeadingTrivia) {
                                 return token;
                         }
 
                         return token.WithLeadingTrivia(
-                            token.LeadingTrivia.WithoutWhitespace(removeEndOfLineTrivia));
+                          token.LeadingTrivia.WithoutWhitespace(removeEndOfLineTrivia));
                 }
 
                 public static SyntaxTriviaList WithoutWhitespace(
-                    this SyntaxTriviaList syntaxTriviaList,
-                    bool removeEndOfLineTrivia = false) {
+                  this SyntaxTriviaList syntaxTriviaList,
+                  bool removeEndOfLineTrivia = false)
+                {
                         if (syntaxTriviaList.Count == 0) {
                                 return syntaxTriviaList;
                         }
 
                         var trivia =
-                            syntaxTriviaList.Where(i => !i.IsKind(SyntaxKind.WhitespaceTrivia));
+                          syntaxTriviaList.Where(i => !i.IsKind(SyntaxKind.WhitespaceTrivia));
                         if (removeEndOfLineTrivia) {
                                 trivia = trivia.Where(i => !i.IsKind(SyntaxKind.EndOfLineTrivia));
                         }
@@ -44,9 +49,10 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="token">The syntax token to remove trivia from.</param>
                 /// <returns>A copy of the input syntax token with leading and trailing trivia
                 /// removed.</returns>
-                public static SyntaxToken WithoutTrivia(this SyntaxToken token) {
+                public static SyntaxToken WithoutTrivia(this SyntaxToken token)
+                {
                         return token.WithLeadingTrivia(default(SyntaxTriviaList))
-                            .WithTrailingTrivia(default(SyntaxTriviaList));
+                          .WithTrailingTrivia(default(SyntaxTriviaList));
                 }
         }
 }

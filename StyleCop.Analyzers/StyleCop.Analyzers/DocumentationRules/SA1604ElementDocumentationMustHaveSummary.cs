@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System.Collections.Immutable;
         using System.Linq;
         using System.Xml.Linq;
@@ -21,36 +22,36 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// <c>&lt;summary&gt;</c> tag.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1604ElementDocumentationMustHaveSummary : ElementDocumentationSummaryBase {
+        internal class SA1604ElementDocumentationMustHaveSummary : ElementDocumentationSummaryBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1604ElementDocumentationMustHaveSummary"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1604";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1604.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1604.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1604Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1604Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1604MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1604MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1604Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1604Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -58,12 +59,13 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 /// <inheritdoc/>
                 protected override void HandleXmlElement(
-                    SyntaxNodeAnalysisContext context,
-                    bool needsComment,
-                    DocumentationCommentTriviaSyntax documentation,
-                    XmlNodeSyntax syntax,
-                    XElement completeDocumentation,
-                    Location[] diagnosticLocations) {
+                  SyntaxNodeAnalysisContext context,
+                  bool needsComment,
+                  DocumentationCommentTriviaSyntax documentation,
+                  XmlNodeSyntax syntax,
+                  XElement completeDocumentation,
+                  Location[] diagnosticLocations)
+                {
                         if (!needsComment) {
                                 // A missing summary is allowed for this element.
                                 return;
@@ -72,14 +74,13 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         if (completeDocumentation != null) {
                                 // We are working with an <include> element
                                 if (completeDocumentation.Nodes().OfType<XElement>().Any(
-                                        element =>
-                                            element.Name == XmlCommentHelper.SummaryXmlTag)) {
+                                      element => element.Name == XmlCommentHelper.SummaryXmlTag)) {
                                         return;
                                 }
 
                                 if (completeDocumentation.Nodes().OfType<XElement>().Any(
-                                        element =>
-                                            element.Name == XmlCommentHelper.InheritdocXmlTag)) {
+                                      element =>
+                                        element.Name == XmlCommentHelper.InheritdocXmlTag)) {
                                         // Ignore nodes with an <inheritdoc/> tag in the included
                                         // XML.
                                         return;
@@ -90,7 +91,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
 
                                 if (documentation?.Content.GetFirstXmlElement(
-                                        XmlCommentHelper.InheritdocXmlTag) != null) {
+                                      XmlCommentHelper.InheritdocXmlTag) != null) {
                                         // Ignore nodes with an <inheritdoc/> tag.
                                         return;
                                 }

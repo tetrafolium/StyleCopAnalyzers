@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System.Collections.Immutable;
         using System.Linq;
         using System.Xml.Linq;
@@ -25,37 +26,37 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// is empty.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1610PropertyDocumentationMustHaveValueText : PropertyDocumentationBase {
+        internal class SA1610PropertyDocumentationMustHaveValueText : PropertyDocumentationBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1610PropertyDocumentationMustHaveValueText"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1610";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1610.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1610.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1610Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1610Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1610MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1610MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1610Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1610Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -69,13 +70,14 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          bool needsComment,
                                                          XmlNodeSyntax syntax,
                                                          XElement completeDocumentation,
-                                                         Location diagnosticLocation) {
+                                                         Location diagnosticLocation)
+                {
                         var properties = ImmutableDictionary.Create<string, string>();
 
                         if (completeDocumentation != null) {
                                 var valueTag =
-                                    completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
-                                        element => element.Name == XmlCommentHelper.ValueXmlTag);
+                                  completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(
+                                    element => element.Name == XmlCommentHelper.ValueXmlTag);
                                 if (valueTag == null) {
                                         // handled by SA1609
                                         return;
@@ -98,7 +100,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, diagnosticLocation, properties));
+                          Diagnostic.Create(Descriptor, diagnosticLocation, properties));
                 }
         }
 }

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Linq;
@@ -32,7 +33,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// <para>Placeholder elements should be reviewed and removed from documentation.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1651DoNotUsePlaceholderElements : DiagnosticAnalyzer {
+        internal class SA1651DoNotUsePlaceholderElements : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1651DoNotUsePlaceholderElements"/> analyzer.
@@ -45,45 +47,45 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 internal const string NoCodeFixKey = "NoCodeFix";
 
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1651.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1651.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1651Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1651Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1651MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1651MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1651Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1651Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> XmlElementAction =
-                    HandleXmlElement;
+                  HandleXmlElement;
                 private static readonly Action<SyntaxNodeAnalysisContext> XmlEmptyElementAction =
-                    HandleXmlEmptyElement;
+                  HandleXmlEmptyElement;
 
                 private static readonly ImmutableDictionary<string, string> NoCodeFixProperties =
-                    ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
+                  ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -92,59 +94,64 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          SyntaxKind.XmlEmptyElement);
                 }
 
-                private static void HandleXmlElement(SyntaxNodeAnalysisContext context) {
+                private static void HandleXmlElement(SyntaxNodeAnalysisContext context)
+                {
                         XmlElementSyntax syntax = (XmlElementSyntax) context.Node;
                         CheckTag(context, syntax.StartTag?.Name?.ToString());
                 }
 
-                private static void HandleXmlEmptyElement(SyntaxNodeAnalysisContext context) {
+                private static void HandleXmlEmptyElement(SyntaxNodeAnalysisContext context)
+                {
                         XmlEmptyElementSyntax syntax = (XmlEmptyElementSyntax) context.Node;
                         CheckTag(context, syntax.Name?.ToString());
                 }
 
-                private static void CheckTag(SyntaxNodeAnalysisContext context, string tagName) {
-                        if (string.Equals(XmlCommentHelper.IncludeXmlTag, tagName,
-                                          StringComparison.Ordinal)) {
+                private static void CheckTag(SyntaxNodeAnalysisContext context, string tagName)
+                {
+                        if (string.Equals(
+                              XmlCommentHelper.IncludeXmlTag, tagName, StringComparison.Ordinal)) {
                                 if (!IncludedDocumentationContainsPlaceHolderTags(context)) {
                                         return;
                                 }
 
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, context.Node.GetLocation(), NoCodeFixProperties));
+                                  Descriptor, context.Node.GetLocation(), NoCodeFixProperties));
                         } else {
-                                if (!string.Equals(XmlCommentHelper.PlaceholderTag, tagName,
+                                if (!string.Equals(XmlCommentHelper.PlaceholderTag,
+                                                   tagName,
                                                    StringComparison.Ordinal)) {
                                         return;
                                 }
 
                                 context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, context.Node.GetLocation()));
+                                  Diagnostic.Create(Descriptor, context.Node.GetLocation()));
                         }
                 }
 
                 private static bool IncludedDocumentationContainsPlaceHolderTags(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         var memberDeclaration =
-                            context.Node.FirstAncestorOrSelf<MemberDeclarationSyntax>();
+                          context.Node.FirstAncestorOrSelf<MemberDeclarationSyntax>();
                         if (memberDeclaration == null) {
                                 return false;
                         }
 
                         var declaration = context.SemanticModel.GetDeclaredSymbol(
-                            memberDeclaration, context.CancellationToken);
+                          memberDeclaration, context.CancellationToken);
                         if (declaration == null) {
                                 return false;
                         }
 
                         var rawDocumentation =
-                            declaration.GetDocumentationCommentXml(expandIncludes
-                                                                   : true, cancellationToken
-                                                                   : context.CancellationToken);
+                          declaration.GetDocumentationCommentXml(expandIncludes
+                                                                 : true, cancellationToken
+                                                                 : context.CancellationToken);
                         var completeDocumentation =
-                            XElement.Parse(rawDocumentation, LoadOptions.None);
+                          XElement.Parse(rawDocumentation, LoadOptions.None);
                         return completeDocumentation.DescendantNodesAndSelf()
-                            .OfType<XElement>()
-                            .Any(element => element.Name == XmlCommentHelper.PlaceholderTag);
+                          .OfType<XElement>()
+                          .Any(element => element.Name == XmlCommentHelper.PlaceholderTag);
                 }
         }
 }

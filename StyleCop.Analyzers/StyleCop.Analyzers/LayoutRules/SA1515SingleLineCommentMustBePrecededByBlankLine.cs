@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.LayoutRules {
+namespace StyleCop.Analyzers.LayoutRules
+{
         using System;
         using System.Collections.Generic;
         using System.Collections.Immutable;
@@ -75,58 +76,61 @@ namespace StyleCop.Analyzers.LayoutRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1515SingleLineCommentMustBePrecededByBlankLine : DiagnosticAnalyzer {
+        internal class SA1515SingleLineCommentMustBePrecededByBlankLine : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1515SingleLineCommentMustBePrecededByBlankLine"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1515";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1515.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1515.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1515Title),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1515Title),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1515MessageFormat),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1515MessageFormat),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(LayoutResources.SA1515Description),
-                                                  LayoutResources.ResourceManager,
-                                                  typeof(LayoutResources));
+                  new LocalizableResourceString(nameof(LayoutResources.SA1515Description),
+                                                LayoutResources.ResourceManager,
+                                                typeof(LayoutResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.LayoutRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.LayoutRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                  HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context) {
+                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                {
                         var syntaxRoot = context.Tree.GetRoot(context.CancellationToken);
                         var previousCommentNotOnOwnLine = false;
 
                         foreach (var trivia in syntaxRoot.DescendantTrivia().Where(
-                                     trivia => trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))) {
+                                   trivia => trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))) {
                                 if (trivia.FullSpan.Start == 0) {
                                         // skip the trivia if it is at the start of the file
                                         previousCommentNotOnOwnLine = false;
@@ -142,7 +146,7 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                                 int triviaIndex;
                                 var triviaList =
-                                    TriviaHelper.GetContainingTriviaList(trivia, out triviaIndex);
+                                  TriviaHelper.GetContainingTriviaList(trivia, out triviaIndex);
 
                                 if (!IsOnOwnLine(triviaList, triviaIndex)) {
                                         // ignore comments after other code elements.
@@ -178,17 +182,18 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 }
 
                                 var diagnosticSpan =
-                                    TextSpan.FromBounds(trivia.SpanStart, trivia.SpanStart + 2);
+                                  TextSpan.FromBounds(trivia.SpanStart, trivia.SpanStart + 2);
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, Location.Create(context.Tree, diagnosticSpan)));
+                                  Descriptor, Location.Create(context.Tree, diagnosticSpan)));
                         }
                 }
 
                 private static bool IsOnOwnLine<T>(T triviaList, int triviaIndex) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                  : IReadOnlyList<SyntaxTrivia>
+                {
                         while (triviaIndex >= 0) {
                                 if (triviaList [triviaIndex]
-                                        .IsKind(SyntaxKind.EndOfLineTrivia)) {
+                                      .IsKind(SyntaxKind.EndOfLineTrivia)) {
                                         return true;
                                 }
 
@@ -199,8 +204,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static bool IsPrecededBySingleLineCommentOrDocumentation<T>(
-                    T triviaList,
-                    int triviaIndex) where T : IReadOnlyList<SyntaxTrivia> {
+                  T triviaList,
+                  int triviaIndex) where T : IReadOnlyList<SyntaxTrivia>
+                {
                         var eolCount = 0;
 
                         triviaIndex--;
@@ -229,7 +235,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                 }
 
                 private static bool IsPrecededByBlankLine<T>(T triviaList, int triviaIndex) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                  : IReadOnlyList<SyntaxTrivia>
+                {
                         var eolCount = 0;
                         var index = triviaIndex - 1;
 
@@ -241,7 +248,7 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 }
 
                                 switch (triviaList [index]
-                                            .Kind()) {
+                                          .Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 index--;
                                                 break;
@@ -259,7 +266,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return eolCount >= 2;
                 }
 
-                private static bool IsAtStartOfScope(SyntaxTrivia trivia) {
+                private static bool IsAtStartOfScope(SyntaxTrivia trivia)
+                {
                         var token = trivia.Token;
 
                         if (token.TrailingTrivia.Contains(trivia) &&
@@ -276,11 +284,12 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                 private static bool IsPrecededByDirectiveTrivia<T>(T triviaList,
                                                                    int triviaIndex) where T
-                    : IReadOnlyList<SyntaxTrivia> {
+                  : IReadOnlyList<SyntaxTrivia>
+                {
                         triviaIndex--;
                         while (triviaIndex >= 0) {
                                 switch (triviaList [triviaIndex]
-                                            .Kind()) {
+                                          .Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 triviaIndex--;
                                                 break;

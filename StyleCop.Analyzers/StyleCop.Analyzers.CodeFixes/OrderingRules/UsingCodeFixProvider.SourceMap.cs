@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.OrderingRules {
+namespace StyleCop.Analyzers.OrderingRules
+{
         using System;
         using System.Collections.Generic;
         using System.Collections.Immutable;
@@ -13,7 +14,8 @@ namespace StyleCop.Analyzers.OrderingRules {
         /// <summary>
         /// Implements a code fix for all misaligned using statements.
         /// </summary>
-        internal sealed partial class UsingCodeFixProvider {
+        internal sealed partial class UsingCodeFixProvider
+        {
                 /// <summary>
                 /// Contains a map of the different regions of a source file.
                 /// </summary>
@@ -27,13 +29,15 @@ namespace StyleCop.Analyzers.OrderingRules {
                 /// directives</description></item>
                 /// </list>
                 /// </remarks>
-                private class SourceMap {
+                private class SourceMap
+                {
                         private readonly TreeTextSpan regionRoot;
                         private readonly TreeTextSpan pragmaWarningRoot;
 
                         private SourceMap(TreeTextSpan conditionalRoot,
                                           TreeTextSpan regionRoot,
-                                          TreeTextSpan pragmaWarningRoot) {
+                                          TreeTextSpan pragmaWarningRoot)
+                        {
                                 this.ConditionalRoot = conditionalRoot;
                                 this.regionRoot = regionRoot;
                                 this.pragmaWarningRoot = pragmaWarningRoot;
@@ -55,16 +59,19 @@ namespace StyleCop.Analyzers.OrderingRules {
                         /// the directive trivia information from the passed <paramref
                         /// name="compilationUnit"/>.</returns>
                         internal static SourceMap FromCompilationUnit(
-                            CompilationUnitSyntax compilationUnit) {
+                          CompilationUnitSyntax compilationUnit)
+                        {
                                 TreeTextSpan conditionalRoot;
                                 TreeTextSpan regionRoot;
                                 TreeTextSpan pragmaWarningRoot;
 
-                                BuildDirectiveTriviaMaps(compilationUnit, out conditionalRoot,
-                                                         out regionRoot, out pragmaWarningRoot);
+                                BuildDirectiveTriviaMaps(compilationUnit,
+                                                         out conditionalRoot,
+                                                         out regionRoot,
+                                                         out pragmaWarningRoot);
 
-                                return new SourceMap(conditionalRoot, regionRoot,
-                                                     pragmaWarningRoot);
+                                return new SourceMap(
+                                  conditionalRoot, regionRoot, pragmaWarningRoot);
                         }
 
                         /// <summary>
@@ -72,23 +79,24 @@ namespace StyleCop.Analyzers.OrderingRules {
                         /// </summary>
                         /// <param name="node">The node for which the containing span will be
                         /// determined.</param> <returns>The span that contains the node.</returns>
-                        internal TreeTextSpan GetContainingSpan(SyntaxNode node) {
+                        internal TreeTextSpan GetContainingSpan(SyntaxNode node)
+                        {
                                 var textSpan = node.GetLocation().SourceSpan;
 
                                 var containingSpans =
-                                    this.pragmaWarningRoot.Children
-                                        .Where(child =>(textSpan.Start >= child.Start) &&
-                                                       (textSpan.End <= child.End))
-                                        .ToList();
+                                  this.pragmaWarningRoot.Children
+                                    .Where(child =>(textSpan.Start >= child.Start) &&
+                                                   (textSpan.End <= child.End))
+                                    .ToList();
 
                                 var containingConditionalSpan =
-                                    this.ConditionalRoot.GetContainingSpan(textSpan);
+                                  this.ConditionalRoot.GetContainingSpan(textSpan);
                                 if (containingConditionalSpan != this.ConditionalRoot) {
                                         containingSpans.Add(containingConditionalSpan);
                                 }
 
                                 var containingRegionSpan =
-                                    this.regionRoot.GetContainingSpan(textSpan);
+                                  this.regionRoot.GetContainingSpan(textSpan);
                                 if (containingRegionSpan != this.regionRoot) {
                                         containingSpans.Add(containingRegionSpan);
                                 }
@@ -99,10 +107,10 @@ namespace StyleCop.Analyzers.OrderingRules {
 
                                 for (var i = containingSpans.Count - 1; i > 0; i--) {
                                         if (containingSpans [i]
-                                                .Contains(containingSpans[i - 1])) {
+                                              .Contains(containingSpans[i - 1])) {
                                                 containingSpans.RemoveAt(i);
                                         } else if (containingSpans [i - 1]
-                                                       .Contains(containingSpans[i])) {
+                                                     .Contains(containingSpans[i])) {
                                                 containingSpans.RemoveAt(i - 1);
                                         }
                                 }
@@ -119,17 +127,18 @@ namespace StyleCop.Analyzers.OrderingRules {
                                         newEnd = Math.Min(newEnd, span.End);
                                 }
 
-                                return new TreeTextSpan(newStart, newEnd,
-                                                        ImmutableArray<TreeTextSpan>.Empty);
+                                return new TreeTextSpan(
+                                  newStart, newEnd, ImmutableArray<TreeTextSpan>.Empty);
                         }
 
                         private static void ProcessNodeMembers(
-                            TreeTextSpan.Builder builder,
-                            SyntaxList<MemberDeclarationSyntax> members) {
+                          TreeTextSpan.Builder builder,
+                          SyntaxList<MemberDeclarationSyntax> members)
+                        {
                                 foreach (var namespaceDeclaration in members
-                                             .OfType<NamespaceDeclarationSyntax>()) {
+                                           .OfType<NamespaceDeclarationSyntax>()) {
                                         var childBuilder =
-                                            builder.AddChild(namespaceDeclaration.FullSpan.Start);
+                                          builder.AddChild(namespaceDeclaration.FullSpan.Start);
                                         childBuilder.SetEnd(namespaceDeclaration.FullSpan.End);
 
                                         ProcessNodeMembers(childBuilder,
@@ -138,16 +147,17 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
 
                         private static void BuildDirectiveTriviaMaps(
-                            CompilationUnitSyntax compilationUnit,
-                            out TreeTextSpan conditionalRoot,
-                            out TreeTextSpan regionRoot,
-                            out TreeTextSpan pragmaWarningRoot) {
+                          CompilationUnitSyntax compilationUnit,
+                          out TreeTextSpan conditionalRoot,
+                          out TreeTextSpan regionRoot,
+                          out TreeTextSpan pragmaWarningRoot)
+                        {
                                 var conditionalStack = new Stack<TreeTextSpan.Builder>();
                                 var regionStack = new Stack<TreeTextSpan.Builder>();
                                 var pragmaWarningList = new List<DirectiveTriviaSyntax>();
 
                                 var conditionalBuilder =
-                                    SetupBuilder(compilationUnit, conditionalStack);
+                                  SetupBuilder(compilationUnit, conditionalStack);
                                 var regionBuilder = SetupBuilder(compilationUnit, regionStack);
 
                                 for (var directiveTrivia = compilationUnit.GetFirstDirective();
@@ -163,7 +173,7 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                 case SyntaxKind.ElseDirectiveTrivia:
                                                         var previousSpan = conditionalStack.Pop();
                                                         previousSpan.SetEnd(
-                                                            directiveTrivia.FullSpan.Start);
+                                                          directiveTrivia.FullSpan.Start);
 
                                                         AddNewDirectiveTriviaSpan(conditionalStack,
                                                                                   directiveTrivia);
@@ -195,43 +205,47 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 }
 
                                 conditionalRoot = FinalizeBuilder(
-                                    conditionalBuilder, conditionalStack, compilationUnit.Span.End);
-                                regionRoot = FinalizeBuilder(regionBuilder, regionStack,
-                                                             compilationUnit.Span.End);
+                                  conditionalBuilder, conditionalStack, compilationUnit.Span.End);
+                                regionRoot = FinalizeBuilder(
+                                  regionBuilder, regionStack, compilationUnit.Span.End);
                                 pragmaWarningRoot =
-                                    BuildPragmaWarningSpans(pragmaWarningList, compilationUnit);
+                                  BuildPragmaWarningSpans(pragmaWarningList, compilationUnit);
                         }
 
                         private static TreeTextSpan.Builder SetupBuilder(
-                            CompilationUnitSyntax compilationUnit,
-                            Stack<TreeTextSpan.Builder> stack) {
+                          CompilationUnitSyntax compilationUnit,
+                          Stack<TreeTextSpan.Builder> stack)
+                        {
                                 var rootBuilder =
-                                    TreeTextSpan.CreateBuilder(compilationUnit.SpanStart);
+                                  TreeTextSpan.CreateBuilder(compilationUnit.SpanStart);
                                 stack.Push(rootBuilder);
 
                                 return rootBuilder;
                         }
 
                         private static void AddNewDirectiveTriviaSpan(
-                            Stack<TreeTextSpan.Builder> spanStack,
-                            DirectiveTriviaSyntax directiveTrivia) {
+                          Stack<TreeTextSpan.Builder> spanStack,
+                          DirectiveTriviaSyntax directiveTrivia)
+                        {
                                 var parent = spanStack.Peek();
                                 var newDirectiveSpan =
-                                    parent.AddChild(directiveTrivia.FullSpan.Start);
+                                  parent.AddChild(directiveTrivia.FullSpan.Start);
                                 spanStack.Push(newDirectiveSpan);
                         }
 
                         private static void CloseDirectiveTriviaSpan(
-                            Stack<TreeTextSpan.Builder> spanStack,
-                            DirectiveTriviaSyntax directiveTrivia) {
+                          Stack<TreeTextSpan.Builder> spanStack,
+                          DirectiveTriviaSyntax directiveTrivia)
+                        {
                                 var previousSpan = spanStack.Pop();
                                 previousSpan.SetEnd(directiveTrivia.FullSpan.End);
                         }
 
                         private static TreeTextSpan FinalizeBuilder(
-                            TreeTextSpan.Builder builder,
-                            Stack<TreeTextSpan.Builder> stack,
-                            int end) {
+                          TreeTextSpan.Builder builder,
+                          Stack<TreeTextSpan.Builder> stack,
+                          int end)
+                        {
                                 // close all spans (including the root) that have not been closed
                                 // yet
                                 while (stack.Count > 0) {
@@ -247,14 +261,15 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
 
                         private static TreeTextSpan BuildPragmaWarningSpans(
-                            List<DirectiveTriviaSyntax> pragmaWarningList,
-                            CompilationUnitSyntax compilationUnit) {
+                          List<DirectiveTriviaSyntax> pragmaWarningList,
+                          CompilationUnitSyntax compilationUnit)
+                        {
                                 var map =
-                                    new Dictionary<string, PragmaWarningDirectiveTriviaSyntax>();
+                                  new Dictionary<string, PragmaWarningDirectiveTriviaSyntax>();
                                 var builder = TreeTextSpan.CreateBuilder(compilationUnit.SpanStart);
 
                                 foreach (var pragmaWarning in pragmaWarningList
-                                             .Cast<PragmaWarningDirectiveTriviaSyntax>()) {
+                                           .Cast<PragmaWarningDirectiveTriviaSyntax>()) {
                                         var errorCodes = GetErrorCodes(pragmaWarning);
 
                                         switch (pragmaWarning.DisableOrRestoreKeyword.Kind()) {
@@ -265,7 +280,7 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                                         // warning isn't disabled
                                                                         // already
                                                                         map[errorCode] =
-                                                                            pragmaWarning;
+                                                                          pragmaWarning;
                                                                 }
                                                         }
 
@@ -274,20 +289,19 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                 case SyntaxKind.RestoreKeyword:
                                                         foreach (var errorCode in errorCodes) {
                                                                 PragmaWarningDirectiveTriviaSyntax
-                                                                    startOfSpan;
+                                                                  startOfSpan;
 
                                                                 if (map.TryGetValue(
-                                                                        errorCode,
-                                                                        out startOfSpan)) {
+                                                                      errorCode, out startOfSpan)) {
                                                                         map.Remove(errorCode);
 
                                                                         var childSpan =
-                                                                            builder.AddChild(
-                                                                                startOfSpan.FullSpan
-                                                                                    .Start);
+                                                                          builder.AddChild(
+                                                                            startOfSpan.FullSpan
+                                                                              .Start);
                                                                         childSpan.SetEnd(
-                                                                            pragmaWarning.FullSpan
-                                                                                .End);
+                                                                          pragmaWarning.FullSpan
+                                                                            .End);
                                                                 }
                                                         }
 
@@ -299,7 +313,7 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 // not been closed.
                                 foreach (var pragmaWarning in map.Values) {
                                         var childSpan =
-                                            builder.AddChild(pragmaWarning.FullSpan.Start);
+                                          builder.AddChild(pragmaWarning.FullSpan.Start);
                                         childSpan.SetEnd(compilationUnit.FullSpan.End);
                                 }
 
@@ -308,11 +322,12 @@ namespace StyleCop.Analyzers.OrderingRules {
                         }
 
                         private static List<string> GetErrorCodes(
-                            PragmaWarningDirectiveTriviaSyntax pragmaWarningDirectiveTrivia) {
+                          PragmaWarningDirectiveTriviaSyntax pragmaWarningDirectiveTrivia)
+                        {
                                 return pragmaWarningDirectiveTrivia.ErrorCodes
-                                    .OfType<IdentifierNameSyntax>()
-                                    .Select(x => x.Identifier.ValueText)
-                                    .ToList();
+                                  .OfType<IdentifierNameSyntax>()
+                                  .Select(x => x.Identifier.ValueText)
+                                  .ToList();
                         }
                 }
         }

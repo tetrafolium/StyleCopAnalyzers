@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace LightJson.Serialization {
+namespace LightJson.Serialization
+{
         using System;
         using System.Collections.Generic;
         using System.Diagnostics;
@@ -12,7 +13,8 @@ namespace LightJson.Serialization {
         /// <summary>
         /// Represents a writer that can write string representations of JsonValues.
         /// </summary>
-        internal sealed class JsonWriter : IDisposable {
+        internal sealed class JsonWriter : IDisposable
+        {
                 private int indent;
                 private bool isNewLine;
                 private TextWriter writer;
@@ -27,7 +29,9 @@ namespace LightJson.Serialization {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonWriter"/> class.
                 /// </summary>
-                public JsonWriter() : this(false) {}
+                public JsonWriter()
+                  : this(false)
+                {}
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="JsonWriter"/> class.
@@ -35,7 +39,8 @@ namespace LightJson.Serialization {
                 /// <param name="pretty">
                 /// A value indicating whether the output of the writer should be human-readable.
                 /// </param>
-                public JsonWriter(bool pretty) {
+                public JsonWriter(bool pretty)
+                {
                         if (pretty) {
                                 this.IndentString = "\t";
                                 this.SpacingString = " ";
@@ -49,7 +54,8 @@ namespace LightJson.Serialization {
                 /// <value>
                 /// The string representing a indent in the output.
                 /// </value>
-                public string IndentString {
+                public string IndentString
+                {
                         get;
                         set;
                 }
@@ -60,7 +66,8 @@ namespace LightJson.Serialization {
                 /// <value>
                 /// The string representing a space in the output.
                 /// </value>
-                public string SpacingString {
+                public string SpacingString
+                {
                         get;
                         set;
                 }
@@ -71,7 +78,8 @@ namespace LightJson.Serialization {
                 /// <value>
                 /// The string representing a new line on the output.
                 /// </value>
-                public string NewLineString {
+                public string NewLineString
+                {
                         get;
                         set;
                 }
@@ -84,7 +92,8 @@ namespace LightJson.Serialization {
                 /// A value indicating whether JsonObject properties should be written in a
                 /// deterministic order.
                 /// </value>
-                public bool SortObjects {
+                public bool SortObjects
+                {
                         get;
                         set;
                 }
@@ -94,7 +103,8 @@ namespace LightJson.Serialization {
                 /// </summary>
                 /// <param name="jsonValue">The JsonValue to serialize.</param>
                 /// <returns>The serialized value.</returns>
-                public string Serialize(JsonValue jsonValue) {
+                public string Serialize(JsonValue jsonValue)
+                {
                         this.Initialize();
 
                         this.Render(jsonValue);
@@ -105,20 +115,23 @@ namespace LightJson.Serialization {
                 /// <summary>
                 /// Releases all the resources used by this object.
                 /// </summary>
-                public void Dispose() {
+                public void Dispose()
+                {
                         if (this.writer != null) {
                                 this.writer.Dispose();
                         }
                 }
 
-                private void Initialize() {
+                private void Initialize()
+                {
                         this.indent = 0;
                         this.isNewLine = true;
                         this.writer = new StringWriter();
                         this.renderingCollections = new HashSet<IEnumerable<JsonValue>>();
                 }
 
-                private void Write(string text) {
+                private void Write(string text)
+                {
                         if (this.isNewLine) {
                                 this.isNewLine = false;
                                 this.WriteIndentation();
@@ -127,7 +140,8 @@ namespace LightJson.Serialization {
                         this.writer.Write(text);
                 }
 
-                private void WriteEncodedJsonValue(JsonValue value) {
+                private void WriteEncodedJsonValue(JsonValue value)
+                {
                         switch (value.Type) {
                                 case JsonValueType.Null:
                                         this.Write("null");
@@ -138,8 +152,8 @@ namespace LightJson.Serialization {
                                         break;
 
                                 case JsonValueType.Number:
-                                        this.Write(((double) value)
-                                                       .ToString(CultureInfo.InvariantCulture));
+                                        this.Write(
+                                          ((double) value).ToString(CultureInfo.InvariantCulture));
                                         break;
 
                                 default:
@@ -150,7 +164,8 @@ namespace LightJson.Serialization {
                         }
                 }
 
-                private void WriteEncodedString(string text) {
+                private void WriteEncodedString(string text)
+                {
                         this.Write("\"");
 
                         for (int i = 0; i < text.Length; i += 1) {
@@ -199,7 +214,8 @@ namespace LightJson.Serialization {
                         this.writer.Write("\"");
                 }
 
-                private void WriteIndentation() {
+                private void WriteIndentation()
+                {
                         for (var i = 0; i < this.indent; i += 1) {
                                 this.Write(this.IndentString);
                         }
@@ -207,27 +223,32 @@ namespace LightJson.Serialization {
 
                 private void WriteSpacing() { this.Write(this.SpacingString); }
 
-                private void WriteLine() {
+                private void WriteLine()
+                {
                         this.Write(this.NewLineString);
                         this.isNewLine = true;
                 }
 
-                private void WriteLine(string line) {
+                private void WriteLine(string line)
+                {
                         this.Write(line);
                         this.WriteLine();
                 }
 
-                private void AddRenderingCollection(IEnumerable<JsonValue> value) {
+                private void AddRenderingCollection(IEnumerable<JsonValue> value)
+                {
                         if (!this.renderingCollections.Add(value)) {
                                 throw new JsonSerializationException(ErrorType.CircularReference);
                         }
                 }
 
-                private void RemoveRenderingCollection(IEnumerable<JsonValue> value) {
+                private void RemoveRenderingCollection(IEnumerable<JsonValue> value)
+                {
                         this.renderingCollections.Remove(value);
                 }
 
-                private void Render(JsonValue value) {
+                private void Render(JsonValue value)
+                {
                         switch (value.Type) {
                                 case JsonValueType.Null:
                                 case JsonValueType.Boolean:
@@ -246,18 +267,20 @@ namespace LightJson.Serialization {
 
                                 default:
                                         throw new JsonSerializationException(
-                                            ErrorType.InvalidValueType);
+                                          ErrorType.InvalidValueType);
                         }
                 }
 
-                private void Render(JsonArray value) {
+                private void Render(JsonArray value)
+                {
                         this.AddRenderingCollection(value);
 
                         this.WriteLine("[");
 
                         this.indent += 1;
 
-                        using(var enumerator = value.GetEnumerator()) {
+                        using(var enumerator = value.GetEnumerator())
+                        {
                                 var hasNext = enumerator.MoveNext();
 
                                 while (hasNext) {
@@ -280,14 +303,16 @@ namespace LightJson.Serialization {
                         this.RemoveRenderingCollection(value);
                 }
 
-                private void Render(JsonObject value) {
+                private void Render(JsonObject value)
+                {
                         this.AddRenderingCollection(value);
 
                         this.WriteLine("{");
 
                         this.indent += 1;
 
-                        using(var enumerator = this.GetJsonObjectEnumerator(value)) {
+                        using(var enumerator = this.GetJsonObjectEnumerator(value))
+                        {
                                 var hasNext = enumerator.MoveNext();
 
                                 while (hasNext) {
@@ -322,10 +347,11 @@ namespace LightJson.Serialization {
                 /// <returns>An enumerator for the properties in a <see
                 /// cref="JsonObject"/>.</returns>
                 private IEnumerator<KeyValuePair<string, JsonValue>> GetJsonObjectEnumerator(
-                    JsonObject jsonObject) {
+                  JsonObject jsonObject)
+                {
                         if (this.SortObjects) {
                                 var sortedDictionary =
-                                    new SortedDictionary<string, JsonValue>(StringComparer.Ordinal);
+                                  new SortedDictionary<string, JsonValue>(StringComparer.Ordinal);
 
                                 foreach (var item in jsonObject) {
                                         sortedDictionary.Add(item.Key, item.Value);

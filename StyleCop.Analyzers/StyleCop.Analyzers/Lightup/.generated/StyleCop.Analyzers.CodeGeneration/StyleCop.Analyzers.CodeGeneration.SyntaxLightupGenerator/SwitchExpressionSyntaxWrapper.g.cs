@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -9,151 +10,165 @@ namespace StyleCop.Analyzers.Lightup {
         using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         internal readonly partial struct SwitchExpressionSyntaxWrapper
-            : ISyntaxWrapper<ExpressionSyntax> {
+          : ISyntaxWrapper<ExpressionSyntax>
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.CSharp.Syntax.SwitchExpressionSyntax";
+                  "Microsoft.CodeAnalysis.CSharp.Syntax.SwitchExpressionSyntax";
                 private static readonly Type WrappedType;
 
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax>
-                    GoverningExpressionAccessor;
+                  GoverningExpressionAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken> SwitchKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken> OpenBraceTokenAccessor;
                 private static readonly
-                    Func<ExpressionSyntax,
-                         SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>> ArmsAccessor;
+                  Func<ExpressionSyntax,
+                       SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>> ArmsAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken> CloseBraceTokenAccessor;
                 private static readonly Func<ExpressionSyntax, ExpressionSyntax, ExpressionSyntax>
-                    WithGoverningExpressionAccessor;
+                  WithGoverningExpressionAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                    WithSwitchKeywordAccessor;
+                  WithSwitchKeywordAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                    WithOpenBraceTokenAccessor;
+                  WithOpenBraceTokenAccessor;
                 private static readonly
-                    Func<ExpressionSyntax,
-                         SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>,
-                         ExpressionSyntax> WithArmsAccessor;
+                  Func<ExpressionSyntax,
+                       SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>,
+                       ExpressionSyntax> WithArmsAccessor;
                 private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax>
-                    WithCloseBraceTokenAccessor;
+                  WithCloseBraceTokenAccessor;
 
                 private readonly ExpressionSyntax node;
 
-                static SwitchExpressionSyntaxWrapper() {
-                        WrappedType = SyntaxWrapperHelper.GetWrappedType(
-                            typeof(SwitchExpressionSyntaxWrapper));
+                static SwitchExpressionSyntaxWrapper()
+                {
+                        WrappedType =
+                          SyntaxWrapperHelper.GetWrappedType(typeof(SwitchExpressionSyntaxWrapper));
                         GoverningExpressionAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
-                                    WrappedType, nameof(GoverningExpression));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                              WrappedType, nameof(GoverningExpression));
                         SwitchKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(SwitchKeyword));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                              WrappedType, nameof(SwitchKeyword));
                         OpenBraceTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(OpenBraceToken));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                              WrappedType, nameof(OpenBraceToken));
                         ArmsAccessor = LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<
-                            ExpressionSyntax, SwitchExpressionArmSyntaxWrapper>(WrappedType,
-                                                                                nameof(Arms));
+                          ExpressionSyntax,
+                          SwitchExpressionArmSyntaxWrapper>(WrappedType, nameof(Arms));
                         CloseBraceTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(CloseBraceToken));
+                          LightupHelpers
+                            .CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                              WrappedType, nameof(CloseBraceToken));
                         WithGoverningExpressionAccessor =
-                            LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax,
-                                                                            ExpressionSyntax>(
-                                WrappedType, nameof(GoverningExpression));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                              WrappedType, nameof(GoverningExpression));
                         WithSwitchKeywordAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(SwitchKeyword));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                              WrappedType, nameof(SwitchKeyword));
                         WithOpenBraceTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(OpenBraceToken));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                              WrappedType, nameof(OpenBraceToken));
                         WithArmsAccessor =
-                            LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
-                                ExpressionSyntax, SwitchExpressionArmSyntaxWrapper>(WrappedType,
-                                                                                    nameof(Arms));
+                          LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<
+                            ExpressionSyntax,
+                            SwitchExpressionArmSyntaxWrapper>(WrappedType, nameof(Arms));
                         WithCloseBraceTokenAccessor =
-                            LightupHelpers
-                                .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
-                                    WrappedType, nameof(CloseBraceToken));
+                          LightupHelpers
+                            .CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                              WrappedType, nameof(CloseBraceToken));
                 }
 
                 private SwitchExpressionSyntaxWrapper(ExpressionSyntax node) { this.node = node; }
 
                 public ExpressionSyntax SyntaxNode => this.node;
 
-                public ExpressionSyntax GoverningExpression {
+                public ExpressionSyntax GoverningExpression
+                {
                         get { return GoverningExpressionAccessor(this.SyntaxNode); }
                 }
 
-                public SyntaxToken SwitchKeyword {
+                public SyntaxToken SwitchKeyword
+                {
                         get { return SwitchKeywordAccessor(this.SyntaxNode); }
                 }
 
-                public SyntaxToken OpenBraceToken {
+                public SyntaxToken OpenBraceToken
+                {
                         get { return OpenBraceTokenAccessor(this.SyntaxNode); }
                 }
 
-                public SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper> Arms {
+                public SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper> Arms
+                {
                         get { return ArmsAccessor(this.SyntaxNode); }
                 }
 
-                public SyntaxToken CloseBraceToken {
+                public SyntaxToken CloseBraceToken
+                {
                         get { return CloseBraceTokenAccessor(this.SyntaxNode); }
                 }
 
-                public static explicit operator SwitchExpressionSyntaxWrapper(SyntaxNode node) {
+                public static explicit operator SwitchExpressionSyntaxWrapper(SyntaxNode node)
+                {
                         if (node == null) {
                                 return default;
                         }
 
                         if (!IsInstance(node)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new SwitchExpressionSyntaxWrapper((ExpressionSyntax) node);
                 }
 
                 public static implicit operator ExpressionSyntax(
-                    SwitchExpressionSyntaxWrapper wrapper) {
+                  SwitchExpressionSyntaxWrapper wrapper)
+                {
                         return wrapper.node;
                 }
 
-                public static bool IsInstance(SyntaxNode node) {
+                public static bool IsInstance(SyntaxNode node)
+                {
                         return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
                 }
 
                 public SwitchExpressionSyntaxWrapper WithGoverningExpression(
-                    ExpressionSyntax governingExpression) {
+                  ExpressionSyntax governingExpression)
+                {
                         return new SwitchExpressionSyntaxWrapper(
-                            WithGoverningExpressionAccessor(this.SyntaxNode, governingExpression));
+                          WithGoverningExpressionAccessor(this.SyntaxNode, governingExpression));
                 }
 
-                public SwitchExpressionSyntaxWrapper WithSwitchKeyword(SyntaxToken switchKeyword) {
+                public SwitchExpressionSyntaxWrapper WithSwitchKeyword(SyntaxToken switchKeyword)
+                {
                         return new SwitchExpressionSyntaxWrapper(
-                            WithSwitchKeywordAccessor(this.SyntaxNode, switchKeyword));
+                          WithSwitchKeywordAccessor(this.SyntaxNode, switchKeyword));
                 }
 
-                public SwitchExpressionSyntaxWrapper WithOpenBraceToken(
-                    SyntaxToken openBraceToken) {
+                public SwitchExpressionSyntaxWrapper WithOpenBraceToken(SyntaxToken openBraceToken)
+                {
                         return new SwitchExpressionSyntaxWrapper(
-                            WithOpenBraceTokenAccessor(this.SyntaxNode, openBraceToken));
+                          WithOpenBraceTokenAccessor(this.SyntaxNode, openBraceToken));
                 }
 
                 public SwitchExpressionSyntaxWrapper WithArms(
-                    SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper> arms) {
+                  SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper> arms)
+                {
                         return new SwitchExpressionSyntaxWrapper(
-                            WithArmsAccessor(this.SyntaxNode, arms));
+                          WithArmsAccessor(this.SyntaxNode, arms));
                 }
 
                 public SwitchExpressionSyntaxWrapper WithCloseBraceToken(
-                    SyntaxToken closeBraceToken) {
+                  SyntaxToken closeBraceToken)
+                {
                         return new SwitchExpressionSyntaxWrapper(
-                            WithCloseBraceTokenAccessor(this.SyntaxNode, closeBraceToken));
+                          WithCloseBraceTokenAccessor(this.SyntaxNode, closeBraceToken));
                 }
         }
 }

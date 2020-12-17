@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -12,7 +13,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         using StyleCop.Analyzers.Lightup;
 
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1141UseTupleSyntax : DiagnosticAnalyzer {
+        internal class SA1141UseTupleSyntax : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see cref="SA1141UseTupleSyntax"/>
                 /// analyzer.
@@ -20,59 +22,60 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 public const string DiagnosticId = "SA1141";
 
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1141.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1141.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1141Title),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1141Title),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1141MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1141MessageFormat),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1141Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1141Description),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
 
                 private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction =
-                    HandleMethodDeclaration;
+                  HandleMethodDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> ConversionOperatorAction =
-                    HandleConversionOperator;
+                  HandleConversionOperator;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    PropertyDeclarationAction = HandleBasePropertyDeclaration;
+                  PropertyDeclarationAction = HandleBasePropertyDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction =
-                    HandleBasePropertyDeclaration;
+                  HandleBasePropertyDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ObjectCreationExpressionAction = HandleObjectCreationExpression;
+                  ObjectCreationExpressionAction = HandleObjectCreationExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    InvocationExpressionAction = HandleInvocationExpression;
+                  InvocationExpressionAction = HandleInvocationExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext> DefaultExpressionAction =
-                    HandleDefaultExpression;
+                  HandleDefaultExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    DelegateDeclarationAction = HandleDelegateDeclaration;
+                  DelegateDeclarationAction = HandleDelegateDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext> CastExpressionAction =
-                    HandleCastExpression;
+                  HandleCastExpression;
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.ReadabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.ReadabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly SymbolDisplayFormat DisplayFormat =
-                    SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(
-                        SymbolDisplayGlobalNamespaceStyle.Omitted);
+                  SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(
+                    SymbolDisplayGlobalNamespaceStyle.Omitted);
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -100,7 +103,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                                                          SyntaxKind.CastExpression);
                 }
 
-                private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -111,20 +115,21 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         CheckParameterList(context, methodDeclaration.ParameterList);
                 }
 
-                private static void HandleConversionOperator(SyntaxNodeAnalysisContext context) {
+                private static void HandleConversionOperator(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
 
                         var conversionOperatorDeclaration =
-                            (ConversionOperatorDeclarationSyntax) context.Node;
+                          (ConversionOperatorDeclarationSyntax) context.Node;
 
                         CheckType(context, conversionOperatorDeclaration.Type);
                         CheckParameterList(context, conversionOperatorDeclaration.ParameterList);
                 }
 
-                private static void HandleBasePropertyDeclaration(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandleBasePropertyDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -134,18 +139,21 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static void HandleObjectCreationExpression(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
 
                         var objectCreationExpression =
-                            (ObjectCreationExpressionSyntax) context.Node;
-                        CheckType(context, objectCreationExpression.Type,
+                          (ObjectCreationExpressionSyntax) context.Node;
+                        CheckType(context,
+                                  objectCreationExpression.Type,
                                   objectCreationExpression.GetLocation());
                 }
 
-                private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -158,26 +166,27 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         }
 
                         if (!invocationExpression.Expression.IsKind(
-                                SyntaxKind.SimpleMemberAccessExpression)) {
+                              SyntaxKind.SimpleMemberAccessExpression)) {
                                 return;
                         }
 
                         var memberAccessExpression =
-                            (MemberAccessExpressionSyntax) invocationExpression.Expression;
+                          (MemberAccessExpressionSyntax) invocationExpression.Expression;
 
                         var symbolInfo =
-                            context.SemanticModel.GetSymbolInfo(memberAccessExpression.Expression);
+                          context.SemanticModel.GetSymbolInfo(memberAccessExpression.Expression);
                         if ((symbolInfo.Symbol is INamedTypeSymbol namedTypeSymbol) &&
                             (namedTypeSymbol.ToDisplayString(DisplayFormat) ==
                              "System.ValueTuple")) {
                                 if (memberAccessExpression.Name.Identifier.ValueText == "Create") {
                                         context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, memberAccessExpression.GetLocation()));
+                                          Descriptor, memberAccessExpression.GetLocation()));
                                 }
                         }
                 }
 
-                private static void HandleDefaultExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleDefaultExpression(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -186,7 +195,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         CheckType(context, defaultExpression.Type);
                 }
 
-                private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -196,7 +206,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         CheckParameterList(context, delegateDeclaration.ParameterList);
                 }
 
-                private static void HandleCastExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleCastExpression(SyntaxNodeAnalysisContext context)
+                {
                         if (!context.SupportsTuples()) {
                                 return;
                         }
@@ -206,7 +217,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static void CheckParameterList(SyntaxNodeAnalysisContext context,
-                                                       ParameterListSyntax parameterList) {
+                                                       ParameterListSyntax parameterList)
+                {
                         foreach (var parameter in parameterList.Parameters) {
                                 CheckType(context, parameter.Type);
                         }
@@ -214,28 +226,32 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private static void CheckType(SyntaxNodeAnalysisContext context,
                                               TypeSyntax typeSyntax,
-                                              Location reportLocation = null) {
+                                              Location reportLocation = null)
+                {
                         switch (typeSyntax.Kind()) {
                                 case SyntaxKindEx.TupleType:
-                                        CheckTupleType(context, (TupleTypeSyntaxWrapper) typeSyntax,
+                                        CheckTupleType(context,
+                                                       (TupleTypeSyntaxWrapper) typeSyntax,
                                                        reportLocation);
                                         break;
 
                                 case SyntaxKind.QualifiedName:
-                                        CheckType(context, ((QualifiedNameSyntax) typeSyntax).Right,
+                                        CheckType(context,
+                                                  ((QualifiedNameSyntax) typeSyntax).Right,
                                                   reportLocation ?? typeSyntax.GetLocation());
                                         break;
 
                                 case SyntaxKind.GenericName:
-                                        CheckGenericName(context, (GenericNameSyntax) typeSyntax,
-                                                         reportLocation);
+                                        CheckGenericName(
+                                          context, (GenericNameSyntax) typeSyntax, reportLocation);
                                         break;
                         }
                 }
 
                 private static void CheckTupleType(SyntaxNodeAnalysisContext context,
                                                    TupleTypeSyntaxWrapper tupleTypeSyntax,
-                                                   Location reportLocation) {
+                                                   Location reportLocation)
+                {
                         foreach (var tupleElementSyntax in tupleTypeSyntax.Elements) {
                                 CheckType(context, tupleElementSyntax.Type, reportLocation);
                         }
@@ -243,7 +259,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
 
                 private static void CheckGenericName(SyntaxNodeAnalysisContext context,
                                                      GenericNameSyntax genericNameSyntax,
-                                                     Location reportLocation) {
+                                                     Location reportLocation)
+                {
                         if (IsValueTupleWithLanguageRepresentation(context, genericNameSyntax)) {
                                 var location = reportLocation ?? genericNameSyntax.GetLocation();
                                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
@@ -258,10 +275,11 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static bool IsValueTupleWithLanguageRepresentation(
-                    SyntaxNodeAnalysisContext context,
-                    ExpressionSyntax syntax) {
+                  SyntaxNodeAnalysisContext context,
+                  ExpressionSyntax syntax)
+                {
                         var symbolInfo =
-                            context.SemanticModel.GetSymbolInfo(syntax, context.CancellationToken);
+                          context.SemanticModel.GetSymbolInfo(syntax, context.CancellationToken);
                         return symbolInfo.Symbol is INamedTypeSymbol typeSymbol &&
                                typeSymbol.IsTupleType() && typeSymbol.TupleElements().Length > 1;
                 }

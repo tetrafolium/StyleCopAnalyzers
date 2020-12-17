@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.OrderingRules {
+namespace StyleCop.Analyzers.OrderingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -23,7 +24,8 @@ namespace StyleCop.Analyzers.OrderingRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1209UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives
-            : DiagnosticAnalyzer {
+          : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1209UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives"/>
@@ -31,41 +33,42 @@ namespace StyleCop.Analyzers.OrderingRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1209";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1209.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1209.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1209Title),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                  new LocalizableResourceString(nameof(OrderingResources.SA1209Title),
+                                                OrderingResources.ResourceManager,
+                                                typeof(OrderingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1209MessageFormat),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                  new LocalizableResourceString(nameof(OrderingResources.SA1209MessageFormat),
+                                                OrderingResources.ResourceManager,
+                                                typeof(OrderingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1209Description),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                  new LocalizableResourceString(nameof(OrderingResources.SA1209Description),
+                                                OrderingResources.ResourceManager,
+                                                typeof(OrderingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.OrderingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.OrderingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> CompilationUnitAction =
-                    HandleCompilationUnit;
+                  HandleCompilationUnit;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    NamespaceDeclarationAction = HandleNamespaceDeclaration;
+                  NamespaceDeclarationAction = HandleNamespaceDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -75,21 +78,24 @@ namespace StyleCop.Analyzers.OrderingRules {
                                                          SyntaxKind.NamespaceDeclaration);
                 }
 
-                private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context) {
+                private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context)
+                {
                         var compilationUnit = (CompilationUnitSyntax) context.Node;
 
                         ProcessUsingsAndReportDiagnostic(compilationUnit.Usings, context);
                 }
 
-                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var namespaceDeclaration = (NamespaceDeclarationSyntax) context.Node;
 
                         ProcessUsingsAndReportDiagnostic(namespaceDeclaration.Usings, context);
                 }
 
                 private static void ProcessUsingsAndReportDiagnostic(
-                    SyntaxList<UsingDirectiveSyntax> usings,
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxList<UsingDirectiveSyntax> usings,
+                  SyntaxNodeAnalysisContext context)
+                {
                         for (int i = 0; i < usings.Count; i++) {
                                 var usingDirective = usings[i];
                                 var notLastUsingDirective = i + 1 < usings.Count;
@@ -97,11 +103,11 @@ namespace StyleCop.Analyzers.OrderingRules {
                                         var nextUsingDirective = usings[i + 1];
                                         if (nextUsingDirective.Alias == null &&
                                             nextUsingDirective.StaticKeyword.IsKind(
-                                                SyntaxKind.None) &&
+                                              SyntaxKind.None) &&
                                             !nextUsingDirective
-                                                 .IsPrecededByPreprocessorDirective()) {
+                                               .IsPrecededByPreprocessorDirective()) {
                                                 context.ReportDiagnostic(Diagnostic.Create(
-                                                    Descriptor, usingDirective.GetLocation()));
+                                                  Descriptor, usingDirective.GetLocation()));
                                         }
                                 }
                         }

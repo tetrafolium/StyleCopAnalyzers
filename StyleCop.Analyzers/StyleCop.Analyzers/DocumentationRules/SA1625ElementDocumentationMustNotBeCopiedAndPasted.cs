@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Collections.Generic;
         using System.Collections.Immutable;
@@ -60,42 +61,42 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1625ElementDocumentationMustNotBeCopiedAndPasted
-            : ElementDocumentationBase {
+        internal class SA1625ElementDocumentationMustNotBeCopiedAndPasted : ElementDocumentationBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1625ElementDocumentationMustNotBeCopiedAndPasted"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1625";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1625.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1625.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1625Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1625Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1625MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1625MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1625Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1625Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 public SA1625ElementDocumentationMustNotBeCopiedAndPasted()
-                    : base(inheritDocSuppressesWarnings
-                           : false) {}
+                  : base(inheritDocSuppressesWarnings
+                         : false)
+                {}
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -106,29 +107,30 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          StyleCopSettings settings,
                                                          bool needsComment,
                                                          IEnumerable<XmlNodeSyntax> syntaxList,
-                                                         params Location[] diagnosticLocations) {
+                                                         params Location[] diagnosticLocations)
+                {
                         var objectPool = SharedPools.Default<HashSet<string>>();
                         HashSet<string> documentationTexts = objectPool.Allocate();
                         var culture =
-                            new CultureInfo(settings.DocumentationRules.DocumentationCulture);
+                          new CultureInfo(settings.DocumentationRules.DocumentationCulture);
                         var resourceManager = DocumentationResources.ResourceManager;
 
                         foreach (var documentationSyntax in syntaxList) {
                                 var documentation =
-                                    XmlCommentHelper.GetText(documentationSyntax, true) ?.Trim();
+                                  XmlCommentHelper.GetText(documentationSyntax, true) ?.Trim();
 
                                 if (ShouldSkipElement(
-                                        documentation,
-                                        resourceManager.GetString(
-                                            nameof(DocumentationResources.ParameterNotUsed),
-                                            culture))) {
+                                      documentation,
+                                      resourceManager.GetString(
+                                        nameof(DocumentationResources.ParameterNotUsed),
+                                        culture))) {
                                         continue;
                                 }
 
                                 if (documentationTexts.Contains(documentation)) {
                                         // Add violation
                                         context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, documentationSyntax.GetLocation()));
+                                          Descriptor, documentationSyntax.GetLocation()));
                                 } else {
                                         documentationTexts.Add(documentation);
                                 }
@@ -139,46 +141,47 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 /// <inheritdoc/>
                 protected override void HandleCompleteDocumentation(
-                    SyntaxNodeAnalysisContext context,
-                    bool needsComment,
-                    XElement completeDocumentation,
-                    params Location[] diagnosticLocations) {
+                  SyntaxNodeAnalysisContext context,
+                  bool needsComment,
+                  XElement completeDocumentation,
+                  params Location[] diagnosticLocations)
+                {
                         var objectPool = SharedPools.Default<HashSet<string>>();
                         HashSet<string> documentationTexts = objectPool.Allocate();
                         var settings =
-                            context.Options.GetStyleCopSettings(context.CancellationToken);
+                          context.Options.GetStyleCopSettings(context.CancellationToken);
                         var culture =
-                            new CultureInfo(settings.DocumentationRules.DocumentationCulture);
+                          new CultureInfo(settings.DocumentationRules.DocumentationCulture);
                         var resourceManager = DocumentationResources.ResourceManager;
 
                         // Concatenate all XML node values
                         var documentationElements =
-                            completeDocumentation.Nodes().OfType<XElement>().Select(x => {
-                                    var builder = StringBuilderPool.Allocate();
+                          completeDocumentation.Nodes().OfType<XElement>().Select(x => {
+                                  var builder = StringBuilderPool.Allocate();
 
-                                    foreach (var node in x.Nodes()) {
-                                            builder.Append(node.ToString().Trim());
-                                    }
+                                  foreach (var node in x.Nodes()) {
+                                          builder.Append(node.ToString().Trim());
+                                  }
 
-                                    var elementValue = builder.ToString();
-                                    StringBuilderPool.ReturnAndFree(builder);
+                                  var elementValue = builder.ToString();
+                                  StringBuilderPool.ReturnAndFree(builder);
 
-                                    return elementValue;
-                            });
+                                  return elementValue;
+                          });
 
                         foreach (var documentation in documentationElements) {
                                 if (ShouldSkipElement(
-                                        documentation,
-                                        resourceManager.GetString(
-                                            nameof(DocumentationResources.ParameterNotUsed),
-                                            culture))) {
+                                      documentation,
+                                      resourceManager.GetString(
+                                        nameof(DocumentationResources.ParameterNotUsed),
+                                        culture))) {
                                         continue;
                                 }
 
                                 if (documentationTexts.Contains(documentation)) {
                                         // Add violation
                                         context.ReportDiagnostic(Diagnostic.Create(
-                                            Descriptor, diagnosticLocations.First()));
+                                          Descriptor, diagnosticLocations.First()));
                                 } else {
                                         documentationTexts.Add(documentation);
                                 }
@@ -187,7 +190,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         objectPool.ClearAndFree(documentationTexts);
                 }
 
-                private static bool ShouldSkipElement(string element, string parameterNotUsed) {
+                private static bool ShouldSkipElement(string element, string parameterNotUsed)
+                {
                         return string.IsNullOrWhiteSpace(element) ||
                                string.Equals(element, parameterNotUsed, StringComparison.Ordinal);
                 }

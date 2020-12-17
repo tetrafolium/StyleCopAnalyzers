@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -44,7 +45,8 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1003SymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer {
+        internal class SA1003SymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1003SymbolsMustBeSpacedCorrectly"/> analyzer.
@@ -58,120 +60,120 @@ namespace StyleCop.Analyzers.SpacingRules {
                 internal const string RemoveAfterTag = "RemoveAfter";
                 internal const string RemoveEndOfLineTag = "RemoveEndOfLine";
                 internal const string RemoveEndOfLineWithTrailingSpaceTag =
-                    "RemoveEndOfLineWithTrailingSpace";
+                  "RemoveEndOfLineWithTrailingSpace";
 
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1003.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1003.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1003Title),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1003Title),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatNotFollowedByComment =
-                    new LocalizableResourceString(
-                        nameof(SpacingResources.SA1003MessageFormatNotFollowedByComment),
-                        SpacingResources.ResourceManager,
-                        typeof(SpacingResources));
+                  new LocalizableResourceString(
+                    nameof(SpacingResources.SA1003MessageFormatNotFollowedByComment),
+                    SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatPrecededByWhitespace =
-                    new LocalizableResourceString(
-                        nameof(SpacingResources.SA1003MessageFormatPrecededByWhitespace),
-                        SpacingResources.ResourceManager,
-                        typeof(SpacingResources));
+                  new LocalizableResourceString(
+                    nameof(SpacingResources.SA1003MessageFormatPrecededByWhitespace),
+                    SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatNotPrecededByWhitespace =
-                    new LocalizableResourceString(
-                        nameof(SpacingResources.SA1003MessageFormatNotPrecededByWhitespace),
-                        SpacingResources.ResourceManager,
-                        typeof(SpacingResources));
+                  new LocalizableResourceString(
+                    nameof(SpacingResources.SA1003MessageFormatNotPrecededByWhitespace),
+                    SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatFollowedByWhitespace =
-                    new LocalizableResourceString(
-                        nameof(SpacingResources.SA1003MessageFormatFollowedByWhitespace),
-                        SpacingResources.ResourceManager,
-                        typeof(SpacingResources));
+                  new LocalizableResourceString(
+                    nameof(SpacingResources.SA1003MessageFormatFollowedByWhitespace),
+                    SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatNotFollowedByWhitespace =
-                    new LocalizableResourceString(
-                        nameof(SpacingResources.SA1003MessageFormatNotFollowedByWhitespace),
-                        SpacingResources.ResourceManager,
-                        typeof(SpacingResources));
+                  new LocalizableResourceString(
+                    nameof(SpacingResources.SA1003MessageFormatNotFollowedByWhitespace),
+                    SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormatNotAtEndOfLine =
-                    new LocalizableResourceString(
-                        nameof(SpacingResources.SA1003MessageFormatNotAtEndOfLine),
-                        SpacingResources.ResourceManager,
-                        typeof(SpacingResources));
+                  new LocalizableResourceString(
+                    nameof(SpacingResources.SA1003MessageFormatNotAtEndOfLine),
+                    SpacingResources.ResourceManager,
+                    typeof(SpacingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1003Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1003Description),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly ImmutableArray<SyntaxKind> BinaryExpressionKinds =
-                    ImmutableArray.Create(SyntaxKind.CoalesceExpression,
-                                          SyntaxKind.IsExpression,
-                                          SyntaxKind.AsExpression,
-                                          SyntaxKind.BitwiseOrExpression,
-                                          SyntaxKind.ExclusiveOrExpression,
-                                          SyntaxKind.BitwiseAndExpression,
-                                          SyntaxKind.EqualsExpression,
-                                          SyntaxKind.NotEqualsExpression,
-                                          SyntaxKind.LessThanExpression,
-                                          SyntaxKind.LessThanOrEqualExpression,
-                                          SyntaxKind.GreaterThanExpression,
-                                          SyntaxKind.GreaterThanOrEqualExpression,
-                                          SyntaxKind.LeftShiftExpression,
-                                          SyntaxKind.RightShiftExpression,
-                                          SyntaxKind.AddExpression,
-                                          SyntaxKind.SubtractExpression,
-                                          SyntaxKind.MultiplyExpression,
-                                          SyntaxKind.DivideExpression,
-                                          SyntaxKind.ModuloExpression,
-                                          SyntaxKind.LogicalAndExpression,
-                                          SyntaxKind.LogicalOrExpression);
+                  ImmutableArray.Create(SyntaxKind.CoalesceExpression,
+                                        SyntaxKind.IsExpression,
+                                        SyntaxKind.AsExpression,
+                                        SyntaxKind.BitwiseOrExpression,
+                                        SyntaxKind.ExclusiveOrExpression,
+                                        SyntaxKind.BitwiseAndExpression,
+                                        SyntaxKind.EqualsExpression,
+                                        SyntaxKind.NotEqualsExpression,
+                                        SyntaxKind.LessThanExpression,
+                                        SyntaxKind.LessThanOrEqualExpression,
+                                        SyntaxKind.GreaterThanExpression,
+                                        SyntaxKind.GreaterThanOrEqualExpression,
+                                        SyntaxKind.LeftShiftExpression,
+                                        SyntaxKind.RightShiftExpression,
+                                        SyntaxKind.AddExpression,
+                                        SyntaxKind.SubtractExpression,
+                                        SyntaxKind.MultiplyExpression,
+                                        SyntaxKind.DivideExpression,
+                                        SyntaxKind.ModuloExpression,
+                                        SyntaxKind.LogicalAndExpression,
+                                        SyntaxKind.LogicalOrExpression);
 
                 private static readonly ImmutableArray<SyntaxKind> PrefixUnaryExpressionKinds =
-                    ImmutableArray.Create(SyntaxKind.UnaryPlusExpression,
-                                          SyntaxKind.UnaryMinusExpression,
-                                          SyntaxKind.BitwiseNotExpression,
-                                          SyntaxKind.LogicalNotExpression,
-                                          SyntaxKind.PreIncrementExpression,
-                                          SyntaxKind.PreDecrementExpression,
-                                          SyntaxKind.AddressOfExpression);
+                  ImmutableArray.Create(SyntaxKind.UnaryPlusExpression,
+                                        SyntaxKind.UnaryMinusExpression,
+                                        SyntaxKind.BitwiseNotExpression,
+                                        SyntaxKind.LogicalNotExpression,
+                                        SyntaxKind.PreIncrementExpression,
+                                        SyntaxKind.PreDecrementExpression,
+                                        SyntaxKind.AddressOfExpression);
 
                 private static readonly ImmutableArray<SyntaxKind> PostfixUnaryExpressionKinds =
-                    ImmutableArray.Create(SyntaxKind.PostIncrementExpression,
-                                          SyntaxKind.PostDecrementExpression);
+                  ImmutableArray.Create(SyntaxKind.PostIncrementExpression,
+                                        SyntaxKind.PostDecrementExpression);
 
                 private static readonly ImmutableArray<SyntaxKind> AssignmentExpressionKinds =
-                    ImmutableArray.Create(SyntaxKind.OrAssignmentExpression,
-                                          SyntaxKind.AndAssignmentExpression,
-                                          SyntaxKind.ExclusiveOrAssignmentExpression,
-                                          SyntaxKind.LeftShiftAssignmentExpression,
-                                          SyntaxKind.RightShiftAssignmentExpression,
-                                          SyntaxKind.AddAssignmentExpression,
-                                          SyntaxKind.SubtractAssignmentExpression,
-                                          SyntaxKind.MultiplyAssignmentExpression,
-                                          SyntaxKind.DivideAssignmentExpression,
-                                          SyntaxKind.ModuloAssignmentExpression,
-                                          SyntaxKind.SimpleAssignmentExpression);
+                  ImmutableArray.Create(SyntaxKind.OrAssignmentExpression,
+                                        SyntaxKind.AndAssignmentExpression,
+                                        SyntaxKind.ExclusiveOrAssignmentExpression,
+                                        SyntaxKind.LeftShiftAssignmentExpression,
+                                        SyntaxKind.RightShiftAssignmentExpression,
+                                        SyntaxKind.AddAssignmentExpression,
+                                        SyntaxKind.SubtractAssignmentExpression,
+                                        SyntaxKind.MultiplyAssignmentExpression,
+                                        SyntaxKind.DivideAssignmentExpression,
+                                        SyntaxKind.ModuloAssignmentExpression,
+                                        SyntaxKind.SimpleAssignmentExpression);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ConstructorDeclarationAction = HandleConstructorDeclaration;
+                  ConstructorDeclarationAction = HandleConstructorDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ConditionalExpressionAction = HandleConditionalExpression;
+                  ConditionalExpressionAction = HandleConditionalExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    TypeParameterConstraintClauseAction = HandleTypeParameterConstraintClause;
+                  TypeParameterConstraintClauseAction = HandleTypeParameterConstraintClause;
                 private static readonly Action<SyntaxNodeAnalysisContext> BinaryExpressionAction =
-                    HandleBinaryExpression;
+                  HandleBinaryExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    PrefixUnaryExpressionAction = HandlePrefixUnaryExpression;
+                  PrefixUnaryExpressionAction = HandlePrefixUnaryExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    PostfixUnaryExpressionAction = HandlePostfixUnaryExpression;
+                  PostfixUnaryExpressionAction = HandlePostfixUnaryExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    AssignmentExpressionAction = HandleAssignmentExpression;
+                  AssignmentExpressionAction = HandleAssignmentExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext> CastExpressionAction =
-                    HandleCastExpression;
+                  HandleCastExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext> EqualsValueClauseAction =
-                    HandleEqualsValueClause;
+                  HandleEqualsValueClause;
                 private static readonly Action<SyntaxNodeAnalysisContext> LambdaExpressionAction =
-                    HandleLambdaExpression;
+                  HandleLambdaExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ArrowExpressionClauseAction = HandleArrowExpressionClause;
+                  ArrowExpressionClauseAction = HandleArrowExpressionClause;
 
                 /// <summary>
                 /// Gets the descriptor for prefix unary expression that may not be followed by a
@@ -280,7 +282,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 = ImmutableArray.Create(DescriptorPrecededByWhitespace);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -308,18 +311,22 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                          SyntaxKind.ArrowExpressionClause);
                 }
 
-                private static void HandleConstructorDeclaration(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var constructorDeclaration = (ConstructorDeclarationSyntax) context.Node;
                         if (constructorDeclaration.Initializer == null) {
                                 return;
                         }
 
-                        CheckToken(context, constructorDeclaration.Initializer.ColonToken, true,
-                                   false, true);
+                        CheckToken(context,
+                                   constructorDeclaration.Initializer.ColonToken,
+                                   true,
+                                   false,
+                                   true);
                 }
 
-                private static void HandleConditionalExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleConditionalExpression(SyntaxNodeAnalysisContext context)
+                {
                         var conditionalExpression = (ConditionalExpressionSyntax) context.Node;
 
                         CheckToken(context, conditionalExpression.QuestionToken, true, true, true);
@@ -327,26 +334,29 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static void HandleTypeParameterConstraintClause(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         var typeParameterConstraint =
-                            (TypeParameterConstraintClauseSyntax) context.Node;
+                          (TypeParameterConstraintClauseSyntax) context.Node;
 
                         CheckToken(context, typeParameterConstraint.ColonToken, true, true, true);
                 }
 
-                private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context)
+                {
                         var binaryExpression = (BinaryExpressionSyntax) context.Node;
 
                         CheckToken(context, binaryExpression.OperatorToken, true, true, true);
                 }
 
-                private static void HandlePrefixUnaryExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandlePrefixUnaryExpression(SyntaxNodeAnalysisContext context)
+                {
                         var unaryExpression = (PrefixUnaryExpressionSyntax) context.Node;
                         var precedingToken = unaryExpression.OperatorToken.GetPreviousToken();
                         var followingToken = unaryExpression.OperatorToken.GetNextToken();
                         var followingTrivia = TriviaHelper.MergeTriviaLists(
-                            unaryExpression.OperatorToken.TrailingTrivia,
-                            followingToken.LeadingTrivia);
+                          unaryExpression.OperatorToken.TrailingTrivia,
+                          followingToken.LeadingTrivia);
 
                         /* let the outer operator handle things like the following, so no error is
                          * reported for '++': c ^= *++buf4;
@@ -355,12 +365,12 @@ namespace StyleCop.Analyzers.SpacingRules {
                          * be no leading space
                          */
                         var mustHaveLeadingWhitespace =
-                            !(unaryExpression.Parent is PrefixUnaryExpressionSyntax) &&
-                            !(unaryExpression.Parent is CastExpressionSyntax) &&
-                            !precedingToken.IsKind(SyntaxKind.OpenParenToken) &&
-                            !precedingToken.IsKind(SyntaxKind.OpenBracketToken) &&
-                            !(precedingToken.IsKind(SyntaxKind.OpenBraceToken) &&
-                              (precedingToken.Parent is InterpolationSyntax));
+                          !(unaryExpression.Parent is PrefixUnaryExpressionSyntax) &&
+                          !(unaryExpression.Parent is CastExpressionSyntax) &&
+                          !precedingToken.IsKind(SyntaxKind.OpenParenToken) &&
+                          !precedingToken.IsKind(SyntaxKind.OpenBracketToken) &&
+                          !(precedingToken.IsKind(SyntaxKind.OpenBraceToken) &&
+                            (precedingToken.Parent is InterpolationSyntax));
 
                         bool analyze;
                         switch (unaryExpression.OperatorToken.Kind()) {
@@ -381,18 +391,21 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 if (followingTrivia.Any(SyntaxKind.SingleLineCommentTrivia) ||
                                     followingTrivia.Any(SyntaxKind.MultiLineCommentTrivia)) {
                                         context.ReportDiagnostic(Diagnostic.Create(
-                                            DescriptorNotFollowedByComment,
-                                            unaryExpression.OperatorToken.GetLocation(),
-                                            unaryExpression.OperatorToken.Text));
+                                          DescriptorNotFollowedByComment,
+                                          unaryExpression.OperatorToken.GetLocation(),
+                                          unaryExpression.OperatorToken.Text));
                                 } else {
-                                        CheckToken(context, unaryExpression.OperatorToken,
-                                                   mustHaveLeadingWhitespace, false, false);
+                                        CheckToken(context,
+                                                   unaryExpression.OperatorToken,
+                                                   mustHaveLeadingWhitespace,
+                                                   false,
+                                                   false);
                                 }
                         }
                 }
 
-                private static void HandlePostfixUnaryExpression(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandlePostfixUnaryExpression(SyntaxNodeAnalysisContext context)
+                {
                         var unaryExpression = (PostfixUnaryExpressionSyntax) context.Node;
                         var followingToken = unaryExpression.OperatorToken.GetNextToken();
 
@@ -409,19 +422,18 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                                 case SyntaxKind.QuestionToken:
                                         mustHaveTrailingWhitespace =
-                                            !(followingToken.Parent is
-                                                  ConditionalAccessExpressionSyntax);
+                                          !(followingToken.Parent is
+                                              ConditionalAccessExpressionSyntax);
                                         break;
 
                                 case SyntaxKind.CloseBraceToken:
                                         mustHaveTrailingWhitespace =
-                                            !(followingToken.Parent is InterpolationSyntax);
+                                          !(followingToken.Parent is InterpolationSyntax);
                                         break;
 
                                 case SyntaxKind.ColonToken:
-                                        mustHaveTrailingWhitespace =
-                                            !(followingToken.Parent is
-                                                  InterpolationFormatClauseSyntax);
+                                        mustHaveTrailingWhitespace = !(
+                                          followingToken.Parent is InterpolationFormatClauseSyntax);
                                         break;
 
                                 default:
@@ -433,52 +445,68 @@ namespace StyleCop.Analyzers.SpacingRules {
                         // creation or an initialization. Then we allow a new line
                         bool allowEndOfLine = followingToken.IsKind(SyntaxKind.CloseBraceToken);
 
-                        CheckToken(context, unaryExpression.OperatorToken, false, allowEndOfLine,
+                        CheckToken(context,
+                                   unaryExpression.OperatorToken,
+                                   false,
+                                   allowEndOfLine,
                                    mustHaveTrailingWhitespace);
                 }
 
-                private static void HandleAssignmentExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleAssignmentExpression(SyntaxNodeAnalysisContext context)
+                {
                         var assignmentExpression = (AssignmentExpressionSyntax) context.Node;
 
                         CheckToken(context, assignmentExpression.OperatorToken, true, true, true);
                 }
 
-                private static void HandleCastExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleCastExpression(SyntaxNodeAnalysisContext context)
+                {
                         var castExpression = (CastExpressionSyntax) context.Node;
                         var precedingToken = castExpression.OpenParenToken.GetPreviousToken();
 
                         var mustHaveLeadingWhitespace =
-                            !(castExpression.Parent is PrefixUnaryExpressionSyntax) &&
-                            !(castExpression.Parent is CastExpressionSyntax) &&
-                            !precedingToken.IsKind(SyntaxKind.OpenParenToken) &&
-                            !precedingToken.IsKind(SyntaxKind.OpenBracketToken) &&
-                            !(precedingToken.IsKind(SyntaxKind.OpenBraceToken) &&
-                              (precedingToken.Parent is InterpolationSyntax));
+                          !(castExpression.Parent is PrefixUnaryExpressionSyntax) &&
+                          !(castExpression.Parent is CastExpressionSyntax) &&
+                          !precedingToken.IsKind(SyntaxKind.OpenParenToken) &&
+                          !precedingToken.IsKind(SyntaxKind.OpenBracketToken) &&
+                          !(precedingToken.IsKind(SyntaxKind.OpenBraceToken) &&
+                            (precedingToken.Parent is InterpolationSyntax));
 
                         var tokenString = castExpression.OpenParenToken.ToString() +
                                           castExpression.Type.ToString() +
                                           castExpression.CloseParenToken.ToString();
-                        CheckToken(context, castExpression.OpenParenToken,
-                                   mustHaveLeadingWhitespace, false, false, tokenString);
-                        CheckToken(context, castExpression.CloseParenToken, false, false, false,
+                        CheckToken(context,
+                                   castExpression.OpenParenToken,
+                                   mustHaveLeadingWhitespace,
+                                   false,
+                                   false,
+                                   tokenString);
+                        CheckToken(context,
+                                   castExpression.CloseParenToken,
+                                   false,
+                                   false,
+                                   false,
                                    tokenString);
                 }
 
-                private static void HandleEqualsValueClause(SyntaxNodeAnalysisContext context) {
+                private static void HandleEqualsValueClause(SyntaxNodeAnalysisContext context)
+                {
                         var equalsValueClause = (EqualsValueClauseSyntax) context.Node;
 
                         CheckToken(context, equalsValueClause.EqualsToken, true, true, true);
                 }
 
-                private static void HandleLambdaExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleLambdaExpression(SyntaxNodeAnalysisContext context)
+                {
                         var lambdaExpression = (LambdaExpressionSyntax) context.Node;
 
                         CheckToken(context, lambdaExpression.ArrowToken, true, true, true);
                 }
 
-                private static void HandleArrowExpressionClause(SyntaxNodeAnalysisContext context) {
+                private static void HandleArrowExpressionClause(SyntaxNodeAnalysisContext context)
+                {
                         ArrowExpressionClauseSyntax arrowExpressionClause =
-                            (ArrowExpressionClauseSyntax) context.Node;
+                          (ArrowExpressionClauseSyntax) context.Node;
                         CheckToken(context, arrowExpressionClause.ArrowToken, true, true, true);
                 }
 
@@ -487,29 +515,32 @@ namespace StyleCop.Analyzers.SpacingRules {
                                                bool withLeadingWhitespace,
                                                bool allowAtEndOfLine,
                                                bool withTrailingWhitespace,
-                                               string tokenText = null) {
+                                               string tokenText = null)
+                {
                         tokenText = tokenText ?? token.Text;
 
                         var precedingToken = token.GetPreviousToken();
                         var precedingTriviaList = TriviaHelper.MergeTriviaLists(
-                            precedingToken.TrailingTrivia, token.LeadingTrivia);
+                          precedingToken.TrailingTrivia, token.LeadingTrivia);
 
                         var followingToken = token.GetNextToken();
                         var followingTriviaList = TriviaHelper.MergeTriviaLists(
-                            token.TrailingTrivia, followingToken.LeadingTrivia);
+                          token.TrailingTrivia, followingToken.LeadingTrivia);
 
                         if (withLeadingWhitespace) {
                                 // Don't report missing leading whitespace when the token is the
                                 // first token on a text line.
                                 if (!token.IsFirstInLine() && ((precedingTriviaList.Count == 0) ||
                                                                !precedingTriviaList.Last().IsKind(
-                                                                   SyntaxKind.WhitespaceTrivia))) {
+                                                                 SyntaxKind.WhitespaceTrivia))) {
                                         var properties =
-                                            ImmutableDictionary.Create<string, string>().Add(
-                                                CodeFixAction, InsertBeforeTag);
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            DescriptorPrecededByWhitespace, token.GetLocation(),
-                                            properties, tokenText));
+                                          ImmutableDictionary.Create<string, string>().Add(
+                                            CodeFixAction, InsertBeforeTag);
+                                        context.ReportDiagnostic(
+                                          Diagnostic.Create(DescriptorPrecededByWhitespace,
+                                                            token.GetLocation(),
+                                                            properties,
+                                                            tokenText));
                                 }
                         } else {
                                 // don't report leading whitespace when the token is the first token
@@ -517,13 +548,15 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 if (!token.IsOnlyPrecededByWhitespaceInLine() &&
                                     ((precedingTriviaList.Count > 0) &&
                                      precedingTriviaList.Last().IsKind(
-                                         SyntaxKind.WhitespaceTrivia))) {
+                                       SyntaxKind.WhitespaceTrivia))) {
                                         var properties =
-                                            ImmutableDictionary.Create<string, string>().Add(
-                                                CodeFixAction, RemoveBeforeTag);
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            DescriptorNotPrecededByWhitespace, token.GetLocation(),
-                                            properties, tokenText));
+                                          ImmutableDictionary.Create<string, string>().Add(
+                                            CodeFixAction, RemoveBeforeTag);
+                                        context.ReportDiagnostic(
+                                          Diagnostic.Create(DescriptorNotPrecededByWhitespace,
+                                                            token.GetLocation(),
+                                                            properties,
+                                                            tokenText));
                                 }
                         }
 
@@ -534,43 +567,49 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 // Do not register a code fix action if there are non whitespace or
                                 // end of line tokens present.
                                 if (followingTriviaList.All(
-                                        t => t.IsKind(SyntaxKind.WhitespaceTrivia) ||
-                                             t.IsKind(SyntaxKind.EndOfLineTrivia))) {
-                                        properties = properties.Add(
-                                            CodeFixAction, withTrailingWhitespace ?
-                                                               RemoveEndOfLineWithTrailingSpaceTag
-                                            : RemoveEndOfLineTag);
+                                      t => t.IsKind(SyntaxKind.WhitespaceTrivia) ||
+                                           t.IsKind(SyntaxKind.EndOfLineTrivia))) {
+                                        properties =
+                                          properties.Add(CodeFixAction,
+                                                         withTrailingWhitespace ?
+                                                           RemoveEndOfLineWithTrailingSpaceTag
+                                                         : RemoveEndOfLineTag);
                                 }
 
                                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotAtEndOfLine,
                                                                            token.GetLocation(),
-                                                                           properties, tokenText));
+                                                                           properties,
+                                                                           tokenText));
                                 return;
                         }
 
                         if (withTrailingWhitespace) {
                                 if ((followingTriviaList.Count == 0) ||
                                     !(followingTriviaList.First().IsKind(
-                                          SyntaxKind.WhitespaceTrivia) ||
+                                        SyntaxKind.WhitespaceTrivia) ||
                                       followingTriviaList.First().IsKind(
-                                          SyntaxKind.EndOfLineTrivia))) {
+                                        SyntaxKind.EndOfLineTrivia))) {
                                         var properties =
-                                            ImmutableDictionary.Create<string, string>().Add(
-                                                CodeFixAction, InsertAfterTag);
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            DescriptorFollowedByWhitespace, token.GetLocation(),
-                                            properties, tokenText));
+                                          ImmutableDictionary.Create<string, string>().Add(
+                                            CodeFixAction, InsertAfterTag);
+                                        context.ReportDiagnostic(
+                                          Diagnostic.Create(DescriptorFollowedByWhitespace,
+                                                            token.GetLocation(),
+                                                            properties,
+                                                            tokenText));
                                 }
                         } else {
                                 if ((followingTriviaList.Count > 0) &&
                                     followingTriviaList.First().IsKind(
-                                        SyntaxKind.WhitespaceTrivia)) {
+                                      SyntaxKind.WhitespaceTrivia)) {
                                         var properties =
-                                            ImmutableDictionary.Create<string, string>().Add(
-                                                CodeFixAction, RemoveAfterTag);
-                                        context.ReportDiagnostic(Diagnostic.Create(
-                                            DescriptorNotFollowedByWhitespace, token.GetLocation(),
-                                            properties, tokenText));
+                                          ImmutableDictionary.Create<string, string>().Add(
+                                            CodeFixAction, RemoveAfterTag);
+                                        context.ReportDiagnostic(
+                                          Diagnostic.Create(DescriptorNotFollowedByWhitespace,
+                                                            token.GetLocation(),
+                                                            properties,
+                                                            tokenText));
                                 }
                         }
                 }

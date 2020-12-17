@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StyleCop.Analyzers.Settings {
+namespace StyleCop.Analyzers.Settings
+{
         using System;
         using System.Reflection;
 
@@ -20,31 +21,36 @@ namespace StyleCop.Analyzers.Settings {
         // To add or remove a member, edit your .ResX file then rerun ResGen
         // with the /str option, or rebuild your VS project.
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
-            "System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+          "System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        internal class SettingsResources {
+        internal class SettingsResources
+        {
                 private static global::System.Resources.ResourceManager resourceMan;
 
                 private static global::System.Globalization.CultureInfo resourceCulture;
 
                 [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-                    "Microsoft.Performance",
-                    "CA1811:AvoidUncalledPrivateCode")]
-                internal SettingsResources() {}
+                  "Microsoft.Performance",
+                  "CA1811:AvoidUncalledPrivateCode")]
+                internal
+                SettingsResources()
+                {}
 
                 /// <summary>
                 ///   Returns the cached ResourceManager instance used by this class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
-                internal static global::System.Resources.ResourceManager ResourceManager {
-                        get {
+                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                internal static global::System.Resources.ResourceManager ResourceManager
+                {
+                        get
+                        {
                                 if (object.ReferenceEquals(resourceMan, null)) {
                                         global::System.Resources.ResourceManager temp =
-                                            new global::System.Resources.ResourceManager(
-                                                "StyleCop.Analyzers.Settings.SettingsResources",
-                                                typeof(SettingsResources).GetTypeInfo().Assembly);
+                                          new global::System.Resources.ResourceManager(
+                                            "StyleCop.Analyzers.Settings.SettingsResources",
+                                            typeof(SettingsResources).GetTypeInfo().Assembly);
                                         resourceMan = temp;
                                 }
                                 return resourceMan;
@@ -56,8 +62,9 @@ namespace StyleCop.Analyzers.Settings {
                 ///   resource lookups using this strongly typed resource class.
                 /// </summary>
                 [global::System.ComponentModel.EditorBrowsableAttribute(
-                    global::System.ComponentModel.EditorBrowsableState.Advanced)]
-                internal static global::System.Globalization.CultureInfo Culture {
+                  global::System.ComponentModel.EditorBrowsableState.Advanced)]
+                internal static global::System.Globalization.CultureInfo Culture
+                {
                         get { return resourceCulture; }
                         set { resourceCulture = value; }
                 }
@@ -66,8 +73,10 @@ namespace StyleCop.Analyzers.Settings {
                 ///   Looks up a localized string similar to Add StyleCop settings file to the
                 ///   project.
                 /// </summary>
-                internal static string SettingsFileCodeFix {
-                        get {
+                internal static string SettingsFileCodeFix
+                {
+                        get
+                        {
                                 return ResourceManager.GetString("SettingsFileCodeFix",
                                                                  resourceCulture);
                         }

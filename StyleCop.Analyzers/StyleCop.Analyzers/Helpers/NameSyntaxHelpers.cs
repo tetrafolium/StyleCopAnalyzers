@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using System.Globalization;
         using System.Text;
         using Microsoft.CodeAnalysis;
@@ -12,7 +13,8 @@ namespace StyleCop.Analyzers.Helpers {
         /// <summary>
         /// Class containing the extension methods for the <see cref="NameSyntax"/> class.
         /// </summary>
-        internal static class NameSyntaxHelpers {
+        internal static class NameSyntaxHelpers
+        {
                 private const string DotChar = ".";
 
                 /// <summary>
@@ -22,7 +24,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="nameSyntax">The <see cref="NameSyntax"/> from which the name will
                 /// be extracted.</param> <returns>The name contained in the <see
                 /// cref="NameSyntax"/>, including its alias (if any).</returns>
-                internal static string ToNormalizedString(this NameSyntax nameSyntax) {
+                internal static string ToNormalizedString(this NameSyntax nameSyntax)
+                {
                         var sb = new StringBuilder();
 
                         BuildName(nameSyntax, sb, true);
@@ -37,7 +40,8 @@ namespace StyleCop.Analyzers.Helpers {
                 /// <param name="nameSyntax">The <see cref="NameSyntax"/> from which the name will
                 /// be extracted.</param> <returns>The name contained in the <see
                 /// cref="NameSyntax"/>, with its alias removed (if any).</returns>
-                internal static string ToUnaliasedString(this NameSyntax nameSyntax) {
+                internal static string ToUnaliasedString(this NameSyntax nameSyntax)
+                {
                         var sb = StringBuilderPool.Allocate();
 
                         BuildName(nameSyntax, sb, false);
@@ -45,20 +49,23 @@ namespace StyleCop.Analyzers.Helpers {
                         return StringBuilderPool.ReturnAndFree(sb);
                 }
 
-                internal static int Compare(NameSyntax first, NameSyntax second) {
+                internal static int Compare(NameSyntax first, NameSyntax second)
+                {
                         string left = first.ToNormalizedString();
                         string right = second.ToNormalizedString();
 
                         // First compare without considering case
                         int result = CultureInfo.InvariantCulture.CompareInfo.Compare(
-                            left, right,
-                            CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace |
-                                CompareOptions.IgnoreWidth);
+                          left,
+                          right,
+                          CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace |
+                            CompareOptions.IgnoreWidth);
                         if (result == 0) {
                                 // Compare case if they matched
                                 result = CultureInfo.InvariantCulture.CompareInfo.Compare(
-                                    left, right,
-                                    CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreWidth);
+                                  left,
+                                  right,
+                                  CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreWidth);
                         }
 
                         return result;
@@ -66,7 +73,8 @@ namespace StyleCop.Analyzers.Helpers {
 
                 private static void BuildName(NameSyntax nameSyntax,
                                               StringBuilder builder,
-                                              bool includeAlias) {
+                                              bool includeAlias)
+                {
                         if (nameSyntax.IsKind(SyntaxKind.IdentifierName)) {
                                 var identifierNameSyntax = (IdentifierNameSyntax) nameSyntax;
                                 builder.Append(identifierNameSyntax.Identifier.ValueText);
@@ -82,10 +90,10 @@ namespace StyleCop.Analyzers.Helpers {
                                                      genericNameSyntax.TypeArgumentList);
                         } else if (nameSyntax.IsKind(SyntaxKind.AliasQualifiedName)) {
                                 var aliasQualifiedNameSyntax =
-                                    (AliasQualifiedNameSyntax) nameSyntax;
+                                  (AliasQualifiedNameSyntax) nameSyntax;
                                 if (includeAlias) {
                                         builder.Append(
-                                            aliasQualifiedNameSyntax.Alias.Identifier.ValueText);
+                                          aliasQualifiedNameSyntax.Alias.Identifier.ValueText);
                                         builder.Append("::");
                                 }
 

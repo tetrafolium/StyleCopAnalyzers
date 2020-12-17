@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.LayoutRules {
+namespace StyleCop.Analyzers.LayoutRules
+{
         using System.Collections.Generic;
         using System.Collections.Immutable;
         using System.Composition;
@@ -23,25 +24,28 @@ namespace StyleCop.Analyzers.LayoutRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1503CodeFixProvider))]
         [Shared]
-        internal class SA1503CodeFixProvider : CodeFixProvider {
+        internal class SA1503CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                    SA1503BracesMustNotBeOmitted.DiagnosticId,
-                    SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.DiagnosticId,
-                    SA1520UseBracesConsistently.DiagnosticId);
+                  SA1503BracesMustNotBeOmitted.DiagnosticId,
+                  SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.DiagnosticId,
+                  SA1520UseBracesConsistently.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
 
                 /// <inheritdoc/>
-                public override async Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         var syntaxRoot =
-                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                .ConfigureAwait(false);
+                          await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                            .ConfigureAwait(false);
 
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
-                                if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false,
+                                if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan,
+                                                          false,
                                                           true) is StatementSyntax node) ||
                                     node.IsMissing) {
                                         continue;
@@ -55,20 +59,21 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 }
 
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        LayoutResources.SA1503CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, syntaxRoot, node, cancellationToken),
-                                        nameof(SA1503CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(
+                                    LayoutResources.SA1503CodeFix,
+                                    cancellationToken => GetTransformedDocumentAsync(
+                                      context.Document, syntaxRoot, node, cancellationToken),
+                                    nameof(SA1503CodeFixProvider)),
+                                  diagnostic);
                         }
                 }
 
                 private static Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    SyntaxNode root,
-                    StatementSyntax node,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  SyntaxNode root,
+                  StatementSyntax node,
+                  CancellationToken cancellationToken)
+                {
                         // Currently unused
                         _ = cancellationToken;
 
@@ -76,7 +81,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
                 }
 
-                private static bool ContainsConditionalDirectiveTrivia(SyntaxNode node) {
+                private static bool ContainsConditionalDirectiveTrivia(SyntaxNode node)
+                {
                         for (var currentDirective = node.GetFirstDirective();
                              currentDirective != null && node.Contains(currentDirective);
                              currentDirective = currentDirective.GetNextDirective()) {
@@ -92,29 +98,31 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return false;
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
+                private class FixAll : DocumentBasedFixAllProvider
+                {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
                         protected override string CodeActionTitle => LayoutResources.SA1503CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext,
-                            Document document,
-                            ImmutableArray<Diagnostic> diagnostics) {
+                          FixAllContext fixAllContext,
+                          Document document,
+                          ImmutableArray<Diagnostic> diagnostics)
+                        {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
                                 SyntaxNode syntaxRoot =
-                                    await document.GetSyntaxRootAsync().ConfigureAwait(false);
+                                  await document.GetSyntaxRootAsync().ConfigureAwait(false);
                                 List<SyntaxNode> nodesNeedingBlocks =
-                                    new List<SyntaxNode>(diagnostics.Length);
+                                  new List<SyntaxNode>(diagnostics.Length);
 
                                 foreach (Diagnostic diagnostic in diagnostics) {
                                         if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan,
-                                                                  false, true)
-                                                  is StatementSyntax node) ||
+                                                                  false,
+                                                                  true) is StatementSyntax node) ||
                                             node.IsMissing) {
                                                 continue;
                                         }
@@ -130,9 +138,9 @@ namespace StyleCop.Analyzers.LayoutRules {
                                 }
 
                                 return syntaxRoot.ReplaceNodes(
-                                    nodesNeedingBlocks,
-                                    (originalNode, rewrittenNode) =>
-                                        SyntaxFactory.Block((StatementSyntax) rewrittenNode));
+                                  nodesNeedingBlocks,
+                                  (originalNode, rewrittenNode) =>
+                                    SyntaxFactory.Block((StatementSyntax) rewrittenNode));
                         }
                 }
         }

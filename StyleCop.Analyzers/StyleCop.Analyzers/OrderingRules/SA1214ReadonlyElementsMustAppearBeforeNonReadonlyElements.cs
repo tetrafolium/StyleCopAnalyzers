@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.OrderingRules {
+namespace StyleCop.Analyzers.OrderingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -16,7 +17,8 @@ namespace StyleCop.Analyzers.OrderingRules {
         /// </summary>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1214ReadonlyElementsMustAppearBeforeNonReadonlyElements
-            : DiagnosticAnalyzer {
+          : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1214ReadonlyElementsMustAppearBeforeNonReadonlyElements"/>
@@ -24,43 +26,43 @@ namespace StyleCop.Analyzers.OrderingRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1214";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1214.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1214.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1214Title),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                  new LocalizableResourceString(nameof(OrderingResources.SA1214Title),
+                                                OrderingResources.ResourceManager,
+                                                typeof(OrderingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1214MessageFormat),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                  new LocalizableResourceString(nameof(OrderingResources.SA1214MessageFormat),
+                                                OrderingResources.ResourceManager,
+                                                typeof(OrderingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(OrderingResources.SA1214Description),
-                                                  OrderingResources.ResourceManager,
-                                                  typeof(OrderingResources));
+                  new LocalizableResourceString(nameof(OrderingResources.SA1214Description),
+                                                OrderingResources.ResourceManager,
+                                                typeof(OrderingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.OrderingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.OrderingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
-                    ImmutableArray.Create(SyntaxKind.ClassDeclaration,
-                                          SyntaxKind.StructDeclaration);
+                  ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration);
 
                 private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
-                    TypeDeclarationAction = HandleTypeDeclaration;
+                  TypeDeclarationAction = HandleTypeDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -69,7 +71,8 @@ namespace StyleCop.Analyzers.OrderingRules {
                 }
 
                 private static void HandleTypeDeclaration(SyntaxNodeAnalysisContext context,
-                                                          StyleCopSettings settings) {
+                                                          StyleCopSettings settings)
+                {
                         var elementOrder = settings.OrderingRules.ElementOrder;
                         int readonlyIndex = elementOrder.IndexOf(OrderingTrait.Readonly);
                         if (readonlyIndex < 0) {
@@ -92,12 +95,12 @@ namespace StyleCop.Analyzers.OrderingRules {
 
                                 var modifiers = member.GetModifiers();
                                 var currentAccessLevel =
-                                    MemberOrderHelper.GetAccessLevelForOrdering(member, modifiers);
+                                  MemberOrderHelper.GetAccessLevelForOrdering(member, modifiers);
                                 bool currentFieldConst = modifiers.Any(SyntaxKind.ConstKeyword);
                                 bool currentFieldStatic =
-                                    currentFieldConst || modifiers.Any(SyntaxKind.StaticKeyword);
+                                  currentFieldConst || modifiers.Any(SyntaxKind.StaticKeyword);
                                 bool currentFieldReadonly =
-                                    currentFieldConst || modifiers.Any(SyntaxKind.ReadOnlyKeyword);
+                                  currentFieldConst || modifiers.Any(SyntaxKind.ReadOnlyKeyword);
                                 if (previousField == null) {
                                         previousField = field;
                                         previousFieldConst = currentFieldConst;
@@ -148,9 +151,9 @@ namespace StyleCop.Analyzers.OrderingRules {
                                 if (compareReadonly) {
                                         if (currentFieldReadonly && !previousFieldReadonly) {
                                                 context.ReportDiagnostic(Diagnostic.Create(
-                                                    Descriptor,
-                                                    NamedTypeHelpers.GetNameOrIdentifierLocation(
-                                                        member)));
+                                                  Descriptor,
+                                                  NamedTypeHelpers.GetNameOrIdentifierLocation(
+                                                    member)));
                                         }
                                 }
 

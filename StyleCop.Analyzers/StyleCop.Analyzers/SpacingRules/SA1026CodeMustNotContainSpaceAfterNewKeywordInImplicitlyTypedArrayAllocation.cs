@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -26,7 +27,8 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1026CodeMustNotContainSpaceAfterNewKeywordInImplicitlyTypedArrayAllocation
-            : DiagnosticAnalyzer {
+          : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see
@@ -35,77 +37,84 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1026";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1026.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1026.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1026Title),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1026Title),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1026MessageFormat),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1026MessageFormat),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1026Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1026Description),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.SpacingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ImplicitArrayCreationExpressionAction = HandleImplicitArrayCreationExpression;
+                  ImplicitArrayCreationExpressionAction = HandleImplicitArrayCreationExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ImplicitStackAllocArrayCreationExpressionAction =
-                        HandleImplicitStackAllocArrayCreationExpression;
+                  ImplicitStackAllocArrayCreationExpressionAction =
+                    HandleImplicitStackAllocArrayCreationExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxNodeAction(
-                            ImplicitArrayCreationExpressionAction,
-                            SyntaxKind.ImplicitArrayCreationExpression);
+                          ImplicitArrayCreationExpressionAction,
+                          SyntaxKind.ImplicitArrayCreationExpression);
                         context.RegisterSyntaxNodeAction(
-                            ImplicitStackAllocArrayCreationExpressionAction,
-                            SyntaxKindEx.ImplicitStackAllocArrayCreationExpression);
+                          ImplicitStackAllocArrayCreationExpressionAction,
+                          SyntaxKindEx.ImplicitStackAllocArrayCreationExpression);
                 }
 
                 private static void HandleImplicitArrayCreationExpression(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         var arrayCreation = (ImplicitArrayCreationExpressionSyntax) context.Node;
                         var newKeywordToken = arrayCreation.NewKeyword;
 
                         if (newKeywordToken.IsFollowedByWhitespace() ||
                             newKeywordToken.IsLastInLine()) {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, newKeywordToken.GetLocation(),
-                                    TokenSpacingProperties.RemoveFollowing, "new"));
+                                context.ReportDiagnostic(
+                                  Diagnostic.Create(Descriptor,
+                                                    newKeywordToken.GetLocation(),
+                                                    TokenSpacingProperties.RemoveFollowing,
+                                                    "new"));
                         }
                 }
 
                 private static void HandleImplicitStackAllocArrayCreationExpression(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         var arrayCreation =
-                            (ImplicitStackAllocArrayCreationExpressionSyntaxWrapper) context.Node;
+                          (ImplicitStackAllocArrayCreationExpressionSyntaxWrapper) context.Node;
                         var stackAllocKeywordToken = arrayCreation.StackAllocKeyword;
 
                         if (stackAllocKeywordToken.IsFollowedByWhitespace() ||
                             stackAllocKeywordToken.IsLastInLine()) {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, stackAllocKeywordToken.GetLocation(),
-                                    TokenSpacingProperties.RemoveFollowing, "stackalloc"));
+                                context.ReportDiagnostic(
+                                  Diagnostic.Create(Descriptor,
+                                                    stackAllocKeywordToken.GetLocation(),
+                                                    TokenSpacingProperties.RemoveFollowing,
+                                                    "stackalloc"));
                         }
                 }
         }

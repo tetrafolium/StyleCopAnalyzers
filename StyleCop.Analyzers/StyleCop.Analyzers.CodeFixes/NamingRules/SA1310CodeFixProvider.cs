@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.NamingRules {
+namespace StyleCop.Analyzers.NamingRules
+{
         using System.Collections.Immutable;
         using System.Composition;
         using System.Text;
@@ -21,21 +22,24 @@ namespace StyleCop.Analyzers.NamingRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1310CodeFixProvider))]
         [Shared]
-        internal class SA1310CodeFixProvider : CodeFixProvider {
+        internal class SA1310CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(SA1310FieldNamesMustNotContainUnderscore.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() {
+                public override FixAllProvider GetFixAllProvider()
+                {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override async Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         var document = context.Document;
                         var root = await document.GetSyntaxRootAsync(context.CancellationToken)
-                                       .ConfigureAwait(false);
+                                     .ConfigureAwait(false);
 
                         foreach (var diagnostic in context.Diagnostics) {
                                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -43,19 +47,23 @@ namespace StyleCop.Analyzers.NamingRules {
                                 string proposedName = BuildProposedName(currentName);
                                 if (proposedName != currentName) {
                                         context.RegisterCodeFix(
-                                            CodeAction.Create(
-                                                string.Format(NamingResources.RenameToCodeFix,
-                                                              proposedName),
-                                                cancellationToken => RenameHelper.RenameSymbolAsync(
-                                                    document, root, token, proposedName,
-                                                    cancellationToken),
-                                                nameof(SA1310CodeFixProvider)),
-                                            diagnostic);
+                                          CodeAction.Create(
+                                            string.Format(NamingResources.RenameToCodeFix,
+                                                          proposedName),
+                                            cancellationToken =>
+                                              RenameHelper.RenameSymbolAsync(document,
+                                                                             root,
+                                                                             token,
+                                                                             proposedName,
+                                                                             cancellationToken),
+                                            nameof(SA1310CodeFixProvider)),
+                                          diagnostic);
                                 }
                         }
                 }
 
-                private static string BuildProposedName(string currentName) {
+                private static string BuildProposedName(string currentName)
+                {
                         StringBuilder builder = StringBuilderPool.Allocate();
 
                         bool foundNonUnderscore = false;

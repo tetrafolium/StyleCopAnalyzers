@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis.CSharp;
 
-        internal static class TokenSpacingProperties {
+        internal static class TokenSpacingProperties
+        {
                 internal const string LocationKey = "location";
                 internal const string ActionKey = "action";
                 internal const string LayoutKey = "layout";
@@ -30,7 +32,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 /// <see cref="SyntaxKind.WhitespaceTrivia"/> trivia which <em>immediately</em>
                 /// precedes the token identified by the diagnostic span.
                 /// </value>
-                internal static ImmutableDictionary<string, string> RemoveImmediatePreceding {
+                internal static ImmutableDictionary<string, string> RemoveImmediatePreceding
+                {
                         get;
                 }
                 =
@@ -46,7 +49,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 .SetItem(ActionKey, ActionRemove)
                 .SetItem(LayoutKey, LayoutPack);
 
-                internal static ImmutableDictionary<string, string> RemovePrecedingPreserveLayout {
+                internal static ImmutableDictionary<string, string> RemovePrecedingPreserveLayout
+                {
                         get;
                 }
                 =
@@ -61,7 +65,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 internal static ImmutableDictionary<string, string> RemoveFollowing { get; }
                 = ImmutableDictionary<string, string>.Empty.SetItem(LocationKey, LocationFollowing).SetItem(ActionKey, ActionRemove);
 
-                internal static ImmutableDictionary<string, string> RemoveFollowingPreserveLayout {
+                internal static ImmutableDictionary<string, string> RemoveFollowingPreserveLayout
+                {
                         get;
                 }
                 =

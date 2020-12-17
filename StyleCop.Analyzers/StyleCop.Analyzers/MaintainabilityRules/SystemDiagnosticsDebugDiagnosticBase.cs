@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.MaintainabilityRules {
+namespace StyleCop.Analyzers.MaintainabilityRules
+{
         using System.Diagnostics;
         using Microsoft.CodeAnalysis;
         using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,7 +14,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
         /// cref="SA1405DebugAssertMustProvideMessageText"/> and <see
         /// cref="SA1406DebugFailMustProvideMessageText"/>.
         /// </summary>
-        internal abstract class SystemDiagnosticsDebugDiagnosticBase : DiagnosticAnalyzer {
+        internal abstract class SystemDiagnosticsDebugDiagnosticBase : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// Analyzes a <see cref="InvocationExpressionSyntax"/> node to add a diagnostic to
                 /// static method calls in <see cref="System.Diagnostics.Debug"/>. The diagnostic is
@@ -27,56 +29,57 @@ namespace StyleCop.Analyzers.MaintainabilityRules {
                 /// checked, is at.</param> <param name="descriptor">The descriptor of the
                 /// diagnostic that should be added.</param>
                 protected internal static void HandleInvocationExpression(
-                    SyntaxNodeAnalysisContext context,
-                    string methodName,
-                    int parameterIndex,
-                    DiagnosticDescriptor descriptor) {
+                  SyntaxNodeAnalysisContext context,
+                  string methodName,
+                  int parameterIndex,
+                  DiagnosticDescriptor descriptor)
+                {
                         var invocationExpressionSyntax = (InvocationExpressionSyntax) context.Node;
                         var memberAccessExpressionSyntax =
-                            invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax;
+                          invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax;
                         var identifierNameSyntax =
-                            invocationExpressionSyntax.Expression as IdentifierNameSyntax;
+                          invocationExpressionSyntax.Expression as IdentifierNameSyntax;
                         var name = memberAccessExpressionSyntax?.Name?.Identifier
-                                       .ValueText ?? identifierNameSyntax?.Identifier.ValueText;
+                                     .ValueText ?? identifierNameSyntax?.Identifier.ValueText;
                         if (name == methodName) {
                                 if (context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax)
-                                        .Symbol is IMethodSymbol symbolInfo) {
+                                      .Symbol is IMethodSymbol symbolInfo) {
                                         var debugType =
-                                            context.SemanticModel.Compilation.GetTypeByMetadataName(
-                                                typeof(Debug).FullName);
+                                          context.SemanticModel.Compilation.GetTypeByMetadataName(
+                                            typeof(Debug).FullName);
 
                                         if (Equals(symbolInfo.ContainingType, debugType) &&
                                             symbolInfo.Name == methodName) {
                                                 if ((invocationExpressionSyntax.ArgumentList?
-                                                         .Arguments.Count ?? 0) <= parameterIndex) {
+                                                       .Arguments.Count ?? 0) <= parameterIndex) {
                                                         // Wrong overload was used, e.g.
                                                         // Debug.Assert(bool condition)
                                                         context.ReportDiagnostic(Diagnostic.Create(
-                                                            descriptor, invocationExpressionSyntax
-                                                                            .GetLocation()));
+                                                          descriptor,
+                                                          invocationExpressionSyntax
+                                                            .GetLocation()));
                                                 } else {
                                                         var messageParameter =
-                                                            invocationExpressionSyntax.ArgumentList?
-                                                                .Arguments[parameterIndex];
+                                                          invocationExpressionSyntax.ArgumentList?
+                                                            .Arguments[parameterIndex];
                                                         if (messageParameter?.Expression != null) {
                                                                 Optional<object> constantValue =
-                                                                    context.SemanticModel
-                                                                        .GetConstantValue(
-                                                                            messageParameter
-                                                                                .Expression);
+                                                                  context.SemanticModel
+                                                                    .GetConstantValue(
+                                                                      messageParameter.Expression);
 
                                                                 // Report a diagnostic if the
                                                                 // message is constant and null or
                                                                 // whitespace
                                                                 if (constantValue.HasValue &&
                                                                     string.IsNullOrWhiteSpace(
-                                                                        constantValue
-                                                                            .Value as string)) {
+                                                                      constantValue
+                                                                        .Value as string)) {
                                                                         context.ReportDiagnostic(
-                                                                            Diagnostic.Create(
-                                                                                descriptor,
-                                                                                invocationExpressionSyntax
-                                                                                    .GetLocation()));
+                                                                          Diagnostic.Create(
+                                                                            descriptor,
+                                                                            invocationExpressionSyntax
+                                                                              .GetLocation()));
                                                                 }
                                                         }
                                                 }

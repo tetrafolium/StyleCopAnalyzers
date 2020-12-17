@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.LayoutRules {
+namespace StyleCop.Analyzers.LayoutRules
+{
         using System.Collections.Generic;
         using System.Collections.Immutable;
         using System.Composition;
@@ -19,37 +20,41 @@ namespace StyleCop.Analyzers.LayoutRules {
         /// </summary>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1509CodeFixProvider))]
         [Shared]
-        internal class SA1509CodeFixProvider : CodeFixProvider {
+        internal class SA1509CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                    SA1509OpeningBracesMustNotBePrecededByBlankLine.DiagnosticId);
+                  SA1509OpeningBracesMustNotBePrecededByBlankLine.DiagnosticId);
 
                 /// <inheritdoc/>
-                public override FixAllProvider GetFixAllProvider() {
+                public override FixAllProvider GetFixAllProvider()
+                {
                         return CustomFixAllProviders.BatchFixer;
                 }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(LayoutResources.SA1509CodeFix,
-                                                      token => this.GetTransformedDocumentAsync(
-                                                          context.Document, diagnostic, token),
-                                                      nameof(SA1509CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(LayoutResources.SA1509CodeFix,
+                                                    token => this.GetTransformedDocumentAsync(
+                                                      context.Document, diagnostic, token),
+                                                    nameof(SA1509CodeFixProvider)),
+                                  diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    Diagnostic diagnostic,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  Diagnostic diagnostic,
+                  CancellationToken cancellationToken)
+                {
                         var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken)
-                                             .ConfigureAwait(false);
+                                           .ConfigureAwait(false);
 
                         var openBrace = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
                         var leadingTrivia = openBrace.LeadingTrivia;
@@ -58,7 +63,7 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         var previousEmptyLines = this.GetPreviousEmptyLines(openBrace).ToList();
                         newTriviaList =
-                            newTriviaList.AddRange(leadingTrivia.Except(previousEmptyLines));
+                          newTriviaList.AddRange(leadingTrivia.Except(previousEmptyLines));
 
                         var newOpenBrace = openBrace.WithLeadingTrivia(newTriviaList);
                         var newSyntaxRoot = syntaxRoot.ReplaceToken(openBrace, newOpenBrace);
@@ -66,7 +71,8 @@ namespace StyleCop.Analyzers.LayoutRules {
                         return document.WithSyntaxRoot(newSyntaxRoot);
                 }
 
-                private IEnumerable<SyntaxTrivia> GetPreviousEmptyLines(SyntaxToken openBrace) {
+                private IEnumerable<SyntaxTrivia> GetPreviousEmptyLines(SyntaxToken openBrace)
+                {
                         var result = new List<SyntaxTrivia>();
 
                         var lineOfOpenBrace = openBrace.GetLineSpan().StartLinePosition.Line;
@@ -74,16 +80,15 @@ namespace StyleCop.Analyzers.LayoutRules {
 
                         while (lineToCheck > -1) {
                                 var trivias =
-                                    openBrace.LeadingTrivia
-                                        .Where(t => t.GetLineSpan().StartLinePosition.Line ==
-                                                    lineToCheck)
-                                        .ToList();
+                                  openBrace.LeadingTrivia
+                                    .Where(t =>
+                                             t.GetLineSpan().StartLinePosition.Line == lineToCheck)
+                                    .ToList();
                                 var endOfLineTrivia =
-                                    trivias.Where(t => t.IsKind(SyntaxKind.EndOfLineTrivia))
-                                        .ToList();
+                                  trivias.Where(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).ToList();
                                 if (endOfLineTrivia.Any() &&
                                     trivias.Except(endOfLineTrivia)
-                                        .All(t => t.IsKind(SyntaxKind.WhitespaceTrivia))) {
+                                      .All(t => t.IsKind(SyntaxKind.WhitespaceTrivia))) {
                                         lineToCheck--;
                                         result.AddRange(trivias);
                                 } else {

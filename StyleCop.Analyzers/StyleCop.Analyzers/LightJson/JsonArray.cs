@@ -12,7 +12,8 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(JsonArrayDebugView))]
-internal sealed class JsonArray : IEnumerable<JsonValue> {
+internal sealed class JsonArray : IEnumerable<JsonValue>
+{
         private readonly IList<JsonValue> items;
 
         /// <summary>
@@ -25,7 +26,9 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// to the collection.
         /// </summary>
         /// <param name="values">The values to be added to this collection.</param>
-        public JsonArray(params JsonValue[] values) : this() {
+        public JsonArray(params JsonValue[] values)
+          : this()
+        {
                 if (values == null) {
                         throw new ArgumentNullException(nameof(values));
                 }
@@ -39,7 +42,8 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// Gets the number of values in this collection.
         /// </summary>
         /// <value>The number of values in this collection.</value>
-        public int Count {
+        public int Count
+        {
                 get { return this.items.Count; }
         }
 
@@ -50,8 +54,10 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// <remarks>
         /// <para>The getter will return JsonValue.Null if the given index is out of range.</para>
         /// </remarks>
-        public JsonValue this[int index] {
-                get {
+        public JsonValue this[int index]
+        {
+                get
+                {
                         if (index >= 0 && index < this.items.Count) {
                                 return this.items[index];
                         } else {
@@ -67,7 +73,8 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// </summary>
         /// <param name="value">The value to be added.</param>
         /// <returns>Returns this collection.</returns>
-        public JsonArray Add(JsonValue value) {
+        public JsonArray Add(JsonValue value)
+        {
                 this.items.Add(value);
                 return this;
         }
@@ -78,7 +85,8 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// <param name="index">The index where the given value will be inserted.</param>
         /// <param name="value">The value to be inserted into this collection.</param>
         /// <returns>Returns this collection.</returns>
-        public JsonArray Insert(int index, JsonValue value) {
+        public JsonArray Insert(int index, JsonValue value)
+        {
                 this.items.Insert(index, value);
                 return this;
         }
@@ -88,7 +96,8 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// </summary>
         /// <param name="index">The index of the value to be removed.</param>
         /// <returns>Return this collection.</returns>
-        public JsonArray Remove(int index) {
+        public JsonArray Remove(int index)
+        {
                 this.items.RemoveAt(index);
                 return this;
         }
@@ -97,7 +106,8 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// Clears the contents of this collection.
         /// </summary>
         /// <returns>Returns this collection.</returns>
-        public JsonArray Clear() {
+        public JsonArray Clear()
+        {
                 this.items.Clear();
                 return this;
         }
@@ -126,19 +136,23 @@ internal sealed class JsonArray : IEnumerable<JsonValue> {
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>The enumerator that iterates through the collection.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
                 return this.GetEnumerator();
         }
 
         [ExcludeFromCodeCoverage]
-        private class JsonArrayDebugView {
+        private class JsonArrayDebugView
+        {
                 private readonly JsonArray jsonArray;
 
                 public JsonArrayDebugView(JsonArray jsonArray) { this.jsonArray = jsonArray; }
 
                 [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-                public JsonValue[] Items {
-                        get {
+                public JsonValue[] Items
+                {
+                        get
+                        {
                                 var items = new JsonValue[this.jsonArray.Count];
 
                                 for (int i = 0; i < this.jsonArray.Count; i += 1) {

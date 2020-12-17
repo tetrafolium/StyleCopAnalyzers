@@ -1,34 +1,38 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
 
-        internal readonly struct IEventAssignmentOperationWrapper : IOperationWrapper {
+        internal readonly struct IEventAssignmentOperationWrapper : IOperationWrapper
+        {
                 internal const string WrappedTypeName =
-                    "Microsoft.CodeAnalysis.Operations.IEventAssignmentOperation";
+                  "Microsoft.CodeAnalysis.Operations.IEventAssignmentOperation";
                 private static readonly Type WrappedType;
                 private static readonly Func<IOperation, IOperation> EventReferenceAccessor;
                 private static readonly Func<IOperation, IOperation> HandlerValueAccessor;
                 private static readonly Func<IOperation, bool> AddsAccessor;
                 private readonly IOperation operation;
-                static IEventAssignmentOperationWrapper() {
+                static IEventAssignmentOperationWrapper()
+                {
                         WrappedType = OperationWrapperHelper.GetWrappedType(
-                            typeof(IEventAssignmentOperationWrapper));
+                          typeof(IEventAssignmentOperationWrapper));
                         EventReferenceAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(EventReference));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                            WrappedType, nameof(EventReference));
                         HandlerValueAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
-                                WrappedType, nameof(HandlerValue));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                            WrappedType, nameof(HandlerValue));
                         AddsAccessor =
-                            LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
-                                WrappedType, nameof(Adds));
+                          LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(
+                            WrappedType, nameof(Adds));
                 }
 
-                private IEventAssignmentOperationWrapper(IOperation operation) {
+                private IEventAssignmentOperationWrapper(IOperation operation)
+                {
                         this.operation = operation;
                 }
 
@@ -37,20 +41,22 @@ namespace StyleCop.Analyzers.Lightup {
                 public IOperation EventReference => EventReferenceAccessor(this.WrappedOperation);
                 public IOperation HandlerValue => HandlerValueAccessor(this.WrappedOperation);
                 public bool Adds => AddsAccessor(this.WrappedOperation);
-                public static IEventAssignmentOperationWrapper FromOperation(IOperation operation) {
+                public static IEventAssignmentOperationWrapper FromOperation(IOperation operation)
+                {
                         if (operation == null) {
                                 return default;
                         }
 
                         if (!IsInstance(operation)) {
                                 throw new InvalidCastException(
-                                    $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
+                                  $"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
                         }
 
                         return new IEventAssignmentOperationWrapper(operation);
                 }
 
-                public static bool IsInstance(IOperation operation) {
+                public static bool IsInstance(IOperation operation)
+                {
                         return operation != null &&
                                LightupHelpers.CanWrapOperation(operation, WrappedType);
                 }

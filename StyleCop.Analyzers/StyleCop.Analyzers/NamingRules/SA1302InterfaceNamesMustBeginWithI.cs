@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.NamingRules {
+namespace StyleCop.Analyzers.NamingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -26,46 +27,48 @@ namespace StyleCop.Analyzers.NamingRules {
         /// within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1302InterfaceNamesMustBeginWithI : DiagnosticAnalyzer {
+        internal class SA1302InterfaceNamesMustBeginWithI : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1302InterfaceNamesMustBeginWithI"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1302";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1302.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1302.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(NamingResources.SA1302Title),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1302Title),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SA1302MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1302MessageFormat),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SA1302Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SA1302Description),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.NamingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.NamingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    InterfaceDeclarationAction = HandleInterfaceDeclaration;
+                  InterfaceDeclarationAction = HandleInterfaceDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -73,21 +76,22 @@ namespace StyleCop.Analyzers.NamingRules {
                                                          SyntaxKind.InterfaceDeclaration);
                 }
 
-                private static void HandleInterfaceDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleInterfaceDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var interfaceDeclaration = (InterfaceDeclarationSyntax) context.Node;
                         if (interfaceDeclaration.Identifier.IsMissing) {
                                 return;
                         }
 
                         if (NamedTypeHelpers.IsContainedInNativeMethodsClass(
-                                interfaceDeclaration)) {
+                              interfaceDeclaration)) {
                                 return;
                         }
 
                         string name = interfaceDeclaration.Identifier.ValueText;
                         if (name != null && !name.StartsWith("I", StringComparison.Ordinal)) {
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, interfaceDeclaration.Identifier.GetLocation()));
+                                  Descriptor, interfaceDeclaration.Identifier.GetLocation()));
                         }
                 }
         }

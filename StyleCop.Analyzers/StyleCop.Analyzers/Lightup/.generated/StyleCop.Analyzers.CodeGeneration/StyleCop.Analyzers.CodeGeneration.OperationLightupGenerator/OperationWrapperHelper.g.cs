@@ -1,389 +1,390 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using System;
         using System.Collections.Immutable;
         using System.Reflection;
         using Microsoft.CodeAnalysis;
 
-        internal static class OperationWrapperHelper {
+        internal static class OperationWrapperHelper
+        {
                 private static readonly ImmutableDictionary<Type, Type> WrappedTypes;
-                static OperationWrapperHelper() {
+                static OperationWrapperHelper()
+                {
                         var codeAnalysisAssembly = typeof(SyntaxNode).GetTypeInfo().Assembly;
                         var builder = ImmutableDictionary.CreateBuilder<Type, Type>();
                         builder.Add(
-                            typeof(ILoopOperationWrapper),
-                            codeAnalysisAssembly.GetType(ILoopOperationWrapper.WrappedTypeName));
+                          typeof(ILoopOperationWrapper),
+                          codeAnalysisAssembly.GetType(ILoopOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IMemberReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IMemberReferenceOperationWrapper.WrappedTypeName));
+                                      IMemberReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IAssignmentOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IAssignmentOperationWrapper.WrappedTypeName));
+                                      IAssignmentOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ISymbolInitializerOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ISymbolInitializerOperationWrapper.WrappedTypeName));
+                                      ISymbolInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ICaseClauseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ICaseClauseOperationWrapper.WrappedTypeName));
+                                      ICaseClauseOperationWrapper.WrappedTypeName));
+                        builder.Add(typeof(IInterpolatedStringContentOperationWrapper),
+                                    codeAnalysisAssembly.GetType(
+                                      IInterpolatedStringContentOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IInterpolatedStringContentOperationWrapper),
-                            codeAnalysisAssembly.GetType(
-                                IInterpolatedStringContentOperationWrapper.WrappedTypeName));
-                        builder.Add(
-                            typeof(IPatternOperationWrapper),
-                            codeAnalysisAssembly.GetType(IPatternOperationWrapper.WrappedTypeName));
+                          typeof(IPatternOperationWrapper),
+                          codeAnalysisAssembly.GetType(IPatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IMethodBodyBaseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IMethodBodyBaseOperationWrapper.WrappedTypeName));
+                                      IMethodBodyBaseOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IInvalidOperationWrapper),
-                            codeAnalysisAssembly.GetType(IInvalidOperationWrapper.WrappedTypeName));
+                          typeof(IInvalidOperationWrapper),
+                          codeAnalysisAssembly.GetType(IInvalidOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IBlockOperationWrapper),
-                            codeAnalysisAssembly.GetType(IBlockOperationWrapper.WrappedTypeName));
+                          typeof(IBlockOperationWrapper),
+                          codeAnalysisAssembly.GetType(IBlockOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IVariableDeclarationGroupOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IVariableDeclarationGroupOperationWrapper.WrappedTypeName));
+                                      IVariableDeclarationGroupOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ISwitchOperationWrapper),
-                            codeAnalysisAssembly.GetType(ISwitchOperationWrapper.WrappedTypeName));
+                          typeof(ISwitchOperationWrapper),
+                          codeAnalysisAssembly.GetType(ISwitchOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IForEachLoopOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IForEachLoopOperationWrapper.WrappedTypeName));
+                                      IForEachLoopOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IForLoopOperationWrapper),
-                            codeAnalysisAssembly.GetType(IForLoopOperationWrapper.WrappedTypeName));
-                        builder.Add(typeof(IForToLoopOperationWrapper),
-                                    codeAnalysisAssembly.GetType(
-                                        IForToLoopOperationWrapper.WrappedTypeName));
-                        builder.Add(typeof(IWhileLoopOperationWrapper),
-                                    codeAnalysisAssembly.GetType(
-                                        IWhileLoopOperationWrapper.WrappedTypeName));
+                          typeof(IForLoopOperationWrapper),
+                          codeAnalysisAssembly.GetType(IForLoopOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ILabeledOperationWrapper),
-                            codeAnalysisAssembly.GetType(ILabeledOperationWrapper.WrappedTypeName));
+                          typeof(IForToLoopOperationWrapper),
+                          codeAnalysisAssembly.GetType(IForToLoopOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IBranchOperationWrapper),
-                            codeAnalysisAssembly.GetType(IBranchOperationWrapper.WrappedTypeName));
+                          typeof(IWhileLoopOperationWrapper),
+                          codeAnalysisAssembly.GetType(IWhileLoopOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IEmptyOperationWrapper),
-                            codeAnalysisAssembly.GetType(IEmptyOperationWrapper.WrappedTypeName));
+                          typeof(ILabeledOperationWrapper),
+                          codeAnalysisAssembly.GetType(ILabeledOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IReturnOperationWrapper),
-                            codeAnalysisAssembly.GetType(IReturnOperationWrapper.WrappedTypeName));
+                          typeof(IBranchOperationWrapper),
+                          codeAnalysisAssembly.GetType(IBranchOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ILockOperationWrapper),
-                            codeAnalysisAssembly.GetType(ILockOperationWrapper.WrappedTypeName));
+                          typeof(IEmptyOperationWrapper),
+                          codeAnalysisAssembly.GetType(IEmptyOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ITryOperationWrapper),
-                            codeAnalysisAssembly.GetType(ITryOperationWrapper.WrappedTypeName));
+                          typeof(IReturnOperationWrapper),
+                          codeAnalysisAssembly.GetType(IReturnOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IUsingOperationWrapper),
-                            codeAnalysisAssembly.GetType(IUsingOperationWrapper.WrappedTypeName));
+                          typeof(ILockOperationWrapper),
+                          codeAnalysisAssembly.GetType(ILockOperationWrapper.WrappedTypeName));
+                        builder.Add(
+                          typeof(ITryOperationWrapper),
+                          codeAnalysisAssembly.GetType(ITryOperationWrapper.WrappedTypeName));
+                        builder.Add(
+                          typeof(IUsingOperationWrapper),
+                          codeAnalysisAssembly.GetType(IUsingOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IExpressionStatementOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IExpressionStatementOperationWrapper.WrappedTypeName));
+                                      IExpressionStatementOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ILocalFunctionOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ILocalFunctionOperationWrapper.WrappedTypeName));
+                                      ILocalFunctionOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IStopOperationWrapper),
-                            codeAnalysisAssembly.GetType(IStopOperationWrapper.WrappedTypeName));
+                          typeof(IStopOperationWrapper),
+                          codeAnalysisAssembly.GetType(IStopOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IEndOperationWrapper),
-                            codeAnalysisAssembly.GetType(IEndOperationWrapper.WrappedTypeName));
+                          typeof(IEndOperationWrapper),
+                          codeAnalysisAssembly.GetType(IEndOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IRaiseEventOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IRaiseEventOperationWrapper.WrappedTypeName));
+                                      IRaiseEventOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ILiteralOperationWrapper),
-                            codeAnalysisAssembly.GetType(ILiteralOperationWrapper.WrappedTypeName));
+                          typeof(ILiteralOperationWrapper),
+                          codeAnalysisAssembly.GetType(ILiteralOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IConversionOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IConversionOperationWrapper.WrappedTypeName));
+                                      IConversionOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IInvocationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IInvocationOperationWrapper.WrappedTypeName));
+                                      IInvocationOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IArrayElementReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IArrayElementReferenceOperationWrapper.WrappedTypeName));
+                                      IArrayElementReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ILocalReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ILocalReferenceOperationWrapper.WrappedTypeName));
+                                      ILocalReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IParameterReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IParameterReferenceOperationWrapper.WrappedTypeName));
+                                      IParameterReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IFieldReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IFieldReferenceOperationWrapper.WrappedTypeName));
+                                      IFieldReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IMethodReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IMethodReferenceOperationWrapper.WrappedTypeName));
+                                      IMethodReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IPropertyReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IPropertyReferenceOperationWrapper.WrappedTypeName));
+                                      IPropertyReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IEventReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IEventReferenceOperationWrapper.WrappedTypeName));
+                                      IEventReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IUnaryOperationWrapper),
-                            codeAnalysisAssembly.GetType(IUnaryOperationWrapper.WrappedTypeName));
+                          typeof(IUnaryOperationWrapper),
+                          codeAnalysisAssembly.GetType(IUnaryOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IBinaryOperationWrapper),
-                            codeAnalysisAssembly.GetType(IBinaryOperationWrapper.WrappedTypeName));
+                          typeof(IBinaryOperationWrapper),
+                          codeAnalysisAssembly.GetType(IBinaryOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IConditionalOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IConditionalOperationWrapper.WrappedTypeName));
-                        builder.Add(typeof(ICoalesceOperationWrapper),
-                                    codeAnalysisAssembly.GetType(
-                                        ICoalesceOperationWrapper.WrappedTypeName));
+                                      IConditionalOperationWrapper.WrappedTypeName));
+                        builder.Add(
+                          typeof(ICoalesceOperationWrapper),
+                          codeAnalysisAssembly.GetType(ICoalesceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IAnonymousFunctionOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IAnonymousFunctionOperationWrapper.WrappedTypeName));
+                                      IAnonymousFunctionOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IObjectCreationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IObjectCreationOperationWrapper.WrappedTypeName));
+                                      IObjectCreationOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ITypeParameterObjectCreationOperationWrapper),
-                            codeAnalysisAssembly.GetType(
-                                ITypeParameterObjectCreationOperationWrapper.WrappedTypeName));
+                          typeof(ITypeParameterObjectCreationOperationWrapper),
+                          codeAnalysisAssembly.GetType(
+                            ITypeParameterObjectCreationOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IArrayCreationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IArrayCreationOperationWrapper.WrappedTypeName));
+                                      IArrayCreationOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IInstanceReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IInstanceReferenceOperationWrapper.WrappedTypeName));
+                                      IInstanceReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IIsTypeOperationWrapper),
-                            codeAnalysisAssembly.GetType(IIsTypeOperationWrapper.WrappedTypeName));
+                          typeof(IIsTypeOperationWrapper),
+                          codeAnalysisAssembly.GetType(IIsTypeOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IAwaitOperationWrapper),
-                            codeAnalysisAssembly.GetType(IAwaitOperationWrapper.WrappedTypeName));
+                          typeof(IAwaitOperationWrapper),
+                          codeAnalysisAssembly.GetType(IAwaitOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ISimpleAssignmentOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ISimpleAssignmentOperationWrapper.WrappedTypeName));
+                                      ISimpleAssignmentOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ICompoundAssignmentOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ICompoundAssignmentOperationWrapper.WrappedTypeName));
+                                      ICompoundAssignmentOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IParenthesizedOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IParenthesizedOperationWrapper.WrappedTypeName));
+                                      IParenthesizedOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IEventAssignmentOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IEventAssignmentOperationWrapper.WrappedTypeName));
+                                      IEventAssignmentOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IConditionalAccessOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IConditionalAccessOperationWrapper.WrappedTypeName));
-                        builder.Add(
-                            typeof(IConditionalAccessInstanceOperationWrapper),
-                            codeAnalysisAssembly.GetType(
-                                IConditionalAccessInstanceOperationWrapper.WrappedTypeName));
+                                      IConditionalAccessOperationWrapper.WrappedTypeName));
+                        builder.Add(typeof(IConditionalAccessInstanceOperationWrapper),
+                                    codeAnalysisAssembly.GetType(
+                                      IConditionalAccessInstanceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IInterpolatedStringOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IInterpolatedStringOperationWrapper.WrappedTypeName));
+                                      IInterpolatedStringOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IAnonymousObjectCreationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IAnonymousObjectCreationOperationWrapper.WrappedTypeName));
+                                      IAnonymousObjectCreationOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IObjectOrCollectionInitializerOperationWrapper),
-                            codeAnalysisAssembly.GetType(
-                                IObjectOrCollectionInitializerOperationWrapper.WrappedTypeName));
+                          typeof(IObjectOrCollectionInitializerOperationWrapper),
+                          codeAnalysisAssembly.GetType(
+                            IObjectOrCollectionInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IMemberInitializerOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IMemberInitializerOperationWrapper.WrappedTypeName));
+                                      IMemberInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ICollectionElementInitializerOperationWrapper),
-                            codeAnalysisAssembly.GetType(
-                                ICollectionElementInitializerOperationWrapper.WrappedTypeName));
+                          typeof(ICollectionElementInitializerOperationWrapper),
+                          codeAnalysisAssembly.GetType(
+                            ICollectionElementInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(INameOfOperationWrapper),
-                            codeAnalysisAssembly.GetType(INameOfOperationWrapper.WrappedTypeName));
+                          typeof(INameOfOperationWrapper),
+                          codeAnalysisAssembly.GetType(INameOfOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ITupleOperationWrapper),
-                            codeAnalysisAssembly.GetType(ITupleOperationWrapper.WrappedTypeName));
+                          typeof(ITupleOperationWrapper),
+                          codeAnalysisAssembly.GetType(ITupleOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDynamicObjectCreationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDynamicObjectCreationOperationWrapper.WrappedTypeName));
+                                      IDynamicObjectCreationOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDynamicMemberReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDynamicMemberReferenceOperationWrapper.WrappedTypeName));
+                                      IDynamicMemberReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDynamicInvocationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDynamicInvocationOperationWrapper.WrappedTypeName));
+                                      IDynamicInvocationOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDynamicIndexerAccessOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDynamicIndexerAccessOperationWrapper.WrappedTypeName));
+                                      IDynamicIndexerAccessOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ITranslatedQueryOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ITranslatedQueryOperationWrapper.WrappedTypeName));
+                                      ITranslatedQueryOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDelegateCreationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDelegateCreationOperationWrapper.WrappedTypeName));
+                                      IDelegateCreationOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDefaultValueOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDefaultValueOperationWrapper.WrappedTypeName));
+                                      IDefaultValueOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ITypeOfOperationWrapper),
-                            codeAnalysisAssembly.GetType(ITypeOfOperationWrapper.WrappedTypeName));
+                          typeof(ITypeOfOperationWrapper),
+                          codeAnalysisAssembly.GetType(ITypeOfOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(ISizeOfOperationWrapper),
-                            codeAnalysisAssembly.GetType(ISizeOfOperationWrapper.WrappedTypeName));
-                        builder.Add(typeof(IAddressOfOperationWrapper),
-                                    codeAnalysisAssembly.GetType(
-                                        IAddressOfOperationWrapper.WrappedTypeName));
-                        builder.Add(typeof(IIsPatternOperationWrapper),
-                                    codeAnalysisAssembly.GetType(
-                                        IIsPatternOperationWrapper.WrappedTypeName));
+                          typeof(ISizeOfOperationWrapper),
+                          codeAnalysisAssembly.GetType(ISizeOfOperationWrapper.WrappedTypeName));
+                        builder.Add(
+                          typeof(IAddressOfOperationWrapper),
+                          codeAnalysisAssembly.GetType(IAddressOfOperationWrapper.WrappedTypeName));
+                        builder.Add(
+                          typeof(IIsPatternOperationWrapper),
+                          codeAnalysisAssembly.GetType(IIsPatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IIncrementOrDecrementOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IIncrementOrDecrementOperationWrapper.WrappedTypeName));
+                                      IIncrementOrDecrementOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IThrowOperationWrapper),
-                            codeAnalysisAssembly.GetType(IThrowOperationWrapper.WrappedTypeName));
+                          typeof(IThrowOperationWrapper),
+                          codeAnalysisAssembly.GetType(IThrowOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDeconstructionAssignmentOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDeconstructionAssignmentOperationWrapper.WrappedTypeName));
+                                      IDeconstructionAssignmentOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDeclarationExpressionOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDeclarationExpressionOperationWrapper.WrappedTypeName));
+                                      IDeclarationExpressionOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IOmittedArgumentOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IOmittedArgumentOperationWrapper.WrappedTypeName));
+                                      IOmittedArgumentOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IFieldInitializerOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IFieldInitializerOperationWrapper.WrappedTypeName));
+                                      IFieldInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IVariableInitializerOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IVariableInitializerOperationWrapper.WrappedTypeName));
+                                      IVariableInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IPropertyInitializerOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IPropertyInitializerOperationWrapper.WrappedTypeName));
+                                      IPropertyInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IParameterInitializerOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IParameterInitializerOperationWrapper.WrappedTypeName));
+                                      IParameterInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IArrayInitializerOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IArrayInitializerOperationWrapper.WrappedTypeName));
+                                      IArrayInitializerOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IVariableDeclaratorOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IVariableDeclaratorOperationWrapper.WrappedTypeName));
+                                      IVariableDeclaratorOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IVariableDeclarationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IVariableDeclarationOperationWrapper.WrappedTypeName));
-                        builder.Add(typeof(IArgumentOperationWrapper),
-                                    codeAnalysisAssembly.GetType(
-                                        IArgumentOperationWrapper.WrappedTypeName));
+                                      IVariableDeclarationOperationWrapper.WrappedTypeName));
+                        builder.Add(
+                          typeof(IArgumentOperationWrapper),
+                          codeAnalysisAssembly.GetType(IArgumentOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ICatchClauseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ICatchClauseOperationWrapper.WrappedTypeName));
+                                      ICatchClauseOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ISwitchCaseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ISwitchCaseOperationWrapper.WrappedTypeName));
+                                      ISwitchCaseOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDefaultCaseClauseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDefaultCaseClauseOperationWrapper.WrappedTypeName));
+                                      IDefaultCaseClauseOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IPatternCaseClauseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IPatternCaseClauseOperationWrapper.WrappedTypeName));
+                                      IPatternCaseClauseOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IRangeCaseClauseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IRangeCaseClauseOperationWrapper.WrappedTypeName));
+                                      IRangeCaseClauseOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IRelationalCaseClauseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IRelationalCaseClauseOperationWrapper.WrappedTypeName));
+                                      IRelationalCaseClauseOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ISingleValueCaseClauseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ISingleValueCaseClauseOperationWrapper.WrappedTypeName));
+                                      ISingleValueCaseClauseOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IInterpolatedStringTextOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IInterpolatedStringTextOperationWrapper.WrappedTypeName));
+                                      IInterpolatedStringTextOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IInterpolationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IInterpolationOperationWrapper.WrappedTypeName));
+                                      IInterpolationOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IConstantPatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IConstantPatternOperationWrapper.WrappedTypeName));
+                                      IConstantPatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDeclarationPatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDeclarationPatternOperationWrapper.WrappedTypeName));
+                                      IDeclarationPatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ITupleBinaryOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ITupleBinaryOperationWrapper.WrappedTypeName));
+                                      ITupleBinaryOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IMethodBodyOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IMethodBodyOperationWrapper.WrappedTypeName));
+                                      IMethodBodyOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IConstructorBodyOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IConstructorBodyOperationWrapper.WrappedTypeName));
+                                      IConstructorBodyOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IDiscardOperationWrapper),
-                            codeAnalysisAssembly.GetType(IDiscardOperationWrapper.WrappedTypeName));
+                          typeof(IDiscardOperationWrapper),
+                          codeAnalysisAssembly.GetType(IDiscardOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IFlowCaptureOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IFlowCaptureOperationWrapper.WrappedTypeName));
+                                      IFlowCaptureOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IFlowCaptureReferenceOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IFlowCaptureReferenceOperationWrapper.WrappedTypeName));
+                                      IFlowCaptureReferenceOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IIsNullOperationWrapper),
-                            codeAnalysisAssembly.GetType(IIsNullOperationWrapper.WrappedTypeName));
+                          typeof(IIsNullOperationWrapper),
+                          codeAnalysisAssembly.GetType(IIsNullOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ICaughtExceptionOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ICaughtExceptionOperationWrapper.WrappedTypeName));
-                        builder.Add(typeof(IStaticLocalInitializationSemaphoreOperationWrapper),
-                                    codeAnalysisAssembly.GetType(
-                                        IStaticLocalInitializationSemaphoreOperationWrapper
-                                            .WrappedTypeName));
+                                      ICaughtExceptionOperationWrapper.WrappedTypeName));
+                        builder.Add(
+                          typeof(IStaticLocalInitializationSemaphoreOperationWrapper),
+                          codeAnalysisAssembly.GetType(
+                            IStaticLocalInitializationSemaphoreOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IFlowAnonymousFunctionOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IFlowAnonymousFunctionOperationWrapper.WrappedTypeName));
+                                      IFlowAnonymousFunctionOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ICoalesceAssignmentOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ICoalesceAssignmentOperationWrapper.WrappedTypeName));
+                                      ICoalesceAssignmentOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IRangeOperationWrapper),
-                            codeAnalysisAssembly.GetType(IRangeOperationWrapper.WrappedTypeName));
+                          typeof(IRangeOperationWrapper),
+                          codeAnalysisAssembly.GetType(IRangeOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IReDimOperationWrapper),
-                            codeAnalysisAssembly.GetType(IReDimOperationWrapper.WrappedTypeName));
+                          typeof(IReDimOperationWrapper),
+                          codeAnalysisAssembly.GetType(IReDimOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IReDimClauseOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IReDimClauseOperationWrapper.WrappedTypeName));
+                                      IReDimClauseOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IRecursivePatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IRecursivePatternOperationWrapper.WrappedTypeName));
+                                      IRecursivePatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IDiscardPatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IDiscardPatternOperationWrapper.WrappedTypeName));
+                                      IDiscardPatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ISwitchExpressionOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ISwitchExpressionOperationWrapper.WrappedTypeName));
+                                      ISwitchExpressionOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ISwitchExpressionArmOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ISwitchExpressionArmOperationWrapper.WrappedTypeName));
+                                      ISwitchExpressionArmOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IPropertySubpatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IPropertySubpatternOperationWrapper.WrappedTypeName));
+                                      IPropertySubpatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IUsingDeclarationOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IUsingDeclarationOperationWrapper.WrappedTypeName));
+                                      IUsingDeclarationOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(INegatedPatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        INegatedPatternOperationWrapper.WrappedTypeName));
+                                      INegatedPatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IBinaryPatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IBinaryPatternOperationWrapper.WrappedTypeName));
+                                      IBinaryPatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(ITypePatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        ITypePatternOperationWrapper.WrappedTypeName));
+                                      ITypePatternOperationWrapper.WrappedTypeName));
                         builder.Add(typeof(IRelationalPatternOperationWrapper),
                                     codeAnalysisAssembly.GetType(
-                                        IRelationalPatternOperationWrapper.WrappedTypeName));
+                                      IRelationalPatternOperationWrapper.WrappedTypeName));
                         builder.Add(
-                            typeof(IWithOperationWrapper),
-                            codeAnalysisAssembly.GetType(IWithOperationWrapper.WrappedTypeName));
+                          typeof(IWithOperationWrapper),
+                          codeAnalysisAssembly.GetType(IWithOperationWrapper.WrappedTypeName));
                         WrappedTypes = builder.ToImmutable();
                 }
 
@@ -393,7 +394,8 @@ namespace StyleCop.Analyzers.Lightup {
                 /// <param name = "wrapperType">Type of the wrapper for which the wrapped type
                 /// should be retrieved.</param> <returns>The wrapped type, or null if there is no
                 /// info.</returns>
-                internal static Type GetWrappedType(Type wrapperType) {
+                internal static Type GetWrappedType(Type wrapperType)
+                {
                         if (WrappedTypes.TryGetValue(wrapperType, out Type wrappedType)) {
                                 return wrappedType;
                         }

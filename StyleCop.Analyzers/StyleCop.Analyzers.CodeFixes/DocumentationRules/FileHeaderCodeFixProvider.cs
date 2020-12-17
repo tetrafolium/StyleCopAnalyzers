@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Collections.Generic;
         using System.Collections.Immutable;
@@ -30,7 +31,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FileHeaderCodeFixProvider))]
         [Shared]
-        internal class FileHeaderCodeFixProvider : CodeFixProvider {
+        internal class FileHeaderCodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(FileHeaderAnalyzers.SA1633DescriptorMissing.Id,
@@ -46,61 +48,64 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
 
                 /// <inheritdoc/>
-                public override Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         foreach (Diagnostic diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        DocumentationResources.SA1633CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, cancellationToken),
-                                        nameof(FileHeaderCodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(DocumentationResources.SA1633CodeFix,
+                                                    cancellationToken =>
+                                                      GetTransformedDocumentAsync(
+                                                        context.Document, cancellationToken),
+                                                    nameof(FileHeaderCodeFixProvider)),
+                                  diagnostic);
                         }
 
                         return SpecializedTasks.CompletedTask;
                 }
 
                 private static string GetFileName(Document document) =>
-                    Path.GetFileName(document.FilePath ?? document.Name);
+                  Path.GetFileName(document.FilePath ?? document.Name);
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  CancellationToken cancellationToken)
+                {
                         return document.WithSyntaxRoot(
-                            await GetTransformedSyntaxRootAsync(document, cancellationToken)
-                                .ConfigureAwait(false));
+                          await GetTransformedSyntaxRootAsync(document, cancellationToken)
+                            .ConfigureAwait(false));
                 }
 
                 private static async Task<SyntaxNode> GetTransformedSyntaxRootAsync(
-                    Document document,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  CancellationToken cancellationToken)
+                {
                         var root = await document.GetSyntaxRootAsync(cancellationToken)
-                                       .ConfigureAwait(false);
+                                     .ConfigureAwait(false);
                         var settings =
-                            document.Project.AnalyzerOptions.GetStyleCopSettings(cancellationToken);
+                          document.Project.AnalyzerOptions.GetStyleCopSettings(cancellationToken);
 
                         var fileHeader = FileHeaderHelpers.ParseFileHeader(root);
                         SyntaxNode newSyntaxRoot;
                         if (fileHeader.IsMissing) {
                                 newSyntaxRoot =
-                                    AddHeader(document, root, GetFileName(document), settings);
+                                  AddHeader(document, root, GetFileName(document), settings);
                         } else {
                                 var trivia = root.GetLeadingTrivia();
                                 var commentIndex =
-                                    TriviaHelper.IndexOfFirstNonWhitespaceTrivia(trivia, false);
+                                  TriviaHelper.IndexOfFirstNonWhitespaceTrivia(trivia, false);
 
                                 // Safe to do this as fileHeader.IsMissing is false.
                                 var isMultiLineComment =
-                                    trivia [commentIndex]
-                                        .IsKind(SyntaxKind.MultiLineCommentTrivia);
+                                  trivia [commentIndex]
+                                    .IsKind(SyntaxKind.MultiLineCommentTrivia);
 
                                 var xmlFileHeader = FileHeaderHelpers.ParseXmlFileHeader(root);
                                 if (isMultiLineComment && !xmlFileHeader.IsMalformed) {
                                         newSyntaxRoot = ReplaceWellFormedMultiLineCommentHeader(
-                                            document, root, settings, commentIndex, xmlFileHeader);
+                                          document, root, settings, commentIndex, xmlFileHeader);
                                 } else {
-                                        newSyntaxRoot = ReplaceHeader(document, root, settings,
-                                                                      xmlFileHeader.IsMalformed);
+                                        newSyntaxRoot = ReplaceHeader(
+                                          document, root, settings, xmlFileHeader.IsMalformed);
                                 }
                         }
 
@@ -108,11 +113,12 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static SyntaxNode ReplaceWellFormedMultiLineCommentHeader(
-                    Document document,
-                    SyntaxNode root,
-                    StyleCopSettings settings,
-                    int commentIndex,
-                    XmlFileHeader header) {
+                  Document document,
+                  SyntaxNode root,
+                  StyleCopSettings settings,
+                  int commentIndex,
+                  XmlFileHeader header)
+                {
                         SyntaxTriviaList trivia = root.GetLeadingTrivia();
                         var commentTrivia = trivia[commentIndex];
 
@@ -129,9 +135,9 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         var startIndex = triviaString.IndexOf("/*", StringComparison.Ordinal) + 2;
                         var endIndex = triviaString.LastIndexOf("*/", StringComparison.Ordinal);
                         var commentContext =
-                            triviaString.Substring(startIndex, endIndex - startIndex)
-                                .Trim(' ', '\t')
-                                .TrimEnd();
+                          triviaString.Substring(startIndex, endIndex - startIndex)
+                            .Trim(' ', '\t')
+                            .TrimEnd();
                         var triviaStringParts = commentContext.Replace("\r\n", "\n").Split('\n');
 
                         // Assume we have comments that have a leading *
@@ -139,28 +145,31 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                         int minExpectedLength = (commentIndentation + interlinePadding).Length;
                         string newLineText = document.Project.Solution.Workspace.Options.GetOption(
-                            FormattingOptions.NewLine, LanguageNames.CSharp);
+                          FormattingOptions.NewLine, LanguageNames.CSharp);
 
                         // Examine second line to see if we should have stars or not if it's blank
                         // set the interline padding to be blank also.
                         if ((triviaStringParts.Length > 2) &&
                             (triviaStringParts[1].Length > minExpectedLength) &&
                             string.IsNullOrWhiteSpace(triviaStringParts [1]
-                                                          .Substring(0, minExpectedLength))) {
+                                                        .Substring(0, minExpectedLength))) {
                                 interlinePadding = "  ";
                         }
 
                         // Pad line that used to be next to a /*
                         triviaStringParts[0] =
-                            commentIndentation + interlinePadding + " " + triviaStringParts[0];
+                          commentIndentation + interlinePadding + " " + triviaStringParts[0];
                         StringBuilder sb = StringBuilderPool.Allocate();
                         string fileName = GetFileName(document);
-                        var copyrightText = GetCopyrightText(
-                            commentIndentation + interlinePadding,
-                            settings.DocumentationRules.GetCopyrightText(fileName), newLineText);
-                        var newHeader =
-                            WrapInXmlComment(commentIndentation + interlinePadding, copyrightText,
-                                             fileName, settings, newLineText);
+                        var copyrightText =
+                          GetCopyrightText(commentIndentation + interlinePadding,
+                                           settings.DocumentationRules.GetCopyrightText(fileName),
+                                           newLineText);
+                        var newHeader = WrapInXmlComment(commentIndentation + interlinePadding,
+                                                         copyrightText,
+                                                         fileName,
+                                                         settings,
+                                                         newLineText);
 
                         sb.Append(commentIndentation);
                         sb.Append("/*");
@@ -180,12 +189,12 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 foreach (var oldLine in triviaStringParts) {
                                         var openingTag = oldLine.Contains("<copyright ");
                                         var closingTag =
-                                            oldLine.Contains("</copyright>") ||
-                                            (openingTag && oldLine.Trim().EndsWith("/>"));
+                                          oldLine.Contains("</copyright>") ||
+                                          (openingTag && oldLine.Trim().EndsWith("/>"));
                                         if (openingTag) {
                                                 inCopyright = !closingTag;
                                                 sb.Append(newHeader.Substring(
-                                                    firstLine ? minExpectedLength : 0));
+                                                  firstLine ? minExpectedLength : 0));
                                                 sb.Append(newLineText);
                                         }
 
@@ -193,7 +202,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                 inCopyright = !closingTag;
                                         } else {
                                                 sb.Append(oldLine.Substring(
-                                                    firstLine ? minExpectedLength : 0));
+                                                  firstLine ? minExpectedLength : 0));
                                                 sb.Append(newLineText);
                                         }
 
@@ -206,22 +215,23 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                         // Get rid of any trailing spaces.
                         var lines =
-                            sb.ToString().Split(new string[]{newLineText}, StringSplitOptions.None);
+                          sb.ToString().Split(new string[]{ newLineText }, StringSplitOptions.None);
                         sb.Clear();
                         for (int i = 0; i < lines.Length; i++) {
                                 sb.Append((i == 0 ? string.Empty : newLineText) + lines [i]
-                                                                                      .TrimEnd());
+                                                                                    .TrimEnd());
                         }
 
                         var newTrivia = SyntaxFactory.SyntaxTrivia(
-                            SyntaxKind.MultiLineCommentTrivia, StringBuilderPool.ReturnAndFree(sb));
+                          SyntaxKind.MultiLineCommentTrivia, StringBuilderPool.ReturnAndFree(sb));
                         return root.WithLeadingTrivia(trivia.Replace(commentTrivia, newTrivia));
                 }
 
                 private static SyntaxNode ReplaceHeader(Document document,
                                                         SyntaxNode root,
                                                         StyleCopSettings settings,
-                                                        bool isMalformedHeader) {
+                                                        bool isMalformedHeader)
+                {
                         // If the header is well formed Xml then we parse out the copyright
                         // otherwise Skip single line comments, whitespace, and end of line trivia
                         // until a blank line is encountered.
@@ -248,14 +258,14 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                                                 if (!isMalformedHeader) {
                                                         var openingTag =
-                                                            triviaLine.ToFullString().Contains(
-                                                                "<copyright ");
+                                                          triviaLine.ToFullString().Contains(
+                                                            "<copyright ");
                                                         var closingTag =
-                                                            triviaLine.ToFullString().Contains(
-                                                                "</copyright>") ||
-                                                            (openingTag && triviaLine.ToFullString()
-                                                                               .Trim()
-                                                                               .EndsWith("/>"));
+                                                          triviaLine.ToFullString().Contains(
+                                                            "</copyright>") ||
+                                                          (openingTag && triviaLine.ToFullString()
+                                                                           .Trim()
+                                                                           .EndsWith("/>"));
                                                         if (openingTag) {
                                                                 inCopyright = !closingTag;
                                                                 copyrightTriviaIndex = i;
@@ -273,7 +283,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 if (leadingSpaces == string.Empty) {
                                                         possibleLeadingSpaces =
-                                                            triviaLine.ToFullString();
+                                                          triviaLine.ToFullString();
                                                 }
 
                                                 if (inCopyright) {
@@ -311,24 +321,24 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         string newLineText = document.Project.Solution.Workspace.Options.GetOption(
-                            FormattingOptions.NewLine, LanguageNames.CSharp);
+                          FormattingOptions.NewLine, LanguageNames.CSharp);
                         var newLineTrivia = SyntaxFactory.EndOfLine(newLineText);
 
                         var newHeaderTrivia = CreateNewHeader(
-                            leadingSpaces + "//", GetFileName(document), settings, newLineText);
+                          leadingSpaces + "//", GetFileName(document), settings, newLineText);
                         if (!isMalformedHeader && copyrightTriviaIndex.HasValue) {
                                 // Does the copyright element have leading whitespace? If so remove
                                 // it.
                                 if ((copyrightTriviaIndex.Value > 0) &&
                                     trivia [copyrightTriviaIndex.Value - 1]
-                                        .IsKind(SyntaxKind.WhitespaceTrivia)) {
+                                      .IsKind(SyntaxKind.WhitespaceTrivia)) {
                                         copyrightTriviaIndex--;
                                         trivia = trivia.RemoveAt(copyrightTriviaIndex.Value);
                                 }
 
                                 // Replace copyright element in place.
                                 return root.WithLeadingTrivia(trivia.ReplaceRange(
-                                    trivia[copyrightTriviaIndex.Value], newHeaderTrivia));
+                                  trivia[copyrightTriviaIndex.Value], newHeaderTrivia));
                         } else {
                                 // Add blank line if we don't already have comments at top of file.
                                 if (!FirstLineIsComment(trivia)) {
@@ -337,21 +347,22 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                                 // Insert header at top of the file.
                                 return root.WithLeadingTrivia(
-                                    newHeaderTrivia.Add(newLineTrivia).AddRange(trivia));
+                                  newHeaderTrivia.Add(newLineTrivia).AddRange(trivia));
                         }
                 }
 
-                private static bool FirstLineIsComment(SyntaxTriviaList trivia) {
+                private static bool FirstLineIsComment(SyntaxTriviaList trivia)
+                {
                         if ((trivia.Count > 0) && trivia [0]
-                                                      .IsKind(SyntaxKind.SingleLineCommentTrivia)) {
+                                                    .IsKind(SyntaxKind.SingleLineCommentTrivia)) {
                                 return true;
                         }
 
                         if ((trivia.Count > 1) &&
                             trivia [0]
-                                .IsKind(SyntaxKind.WhitespaceTrivia) &&
+                              .IsKind(SyntaxKind.WhitespaceTrivia) &&
                             trivia [1]
-                                .IsKind(SyntaxKind.SingleLineCommentTrivia)) {
+                              .IsKind(SyntaxKind.SingleLineCommentTrivia)) {
                                 return true;
                         }
 
@@ -361,13 +372,14 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static SyntaxNode AddHeader(Document document,
                                                     SyntaxNode root,
                                                     string name,
-                                                    StyleCopSettings settings) {
+                                                    StyleCopSettings settings)
+                {
                         string newLineText = document.Project.Solution.Workspace.Options.GetOption(
-                            FormattingOptions.NewLine, LanguageNames.CSharp);
+                          FormattingOptions.NewLine, LanguageNames.CSharp);
                         var newLineTrivia = SyntaxFactory.EndOfLine(newLineText);
                         var newTrivia = CreateNewHeader("//", name, settings, newLineText)
-                                            .Add(newLineTrivia)
-                                            .Add(newLineTrivia);
+                                          .Add(newLineTrivia)
+                                          .Add(newLineTrivia);
 
                         // Skip blank lines already at the beginning of the document, since we add
                         // our own
@@ -376,7 +388,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         for (int i = 0; i < leadingTrivia.Count; i++) {
                                 bool done = false;
                                 switch (leadingTrivia [i]
-                                            .Kind()) {
+                                          .Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
                                                 break;
 
@@ -402,14 +414,16 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 private static SyntaxTriviaList CreateNewHeader(string prefixWithLeadingSpaces,
                                                                 string fileName,
                                                                 StyleCopSettings settings,
-                                                                string newLineText) {
-                        var copyrightText = GetCopyrightText(
-                            prefixWithLeadingSpaces,
-                            settings.DocumentationRules.GetCopyrightText(fileName), newLineText);
+                                                                string newLineText)
+                {
+                        var copyrightText =
+                          GetCopyrightText(prefixWithLeadingSpaces,
+                                           settings.DocumentationRules.GetCopyrightText(fileName),
+                                           newLineText);
                         var newHeader = settings.DocumentationRules.XmlHeader
                 ? WrapInXmlComment(
-                            prefixWithLeadingSpaces, copyrightText, fileName, settings, newLineText)
-                            : copyrightText;
+                          prefixWithLeadingSpaces, copyrightText, fileName, settings, newLineText)
+                          : copyrightText;
                         return SyntaxFactory.ParseLeadingTrivia(newHeader);
                 }
 
@@ -417,20 +431,21 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                        string copyrightText,
                                                        string fileName,
                                                        StyleCopSettings settings,
-                                                       string newLineText) {
+                                                       string newLineText)
+                {
                         string encodedFilename =
-                            new XAttribute("t", fileName).ToString().Substring(2).Trim('"');
+                          new XAttribute("t", fileName).ToString().Substring(2).Trim('"');
                         string encodedCompanyName =
-                            new XAttribute("t", settings.DocumentationRules.CompanyName)
-                                .ToString()
-                                .Substring(2)
-                                .Trim('"');
+                          new XAttribute("t", settings.DocumentationRules.CompanyName)
+                            .ToString()
+                            .Substring(2)
+                            .Trim('"');
                         string encodedCopyrightText = new XText(copyrightText).ToString();
 
                         string copyrightString =
-                            $"{prefixWithLeadingSpaces} <copyright file=\"{encodedFilename}\" company=\"{encodedCompanyName}\">" +
-                            newLineText + encodedCopyrightText + newLineText +
-                            prefixWithLeadingSpaces + " </copyright>";
+                          $"{prefixWithLeadingSpaces} <copyright file=\"{encodedFilename}\" company=\"{encodedCompanyName}\">" +
+                          newLineText + encodedCopyrightText + newLineText +
+                          prefixWithLeadingSpaces + " </copyright>";
 
                         if (!string.IsNullOrEmpty(settings.DocumentationRules.HeaderDecoration)) {
                                 return $"{prefixWithLeadingSpaces} {settings.DocumentationRules.HeaderDecoration}" +
@@ -443,7 +458,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
 
                 private static string GetCopyrightText(string prefixWithLeadingSpaces,
                                                        string copyrightText,
-                                                       string newLineText) {
+                                                       string newLineText)
+                {
                         copyrightText = copyrightText.Replace("\r\n", "\n");
                         var lines = copyrightText.Split('\n');
                         return string.Join(newLineText, lines.Select(line => {
@@ -456,22 +472,23 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 }
 
                 private static SyntaxTriviaList RemoveHeaderDecorationLines(
-                    SyntaxTriviaList trivia,
-                    StyleCopSettings settings) {
+                  SyntaxTriviaList trivia,
+                  StyleCopSettings settings)
+                {
                         if (!string.IsNullOrEmpty(settings.DocumentationRules.HeaderDecoration)) {
                                 var decorationRemovalList = new List<int>();
                                 for (int i = 0; i < trivia.Count; i++) {
                                         var triviaLine = trivia[i];
                                         if (triviaLine.Kind() ==
-                                                SyntaxKind.SingleLineCommentTrivia &&
+                                              SyntaxKind.SingleLineCommentTrivia &&
                                             triviaLine.ToFullString().Contains(
-                                                settings.DocumentationRules.HeaderDecoration)) {
+                                              settings.DocumentationRules.HeaderDecoration)) {
                                                 decorationRemovalList.Add(i);
 
                                                 // also remove the line break
                                                 if (i + 1 < trivia.Count &&
                                                     trivia [i + 1]
-                                                            .Kind() == SyntaxKind.EndOfLineTrivia) {
+                                                        .Kind() == SyntaxKind.EndOfLineTrivia) {
                                                         decorationRemovalList.Add(i + 1);
                                                 }
                                         }
@@ -486,23 +503,25 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         return trivia;
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
+                private class FixAll : DocumentBasedFixAllProvider
+                {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
                         protected override string CodeActionTitle =>
-                            DocumentationResources.SA1633CodeFix;
+                          DocumentationResources.SA1633CodeFix;
 
                         protected override Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext,
-                            Document document,
-                            ImmutableArray<Diagnostic> diagnostics) {
+                          FixAllContext fixAllContext,
+                          Document document,
+                          ImmutableArray<Diagnostic> diagnostics)
+                        {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
 
                                 return GetTransformedSyntaxRootAsync(
-                                    document, fixAllContext.CancellationToken);
+                                  document, fixAllContext.CancellationToken);
                         }
                 }
         }

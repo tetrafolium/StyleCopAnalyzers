@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.NamingRules {
+namespace StyleCop.Analyzers.NamingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -29,46 +30,48 @@ namespace StyleCop.Analyzers.NamingRules {
         /// is placed within a <c>NativeMethods</c> class.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SX1309FieldNamesMustBeginWithUnderscore : DiagnosticAnalyzer {
+        internal class SX1309FieldNamesMustBeginWithUnderscore : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SX1309FieldNamesMustBeginWithUnderscore"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SX1309";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1309.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1309.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(NamingResources.SX1309Title),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SX1309Title),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(NamingResources.SX1309MessageFormat),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SX1309MessageFormat),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(NamingResources.SX1309Description),
-                                                  NamingResources.ResourceManager,
-                                                  typeof(NamingResources));
+                  new LocalizableResourceString(nameof(NamingResources.SX1309Description),
+                                                NamingResources.ResourceManager,
+                                                typeof(NamingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.NamingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.DisabledAlternative,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.NamingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.DisabledAlternative,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction =
-                    HandleFieldDeclaration;
+                  HandleFieldDeclaration;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -76,7 +79,8 @@ namespace StyleCop.Analyzers.NamingRules {
                                                          SyntaxKind.FieldDeclaration);
                 }
 
-                private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         FieldDeclarationSyntax syntax = (FieldDeclarationSyntax) context.Node;
                         foreach (SyntaxToken token in syntax.Modifiers) {
                                 switch (token.Kind()) {
@@ -123,7 +127,7 @@ namespace StyleCop.Analyzers.NamingRules {
                                 // Field '{name}' should begin with an underscore
                                 string name = identifier.ValueText;
                                 context.ReportDiagnostic(
-                                    Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
+                                  Diagnostic.Create(Descriptor, identifier.GetLocation(), name));
                         }
                 }
         }

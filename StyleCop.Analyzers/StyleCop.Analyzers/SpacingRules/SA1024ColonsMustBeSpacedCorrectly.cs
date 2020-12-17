@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -60,90 +61,93 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1024ColonsMustBeSpacedCorrectly : DiagnosticAnalyzer {
+        internal class SA1024ColonsMustBeSpacedCorrectly : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1024ColonsMustBeSpacedCorrectly"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1024";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1024.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1024.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1024Title),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1024Title),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1024MessageNotPreceded),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1024MessageNotPreceded),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1024Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1024Description),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly LocalizableString MessageNotPreceded =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1024MessageNotPreceded),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1024MessageNotPreceded),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessagePreceded =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1024MessagePreceded),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1024MessagePreceded),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageFollowed =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1024MessageFollowed),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1024MessageFollowed),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                  HandleSyntaxTree;
 
-#pragma warning disable SA1202  // Elements should be ordered by access
+#pragma warning disable SA1202 // Elements should be ordered by access
                 internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageNotPreceded,
-                                             AnalyzerCategory.SpacingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageNotPreceded,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 internal static readonly DiagnosticDescriptor DescriptorPreceded =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessagePreceded,
-                                             AnalyzerCategory.SpacingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessagePreceded,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 internal static readonly DiagnosticDescriptor DescriptorFollowed =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFollowed,
-                                             AnalyzerCategory.SpacingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
-#pragma warning restore SA1202  // Elements should be ordered by access
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFollowed,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
+#pragma warning restore SA1202 // Elements should be ordered by access
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(DescriptorNotPreceded);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context) {
+                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                {
                         SyntaxNode root =
-                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                          context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var token in root.DescendantTokens()) {
                                 if (token.Kind() == SyntaxKind.ColonToken) {
                                         HandleColonToken(context, token);
@@ -152,7 +156,8 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static void HandleColonToken(SyntaxTreeAnalysisContext context,
-                                                     SyntaxToken token) {
+                                                     SyntaxToken token)
+                {
                         if (token.IsMissing) {
                                 return;
                         }
@@ -191,10 +196,10 @@ namespace StyleCop.Analyzers.SpacingRules {
                         bool missingFollowingSpace = true;
                         if (token.HasTrailingTrivia) {
                                 if (token.TrailingTrivia.First().IsKind(
-                                        SyntaxKind.WhitespaceTrivia)) {
+                                      SyntaxKind.WhitespaceTrivia)) {
                                         missingFollowingSpace = false;
                                 } else if (token.TrailingTrivia.First().IsKind(
-                                               SyntaxKind.EndOfLineTrivia)) {
+                                             SyntaxKind.EndOfLineTrivia)) {
                                         missingFollowingSpace = false;
                                 }
                         }
@@ -205,10 +210,10 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 // are ignored
                                 SyntaxToken precedingToken = token.GetPreviousToken();
                                 var combinedTrivia = TriviaHelper.MergeTriviaLists(
-                                    precedingToken.TrailingTrivia, token.LeadingTrivia);
+                                  precedingToken.TrailingTrivia, token.LeadingTrivia);
                                 if (combinedTrivia.Count > 0 &&
                                     !combinedTrivia.Last().IsKind(
-                                        SyntaxKind.MultiLineCommentTrivia)) {
+                                      SyntaxKind.MultiLineCommentTrivia)) {
                                         hasPrecedingSpace = true;
                                 }
                         }
@@ -216,21 +221,22 @@ namespace StyleCop.Analyzers.SpacingRules {
                         if (hasPrecedingSpace != requireBefore) {
                                 // colon should{ not}? be {preceded}{} by a space
                                 var properties = requireBefore ? TokenSpacingProperties
-                                                     .InsertPreceding
-                                    : TokenSpacingProperties.RemovePreceding;
+                                                   .InsertPreceding
+                                  : TokenSpacingProperties.RemovePreceding;
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    requireBefore ? DescriptorPreceded
-                                    : DescriptorNotPreceded, token.GetLocation(), properties));
+                                  requireBefore ? DescriptorPreceded
+                                  : DescriptorNotPreceded, token.GetLocation(), properties));
                         }
 
                         if (missingFollowingSpace && checkRequireAfter) {
                                 // colon should{} be {followed}{} by a space
-#pragma warning disable RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                                // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                                 context.ReportDiagnostic(
-                                    Diagnostic.Create(DescriptorFollowed, token.GetLocation(),
-                                                      TokenSpacingProperties.InsertFollowing));
-#pragma warning restore RS1005  // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                                  Diagnostic.Create(DescriptorFollowed,
+                                                    token.GetLocation(),
+                                                    TokenSpacingProperties.InsertFollowing));
+#pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                         }
                 }
         }

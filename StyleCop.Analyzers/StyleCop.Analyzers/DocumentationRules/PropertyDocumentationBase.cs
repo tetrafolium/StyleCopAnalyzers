@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Linq;
         using System.Xml.Linq;
@@ -16,16 +17,18 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// This is the base class for analyzers which examine the <c>&lt;value&gt;</c> text of a
         /// documentation comment on a property declaration.
         /// </summary>
-        internal abstract class PropertyDocumentationBase : DiagnosticAnalyzer {
+        internal abstract class PropertyDocumentationBase : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The key used for signalling that no codefix should be offered.
                 /// </summary>
                 internal const string NoCodeFixKey = "NoCodeFix";
 
                 private readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings>
-                    propertyDeclarationAction;
+                  propertyDeclarationAction;
 
-                protected PropertyDocumentationBase() {
+                protected PropertyDocumentationBase()
+                {
                         this.propertyDeclarationAction = this.HandlePropertyDeclaration;
                 }
 
@@ -36,7 +39,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 protected abstract string XmlTagToHandle { get; }
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -67,27 +71,32 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          Location diagnosticLocation);
 
                 private void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context,
-                                                       StyleCopSettings settings) {
+                                                       StyleCopSettings settings)
+                {
                         var node = (PropertyDeclarationSyntax) context.Node;
                         if (node.Identifier.IsMissing) {
                                 return;
                         }
 
                         Accessibility declaredAccessibility = node.GetDeclaredAccessibility(
-                            context.SemanticModel, context.CancellationToken);
+                          context.SemanticModel, context.CancellationToken);
                         Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(
-                            context.SemanticModel, context.CancellationToken);
-                        bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
-                            settings.DocumentationRules, node.Kind(), node.Parent.Kind(),
-                            declaredAccessibility, effectiveAccessibility);
-                        this.HandleDeclaration(context, needsComment, node,
-                                               node.Identifier.GetLocation());
+                          context.SemanticModel, context.CancellationToken);
+                        bool needsComment =
+                          SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules,
+                                                                      node.Kind(),
+                                                                      node.Parent.Kind(),
+                                                                      declaredAccessibility,
+                                                                      effectiveAccessibility);
+                        this.HandleDeclaration(
+                          context, needsComment, node, node.Identifier.GetLocation());
                 }
 
                 private void HandleDeclaration(SyntaxNodeAnalysisContext context,
                                                bool needsComment,
                                                SyntaxNode node,
-                                               Location location) {
+                                               Location location)
+                {
                         var documentation = node.GetDocumentationCommentTriviaSyntax();
                         if (documentation == null) {
                                 // missing documentation is reported by SA1600, SA1601, and SA1602
@@ -95,7 +104,7 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         }
 
                         if (documentation.Content.GetFirstXmlElement(
-                                XmlCommentHelper.InheritdocXmlTag) != null) {
+                              XmlCommentHelper.InheritdocXmlTag) != null) {
                                 // Ignore nodes with an <inheritdoc/> tag.
                                 return;
                         }
@@ -103,23 +112,23 @@ namespace StyleCop.Analyzers.DocumentationRules {
                         XElement completeDocumentation = null;
 
                         var relevantXmlElement =
-                            documentation.Content.GetFirstXmlElement(this.XmlTagToHandle);
+                          documentation.Content.GetFirstXmlElement(this.XmlTagToHandle);
                         if (relevantXmlElement == null) {
                                 relevantXmlElement = documentation.Content.GetFirstXmlElement(
-                                    XmlCommentHelper.IncludeXmlTag);
+                                  XmlCommentHelper.IncludeXmlTag);
                                 if (relevantXmlElement != null) {
                                         var declaration = context.SemanticModel.GetDeclaredSymbol(
-                                            node, context.CancellationToken);
+                                          node, context.CancellationToken);
                                         var rawDocumentation =
-                                            declaration?.GetDocumentationCommentXml(
-                                                expandIncludes
-                                                : true, cancellationToken
-                                                : context.CancellationToken);
+                                          declaration?.GetDocumentationCommentXml(
+                                            expandIncludes
+                                            : true, cancellationToken
+                                            : context.CancellationToken);
                                         completeDocumentation =
-                                            XElement.Parse(rawDocumentation, LoadOptions.None);
+                                          XElement.Parse(rawDocumentation, LoadOptions.None);
                                         if (completeDocumentation.Nodes().OfType<XElement>().Any(
-                                                element => element.Name ==
-                                                           XmlCommentHelper.InheritdocXmlTag)) {
+                                              element => element.Name ==
+                                                         XmlCommentHelper.InheritdocXmlTag)) {
                                                 // Ignore nodes with an <inheritdoc/> tag in the
                                                 // included XML.
                                                 return;
@@ -127,8 +136,11 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                 }
                         }
 
-                        this.HandleXmlElement(context, needsComment, relevantXmlElement,
-                                              completeDocumentation, location);
+                        this.HandleXmlElement(context,
+                                              needsComment,
+                                              relevantXmlElement,
+                                              completeDocumentation,
+                                              location);
                 }
         }
 }

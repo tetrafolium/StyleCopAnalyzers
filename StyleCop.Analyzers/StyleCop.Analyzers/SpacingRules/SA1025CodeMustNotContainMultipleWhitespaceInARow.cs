@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -18,53 +19,56 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// code, following a comma or semicolon or preceding a symbol.</para>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1025CodeMustNotContainMultipleWhitespaceInARow : DiagnosticAnalyzer {
+        internal class SA1025CodeMustNotContainMultipleWhitespaceInARow : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the <see
                 /// cref="SA1025CodeMustNotContainMultipleWhitespaceInARow"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1025";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1025.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1025.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1025Title),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1025Title),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1025MessageFormat),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1025MessageFormat),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(SpacingResources.SA1025Description),
-                                                  SpacingResources.ResourceManager,
-                                                  typeof(SpacingResources));
+                  new LocalizableResourceString(nameof(SpacingResources.SA1025Description),
+                                                SpacingResources.ResourceManager,
+                                                typeof(SpacingResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.SpacingRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.SpacingRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction =
-                    HandleSyntaxTree;
+                  HandleSyntaxTree;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
                         context.RegisterSyntaxTreeAction(SyntaxTreeAction);
                 }
 
-                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context) {
+                private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
+                {
                         if (context.Tree.IsWhitespaceOnly(context.CancellationToken)) {
                                 // Handling of empty documents is now the responsibility of the
                                 // analyzers
@@ -72,7 +76,7 @@ namespace StyleCop.Analyzers.SpacingRules {
                         }
 
                         SyntaxNode root =
-                            context.Tree.GetCompilationUnitRoot(context.CancellationToken);
+                          context.Tree.GetCompilationUnitRoot(context.CancellationToken);
                         foreach (var trivia in root.DescendantTrivia()) {
                                 switch (trivia.Kind()) {
                                         case SyntaxKind.WhitespaceTrivia:
@@ -86,13 +90,14 @@ namespace StyleCop.Analyzers.SpacingRules {
                 }
 
                 private static void HandleWhitespaceTrivia(SyntaxTreeAnalysisContext context,
-                                                           SyntaxTrivia trivia) {
+                                                           SyntaxTrivia trivia)
+                {
                         if (trivia.Span.Length <= 1) {
                                 return;
                         }
 
                         if (trivia.SyntaxTree.GetMappedLineSpan(trivia.Span)
-                                .StartLinePosition.Character == 0) {
+                              .StartLinePosition.Character == 0) {
                                 return;
                         }
 
@@ -127,7 +132,7 @@ namespace StyleCop.Analyzers.SpacingRules {
 
                         // Code should not contain multiple whitespace characters in a row.
                         context.ReportDiagnostic(
-                            Diagnostic.Create(Descriptor, trivia.GetLocation()));
+                          Diagnostic.Create(Descriptor, trivia.GetLocation()));
                 }
         }
 }

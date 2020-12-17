@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.DocumentationRules {
+namespace StyleCop.Analyzers.DocumentationRules
+{
         using System;
         using System.Collections.Immutable;
         using System.Globalization;
@@ -46,7 +47,8 @@ namespace StyleCop.Analyzers.DocumentationRules {
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
         internal class SA1643DestructorSummaryDocumentationMustBeginWithStandardText
-            : StandardTextDiagnosticBase {
+          : StandardTextDiagnosticBase
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1643DestructorSummaryDocumentationMustBeginWithStandardText"/>
@@ -54,40 +56,40 @@ namespace StyleCop.Analyzers.DocumentationRules {
                 /// </summary>
                 public const string DiagnosticId = "SA1643";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1643.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1643.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1643Title),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1643Title),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(
-                        nameof(DocumentationResources.SA1643MessageFormat),
-                        DocumentationResources.ResourceManager,
-                        typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1643MessageFormat),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(DocumentationResources.SA1643Description),
-                                                  DocumentationResources.ResourceManager,
-                                                  typeof(DocumentationResources));
+                  new LocalizableResourceString(nameof(DocumentationResources.SA1643Description),
+                                                DocumentationResources.ResourceManager,
+                                                typeof(DocumentationResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.DocumentationRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.DocumentationRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    DestructorDeclarationAction = HandleDestructor;
+                  DestructorDeclarationAction = HandleDestructor;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -95,22 +97,23 @@ namespace StyleCop.Analyzers.DocumentationRules {
                                                          SyntaxKind.DestructorDeclaration);
                 }
 
-                private static void HandleDestructor(SyntaxNodeAnalysisContext context) {
+                private static void HandleDestructor(SyntaxNodeAnalysisContext context)
+                {
                         var settings =
-                            context.Options.GetStyleCopSettings(context.CancellationToken);
+                          context.Options.GetStyleCopSettings(context.CancellationToken);
                         var culture =
-                            new CultureInfo(settings.DocumentationRules.DocumentationCulture);
+                          new CultureInfo(settings.DocumentationRules.DocumentationCulture);
                         var resourceManager = DocumentationResources.ResourceManager;
 
                         HandleDeclaration(
-                            context,
-                            resourceManager.GetString(
-                                nameof(DocumentationResources.DestructorStandardTextFirstPart),
-                                culture),
-                            resourceManager.GetString(
-                                nameof(DocumentationResources.DestructorStandardTextSecondPart),
-                                culture),
-                            Descriptor);
+                          context,
+                          resourceManager.GetString(
+                            nameof(DocumentationResources.DestructorStandardTextFirstPart),
+                            culture),
+                          resourceManager.GetString(
+                            nameof(DocumentationResources.DestructorStandardTextSecondPart),
+                            culture),
+                          Descriptor);
                 }
         }
 }

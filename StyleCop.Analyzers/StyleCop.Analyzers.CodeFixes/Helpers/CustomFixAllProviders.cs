@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Helpers {
+namespace StyleCop.Analyzers.Helpers
+{
         using Microsoft.CodeAnalysis.CodeActions;
         using Microsoft.CodeAnalysis.CodeFixes;
 
         /// <summary>
         /// Contains custom implementations of <see cref="FixAllProvider"/>.
         /// </summary>
-        internal static class CustomFixAllProviders {
+        internal static class CustomFixAllProviders
+        {
                 /// <summary>
                 /// Gets the default batch fix all provider.
                 /// This provider batches all the individual diagnostic fixes across the scope of

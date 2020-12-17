@@ -3,10 +3,12 @@
 
 #nullable enable
 
-namespace StyleCop.Analyzers.Lightup {
+namespace StyleCop.Analyzers.Lightup
+{
         using Microsoft.CodeAnalysis;
 
-        internal interface IOperationWrapper {
+        internal interface IOperationWrapper
+        {
                 IOperation? WrappedOperation { get; }
 
                 ////IOperationWrapper Parent { get; }

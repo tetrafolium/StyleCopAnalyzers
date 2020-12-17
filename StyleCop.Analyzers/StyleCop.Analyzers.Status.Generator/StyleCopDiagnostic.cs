@@ -1,21 +1,24 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Status.Generator {
+namespace StyleCop.Analyzers.Status.Generator
+{
         using Newtonsoft.Json;
         using Newtonsoft.Json.Converters;
 
         /// <summary>
         /// Represents a diagnostic in the StyleCop.Analyzers project.
         /// </summary>
-        public class StyleCopDiagnostic {
+        public class StyleCopDiagnostic
+        {
                 /// <summary>
                 /// Gets or sets the ID of the diagnostic, including the prefix 'SA' or 'SX'.
                 /// </summary>
                 /// <value>
                 /// The ID of the diagnostic including, the prefix 'SA' or 'SX'.
                 /// </value>
-                public string Id {
+                public string Id
+                {
                         get;
                         set;
                 }
@@ -26,7 +29,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// <value>
                 /// The short name if the diagnostic that is used in the class name.
                 /// </value>
-                public string Name {
+                public string Name
+                {
                         get;
                         set;
                 }
@@ -38,7 +42,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// <see langword="true"/> if the diagnostic is implemented; otherwise <see
                 /// langword="false"/>.
                 /// </value>
-                public bool HasImplementation {
+                public bool HasImplementation
+                {
                         get;
                         set;
                 }
@@ -56,7 +61,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// <item><description>DisabledByDefault</description></item>
                 /// </list>
                 /// </value>
-                public string Status {
+                public string Status
+                {
                         get;
                         set;
                 }
@@ -68,7 +74,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// A value indicating the code fix status for the diagnostic.
                 /// </value>
                 [JsonConverter(typeof(StringEnumConverter))]
-                public CodeFixStatus CodeFixStatus {
+                public CodeFixStatus CodeFixStatus
+                {
                         get;
                         set;
                 }
@@ -81,7 +88,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// A value that represents how the fix all functionality is implemented.
                 /// </value>
                 [JsonConverter(typeof(StringEnumConverter))]
-                public FixAllStatus FixAllStatus {
+                public FixAllStatus FixAllStatus
+                {
                         get;
                         set;
                 }
@@ -94,7 +102,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// The reason why a code fix is not implemented, or <see langword="null"/> if there
                 /// is no reason.
                 /// </value>
-                public string NoCodeFixReason {
+                public string NoCodeFixReason
+                {
                         get;
                         set;
                 }
@@ -105,7 +114,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// <value>
                 /// The title of this diagnostic.
                 /// </value>
-                public string Title {
+                public string Title
+                {
                         get;
                         set;
                 }
@@ -116,7 +126,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// <value>
                 /// The category of this diagnostic.
                 /// </value>
-                public string Category {
+                public string Category
+                {
                         get;
                         set;
                 }
@@ -127,7 +138,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// <value>
                 /// The help link for this diagnostic.
                 /// </value>
-                public string HelpLink {
+                public string HelpLink
+                {
                         get;
                         set;
                 }
@@ -139,7 +151,8 @@ namespace StyleCop.Analyzers.Status.Generator {
                 /// <param name="value">A JSON string representing a <see
                 /// cref="StyleCopDiagnostic"/>.</param> <returns>A <see cref="StyleCopDiagnostic"/>
                 /// that is populated with the data stored in <paramref name="value"/>.</returns>
-                public static StyleCopDiagnostic FromJson(string value) {
+                public static StyleCopDiagnostic FromJson(string value)
+                {
                         return JsonConvert.DeserializeObject<StyleCopDiagnostic>(value);
                 }
 

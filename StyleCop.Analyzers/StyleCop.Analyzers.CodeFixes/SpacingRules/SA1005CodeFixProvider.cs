@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.SpacingRules {
+namespace StyleCop.Analyzers.SpacingRules
+{
         using System.Collections.Generic;
         using System.Collections.Immutable;
         using System.Composition;
@@ -25,45 +26,48 @@ namespace StyleCop.Analyzers.SpacingRules {
         /// </remarks>
         [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1005CodeFixProvider))]
         [Shared]
-        internal class SA1005CodeFixProvider : CodeFixProvider {
+        internal class SA1005CodeFixProvider : CodeFixProvider
+        {
                 /// <inheritdoc/>
                 public override ImmutableArray<string> FixableDiagnosticIds { get; }
                 = ImmutableArray.Create(
-                    SA1005SingleLineCommentsMustBeginWithSingleSpace.DiagnosticId);
+                  SA1005SingleLineCommentsMustBeginWithSingleSpace.DiagnosticId);
 
                 /// <inheritdoc/>
                 public override FixAllProvider GetFixAllProvider() { return FixAll.Instance; }
 
                 /// <inheritdoc/>
-                public override async Task RegisterCodeFixesAsync(CodeFixContext context) {
+                public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+                {
                         var root =
-                            await context.Document.GetSyntaxRootAsync(context.CancellationToken)
-                                .ConfigureAwait(false);
+                          await context.Document.GetSyntaxRootAsync(context.CancellationToken)
+                            .ConfigureAwait(false);
 
                         foreach (var diagnostic in context.Diagnostics) {
                                 context.RegisterCodeFix(
-                                    CodeAction.Create(
-                                        SpacingResources.SA1005CodeFix,
-                                        cancellationToken => GetTransformedDocumentAsync(
-                                            context.Document, diagnostic.Location,
-                                            cancellationToken),
-                                        nameof(SA1005CodeFixProvider)),
-                                    diagnostic);
+                                  CodeAction.Create(
+                                    SpacingResources.SA1005CodeFix,
+                                    cancellationToken => GetTransformedDocumentAsync(
+                                      context.Document, diagnostic.Location, cancellationToken),
+                                    nameof(SA1005CodeFixProvider)),
+                                  diagnostic);
                         }
                 }
 
                 private static async Task<Document> GetTransformedDocumentAsync(
-                    Document document,
-                    Location location,
-                    CancellationToken cancellationToken) {
+                  Document document,
+                  Location location,
+                  CancellationToken cancellationToken)
+                {
                         var text =
-                            await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                          await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
                         var sourceSpan = location.SourceSpan;
 
                         return document.WithText(text.WithChanges(GetTextChange(text, sourceSpan)));
                 }
 
-                private static TextChange GetTextChange(SourceText text, TextSpan sourceSpan) {
+                private static TextChange GetTextChange(SourceText text, TextSpan sourceSpan)
+                {
                         var subText = text.GetSubText(sourceSpan).ToString();
 
                         int i = 2;
@@ -76,16 +80,18 @@ namespace StyleCop.Analyzers.SpacingRules {
                         return new TextChange(new TextSpan(sourceSpan.Start + 2, i - 2), " ");
                 }
 
-                private class FixAll : DocumentBasedFixAllProvider {
+                private class FixAll : DocumentBasedFixAllProvider
+                {
                         public static FixAllProvider Instance { get; }
                         = new FixAll();
 
                         protected override string CodeActionTitle => SpacingResources.SA1005CodeFix;
 
                         protected override async Task<SyntaxNode> FixAllInDocumentAsync(
-                            FixAllContext fixAllContext,
-                            Document document,
-                            ImmutableArray<Diagnostic> diagnostics) {
+                          FixAllContext fixAllContext,
+                          Document document,
+                          ImmutableArray<Diagnostic> diagnostics)
+                        {
                                 if (diagnostics.IsEmpty) {
                                         return null;
                                 }
@@ -100,13 +106,13 @@ namespace StyleCop.Analyzers.SpacingRules {
                                 }
 
                                 changes.Sort((left, right) =>
-                                                 left.Span.Start.CompareTo(right.Span.Start));
+                                               left.Span.Start.CompareTo(right.Span.Start));
 
                                 var tree =
-                                    await document.GetSyntaxTreeAsync().ConfigureAwait(false);
+                                  await document.GetSyntaxTreeAsync().ConfigureAwait(false);
                                 return await tree.WithChangedText(text.WithChanges(changes))
-                                    .GetRootAsync()
-                                    .ConfigureAwait(false);
+                                  .GetRootAsync()
+                                  .ConfigureAwait(false);
                         }
                 }
         }

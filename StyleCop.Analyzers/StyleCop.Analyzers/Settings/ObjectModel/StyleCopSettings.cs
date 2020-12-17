@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.Settings.ObjectModel {
+namespace StyleCop.Analyzers.Settings.ObjectModel
+{
         using LightJson;
 
-        internal class StyleCopSettings {
+        internal class StyleCopSettings
+        {
                 /// <summary>
                 /// This is the backing field for the <see cref="Indentation"/> property.
                 /// </summary>
@@ -48,7 +50,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                 /// <summary>
                 /// Initializes a new instance of the <see cref="StyleCopSettings"/> class.
                 /// </summary>
-                protected internal StyleCopSettings() {
+                protected internal StyleCopSettings()
+                {
                         this.indentation = new IndentationSettings();
 
                         this.spacingRules = new SpacingSettings();
@@ -60,57 +63,58 @@ namespace StyleCop.Analyzers.Settings.ObjectModel {
                         this.documentationRules = new DocumentationSettings();
                 }
 
-                protected internal StyleCopSettings(JsonObject settingsObject) : this() {
+                protected internal StyleCopSettings(JsonObject settingsObject)
+                  : this()
+                {
                         foreach (var kvp in settingsObject) {
                                 var childSettingsObject = kvp.Value.AsJsonObject;
                                 switch (kvp.Key) {
                                         case "indentation":
                                                 kvp.AssertIsObject();
                                                 this.indentation =
-                                                    new IndentationSettings(childSettingsObject);
+                                                  new IndentationSettings(childSettingsObject);
                                                 break;
 
                                         case "spacingRules":
                                                 kvp.AssertIsObject();
                                                 this.spacingRules =
-                                                    new SpacingSettings(childSettingsObject);
+                                                  new SpacingSettings(childSettingsObject);
                                                 break;
 
                                         case "readabilityRules":
                                                 kvp.AssertIsObject();
                                                 this.readabilityRules =
-                                                    new ReadabilitySettings(childSettingsObject);
+                                                  new ReadabilitySettings(childSettingsObject);
                                                 break;
 
                                         case "orderingRules":
                                                 kvp.AssertIsObject();
                                                 this.orderingRules =
-                                                    new OrderingSettings(childSettingsObject);
+                                                  new OrderingSettings(childSettingsObject);
                                                 break;
 
                                         case "namingRules":
                                                 kvp.AssertIsObject();
                                                 this.namingRules =
-                                                    new NamingSettings(childSettingsObject);
+                                                  new NamingSettings(childSettingsObject);
                                                 break;
 
                                         case "maintainabilityRules":
                                                 kvp.AssertIsObject();
                                                 this.maintainabilityRules =
-                                                    new MaintainabilitySettings(
-                                                        childSettingsObject);
+                                                  new MaintainabilitySettings(childSettingsObject);
                                                 break;
 
                                         case "layoutRules":
                                                 kvp.AssertIsObject();
                                                 this.layoutRules =
-                                                    new LayoutSettings(childSettingsObject);
+                                                  new LayoutSettings(childSettingsObject);
                                                 break;
 
                                         case "documentationRules":
                                                 kvp.AssertIsObject();
                                                 this.documentationRules =
-                                                    new DocumentationSettings(childSettingsObject);
+                                                  new DocumentationSettings(childSettingsObject);
                                                 break;
 
                                         default:

@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace StyleCop.Analyzers.ReadabilityRules {
+namespace StyleCop.Analyzers.ReadabilityRules
+{
         using System;
         using System.Collections.Immutable;
         using Microsoft.CodeAnalysis;
@@ -29,55 +30,56 @@ namespace StyleCop.Analyzers.ReadabilityRules {
         /// </code>
         /// </remarks>
         [DiagnosticAnalyzer(LanguageNames.CSharp)]
-        internal class SA1112ClosingParenthesisMustBeOnLineOfOpeningParenthesis
-            : DiagnosticAnalyzer {
+        internal class SA1112ClosingParenthesisMustBeOnLineOfOpeningParenthesis : DiagnosticAnalyzer
+        {
                 /// <summary>
                 /// The ID for diagnostics produced by the
                 /// <see cref="SA1112ClosingParenthesisMustBeOnLineOfOpeningParenthesis"/> analyzer.
                 /// </summary>
                 public const string DiagnosticId = "SA1112";
                 private const string HelpLink =
-                    "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1112.md";
+                  "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1112.md";
                 private static readonly LocalizableString Title =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1112Title),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1112Title),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString MessageFormat =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1112MessageFormat),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1112MessageFormat),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
                 private static readonly LocalizableString Description =
-                    new LocalizableResourceString(nameof(ReadabilityResources.SA1112Description),
-                                                  ReadabilityResources.ResourceManager,
-                                                  typeof(ReadabilityResources));
+                  new LocalizableResourceString(nameof(ReadabilityResources.SA1112Description),
+                                                ReadabilityResources.ResourceManager,
+                                                typeof(ReadabilityResources));
 
                 private static readonly DiagnosticDescriptor Descriptor =
-                    new DiagnosticDescriptor(DiagnosticId,
-                                             Title,
-                                             MessageFormat,
-                                             AnalyzerCategory.ReadabilityRules,
-                                             DiagnosticSeverity.Warning,
-                                             AnalyzerConstants.EnabledByDefault,
-                                             Description,
-                                             HelpLink);
+                  new DiagnosticDescriptor(DiagnosticId,
+                                           Title,
+                                           MessageFormat,
+                                           AnalyzerCategory.ReadabilityRules,
+                                           DiagnosticSeverity.Warning,
+                                           AnalyzerConstants.EnabledByDefault,
+                                           Description,
+                                           HelpLink);
 
                 private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction =
-                    HandleMethodDeclaration;
+                  HandleMethodDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    LocalFunctionStatementAction = HandleLocalFunctionStatement;
+                  LocalFunctionStatementAction = HandleLocalFunctionStatement;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ConstructorDeclarationAction = HandleConstructorDeclaration;
+                  ConstructorDeclarationAction = HandleConstructorDeclaration;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    InvocationExpressionAction = HandleInvocationExpression;
+                  InvocationExpressionAction = HandleInvocationExpression;
                 private static readonly Action<SyntaxNodeAnalysisContext>
-                    ObjectCreationExpressionAction = HandleObjectCreationExpression;
+                  ObjectCreationExpressionAction = HandleObjectCreationExpression;
 
                 /// <inheritdoc/>
                 public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
                 = ImmutableArray.Create(Descriptor);
 
                 /// <inheritdoc/>
-                public override void Initialize(AnalysisContext context) {
+                public override void Initialize(AnalysisContext context)
+                {
                         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
                         context.EnableConcurrentExecution();
 
@@ -94,7 +96,8 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                 }
 
                 private static void HandleObjectCreationExpression(
-                    SyntaxNodeAnalysisContext context) {
+                  SyntaxNodeAnalysisContext context)
+                {
                         var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
                         if (objectCreation.ArgumentList == null ||
                             objectCreation.ArgumentList.IsMissing ||
@@ -105,12 +108,14 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         if (!objectCreation.ArgumentList.OpenParenToken.IsMissing &&
                             !objectCreation.ArgumentList.CloseParenToken.IsMissing) {
                                 CheckIfLocationOfOpenAndCloseTokensAreTheSame(
-                                    context, objectCreation.ArgumentList.OpenParenToken,
-                                    objectCreation.ArgumentList.CloseParenToken);
+                                  context,
+                                  objectCreation.ArgumentList.OpenParenToken,
+                                  objectCreation.ArgumentList.CloseParenToken);
                         }
                 }
 
-                private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context) {
+                private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
+                {
                         var invocationExpression = (InvocationExpressionSyntax) context.Node;
                         if (invocationExpression.ArgumentList == null ||
                             invocationExpression.ArgumentList.IsMissing ||
@@ -121,54 +126,59 @@ namespace StyleCop.Analyzers.ReadabilityRules {
                         if (!invocationExpression.ArgumentList.OpenParenToken.IsMissing &&
                             !invocationExpression.ArgumentList.CloseParenToken.IsMissing) {
                                 CheckIfLocationOfOpenAndCloseTokensAreTheSame(
-                                    context, invocationExpression.ArgumentList.OpenParenToken,
-                                    invocationExpression.ArgumentList.CloseParenToken);
+                                  context,
+                                  invocationExpression.ArgumentList.OpenParenToken,
+                                  invocationExpression.ArgumentList.CloseParenToken);
                         }
                 }
 
-                private static void HandleConstructorDeclaration(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var constructotDeclarationSyntax =
-                            (ConstructorDeclarationSyntax) context.Node;
+                          (ConstructorDeclarationSyntax) context.Node;
                         HandleParameterList(context, constructotDeclarationSyntax.ParameterList);
                 }
 
-                private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context) {
+                private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
+                {
                         var methodDeclaration = (MethodDeclarationSyntax) context.Node;
                         HandleParameterList(context, methodDeclaration.ParameterList);
                 }
 
-                private static void HandleLocalFunctionStatement(
-                    SyntaxNodeAnalysisContext context) {
+                private static void HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context)
+                {
                         var localFunctionStatement =
-                            (LocalFunctionStatementSyntaxWrapper) context.Node;
+                          (LocalFunctionStatementSyntaxWrapper) context.Node;
                         HandleParameterList(context, localFunctionStatement.ParameterList);
                 }
 
                 private static void HandleParameterList(SyntaxNodeAnalysisContext context,
-                                                        ParameterListSyntax parameterListSyntax) {
+                                                        ParameterListSyntax parameterListSyntax)
+                {
                         if (parameterListSyntax != null && !parameterListSyntax.Parameters.Any()) {
                                 if (!parameterListSyntax.OpenParenToken.IsMissing &&
                                     !parameterListSyntax.CloseParenToken.IsMissing) {
                                         CheckIfLocationOfOpenAndCloseTokensAreTheSame(
-                                            context, parameterListSyntax.OpenParenToken,
-                                            parameterListSyntax.CloseParenToken);
+                                          context,
+                                          parameterListSyntax.OpenParenToken,
+                                          parameterListSyntax.CloseParenToken);
                                 }
                         }
                 }
 
                 private static void CheckIfLocationOfOpenAndCloseTokensAreTheSame(
-                    SyntaxNodeAnalysisContext context,
-                    SyntaxToken openToken,
-                    SyntaxToken closeToken) {
+                  SyntaxNodeAnalysisContext context,
+                  SyntaxToken openToken,
+                  SyntaxToken closeToken)
+                {
                         var closeParenLine = closeToken.GetLineSpan();
                         var openParenLine = openToken.GetLineSpan();
                         if (closeParenLine.IsValid && openParenLine.IsValid &&
                             openParenLine.StartLinePosition.Line !=
-                                closeParenLine.StartLinePosition.Line) {
+                              closeParenLine.StartLinePosition.Line) {
                                 var properties = TokenSpacingProperties.RemovePreceding;
                                 context.ReportDiagnostic(Diagnostic.Create(
-                                    Descriptor, closeToken.GetLocation(), properties));
+                                  Descriptor, closeToken.GetLocation(), properties));
                         }
                 }
         }
