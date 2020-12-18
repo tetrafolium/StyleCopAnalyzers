@@ -3,114 +3,114 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using System;
-    using System.Collections.Immutable;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct RelationalPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
-        internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.RelationalPatternSyntax";
-        private static readonly Type WrappedType;
+internal readonly partial struct RelationalPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
+{
+	internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.RelationalPatternSyntax";
+	private static readonly Type WrappedType;
 
-        private static readonly Func<CSharpSyntaxNode, SyntaxToken> OperatorTokenAccessor;
-        private static readonly Func<CSharpSyntaxNode, ExpressionSyntax> ExpressionAccessor;
-        private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode> WithOperatorTokenAccessor;
-        private static readonly Func<CSharpSyntaxNode, ExpressionSyntax, CSharpSyntaxNode> WithExpressionAccessor;
+	private static readonly Func<CSharpSyntaxNode, SyntaxToken> OperatorTokenAccessor;
+	private static readonly Func<CSharpSyntaxNode, ExpressionSyntax> ExpressionAccessor;
+	private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode> WithOperatorTokenAccessor;
+	private static readonly Func<CSharpSyntaxNode, ExpressionSyntax, CSharpSyntaxNode> WithExpressionAccessor;
 
-        private readonly CSharpSyntaxNode node;
+	private readonly CSharpSyntaxNode node;
 
-        static RelationalPatternSyntaxWrapper()
-        {
-            WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(RelationalPatternSyntaxWrapper));
-            OperatorTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                WrappedType, nameof(OperatorToken));
-            ExpressionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
-                WrappedType, nameof(Expression));
-            WithOperatorTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
-                WrappedType, nameof(OperatorToken));
-            WithExpressionAccessor =
-                LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(WrappedType,
-                                                                                                    nameof(Expression));
-        }
+	static RelationalPatternSyntaxWrapper()
+	{
+		WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(RelationalPatternSyntaxWrapper));
+		OperatorTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+			WrappedType, nameof(OperatorToken));
+		ExpressionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
+			WrappedType, nameof(Expression));
+		WithOperatorTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+			WrappedType, nameof(OperatorToken));
+		WithExpressionAccessor =
+			LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(WrappedType,
+			                                                                                    nameof(Expression));
+	}
 
-        private RelationalPatternSyntaxWrapper(CSharpSyntaxNode node)
-        {
-            this.node = node;
-        }
+	private RelationalPatternSyntaxWrapper(CSharpSyntaxNode node)
+	{
+		this.node = node;
+	}
 
-        public CSharpSyntaxNode SyntaxNode => this.node;
+	public CSharpSyntaxNode SyntaxNode => this.node;
 
-        public SyntaxToken OperatorToken
-        {
-            get
-            {
-                return OperatorTokenAccessor(this.SyntaxNode);
-            }
-        }
+	public SyntaxToken OperatorToken
+	{
+		get
+		{
+			return OperatorTokenAccessor(this.SyntaxNode);
+		}
+	}
 
-        public ExpressionSyntax Expression
-        {
-            get
-            {
-                return ExpressionAccessor(this.SyntaxNode);
-            }
-        }
+	public ExpressionSyntax Expression
+	{
+		get
+		{
+			return ExpressionAccessor(this.SyntaxNode);
+		}
+	}
 
-        public static explicit operator RelationalPatternSyntaxWrapper(PatternSyntaxWrapper node)
-        {
-            return (RelationalPatternSyntaxWrapper) node.SyntaxNode;
-        }
+	public static explicit operator RelationalPatternSyntaxWrapper(PatternSyntaxWrapper node)
+	{
+		return (RelationalPatternSyntaxWrapper) node.SyntaxNode;
+	}
 
-        public static explicit operator RelationalPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
-        {
-            return (RelationalPatternSyntaxWrapper) node.SyntaxNode;
-        }
+	public static explicit operator RelationalPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
+	{
+		return (RelationalPatternSyntaxWrapper) node.SyntaxNode;
+	}
 
-        public static explicit operator RelationalPatternSyntaxWrapper(SyntaxNode node)
-        {
-            if (node == null)
-            {
-                return default;
-            }
+	public static explicit operator RelationalPatternSyntaxWrapper(SyntaxNode node)
+	{
+		if (node == null)
+		{
+			return default;
+		}
 
-            if (!IsInstance(node))
-            {
-                throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-            }
+		if (!IsInstance(node))
+		{
+			throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+		}
 
-            return new RelationalPatternSyntaxWrapper((CSharpSyntaxNode) node);
-        }
+		return new RelationalPatternSyntaxWrapper((CSharpSyntaxNode) node);
+	}
 
-        public static implicit operator PatternSyntaxWrapper(RelationalPatternSyntaxWrapper wrapper)
-        {
-            return PatternSyntaxWrapper.FromUpcast(wrapper.node);
-        }
+	public static implicit operator PatternSyntaxWrapper(RelationalPatternSyntaxWrapper wrapper)
+	{
+		return PatternSyntaxWrapper.FromUpcast(wrapper.node);
+	}
 
-        public static implicit operator ExpressionOrPatternSyntaxWrapper(RelationalPatternSyntaxWrapper wrapper)
-        {
-            return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
-        }
+	public static implicit operator ExpressionOrPatternSyntaxWrapper(RelationalPatternSyntaxWrapper wrapper)
+	{
+		return ExpressionOrPatternSyntaxWrapper.FromUpcast(wrapper.node);
+	}
 
-        public static implicit operator CSharpSyntaxNode(RelationalPatternSyntaxWrapper wrapper)
-        {
-            return wrapper.node;
-        }
+	public static implicit operator CSharpSyntaxNode(RelationalPatternSyntaxWrapper wrapper)
+	{
+		return wrapper.node;
+	}
 
-        public static bool IsInstance(SyntaxNode node)
-        {
-            return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
-        }
+	public static bool IsInstance(SyntaxNode node)
+	{
+		return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+	}
 
-        public RelationalPatternSyntaxWrapper WithOperatorToken(SyntaxToken operatorToken)
-        {
-            return new RelationalPatternSyntaxWrapper(WithOperatorTokenAccessor(this.SyntaxNode, operatorToken));
-        }
+	public RelationalPatternSyntaxWrapper WithOperatorToken(SyntaxToken operatorToken)
+	{
+		return new RelationalPatternSyntaxWrapper(WithOperatorTokenAccessor(this.SyntaxNode, operatorToken));
+	}
 
-        public RelationalPatternSyntaxWrapper WithExpression(ExpressionSyntax expression)
-        {
-            return new RelationalPatternSyntaxWrapper(WithExpressionAccessor(this.SyntaxNode, expression));
-        }
-    }
+	public RelationalPatternSyntaxWrapper WithExpression(ExpressionSyntax expression)
+	{
+		return new RelationalPatternSyntaxWrapper(WithExpressionAccessor(this.SyntaxNode, expression));
+	}
+}
 }

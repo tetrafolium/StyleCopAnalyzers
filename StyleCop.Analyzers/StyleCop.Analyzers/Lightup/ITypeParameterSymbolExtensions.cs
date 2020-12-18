@@ -3,23 +3,23 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using System;
-    using Microsoft.CodeAnalysis;
+using System;
+using Microsoft.CodeAnalysis;
 
-    internal static class ITypeParameterSymbolExtensions
-    {
-        private static readonly Func<ITypeParameterSymbol, bool> HasUnmanagedTypeConstraintAccessor;
+internal static class ITypeParameterSymbolExtensions
+{
+private static readonly Func<ITypeParameterSymbol, bool> HasUnmanagedTypeConstraintAccessor;
 
-        static ITypeParameterSymbolExtensions()
-        {
-            HasUnmanagedTypeConstraintAccessor =
-                LightupHelpers.CreateSyntaxPropertyAccessor<ITypeParameterSymbol, bool>(
-                    typeof(ITypeParameterSymbol), nameof(HasUnmanagedTypeConstraint));
-        }
+static ITypeParameterSymbolExtensions()
+{
+	HasUnmanagedTypeConstraintAccessor =
+		LightupHelpers.CreateSyntaxPropertyAccessor<ITypeParameterSymbol, bool>(
+			typeof(ITypeParameterSymbol), nameof(HasUnmanagedTypeConstraint));
+}
 
-        public static bool HasUnmanagedTypeConstraint(this ITypeParameterSymbol symbol)
-        {
-            return HasUnmanagedTypeConstraintAccessor(symbol);
-        }
-    }
+public static bool HasUnmanagedTypeConstraint(this ITypeParameterSymbol symbol)
+{
+	return HasUnmanagedTypeConstraintAccessor(symbol);
+}
+}
 }
