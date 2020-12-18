@@ -10,7 +10,7 @@ inspecode:
       options:
         # -style: LLVM
         # -style: Google
-        # -style: Chromium
+        -style: Chromium
         # -style: Mozilla
         # -style: WebKit
         # -style: Microsoft
