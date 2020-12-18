@@ -28,21 +28,24 @@ namespace StyleCop.Analyzers.OrderingRules
         private const string SystemUsingDirectiveIdentifier = nameof(System);
 
         private static readonly List<UsingDirectiveSyntax> EmptyUsingsList = new List<UsingDirectiveSyntax>();
-        private static readonly SyntaxAnnotation UsingCodeFixAnnotation = new SyntaxAnnotation(nameof(UsingCodeFixAnnotation));
-        private static readonly SymbolDisplayFormat FullNamespaceDisplayFormat = SymbolDisplayFormat.FullyQualifiedFormat
-            .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)
-            .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+        private static readonly SyntaxAnnotation UsingCodeFixAnnotation =
+            new SyntaxAnnotation(nameof(UsingCodeFixAnnotation));
+        private static readonly SymbolDisplayFormat FullNamespaceDisplayFormat =
+            SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)
+                .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1200UsingDirectivesMustBePlacedCorrectly.DiagnosticId,
-                SA1208SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives.DiagnosticId,
-                SA1209UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives.DiagnosticId,
-                SA1210UsingDirectivesMustBeOrderedAlphabeticallyByNamespace.DiagnosticId,
-                SA1211UsingAliasDirectivesMustBeOrderedAlphabeticallyByAliasName.DiagnosticId,
-                SA1216UsingStaticDirectivesMustBePlacedAtTheCorrectLocation.DiagnosticId,
-                SA1217UsingStaticDirectivesMustBeOrderedAlphabetically.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1200UsingDirectivesMustBePlacedCorrectly.DiagnosticId,
+                                SA1208SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives.DiagnosticId,
+                                SA1209UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives.DiagnosticId,
+                                SA1210UsingDirectivesMustBeOrderedAlphabeticallyByNamespace.DiagnosticId,
+                                SA1211UsingAliasDirectivesMustBeOrderedAlphabeticallyByAliasName.DiagnosticId,
+                                SA1216UsingStaticDirectivesMustBePlacedAtTheCorrectLocation.DiagnosticId,
+                                SA1217UsingStaticDirectivesMustBeOrderedAlphabetically.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -54,7 +57,7 @@ namespace StyleCop.Analyzers.OrderingRules
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var syntaxRoot = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var compilationUnit = (CompilationUnitSyntax)syntaxRoot;
+            var compilationUnit = (CompilationUnitSyntax) syntaxRoot;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
@@ -67,30 +70,37 @@ namespace StyleCop.Analyzers.OrderingRules
                 }
 
                 context.RegisterCodeFix(
-                    CodeAction.Create(
-                        OrderingResources.UsingCodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, syntaxRoot, !isSA1200, cancellationToken),
-                        nameof(UsingCodeFixProvider)),
+                    CodeAction.Create(OrderingResources.UsingCodeFix,
+                                      cancellationToken => GetTransformedDocumentAsync(context.Document, syntaxRoot,
+                                                                                       !isSA1200, cancellationToken),
+                                      nameof(UsingCodeFixProvider)),
                     diagnostic);
             }
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode syntaxRoot, bool forcePreservePlacement, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode syntaxRoot,
+                                                                        bool forcePreservePlacement,
+                                                                        CancellationToken cancellationToken)
         {
             var fileHeader = GetFileHeader(syntaxRoot);
-            var compilationUnit = (CompilationUnitSyntax)syntaxRoot;
+            var compilationUnit = (CompilationUnitSyntax) syntaxRoot;
 
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-            var usingDirectivesPlacement = forcePreservePlacement ? UsingDirectivesPlacement.Preserve : DeterminePlacement(compilationUnit, settings);
+            var usingDirectivesPlacement = forcePreservePlacement ? UsingDirectivesPlacement.Preserve
+                : DeterminePlacement(compilationUnit, settings);
 
             var usingsHelper = new UsingsSorter(settings, semanticModel, compilationUnit, fileHeader);
-            var usingsIndentation = DetermineIndentation(compilationUnit, settings.Indentation, usingDirectivesPlacement);
+            var usingsIndentation =
+                DetermineIndentation(compilationUnit, settings.Indentation, usingDirectivesPlacement);
 
-            // - The strategy is to strip all using directive that are not inside a conditional directive and replace them later with a sorted list at the correct spot
-            // - The using directives that are inside a conditional directive are replaced (in sorted order) on the spot.
+            // - The strategy is to strip all using directive that are not inside a conditional directive and replace
+            // them later with a sorted list at the correct spot
+            // - The using directives that are inside a conditional directive are replaced (in sorted order) on the
+            // spot.
             // - Conditional directives are not moved, as correctly parsing them is too tricky
-            // - No using directives will be stripped when there are multiple namespaces. In that case everything is replaced on the spot.
+            // - No using directives will be stripped when there are multiple namespaces. In that case everything is
+            // replaced on the spot.
             List<UsingDirectiveSyntax> stripList;
             var replaceMap = new Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax>();
 
@@ -105,7 +115,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 stripList = BuildStripList(usingsHelper);
             }
 
-            BuildReplaceMapForConditionalDirectives(usingsHelper, replaceMap, settings.Indentation, usingsHelper.ConditionalRoot);
+            BuildReplaceMapForConditionalDirectives(usingsHelper, replaceMap, settings.Indentation,
+                                                    usingsHelper.ConditionalRoot);
 
             var usingSyntaxRewriter = new UsingSyntaxRewriter(stripList, replaceMap, fileHeader);
             var newSyntaxRoot = usingSyntaxRewriter.Visit(syntaxRoot);
@@ -116,7 +127,8 @@ namespace StyleCop.Analyzers.OrderingRules
             }
             else if (usingDirectivesPlacement == UsingDirectivesPlacement.OutsideNamespace)
             {
-                newSyntaxRoot = AddUsingsToCompilationRoot(newSyntaxRoot, usingsHelper, usingsIndentation, replaceMap.Any());
+                newSyntaxRoot =
+                    AddUsingsToCompilationRoot(newSyntaxRoot, usingsHelper, usingsIndentation, replaceMap.Any());
             }
 
             // Final cleanup
@@ -128,7 +140,9 @@ namespace StyleCop.Analyzers.OrderingRules
             return newDocument;
         }
 
-        private static string DetermineIndentation(CompilationUnitSyntax compilationUnit, IndentationSettings indentationSettings, UsingDirectivesPlacement usingDirectivesPlacement)
+        private static string DetermineIndentation(CompilationUnitSyntax compilationUnit,
+                                                   IndentationSettings indentationSettings,
+                                                   UsingDirectivesPlacement usingDirectivesPlacement)
         {
             string usingsIndentation;
 
@@ -136,7 +150,8 @@ namespace StyleCop.Analyzers.OrderingRules
             {
                 var rootNamespace = compilationUnit.Members.OfType<NamespaceDeclarationSyntax>().First();
                 var indentationLevel = IndentationHelper.GetIndentationSteps(indentationSettings, rootNamespace);
-                usingsIndentation = IndentationHelper.GenerateIndentationString(indentationSettings, indentationLevel + 1);
+                usingsIndentation =
+                    IndentationHelper.GenerateIndentationString(indentationSettings, indentationLevel + 1);
             }
             else
             {
@@ -146,7 +161,8 @@ namespace StyleCop.Analyzers.OrderingRules
             return usingsIndentation;
         }
 
-        private static UsingDirectivesPlacement DeterminePlacement(CompilationUnitSyntax compilationUnit, StyleCopSettings settings)
+        private static UsingDirectivesPlacement DeterminePlacement(CompilationUnitSyntax compilationUnit,
+                                                                   StyleCopSettings settings)
         {
             switch (settings.OrderingRules.UsingDirectivesPlacement)
             {
@@ -157,9 +173,7 @@ namespace StyleCop.Analyzers.OrderingRules
                 // - There are no global attributes
                 // - There is only a single namespace declared at the top level
                 // - OrderingSettings.UsingDirectivesPlacement is set to InsideNamespace
-                if (compilationUnit.AttributeLists.Any()
-                    || compilationUnit.Members.Count > 1
-                    || namespaceCount > 1)
+                if (compilationUnit.AttributeLists.Any() || compilationUnit.Members.Count > 1 || namespaceCount > 1)
                 {
                     // Override the user's setting with a more conservative one
                     return UsingDirectivesPlacement.Preserve;
@@ -198,12 +212,12 @@ namespace StyleCop.Analyzers.OrderingRules
             return usingsHelper.GetContainedUsings(TreeTextSpan.Empty).ToList();
         }
 
-        private static void BuildReplaceMapForNamespaces(UsingsSorter usingsHelper, Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax> replaceMap, IndentationSettings indentationSettings, bool qualifyNames)
+        private static void BuildReplaceMapForNamespaces(
+            UsingsSorter usingsHelper, Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax> replaceMap,
+            IndentationSettings indentationSettings, bool qualifyNames)
         {
-            var usingsPerNamespace = usingsHelper
-                .GetContainedUsings(TreeTextSpan.Empty)
-                .GroupBy(ud => ud.Parent)
-                .Select(gr => gr.ToList());
+            var usingsPerNamespace =
+                usingsHelper.GetContainedUsings(TreeTextSpan.Empty).GroupBy(ud => ud.Parent).Select(gr => gr.ToList());
 
             foreach (var usingList in usingsPerNamespace)
             {
@@ -212,15 +226,18 @@ namespace StyleCop.Analyzers.OrderingRules
                     // sort the original using declarations on Span.Start, in order to have the correct replace mapping.
                     usingList.Sort(CompareSpanStart);
 
-                    var indentationSteps = IndentationHelper.GetIndentationSteps(indentationSettings, usingList[0].Parent);
+                    var indentationSteps =
+                        IndentationHelper.GetIndentationSteps(indentationSettings, usingList[0].Parent);
                     if (usingList[0].Parent is NamespaceDeclarationSyntax)
                     {
                         indentationSteps++;
                     }
 
-                    var indentation = IndentationHelper.GenerateIndentationString(indentationSettings, indentationSteps);
+                    var indentation =
+                        IndentationHelper.GenerateIndentationString(indentationSettings, indentationSteps);
 
-                    var modifiedUsings = usingsHelper.GenerateGroupedUsings(usingList, indentation, false, qualifyNames);
+                    var modifiedUsings =
+                        usingsHelper.GenerateGroupedUsings(usingList, indentation, false, qualifyNames);
 
                     for (var i = 0; i < usingList.Count; i++)
                     {
@@ -230,7 +247,9 @@ namespace StyleCop.Analyzers.OrderingRules
             }
         }
 
-        private static void BuildReplaceMapForConditionalDirectives(UsingsSorter usingsHelper, Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax> replaceMap, IndentationSettings indentationSettings, TreeTextSpan rootSpan)
+        private static void BuildReplaceMapForConditionalDirectives(
+            UsingsSorter usingsHelper, Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax> replaceMap,
+            IndentationSettings indentationSettings, TreeTextSpan rootSpan)
         {
             foreach (var childSpan in rootSpan.Children)
             {
@@ -240,15 +259,18 @@ namespace StyleCop.Analyzers.OrderingRules
                     // sort the original using declarations on Span.Start, in order to have the correct replace mapping.
                     originalUsings.Sort(CompareSpanStart);
 
-                    var indentationSteps = IndentationHelper.GetIndentationSteps(indentationSettings, originalUsings[0].Parent);
+                    var indentationSteps =
+                        IndentationHelper.GetIndentationSteps(indentationSettings, originalUsings[0].Parent);
                     if (originalUsings[0].Parent is NamespaceDeclarationSyntax)
                     {
                         indentationSteps++;
                     }
 
-                    var indentation = IndentationHelper.GenerateIndentationString(indentationSettings, indentationSteps);
+                    var indentation =
+                        IndentationHelper.GenerateIndentationString(indentationSettings, indentationSteps);
 
-                    var modifiedUsings = usingsHelper.GenerateGroupedUsings(childSpan, indentation, false, qualifyNames: false);
+                    var modifiedUsings = usingsHelper.GenerateGroupedUsings(childSpan, indentation, false, qualifyNames
+                                                                            : false);
 
                     for (var i = 0; i < originalUsings.Count; i++)
                     {
@@ -265,12 +287,17 @@ namespace StyleCop.Analyzers.OrderingRules
             return left.SpanStart - right.SpanStart;
         }
 
-        private static SyntaxNode AddUsingsToNamespace(SyntaxNode newSyntaxRoot, UsingsSorter usingsHelper, string usingsIndentation, bool hasConditionalDirectives)
+        private static SyntaxNode AddUsingsToNamespace(SyntaxNode newSyntaxRoot, UsingsSorter usingsHelper,
+                                                       string usingsIndentation, bool hasConditionalDirectives)
         {
-            var rootNamespace = ((CompilationUnitSyntax)newSyntaxRoot).Members.OfType<NamespaceDeclarationSyntax>().First();
-            var withTrailingBlankLine = hasConditionalDirectives || rootNamespace.Members.Any() || rootNamespace.Externs.Any();
+            var rootNamespace =
+                ((CompilationUnitSyntax) newSyntaxRoot).Members.OfType<NamespaceDeclarationSyntax>().First();
+            var withTrailingBlankLine =
+                hasConditionalDirectives || rootNamespace.Members.Any() || rootNamespace.Externs.Any();
 
-            var groupedUsings = usingsHelper.GenerateGroupedUsings(TreeTextSpan.Empty, usingsIndentation, withTrailingBlankLine, qualifyNames: false);
+            var groupedUsings = usingsHelper.GenerateGroupedUsings(TreeTextSpan.Empty, usingsIndentation,
+                                                                   withTrailingBlankLine, qualifyNames
+                                                                   : false);
             groupedUsings = groupedUsings.AddRange(rootNamespace.Usings);
 
             var newRootNamespace = rootNamespace.WithUsings(groupedUsings);
@@ -279,12 +306,16 @@ namespace StyleCop.Analyzers.OrderingRules
             return newSyntaxRoot;
         }
 
-        private static SyntaxNode AddUsingsToCompilationRoot(SyntaxNode newSyntaxRoot, UsingsSorter usingsHelper, string usingsIndentation, bool hasConditionalDirectives)
+        private static SyntaxNode AddUsingsToCompilationRoot(SyntaxNode newSyntaxRoot, UsingsSorter usingsHelper,
+                                                             string usingsIndentation, bool hasConditionalDirectives)
         {
-            var newCompilationUnit = (CompilationUnitSyntax)newSyntaxRoot;
-            var withTrailingBlankLine = hasConditionalDirectives || newCompilationUnit.AttributeLists.Any() || newCompilationUnit.Members.Any() || newCompilationUnit.Externs.Any();
+            var newCompilationUnit = (CompilationUnitSyntax) newSyntaxRoot;
+            var withTrailingBlankLine = hasConditionalDirectives || newCompilationUnit.AttributeLists.Any() ||
+                                        newCompilationUnit.Members.Any() || newCompilationUnit.Externs.Any();
 
-            var groupedUsings = usingsHelper.GenerateGroupedUsings(TreeTextSpan.Empty, usingsIndentation, withTrailingBlankLine, qualifyNames: true);
+            var groupedUsings = usingsHelper.GenerateGroupedUsings(TreeTextSpan.Empty, usingsIndentation,
+                                                                   withTrailingBlankLine, qualifyNames
+                                                                   : true);
             groupedUsings = groupedUsings.AddRange(newCompilationUnit.Usings);
             newSyntaxRoot = newCompilationUnit.WithUsings(groupedUsings);
 
@@ -337,18 +368,21 @@ namespace StyleCop.Analyzers.OrderingRules
                         var trailingStripCount = Math.Min(totalStripCount, trailingCount);
 
                         var trailingTrivia = usingDirective.SemicolonToken.TrailingTrivia;
-                        replaceMap[usingDirective.SemicolonToken] = usingDirective.SemicolonToken.WithTrailingTrivia(trailingTrivia.Take(trailingTrivia.Count - trailingStripCount));
+                        replaceMap[usingDirective.SemicolonToken] = usingDirective.SemicolonToken.WithTrailingTrivia(
+                            trailingTrivia.Take(trailingTrivia.Count - trailingStripCount));
                         totalStripCount -= trailingStripCount;
                     }
 
                     if (totalStripCount > 0)
                     {
-                        replaceMap[nextToken] = nextToken.WithLeadingTrivia(nextToken.LeadingTrivia.Skip(totalStripCount));
+                        replaceMap[nextToken] =
+                            nextToken.WithLeadingTrivia(nextToken.LeadingTrivia.Skip(totalStripCount));
                     }
                 }
             }
 
-            var newSyntaxRoot = syntaxRoot.ReplaceTokens(replaceMap.Keys, (original, rewritten) => replaceMap[original]);
+            var newSyntaxRoot =
+                syntaxRoot.ReplaceTokens(replaceMap.Keys, (original, rewritten) => replaceMap[original]);
             return newSyntaxRoot;
         }
 
@@ -358,14 +392,15 @@ namespace StyleCop.Analyzers.OrderingRules
             var hasHeader = false;
             var fileHeaderBuilder = ImmutableArray.CreateBuilder<SyntaxTrivia>();
 
-            var firstToken = syntaxRoot.GetFirstToken(includeZeroWidth: true);
+            var firstToken = syntaxRoot.GetFirstToken(includeZeroWidth : true);
             var firstTokenLeadingTrivia = firstToken.LeadingTrivia;
 
             int i;
             for (i = 0; i < firstTokenLeadingTrivia.Count; i++)
             {
                 bool done = false;
-                switch (firstTokenLeadingTrivia[i].Kind())
+                switch (firstTokenLeadingTrivia [i]
+                            .Kind())
                 {
                 case SyntaxKind.SingleLineCommentTrivia:
                 case SyntaxKind.MultiLineCommentTrivia:
@@ -414,7 +449,7 @@ namespace StyleCop.Analyzers.OrderingRules
                 return syntaxRoot;
             }
 
-            var firstToken = syntaxRoot.GetFirstToken(includeZeroWidth: true);
+            var firstToken = syntaxRoot.GetFirstToken(includeZeroWidth : true);
             var newLeadingTrivia = firstToken.LeadingTrivia.InsertRange(0, fileHeader);
             return syntaxRoot.ReplaceToken(firstToken, firstToken.WithLeadingTrivia(newLeadingTrivia));
         }
@@ -426,7 +461,9 @@ namespace StyleCop.Analyzers.OrderingRules
             private readonly ImmutableArray<SyntaxTrivia> fileHeader;
             private readonly LinkedList<SyntaxToken> tokensToStrip = new LinkedList<SyntaxToken>();
 
-            public UsingSyntaxRewriter(List<UsingDirectiveSyntax> stripList, Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax> replaceMap, ImmutableArray<SyntaxTrivia> fileHeader)
+            public UsingSyntaxRewriter(List<UsingDirectiveSyntax> stripList,
+                                       Dictionary<UsingDirectiveSyntax, UsingDirectiveSyntax> replaceMap,
+                                       ImmutableArray<SyntaxTrivia> fileHeader)
             {
                 this.stripList = stripList;
                 this.replaceMap = replaceMap;
@@ -452,7 +489,8 @@ namespace StyleCop.Analyzers.OrderingRules
                     return null;
                 }
 
-                // The replacement map is used to replace using declarations in place in sorted order (inside directive trivia)
+                // The replacement map is used to replace using declarations in place in sorted order (inside directive
+                // trivia)
                 UsingDirectiveSyntax replacementNode;
                 if (this.replaceMap.TryGetValue(node, out replacementNode))
                 {
@@ -469,7 +507,8 @@ namespace StyleCop.Analyzers.OrderingRules
                     this.tokensToStrip.Remove(token);
 
                     var index = TriviaHelper.IndexOfFirstNonBlankLineTrivia(token.LeadingTrivia);
-                    var newLeadingTrivia = (index == -1) ? SyntaxFactory.TriviaList() : SyntaxFactory.TriviaList(token.LeadingTrivia.Skip(index));
+                    var newLeadingTrivia = (index == -1) ? SyntaxFactory.TriviaList()
+                                                         : SyntaxFactory.TriviaList(token.LeadingTrivia.Skip(index));
                     return token.WithLeadingTrivia(newLeadingTrivia);
                 }
 
@@ -489,24 +528,33 @@ namespace StyleCop.Analyzers.OrderingRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } = new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
             /// <inheritdoc/>
-            protected override string CodeActionTitle
-                => OrderingResources.UsingCodeFix;
+            protected override string CodeActionTitle => OrderingResources.UsingCodeFix;
 
             /// <inheritdoc/>
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
                     return null;
                 }
 
-                var forcePreserve = diagnostics.All(d => d.Id != SA1200UsingDirectivesMustBePlacedCorrectly.DiagnosticId);
+                var forcePreserve =
+                    diagnostics.All(d => d.Id != SA1200UsingDirectivesMustBePlacedCorrectly.DiagnosticId);
 
-                var syntaxRoot = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
-                Document newDocument = await GetTransformedDocumentAsync(document, syntaxRoot, forcePreserve, fixAllContext.CancellationToken).ConfigureAwait(false);
+                var syntaxRoot =
+                    await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                Document newDocument = await GetTransformedDocumentAsync(document, syntaxRoot, forcePreserve,
+                                                                         fixAllContext.CancellationToken)
+                                           .ConfigureAwait(false);
                 return await newDocument.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
             }
         }

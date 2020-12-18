@@ -23,8 +23,11 @@ namespace StyleCop.Analyzers.LayoutRules
     internal class SA1507CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1507CodeMustNotContainMultipleBlankLinesInARow.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1507CodeMustNotContainMultipleBlankLinesInARow.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,20 +40,21 @@ namespace StyleCop.Analyzers.LayoutRules
         {
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        LayoutResources.SA1507CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1507CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(LayoutResources.SA1507CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1507CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken token)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken token)
         {
-            var newLine = document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
+            var newLine =
+                document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
 
             var sourceText = await document.GetTextAsync(token).ConfigureAwait(false);
             var textChange = new TextChange(diagnostic.Location.SourceSpan, newLine);
@@ -60,20 +64,25 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1507CodeFix;
+            protected override string CodeActionTitle => LayoutResources.SA1507CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
                     return null;
                 }
 
-                var newLine = fixAllContext.Document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
+                var newLine = fixAllContext.Document.Project.Solution.Workspace.Options.GetOption(
+                    FormattingOptions.NewLine, LanguageNames.CSharp);
                 var text = await document.GetTextAsync().ConfigureAwait(false);
 
                 List<TextChange> changes = new List<TextChange>();

@@ -27,19 +27,30 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1401FieldsMustBePrivate"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1401";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1401.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(MaintainabilityResources.SA1401Title), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1401MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1401Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1401.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1401Title),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1401MessageFormat),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1401Description),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SymbolAnalysisContext> AnalyzeFieldAction = Analyzer.AnalyzeField;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -54,11 +65,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         {
             public static void AnalyzeField(SymbolAnalysisContext symbolAnalysisContext)
             {
-                var fieldDeclarationSyntax = (IFieldSymbol)symbolAnalysisContext.Symbol;
-                if (!IsFieldPrivate(fieldDeclarationSyntax) &&
-                    !IsStaticReadonly(fieldDeclarationSyntax) &&
-                    IsParentAClass(fieldDeclarationSyntax) &&
-                    !fieldDeclarationSyntax.IsConst)
+                var fieldDeclarationSyntax = (IFieldSymbol) symbolAnalysisContext.Symbol;
+                if (!IsFieldPrivate(fieldDeclarationSyntax) && !IsStaticReadonly(fieldDeclarationSyntax) &&
+                    IsParentAClass(fieldDeclarationSyntax) && !fieldDeclarationSyntax.IsConst)
                 {
                     foreach (var location in symbolAnalysisContext.Symbol.Locations)
                     {
@@ -69,7 +78,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                         }
                     }
 
-                    symbolAnalysisContext.ReportDiagnostic(Diagnostic.Create(Descriptor, fieldDeclarationSyntax.Locations[0]));
+                    symbolAnalysisContext.ReportDiagnostic(
+                        Diagnostic.Create(Descriptor, fieldDeclarationSyntax.Locations[0]));
                 }
             }
 
@@ -88,7 +98,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 if (fieldDeclarationSyntax.ContainingSymbol != null &&
                     fieldDeclarationSyntax.ContainingSymbol.Kind == SymbolKind.NamedType)
                 {
-                    return ((ITypeSymbol)fieldDeclarationSyntax.ContainingSymbol).TypeKind == TypeKind.Class;
+                    return ((ITypeSymbol) fieldDeclarationSyntax.ContainingSymbol).TypeKind == TypeKind.Class;
                 }
 
                 return false;

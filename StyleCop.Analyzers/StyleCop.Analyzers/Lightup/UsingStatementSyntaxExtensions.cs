@@ -14,8 +14,11 @@ namespace StyleCop.Analyzers.Lightup
 
         static UsingStatementSyntaxExtensions()
         {
-            AwaitKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<UsingStatementSyntax, SyntaxToken>(typeof(UsingStatementSyntax), nameof(AwaitKeyword));
-            WithAwaitKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<UsingStatementSyntax, SyntaxToken>(typeof(UsingStatementSyntax), nameof(AwaitKeyword));
+            AwaitKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<UsingStatementSyntax, SyntaxToken>(
+                typeof(UsingStatementSyntax), nameof(AwaitKeyword));
+            WithAwaitKeywordAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<UsingStatementSyntax, SyntaxToken>(
+                    typeof(UsingStatementSyntax), nameof(AwaitKeyword));
         }
 
         public static SyntaxToken AwaitKeyword(this UsingStatementSyntax syntax)

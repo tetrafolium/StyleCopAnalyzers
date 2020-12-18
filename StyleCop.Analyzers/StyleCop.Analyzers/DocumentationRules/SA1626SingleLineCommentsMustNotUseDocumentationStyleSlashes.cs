@@ -53,19 +53,31 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <see cref="SA1626SingleLineCommentsMustNotUseDocumentationStyleSlashes"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1626";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1626.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(DocumentationResources.SA1626Title), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1626MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1626Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1626.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1626Title),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1626MessageFormat),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1626Description),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly Action<SyntaxNodeAnalysisContext> SingleLineDocumentationTriviaAction = HandleSingleLineDocumentationTrivia;
+        private static readonly Action<SyntaxNodeAnalysisContext> SingleLineDocumentationTriviaAction =
+            HandleSingleLineDocumentationTrivia;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -73,17 +85,18 @@ namespace StyleCop.Analyzers.DocumentationRules
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(SingleLineDocumentationTriviaAction, SyntaxKind.SingleLineDocumentationCommentTrivia);
+            context.RegisterSyntaxNodeAction(SingleLineDocumentationTriviaAction,
+                                             SyntaxKind.SingleLineDocumentationCommentTrivia);
         }
 
         private static void HandleSingleLineDocumentationTrivia(SyntaxNodeAnalysisContext context)
         {
-            var node = (DocumentationCommentTriviaSyntax)context.Node;
+            var node = (DocumentationCommentTriviaSyntax) context.Node;
 
             // Check if the comment is not multi line
             if (node.Content.All(x => x.IsKind(SyntaxKind.XmlText)))
             {
-                foreach (var trivia in node.DescendantTrivia(descendIntoTrivia: true))
+                foreach (var trivia in node.DescendantTrivia(descendIntoTrivia : true))
                 {
                     if (!trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
                     {
@@ -93,7 +106,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                     // Add a diagnostic on '///'
                     TextSpan location = trivia.GetLocation().SourceSpan;
                     TextSpan slashes = TextSpan.FromBounds(location.End - 3, location.End);
-                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, Location.Create(trivia.SyntaxTree, slashes)));
+                    context.ReportDiagnostic(
+                        Diagnostic.Create(Descriptor, Location.Create(trivia.SyntaxTree, slashes)));
                 }
             }
         }

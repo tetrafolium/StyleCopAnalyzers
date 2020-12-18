@@ -81,19 +81,31 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1619";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1619.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(DocumentationResources.SA1619Title), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1619MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1619Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1619.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1619Title),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1619MessageFormat),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1619Description),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> TypeDeclarationAction = HandleTypeDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> TypeDeclarationAction =
+            HandleTypeDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -106,7 +118,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static void HandleTypeDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            TypeDeclarationSyntax typeDeclaration = (TypeDeclarationSyntax)context.Node;
+            TypeDeclarationSyntax typeDeclaration = (TypeDeclarationSyntax) context.Node;
 
             if (typeDeclaration.TypeParameterList == null)
             {
@@ -127,9 +139,13 @@ namespace StyleCop.Analyzers.DocumentationRules
                 return;
             }
 
-            Accessibility declaredAccessibility = typeDeclaration.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
-            Accessibility effectiveAccessibility = typeDeclaration.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
-            bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, typeDeclaration.Kind(), typeDeclaration.Parent.Kind(), declaredAccessibility, effectiveAccessibility);
+            Accessibility declaredAccessibility =
+                typeDeclaration.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
+            Accessibility effectiveAccessibility =
+                typeDeclaration.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
+            bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(
+                settings.DocumentationRules, typeDeclaration.Kind(), typeDeclaration.Parent.Kind(),
+                declaredAccessibility, effectiveAccessibility);
             if (!needsComment)
             {
                 // Omitting documentation is allowed for this element.
@@ -147,31 +163,37 @@ namespace StyleCop.Analyzers.DocumentationRules
                     return;
                 }
 
-                rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+                rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes
+                                                                          : true, cancellationToken
+                                                                          : context.CancellationToken);
                 var completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
-                if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag))
+                if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name ==
+                                                                                    XmlCommentHelper.InheritdocXmlTag))
                 {
                     // Ignore nodes with an <inheritdoc/> tag in the included XML.
                     return;
                 }
 
-                if (completeDocumentation.Nodes().OfType<XElement>().All(element => element.Name != XmlCommentHelper.SummaryXmlTag))
+                if (completeDocumentation.Nodes().OfType<XElement>().All(element => element.Name !=
+                                                                                    XmlCommentHelper.SummaryXmlTag))
                 {
                     // Ignore nodes without a <summary> tag.
                     return;
                 }
 
-                var typeParameterAttributes = completeDocumentation.Nodes()
-                    .OfType<XElement>()
-                    .Where(element => element.Name == XmlCommentHelper.TypeParamXmlTag)
-                    .Select(element => element.Attribute(XmlCommentHelper.NameArgumentName))
-                    .Where(x => x != null);
+                var typeParameterAttributes =
+                    completeDocumentation.Nodes()
+                        .OfType<XElement>()
+                        .Where(element => element.Name == XmlCommentHelper.TypeParamXmlTag)
+                        .Select(element => element.Attribute(XmlCommentHelper.NameArgumentName))
+                        .Where(x => x != null);
 
                 foreach (var parameter in typeDeclaration.TypeParameterList.Parameters)
                 {
                     if (!typeParameterAttributes.Any(x => x.Value == parameter.Identifier.ValueText))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, parameter.Identifier.GetLocation(), parameter.Identifier.ValueText));
+                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, parameter.Identifier.GetLocation(),
+                                                                   parameter.Identifier.ValueText));
                     }
                 }
             }
@@ -190,15 +212,17 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 var xmlParameterNames = documentation.Content.GetXmlElements(XmlCommentHelper.TypeParamXmlTag)
-                    .Select(XmlCommentHelper.GetFirstAttributeOrDefault<XmlNameAttributeSyntax>)
-                    .Where(x => x != null)
-                    .ToImmutableArray();
+                                            .Select(XmlCommentHelper.GetFirstAttributeOrDefault<XmlNameAttributeSyntax>)
+                                            .Where(x => x != null)
+                                            .ToImmutableArray();
 
                 foreach (var parameter in typeDeclaration.TypeParameterList.Parameters)
                 {
-                    if (!xmlParameterNames.Any(x => x.Identifier.Identifier.ValueText == parameter.Identifier.ValueText))
+                    if (!xmlParameterNames.Any(x =>
+                                                   x.Identifier.Identifier.ValueText == parameter.Identifier.ValueText))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, parameter.Identifier.GetLocation(), parameter.Identifier.ValueText));
+                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, parameter.Identifier.GetLocation(),
+                                                                   parameter.Identifier.ValueText));
                     }
                 }
             }

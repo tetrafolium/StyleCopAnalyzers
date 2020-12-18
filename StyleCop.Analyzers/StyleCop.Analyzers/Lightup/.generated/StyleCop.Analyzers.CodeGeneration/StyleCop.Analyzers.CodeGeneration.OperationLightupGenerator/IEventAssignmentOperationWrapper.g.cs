@@ -18,8 +18,10 @@ namespace StyleCop.Analyzers.Lightup
         static IEventAssignmentOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IEventAssignmentOperationWrapper));
-            EventReferenceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(EventReference));
-            HandlerValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(HandlerValue));
+            EventReferenceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(EventReference));
+            HandlerValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(HandlerValue));
             AddsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(Adds));
         }
 

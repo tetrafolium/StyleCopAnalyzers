@@ -24,11 +24,13 @@ namespace StyleCop.Analyzers.NamingRules
     internal class RenameToLowerCaseCodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1306FieldNamesMustBeginWithLowerCaseLetter.DiagnosticId,
-                SA1312VariableNamesMustBeginWithLowerCaseLetter.DiagnosticId,
-                SA1313ParameterNamesMustBeginWithLowerCaseLetter.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1306FieldNamesMustBeginWithLowerCaseLetter.DiagnosticId,
+                                SA1312VariableNamesMustBeginWithLowerCaseLetter.DiagnosticId,
+                                SA1313ParameterNamesMustBeginWithLowerCaseLetter.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -64,7 +66,8 @@ namespace StyleCop.Analyzers.NamingRules
 
                 var memberSyntax = RenameHelper.GetParentDeclaration(token);
 
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                SemanticModel semanticModel =
+                    await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
                 var declaredSymbol = semanticModel.GetDeclaredSymbol(memberSyntax);
                 if (declaredSymbol == null)
@@ -73,21 +76,25 @@ namespace StyleCop.Analyzers.NamingRules
                 }
 
                 // preserve the underscores, but only for fields.
-                var prefix = declaredSymbol.Kind == SymbolKind.Field ? originalName.Substring(0, underscoreCount) : string.Empty;
+                var prefix =
+                    declaredSymbol.Kind == SymbolKind.Field ? originalName.Substring(0, underscoreCount) : string.Empty;
                 var newName = prefix + baseName;
 
                 int index = 0;
-                while (!await RenameHelper.IsValidNewMemberNameAsync(semanticModel, declaredSymbol, newName, context.CancellationToken).ConfigureAwait(false))
+                while (
+                    !await RenameHelper
+                         .IsValidNewMemberNameAsync(semanticModel, declaredSymbol, newName, context.CancellationToken)
+                         .ConfigureAwait(false))
                 {
                     index++;
                     newName = prefix + baseName + index;
                 }
 
                 context.RegisterCodeFix(
-                    CodeAction.Create(
-                        string.Format(NamingResources.RenameToCodeFix, newName),
-                        cancellationToken => RenameHelper.RenameSymbolAsync(document, root, token, newName, cancellationToken),
-                        nameof(RenameToLowerCaseCodeFixProvider) + "_" + underscoreCount + "_" + index),
+                    CodeAction.Create(string.Format(NamingResources.RenameToCodeFix, newName),
+                                      cancellationToken => RenameHelper.RenameSymbolAsync(document, root, token,
+                                                                                          newName, cancellationToken),
+                                      nameof(RenameToLowerCaseCodeFixProvider) + "_" + underscoreCount + "_" + index),
                     diagnostic);
             }
         }

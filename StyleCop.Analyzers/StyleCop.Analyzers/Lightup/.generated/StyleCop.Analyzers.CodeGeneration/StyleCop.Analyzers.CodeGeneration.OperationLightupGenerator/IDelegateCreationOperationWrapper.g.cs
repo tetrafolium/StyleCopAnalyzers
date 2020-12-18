@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IDelegateCreationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IDelegateCreationOperationWrapper));
-            TargetAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Target));
+            TargetAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Target));
         }
 
         private IDelegateCreationOperationWrapper(IOperation operation)

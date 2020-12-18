@@ -44,22 +44,21 @@ namespace StyleCop.Analyzers.Status.Generator
             Commit commit;
             string commitId;
 
-            using (Repository repository = new Repository(Path.GetDirectoryName(args[0])))
+            using(Repository repository = new Repository(Path.GetDirectoryName(args[0])))
             {
                 commitId = repository.Head.Tip.Sha;
                 commit = repository.Head.Tip;
 
-                var output = new
-                {
+                var output = new {
                     diagnostics,
-                    git = new
-                    {
-                        commit.Sha,
-                        commit.Message,
-                        commit.Author,
-                        commit.Committer,
-                        Parents = commit.Parents.Select(x => x.Sha),
-                    },
+                    git =
+                        new {
+                            commit.Sha,
+                            commit.Message,
+                            commit.Author,
+                            commit.Committer,
+                            Parents = commit.Parents.Select(x => x.Sha),
+                        },
                 };
 
                 Console.WriteLine(JsonConvert.SerializeObject(output, Formatting.Indented));

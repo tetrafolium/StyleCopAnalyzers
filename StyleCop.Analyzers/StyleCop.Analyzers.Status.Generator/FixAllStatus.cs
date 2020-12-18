@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Status.Generator
     /// <summary>
     /// This enum captures the status of the implementation of a fix all provider.
     /// </summary>
-    public enum FixAllStatus
-    {
+    public enum FixAllStatus {
         /// <summary>
         /// No fix all provider is implemented for the given code fix.
         /// </summary>
@@ -20,7 +19,8 @@ namespace StyleCop.Analyzers.Status.Generator
 
         /// <summary>
         /// The fix all capability is provided by the default batch fixer.
-        /// This implementation might have various problems e.g. bad performance or it might not fix all problems at once.
+        /// This implementation might have various problems e.g. bad performance or it might not fix all problems at
+        /// once.
         /// </summary>
         BatchFixer,
     }

@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     {
         protected override string CodeActionTitle => MaintainabilityResources.SA1407SA1408CodeFix;
 
-        protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+        protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
+                                                                        ImmutableArray<Diagnostic> diagnostics)
         {
             if (diagnostics.IsEmpty)
             {
@@ -49,9 +50,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
             BinaryExpressionSyntax trimmedSyntax = syntax.WithoutTrivia();
 
-            return SyntaxFactory.ParenthesizedExpression(trimmedSyntax)
-                .WithTriviaFrom(syntax)
-                .WithoutFormatting();
+            return SyntaxFactory.ParenthesizedExpression(trimmedSyntax).WithTriviaFrom(syntax).WithoutFormatting();
         }
     }
 }

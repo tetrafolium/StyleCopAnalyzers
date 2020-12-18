@@ -43,21 +43,29 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         public const string DiagnosticId = "SA1520";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1520.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1520Title), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1520MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1520Description), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1520.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1520Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(LayoutResources.SA1520MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(LayoutResources.SA1520Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         private static readonly Action<SyntaxNodeAnalysisContext> IfStatementAction = HandleIfStatement;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -70,7 +78,7 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleIfStatement(SyntaxNodeAnalysisContext context)
         {
-            var ifStatement = (IfStatementSyntax)context.Node;
+            var ifStatement = (IfStatementSyntax) context.Node;
             if (ifStatement.Parent.IsKind(SyntaxKind.ElseClause))
             {
                 // this will be analyzed as a clause of the outer if statement
@@ -78,7 +86,8 @@ namespace StyleCop.Analyzers.LayoutRules
             }
 
             List<StatementSyntax> clauses = new List<StatementSyntax>();
-            for (IfStatementSyntax current = ifStatement; current != null; current = current.Else?.Statement as IfStatementSyntax)
+            for (IfStatementSyntax current = ifStatement; current != null;
+                 current = current.Else?.Statement as IfStatementSyntax)
             {
                 clauses.Add(current.Statement);
                 if (current.Else != null && !(current.Else.Statement is IfStatementSyntax))

@@ -11,8 +11,7 @@ namespace StyleCop.Analyzers.Helpers
     {
         public static bool IsMissingOrDefault(this SyntaxToken token)
         {
-            return token.IsKind(SyntaxKind.None)
-                || token.IsMissing;
+            return token.IsKind(SyntaxKind.None) || token.IsMissing;
         }
 
         public static SyntaxToken WithoutLeadingWhitespace(this SyntaxToken token, bool removeEndOfLineTrivia = false)
@@ -25,7 +24,8 @@ namespace StyleCop.Analyzers.Helpers
             return token.WithLeadingTrivia(token.LeadingTrivia.WithoutWhitespace(removeEndOfLineTrivia));
         }
 
-        public static SyntaxTriviaList WithoutWhitespace(this SyntaxTriviaList syntaxTriviaList, bool removeEndOfLineTrivia = false)
+        public static SyntaxTriviaList WithoutWhitespace(this SyntaxTriviaList syntaxTriviaList,
+                                                         bool removeEndOfLineTrivia = false)
         {
             if (syntaxTriviaList.Count == 0)
             {

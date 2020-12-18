@@ -14,8 +14,11 @@ namespace StyleCop.Analyzers.Lightup
 
         static CrefParameterSyntaxExtensions()
         {
-            RefKindKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CrefParameterSyntax, SyntaxToken>(typeof(CrefParameterSyntax), nameof(RefKindKeyword));
-            WithRefKindKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CrefParameterSyntax, SyntaxToken>(typeof(CrefParameterSyntax), nameof(RefKindKeyword));
+            RefKindKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CrefParameterSyntax, SyntaxToken>(
+                typeof(CrefParameterSyntax), nameof(RefKindKeyword));
+            WithRefKindKeywordAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<CrefParameterSyntax, SyntaxToken>(
+                    typeof(CrefParameterSyntax), nameof(RefKindKeyword));
         }
 
         public static SyntaxToken RefKindKeyword(this CrefParameterSyntax syntax)
@@ -23,7 +26,8 @@ namespace StyleCop.Analyzers.Lightup
             return RefKindKeywordAccessor(syntax);
         }
 
-        public static CrefParameterSyntax WithRefKindKeyword(this CrefParameterSyntax syntax, SyntaxToken refKindKeyword)
+        public static CrefParameterSyntax WithRefKindKeyword(this CrefParameterSyntax syntax,
+                                                             SyntaxToken refKindKeyword)
         {
             return WithRefKindKeywordAccessor(syntax, refKindKeyword);
         }

@@ -32,10 +32,12 @@ namespace StyleCop.Analyzers.DocumentationRules
     internal class SA1642SA1643CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1642ConstructorSummaryDocumentationMustBeginWithStandardText.DiagnosticId,
-                SA1643DestructorSummaryDocumentationMustBeginWithStandardText.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1642ConstructorSummaryDocumentationMustBeginWithStandardText.DiagnosticId,
+                                SA1643DestructorSummaryDocumentationMustBeginWithStandardText.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -55,31 +57,35 @@ namespace StyleCop.Analyzers.DocumentationRules
                     continue;
                 }
 
-                var node = root.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+                var node = root.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                         : true, getInnermostNodeForTie
+                                         : true);
 
                 if (node is XmlElementSyntax xmlElementSyntax)
                 {
                     context.RegisterCodeFix(
-                        CodeAction.Create(
-                            DocumentationResources.SA1642SA1643CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, root, xmlElementSyntax, cancellationToken),
-                            nameof(SA1642SA1643CodeFixProvider)),
+                        CodeAction.Create(DocumentationResources.SA1642SA1643CodeFix,
+                                          cancellationToken => GetTransformedDocumentAsync(
+                                              context.Document, root, xmlElementSyntax, cancellationToken),
+                                          nameof(SA1642SA1643CodeFixProvider)),
                         diagnostic);
                 }
                 else
                 {
-                    var xmlEmptyElementSyntax = (XmlEmptyElementSyntax)node;
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            DocumentationResources.SA1642SA1643CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, root, xmlEmptyElementSyntax),
-                            nameof(SA1642SA1643CodeFixProvider)),
-                        diagnostic);
+                    var xmlEmptyElementSyntax = (XmlEmptyElementSyntax) node;
+                    context.RegisterCodeFix(CodeAction.Create(DocumentationResources.SA1642SA1643CodeFix,
+                                                              cancellationToken => GetTransformedDocumentAsync(
+                                                                  context.Document, root, xmlEmptyElementSyntax),
+                                                              nameof(SA1642SA1643CodeFixProvider)),
+                                            diagnostic);
                 }
             }
         }
 
-        internal static ImmutableArray<string> GenerateStandardText(Document document, BaseMethodDeclarationSyntax methodDeclaration, BaseTypeDeclarationSyntax typeDeclaration, CancellationToken cancellationToken)
+        internal static ImmutableArray<string> GenerateStandardText(Document document,
+                                                                    BaseMethodDeclarationSyntax methodDeclaration,
+                                                                    BaseTypeDeclarationSyntax typeDeclaration,
+                                                                    CancellationToken cancellationToken)
         {
             bool isStruct = typeDeclaration.IsKind(SyntaxKind.StructDeclaration);
             var settings = document.Project.AnalyzerOptions.GetStyleCopSettings(cancellationToken);
@@ -88,12 +94,19 @@ namespace StyleCop.Analyzers.DocumentationRules
 
             if (methodDeclaration is ConstructorDeclarationSyntax)
             {
-                var typeKindText = resourceManager.GetString(isStruct ? nameof(DocumentationResources.TypeTextStruct) : nameof(DocumentationResources.TypeTextClass), culture);
+                var typeKindText = resourceManager.GetString(isStruct ? nameof(DocumentationResources.TypeTextStruct)
+                                                             : nameof(DocumentationResources.TypeTextClass), culture);
                 if (methodDeclaration.Modifiers.Any(SyntaxKind.StaticKeyword))
                 {
                     return ImmutableArray.Create(
-                        string.Format(resourceManager.GetString(nameof(DocumentationResources.StaticConstructorStandardTextFirstPart), culture), typeKindText),
-                        string.Format(resourceManager.GetString(nameof(DocumentationResources.StaticConstructorStandardTextSecondPart), culture), typeKindText));
+                        string.Format(
+                            resourceManager.GetString(
+                                nameof(DocumentationResources.StaticConstructorStandardTextFirstPart), culture),
+                            typeKindText),
+                        string.Format(
+                            resourceManager.GetString(
+                                nameof(DocumentationResources.StaticConstructorStandardTextSecondPart), culture),
+                            typeKindText));
                 }
                 else
                 {
@@ -101,15 +114,22 @@ namespace StyleCop.Analyzers.DocumentationRules
                     // acceptable for private constructors by the diagnostic.
                     // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/413
                     return ImmutableArray.Create(
-                        string.Format(resourceManager.GetString(nameof(DocumentationResources.NonPrivateConstructorStandardTextFirstPart), culture), typeKindText),
-                        string.Format(resourceManager.GetString(nameof(DocumentationResources.NonPrivateConstructorStandardTextSecondPart), culture), typeKindText));
+                        string.Format(
+                            resourceManager.GetString(
+                                nameof(DocumentationResources.NonPrivateConstructorStandardTextFirstPart), culture),
+                            typeKindText),
+                        string.Format(
+                            resourceManager.GetString(
+                                nameof(DocumentationResources.NonPrivateConstructorStandardTextSecondPart), culture),
+                            typeKindText));
                 }
             }
             else if (methodDeclaration is DestructorDeclarationSyntax)
             {
                 return ImmutableArray.Create(
                     resourceManager.GetString(nameof(DocumentationResources.DestructorStandardTextFirstPart), culture),
-                    resourceManager.GetString(nameof(DocumentationResources.DestructorStandardTextSecondPart), culture));
+                    resourceManager.GetString(nameof(DocumentationResources.DestructorStandardTextSecondPart),
+                                              culture));
             }
             else
             {
@@ -117,25 +137,25 @@ namespace StyleCop.Analyzers.DocumentationRules
             }
         }
 
-        internal static SyntaxList<XmlNodeSyntax> BuildStandardTextSyntaxList(BaseTypeDeclarationSyntax typeDeclaration, string preText, string postText)
+        internal static SyntaxList<XmlNodeSyntax> BuildStandardTextSyntaxList(BaseTypeDeclarationSyntax typeDeclaration,
+                                                                              string preText, string postText)
         {
             TypeParameterListSyntax typeParameterList = GetTypeParameterList(typeDeclaration);
 
-            return XmlSyntaxFactory.List(
-                XmlSyntaxFactory.Text(preText),
-                BuildSeeElement(typeDeclaration.Identifier, typeParameterList),
-                XmlSyntaxFactory.Text(postText.EndsWith(".") ? postText : (postText + ".")));
+            return XmlSyntaxFactory.List(XmlSyntaxFactory.Text(preText),
+                                         BuildSeeElement(typeDeclaration.Identifier, typeParameterList),
+                                         XmlSyntaxFactory.Text(postText.EndsWith(".") ? postText : (postText + ".")));
         }
 
-        internal static SyntaxList<XmlNodeSyntax> BuildStandardTextSyntaxList(BaseTypeDeclarationSyntax typeDeclaration, string newLineText, string preText, string postText)
+        internal static SyntaxList<XmlNodeSyntax> BuildStandardTextSyntaxList(BaseTypeDeclarationSyntax typeDeclaration,
+                                                                              string newLineText, string preText,
+                                                                              string postText)
         {
             TypeParameterListSyntax typeParameterList = GetTypeParameterList(typeDeclaration);
 
-            return XmlSyntaxFactory.List(
-                XmlSyntaxFactory.NewLine(newLineText),
-                XmlSyntaxFactory.Text(preText),
-                BuildSeeElement(typeDeclaration.Identifier, typeParameterList),
-                XmlSyntaxFactory.Text(postText.EndsWith(".") ? postText : (postText + ".")));
+            return XmlSyntaxFactory.List(XmlSyntaxFactory.NewLine(newLineText), XmlSyntaxFactory.Text(preText),
+                                         BuildSeeElement(typeDeclaration.Identifier, typeParameterList),
+                                         XmlSyntaxFactory.Text(postText.EndsWith(".") ? postText : (postText + ".")));
         }
 
         private static TypeParameterListSyntax GetTypeParameterList(BaseTypeDeclarationSyntax typeDeclaration)
@@ -145,10 +165,12 @@ namespace StyleCop.Analyzers.DocumentationRules
                 return classDeclaration.TypeParameterList;
             }
 
-            return (typeDeclaration as StructDeclarationSyntax)?.TypeParameterList;
+            return (typeDeclaration as StructDeclarationSyntax) ?.TypeParameterList;
         }
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, XmlElementSyntax node, CancellationToken cancellationToken)
+        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root,
+                                                                  XmlElementSyntax node,
+                                                                  CancellationToken cancellationToken)
         {
             var typeDeclaration = node.FirstAncestorOrSelf<BaseTypeDeclarationSyntax>();
             var declarationSyntax = node.FirstAncestorOrSelf<BaseMethodDeclarationSyntax>();
@@ -157,7 +179,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
             string trailingString = string.Empty;
 
-            var newContent = RemoveMalformattedStandardText(node.Content, standardText[0], standardText[1], ref trailingString);
+            var newContent =
+                RemoveMalformattedStandardText(node.Content, standardText[0], standardText[1], ref trailingString);
 
             if (newContent.Count == 1 && newContent[0] is XmlTextSyntax xmlText)
             {
@@ -170,8 +193,10 @@ namespace StyleCop.Analyzers.DocumentationRules
             SyntaxList<XmlNodeSyntax> list;
             if (IsMultiLine(node))
             {
-                string newLineText = document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
-                list = BuildStandardTextSyntaxList(typeDeclaration, newLineText, standardText[0], standardText[1] + trailingString);
+                string newLineText = document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine,
+                                                                                           LanguageNames.CSharp);
+                list = BuildStandardTextSyntaxList(typeDeclaration, newLineText, standardText[0],
+                                                   standardText[1] + trailingString);
             }
             else
             {
@@ -197,7 +222,8 @@ namespace StyleCop.Analyzers.DocumentationRules
             return lineSpan.StartLinePosition.Line != lineSpan.EndLinePosition.Line;
         }
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, XmlEmptyElementSyntax node)
+        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root,
+                                                                  XmlEmptyElementSyntax node)
         {
             var typeDeclaration = node.FirstAncestorOrSelf<BaseTypeDeclarationSyntax>();
 
@@ -208,7 +234,7 @@ namespace StyleCop.Analyzers.DocumentationRules
             }
             else
             {
-                typeParameterList = (typeDeclaration as StructDeclarationSyntax)?.TypeParameterList;
+                typeParameterList = (typeDeclaration as StructDeclarationSyntax) ?.TypeParameterList;
             }
 
             var newRoot = root.ReplaceNode(node, BuildSeeElement(typeDeclaration.Identifier, typeParameterList));
@@ -218,7 +244,9 @@ namespace StyleCop.Analyzers.DocumentationRules
             return Task.FromResult(newDocument);
         }
 
-        private static SyntaxList<XmlNodeSyntax> RemoveMalformattedStandardText(SyntaxList<XmlNodeSyntax> content, string preText, string postText, ref string trailingString)
+        private static SyntaxList<XmlNodeSyntax> RemoveMalformattedStandardText(SyntaxList<XmlNodeSyntax> content,
+                                                                                string preText, string postText,
+                                                                                ref string trailingString)
         {
             var regex = new Regex(@"^\s*" + Regex.Escape(preText) + "[^ ]+" + Regex.Escape(postText));
             var item = content.OfType<XmlTextSyntax>().FirstOrDefault();
@@ -289,7 +317,8 @@ namespace StyleCop.Analyzers.DocumentationRules
             return content;
         }
 
-        private static XmlEmptyElementSyntax BuildSeeElement(SyntaxToken identifier, TypeParameterListSyntax typeParameters)
+        private static XmlEmptyElementSyntax BuildSeeElement(SyntaxToken identifier,
+                                                             TypeParameterListSyntax typeParameters)
         {
             TypeSyntax identifierName;
 
@@ -300,7 +329,8 @@ namespace StyleCop.Analyzers.DocumentationRules
             }
             else
             {
-                identifierName = SyntaxFactory.GenericName(identifier.WithoutTrivia(), ParameterToArgumentListSyntax(typeParameters));
+                identifierName = SyntaxFactory.GenericName(identifier.WithoutTrivia(),
+                                                           ParameterToArgumentListSyntax(typeParameters));
             }
 
             return XmlSyntaxFactory.SeeElement(SyntaxFactory.TypeCref(identifierName));
@@ -309,7 +339,8 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static TypeArgumentListSyntax ParameterToArgumentListSyntax(TypeParameterListSyntax typeParameters)
         {
             var list = SyntaxFactory.SeparatedList<TypeSyntax>();
-            list = list.AddRange(typeParameters.Parameters.Select(p => SyntaxFactory.ParseName(p.ToString()).WithTriviaFrom(p)));
+            list = list.AddRange(
+                typeParameters.Parameters.Select(p => SyntaxFactory.ParseName(p.ToString()).WithTriviaFrom(p)));
 
             for (int i = 0; i < list.SeparatorCount; i++)
             {
@@ -338,7 +369,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                     firstEmptyToken = j;
                 }
-                else if (textToken.IsXmlNewLine() && textToken.LeadingTrivia.Any(SyntaxKind.DocumentationCommentExteriorTrivia))
+                else if (textToken.IsXmlNewLine() &&
+                         textToken.LeadingTrivia.Any(SyntaxKind.DocumentationCommentExteriorTrivia))
                 {
                     // Skip completely blank lines
                     firstEmptyToken = j;
@@ -352,9 +384,8 @@ namespace StyleCop.Analyzers.DocumentationRules
             if (firstEmptyToken > -1)
             {
                 var newContent = content.RemoveAt(content.Count - 1);
-                newContent = newContent
-                    .Add(XmlSyntaxFactory.Text(xmlText.TextTokens.Take(firstEmptyToken).ToArray()))
-                    .Add(XmlSyntaxFactory.Text(xmlText.TextTokens.Last()));
+                newContent = newContent.Add(XmlSyntaxFactory.Text(xmlText.TextTokens.Take(firstEmptyToken).ToArray()))
+                                 .Add(XmlSyntaxFactory.Text(xmlText.TextTokens.Last()));
                 return newContent;
             }
 

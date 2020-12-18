@@ -44,13 +44,17 @@ namespace StyleCop.Analyzers.OrderingRules
             /// Gets the root entry for all conditional directive spans.
             /// </summary>
             /// <value>A <see cref="TreeTextSpan"/> object representing the root conditional directive span.</value>
-            internal TreeTextSpan ConditionalRoot { get; }
+            internal TreeTextSpan ConditionalRoot
+            {
+                get;
+            }
 
             /// <summary>
             /// Constructs the directive map for the given <paramref name="compilationUnit"/>.
             /// </summary>
             /// <param name="compilationUnit">The compilation unit to scan for directive trivia.</param>
-            /// <returns>A new <see cref="SourceMap"/> object containing the directive trivia information from the passed <paramref name="compilationUnit"/>.</returns>
+            /// <returns>A new <see cref="SourceMap"/> object containing the directive trivia information from the
+            /// passed <paramref name="compilationUnit"/>.</returns>
             internal static SourceMap FromCompilationUnit(CompilationUnitSyntax compilationUnit)
             {
                 TreeTextSpan conditionalRoot;
@@ -72,8 +76,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 var textSpan = node.GetLocation().SourceSpan;
 
                 var containingSpans = this.pragmaWarningRoot.Children
-                    .Where(child => (textSpan.Start >= child.Start) && (textSpan.End <= child.End))
-                    .ToList();
+                                          .Where(child =>(textSpan.Start >= child.Start) && (textSpan.End <= child.End))
+                                          .ToList();
 
                 var containingConditionalSpan = this.ConditionalRoot.GetContainingSpan(textSpan);
                 if (containingConditionalSpan != this.ConditionalRoot)
@@ -94,11 +98,13 @@ namespace StyleCop.Analyzers.OrderingRules
 
                 for (var i = containingSpans.Count - 1; i > 0; i--)
                 {
-                    if (containingSpans[i].Contains(containingSpans[i - 1]))
+                    if (containingSpans [i]
+                            .Contains(containingSpans[i - 1]))
                     {
                         containingSpans.RemoveAt(i);
                     }
-                    else if (containingSpans[i - 1].Contains(containingSpans[i]))
+                    else if (containingSpans [i - 1]
+                                 .Contains(containingSpans[i]))
                     {
                         containingSpans.RemoveAt(i - 1);
                     }
@@ -121,7 +127,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 return new TreeTextSpan(newStart, newEnd, ImmutableArray<TreeTextSpan>.Empty);
             }
 
-            private static void ProcessNodeMembers(TreeTextSpan.Builder builder, SyntaxList<MemberDeclarationSyntax> members)
+            private static void ProcessNodeMembers(TreeTextSpan.Builder builder,
+                                                   SyntaxList<MemberDeclarationSyntax> members)
             {
                 foreach (var namespaceDeclaration in members.OfType<NamespaceDeclarationSyntax>())
                 {
@@ -132,7 +139,9 @@ namespace StyleCop.Analyzers.OrderingRules
                 }
             }
 
-            private static void BuildDirectiveTriviaMaps(CompilationUnitSyntax compilationUnit, out TreeTextSpan conditionalRoot, out TreeTextSpan regionRoot, out TreeTextSpan pragmaWarningRoot)
+            private static void BuildDirectiveTriviaMaps(CompilationUnitSyntax compilationUnit,
+                                                         out TreeTextSpan conditionalRoot, out TreeTextSpan regionRoot,
+                                                         out TreeTextSpan pragmaWarningRoot)
             {
                 var conditionalStack = new Stack<TreeTextSpan.Builder>();
                 var regionStack = new Stack<TreeTextSpan.Builder>();
@@ -141,7 +150,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 var conditionalBuilder = SetupBuilder(compilationUnit, conditionalStack);
                 var regionBuilder = SetupBuilder(compilationUnit, regionStack);
 
-                for (var directiveTrivia = compilationUnit.GetFirstDirective(); directiveTrivia != null; directiveTrivia = directiveTrivia.GetNextDirective())
+                for (var directiveTrivia = compilationUnit.GetFirstDirective(); directiveTrivia != null;
+                     directiveTrivia = directiveTrivia.GetNextDirective())
                 {
                     switch (directiveTrivia.Kind())
                     {
@@ -184,7 +194,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 pragmaWarningRoot = BuildPragmaWarningSpans(pragmaWarningList, compilationUnit);
             }
 
-            private static TreeTextSpan.Builder SetupBuilder(CompilationUnitSyntax compilationUnit, Stack<TreeTextSpan.Builder> stack)
+            private static TreeTextSpan.Builder SetupBuilder(CompilationUnitSyntax compilationUnit,
+                                                             Stack<TreeTextSpan.Builder> stack)
             {
                 var rootBuilder = TreeTextSpan.CreateBuilder(compilationUnit.SpanStart);
                 stack.Push(rootBuilder);
@@ -192,20 +203,23 @@ namespace StyleCop.Analyzers.OrderingRules
                 return rootBuilder;
             }
 
-            private static void AddNewDirectiveTriviaSpan(Stack<TreeTextSpan.Builder> spanStack, DirectiveTriviaSyntax directiveTrivia)
+            private static void AddNewDirectiveTriviaSpan(Stack<TreeTextSpan.Builder> spanStack,
+                                                          DirectiveTriviaSyntax directiveTrivia)
             {
                 var parent = spanStack.Peek();
                 var newDirectiveSpan = parent.AddChild(directiveTrivia.FullSpan.Start);
                 spanStack.Push(newDirectiveSpan);
             }
 
-            private static void CloseDirectiveTriviaSpan(Stack<TreeTextSpan.Builder> spanStack, DirectiveTriviaSyntax directiveTrivia)
+            private static void CloseDirectiveTriviaSpan(Stack<TreeTextSpan.Builder> spanStack,
+                                                         DirectiveTriviaSyntax directiveTrivia)
             {
                 var previousSpan = spanStack.Pop();
                 previousSpan.SetEnd(directiveTrivia.FullSpan.End);
             }
 
-            private static TreeTextSpan FinalizeBuilder(TreeTextSpan.Builder builder, Stack<TreeTextSpan.Builder> stack, int end)
+            private static TreeTextSpan FinalizeBuilder(TreeTextSpan.Builder builder, Stack<TreeTextSpan.Builder> stack,
+                                                        int end)
             {
                 // close all spans (including the root) that have not been closed yet
                 while (stack.Count > 0)
@@ -214,13 +228,15 @@ namespace StyleCop.Analyzers.OrderingRules
                     span.SetEnd(end);
                 }
 
-                // Fill the gaps to make sure that directives on either side of an conditional directive group are not combined
+                // Fill the gaps to make sure that directives on either side of an conditional directive group are not
+                // combined
                 builder.FillGaps();
 
                 return builder.ToSpan();
             }
 
-            private static TreeTextSpan BuildPragmaWarningSpans(List<DirectiveTriviaSyntax> pragmaWarningList, CompilationUnitSyntax compilationUnit)
+            private static TreeTextSpan BuildPragmaWarningSpans(List<DirectiveTriviaSyntax> pragmaWarningList,
+                                                                CompilationUnitSyntax compilationUnit)
             {
                 var map = new Dictionary<string, PragmaWarningDirectiveTriviaSyntax>();
                 var builder = TreeTextSpan.CreateBuilder(compilationUnit.SpanStart);
@@ -274,8 +290,7 @@ namespace StyleCop.Analyzers.OrderingRules
 
             private static List<string> GetErrorCodes(PragmaWarningDirectiveTriviaSyntax pragmaWarningDirectiveTrivia)
             {
-                return pragmaWarningDirectiveTrivia.ErrorCodes
-                    .OfType<IdentifierNameSyntax>()
+                return pragmaWarningDirectiveTrivia.ErrorCodes.OfType<IdentifierNameSyntax>()
                     .Select(x => x.Identifier.ValueText)
                     .ToList();
             }

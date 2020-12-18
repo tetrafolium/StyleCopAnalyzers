@@ -26,12 +26,18 @@ namespace StyleCop.Analyzers.Lightup
         static BinaryPatternSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(BinaryPatternSyntaxWrapper));
-            LeftAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Left));
-            OperatorTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(OperatorToken));
-            RightAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Right));
-            WithLeftAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Left));
-            WithOperatorTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(OperatorToken));
-            WithRightAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(WrappedType, nameof(Right));
+            LeftAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                WrappedType, nameof(Left));
+            OperatorTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                WrappedType, nameof(OperatorToken));
+            RightAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                WrappedType, nameof(Right));
+            WithLeftAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                WrappedType, nameof(Left));
+            WithOperatorTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                WrappedType, nameof(OperatorToken));
+            WithRightAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, CSharpSyntaxNode>(
+                WrappedType, nameof(Right));
         }
 
         private BinaryPatternSyntaxWrapper(CSharpSyntaxNode node)
@@ -45,7 +51,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PatternSyntaxWrapper)LeftAccessor(this.SyntaxNode);
+                return (PatternSyntaxWrapper) LeftAccessor(this.SyntaxNode);
             }
         }
 
@@ -61,18 +67,18 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PatternSyntaxWrapper)RightAccessor(this.SyntaxNode);
+                return (PatternSyntaxWrapper) RightAccessor(this.SyntaxNode);
             }
         }
 
         public static explicit operator BinaryPatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (BinaryPatternSyntaxWrapper)node.SyntaxNode;
+            return (BinaryPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator BinaryPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (BinaryPatternSyntaxWrapper)node.SyntaxNode;
+            return (BinaryPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator BinaryPatternSyntaxWrapper(SyntaxNode node)
@@ -87,7 +93,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new BinaryPatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new BinaryPatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(BinaryPatternSyntaxWrapper wrapper)

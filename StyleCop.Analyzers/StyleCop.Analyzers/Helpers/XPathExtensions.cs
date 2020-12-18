@@ -12,16 +12,17 @@ namespace StyleCop.Analyzers.Helpers
     {
         // This class borrows heavily from src/Compilers/Core/Portable/PortableShim.cs of Roslyn
         private static readonly Type XPathExtensionsType = GetTypeFromEither(
-            contractName: "System.Xml.XPath.Extensions, System.Xml.XPath.XDocument, Version = 4.0.0.0, Culture = neutral, PublicKeyToken = b03f5f7f11d50a3a",
-            desktopName: "System.Xml.XPath.Extensions, System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+            contractName
+            : "System.Xml.XPath.Extensions, System.Xml.XPath.XDocument, Version = 4.0.0.0, Culture = neutral, PublicKeyToken = b03f5f7f11d50a3a",
+              desktopName
+            : "System.Xml.XPath.Extensions, System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
 
         internal static IEnumerable<XElement> XPathSelectElements(this XNode node, string expression)
         {
-            var xpathSelectElements = XPathExtensionsType
-                .GetTypeInfo()
-                .GetDeclaredMethod(nameof(XPathSelectElements), new[] { typeof(XNode), typeof(string) });
+            var xpathSelectElements = XPathExtensionsType.GetTypeInfo().GetDeclaredMethod(
+                nameof(XPathSelectElements), new[]{typeof(XNode), typeof(string)});
 
-            return xpathSelectElements.Invoke(null, new object[] { node, expression }) as IEnumerable<XElement>;
+            return xpathSelectElements.Invoke(null, new object[]{node, expression}) as IEnumerable<XElement>;
         }
 
         private static Type GetTypeFromEither(string contractName, string desktopName)
@@ -41,7 +42,7 @@ namespace StyleCop.Analyzers.Helpers
             try
             {
                 // Note that throwOnError=false only suppresses some exceptions, not all.
-                return Type.GetType(assemblyQualifiedName, throwOnError: false);
+                return Type.GetType(assemblyQualifiedName, throwOnError : false);
             }
             catch
             {
@@ -54,8 +55,7 @@ namespace StyleCop.Analyzers.Helpers
             return FindItem(typeInfo.GetDeclaredMethods(name), paramTypes);
         }
 
-        private static T FindItem<T>(IEnumerable<T> collection, params Type[] paramTypes)
-             where T : MethodBase
+        private static T FindItem<T>(IEnumerable<T> collection, params Type[] paramTypes) where T : MethodBase
         {
             foreach (var current in collection)
             {

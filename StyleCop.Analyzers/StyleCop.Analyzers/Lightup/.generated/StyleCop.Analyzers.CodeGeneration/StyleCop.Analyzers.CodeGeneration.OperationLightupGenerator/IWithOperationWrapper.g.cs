@@ -18,9 +18,12 @@ namespace StyleCop.Analyzers.Lightup
         static IWithOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IWithOperationWrapper));
-            OperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
-            CloneMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(CloneMethod));
-            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Initializer));
+            OperandAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
+            CloneMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                WrappedType, nameof(CloneMethod));
+            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(Initializer));
         }
 
         private IWithOperationWrapper(IOperation operation)
@@ -32,7 +35,8 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation Operand => OperandAccessor(this.WrappedOperation);
         public IMethodSymbol CloneMethod => CloneMethodAccessor(this.WrappedOperation);
-        public IObjectOrCollectionInitializerOperationWrapper Initializer => IObjectOrCollectionInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
+        public IObjectOrCollectionInitializerOperationWrapper Initializer =>
+            IObjectOrCollectionInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
         public static IWithOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

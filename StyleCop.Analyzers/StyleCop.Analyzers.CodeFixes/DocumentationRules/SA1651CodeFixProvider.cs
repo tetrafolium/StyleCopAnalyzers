@@ -27,11 +27,15 @@ namespace StyleCop.Analyzers.DocumentationRules
     [Shared]
     internal class SA1651CodeFixProvider : CodeFixProvider
     {
-        private static readonly SyntaxAnnotation NodeToReplaceAnnotation = new SyntaxAnnotation(nameof(NodeToReplaceAnnotation));
+        private static readonly SyntaxAnnotation NodeToReplaceAnnotation =
+            new SyntaxAnnotation(nameof(NodeToReplaceAnnotation));
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1651DoNotUsePlaceholderElements.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1651DoNotUsePlaceholderElements.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -50,8 +54,11 @@ namespace StyleCop.Analyzers.DocumentationRules
                     continue;
                 }
 
-                var documentRoot = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-                SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+                var documentRoot =
+                    await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+                SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                                          : true, getInnermostNodeForTie
+                                                          : true);
                 if (syntax == null)
                 {
                     continue;
@@ -69,12 +76,11 @@ namespace StyleCop.Analyzers.DocumentationRules
                     continue;
                 }
 
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        DocumentationResources.SA1651CodeFix,
-                        cancellationToken => this.GetTransformedDocumentAsync(context.Document, xmlElementSyntax, cancellationToken),
-                        nameof(SA1651CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(DocumentationResources.SA1651CodeFix,
+                                                          cancellationToken => this.GetTransformedDocumentAsync(
+                                                              context.Document, xmlElementSyntax, cancellationToken),
+                                                          nameof(SA1651CodeFixProvider)),
+                                        diagnostic);
             }
         }
 
@@ -84,18 +90,23 @@ namespace StyleCop.Analyzers.DocumentationRules
 
             var leadingTrivia = elementSyntax.StartTag.GetLeadingTrivia();
             leadingTrivia = leadingTrivia.AddRange(elementSyntax.StartTag.GetTrailingTrivia());
-            leadingTrivia = leadingTrivia.AddRange(content[0].GetLeadingTrivia());
-            content = content.Replace(content[0], content[0].WithLeadingTrivia(leadingTrivia));
+            leadingTrivia = leadingTrivia.AddRange(content [0]
+                                                       .GetLeadingTrivia());
+            content = content.Replace(content[0], content [0]
+                                                      .WithLeadingTrivia(leadingTrivia));
 
-            var trailingTrivia = content[content.Count - 1].GetTrailingTrivia();
+            var trailingTrivia = content [content.Count - 1]
+                                     .GetTrailingTrivia();
             trailingTrivia = trailingTrivia.AddRange(elementSyntax.EndTag.GetLeadingTrivia());
             trailingTrivia = trailingTrivia.AddRange(elementSyntax.EndTag.GetTrailingTrivia());
-            content = content.Replace(content[content.Count - 1], content[content.Count - 1].WithTrailingTrivia(trailingTrivia));
+            content = content.Replace(content[content.Count - 1], content [content.Count - 1]
+                                                                      .WithTrailingTrivia(trailingTrivia));
 
             return content;
         }
 
-        private async Task<Document> GetTransformedDocumentAsync(Document document, XmlElementSyntax elementSyntax, CancellationToken cancellationToken)
+        private async Task<Document> GetTransformedDocumentAsync(Document document, XmlElementSyntax elementSyntax,
+                                                                 CancellationToken cancellationToken)
         {
             if (elementSyntax.Content.Count == 0)
             {
@@ -109,26 +120,39 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAll Instance { get; } = new FixAll();
-
-            protected override string CodeActionTitle { get; } = DocumentationResources.SA1651CodeFix;
-
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            public static FixAll Instance
             {
-                var syntaxRoot = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                get;
+            }
+            = new FixAll();
+
+            protected override string CodeActionTitle
+            {
+                get;
+            }
+            = DocumentationResources.SA1651CodeFix;
+
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
+            {
+                var syntaxRoot =
+                    await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
                 var elements = new List<XmlElementSyntax>();
 
                 foreach (var diagnostic in diagnostics)
                 {
-                    if ((syntaxRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true) is XmlElementSyntax xmlElement)
-                        && (xmlElement.Content.Count > 0)
-                        && !string.IsNullOrWhiteSpace(xmlElement.Content.ToString()))
+                    if ((syntaxRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                             : true, getInnermostNodeForTie
+                                             : true) is XmlElementSyntax xmlElement) &&
+                        (xmlElement.Content.Count > 0) && !string.IsNullOrWhiteSpace(xmlElement.Content.ToString()))
                     {
                         elements.Add(xmlElement);
                     }
                 }
 
-                var newSyntaxRoot = syntaxRoot.ReplaceNodes(elements, (original, rewritten) => rewritten.WithAdditionalAnnotations(NodeToReplaceAnnotation));
+                var newSyntaxRoot = syntaxRoot.ReplaceNodes(
+                    elements, (original, rewritten) => rewritten.WithAdditionalAnnotations(NodeToReplaceAnnotation));
                 newSyntaxRoot = new FixAllVisitor().Visit(newSyntaxRoot);
                 return newSyntaxRoot;
             }
@@ -136,8 +160,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private class FixAllVisitor : CSharpSyntaxRewriter
         {
-            public FixAllVisitor()
-                : base(true)
+            public FixAllVisitor() : base(true)
             {
             }
 

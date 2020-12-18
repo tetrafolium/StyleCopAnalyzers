@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     /// Represents a light-up wrapper for a type derived from a known back syntax kind <typeparamref name="T"/>.
     /// </summary>
     /// <typeparam name="T">The base syntax kind which is exposed in the referenced API.</typeparam>
-    internal interface ISyntaxWrapper<T>
-        where T : SyntaxNode
+    internal interface ISyntaxWrapper<T> where T : SyntaxNode
     {
         /// <summary>
         /// Gets the wrapped syntax node.

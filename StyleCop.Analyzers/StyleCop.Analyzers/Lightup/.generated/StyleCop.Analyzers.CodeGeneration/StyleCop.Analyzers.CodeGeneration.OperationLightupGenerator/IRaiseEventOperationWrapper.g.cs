@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IRaiseEventOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IRaiseEventOperationWrapper));
-            EventReferenceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(EventReference));
-            ArgumentsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Arguments));
+            EventReferenceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(EventReference));
+            ArgumentsAccessor =
+                LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Arguments));
         }
 
         private IRaiseEventOperationWrapper(IOperation operation)
@@ -28,7 +30,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public IEventReferenceOperationWrapper EventReference => IEventReferenceOperationWrapper.FromOperation(EventReferenceAccessor(this.WrappedOperation));
+        public IEventReferenceOperationWrapper EventReference =>
+            IEventReferenceOperationWrapper.FromOperation(EventReferenceAccessor(this.WrappedOperation));
         public ImmutableArray<IOperation> Arguments => ArgumentsAccessor(this.WrappedOperation);
         public static IRaiseEventOperationWrapper FromOperation(IOperation operation)
         {

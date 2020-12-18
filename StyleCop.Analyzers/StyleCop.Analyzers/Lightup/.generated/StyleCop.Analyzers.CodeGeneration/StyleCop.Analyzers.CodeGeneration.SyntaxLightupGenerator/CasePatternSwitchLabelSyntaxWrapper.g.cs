@@ -26,12 +26,19 @@ namespace StyleCop.Analyzers.Lightup
         static CasePatternSwitchLabelSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(CasePatternSwitchLabelSyntaxWrapper));
-            PatternAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<SwitchLabelSyntax, CSharpSyntaxNode>(WrappedType, nameof(Pattern));
-            WhenClauseAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<SwitchLabelSyntax, CSharpSyntaxNode>(WrappedType, nameof(WhenClause));
-            WithKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, SyntaxToken>(WrappedType, nameof(Keyword));
-            WithPatternAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, CSharpSyntaxNode>(WrappedType, nameof(Pattern));
-            WithWhenClauseAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, CSharpSyntaxNode>(WrappedType, nameof(WhenClause));
-            WithColonTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, SyntaxToken>(WrappedType, nameof(ColonToken));
+            PatternAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<SwitchLabelSyntax, CSharpSyntaxNode>(
+                WrappedType, nameof(Pattern));
+            WhenClauseAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<SwitchLabelSyntax, CSharpSyntaxNode>(
+                WrappedType, nameof(WhenClause));
+            WithKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, SyntaxToken>(
+                WrappedType, nameof(Keyword));
+            WithPatternAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, CSharpSyntaxNode>(
+                WrappedType, nameof(Pattern));
+            WithWhenClauseAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, CSharpSyntaxNode>(
+                    WrappedType, nameof(WhenClause));
+            WithColonTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<SwitchLabelSyntax, SyntaxToken>(
+                WrappedType, nameof(ColonToken));
         }
 
         private CasePatternSwitchLabelSyntaxWrapper(SwitchLabelSyntax node)
@@ -53,7 +60,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PatternSyntaxWrapper)PatternAccessor(this.SyntaxNode);
+                return (PatternSyntaxWrapper) PatternAccessor(this.SyntaxNode);
             }
         }
 
@@ -61,7 +68,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (WhenClauseSyntaxWrapper)WhenClauseAccessor(this.SyntaxNode);
+                return (WhenClauseSyntaxWrapper) WhenClauseAccessor(this.SyntaxNode);
             }
         }
 
@@ -85,7 +92,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new CasePatternSwitchLabelSyntaxWrapper((SwitchLabelSyntax)node);
+            return new CasePatternSwitchLabelSyntaxWrapper((SwitchLabelSyntax) node);
         }
 
         public static implicit operator SwitchLabelSyntax(CasePatternSwitchLabelSyntaxWrapper wrapper)

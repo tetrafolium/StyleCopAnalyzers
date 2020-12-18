@@ -43,19 +43,27 @@ namespace StyleCop.Analyzers.LayoutRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1509";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1509.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1509Title), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1509MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1509Description), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1509.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1509Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(LayoutResources.SA1509MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(LayoutResources.SA1509Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -82,7 +90,8 @@ namespace StyleCop.Analyzers.LayoutRules
             }
         }
 
-        private static void AnalyzeOpenBrace(SyntaxTreeAnalysisContext context, SyntaxToken openBrace, SyntaxToken previousToken)
+        private static void AnalyzeOpenBrace(SyntaxTreeAnalysisContext context, SyntaxToken openBrace,
+                                             SyntaxToken previousToken)
         {
             var triviaList = TriviaHelper.MergeTriviaLists(previousToken.TrailingTrivia, openBrace.LeadingTrivia);
 
@@ -90,7 +99,8 @@ namespace StyleCop.Analyzers.LayoutRules
             var eolCount = 0;
             for (var i = triviaList.Count - 1; !done && (i >= 0); i--)
             {
-                switch (triviaList[i].Kind())
+                switch (triviaList [i]
+                            .Kind())
                 {
                 case SyntaxKind.WhitespaceTrivia:
                     break;

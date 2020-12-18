@@ -15,7 +15,8 @@ namespace StyleCop.Analyzers.Lightup
         private static readonly Type WrappedType;
 
         private static readonly Func<StatementSyntax, ExpressionSyntax> VariableAccessor;
-        private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax> WithAttributeListsAccessor;
+        private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax>
+            WithAttributeListsAccessor;
         private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax> WithAwaitKeywordAccessor;
         private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax> WithForEachKeywordAccessor;
         private static readonly Func<StatementSyntax, SyntaxToken, StatementSyntax> WithOpenParenTokenAccessor;
@@ -30,16 +31,27 @@ namespace StyleCop.Analyzers.Lightup
         static ForEachVariableStatementSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(ForEachVariableStatementSyntaxWrapper));
-            VariableAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax, ExpressionSyntax>(WrappedType, nameof(Variable));
-            WithAttributeListsAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxList<AttributeListSyntax>>(WrappedType, nameof(AttributeLists));
-            WithAwaitKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(WrappedType, nameof(AwaitKeyword));
-            WithForEachKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(WrappedType, nameof(ForEachKeyword));
-            WithOpenParenTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(WrappedType, nameof(OpenParenToken));
-            WithVariableAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, ExpressionSyntax>(WrappedType, nameof(Variable));
-            WithInKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(WrappedType, nameof(InKeyword));
-            WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, ExpressionSyntax>(WrappedType, nameof(Expression));
-            WithCloseParenTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(WrappedType, nameof(CloseParenToken));
-            WithStatementAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, StatementSyntax>(WrappedType, nameof(Statement));
+            VariableAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax, ExpressionSyntax>(
+                WrappedType, nameof(Variable));
+            WithAttributeListsAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxList<AttributeListSyntax>>(
+                    WrappedType, nameof(AttributeLists));
+            WithAwaitKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
+                WrappedType, nameof(AwaitKeyword));
+            WithForEachKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
+                WrappedType, nameof(ForEachKeyword));
+            WithOpenParenTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
+                WrappedType, nameof(OpenParenToken));
+            WithVariableAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, ExpressionSyntax>(
+                WrappedType, nameof(Variable));
+            WithInKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
+                WrappedType, nameof(InKeyword));
+            WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, ExpressionSyntax>(
+                WrappedType, nameof(Expression));
+            WithCloseParenTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxToken>(
+                WrappedType, nameof(CloseParenToken));
+            WithStatementAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, StatementSyntax>(
+                WrappedType, nameof(Statement));
         }
 
         private ForEachVariableStatementSyntaxWrapper(StatementSyntax node)
@@ -61,7 +73,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).AwaitKeyword;
+                return ((CommonForEachStatementSyntaxWrapper) this).AwaitKeyword;
             }
         }
 
@@ -69,7 +81,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).ForEachKeyword;
+                return ((CommonForEachStatementSyntaxWrapper) this).ForEachKeyword;
             }
         }
 
@@ -77,7 +89,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).OpenParenToken;
+                return ((CommonForEachStatementSyntaxWrapper) this).OpenParenToken;
             }
         }
 
@@ -93,7 +105,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).InKeyword;
+                return ((CommonForEachStatementSyntaxWrapper) this).InKeyword;
             }
         }
 
@@ -101,7 +113,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).Expression;
+                return ((CommonForEachStatementSyntaxWrapper) this).Expression;
             }
         }
 
@@ -109,7 +121,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).CloseParenToken;
+                return ((CommonForEachStatementSyntaxWrapper) this).CloseParenToken;
             }
         }
 
@@ -117,13 +129,13 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).Statement;
+                return ((CommonForEachStatementSyntaxWrapper) this).Statement;
             }
         }
 
         public static explicit operator ForEachVariableStatementSyntaxWrapper(CommonForEachStatementSyntaxWrapper node)
         {
-            return (ForEachVariableStatementSyntaxWrapper)node.SyntaxNode;
+            return (ForEachVariableStatementSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator ForEachVariableStatementSyntaxWrapper(SyntaxNode node)
@@ -138,10 +150,11 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new ForEachVariableStatementSyntaxWrapper((StatementSyntax)node);
+            return new ForEachVariableStatementSyntaxWrapper((StatementSyntax) node);
         }
 
-        public static implicit operator CommonForEachStatementSyntaxWrapper(ForEachVariableStatementSyntaxWrapper wrapper)
+        public static implicit operator CommonForEachStatementSyntaxWrapper(
+            ForEachVariableStatementSyntaxWrapper wrapper)
         {
             return CommonForEachStatementSyntaxWrapper.FromUpcast(wrapper.node);
         }
@@ -158,7 +171,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public ForEachVariableStatementSyntaxWrapper WithAttributeLists(SyntaxList<AttributeListSyntax> attributeLists)
         {
-            return new ForEachVariableStatementSyntaxWrapper(WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
+            return new ForEachVariableStatementSyntaxWrapper(
+                WithAttributeListsAccessor(this.SyntaxNode, attributeLists));
         }
 
         public ForEachVariableStatementSyntaxWrapper WithAwaitKeyword(SyntaxToken awaitKeyword)
@@ -168,12 +182,14 @@ namespace StyleCop.Analyzers.Lightup
 
         public ForEachVariableStatementSyntaxWrapper WithForEachKeyword(SyntaxToken forEachKeyword)
         {
-            return new ForEachVariableStatementSyntaxWrapper(WithForEachKeywordAccessor(this.SyntaxNode, forEachKeyword));
+            return new ForEachVariableStatementSyntaxWrapper(
+                WithForEachKeywordAccessor(this.SyntaxNode, forEachKeyword));
         }
 
         public ForEachVariableStatementSyntaxWrapper WithOpenParenToken(SyntaxToken openParenToken)
         {
-            return new ForEachVariableStatementSyntaxWrapper(WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
+            return new ForEachVariableStatementSyntaxWrapper(
+                WithOpenParenTokenAccessor(this.SyntaxNode, openParenToken));
         }
 
         public ForEachVariableStatementSyntaxWrapper WithVariable(ExpressionSyntax variable)
@@ -193,7 +209,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public ForEachVariableStatementSyntaxWrapper WithCloseParenToken(SyntaxToken closeParenToken)
         {
-            return new ForEachVariableStatementSyntaxWrapper(WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
+            return new ForEachVariableStatementSyntaxWrapper(
+                WithCloseParenTokenAccessor(this.SyntaxNode, closeParenToken));
         }
 
         public ForEachVariableStatementSyntaxWrapper WithStatement(StatementSyntax statement)

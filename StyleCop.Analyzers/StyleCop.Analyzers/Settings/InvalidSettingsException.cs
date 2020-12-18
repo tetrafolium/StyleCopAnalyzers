@@ -14,8 +14,7 @@ namespace StyleCop.Analyzers
         /// Initializes a new instance of the <see cref="InvalidSettingsException"/> class.
         /// </summary>
         /// <param name="message">The exception message.</param>
-        internal InvalidSettingsException(string message)
-            : base(message)
+        internal InvalidSettingsException(string message) : base(message)
         {
         }
     }

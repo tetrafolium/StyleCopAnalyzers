@@ -21,8 +21,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1135CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1135UsingDirectivesMustBeQualified.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1135UsingDirectivesMustBeQualified.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,18 +38,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1135CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1135CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1135CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1135CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
@@ -61,13 +64,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
 
-        private static SyntaxNode GetReplacementNode(SemanticModel semanticModel, UsingDirectiveSyntax node, CancellationToken cancellationToken)
+        private static SyntaxNode GetReplacementNode(SemanticModel semanticModel, UsingDirectiveSyntax node,
+                                                     CancellationToken cancellationToken)
         {
             SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(node.Name, cancellationToken);
             var symbolNameSyntax = SyntaxFactory.ParseName(symbolInfo.Symbol.ToQualifiedString(node.Name));
 
             var newName = GetReplacementName(symbolNameSyntax, node.Name);
-            return node.WithName((NameSyntax)newName);
+            return node.WithName((NameSyntax) newName);
         }
 
         private static TypeSyntax GetReplacementName(TypeSyntax symbolNameSyntax, TypeSyntax nameSyntax)
@@ -75,33 +79,38 @@ namespace StyleCop.Analyzers.ReadabilityRules
             switch (nameSyntax.Kind())
             {
             case SyntaxKind.GenericName:
-                return GetReplacementGenericName(symbolNameSyntax, (GenericNameSyntax)nameSyntax);
+                return GetReplacementGenericName(symbolNameSyntax, (GenericNameSyntax) nameSyntax);
 
             case SyntaxKind.QualifiedName:
-                return GetReplacementQualifiedName((QualifiedNameSyntax)symbolNameSyntax, (QualifiedNameSyntax)nameSyntax);
+                return GetReplacementQualifiedName((QualifiedNameSyntax) symbolNameSyntax,
+                                                   (QualifiedNameSyntax) nameSyntax);
 
             default:
                 return symbolNameSyntax;
             }
         }
 
-        private static NameSyntax GetReplacementGenericName(TypeSyntax symbolNameSyntax, GenericNameSyntax genericNameSyntax)
+        private static NameSyntax GetReplacementGenericName(TypeSyntax symbolNameSyntax,
+                                                            GenericNameSyntax genericNameSyntax)
         {
             var symbolQualifiedNameSyntax = symbolNameSyntax as QualifiedNameSyntax;
             var symbolGenericNameSyntax = (GenericNameSyntax)(symbolQualifiedNameSyntax?.Right ?? symbolNameSyntax);
 
-            TypeArgumentListSyntax newTypeArgumentList = GetReplacementTypeArgumentList(symbolGenericNameSyntax, genericNameSyntax);
+            TypeArgumentListSyntax newTypeArgumentList =
+                GetReplacementTypeArgumentList(symbolGenericNameSyntax, genericNameSyntax);
 
             if (symbolQualifiedNameSyntax != null)
             {
-                var newRightPart = ((GenericNameSyntax)symbolQualifiedNameSyntax.Right).WithTypeArgumentList(newTypeArgumentList);
+                var newRightPart =
+                    ((GenericNameSyntax) symbolQualifiedNameSyntax.Right).WithTypeArgumentList(newTypeArgumentList);
                 return symbolQualifiedNameSyntax.WithRight(newRightPart);
             }
 
             return genericNameSyntax.WithTypeArgumentList(newTypeArgumentList);
         }
 
-        private static TypeArgumentListSyntax GetReplacementTypeArgumentList(GenericNameSyntax symbolGenericNameSyntax, GenericNameSyntax genericNameSyntax)
+        private static TypeArgumentListSyntax GetReplacementTypeArgumentList(GenericNameSyntax symbolGenericNameSyntax,
+                                                                             GenericNameSyntax genericNameSyntax)
         {
             var replacements = new Dictionary<TypeSyntax, TypeSyntax>();
             for (var i = 0; i < genericNameSyntax.TypeArgumentList.Arguments.Count; i++)
@@ -113,22 +122,24 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     var symbolArgument = symbolGenericNameSyntax.TypeArgumentList.Arguments[i];
 
                     var replacementArgument = GetReplacementName(symbolArgument, argument)
-                        .WithLeadingTrivia(argument.GetLeadingTrivia())
-                        .WithTrailingTrivia(argument.GetTrailingTrivia());
+                                                  .WithLeadingTrivia(argument.GetLeadingTrivia())
+                                                  .WithTrailingTrivia(argument.GetTrailingTrivia());
 
                     replacements.Add(argument, replacementArgument);
                 }
             }
 
-            var newTypeArgumentList = genericNameSyntax.TypeArgumentList.ReplaceNodes(replacements.Keys, (original, maybeRewritten) => replacements[original]);
+            var newTypeArgumentList = genericNameSyntax.TypeArgumentList.ReplaceNodes(
+                replacements.Keys, (original, maybeRewritten) => replacements[original]);
             return newTypeArgumentList;
         }
 
-        private static NameSyntax GetReplacementQualifiedName(QualifiedNameSyntax symbolNameSyntax, QualifiedNameSyntax nameSyntax)
+        private static NameSyntax GetReplacementQualifiedName(QualifiedNameSyntax symbolNameSyntax,
+                                                              QualifiedNameSyntax nameSyntax)
         {
             if (nameSyntax.Right.IsKind(SyntaxKind.GenericName))
             {
-                return GetReplacementGenericName(symbolNameSyntax, (GenericNameSyntax)nameSyntax.Right);
+                return GetReplacementGenericName(symbolNameSyntax, (GenericNameSyntax) nameSyntax.Right);
             }
             else
             {
@@ -138,25 +149,36 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                   new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                ReadabilityResources.SA1135CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1135CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
                     return null;
                 }
 
-                SyntaxNode syntaxRoot = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                SyntaxNode syntaxRoot =
+                    await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                SemanticModel semanticModel =
+                    await document.GetSemanticModelAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
 
-                var nodes = diagnostics.Select(diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true).FirstAncestorOrSelf<UsingDirectiveSyntax>());
+                var nodes = diagnostics.Select(
+                    diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                      : true)
+                                      .FirstAncestorOrSelf<UsingDirectiveSyntax>());
 
-                return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) => GetReplacementNode(semanticModel, rewrittenNode, fixAllContext.CancellationToken));
+                return syntaxRoot.ReplaceNodes(
+                    nodes, (originalNode, rewrittenNode) =>
+                               GetReplacementNode(semanticModel, rewrittenNode, fixAllContext.CancellationToken));
             }
         }
     }

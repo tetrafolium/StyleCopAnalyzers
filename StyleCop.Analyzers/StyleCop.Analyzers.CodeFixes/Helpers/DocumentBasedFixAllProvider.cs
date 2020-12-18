@@ -16,7 +16,10 @@ namespace StyleCop.Analyzers.Helpers
     /// </summary>
     internal abstract class DocumentBasedFixAllProvider : FixAllProvider
     {
-        protected abstract string CodeActionTitle { get; }
+        protected abstract string CodeActionTitle
+        {
+            get;
+        }
 
         public override Task<CodeAction> GetFixAsync(FixAllContext fixAllContext)
         {
@@ -24,24 +27,25 @@ namespace StyleCop.Analyzers.Helpers
             switch (fixAllContext.Scope)
             {
             case FixAllScope.Document:
-                fixAction = CodeAction.Create(
-                    this.CodeActionTitle,
-                    cancellationToken => this.GetDocumentFixesAsync(fixAllContext.WithCancellationToken(cancellationToken)),
-                    nameof(DocumentBasedFixAllProvider));
+                fixAction = CodeAction.Create(this.CodeActionTitle,
+                                              cancellationToken => this.GetDocumentFixesAsync(
+                                                  fixAllContext.WithCancellationToken(cancellationToken)),
+                                              nameof(DocumentBasedFixAllProvider));
                 break;
 
             case FixAllScope.Project:
                 fixAction = CodeAction.Create(
                     this.CodeActionTitle,
-                    cancellationToken => this.GetProjectFixesAsync(fixAllContext.WithCancellationToken(cancellationToken), fixAllContext.Project),
+                    cancellationToken => this.GetProjectFixesAsync(
+                        fixAllContext.WithCancellationToken(cancellationToken), fixAllContext.Project),
                     nameof(DocumentBasedFixAllProvider));
                 break;
 
             case FixAllScope.Solution:
-                fixAction = CodeAction.Create(
-                    this.CodeActionTitle,
-                    cancellationToken => this.GetSolutionFixesAsync(fixAllContext.WithCancellationToken(cancellationToken)),
-                    nameof(DocumentBasedFixAllProvider));
+                fixAction = CodeAction.Create(this.CodeActionTitle,
+                                              cancellationToken => this.GetSolutionFixesAsync(
+                                                  fixAllContext.WithCancellationToken(cancellationToken)),
+                                              nameof(DocumentBasedFixAllProvider));
                 break;
 
             case FixAllScope.Custom:
@@ -64,18 +68,21 @@ namespace StyleCop.Analyzers.Helpers
         /// <para>-or-</para>
         /// <para><see langword="null"/>, if no changes were made to the document.</para>
         /// </returns>
-        protected abstract Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics);
+        protected abstract Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
+                                                                  ImmutableArray<Diagnostic> diagnostics);
 
         private async Task<Document> GetDocumentFixesAsync(FixAllContext fixAllContext)
         {
-            var documentDiagnosticsToFix = await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
+            var documentDiagnosticsToFix =
+                await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
             ImmutableArray<Diagnostic> diagnostics;
             if (!documentDiagnosticsToFix.TryGetValue(fixAllContext.Document, out diagnostics))
             {
                 return fixAllContext.Document;
             }
 
-            var newRoot = await this.FixAllInDocumentAsync(fixAllContext, fixAllContext.Document, diagnostics).ConfigureAwait(false);
+            var newRoot = await this.FixAllInDocumentAsync(fixAllContext, fixAllContext.Document, diagnostics)
+                              .ConfigureAwait(false);
             if (newRoot == null)
             {
                 return fixAllContext.Document;
@@ -84,9 +91,11 @@ namespace StyleCop.Analyzers.Helpers
             return fixAllContext.Document.WithSyntaxRoot(newRoot);
         }
 
-        private async Task<Solution> GetSolutionFixesAsync(FixAllContext fixAllContext, ImmutableArray<Document> documents)
+        private async Task<Solution> GetSolutionFixesAsync(FixAllContext fixAllContext,
+                                                           ImmutableArray<Document> documents)
         {
-            var documentDiagnosticsToFix = await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
+            var documentDiagnosticsToFix =
+                await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
 
             Solution solution = fixAllContext.Solution;
             List<Task<SyntaxNode>> newDocuments = new List<Task<SyntaxNode>>(documents.Length);
@@ -104,7 +113,8 @@ namespace StyleCop.Analyzers.Helpers
 
             for (int i = 0; i < documents.Length; i++)
             {
-                var newDocumentRoot = await newDocuments[i].ConfigureAwait(false);
+                var newDocumentRoot = await newDocuments [i]
+                                          .ConfigureAwait(false);
                 if (newDocumentRoot == null)
                 {
                     continue;
@@ -123,7 +133,8 @@ namespace StyleCop.Analyzers.Helpers
 
         private Task<Solution> GetSolutionFixesAsync(FixAllContext fixAllContext)
         {
-            ImmutableArray<Document> documents = fixAllContext.Solution.Projects.SelectMany(i => i.Documents).ToImmutableArray();
+            ImmutableArray<Document> documents =
+                fixAllContext.Solution.Projects.SelectMany(i => i.Documents).ToImmutableArray();
             return this.GetSolutionFixesAsync(fixAllContext, documents);
         }
     }

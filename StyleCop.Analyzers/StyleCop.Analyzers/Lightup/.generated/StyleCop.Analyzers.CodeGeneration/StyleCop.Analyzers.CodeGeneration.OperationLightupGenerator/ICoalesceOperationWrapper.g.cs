@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static ICoalesceOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ICoalesceOperationWrapper));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
-            WhenNullAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(WhenNull));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            WhenNullAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(WhenNull));
         }
 
         private ICoalesceOperationWrapper(IOperation operation)
@@ -30,7 +32,8 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation Value => ValueAccessor(this.WrappedOperation);
         public IOperation WhenNull => WhenNullAccessor(this.WrappedOperation);
-        public object ValueConversion => throw new NotImplementedException("Property 'ICoalesceOperation.ValueConversion' has unsupported type 'CommonConversion'");
+        public object ValueConversion => throw new NotImplementedException(
+            "Property 'ICoalesceOperation.ValueConversion' has unsupported type 'CommonConversion'");
         public static ICoalesceOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

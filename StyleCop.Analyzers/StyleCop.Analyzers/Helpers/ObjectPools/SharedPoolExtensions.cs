@@ -31,7 +31,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
             return PooledObject<HashSet<TItem>>.Create(pool);
         }
 
-        public static PooledObject<Dictionary<TKey, TValue>> GetPooledObject<TKey, TValue>(this ObjectPool<Dictionary<TKey, TValue>> pool)
+        public static PooledObject<Dictionary<TKey, TValue>> GetPooledObject<TKey, TValue>(
+            this ObjectPool<Dictionary<TKey, TValue>> pool)
         {
             return PooledObject<Dictionary<TKey, TValue>>.Create(pool);
         }
@@ -41,8 +42,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
             return PooledObject<List<TItem>>.Create(pool);
         }
 
-        public static PooledObject<T> GetPooledObject<T>(this ObjectPool<T> pool)
-            where T : class
+        public static PooledObject<T> GetPooledObject<T>(this ObjectPool<T> pool) where T : class
         {
             return new PooledObject<T>(pool, p => p.Allocate(), (p, o) => p.Free(o));
         }
@@ -79,7 +79,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
             return set;
         }
 
-        public static Dictionary<TKey, TValue> AllocateAndClear<TKey, TValue>(this ObjectPool<Dictionary<TKey, TValue>> pool)
+        public static Dictionary<TKey, TValue> AllocateAndClear<TKey, TValue>(
+            this ObjectPool<Dictionary<TKey, TValue>> pool)
         {
             var map = pool.Allocate();
             map.Clear();
@@ -166,7 +167,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
             pool.Free(set);
         }
 
-        public static void ClearAndFree<TKey, TValue>(this ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> map)
+        public static void ClearAndFree<TKey, TValue>(this ObjectPool<Dictionary<TKey, TValue>> pool,
+                                                      Dictionary<TKey, TValue> map)
         {
             if (map == null)
             {

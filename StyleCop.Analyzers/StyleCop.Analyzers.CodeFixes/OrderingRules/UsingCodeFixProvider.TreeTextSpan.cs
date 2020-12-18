@@ -32,25 +32,38 @@ namespace StyleCop.Analyzers.OrderingRules
                 this.Children = children;
             }
 
-            internal static TreeTextSpan Empty { get; } = new TreeTextSpan(0, 0, ImmutableArray<TreeTextSpan>.Empty);
+            internal static TreeTextSpan Empty
+            {
+                get;
+            }
+            = new TreeTextSpan(0, 0, ImmutableArray<TreeTextSpan>.Empty);
 
             /// <summary>
             /// Gets the start position of the span.
             /// </summary>
             /// <value>The start position within the source code.</value>
-            internal int Start { get; }
+            internal int Start
+            {
+                get;
+            }
 
             /// <summary>
             /// Gets the end position of the span.
             /// </summary>
             /// <value>The end position within the source code.</value>
-            internal int End { get; }
+            internal int End
+            {
+                get;
+            }
 
             /// <summary>
             /// Gets the children of this span.
             /// </summary>
             /// <value>A read-only list containing the children.</value>
-            internal ImmutableArray<TreeTextSpan> Children { get; }
+            internal ImmutableArray<TreeTextSpan> Children
+            {
+                get;
+            }
 
             /// <summary>
             /// Determines if two instances of <see cref="TreeTextSpan"/> are the same.
@@ -83,7 +96,7 @@ namespace StyleCop.Analyzers.OrderingRules
             /// <inheritdoc/>
             public override bool Equals(object obj)
             {
-                return (obj is TreeTextSpan) && this.Equals((TreeTextSpan)obj);
+                return (obj is TreeTextSpan) && this.Equals((TreeTextSpan) obj);
             }
 
             /// <inheritdoc/>
@@ -200,7 +213,8 @@ namespace StyleCop.Analyzers.OrderingRules
 
                 /// <summary>
                 /// Makes sure that the gaps between children are filled.
-                /// These extra spans are created to make sure that using statements will not be moved over directive boundaries.
+                /// These extra spans are created to make sure that using statements will not be moved over directive
+                /// boundaries.
                 /// </summary>
                 internal void FillGaps()
                 {

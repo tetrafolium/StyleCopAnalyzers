@@ -25,8 +25,11 @@ namespace StyleCop.Analyzers.SpacingRules
     internal class SA1027CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1027UseTabsCorrectly.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1027UseTabsCorrectly.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -39,25 +42,27 @@ namespace StyleCop.Analyzers.SpacingRules
         {
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        SpacingResources.SA1027CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1027CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(SpacingResources.SA1027CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1027CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-            return document.WithText(sourceText.WithChanges(FixDiagnostic(settings.Indentation, sourceText, diagnostic)));
+            return document.WithText(
+                sourceText.WithChanges(FixDiagnostic(settings.Indentation, sourceText, diagnostic)));
         }
 
-        private static TextChange FixDiagnostic(IndentationSettings indentationSettings, SourceText sourceText, Diagnostic diagnostic)
+        private static TextChange FixDiagnostic(IndentationSettings indentationSettings, SourceText sourceText,
+                                                Diagnostic diagnostic)
         {
             TextSpan span = diagnostic.Location.SourceSpan;
 
@@ -144,21 +149,27 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; }
-                = new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle
-                => SpacingResources.SA1027CodeFix;
+            protected override string CodeActionTitle => SpacingResources.SA1027CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
                     return null;
                 }
 
-                var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, fixAllContext.CancellationToken);
-                SourceText sourceText = await document.GetTextAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions,
+                                                                  fixAllContext.CancellationToken);
+                SourceText sourceText =
+                    await document.GetTextAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
 
                 List<TextChange> changes = new List<TextChange>();
                 foreach (var diagnostic in diagnostics)
@@ -168,8 +179,11 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 changes.Sort((left, right) => left.Span.Start.CompareTo(right.Span.Start));
 
-                SyntaxTree tree = await document.GetSyntaxTreeAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
-                return await tree.WithChangedText(sourceText.WithChanges(changes)).GetRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                SyntaxTree tree =
+                    await document.GetSyntaxTreeAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                return await tree.WithChangedText(sourceText.WithChanges(changes))
+                    .GetRootAsync(fixAllContext.CancellationToken)
+                    .ConfigureAwait(false);
             }
         }
     }

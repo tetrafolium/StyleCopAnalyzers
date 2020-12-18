@@ -22,19 +22,31 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </summary>
         public const string DiagnosticId = "SA1130";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1130.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1130Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1130MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1130Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1130.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1130Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1130MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1130Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousMethodExpressionAction =
+            HandleAnonymousMethodExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -81,13 +93,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 }
                 else
                 {
-                    // Just to make sure that we do not crash if in future versions of the compiler other types are allowed for params.
-                    // This if statement should be extended if e.g. Span params are introduced into the language.
+                    // Just to make sure that we do not crash if in future versions of the compiler other types are
+                    // allowed for params. This if statement should be extended if e.g. Span params are introduced into
+                    // the language.
                     return null;
                 }
             }
 
-            delegateType = (INamedTypeSymbol)type;
+            delegateType = (INamedTypeSymbol) type;
 
             var delegateParameters = delegateType.DelegateInvokeMethod.Parameters;
 
@@ -99,12 +112,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static void HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
             bool reportDiagnostic = true;
-            var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
+            var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
 
             switch (anonymousMethod.Parent.Kind())
             {
             case SyntaxKind.Argument:
-                reportDiagnostic = HandleMethodInvocation(context.SemanticModel, anonymousMethod, (ArgumentSyntax)anonymousMethod.Parent);
+                reportDiagnostic = HandleMethodInvocation(context.SemanticModel, anonymousMethod,
+                                                          (ArgumentSyntax) anonymousMethod.Parent);
                 break;
 
             case SyntaxKind.EqualsValueClause:
@@ -123,7 +137,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static bool HandleMethodInvocation(SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod, ArgumentSyntax argumentSyntax)
+        private static bool HandleMethodInvocation(SemanticModel semanticModel,
+                                                   AnonymousMethodExpressionSyntax anonymousMethod,
+                                                   ArgumentSyntax argumentSyntax)
         {
             // invocation -> argument list -> argument -> anonymous method
             if (argumentSyntax?.Parent is BaseArgumentListSyntax argumentListSyntax)
@@ -140,25 +156,26 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 var argumentIndex = argumentListSyntax.Arguments.IndexOf(argumentSyntax);
 
-                // Determine the parameter list from the method that is invoked, as delegates without parameters are allowed, but they cannot be replaced by a lambda without parameters.
+                // Determine the parameter list from the method that is invoked, as delegates without parameters are
+                // allowed, but they cannot be replaced by a lambda without parameters.
                 var parameterList = GetDelegateParameterList(originalSymbolInfo.Symbol, argumentIndex);
 
                 if (parameterList == null)
                 {
-                    // This might happen if the call was using params witha type unknown to the analyzer, e.g. params Span<T>.
+                    // This might happen if the call was using params witha type unknown to the analyzer, e.g. params
+                    // Span<T>.
                     return false;
                 }
 
                 // In some cases passing a delegate as an argument to a method is required to call the right overload
                 // When there is an other overload that takes an expression.
                 var lambdaExpression = SyntaxFactory.ParenthesizedLambdaExpression(
-                    anonymousMethod.AsyncKeyword,
-                    parameterList,
-                    SyntaxFactory.Token(SyntaxKind.EqualsGreaterThanToken),
+                    anonymousMethod.AsyncKeyword, parameterList, SyntaxFactory.Token(SyntaxKind.EqualsGreaterThanToken),
                     anonymousMethod.Body);
 
                 var invocationExpression = originalInvocableExpression.ReplaceNode(anonymousMethod, lambdaExpression);
-                SymbolInfo newSymbolInfo = semanticModel.GetSpeculativeSymbolInfo(location.SourceSpan.Start, invocationExpression, SpeculativeBindingOption.BindAsExpression);
+                SymbolInfo newSymbolInfo = semanticModel.GetSpeculativeSymbolInfo(
+                    location.SourceSpan.Start, invocationExpression, SpeculativeBindingOption.BindAsExpression);
 
                 if (!originalSymbolInfo.Symbol.Equals(newSymbolInfo.Symbol))
                 {
@@ -169,7 +186,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return true;
         }
 
-        private static ImmutableArray<ParameterSyntax> GetSyntaxParametersFromSymbolParameters(ImmutableArray<IParameterSymbol> symbolParameters)
+        private static ImmutableArray<ParameterSyntax> GetSyntaxParametersFromSymbolParameters(
+            ImmutableArray<IParameterSymbol> symbolParameters)
         {
             var result = ImmutableArray.CreateBuilder<ParameterSyntax>(symbolParameters.Length);
 

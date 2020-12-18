@@ -126,19 +126,30 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1121UseBuiltInTypeAlias"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1121";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1121.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1121Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1121MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1121Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1121.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1121Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1121MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1121Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
 
         private static readonly Action<CompilationStartAnalysisContext> CompilationStartAction = HandleCompilationStart;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -166,7 +177,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             public void HandleIdentifierNameSyntax(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
             {
-                IdentifierNameSyntax identifierNameSyntax = (IdentifierNameSyntax)context.Node;
+                IdentifierNameSyntax identifierNameSyntax = (IdentifierNameSyntax) context.Node;
                 if (identifierNameSyntax.IsVar)
                 {
                     return;
@@ -200,16 +211,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     break;
                 }
 
-                if (identifierNameSyntax.FirstAncestorOrSelf<UsingDirectiveSyntax>() != null
-                    && identifierNameSyntax.FirstAncestorOrSelf<TypeArgumentListSyntax>() == null)
+                if (identifierNameSyntax.FirstAncestorOrSelf<UsingDirectiveSyntax>() != null &&
+                    identifierNameSyntax.FirstAncestorOrSelf<TypeArgumentListSyntax>() == null)
                 {
                     return;
                 }
 
                 // Most source files will not have any using alias directives. Then we don't have to use semantics
                 // if the identifier name doesn't match the name of a special type
-                if (settings.ReadabilityRules.AllowBuiltInTypeAliases
-                    || !identifierNameSyntax.SyntaxTree.ContainsUsingAlias(this.usingAliasCache))
+                if (settings.ReadabilityRules.AllowBuiltInTypeAliases ||
+                    !identifierNameSyntax.SyntaxTree.ContainsUsingAlias(this.usingAliasCache))
                 {
                     switch (identifierNameSyntax.Identifier.ValueText)
                     {
@@ -245,7 +256,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 // 2. The alias to a built-in type is a different name. In this case, if allowBuiltInTypeAliases is true
                 //    then the above code would have already returned due to the renamed symbol not being in the set of
                 //    strings checked by the analyzer above.
-                INamedTypeSymbol symbol = semanticModel.GetSymbolInfo(identifierNameSyntax, context.CancellationToken).Symbol as INamedTypeSymbol;
+                INamedTypeSymbol symbol = semanticModel.GetSymbolInfo(identifierNameSyntax, context.CancellationToken)
+                                              .Symbol as INamedTypeSymbol;
 
                 switch (symbol?.SpecialType)
                 {
@@ -280,7 +292,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     // this "weird" syntax appears for qualified references within a nameof expression
                     locationNode = identifierNameSyntax.Parent;
                 }
-                else if (identifierNameSyntax.Parent is NameMemberCrefSyntax && identifierNameSyntax.Parent.Parent is QualifiedCrefSyntax)
+                else if (identifierNameSyntax.Parent is NameMemberCrefSyntax &&
+                         identifierNameSyntax.Parent.Parent is QualifiedCrefSyntax)
                 {
                     locationNode = identifierNameSyntax.Parent.Parent;
                 }
@@ -311,8 +324,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 {
                     // This final check ensures that we don't consider nameof(System.Int32.ToString) the same as
                     // nameof(System.Int32)
-                    return identifierNameSyntax.Parent.Parent.IsKind(SyntaxKind.Argument)
-                        && simpleMemberAccess.Name == identifierNameSyntax;
+                    return identifierNameSyntax.Parent.Parent.IsKind(SyntaxKind.Argument) &&
+                           simpleMemberAccess.Name == identifierNameSyntax;
                 }
 
                 return false;

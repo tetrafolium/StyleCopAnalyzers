@@ -42,38 +42,35 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <see cref="SA1506ElementDocumentationHeadersMustNotBeFollowedByBlankLine"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1506";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1506.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1506Title), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1506MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1506Description), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1506.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1506Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(LayoutResources.SA1506MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(LayoutResources.SA1506Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds =
-            ImmutableArray.Create(
-                SyntaxKind.ClassDeclaration,
-                SyntaxKind.StructDeclaration,
-                SyntaxKind.InterfaceDeclaration,
-                SyntaxKind.EnumDeclaration,
-                SyntaxKind.EnumMemberDeclaration,
-                SyntaxKind.MethodDeclaration,
-                SyntaxKind.ConstructorDeclaration,
-                SyntaxKind.DestructorDeclaration,
-                SyntaxKind.PropertyDeclaration,
-                SyntaxKind.IndexerDeclaration,
-                SyntaxKind.FieldDeclaration,
-                SyntaxKind.DelegateDeclaration,
-                SyntaxKind.EventDeclaration,
-                SyntaxKind.EventFieldDeclaration,
-                SyntaxKind.OperatorDeclaration,
-                SyntaxKind.ConversionOperatorDeclaration);
+        private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds = ImmutableArray.Create(
+            SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration,
+            SyntaxKind.EnumDeclaration, SyntaxKind.EnumMemberDeclaration, SyntaxKind.MethodDeclaration,
+            SyntaxKind.ConstructorDeclaration, SyntaxKind.DestructorDeclaration, SyntaxKind.PropertyDeclaration,
+            SyntaxKind.IndexerDeclaration, SyntaxKind.FieldDeclaration, SyntaxKind.DelegateDeclaration,
+            SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.OperatorDeclaration,
+            SyntaxKind.ConversionOperatorDeclaration);
 
         private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction = HandleDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -91,7 +88,8 @@ namespace StyleCop.Analyzers.LayoutRules
             var eolCount = 0;
             for (var i = triviaList.Count - 1; i >= 0; i--)
             {
-                switch (triviaList[i].Kind())
+                switch (triviaList [i]
+                            .Kind())
                 {
                 case SyntaxKind.WhitespaceTrivia:
                     break;
@@ -105,7 +103,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
                     if (eolCount > 0)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, triviaList[i + 1].GetLocation()));
+                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, triviaList [i + 1]
+                                                                                   .GetLocation()));
                     }
 
                     return;

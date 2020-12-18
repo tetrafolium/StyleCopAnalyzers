@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IVariableDeclarationGroupOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IVariableDeclarationGroupOperationWrapper));
-            DeclarationsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Declarations));
+            DeclarationsAccessor =
+                LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Declarations));
         }
 
         private IVariableDeclarationGroupOperationWrapper(IOperation operation)

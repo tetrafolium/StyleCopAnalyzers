@@ -28,20 +28,30 @@ namespace StyleCop.Analyzers.OrderingRules
         /// <see cref="SA1211UsingAliasDirectivesMustBeOrderedAlphabeticallyByAliasName"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1211";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1211.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(OrderingResources.SA1211Title), OrderingResources.ResourceManager, typeof(OrderingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1211MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1211Description), OrderingResources.ResourceManager, typeof(OrderingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1211.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(OrderingResources.SA1211Title), OrderingResources.ResourceManager, typeof(OrderingResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(OrderingResources.SA1211MessageFormat),
+                                          OrderingResources.ResourceManager, typeof(OrderingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(OrderingResources.SA1211Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> CompilationUnitAction = HandleCompilationUnit;
-        private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction = HandleNamespaceDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction =
+            HandleNamespaceDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -55,17 +65,18 @@ namespace StyleCop.Analyzers.OrderingRules
 
         private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context)
         {
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
+            var compilationUnit = (CompilationUnitSyntax) context.Node;
             HandleUsingDirectives(context, compilationUnit.Usings);
         }
 
         private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
+            var namespaceDeclaration = (NamespaceDeclarationSyntax) context.Node;
             HandleUsingDirectives(context, namespaceDeclaration.Usings);
         }
 
-        private static void HandleUsingDirectives(SyntaxNodeAnalysisContext context, SyntaxList<UsingDirectiveSyntax> usingDirectives)
+        private static void HandleUsingDirectives(SyntaxNodeAnalysisContext context,
+                                                  SyntaxList<UsingDirectiveSyntax> usingDirectives)
         {
             if (usingDirectives.Count == 0)
             {
@@ -106,8 +117,10 @@ namespace StyleCop.Analyzers.OrderingRules
                             }
                         }
 
-                        // Using alias directive for '{currentAliasName}' should appear before using alias directive for '{prevAliasName}'
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, usingDirective.GetLocation(), currentAliasName, prevAliasName));
+                        // Using alias directive for '{currentAliasName}' should appear before using alias directive for
+                        // '{prevAliasName}'
+                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, usingDirective.GetLocation(),
+                                                                   currentAliasName, prevAliasName));
                         return;
                     }
                 }

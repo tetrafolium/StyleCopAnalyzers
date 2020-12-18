@@ -28,8 +28,11 @@ namespace StyleCop.Analyzers.SpacingRules
     internal class SA1018CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1018NullableTypeSymbolsMustNotBePrecededBySpace.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1018NullableTypeSymbolsMustNotBePrecededBySpace.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -44,7 +47,8 @@ namespace StyleCop.Analyzers.SpacingRules
 
             foreach (var diagnostic in context.Diagnostics)
             {
-                if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is NullableTypeSyntax nullableType))
+                if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                          : true) is NullableTypeSyntax nullableType))
                 {
                     continue;
                 }
@@ -59,12 +63,11 @@ namespace StyleCop.Analyzers.SpacingRules
                     continue;
                 }
 
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        SpacingResources.SA1018CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1018CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(SpacingResources.SA1018CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1018CodeFixProvider)),
+                                        diagnostic);
             }
         }
 
@@ -82,21 +85,22 @@ namespace StyleCop.Analyzers.SpacingRules
             }
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            var nullableType = (NullableTypeSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
+            var nullableType = (NullableTypeSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
             var questionToken = nullableType.QuestionToken;
             var precedingToken = questionToken.GetPreviousToken();
 
             var triviaList = precedingToken.TrailingTrivia.AddRange(questionToken.LeadingTrivia);
-            var correctedTriviaList = triviaList.Where(t => !t.IsKind(SyntaxKind.WhitespaceTrivia) && !t.IsKind(SyntaxKind.EndOfLineTrivia));
+            var correctedTriviaList =
+                triviaList.Where(t => !t.IsKind(SyntaxKind.WhitespaceTrivia) && !t.IsKind(SyntaxKind.EndOfLineTrivia));
 
-            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>()
-            {
-                [precedingToken] = precedingToken.WithTrailingTrivia(correctedTriviaList),
-                [questionToken] = questionToken.WithLeadingTrivia(),
+            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
+                    [precedingToken] = precedingToken.WithTrailingTrivia(correctedTriviaList),
+                    [ questionToken ] = questionToken.WithLeadingTrivia(),
             };
 
             var newSyntaxRoot = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]);

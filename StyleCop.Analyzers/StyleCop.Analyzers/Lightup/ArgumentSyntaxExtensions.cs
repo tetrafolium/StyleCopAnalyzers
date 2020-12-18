@@ -14,8 +14,10 @@ namespace StyleCop.Analyzers.Lightup
 
         static ArgumentSyntaxExtensions()
         {
-            RefKindKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ArgumentSyntax, SyntaxToken>(typeof(ArgumentSyntax), nameof(RefKindKeyword));
-            WithRefKindKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ArgumentSyntax, SyntaxToken>(typeof(ArgumentSyntax), nameof(RefKindKeyword));
+            RefKindKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ArgumentSyntax, SyntaxToken>(
+                typeof(ArgumentSyntax), nameof(RefKindKeyword));
+            WithRefKindKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ArgumentSyntax, SyntaxToken>(
+                typeof(ArgumentSyntax), nameof(RefKindKeyword));
         }
 
         public static SyntaxToken RefKindKeyword(this ArgumentSyntax syntax)

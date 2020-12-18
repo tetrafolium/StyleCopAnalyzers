@@ -10,12 +10,17 @@ namespace StyleCop.Analyzers.Lightup
     internal static class ClassOrStructConstraintSyntaxExtensions
     {
         private static readonly Func<ClassOrStructConstraintSyntax, SyntaxToken> QuestionTokenAccessor;
-        private static readonly Func<ClassOrStructConstraintSyntax, SyntaxToken, ClassOrStructConstraintSyntax> WithQuestionTokenAccessor;
+        private static readonly Func<ClassOrStructConstraintSyntax, SyntaxToken, ClassOrStructConstraintSyntax>
+            WithQuestionTokenAccessor;
 
         static ClassOrStructConstraintSyntaxExtensions()
         {
-            QuestionTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ClassOrStructConstraintSyntax, SyntaxToken>(typeof(ClassOrStructConstraintSyntax), nameof(QuestionToken));
-            WithQuestionTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ClassOrStructConstraintSyntax, SyntaxToken>(typeof(ClassOrStructConstraintSyntax), nameof(QuestionToken));
+            QuestionTokenAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<ClassOrStructConstraintSyntax, SyntaxToken>(
+                    typeof(ClassOrStructConstraintSyntax), nameof(QuestionToken));
+            WithQuestionTokenAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<ClassOrStructConstraintSyntax, SyntaxToken>(
+                    typeof(ClassOrStructConstraintSyntax), nameof(QuestionToken));
         }
 
         public static SyntaxToken QuestionToken(this ClassOrStructConstraintSyntax syntax)
@@ -23,7 +28,8 @@ namespace StyleCop.Analyzers.Lightup
             return QuestionTokenAccessor(syntax);
         }
 
-        public static ClassOrStructConstraintSyntax WithQuestionToken(this ClassOrStructConstraintSyntax syntax, SyntaxToken questionToken)
+        public static ClassOrStructConstraintSyntax WithQuestionToken(this ClassOrStructConstraintSyntax syntax,
+                                                                      SyntaxToken questionToken)
         {
             return WithQuestionTokenAccessor(syntax, questionToken);
         }

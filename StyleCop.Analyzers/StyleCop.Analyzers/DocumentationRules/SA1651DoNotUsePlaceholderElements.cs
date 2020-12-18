@@ -46,22 +46,34 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </summary>
         internal const string NoCodeFixKey = "NoCodeFix";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1651.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(DocumentationResources.SA1651Title), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1651MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1651Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1651.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1651Title),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1651MessageFormat),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1651Description),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> XmlElementAction = HandleXmlElement;
         private static readonly Action<SyntaxNodeAnalysisContext> XmlEmptyElementAction = HandleXmlEmptyElement;
 
-        private static readonly ImmutableDictionary<string, string> NoCodeFixProperties = ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
+        private static readonly ImmutableDictionary<string, string> NoCodeFixProperties =
+            ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -75,13 +87,13 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static void HandleXmlElement(SyntaxNodeAnalysisContext context)
         {
-            XmlElementSyntax syntax = (XmlElementSyntax)context.Node;
+            XmlElementSyntax syntax = (XmlElementSyntax) context.Node;
             CheckTag(context, syntax.StartTag?.Name?.ToString());
         }
 
         private static void HandleXmlEmptyElement(SyntaxNodeAnalysisContext context)
         {
-            XmlEmptyElementSyntax syntax = (XmlEmptyElementSyntax)context.Node;
+            XmlEmptyElementSyntax syntax = (XmlEmptyElementSyntax) context.Node;
             CheckTag(context, syntax.Name?.ToString());
         }
 
@@ -94,7 +106,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                     return;
                 }
 
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, context.Node.GetLocation(), NoCodeFixProperties));
+                context.ReportDiagnostic(
+                    Diagnostic.Create(Descriptor, context.Node.GetLocation(), NoCodeFixProperties));
             }
             else
             {
@@ -121,9 +134,12 @@ namespace StyleCop.Analyzers.DocumentationRules
                 return false;
             }
 
-            var rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+            var rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes
+                                                                          : true, cancellationToken
+                                                                          : context.CancellationToken);
             var completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
-            return completeDocumentation.DescendantNodesAndSelf().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.PlaceholderTag);
+            return completeDocumentation.DescendantNodesAndSelf().OfType<XElement>().Any(
+                element => element.Name == XmlCommentHelper.PlaceholderTag);
         }
     }
 }

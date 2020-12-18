@@ -27,19 +27,27 @@ namespace StyleCop.Analyzers.SpacingRules
         /// The ID for diagnostics produced by the <see cref="SA1001CommasMustBeSpacedCorrectly"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1001";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1001.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(SpacingResources.SA1001Title), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1001MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1001Description), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1001.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(SpacingResources.SA1001Title), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(SpacingResources.SA1001MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(SpacingResources.SA1001Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -93,7 +101,8 @@ namespace StyleCop.Analyzers.SpacingRules
             else
             {
                 SyntaxToken nextToken = token.GetNextToken();
-                if (nextToken.IsKind(SyntaxKind.CommaToken) || nextToken.IsKind(SyntaxKind.GreaterThanToken) || nextToken.IsKind(SyntaxKind.CloseBracketToken))
+                if (nextToken.IsKind(SyntaxKind.CommaToken) || nextToken.IsKind(SyntaxKind.GreaterThanToken) ||
+                    nextToken.IsKind(SyntaxKind.CloseBracketToken))
                 {
                     // make an exception for things like typeof(Func<,>), typeof(Func<,,>), and int[,]
                     missingFollowingSpace = false;
@@ -103,19 +112,23 @@ namespace StyleCop.Analyzers.SpacingRules
             if (token.IsFirstInLine() || token.IsPrecededByWhitespace(context.CancellationToken))
             {
                 // comma should{ not} be {preceded} by whitespace
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemovePrecedingPreserveLayout, " not", "preceded"));
+                context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(),
+                                                           TokenSpacingProperties.RemovePrecedingPreserveLayout, " not",
+                                                           "preceded"));
             }
 
             if (missingFollowingSpace && !shouldNotHaveFollowingSpace)
             {
                 // comma should{} be {followed} by whitespace
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.InsertFollowing, string.Empty, "followed"));
+                context.ReportDiagnostic(Diagnostic.Create(
+                    Descriptor, token.GetLocation(), TokenSpacingProperties.InsertFollowing, string.Empty, "followed"));
             }
 
             if (!missingFollowingSpace && shouldNotHaveFollowingSpace)
             {
                 // comma should{ not} be {followed} by whitespace
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemoveFollowing, " not", "followed"));
+                context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(),
+                                                           TokenSpacingProperties.RemoveFollowing, " not", "followed"));
             }
         }
     }

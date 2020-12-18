@@ -16,8 +16,7 @@ namespace LightJson.Serialization
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonSerializationException"/> class.
         /// </summary>
-        public JsonSerializationException()
-            : base(GetDefaultMessage(ErrorType.Unknown))
+        public JsonSerializationException() : base(GetDefaultMessage(ErrorType.Unknown))
         {
         }
 
@@ -25,8 +24,7 @@ namespace LightJson.Serialization
         /// Initializes a new instance of the <see cref="JsonSerializationException"/> class with the given error type.
         /// </summary>
         /// <param name="type">The error type that describes the cause of the error.</param>
-        public JsonSerializationException(ErrorType type)
-            : this(GetDefaultMessage(type), type)
+        public JsonSerializationException(ErrorType type) : this(GetDefaultMessage(type), type)
         {
         }
 
@@ -36,8 +34,7 @@ namespace LightJson.Serialization
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="type">The error type that describes the cause of the error.</param>
-        public JsonSerializationException(string message, ErrorType type)
-            : base(message)
+        public JsonSerializationException(string message, ErrorType type) : base(message)
         {
             this.Type = type;
         }
@@ -45,8 +42,7 @@ namespace LightJson.Serialization
         /// <summary>
         /// Enumerates the types of errors that can occur during serialization.
         /// </summary>
-        public enum ErrorType
-        {
+        public enum ErrorType {
             /// <summary>
             /// Indicates that the cause of the error is unknown.
             /// </summary>
@@ -75,7 +71,10 @@ namespace LightJson.Serialization
         /// <value>
         /// The type of error that caused the exception to be thrown.
         /// </value>
-        public ErrorType Type { get; }
+        public ErrorType Type
+        {
+            get;
+        }
 
         private static string GetDefaultMessage(ErrorType type)
         {

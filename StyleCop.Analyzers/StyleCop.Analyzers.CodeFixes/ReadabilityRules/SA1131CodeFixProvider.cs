@@ -26,8 +26,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1131CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1131UseReadableConditions.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1131UseReadableConditions.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -40,22 +43,24 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1131CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1131CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1131CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1131CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            var binaryExpression = (BinaryExpressionSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            var binaryExpression =
+                (BinaryExpressionSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                             : true);
 
             var newBinaryExpression = TransformExpression(binaryExpression);
 
@@ -66,7 +71,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             var newLeft = binaryExpression.Right.WithTriviaFrom(binaryExpression.Left);
             var newRight = binaryExpression.Left.WithTriviaFrom(binaryExpression.Right);
-            return binaryExpression.WithLeft(newLeft).WithRight(newRight).WithOperatorToken(GetCorrectOperatorToken(binaryExpression.OperatorToken));
+            return binaryExpression.WithLeft(newLeft).WithRight(newRight).WithOperatorToken(
+                GetCorrectOperatorToken(binaryExpression.OperatorToken));
         }
 
         private static SyntaxToken GetCorrectOperatorToken(SyntaxToken operatorToken)
@@ -78,16 +84,20 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return operatorToken;
 
             case SyntaxKind.GreaterThanToken:
-                return SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.LessThanToken, operatorToken.TrailingTrivia);
+                return SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.LessThanToken,
+                                           operatorToken.TrailingTrivia);
 
             case SyntaxKind.GreaterThanEqualsToken:
-                return SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.LessThanEqualsToken, operatorToken.TrailingTrivia);
+                return SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.LessThanEqualsToken,
+                                           operatorToken.TrailingTrivia);
 
             case SyntaxKind.LessThanToken:
-                return SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.GreaterThanToken, operatorToken.TrailingTrivia);
+                return SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.GreaterThanToken,
+                                           operatorToken.TrailingTrivia);
 
             case SyntaxKind.LessThanEqualsToken:
-                return SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.GreaterThanEqualsToken, operatorToken.TrailingTrivia);
+                return SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.GreaterThanEqualsToken,
+                                           operatorToken.TrailingTrivia);
 
             default:
                 return SyntaxFactory.Token(SyntaxKind.None);
@@ -96,24 +106,32 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                ReadabilityResources.SA1131CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1131CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
                     return null;
                 }
 
-                var syntaxRoot = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                var syntaxRoot =
+                    await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
 
-                var nodes = diagnostics.Select(diagnostic => (BinaryExpressionSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true));
+                var nodes = diagnostics.Select(diagnostic =>(BinaryExpressionSyntax) syntaxRoot.FindNode(
+                                                   diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                   : true));
 
-                return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) => TransformExpression(rewrittenNode));
+                return syntaxRoot.ReplaceNodes(nodes,
+                                               (originalNode, rewrittenNode) => TransformExpression(rewrittenNode));
             }
         }
     }

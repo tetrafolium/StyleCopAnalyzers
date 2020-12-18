@@ -30,19 +30,27 @@ namespace StyleCop.Analyzers.SpacingRules
         /// The ID for diagnostics produced by the <see cref="SA1022PositiveSignsMustBeSpacedCorrectly"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1022";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1022.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(SpacingResources.SA1022Title), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1022MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1022Description), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1022.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(SpacingResources.SA1022Title), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(SpacingResources.SA1022MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(SpacingResources.SA1022Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -104,10 +112,10 @@ namespace StyleCop.Analyzers.SpacingRules
                 SyntaxToken precedingToken = token.GetPreviousToken();
 
                 followsSpecialCharacter =
-                    precedingToken.IsKind(SyntaxKind.OpenBracketToken)
-                    || precedingToken.IsKind(SyntaxKind.OpenParenToken)
-                    || precedingToken.IsKind(SyntaxKind.CloseParenToken)
-                    || (precedingToken.IsKind(SyntaxKind.OpenBraceToken) && interpolatedUnaryExpression);
+                    precedingToken.IsKind(SyntaxKind.OpenBracketToken) ||
+                    precedingToken.IsKind(SyntaxKind.OpenParenToken) ||
+                    precedingToken.IsKind(SyntaxKind.CloseParenToken) ||
+                    (precedingToken.IsKind(SyntaxKind.OpenBraceToken) && interpolatedUnaryExpression);
             }
 
             if (!firstInLine && !isInInterpolationAlignmentClause)
@@ -115,19 +123,23 @@ namespace StyleCop.Analyzers.SpacingRules
                 if (!followsSpecialCharacter && !precededBySpace)
                 {
                     // Positive sign should{} be {preceded} by a space.
-                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.InsertPreceding, string.Empty, "preceded"));
+                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(),
+                                                               TokenSpacingProperties.InsertPreceding, string.Empty,
+                                                               "preceded"));
                 }
                 else if (followsSpecialCharacter && precededBySpace)
                 {
                     // Positive sign should{ not} be {preceded} by a space.
-                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemovePreceding, " not", "preceded"));
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        Descriptor, token.GetLocation(), TokenSpacingProperties.RemovePreceding, " not", "preceded"));
                 }
             }
 
             if (lastInLine || followedBySpace)
             {
                 // Positive sign should{ not} be {followed} by a space.
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemoveFollowing, " not", "followed"));
+                context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(),
+                                                           TokenSpacingProperties.RemoveFollowing, " not", "followed"));
             }
         }
     }

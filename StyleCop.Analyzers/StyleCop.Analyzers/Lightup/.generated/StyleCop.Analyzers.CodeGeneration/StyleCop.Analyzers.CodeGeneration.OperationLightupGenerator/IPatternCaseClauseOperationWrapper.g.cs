@@ -18,9 +18,12 @@ namespace StyleCop.Analyzers.Lightup
         static IPatternCaseClauseOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IPatternCaseClauseOperationWrapper));
-            LabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(Label));
-            PatternAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Pattern));
-            GuardAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Guard));
+            LabelAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(Label));
+            PatternAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Pattern));
+            GuardAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Guard));
         }
 
         private IPatternCaseClauseOperationWrapper(IOperation operation)
@@ -31,11 +34,14 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ILabelSymbol Label => LabelAccessor(this.WrappedOperation);
-        public IPatternOperationWrapper Pattern => IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
+        public IPatternOperationWrapper Pattern =>
+            IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
         public IOperation Guard => GuardAccessor(this.WrappedOperation);
-        public object CaseKind => ((ICaseClauseOperationWrapper)this).CaseKind;
-        public static explicit operator IPatternCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ICaseClauseOperationWrapper(IPatternCaseClauseOperationWrapper wrapper) => ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
+        public static explicit operator IPatternCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ICaseClauseOperationWrapper(IPatternCaseClauseOperationWrapper wrapper) =>
+            ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IPatternCaseClauseOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

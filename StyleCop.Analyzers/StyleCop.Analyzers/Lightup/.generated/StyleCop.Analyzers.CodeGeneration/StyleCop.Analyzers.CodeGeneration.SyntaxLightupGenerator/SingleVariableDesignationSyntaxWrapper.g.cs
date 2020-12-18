@@ -22,8 +22,10 @@ namespace StyleCop.Analyzers.Lightup
         static SingleVariableDesignationSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(SingleVariableDesignationSyntaxWrapper));
-            IdentifierAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Identifier));
-            WithIdentifierAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Identifier));
+            IdentifierAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                WrappedType, nameof(Identifier));
+            WithIdentifierAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                WrappedType, nameof(Identifier));
         }
 
         private SingleVariableDesignationSyntaxWrapper(CSharpSyntaxNode node)
@@ -43,7 +45,7 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator SingleVariableDesignationSyntaxWrapper(VariableDesignationSyntaxWrapper node)
         {
-            return (SingleVariableDesignationSyntaxWrapper)node.SyntaxNode;
+            return (SingleVariableDesignationSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator SingleVariableDesignationSyntaxWrapper(SyntaxNode node)
@@ -58,7 +60,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new SingleVariableDesignationSyntaxWrapper((CSharpSyntaxNode)node);
+            return new SingleVariableDesignationSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator VariableDesignationSyntaxWrapper(SingleVariableDesignationSyntaxWrapper wrapper)

@@ -22,8 +22,11 @@ namespace StyleCop.Analyzers.Lightup
         static DiscardDesignationSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(DiscardDesignationSyntaxWrapper));
-            UnderscoreTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(UnderscoreToken));
-            WithUnderscoreTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(UnderscoreToken));
+            UnderscoreTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                WrappedType, nameof(UnderscoreToken));
+            WithUnderscoreTokenAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType,
+                                                                                               nameof(UnderscoreToken));
         }
 
         private DiscardDesignationSyntaxWrapper(CSharpSyntaxNode node)
@@ -43,7 +46,7 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator DiscardDesignationSyntaxWrapper(VariableDesignationSyntaxWrapper node)
         {
-            return (DiscardDesignationSyntaxWrapper)node.SyntaxNode;
+            return (DiscardDesignationSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator DiscardDesignationSyntaxWrapper(SyntaxNode node)
@@ -58,7 +61,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new DiscardDesignationSyntaxWrapper((CSharpSyntaxNode)node);
+            return new DiscardDesignationSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator VariableDesignationSyntaxWrapper(DiscardDesignationSyntaxWrapper wrapper)

@@ -9,14 +9,17 @@ namespace StyleCop.Analyzers.Lightup
 
     internal readonly struct IObjectOrCollectionInitializerOperationWrapper : IOperationWrapper
     {
-        internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IObjectOrCollectionInitializerOperation";
+        internal const string WrappedTypeName =
+            "Microsoft.CodeAnalysis.Operations.IObjectOrCollectionInitializerOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ImmutableArray<IOperation>> InitializersAccessor;
         private readonly IOperation operation;
         static IObjectOrCollectionInitializerOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IObjectOrCollectionInitializerOperationWrapper));
-            InitializersAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Initializers));
+            InitializersAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                    WrappedType, nameof(Initializers));
         }
 
         private IObjectOrCollectionInitializerOperationWrapper(IOperation operation)

@@ -39,8 +39,7 @@ namespace LightJson.Serialization
         /// Reads the next character in the stream without changing the current position.
         /// </summary>
         /// <returns>The next character in the stream.</returns>
-        public char Peek()
-            => (char)this.Peek(throwAtEndOfFile: true);
+        public char Peek() =>(char) this.Peek(throwAtEndOfFile : true);
 
         /// <summary>
         /// Reads the next character in the stream without changing the current position.
@@ -55,9 +54,7 @@ namespace LightJson.Serialization
 
             if (next == -1 && throwAtEndOfFile)
             {
-                throw new JsonParseException(
-                    ErrorType.IncompleteMessage,
-                    this.position);
+                throw new JsonParseException(ErrorType.IncompleteMessage, this.position);
             }
             else
             {
@@ -75,9 +72,7 @@ namespace LightJson.Serialization
 
             if (next == -1)
             {
-                throw new JsonParseException(
-                    ErrorType.IncompleteMessage,
-                    this.position);
+                throw new JsonParseException(ErrorType.IncompleteMessage, this.position);
             }
             else
             {
@@ -91,7 +86,7 @@ namespace LightJson.Serialization
                     this.position.Column += 1;
                 }
 
-                return (char)next;
+                return (char) next;
             }
         }
 
@@ -130,10 +125,8 @@ namespace LightJson.Serialization
             var errorPosition = this.position;
             if (this.Read() != next)
             {
-                throw new JsonParseException(
-                    string.Format("Parser expected '{0}'", next),
-                    ErrorType.InvalidOrUnexpectedCharacter,
-                    errorPosition);
+                throw new JsonParseException(string.Format("Parser expected '{0}'", next),
+                                             ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
             }
         }
 
@@ -165,10 +158,8 @@ namespace LightJson.Serialization
                 return;
 
             default:
-                throw new JsonParseException(
-                    string.Format("Parser expected '{0}'", this.Peek()),
-                    ErrorType.InvalidOrUnexpectedCharacter,
-                    this.position);
+                throw new JsonParseException(string.Format("Parser expected '{0}'", this.Peek()),
+                                             ErrorType.InvalidOrUnexpectedCharacter, this.position);
             }
         }
 

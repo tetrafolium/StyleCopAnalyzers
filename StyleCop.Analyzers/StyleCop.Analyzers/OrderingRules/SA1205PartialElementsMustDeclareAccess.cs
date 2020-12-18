@@ -25,19 +25,28 @@ namespace StyleCop.Analyzers.OrderingRules
         /// The ID for diagnostics produced by the <see cref="SA1205PartialElementsMustDeclareAccess"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1205";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1205.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(OrderingResources.SA1205Title), OrderingResources.ResourceManager, typeof(OrderingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1205MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1205Description), OrderingResources.ResourceManager, typeof(OrderingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1205.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(OrderingResources.SA1205Title), OrderingResources.ResourceManager, typeof(OrderingResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(OrderingResources.SA1205MessageFormat),
+                                          OrderingResources.ResourceManager, typeof(OrderingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(OrderingResources.SA1205Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> TypeDeclarationAction = HandleTypeDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -50,16 +59,17 @@ namespace StyleCop.Analyzers.OrderingRules
 
         private static void HandleTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var typeDeclarationNode = (TypeDeclarationSyntax)context.Node;
+            var typeDeclarationNode = (TypeDeclarationSyntax) context.Node;
 
             if (typeDeclarationNode.Modifiers.Any(SyntaxKind.PartialKeyword))
             {
-                if (!typeDeclarationNode.Modifiers.Any(SyntaxKind.PublicKeyword)
-                    && !typeDeclarationNode.Modifiers.Any(SyntaxKind.InternalKeyword)
-                    && !typeDeclarationNode.Modifiers.Any(SyntaxKind.ProtectedKeyword)
-                    && !typeDeclarationNode.Modifiers.Any(SyntaxKind.PrivateKeyword))
+                if (!typeDeclarationNode.Modifiers.Any(SyntaxKind.PublicKeyword) &&
+                    !typeDeclarationNode.Modifiers.Any(SyntaxKind.InternalKeyword) &&
+                    !typeDeclarationNode.Modifiers.Any(SyntaxKind.ProtectedKeyword) &&
+                    !typeDeclarationNode.Modifiers.Any(SyntaxKind.PrivateKeyword))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, typeDeclarationNode.Identifier.GetLocation()));
+                    context.ReportDiagnostic(
+                        Diagnostic.Create(Descriptor, typeDeclarationNode.Identifier.GetLocation()));
                 }
             }
         }

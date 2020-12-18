@@ -41,19 +41,31 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// The ID for diagnostics produced by the <see cref="SA1602EnumerationItemsMustBeDocumented"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1602";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1602.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(DocumentationResources.SA1602Title), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1602MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1602Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1602.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1602Title),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1602MessageFormat),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1602Description),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> EnumMemberDeclarationAction = Analyzer.HandleEnumMemberDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> EnumMemberDeclarationAction =
+            Analyzer.HandleEnumMemberDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -73,10 +85,13 @@ namespace StyleCop.Analyzers.DocumentationRules
                     return;
                 }
 
-                EnumMemberDeclarationSyntax declaration = (EnumMemberDeclarationSyntax)context.Node;
+                EnumMemberDeclarationSyntax declaration = (EnumMemberDeclarationSyntax) context.Node;
                 Accessibility declaredAccessibility = declaration.GetDeclaredAccessibility();
-                Accessibility effectiveAccessibility = declaration.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
-                if (SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, declaration.Kind(), declaration.Parent.Kind(), declaredAccessibility, effectiveAccessibility))
+                Accessibility effectiveAccessibility =
+                    declaration.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
+                if (SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, declaration.Kind(),
+                                                                declaration.Parent.Kind(), declaredAccessibility,
+                                                                effectiveAccessibility))
                 {
                     if (!XmlCommentHelper.HasDocumentation(declaration))
                     {

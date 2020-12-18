@@ -12,7 +12,8 @@ namespace StyleCop.Analyzers.Lightup
 
         static IFieldSymbolExtensions()
         {
-            CorrespondingTupleFieldAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<IFieldSymbol, IFieldSymbol>(typeof(IFieldSymbol), nameof(CorrespondingTupleField));
+            CorrespondingTupleFieldAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<IFieldSymbol, IFieldSymbol>(
+                typeof(IFieldSymbol), nameof(CorrespondingTupleField));
         }
 
         public static IFieldSymbol CorrespondingTupleField(this IFieldSymbol symbol)

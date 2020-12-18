@@ -26,8 +26,13 @@ namespace StyleCop.Analyzers.LayoutRules
     internal class SA1503CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1503BracesMustNotBeOmitted.DiagnosticId, SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.DiagnosticId, SA1520UseBracesConsistently.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1503BracesMustNotBeOmitted.DiagnosticId,
+                                SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.DiagnosticId,
+                                SA1520UseBracesConsistently.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,27 +47,30 @@ namespace StyleCop.Analyzers.LayoutRules
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is StatementSyntax node) || node.IsMissing)
+                if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is StatementSyntax node) ||
+                    node.IsMissing)
                 {
                     continue;
                 }
 
-                // If the parent of the statement contains a conditional directive, stuff will be really hard to fix correctly, so don't offer a code fix.
+                // If the parent of the statement contains a conditional directive, stuff will be really hard to fix
+                // correctly, so don't offer a code fix.
                 if (ContainsConditionalDirectiveTrivia(node.Parent))
                 {
                     continue;
                 }
 
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        LayoutResources.SA1503CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, syntaxRoot, node, cancellationToken),
-                        nameof(SA1503CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(LayoutResources.SA1503CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, syntaxRoot, node, cancellationToken),
+                                                          nameof(SA1503CodeFixProvider)),
+                                        diagnostic);
             }
         }
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, StatementSyntax node, CancellationToken cancellationToken)
+        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root,
+                                                                  StatementSyntax node,
+                                                                  CancellationToken cancellationToken)
         {
             // Currently unused
             _ = cancellationToken;
@@ -73,7 +81,9 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static bool ContainsConditionalDirectiveTrivia(SyntaxNode node)
         {
-            for (var currentDirective = node.GetFirstDirective(); currentDirective != null && node.Contains(currentDirective); currentDirective = currentDirective.GetNextDirective())
+            for (var currentDirective = node.GetFirstDirective();
+                 currentDirective != null && node.Contains(currentDirective);
+                 currentDirective = currentDirective.GetNextDirective())
             {
                 switch (currentDirective.Kind())
                 {
@@ -90,13 +100,17 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1503CodeFix;
+            protected override string CodeActionTitle => LayoutResources.SA1503CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
@@ -108,12 +122,14 @@ namespace StyleCop.Analyzers.LayoutRules
 
                 foreach (Diagnostic diagnostic in diagnostics)
                 {
-                    if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is StatementSyntax node) || node.IsMissing)
+                    if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is StatementSyntax node) ||
+                        node.IsMissing)
                     {
                         continue;
                     }
 
-                    // If the parent of the statement contains a conditional directive, stuff will be really hard to fix correctly, so don't offer a code fix.
+                    // If the parent of the statement contains a conditional directive, stuff will be really hard to fix
+                    // correctly, so don't offer a code fix.
                     if (ContainsConditionalDirectiveTrivia(node.Parent))
                     {
                         continue;
@@ -122,7 +138,8 @@ namespace StyleCop.Analyzers.LayoutRules
                     nodesNeedingBlocks.Add(node);
                 }
 
-                return syntaxRoot.ReplaceNodes(nodesNeedingBlocks, (originalNode, rewrittenNode) => SyntaxFactory.Block((StatementSyntax)rewrittenNode));
+                return syntaxRoot.ReplaceNodes(nodesNeedingBlocks, (originalNode, rewrittenNode) => SyntaxFactory.Block(
+                                                                       (StatementSyntax) rewrittenNode));
             }
         }
     }

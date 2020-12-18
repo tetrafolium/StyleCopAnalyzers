@@ -19,10 +19,15 @@ namespace StyleCop.Analyzers.Lightup
         static IDynamicMemberReferenceOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IDynamicMemberReferenceOperationWrapper));
-            InstanceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Instance));
-            MemberNameAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, string>(WrappedType, nameof(MemberName));
-            TypeArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ITypeSymbol>>(WrappedType, nameof(TypeArguments));
-            ContainingTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(ContainingType));
+            InstanceAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Instance));
+            MemberNameAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, string>(WrappedType, nameof(MemberName));
+            TypeArgumentsAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ITypeSymbol>>(
+                    WrappedType, nameof(TypeArguments));
+            ContainingTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                WrappedType, nameof(ContainingType));
         }
 
         private IDynamicMemberReferenceOperationWrapper(IOperation operation)

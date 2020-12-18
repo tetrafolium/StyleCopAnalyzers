@@ -28,33 +28,48 @@ namespace StyleCop.Analyzers.LayoutRules
         /// The ID for diagnostics produced by the <see cref="SA1518UseLineEndingsCorrectlyAtEndOfFile"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1518";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1518.md";
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1518.md";
 
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1518Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1518Title), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        private static readonly LocalizableString MessageFormatAllow = new LocalizableResourceString(nameof(LayoutResources.SA1518MessageFormatAllow), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString DescriptionAllow = new LocalizableResourceString(nameof(LayoutResources.SA1518DescriptionAllow), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString MessageFormatRequire = new LocalizableResourceString(nameof(LayoutResources.SA1518MessageFormatRequire), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString DescriptionRequire = new LocalizableResourceString(nameof(LayoutResources.SA1518DescriptionRequire), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString MessageFormatOmit = new LocalizableResourceString(nameof(LayoutResources.SA1518MessageFormatOmit), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString DescriptionOmit = new LocalizableResourceString(nameof(LayoutResources.SA1518DescriptionOmit), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormatAllow = new LocalizableResourceString(
+            nameof(LayoutResources.SA1518MessageFormatAllow), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString DescriptionAllow = new LocalizableResourceString(
+            nameof(LayoutResources.SA1518DescriptionAllow), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormatRequire =
+            new LocalizableResourceString(nameof(LayoutResources.SA1518MessageFormatRequire),
+                                          LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString DescriptionRequire = new LocalizableResourceString(
+            nameof(LayoutResources.SA1518DescriptionRequire), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormatOmit = new LocalizableResourceString(
+            nameof(LayoutResources.SA1518MessageFormatOmit), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString DescriptionOmit = new LocalizableResourceString(
+            nameof(LayoutResources.SA1518DescriptionOmit), LayoutResources.ResourceManager, typeof(LayoutResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor DescriptorAllow =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatAllow, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionAllow, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorAllow = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormatAllow, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, DescriptionAllow, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorRequire =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatRequire, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionRequire, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorRequire = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormatRequire, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, DescriptionRequire, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorOmit =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatOmit, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionOmit, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorOmit = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormatOmit, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, DescriptionOmit, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorAllow);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(DescriptorAllow);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -67,7 +82,7 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context, StyleCopSettings settings)
         {
-            var endOfFileToken = context.Tree.GetRoot().GetLastToken(includeZeroWidth: true);
+            var endOfFileToken = context.Tree.GetRoot().GetLastToken(includeZeroWidth : true);
             TextSpan reportedSpan = new TextSpan(endOfFileToken.SpanStart, 0);
 
             SyntaxTrivia precedingTrivia = default;
@@ -79,13 +94,15 @@ namespace StyleCop.Analyzers.LayoutRules
                 if (trailingWhitespaceIndex > 0)
                 {
                     checkPrecedingToken = false;
-                    reportedSpan = TextSpan.FromBounds(leadingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
+                    reportedSpan =
+                        TextSpan.FromBounds(leadingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
                     precedingTrivia = leadingTrivia[trailingWhitespaceIndex - 1];
                 }
                 else if (trailingWhitespaceIndex == 0)
                 {
                     checkPrecedingToken = true;
-                    reportedSpan = TextSpan.FromBounds(leadingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
+                    reportedSpan =
+                        TextSpan.FromBounds(leadingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
                 }
                 else
                 {
@@ -100,16 +117,22 @@ namespace StyleCop.Analyzers.LayoutRules
 
             if (checkPrecedingToken)
             {
-                var previousToken = endOfFileToken.GetPreviousToken(includeZeroWidth: true, includeSkipped: true, includeDirectives: true, includeDocumentationComments: true);
+                var previousToken = endOfFileToken.GetPreviousToken(includeZeroWidth
+                                                                    : true, includeSkipped
+                                                                    : true, includeDirectives
+                                                                    : true, includeDocumentationComments
+                                                                    : true);
                 var trailingWhitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(previousToken.TrailingTrivia);
                 if (trailingWhitespaceIndex > 0)
                 {
-                    reportedSpan = TextSpan.FromBounds(previousToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
+                    reportedSpan = TextSpan.FromBounds(previousToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart,
+                                                       reportedSpan.End);
                     precedingTrivia = previousToken.TrailingTrivia[trailingWhitespaceIndex - 1];
                 }
                 else if (trailingWhitespaceIndex == 0)
                 {
-                    reportedSpan = TextSpan.FromBounds(previousToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
+                    reportedSpan = TextSpan.FromBounds(previousToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart,
+                                                       reportedSpan.End);
                     precedingTrivia = default;
                 }
                 else
@@ -123,13 +146,16 @@ namespace StyleCop.Analyzers.LayoutRules
 
             if (precedingTrivia.IsDirective)
             {
-                if (precedingTrivia.GetStructure() is DirectiveTriviaSyntax directiveTriviaSyntax
-                    && directiveTriviaSyntax.EndOfDirectiveToken.HasTrailingTrivia)
+                if (precedingTrivia.GetStructure() is DirectiveTriviaSyntax directiveTriviaSyntax &&
+                    directiveTriviaSyntax.EndOfDirectiveToken.HasTrailingTrivia)
                 {
-                    var trailingWhitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(directiveTriviaSyntax.EndOfDirectiveToken.TrailingTrivia);
+                    var trailingWhitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(
+                        directiveTriviaSyntax.EndOfDirectiveToken.TrailingTrivia);
                     if (trailingWhitespaceIndex >= 0)
                     {
-                        reportedSpan = TextSpan.FromBounds(directiveTriviaSyntax.EndOfDirectiveToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
+                        reportedSpan = TextSpan.FromBounds(
+                            directiveTriviaSyntax.EndOfDirectiveToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart,
+                            reportedSpan.End);
                     }
                 }
             }
@@ -180,7 +206,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 break;
             }
 
-            context.ReportDiagnostic(Diagnostic.Create(descriptorToReport, Location.Create(context.Tree, reportedSpan)));
+            context.ReportDiagnostic(
+                Diagnostic.Create(descriptorToReport, Location.Create(context.Tree, reportedSpan)));
         }
     }
 }

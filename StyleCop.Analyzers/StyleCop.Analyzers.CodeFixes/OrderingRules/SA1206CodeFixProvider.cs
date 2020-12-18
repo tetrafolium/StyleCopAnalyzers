@@ -24,8 +24,11 @@ namespace StyleCop.Analyzers.OrderingRules
     internal sealed class SA1206CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1206DeclarationKeywordsMustFollowOrder.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1206DeclarationKeywordsMustFollowOrder.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -38,22 +41,23 @@ namespace StyleCop.Analyzers.OrderingRules
         {
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        OrderingResources.ModifierOrderCodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1206CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(OrderingResources.ModifierOrderCodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1206CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            var memberDeclaration = syntaxRoot.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberDeclarationSyntax>();
+            var memberDeclaration =
+                syntaxRoot.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberDeclarationSyntax>();
             if (memberDeclaration == null)
             {
                 return document;
@@ -71,7 +75,8 @@ namespace StyleCop.Analyzers.OrderingRules
             return document.WithSyntaxRoot(syntaxRoot);
         }
 
-        private static SyntaxNode UpdateSyntaxRoot(MemberDeclarationSyntax memberDeclaration, SyntaxTokenList newModifiers, SyntaxNode syntaxRoot)
+        private static SyntaxNode UpdateSyntaxRoot(MemberDeclarationSyntax memberDeclaration,
+                                                   SyntaxTokenList newModifiers, SyntaxNode syntaxRoot)
         {
             var newDeclaration = memberDeclaration.WithModifiers(newModifiers);
 
@@ -92,11 +97,7 @@ namespace StyleCop.Analyzers.OrderingRules
             var staticModifiers = modifiers.Where(modifier => GetModifierType(modifier) == ModifierType.Static);
             var otherModifiers = modifiers.Where(modifier => GetModifierType(modifier) == ModifierType.Other);
 
-            return AdjustTrivia(
-                accessModifiers
-                    .Concat(staticModifiers)
-                    .Concat(otherModifiers),
-                modifiers);
+            return AdjustTrivia(accessModifiers.Concat(staticModifiers).Concat(otherModifiers), modifiers);
         }
 
         /// <summary>
@@ -121,21 +122,18 @@ namespace StyleCop.Analyzers.OrderingRules
             // modifier list
             if (GetModifierType(modifierToFix) == ModifierType.Other)
             {
-                beforeIncluding = accessModifiers
-                    .Concat(staticModifiers)
-                    .Concat(otherModifiers);
+                beforeIncluding = accessModifiers.Concat(staticModifiers).Concat(otherModifiers);
             }
             else if (GetModifierType(modifierToFix) == ModifierType.Static)
             {
-                beforeIncluding = accessModifiers
-                    .Concat(staticModifiers.TakeWhile(modifier => modifier != modifierToFix))
-                    .Concat(new[] { modifierToFix });
+                beforeIncluding =
+                    accessModifiers.Concat(staticModifiers.TakeWhile(modifier => modifier != modifierToFix))
+                        .Concat(new[]{modifierToFix});
             }
             else
             {
-                beforeIncluding = accessModifiers
-                    .TakeWhile(modifier => modifier != modifierToFix)
-                    .Concat(new[] { modifierToFix });
+                beforeIncluding =
+                    accessModifiers.TakeWhile(modifier => modifier != modifierToFix).Concat(new[]{modifierToFix});
             }
 
             var after = modifiers.Where(modifier => !beforeIncluding.Contains(modifier));
@@ -152,17 +150,22 @@ namespace StyleCop.Analyzers.OrderingRules
         private static SyntaxTokenList AdjustTrivia(IEnumerable<SyntaxToken> newModifiers, SyntaxTokenList oldModifiers)
         {
             var newTokenList = default(SyntaxTokenList);
-            return newTokenList.AddRange(
-                newModifiers.Zip(oldModifiers, (m1, m2) => m1.WithTriviaFrom(m2)));
+            return newTokenList.AddRange(newModifiers.Zip(oldModifiers, (m1, m2) => m1.WithTriviaFrom(m2)));
         }
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } = new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
             protected override string CodeActionTitle => OrderingResources.ModifierOrderCodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
@@ -176,7 +179,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 var trackedDiagnosticMembers = new HashSet<MemberDeclarationSyntax>();
                 foreach (var diagnostic in diagnostics)
                 {
-                    var memberDeclaration = syntaxRoot.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberDeclarationSyntax>();
+                    var memberDeclaration = syntaxRoot.FindNode(diagnostic.Location.SourceSpan)
+                                                .FirstAncestorOrSelf<MemberDeclarationSyntax>();
                     if (memberDeclaration == null)
                     {
                         continue;

@@ -67,10 +67,10 @@ namespace StyleCop.Analyzers.Helpers
         /// </returns>
         internal static bool IsInterpolatedUnaryExpression(this SyntaxToken token)
         {
-            SyntaxNode parentNode = (token.Parent.IsKind(SyntaxKind.UnaryMinusExpression)
-                    || token.Parent.IsKind(SyntaxKind.UnaryPlusExpression))
-                ? token.Parent.Parent
-                : token.Parent;
+            SyntaxNode parentNode = (token.Parent.IsKind(SyntaxKind.UnaryMinusExpression) ||
+                                     token.Parent.IsKind(SyntaxKind.UnaryPlusExpression))
+                                        ? token.Parent.Parent
+                                        : token.Parent;
 
             if (parentNode.IsKind(SyntaxKind.Interpolation))
             {
@@ -96,8 +96,8 @@ namespace StyleCop.Analyzers.Helpers
 
             var tokenLineSpan = token.SyntaxTree.GetLineSpan(token.Span);
 
-            if (tokenLineSpan.EndLinePosition.Line != fullLineSpan.EndLinePosition.Line
-                || token.SyntaxTree.Length == token.FullSpan.End)
+            if (tokenLineSpan.EndLinePosition.Line != fullLineSpan.EndLinePosition.Line ||
+                token.SyntaxTree.Length == token.FullSpan.End)
             {
                 return true;
             }
@@ -127,7 +127,8 @@ namespace StyleCop.Analyzers.Helpers
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <paramref name="token"/> is the first token in a line and it is only preceded by whitespace.
+        /// Gets a value indicating whether the <paramref name="token"/> is the first token in a line and it is only
+        /// preceded by whitespace.
         /// </summary>
         /// <param name="token">The token to process.</param>
         /// <returns>true if the token is the first token in a line and it is only preceded by whitespace.</returns>
@@ -143,7 +144,8 @@ namespace StyleCop.Analyzers.Helpers
             var precedingTriviaList = TriviaHelper.MergeTriviaLists(precedingToken.TrailingTrivia, token.LeadingTrivia);
             for (var i = precedingTriviaList.Count - 1; i >= 0; i--)
             {
-                switch (precedingTriviaList[i].Kind())
+                switch (precedingTriviaList [i]
+                            .Kind())
                 {
                 case SyntaxKind.WhitespaceTrivia:
                     break;

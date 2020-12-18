@@ -24,10 +24,11 @@ namespace StyleCop.Analyzers.DocumentationRules
     internal class InheritdocCodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                "CS1591",
-                SA1600ElementsMustBeDocumented.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create("CS1591", SA1600ElementsMustBeDocumented.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -38,7 +39,8 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <inheritdoc/>
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            SyntaxNode root =
+                await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             foreach (var diagnostic in context.Diagnostics)
             {
                 SyntaxToken identifierToken = root.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -51,7 +53,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 {
                 case SyntaxKind.PropertyDeclaration:
                 case SyntaxKind.EventDeclaration:
-                    if (((BasePropertyDeclarationSyntax)identifierToken.Parent).Modifiers.Any(SyntaxKind.StaticKeyword))
+                    if (((BasePropertyDeclarationSyntax) identifierToken.Parent)
+                            .Modifiers.Any(SyntaxKind.StaticKeyword))
                     {
                         continue;
                     }
@@ -59,7 +62,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                     break;
 
                 case SyntaxKind.MethodDeclaration:
-                    if (((MethodDeclarationSyntax)identifierToken.Parent).Modifiers.Any(SyntaxKind.StaticKeyword))
+                    if (((MethodDeclarationSyntax) identifierToken.Parent).Modifiers.Any(SyntaxKind.StaticKeyword))
                     {
                         continue;
                     }
@@ -67,13 +70,14 @@ namespace StyleCop.Analyzers.DocumentationRules
                     break;
 
                 case SyntaxKind.VariableDeclarator:
-                    if (!identifierToken.Parent.Parent.IsKind(SyntaxKind.VariableDeclaration)
-                        || !identifierToken.Parent.Parent.Parent.IsKind(SyntaxKind.EventFieldDeclaration))
+                    if (!identifierToken.Parent.Parent.IsKind(SyntaxKind.VariableDeclaration) ||
+                        !identifierToken.Parent.Parent.Parent.IsKind(SyntaxKind.EventFieldDeclaration))
                     {
                         continue;
                     }
 
-                    if (((EventFieldDeclarationSyntax)identifierToken.Parent.Parent.Parent).Modifiers.Any(SyntaxKind.StaticKeyword))
+                    if (((EventFieldDeclarationSyntax) identifierToken.Parent.Parent.Parent)
+                            .Modifiers.Any(SyntaxKind.StaticKeyword))
                     {
                         continue;
                     }
@@ -88,40 +92,52 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
 
                 context.RegisterCodeFix(
-                    CodeAction.Create(
-                        DocumentationResources.InheritdocCodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, root, identifierToken, cancellationToken),
-                        nameof(InheritdocCodeFixProvider)),
+                    CodeAction.Create(DocumentationResources.InheritdocCodeFix,
+                                      cancellationToken => GetTransformedDocumentAsync(
+                                          context.Document, root, identifierToken, cancellationToken),
+                                      nameof(InheritdocCodeFixProvider)),
                     diagnostic);
             }
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, SyntaxToken identifierToken, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root,
+                                                                        SyntaxToken identifierToken,
+                                                                        CancellationToken cancellationToken)
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             switch (identifierToken.Parent.Kind())
             {
             case SyntaxKind.PropertyDeclaration:
             case SyntaxKind.EventDeclaration:
-                return GetTransformedDocumentForBasePropertyDeclaration(document, root, semanticModel, (BasePropertyDeclarationSyntax)identifierToken.Parent, cancellationToken);
+                return GetTransformedDocumentForBasePropertyDeclaration(
+                    document, root, semanticModel, (BasePropertyDeclarationSyntax) identifierToken.Parent,
+                    cancellationToken);
 
             case SyntaxKind.MethodDeclaration:
-                return GetTransformedDocumentForMethodDeclaration(document, root, semanticModel, (MethodDeclarationSyntax)identifierToken.Parent, cancellationToken);
+                return GetTransformedDocumentForMethodDeclaration(
+                    document, root, semanticModel, (MethodDeclarationSyntax) identifierToken.Parent, cancellationToken);
 
             case SyntaxKind.VariableDeclarator:
-                return GetTransformedDocumentForEventFieldDeclaration(document, root, semanticModel, (EventFieldDeclarationSyntax)identifierToken.Parent.Parent.Parent, cancellationToken);
+                return GetTransformedDocumentForEventFieldDeclaration(
+                    document, root, semanticModel, (EventFieldDeclarationSyntax) identifierToken.Parent.Parent.Parent,
+                    cancellationToken);
 
             case SyntaxKind.IndexerDeclaration:
-                return GetTransformedDocumentForIndexerDeclaration(document, root, semanticModel, (IndexerDeclarationSyntax)identifierToken.Parent, cancellationToken);
+                return GetTransformedDocumentForIndexerDeclaration(document, root, semanticModel,
+                                                                   (IndexerDeclarationSyntax) identifierToken.Parent,
+                                                                   cancellationToken);
 
             default:
                 return document;
             }
         }
 
-        private static Document GetTransformedDocumentForBasePropertyDeclaration(Document document, SyntaxNode root, SemanticModel semanticModel, BasePropertyDeclarationSyntax basePropertyDeclaration, CancellationToken cancellationToken)
+        private static Document GetTransformedDocumentForBasePropertyDeclaration(
+            Document document, SyntaxNode root, SemanticModel semanticModel,
+            BasePropertyDeclarationSyntax basePropertyDeclaration, CancellationToken cancellationToken)
         {
-            if (basePropertyDeclaration.ExplicitInterfaceSpecifier == null && !basePropertyDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
+            if (basePropertyDeclaration.ExplicitInterfaceSpecifier == null &&
+                !basePropertyDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
             {
                 ISymbol declaredSymbol = semanticModel.GetDeclaredSymbol(basePropertyDeclaration, cancellationToken);
                 if (declaredSymbol == null || !NamedTypeHelpers.IsImplementingAnInterfaceMember(declaredSymbol))
@@ -133,9 +149,13 @@ namespace StyleCop.Analyzers.DocumentationRules
             return InsertInheritdocComment(document, root, basePropertyDeclaration, cancellationToken);
         }
 
-        private static Document GetTransformedDocumentForMethodDeclaration(Document document, SyntaxNode root, SemanticModel semanticModel, MethodDeclarationSyntax methodDeclaration, CancellationToken cancellationToken)
+        private static Document GetTransformedDocumentForMethodDeclaration(Document document, SyntaxNode root,
+                                                                           SemanticModel semanticModel,
+                                                                           MethodDeclarationSyntax methodDeclaration,
+                                                                           CancellationToken cancellationToken)
         {
-            if (methodDeclaration.ExplicitInterfaceSpecifier == null && !methodDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
+            if (methodDeclaration.ExplicitInterfaceSpecifier == null &&
+                !methodDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
             {
                 ISymbol declaredSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
                 if (declaredSymbol == null || !NamedTypeHelpers.IsImplementingAnInterfaceMember(declaredSymbol))
@@ -147,7 +167,9 @@ namespace StyleCop.Analyzers.DocumentationRules
             return InsertInheritdocComment(document, root, methodDeclaration, cancellationToken);
         }
 
-        private static Document GetTransformedDocumentForEventFieldDeclaration(Document document, SyntaxNode root, SemanticModel semanticModel, EventFieldDeclarationSyntax eventFieldDeclaration, CancellationToken cancellationToken)
+        private static Document GetTransformedDocumentForEventFieldDeclaration(
+            Document document, SyntaxNode root, SemanticModel semanticModel,
+            EventFieldDeclarationSyntax eventFieldDeclaration, CancellationToken cancellationToken)
         {
             if (!eventFieldDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
             {
@@ -167,9 +189,13 @@ namespace StyleCop.Analyzers.DocumentationRules
             return InsertInheritdocComment(document, root, eventFieldDeclaration, cancellationToken);
         }
 
-        private static Document GetTransformedDocumentForIndexerDeclaration(Document document, SyntaxNode root, SemanticModel semanticModel, IndexerDeclarationSyntax indexerDeclaration, CancellationToken cancellationToken)
+        private static Document GetTransformedDocumentForIndexerDeclaration(Document document, SyntaxNode root,
+                                                                            SemanticModel semanticModel,
+                                                                            IndexerDeclarationSyntax indexerDeclaration,
+                                                                            CancellationToken cancellationToken)
         {
-            if (indexerDeclaration.ExplicitInterfaceSpecifier == null && !indexerDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
+            if (indexerDeclaration.ExplicitInterfaceSpecifier == null &&
+                !indexerDeclaration.Modifiers.Any(SyntaxKind.OverrideKeyword))
             {
                 ISymbol declaredSymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
                 if (declaredSymbol == null || !NamedTypeHelpers.IsImplementingAnInterfaceMember(declaredSymbol))
@@ -181,23 +207,24 @@ namespace StyleCop.Analyzers.DocumentationRules
             return InsertInheritdocComment(document, root, indexerDeclaration, cancellationToken);
         }
 
-        private static Document InsertInheritdocComment(Document document, SyntaxNode root, SyntaxNode syntaxNode, CancellationToken cancellationToken)
+        private static Document InsertInheritdocComment(Document document, SyntaxNode root, SyntaxNode syntaxNode,
+                                                        CancellationToken cancellationToken)
         {
             // Currently unused
             _ = cancellationToken;
 
             SyntaxTriviaList leadingTrivia = syntaxNode.GetLeadingTrivia();
             int insertionIndex = leadingTrivia.Count;
-            while (insertionIndex > 0 && !leadingTrivia[insertionIndex - 1].HasBuiltinEndLine())
+            while (insertionIndex > 0 && !leadingTrivia [insertionIndex - 1]
+                                              .HasBuiltinEndLine())
             {
                 insertionIndex--;
             }
 
-            string newLineText = document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
-            var documentationComment =
-                XmlSyntaxFactory.DocumentationComment(
-                    newLineText,
-                    XmlSyntaxFactory.EmptyElement(XmlCommentHelper.InheritdocXmlTag));
+            string newLineText =
+                document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
+            var documentationComment = XmlSyntaxFactory.DocumentationComment(
+                newLineText, XmlSyntaxFactory.EmptyElement(XmlCommentHelper.InheritdocXmlTag));
             var trivia = SyntaxFactory.Trivia(documentationComment);
 
             SyntaxTriviaList newLeadingTrivia = leadingTrivia.Insert(insertionIndex, trivia);

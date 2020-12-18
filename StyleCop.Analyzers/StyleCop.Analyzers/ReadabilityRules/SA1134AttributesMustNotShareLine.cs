@@ -31,19 +31,30 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1134AttributesMustNotShareLine"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1134";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1134.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1134Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1134MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1134Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1134.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1134Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1134MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1134Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> HandleAttributeListAction = HandleAttributeList;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -57,10 +68,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static void HandleAttributeList(SyntaxNodeAnalysisContext context)
         {
             var diagnosticProperties = ImmutableDictionary.CreateBuilder<string, string>();
-            AttributeListSyntax attributeList = (AttributeListSyntax)context.Node;
+            AttributeListSyntax attributeList = (AttributeListSyntax) context.Node;
             bool violation = false;
 
-            if (attributeList.Parent.IsKind(SyntaxKind.Parameter) || attributeList.Parent.IsKind(SyntaxKind.TypeParameter))
+            if (attributeList.Parent.IsKind(SyntaxKind.Parameter) ||
+                attributeList.Parent.IsKind(SyntaxKind.TypeParameter))
             {
                 // no analysis required for parameters or type (generic) parameters
                 return;
@@ -84,8 +96,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
             {
                 var nextTokenLineSpan = nextToken.GetLineSpan();
 
-                // do not report for trailing attribute lists, to prevent unnecessary diagnostics and issues with the code fix
-                if ((nextTokenLineSpan.EndLinePosition.Line == attributeListLineSpan.EndLinePosition.Line) && !nextToken.Parent.IsKind(SyntaxKind.AttributeList))
+                // do not report for trailing attribute lists, to prevent unnecessary diagnostics and issues with the
+                // code fix
+                if ((nextTokenLineSpan.EndLinePosition.Line == attributeListLineSpan.EndLinePosition.Line) &&
+                    !nextToken.Parent.IsKind(SyntaxKind.AttributeList))
                 {
                     diagnosticProperties.Add(FixWithNewLineAfterKey, string.Empty);
                     violation = true;
@@ -94,7 +108,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             if (violation)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, attributeList.OpenBracketToken.GetLocation(), diagnosticProperties.ToImmutable()));
+                context.ReportDiagnostic(Diagnostic.Create(Descriptor, attributeList.OpenBracketToken.GetLocation(),
+                                                           diagnosticProperties.ToImmutable()));
             }
         }
     }

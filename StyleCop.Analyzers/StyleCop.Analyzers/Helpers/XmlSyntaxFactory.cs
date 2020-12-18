@@ -11,43 +11,49 @@ namespace StyleCop.Analyzers.Helpers
 
     internal static class XmlSyntaxFactory
     {
-        public static DocumentationCommentTriviaSyntax DocumentationComment(string newLineText, params XmlNodeSyntax[] content)
+        public static DocumentationCommentTriviaSyntax DocumentationComment(string newLineText,
+                                                                            params XmlNodeSyntax[] content)
         {
-            return SyntaxFactory.DocumentationCommentTrivia(SyntaxKind.SingleLineDocumentationCommentTrivia, List(content))
+            return SyntaxFactory
+                .DocumentationCommentTrivia(SyntaxKind.SingleLineDocumentationCommentTrivia, List(content))
                 .WithLeadingTrivia(SyntaxFactory.DocumentationCommentExterior("/// "))
                 .WithTrailingTrivia(SyntaxFactory.EndOfLine(newLineText));
         }
 
-        public static XmlElementSyntax MultiLineElement(string localName, string newLineText, SyntaxList<XmlNodeSyntax> content)
+        public static XmlElementSyntax MultiLineElement(string localName, string newLineText,
+                                                        SyntaxList<XmlNodeSyntax> content)
         {
             return MultiLineElement(SyntaxFactory.XmlName(localName), newLineText, content);
         }
 
-        public static XmlElementSyntax MultiLineElement(XmlNameSyntax name, string newLineText, SyntaxList<XmlNodeSyntax> content)
+        public static XmlElementSyntax MultiLineElement(XmlNameSyntax name, string newLineText,
+                                                        SyntaxList<XmlNodeSyntax> content)
         {
             var newContent = content.Insert(0, NewLine(newLineText)).Add(NewLine(newLineText));
 
             for (var i = 1; i < newContent.Count; i++)
             {
-                if (newContent[i] is XmlTextSyntax xmlTextSyntax
-                    && xmlTextSyntax.TextTokens[0].ValueText == newLineText)
+                if (newContent[i] is XmlTextSyntax xmlTextSyntax &&
+                    xmlTextSyntax.TextTokens[0].ValueText == newLineText)
                 {
-                    var previousTrailingTrivia = newContent[i - 1].GetTrailingTrivia();
+                    var previousTrailingTrivia = newContent [i - 1]
+                                                     .GetTrailingTrivia();
                     if (previousTrailingTrivia.Count > 0)
                     {
                         var lastTrivia = previousTrailingTrivia.Last();
                         var updatedLastTriviaText = lastTrivia.ToString().TrimEnd(' ', '\t');
 
-                        var updatedTrailingTrivia = previousTrailingTrivia.Replace(lastTrivia, SyntaxFactory.SyntaxTrivia(lastTrivia.Kind(), updatedLastTriviaText));
-                        newContent = newContent.Replace(newContent[i - 1], newContent[i - 1].WithTrailingTrivia(updatedTrailingTrivia));
+                        var updatedTrailingTrivia = previousTrailingTrivia.Replace(
+                            lastTrivia, SyntaxFactory.SyntaxTrivia(lastTrivia.Kind(), updatedLastTriviaText));
+                        newContent =
+                            newContent.Replace(newContent[i - 1], newContent [i - 1]
+                                                                      .WithTrailingTrivia(updatedTrailingTrivia));
                     }
                 }
             }
 
-            return SyntaxFactory.XmlElement(
-                SyntaxFactory.XmlElementStartTag(name),
-                newContent,
-                SyntaxFactory.XmlElementEndTag(name));
+            return SyntaxFactory.XmlElement(SyntaxFactory.XmlElementStartTag(name), newContent,
+                                            SyntaxFactory.XmlElementEndTag(name));
         }
 
         public static XmlElementSyntax Element(string localName, SyntaxList<XmlNodeSyntax> content)
@@ -57,10 +63,8 @@ namespace StyleCop.Analyzers.Helpers
 
         public static XmlElementSyntax Element(XmlNameSyntax name, SyntaxList<XmlNodeSyntax> content)
         {
-            return SyntaxFactory.XmlElement(
-                SyntaxFactory.XmlElementStartTag(name),
-                content,
-                SyntaxFactory.XmlElementEndTag(name));
+            return SyntaxFactory.XmlElement(SyntaxFactory.XmlElementStartTag(name), content,
+                                            SyntaxFactory.XmlElementEndTag(name));
         }
 
         public static XmlEmptyElementSyntax EmptyElement(string localName)
@@ -90,31 +94,30 @@ namespace StyleCop.Analyzers.Helpers
 
         public static XmlTextAttributeSyntax TextAttribute(string name, params SyntaxToken[] textTokens)
         {
-            return TextAttribute(SyntaxFactory.XmlName(name), SyntaxKind.DoubleQuoteToken, SyntaxFactory.TokenList(textTokens));
+            return TextAttribute(SyntaxFactory.XmlName(name), SyntaxKind.DoubleQuoteToken,
+                                 SyntaxFactory.TokenList(textTokens));
         }
 
-        public static XmlTextAttributeSyntax TextAttribute(string name, SyntaxKind quoteKind, SyntaxTokenList textTokens)
+        public static XmlTextAttributeSyntax TextAttribute(string name, SyntaxKind quoteKind,
+                                                           SyntaxTokenList textTokens)
         {
             return TextAttribute(SyntaxFactory.XmlName(name), quoteKind, textTokens);
         }
 
-        public static XmlTextAttributeSyntax TextAttribute(XmlNameSyntax name, SyntaxKind quoteKind, SyntaxTokenList textTokens)
+        public static XmlTextAttributeSyntax TextAttribute(XmlNameSyntax name, SyntaxKind quoteKind,
+                                                           SyntaxTokenList textTokens)
         {
-            return SyntaxFactory.XmlTextAttribute(
-                name,
-                SyntaxFactory.Token(quoteKind),
-                textTokens,
-                SyntaxFactory.Token(quoteKind))
+            return SyntaxFactory
+                .XmlTextAttribute(name, SyntaxFactory.Token(quoteKind), textTokens, SyntaxFactory.Token(quoteKind))
                 .WithLeadingTrivia(SyntaxFactory.Whitespace(" "));
         }
 
         public static XmlNameAttributeSyntax NameAttribute(string parameterName)
         {
-            return SyntaxFactory.XmlNameAttribute(
-                SyntaxFactory.XmlName(XmlCommentHelper.NameArgumentName),
-                SyntaxFactory.Token(SyntaxKind.DoubleQuoteToken),
-                parameterName,
-                SyntaxFactory.Token(SyntaxKind.DoubleQuoteToken))
+            return SyntaxFactory
+                .XmlNameAttribute(SyntaxFactory.XmlName(XmlCommentHelper.NameArgumentName),
+                                  SyntaxFactory.Token(SyntaxKind.DoubleQuoteToken), parameterName,
+                                  SyntaxFactory.Token(SyntaxKind.DoubleQuoteToken))
                 .WithLeadingTrivia(SyntaxFactory.Whitespace(" "));
         }
 
@@ -126,11 +129,9 @@ namespace StyleCop.Analyzers.Helpers
         public static XmlCrefAttributeSyntax CrefAttribute(CrefSyntax cref, SyntaxKind quoteKind)
         {
             cref = cref.ReplaceTokens(cref.DescendantTokens(), ReplaceBraceTokens);
-            return SyntaxFactory.XmlCrefAttribute(
-                SyntaxFactory.XmlName(XmlCommentHelper.CrefArgumentName),
-                SyntaxFactory.Token(quoteKind),
-                cref,
-                SyntaxFactory.Token(quoteKind))
+            return SyntaxFactory
+                .XmlCrefAttribute(SyntaxFactory.XmlName(XmlCommentHelper.CrefArgumentName),
+                                  SyntaxFactory.Token(quoteKind), cref, SyntaxFactory.Token(quoteKind))
                 .WithLeadingTrivia(SyntaxFactory.Whitespace(" "));
         }
 
@@ -146,11 +147,8 @@ namespace StyleCop.Analyzers.Helpers
 
         public static SyntaxToken TextNewLine(string text, bool continueComment)
         {
-            SyntaxToken token = SyntaxFactory.XmlTextNewLine(
-                SyntaxFactory.TriviaList(),
-                text,
-                text,
-                SyntaxFactory.TriviaList());
+            SyntaxToken token =
+                SyntaxFactory.XmlTextNewLine(SyntaxFactory.TriviaList(), text, text, SyntaxFactory.TriviaList());
 
             if (continueComment)
             {
@@ -173,11 +171,7 @@ namespace StyleCop.Analyzers.Helpers
                 encoded = encoded.Replace("\"", "&quot;");
             }
 
-            return SyntaxFactory.XmlTextLiteral(
-                SyntaxFactory.TriviaList(),
-                encoded,
-                value,
-                SyntaxFactory.TriviaList());
+            return SyntaxFactory.XmlTextLiteral(SyntaxFactory.TriviaList(), encoded, value, SyntaxFactory.TriviaList());
         }
 
         public static XmlElementSyntax SummaryElement(string newLineText, params XmlNodeSyntax[] content)
@@ -306,9 +300,9 @@ namespace StyleCop.Analyzers.Helpers
 
         public static XmlEmptyElementSyntax ThreadSafetyElement(bool @static, bool instance)
         {
-            return EmptyElement("threadsafety").AddAttributes(
-                TextAttribute("static", @static.ToString().ToLowerInvariant()),
-                TextAttribute("instance", instance.ToString().ToLowerInvariant()));
+            return EmptyElement("threadsafety")
+                .AddAttributes(TextAttribute("static", @static.ToString().ToLowerInvariant()),
+                               TextAttribute("instance", instance.ToString().ToLowerInvariant()));
         }
 
         public static XmlEmptyElementSyntax PreliminaryElement()
@@ -323,20 +317,23 @@ namespace StyleCop.Analyzers.Helpers
 
         private static XmlEmptyElementSyntax KeywordElement(string keyword)
         {
-            return EmptyElement("see").AddAttributes(
-                TextAttribute("langword", keyword));
+            return EmptyElement("see").AddAttributes(TextAttribute("langword", keyword));
         }
 
         private static SyntaxToken ReplaceBraceTokens(SyntaxToken originalToken, SyntaxToken rewrittenToken)
         {
-            if (rewrittenToken.IsKind(SyntaxKind.LessThanToken) && string.Equals("<", rewrittenToken.Text, StringComparison.Ordinal))
+            if (rewrittenToken.IsKind(SyntaxKind.LessThanToken) &&
+                string.Equals("<", rewrittenToken.Text, StringComparison.Ordinal))
             {
-                return SyntaxFactory.Token(rewrittenToken.LeadingTrivia, SyntaxKind.LessThanToken, "{", rewrittenToken.ValueText, rewrittenToken.TrailingTrivia);
+                return SyntaxFactory.Token(rewrittenToken.LeadingTrivia, SyntaxKind.LessThanToken, "{",
+                                           rewrittenToken.ValueText, rewrittenToken.TrailingTrivia);
             }
 
-            if (rewrittenToken.IsKind(SyntaxKind.GreaterThanToken) && string.Equals(">", rewrittenToken.Text, StringComparison.Ordinal))
+            if (rewrittenToken.IsKind(SyntaxKind.GreaterThanToken) &&
+                string.Equals(">", rewrittenToken.Text, StringComparison.Ordinal))
             {
-                return SyntaxFactory.Token(rewrittenToken.LeadingTrivia, SyntaxKind.GreaterThanToken, "}", rewrittenToken.ValueText, rewrittenToken.TrailingTrivia);
+                return SyntaxFactory.Token(rewrittenToken.LeadingTrivia, SyntaxKind.GreaterThanToken, "}",
+                                           rewrittenToken.ValueText, rewrittenToken.TrailingTrivia);
             }
 
             return rewrittenToken;

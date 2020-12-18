@@ -20,8 +20,8 @@ namespace StyleCop.Analyzers.OrderingRules
     /// <para>A violation of this rule occurs when the code elements within a file do not follow a standard ordering
     /// scheme based on access level.</para>
     ///
-    /// <para>To comply with this rule, adjacent elements of the same type should be positioned in the following order by
-    /// access level:</para>
+    /// <para>To comply with this rule, adjacent elements of the same type should be positioned in the following order
+    /// by access level:</para>
     ///
     /// <list type="bullet">
     /// <item><description>public</description></item>
@@ -42,39 +42,43 @@ namespace StyleCop.Analyzers.OrderingRules
         /// The ID for diagnostics produced by the <see cref="SA1202ElementsMustBeOrderedByAccess"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1202";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1202.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(OrderingResources.SA1202Title), OrderingResources.ResourceManager, typeof(OrderingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1202MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1202Description), OrderingResources.ResourceManager, typeof(OrderingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1202.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(OrderingResources.SA1202Title), OrderingResources.ResourceManager, typeof(OrderingResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(OrderingResources.SA1202MessageFormat),
+                                          OrderingResources.ResourceManager, typeof(OrderingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(OrderingResources.SA1202Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
             ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration);
 
         private static readonly ImmutableHashSet<SyntaxKind> MemberKinds = ImmutableHashSet.Create(
-            SyntaxKind.DelegateDeclaration,
-            SyntaxKind.EnumDeclaration,
-            SyntaxKind.InterfaceDeclaration,
-            SyntaxKind.StructDeclaration,
-            SyntaxKind.ClassDeclaration,
-            SyntaxKind.FieldDeclaration,
-            SyntaxKind.ConstructorDeclaration,
-            SyntaxKind.EventDeclaration,
-            SyntaxKind.PropertyDeclaration,
-            SyntaxKind.IndexerDeclaration,
-            SyntaxKind.MethodDeclaration,
-            SyntaxKind.ConversionOperatorDeclaration,
+            SyntaxKind.DelegateDeclaration, SyntaxKind.EnumDeclaration, SyntaxKind.InterfaceDeclaration,
+            SyntaxKind.StructDeclaration, SyntaxKind.ClassDeclaration, SyntaxKind.FieldDeclaration,
+            SyntaxKind.ConstructorDeclaration, SyntaxKind.EventDeclaration, SyntaxKind.PropertyDeclaration,
+            SyntaxKind.IndexerDeclaration, SyntaxKind.MethodDeclaration, SyntaxKind.ConversionOperatorDeclaration,
             SyntaxKind.OperatorDeclaration);
 
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> CompilationUnitAction = HandleCompilationUnit;
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> NamespaceDeclarationAction = HandleNamespaceDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> TypeDeclarationAction = HandleTypeDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> CompilationUnitAction =
+            HandleCompilationUnit;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> NamespaceDeclarationAction =
+            HandleNamespaceDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> TypeDeclarationAction =
+            HandleTypeDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -96,7 +100,7 @@ namespace StyleCop.Analyzers.OrderingRules
                 return;
             }
 
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
+            var compilationUnit = (CompilationUnitSyntax) context.Node;
 
             HandleMemberList(context, elementOrder, accessibilityIndex, compilationUnit.Members);
         }
@@ -110,7 +114,7 @@ namespace StyleCop.Analyzers.OrderingRules
                 return;
             }
 
-            var compilationUnit = (NamespaceDeclarationSyntax)context.Node;
+            var compilationUnit = (NamespaceDeclarationSyntax) context.Node;
 
             HandleMemberList(context, elementOrder, accessibilityIndex, compilationUnit.Members);
         }
@@ -124,12 +128,14 @@ namespace StyleCop.Analyzers.OrderingRules
                 return;
             }
 
-            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+            var typeDeclaration = (TypeDeclarationSyntax) context.Node;
 
             HandleMemberList(context, elementOrder, accessibilityIndex, typeDeclaration.Members);
         }
 
-        private static void HandleMemberList(SyntaxNodeAnalysisContext context, ImmutableArray<OrderingTrait> elementOrder, int accessibilityIndex, SyntaxList<MemberDeclarationSyntax> members)
+        private static void HandleMemberList(SyntaxNodeAnalysisContext context,
+                                             ImmutableArray<OrderingTrait> elementOrder, int accessibilityIndex,
+                                             SyntaxList<MemberDeclarationSyntax> members)
         {
             var previousSyntaxKind = SyntaxKind.None;
             var previousAccessLevel = AccessLevel.NotSpecified;
@@ -140,7 +146,8 @@ namespace StyleCop.Analyzers.OrderingRules
             foreach (var member in members)
             {
                 var currentSyntaxKind = member.Kind();
-                currentSyntaxKind = currentSyntaxKind == SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration : currentSyntaxKind;
+                currentSyntaxKind = currentSyntaxKind == SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration
+                    : currentSyntaxKind;
 
                 // if the SyntaxKind of this member (e.g. SyntaxKind.IncompleteMember) will not
                 // be handled, skip early.
@@ -202,12 +209,10 @@ namespace StyleCop.Analyzers.OrderingRules
 
                     if (compareAccessLevel && currentAccessLevel > previousAccessLevel)
                     {
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(
-                                Descriptor,
-                                NamedTypeHelpers.GetNameOrIdentifierLocation(member),
-                                AccessLevelHelper.GetName(currentAccessLevel),
-                                AccessLevelHelper.GetName(previousAccessLevel)));
+                        context.ReportDiagnostic(Diagnostic.Create(Descriptor,
+                                                                   NamedTypeHelpers.GetNameOrIdentifierLocation(member),
+                                                                   AccessLevelHelper.GetName(currentAccessLevel),
+                                                                   AccessLevelHelper.GetName(previousAccessLevel)));
                     }
                 }
 

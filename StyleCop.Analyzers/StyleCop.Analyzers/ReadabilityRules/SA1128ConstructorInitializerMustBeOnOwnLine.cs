@@ -22,19 +22,31 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1128ConstructorInitializerMustBeOnOwnLine"/>.
         /// </summary>
         public const string DiagnosticId = "SA1128";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1128.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1128Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1128MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1128Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1128.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1128Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1128MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1128Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly Action<SyntaxNodeAnalysisContext> ConstructorDeclarationAction = HandleConstructorDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> ConstructorDeclarationAction =
+            HandleConstructorDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -47,16 +59,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var constructor = (ConstructorDeclarationSyntax)context.Node;
+            var constructor = (ConstructorDeclarationSyntax) context.Node;
             if (constructor.Initializer != null)
             {
                 Analyze(context, constructor);
             }
         }
 
-        private static void Analyze(
-            SyntaxNodeAnalysisContext context,
-            ConstructorDeclarationSyntax constructor)
+        private static void Analyze(SyntaxNodeAnalysisContext context, ConstructorDeclarationSyntax constructor)
         {
             var initializer = constructor.Initializer;
             var colon = initializer.ColonToken;

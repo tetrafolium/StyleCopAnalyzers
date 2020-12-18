@@ -29,8 +29,7 @@ namespace LightJson.Serialization
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonWriter"/> class.
         /// </summary>
-        public JsonWriter()
-            : this(false)
+        public JsonWriter() : this(false)
         {
         }
 
@@ -56,7 +55,11 @@ namespace LightJson.Serialization
         /// <value>
         /// The string representing a indent in the output.
         /// </value>
-        public string IndentString { get; set; }
+        public string IndentString
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the string representing a space in the output.
@@ -64,7 +67,11 @@ namespace LightJson.Serialization
         /// <value>
         /// The string representing a space in the output.
         /// </value>
-        public string SpacingString { get; set; }
+        public string SpacingString
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the string representing a new line on the output.
@@ -72,7 +79,11 @@ namespace LightJson.Serialization
         /// <value>
         /// The string representing a new line on the output.
         /// </value>
-        public string NewLineString { get; set; }
+        public string NewLineString
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether JsonObject properties should be written in a deterministic order.
@@ -80,7 +91,11 @@ namespace LightJson.Serialization
         /// <value>
         /// A value indicating whether JsonObject properties should be written in a deterministic order.
         /// </value>
-        public bool SortObjects { get; set; }
+        public bool SortObjects
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Returns a string representation of the given JsonValue.
@@ -139,12 +154,12 @@ namespace LightJson.Serialization
                 break;
 
             case JsonValueType.Number:
-                this.Write(((double)value).ToString(CultureInfo.InvariantCulture));
+                this.Write(((double) value).ToString(CultureInfo.InvariantCulture));
                 break;
 
             default:
                 Debug.Assert(value.Type == JsonValueType.String, "value.Type == JsonValueType.String");
-                this.WriteEncodedString((string)value);
+                this.WriteEncodedString((string) value);
                 break;
             }
         }
@@ -251,11 +266,11 @@ namespace LightJson.Serialization
                 break;
 
             case JsonValueType.Object:
-                this.Render((JsonObject)value);
+                this.Render((JsonObject) value);
                 break;
 
             case JsonValueType.Array:
-                this.Render((JsonArray)value);
+                this.Render((JsonArray) value);
                 break;
 
             default:
@@ -271,7 +286,7 @@ namespace LightJson.Serialization
 
             this.indent += 1;
 
-            using (var enumerator = value.GetEnumerator())
+            using(var enumerator = value.GetEnumerator())
             {
                 var hasNext = enumerator.MoveNext();
 
@@ -307,7 +322,7 @@ namespace LightJson.Serialization
 
             this.indent += 1;
 
-            using (var enumerator = this.GetJsonObjectEnumerator(value))
+            using(var enumerator = this.GetJsonObjectEnumerator(value))
             {
                 var hasNext = enumerator.MoveNext();
 

@@ -46,7 +46,8 @@ namespace StyleCop.Analyzers.Helpers
             var tupleElements = tupleSymbol.TupleElements();
             if (tupleElements.IsDefault)
             {
-                // If the tuple elements API is not available, the default formatting will produce System.ValueTuple and not the C# tuple format.
+                // If the tuple elements API is not available, the default formatting will produce System.ValueTuple and
+                // not the C# tuple format.
                 return tupleSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
             }
             else
@@ -77,18 +78,15 @@ namespace StyleCop.Analyzers.Helpers
             switch (symbol.Kind)
             {
             case SymbolKind.ArrayType:
-                var arraySymbol = (IArrayTypeSymbol)symbol;
+                var arraySymbol = (IArrayTypeSymbol) symbol;
                 AppendQualifiedSymbolName(builder, arraySymbol.ElementType, GetElementSyntax(type));
-                builder
-                    .Append("[")
-                    .Append(',', arraySymbol.Rank - 1)
-                    .Append("]");
+                builder.Append("[").Append(',', arraySymbol.Rank - 1).Append("]");
 
                 AppendNullableSuffixIfNeeded(builder, type);
                 return true;
 
             case SymbolKind.Namespace:
-                var namespaceSymbol = (INamespaceSymbol)symbol;
+                var namespaceSymbol = (INamespaceSymbol) symbol;
                 if (namespaceSymbol.IsGlobalNamespace)
                 {
                     return false;
@@ -98,11 +96,11 @@ namespace StyleCop.Analyzers.Helpers
                 return true;
 
             case SymbolKind.NamedType:
-                var namedTypeSymbol = (INamedTypeSymbol)symbol;
+                var namedTypeSymbol = (INamedTypeSymbol) symbol;
 
                 if (SpecialTypeHelper.TryGetPredefinedType(namedTypeSymbol.SpecialType, out var specialTypeSyntax) &&
-                    (type?.IsKind(SyntaxKind.PredefinedType) == true
-                    || (type is NullableTypeSyntax nullable && nullable.ElementType.IsKind(SyntaxKind.PredefinedType))))
+                    (type?.IsKind(SyntaxKind.PredefinedType) == true ||
+                     (type is NullableTypeSyntax nullable && nullable.ElementType.IsKind(SyntaxKind.PredefinedType))))
                 {
                     // This handles these cases: int, int?, object, object?
                     // But not these cases: System.Int32, System.Int32?, System.Object, System.Object?
@@ -115,10 +113,12 @@ namespace StyleCop.Analyzers.Helpers
                     return AppendTupleType(builder, namedTypeSymbol, type);
                 }
                 else if (namedTypeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T &&
-                    type?.IsKind(SyntaxKind.NullableType) == true)
+                         type?.IsKind(SyntaxKind.NullableType) == true)
                 {
                     // This handles the case '(int, int)?' but not 'System.Nullable<(int, int)>'
-                    AppendQualifiedSymbolName(builder, namedTypeSymbol.TypeArguments[0], GetElementSyntax(type));
+                    AppendQualifiedSymbolName(builder, namedTypeSymbol.TypeArguments [0]
+                                                       ,
+                                              GetElementSyntax(type));
                     builder.Append("?");
                     return true;
                 }
@@ -151,13 +151,16 @@ namespace StyleCop.Analyzers.Helpers
                 builder.Append(GenericTypeParametersOpen);
                 var arguments = namedTypeSymbol.TypeArguments;
                 var argumentTypes = type is QualifiedNameSyntax qualifiedName
-                    ? (qualifiedName.Right as GenericNameSyntax)?.TypeArgumentList
-                    : (type as GenericNameSyntax)?.TypeArgumentList;
+                    ?(qualifiedName.Right as GenericNameSyntax)
+                                        ?.TypeArgumentList
+                                        : (type as GenericNameSyntax)
+                                        ?.TypeArgumentList;
 
                 for (int i = 0; i < arguments.Length; i++)
                 {
                     var argument = arguments[i];
-                    var argumentType = argumentTypes != null && argumentTypes.Arguments.Count > i ? argumentTypes.Arguments[i] : null;
+                    var argumentType =
+                        argumentTypes != null && argumentTypes.Arguments.Count > i ? argumentTypes.Arguments[i] : null;
 
                     if (i > 0)
                     {
@@ -181,7 +184,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             if (TupleTypeSyntaxWrapper.IsInstance(type))
             {
-                var tupleType = (TupleTypeSyntaxWrapper)type;
+                var tupleType = (TupleTypeSyntaxWrapper) type;
 
                 builder.Append(TupleTypeOpen);
                 var elements = namedTypeSymbol.TupleElements();
@@ -218,14 +221,12 @@ namespace StyleCop.Analyzers.Helpers
             {
                 ArrayTypeSyntax array => array.ElementType,
 
-                NullableTypeSyntax nullable =>
-                    nullable.ElementType switch
-                    {
-                        ArrayTypeSyntax array => array.ElementType,
-                        _ => nullable.ElementType,
-                    },
+                                NullableTypeSyntax nullable => nullable.ElementType switch {
+                                    ArrayTypeSyntax array => array.ElementType,
+                                    _ => nullable.ElementType,
+                                },
 
-                _ => null,
+                                _ => null,
             };
         }
 

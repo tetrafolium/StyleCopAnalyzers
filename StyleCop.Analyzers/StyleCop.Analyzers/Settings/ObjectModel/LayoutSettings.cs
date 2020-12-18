@@ -30,8 +30,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         /// Initializes a new instance of the <see cref="LayoutSettings"/> class.
         /// </summary>
         /// <param name="layoutSettingsObject">The JSON object containing the settings.</param>
-        protected internal LayoutSettings(JsonObject layoutSettingsObject)
-            : this()
+        protected internal LayoutSettings(JsonObject layoutSettingsObject) : this()
         {
             foreach (var kvp in layoutSettingsObject)
             {
@@ -51,10 +50,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public OptionSetting NewlineAtEndOfFile =>
-            this.newlineAtEndOfFile;
+        public OptionSetting NewlineAtEndOfFile => this.newlineAtEndOfFile;
 
-        public bool AllowConsecutiveUsings =>
-            this.allowConsecutiveUsings;
+        public bool AllowConsecutiveUsings => this.allowConsecutiveUsings;
     }
 }

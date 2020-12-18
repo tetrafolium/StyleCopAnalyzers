@@ -32,19 +32,31 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// </summary>
         internal const string ExpectedFileNameKey = "ExpectedFileName";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1649.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(DocumentationResources.SA1649Title), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1649MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1649Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1649.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1649Title),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1649MessageFormat),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1649Description),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings> SyntaxTreeAction = Analyzer.HandleSyntaxTree;
+        private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings> SyntaxTreeAction =
+            Analyzer.HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -67,7 +79,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                     return;
                 }
 
-                var modifiers = (firstTypeDeclaration as BaseTypeDeclarationSyntax)?.Modifiers ?? SyntaxFactory.TokenList();
+                var modifiers =
+                    (firstTypeDeclaration as BaseTypeDeclarationSyntax) ?.Modifiers ?? SyntaxFactory.TokenList();
                 if (modifiers.Any(SyntaxKind.PartialKeyword))
                 {
                     return;
@@ -75,21 +88,24 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                 string suffix;
                 var fileName = FileNameHelpers.GetFileNameAndSuffix(context.Tree.FilePath, out suffix);
-                var expectedFileName = FileNameHelpers.GetConventionalFileName(firstTypeDeclaration, settings.DocumentationRules.FileNamingConvention);
+                var expectedFileName = FileNameHelpers.GetConventionalFileName(
+                    firstTypeDeclaration, settings.DocumentationRules.FileNamingConvention);
 
                 if (string.Compare(fileName, expectedFileName, StringComparison.OrdinalIgnoreCase) != 0)
                 {
-                    if (settings.DocumentationRules.FileNamingConvention == FileNamingConvention.StyleCop
-                        && string.Compare(fileName, FileNameHelpers.GetSimpleFileName(firstTypeDeclaration), StringComparison.OrdinalIgnoreCase) == 0)
+                    if (settings.DocumentationRules.FileNamingConvention == FileNamingConvention.StyleCop &&
+                        string.Compare(fileName, FileNameHelpers.GetSimpleFileName(firstTypeDeclaration),
+                                       StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         return;
                     }
 
-                    var properties = ImmutableDictionary.Create<string, string>()
-                        .Add(ExpectedFileNameKey, expectedFileName + suffix);
+                    var properties = ImmutableDictionary.Create<string, string>().Add(ExpectedFileNameKey,
+                                                                                      expectedFileName + suffix);
 
-                    var identifier = (firstTypeDeclaration as BaseTypeDeclarationSyntax)?.Identifier
-                        ?? ((DelegateDeclarationSyntax)firstTypeDeclaration).Identifier;
+                    var identifier = (firstTypeDeclaration as BaseTypeDeclarationSyntax)
+                        ?.Identifier
+                        ??((DelegateDeclarationSyntax) firstTypeDeclaration).Identifier;
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, identifier.GetLocation(), properties));
                 }
             }
@@ -97,16 +113,22 @@ namespace StyleCop.Analyzers.DocumentationRules
             private static MemberDeclarationSyntax GetFirstTypeDeclaration(SyntaxNode root)
             {
                 // Prefer to find the first type which is a true TypeDeclarationSyntax
-                MemberDeclarationSyntax firstTypeDeclaration = root.DescendantNodes(descendIntoChildren: node => node.IsKind(SyntaxKind.CompilationUnit) || node.IsKind(SyntaxKind.NamespaceDeclaration))
-                    .OfType<TypeDeclarationSyntax>()
-                    .FirstOrDefault();
+                MemberDeclarationSyntax firstTypeDeclaration =
+                    root.DescendantNodes(descendIntoChildren
+                                         : node => node.IsKind(SyntaxKind.CompilationUnit) ||
+                                                   node.IsKind(SyntaxKind.NamespaceDeclaration))
+                        .OfType<TypeDeclarationSyntax>()
+                        .FirstOrDefault();
 
                 // If no TypeDeclarationSyntax is found, expand the search to any type declaration as long as only one
                 // is present
-                var expandedTypeDeclarations = root.DescendantNodes(descendIntoChildren: node => node.IsKind(SyntaxKind.CompilationUnit) || node.IsKind(SyntaxKind.NamespaceDeclaration))
-                    .OfType<MemberDeclarationSyntax>()
-                    .Where(node => node is BaseTypeDeclarationSyntax || node.IsKind(SyntaxKind.DelegateDeclaration))
-                    .ToList();
+                var expandedTypeDeclarations =
+                    root.DescendantNodes(descendIntoChildren
+                                         : node => node.IsKind(SyntaxKind.CompilationUnit) ||
+                                                   node.IsKind(SyntaxKind.NamespaceDeclaration))
+                        .OfType<MemberDeclarationSyntax>()
+                        .Where(node => node is BaseTypeDeclarationSyntax || node.IsKind(SyntaxKind.DelegateDeclaration))
+                        .ToList();
                 if (expandedTypeDeclarations.Count == 1)
                 {
                     firstTypeDeclaration = expandedTypeDeclarations[0];

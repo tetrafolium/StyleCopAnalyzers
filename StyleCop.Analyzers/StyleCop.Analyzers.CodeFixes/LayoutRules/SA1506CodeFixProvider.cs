@@ -21,8 +21,11 @@ namespace StyleCop.Analyzers.LayoutRules
     internal class SA1506CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1506ElementDocumentationHeadersMustNotBeFollowedByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1506ElementDocumentationHeadersMustNotBeFollowedByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,18 +38,18 @@ namespace StyleCop.Analyzers.LayoutRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        LayoutResources.SA1506CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1506CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(LayoutResources.SA1506CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1506CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
@@ -59,7 +62,8 @@ namespace StyleCop.Analyzers.LayoutRules
             bool onBlankLine = true;
             for (int currentIndex = currentLineStart; currentIndex < triviaList.Count; currentIndex++)
             {
-                switch (triviaList[currentIndex].Kind())
+                switch (triviaList [currentIndex]
+                            .Kind())
                 {
                 case SyntaxKind.EndOfLineTrivia:
                     if (onBlankLine)
@@ -79,7 +83,8 @@ namespace StyleCop.Analyzers.LayoutRules
                     break;
 
                 default:
-                    if (triviaList[currentIndex].HasBuiltinEndLine())
+                    if (triviaList [currentIndex]
+                            .HasBuiltinEndLine())
                     {
                         currentLineStart = currentIndex + 1;
                         onBlankLine = true;

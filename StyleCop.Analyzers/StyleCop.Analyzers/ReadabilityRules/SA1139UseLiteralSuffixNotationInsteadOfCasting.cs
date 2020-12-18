@@ -20,22 +20,35 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1139UseLiteralSuffixNotationInsteadOfCasting : DiagnosticAnalyzer
     {
         /// <summary>
-        /// The ID for diagnostics produced by the <see cref="SA1139UseLiteralSuffixNotationInsteadOfCasting"/> analyzer.
+        /// The ID for diagnostics produced by the <see cref="SA1139UseLiteralSuffixNotationInsteadOfCasting"/>
+        /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1139";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1139.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1139Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1139MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1139Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1139.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1139Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1139MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1139Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
         private static readonly Action<CompilationStartAnalysisContext> CompilationStartAction = HandleCompilationStart;
         private static readonly Action<SyntaxNodeAnalysisContext> CastExpressionAction = HandleCastExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -52,26 +65,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleCastExpression(SyntaxNodeAnalysisContext context)
         {
-            var castExpressionSyntax = (CastExpressionSyntax)context.Node;
+            var castExpressionSyntax = (CastExpressionSyntax) context.Node;
 
             if (!(castExpressionSyntax.Type is PredefinedTypeSyntax castingToTypeSyntax))
             {
                 return;
             }
 
-            var unaryExpressionSyntax = castExpressionSyntax.Expression.WalkDownParentheses() as PrefixUnaryExpressionSyntax;
+            var unaryExpressionSyntax =
+                castExpressionSyntax.Expression.WalkDownParentheses() as PrefixUnaryExpressionSyntax;
             if (unaryExpressionSyntax != null)
             {
-                if (unaryExpressionSyntax.Kind() != SyntaxKind.UnaryPlusExpression
-                    && unaryExpressionSyntax.Kind() != SyntaxKind.UnaryMinusExpression)
+                if (unaryExpressionSyntax.Kind() != SyntaxKind.UnaryPlusExpression &&
+                    unaryExpressionSyntax.Kind() != SyntaxKind.UnaryMinusExpression)
                 {
-                    // don't report diagnostic if bit operations are performed and for some invalid code (eg. "(long)++1")
+                    // don't report diagnostic if bit operations are performed and for some invalid code (eg.
+                    // "(long)++1")
                     return;
                 }
             }
 
             var castedElementTypeSyntax = unaryExpressionSyntax == null
-                ? castExpressionSyntax.Expression.WalkDownParentheses() as LiteralExpressionSyntax
+                ? castExpressionSyntax.Expression
+                                                                       .WalkDownParentheses() as LiteralExpressionSyntax
                 : unaryExpressionSyntax.Operand.WalkDownParentheses() as LiteralExpressionSyntax;
 
             if (castedElementTypeSyntax == null)
@@ -80,8 +96,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
 
             var syntaxKindKeyword = castingToTypeSyntax.Keyword.Kind();
-            if (!SyntaxKinds.IntegerLiteralKeyword.Contains(syntaxKindKeyword)
-                && !SyntaxKinds.RealLiteralKeyword.Contains(syntaxKindKeyword))
+            if (!SyntaxKinds.IntegerLiteralKeyword.Contains(syntaxKindKeyword) &&
+                !SyntaxKinds.RealLiteralKeyword.Contains(syntaxKindKeyword))
             {
                 return;
             }
@@ -110,8 +126,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return;
             }
 
-            var speculativeExpression = castExpressionSyntax.Expression.ReplaceNode(castedElementTypeSyntax, castedElementTypeSyntax.WithLiteralSuffix(syntaxKindKeyword));
-            var speculativeTypeInfo = context.SemanticModel.GetSpeculativeTypeInfo(castExpressionSyntax.SpanStart, speculativeExpression, SpeculativeBindingOption.BindAsExpression);
+            var speculativeExpression = castExpressionSyntax.Expression.ReplaceNode(
+                castedElementTypeSyntax, castedElementTypeSyntax.WithLiteralSuffix(syntaxKindKeyword));
+            var speculativeTypeInfo = context.SemanticModel.GetSpeculativeTypeInfo(
+                castExpressionSyntax.SpanStart, speculativeExpression, SpeculativeBindingOption.BindAsExpression);
             if (!targetType.Equals(speculativeTypeInfo.Type))
             {
                 // Suffix notation would change the type of the expression

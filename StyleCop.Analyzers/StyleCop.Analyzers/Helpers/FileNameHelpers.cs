@@ -27,7 +27,8 @@ namespace StyleCop.Analyzers.Helpers
             return fileName;
         }
 
-        internal static string GetConventionalFileName(MemberDeclarationSyntax declaration, FileNamingConvention convention)
+        internal static string GetConventionalFileName(MemberDeclarationSyntax declaration,
+                                                       FileNamingConvention convention)
         {
             if (declaration is TypeDeclarationSyntax typeDeclaration)
             {
@@ -62,7 +63,8 @@ namespace StyleCop.Analyzers.Helpers
 
         private static string GetStyleCopFileName(TypeDeclarationSyntax typeDeclaration)
         {
-            var typeParameterList = string.Join(",", typeDeclaration.TypeParameterList.Parameters.Select(p => p.Identifier.ValueText));
+            var typeParameterList =
+                string.Join(",", typeDeclaration.TypeParameterList.Parameters.Select(p => p.Identifier.ValueText));
             return $"{typeDeclaration.Identifier.ValueText}{{{typeParameterList}}}";
         }
     }

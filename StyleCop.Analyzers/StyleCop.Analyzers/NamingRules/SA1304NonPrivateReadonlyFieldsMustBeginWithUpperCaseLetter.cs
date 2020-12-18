@@ -33,19 +33,27 @@ namespace StyleCop.Analyzers.NamingRules
         /// <see cref="SA1304NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1304";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1304.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(NamingResources.SA1304Title), NamingResources.ResourceManager, typeof(NamingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1304MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1304Description), NamingResources.ResourceManager, typeof(NamingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1304.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(NamingResources.SA1304Title), NamingResources.ResourceManager, typeof(NamingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(NamingResources.SA1304MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(NamingResources.SA1304Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction = HandleFieldDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -58,7 +66,7 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax)context.Node;
+            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax) context.Node;
             if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax))
             {
                 return;
@@ -70,9 +78,8 @@ namespace StyleCop.Analyzers.NamingRules
                 return;
             }
 
-            if (!syntax.Modifiers.Any(SyntaxKind.PublicKeyword)
-                && !syntax.Modifiers.Any(SyntaxKind.ProtectedKeyword)
-                && !syntax.Modifiers.Any(SyntaxKind.InternalKeyword))
+            if (!syntax.Modifiers.Any(SyntaxKind.PublicKeyword) && !syntax.Modifiers.Any(SyntaxKind.ProtectedKeyword) &&
+                !syntax.Modifiers.Any(SyntaxKind.InternalKeyword))
             {
                 // this analyzer only applies to non-private fields
                 return;

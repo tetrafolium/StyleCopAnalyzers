@@ -25,8 +25,11 @@ namespace StyleCop.Analyzers.SpacingRules
     internal class SA1028CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1028CodeMustNotContainTrailingWhitespace.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1028CodeMustNotContainTrailingWhitespace.DiagnosticId);
 
         /// <inheritdoc/>
         public sealed override FixAllProvider GetFixAllProvider()
@@ -39,12 +42,10 @@ namespace StyleCop.Analyzers.SpacingRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        SpacingResources.SA1028CodeFix,
-                        ct => RemoveWhitespaceAsync(context.Document, diagnostic, ct),
-                        nameof(SA1028CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(SpacingResources.SA1028CodeFix,
+                                                          ct => RemoveWhitespaceAsync(context.Document, diagnostic, ct),
+                                                          nameof(SA1028CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
@@ -57,7 +58,8 @@ namespace StyleCop.Analyzers.SpacingRules
         /// <param name="diagnostic">The diagnostic to fix.</param>
         /// <param name="cancellationToken">The cancellation token associated with the fix action.</param>
         /// <returns>The transformed document.</returns>
-        private static async Task<Document> RemoveWhitespaceAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> RemoveWhitespaceAsync(Document document, Diagnostic diagnostic,
+                                                                  CancellationToken cancellationToken)
         {
             var text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
             return document.WithText(text.WithChanges(new TextChange(diagnostic.Location.SourceSpan, string.Empty)));
@@ -65,13 +67,17 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                SpacingResources.SA1028CodeFix;
+            protected override string CodeActionTitle => SpacingResources.SA1028CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {

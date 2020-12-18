@@ -17,8 +17,8 @@ namespace StyleCop.Analyzers.NamingRules
     /// <remarks>
     /// <para>A violation of this rule occurs when the name of a field begins with an upper-case letter. Constants,
     /// non-private readonly fields and static readonly fields should always start with an uppercase letter, whilst
-    /// private readonly fields should start with a lowercase letter. Also, public or internal fields should always start
-    /// with an uppercase letter.</para>
+    /// private readonly fields should start with a lowercase letter. Also, public or internal fields should always
+    /// start with an uppercase letter.</para>
     ///
     /// <para>If the field name is intended to match the name of an item associated with Win32 or COM, and thus needs to
     /// begin with an upper-case letter, place the field within a special <c>NativeMethods</c> class. A
@@ -33,19 +33,27 @@ namespace StyleCop.Analyzers.NamingRules
         /// The ID for diagnostics produced by the <see cref="SA1306FieldNamesMustBeginWithLowerCaseLetter"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1306";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1306.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(NamingResources.SA1306Title), NamingResources.ResourceManager, typeof(NamingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1306MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1306Description), NamingResources.ResourceManager, typeof(NamingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1306.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(NamingResources.SA1306Title), NamingResources.ResourceManager, typeof(NamingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(NamingResources.SA1306MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(NamingResources.SA1306Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction = HandleFieldDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -58,7 +66,7 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax)context.Node;
+            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax) context.Node;
             if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax))
             {
                 return;
@@ -70,22 +78,19 @@ namespace StyleCop.Analyzers.NamingRules
                 return;
             }
 
-            if (syntax.Modifiers.Any(SyntaxKind.PublicKeyword)
-                || syntax.Modifiers.Any(SyntaxKind.InternalKeyword))
+            if (syntax.Modifiers.Any(SyntaxKind.PublicKeyword) || syntax.Modifiers.Any(SyntaxKind.InternalKeyword))
             {
                 // this diagnostic does not apply to public or internal read only fields
                 return;
             }
 
-            if (syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword)
-                && syntax.Modifiers.Any(SyntaxKind.ProtectedKeyword))
+            if (syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword) && syntax.Modifiers.Any(SyntaxKind.ProtectedKeyword))
             {
                 // this diagnostic does not apply to non-private read only fields
                 return;
             }
 
-            if (syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword)
-                && syntax.Modifiers.Any(SyntaxKind.StaticKeyword))
+            if (syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword) && syntax.Modifiers.Any(SyntaxKind.StaticKeyword))
             {
                 // this diagnostic does not apply to static read only fields
                 return;

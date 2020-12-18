@@ -39,16 +39,22 @@ namespace StyleCop.Analyzers.SpacingRules
         /// The ID for diagnostics produced by the <see cref="SA1000KeywordsMustBeSpacedCorrectly"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1000";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1000.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(SpacingResources.SA1000Title), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1000MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1000Description), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1000.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(SpacingResources.SA1000Title), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(SpacingResources.SA1000MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(SpacingResources.SA1000Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
-        private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction = HandleInvocationExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction =
+            HandleInvocationExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> IdentifierNameAction = HandleIdentifierName;
         private static readonly ReportDiagnosticCallback<SyntaxTreeAnalysisContext> ReportSyntaxTreeDiagnostic =
             (ref SyntaxTreeAnalysisContext context, Diagnostic diagnostic) => context.ReportDiagnostic(diagnostic);
@@ -59,8 +65,11 @@ namespace StyleCop.Analyzers.SpacingRules
         private delegate void ReportDiagnosticCallback<TContext>(ref TContext context, Diagnostic diagnostic);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -161,7 +170,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
         {
-            InvocationExpressionSyntax invocationExpressionSyntax = (InvocationExpressionSyntax)context.Node;
+            InvocationExpressionSyntax invocationExpressionSyntax = (InvocationExpressionSyntax) context.Node;
             if (!(invocationExpressionSyntax.Expression is IdentifierNameSyntax identifierNameSyntax))
             {
                 return;
@@ -177,7 +186,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 return;
             }
 
-            var constantValue = context.SemanticModel.GetConstantValue(invocationExpressionSyntax, context.CancellationToken);
+            var constantValue =
+                context.SemanticModel.GetConstantValue(invocationExpressionSyntax, context.CancellationToken);
             if (constantValue.HasValue && !string.IsNullOrEmpty(constantValue.Value as string))
             {
                 // this is a nameof expression
@@ -187,7 +197,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleIdentifierName(SyntaxNodeAnalysisContext context)
         {
-            var identifierNameSyntax = (IdentifierNameSyntax)context.Node;
+            var identifierNameSyntax = (IdentifierNameSyntax) context.Node;
             if (identifierNameSyntax.IsVar)
             {
                 var nextToken = identifierNameSyntax.Identifier.GetNextToken();
@@ -218,13 +228,14 @@ namespace StyleCop.Analyzers.SpacingRules
             }
         }
 
-        private static void HandleRequiredSpaceToken(ref SyntaxTreeAnalysisContext context, SyntaxToken token)
-            => HandleRequiredSpaceToken(ReportSyntaxTreeDiagnostic, ref context, token);
+        private static void HandleRequiredSpaceToken(ref SyntaxTreeAnalysisContext context, SyntaxToken token) =>
+            HandleRequiredSpaceToken(ReportSyntaxTreeDiagnostic, ref context, token);
 
-        private static void HandleRequiredSpaceToken(ref SyntaxNodeAnalysisContext context, SyntaxToken token)
-            => HandleRequiredSpaceToken(ReportSyntaxNodeDiagnostic, ref context, token);
+        private static void HandleRequiredSpaceToken(ref SyntaxNodeAnalysisContext context, SyntaxToken token) =>
+            HandleRequiredSpaceToken(ReportSyntaxNodeDiagnostic, ref context, token);
 
-        private static void HandleRequiredSpaceToken<TContext>(ReportDiagnosticCallback<TContext> reportDiagnostic, ref TContext context, SyntaxToken token)
+        private static void HandleRequiredSpaceToken<TContext>(ReportDiagnosticCallback<TContext> reportDiagnostic,
+                                                               ref TContext context, SyntaxToken token)
         {
             if (token.IsMissing)
             {
@@ -244,16 +255,19 @@ namespace StyleCop.Analyzers.SpacingRules
                 }
             }
 
-            reportDiagnostic(ref context, Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.InsertFollowing, token.Text, string.Empty));
+            reportDiagnostic(ref context,
+                             Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.InsertFollowing,
+                                               token.Text, string.Empty));
         }
 
-        private static void HandleDisallowedSpaceToken(ref SyntaxTreeAnalysisContext context, SyntaxToken token)
-            => HandleDisallowedSpaceToken(ReportSyntaxTreeDiagnostic, ref context, token);
+        private static void HandleDisallowedSpaceToken(ref SyntaxTreeAnalysisContext context, SyntaxToken token) =>
+            HandleDisallowedSpaceToken(ReportSyntaxTreeDiagnostic, ref context, token);
 
-        private static void HandleDisallowedSpaceToken(ref SyntaxNodeAnalysisContext context, SyntaxToken token)
-            => HandleDisallowedSpaceToken(ReportSyntaxNodeDiagnostic, ref context, token);
+        private static void HandleDisallowedSpaceToken(ref SyntaxNodeAnalysisContext context, SyntaxToken token) =>
+            HandleDisallowedSpaceToken(ReportSyntaxNodeDiagnostic, ref context, token);
 
-        private static void HandleDisallowedSpaceToken<TContext>(ReportDiagnosticCallback<TContext> reportDiagnostic, ref TContext context, SyntaxToken token)
+        private static void HandleDisallowedSpaceToken<TContext>(ReportDiagnosticCallback<TContext> reportDiagnostic,
+                                                                 ref TContext context, SyntaxToken token)
         {
             if (token.IsMissing || !token.HasTrailingTrivia)
             {
@@ -265,7 +279,9 @@ namespace StyleCop.Analyzers.SpacingRules
                 return;
             }
 
-            reportDiagnostic(ref context, Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemoveFollowing, token.Text, " not"));
+            reportDiagnostic(ref context,
+                             Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemoveFollowing,
+                                               token.Text, " not"));
         }
 
         private static void HandleNewOrStackAllocKeywordToken(ref SyntaxTreeAnalysisContext context, SyntaxToken token)
@@ -280,8 +296,8 @@ namespace StyleCop.Analyzers.SpacingRules
             switch (nextToken.Kind())
             {
             case SyntaxKind.OpenBracketToken:
-                if (token.Parent.IsKind(SyntaxKind.ImplicitArrayCreationExpression)
-                    || token.Parent.IsKind(SyntaxKindEx.ImplicitStackAllocArrayCreationExpression))
+                if (token.Parent.IsKind(SyntaxKind.ImplicitArrayCreationExpression) ||
+                    token.Parent.IsKind(SyntaxKindEx.ImplicitStackAllocArrayCreationExpression))
                 {
                     // This is handled by SA1026
                     return;
@@ -293,8 +309,8 @@ namespace StyleCop.Analyzers.SpacingRules
 
             case SyntaxKind.OpenParenToken:
                 // Disallowed for new() constraint, but otherwise allowed for tuple types
-                needSpace = !token.Parent.IsKind(SyntaxKind.ConstructorConstraint)
-                    && !token.Parent.IsKind(SyntaxKindEx.ImplicitObjectCreationExpression);
+                needSpace = !token.Parent.IsKind(SyntaxKind.ConstructorConstraint) &&
+                            !token.Parent.IsKind(SyntaxKindEx.ImplicitObjectCreationExpression);
                 break;
 
             default:

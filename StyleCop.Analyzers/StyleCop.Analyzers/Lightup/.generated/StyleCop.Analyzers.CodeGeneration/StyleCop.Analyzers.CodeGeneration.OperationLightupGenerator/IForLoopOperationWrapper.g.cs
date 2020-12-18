@@ -19,10 +19,16 @@ namespace StyleCop.Analyzers.Lightup
         static IForLoopOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IForLoopOperationWrapper));
-            BeforeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Before));
-            ConditionLocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(ConditionLocals));
-            ConditionAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Condition));
-            AtLoopBottomAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(AtLoopBottom));
+            BeforeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                WrappedType, nameof(Before));
+            ConditionLocalsAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                    WrappedType, nameof(ConditionLocals));
+            ConditionAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Condition));
+            AtLoopBottomAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                    WrappedType, nameof(AtLoopBottom));
         }
 
         private IForLoopOperationWrapper(IOperation operation)
@@ -36,13 +42,15 @@ namespace StyleCop.Analyzers.Lightup
         public ImmutableArray<ILocalSymbol> ConditionLocals => ConditionLocalsAccessor(this.WrappedOperation);
         public IOperation Condition => ConditionAccessor(this.WrappedOperation);
         public ImmutableArray<IOperation> AtLoopBottom => AtLoopBottomAccessor(this.WrappedOperation);
-        public object LoopKind => ((ILoopOperationWrapper)this).LoopKind;
-        public IOperation Body => ((ILoopOperationWrapper)this).Body;
-        public ImmutableArray<ILocalSymbol> Locals => ((ILoopOperationWrapper)this).Locals;
-        public ILabelSymbol ContinueLabel => ((ILoopOperationWrapper)this).ContinueLabel;
-        public ILabelSymbol ExitLabel => ((ILoopOperationWrapper)this).ExitLabel;
-        public static explicit operator IForLoopOperationWrapper(ILoopOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ILoopOperationWrapper(IForLoopOperationWrapper wrapper) => ILoopOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public object LoopKind =>((ILoopOperationWrapper) this).LoopKind;
+        public IOperation Body =>((ILoopOperationWrapper) this).Body;
+        public ImmutableArray<ILocalSymbol> Locals =>((ILoopOperationWrapper) this).Locals;
+        public ILabelSymbol ContinueLabel =>((ILoopOperationWrapper) this).ContinueLabel;
+        public ILabelSymbol ExitLabel =>((ILoopOperationWrapper) this).ExitLabel;
+        public static explicit operator IForLoopOperationWrapper(ILoopOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ILoopOperationWrapper(IForLoopOperationWrapper wrapper) =>
+            ILoopOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IForLoopOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

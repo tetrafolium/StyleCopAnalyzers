@@ -7,9 +7,11 @@ namespace StyleCop.Analyzers.Lightup
 
     internal partial struct ParenthesizedVariableDesignationSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
     {
-        public ParenthesizedVariableDesignationSyntaxWrapper AddVariables(params VariableDesignationSyntaxWrapper[] items)
+        public ParenthesizedVariableDesignationSyntaxWrapper AddVariables(
+            params VariableDesignationSyntaxWrapper[] items)
         {
-            return new ParenthesizedVariableDesignationSyntaxWrapper(this.WithVariables(this.Variables.AddRange(items)));
+            return new ParenthesizedVariableDesignationSyntaxWrapper(
+                this.WithVariables(this.Variables.AddRange(items)));
         }
     }
 }

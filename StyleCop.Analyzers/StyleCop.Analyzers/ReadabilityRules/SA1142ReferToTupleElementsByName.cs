@@ -21,18 +21,33 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </summary>
         public const string DiagnosticId = "SA1142";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1142.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1142Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1142MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1142Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1142.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1142Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1142MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1142Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly Action<OperationAnalysisContext> FieldReferenceOperationAction = HandleFieldReferenceOperation;
-        private static readonly Action<SyntaxNodeAnalysisContext> SimpleMemberAccessExpressionAction = HandleSimpleMemberAccessExpression;
+        private static readonly Action<OperationAnalysisContext> FieldReferenceOperationAction =
+            HandleFieldReferenceOperation;
+        private static readonly Action<SyntaxNodeAnalysisContext> SimpleMemberAccessExpressionAction =
+            HandleSimpleMemberAccessExpression;
 
-        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -46,7 +61,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
             else
             {
-                context.RegisterSyntaxNodeAction(SimpleMemberAccessExpressionAction, SyntaxKind.SimpleMemberAccessExpression);
+                context.RegisterSyntaxNodeAction(SimpleMemberAccessExpressionAction,
+                                                 SyntaxKind.SimpleMemberAccessExpression);
             }
         }
 
@@ -61,8 +77,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             if (CheckFieldName(fieldReference.Field))
             {
-                var location = fieldReference.WrappedOperation.Syntax is MemberAccessExpressionSyntax memberAccessExpression
-                    ? memberAccessExpression.Name.GetLocation()
+                var location = fieldReference.WrappedOperation
+                                   .Syntax is MemberAccessExpressionSyntax memberAccessExpression
+                    ?
+                                       memberAccessExpression.Name.GetLocation()
                     : fieldReference.WrappedOperation.Syntax.GetLocation();
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
             }
@@ -75,7 +93,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return;
             }
 
-            var memberAccessExpression = (MemberAccessExpressionSyntax)context.Node;
+            var memberAccessExpression = (MemberAccessExpressionSyntax) context.Node;
 
             if (!(context.SemanticModel.GetSymbolInfo(memberAccessExpression).Symbol is IFieldSymbol fieldSymbol))
             {
@@ -102,7 +120,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
 
             // check if there is a tuple field name declared.
-            return fieldSymbol.ContainingType.GetMembers().OfType<IFieldSymbol>().Count(fs => Equals(fs.CorrespondingTupleField(), fieldSymbol)) > 1;
+            return fieldSymbol.ContainingType.GetMembers().OfType<IFieldSymbol>().Count(
+                       fs => Equals(fs.CorrespondingTupleField(), fieldSymbol)) > 1;
         }
     }
 }

@@ -10,12 +10,17 @@ namespace StyleCop.Analyzers.Lightup
     internal static class StatementSyntaxExtensions
     {
         private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>> AttributeListsAccessor;
-        private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax> WithAttributeListsAccessor;
+        private static readonly Func<StatementSyntax, SyntaxList<AttributeListSyntax>, StatementSyntax>
+            WithAttributeListsAccessor;
 
         static StatementSyntaxExtensions()
         {
-            AttributeListsAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax, SyntaxList<AttributeListSyntax>>(typeof(StatementSyntax), nameof(AttributeLists));
-            WithAttributeListsAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxList<AttributeListSyntax>>(typeof(StatementSyntax), nameof(AttributeLists));
+            AttributeListsAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<StatementSyntax, SyntaxList<AttributeListSyntax>>(
+                    typeof(StatementSyntax), nameof(AttributeLists));
+            WithAttributeListsAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<StatementSyntax, SyntaxList<AttributeListSyntax>>(
+                    typeof(StatementSyntax), nameof(AttributeLists));
         }
 
         public static SyntaxList<AttributeListSyntax> AttributeLists(this StatementSyntax syntax)
@@ -23,7 +28,8 @@ namespace StyleCop.Analyzers.Lightup
             return AttributeListsAccessor(syntax);
         }
 
-        public static StatementSyntax WithAttributeLists(this StatementSyntax syntax, SyntaxList<AttributeListSyntax> attributeLists)
+        public static StatementSyntax WithAttributeLists(this StatementSyntax syntax,
+                                                         SyntaxList<AttributeListSyntax> attributeLists)
         {
             return WithAttributeListsAccessor(syntax, attributeLists);
         }

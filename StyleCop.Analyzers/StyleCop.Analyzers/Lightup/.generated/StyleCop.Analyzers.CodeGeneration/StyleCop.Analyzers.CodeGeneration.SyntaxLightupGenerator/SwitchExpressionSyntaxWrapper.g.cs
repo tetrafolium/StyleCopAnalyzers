@@ -17,12 +17,15 @@ namespace StyleCop.Analyzers.Lightup
         private static readonly Func<ExpressionSyntax, ExpressionSyntax> GoverningExpressionAccessor;
         private static readonly Func<ExpressionSyntax, SyntaxToken> SwitchKeywordAccessor;
         private static readonly Func<ExpressionSyntax, SyntaxToken> OpenBraceTokenAccessor;
-        private static readonly Func<ExpressionSyntax, SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>> ArmsAccessor;
+        private static readonly Func<ExpressionSyntax, SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>>
+            ArmsAccessor;
         private static readonly Func<ExpressionSyntax, SyntaxToken> CloseBraceTokenAccessor;
-        private static readonly Func<ExpressionSyntax, ExpressionSyntax, ExpressionSyntax> WithGoverningExpressionAccessor;
+        private static readonly Func<ExpressionSyntax, ExpressionSyntax, ExpressionSyntax>
+            WithGoverningExpressionAccessor;
         private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax> WithSwitchKeywordAccessor;
         private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax> WithOpenBraceTokenAccessor;
-        private static readonly Func<ExpressionSyntax, SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>, ExpressionSyntax> WithArmsAccessor;
+        private static readonly Func<ExpressionSyntax, SeparatedSyntaxListWrapper<SwitchExpressionArmSyntaxWrapper>,
+                                     ExpressionSyntax> WithArmsAccessor;
         private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax> WithCloseBraceTokenAccessor;
 
         private readonly ExpressionSyntax node;
@@ -30,16 +33,33 @@ namespace StyleCop.Analyzers.Lightup
         static SwitchExpressionSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(SwitchExpressionSyntaxWrapper));
-            GoverningExpressionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(GoverningExpression));
-            SwitchKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(WrappedType, nameof(SwitchKeyword));
-            OpenBraceTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(WrappedType, nameof(OpenBraceToken));
-            ArmsAccessor = LightupHelpers.CreateSeparatedSyntaxListPropertyAccessor<ExpressionSyntax, SwitchExpressionArmSyntaxWrapper>(WrappedType, nameof(Arms));
-            CloseBraceTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(WrappedType, nameof(CloseBraceToken));
-            WithGoverningExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(WrappedType, nameof(GoverningExpression));
-            WithSwitchKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(WrappedType, nameof(SwitchKeyword));
-            WithOpenBraceTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(WrappedType, nameof(OpenBraceToken));
-            WithArmsAccessor = LightupHelpers.CreateSeparatedSyntaxListWithPropertyAccessor<ExpressionSyntax, SwitchExpressionArmSyntaxWrapper>(WrappedType, nameof(Arms));
-            WithCloseBraceTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(WrappedType, nameof(CloseBraceToken));
+            GoverningExpressionAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                    WrappedType, nameof(GoverningExpression));
+            SwitchKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                WrappedType, nameof(SwitchKeyword));
+            OpenBraceTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                WrappedType, nameof(OpenBraceToken));
+            ArmsAccessor =
+                LightupHelpers
+                    .CreateSeparatedSyntaxListPropertyAccessor<ExpressionSyntax, SwitchExpressionArmSyntaxWrapper>(
+                        WrappedType, nameof(Arms));
+            CloseBraceTokenAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                WrappedType, nameof(CloseBraceToken));
+            WithGoverningExpressionAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, ExpressionSyntax>(
+                    WrappedType, nameof(GoverningExpression));
+            WithSwitchKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                WrappedType, nameof(SwitchKeyword));
+            WithOpenBraceTokenAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(
+                WrappedType, nameof(OpenBraceToken));
+            WithArmsAccessor =
+                LightupHelpers
+                    .CreateSeparatedSyntaxListWithPropertyAccessor<ExpressionSyntax, SwitchExpressionArmSyntaxWrapper>(
+                        WrappedType, nameof(Arms));
+            WithCloseBraceTokenAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, SyntaxToken>(WrappedType,
+                                                                                               nameof(CloseBraceToken));
         }
 
         private SwitchExpressionSyntaxWrapper(ExpressionSyntax node)
@@ -101,7 +121,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new SwitchExpressionSyntaxWrapper((ExpressionSyntax)node);
+            return new SwitchExpressionSyntaxWrapper((ExpressionSyntax) node);
         }
 
         public static implicit operator ExpressionSyntax(SwitchExpressionSyntaxWrapper wrapper)
@@ -116,7 +136,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public SwitchExpressionSyntaxWrapper WithGoverningExpression(ExpressionSyntax governingExpression)
         {
-            return new SwitchExpressionSyntaxWrapper(WithGoverningExpressionAccessor(this.SyntaxNode, governingExpression));
+            return new SwitchExpressionSyntaxWrapper(
+                WithGoverningExpressionAccessor(this.SyntaxNode, governingExpression));
         }
 
         public SwitchExpressionSyntaxWrapper WithSwitchKeyword(SyntaxToken switchKeyword)

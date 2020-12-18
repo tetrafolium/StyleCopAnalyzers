@@ -26,19 +26,30 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1107";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1107.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1107Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1107MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1107Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1107.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1107Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1107MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1107Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BlockAction = HandleBlock;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -51,7 +62,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBlock(SyntaxNodeAnalysisContext context)
         {
-            var block = (BlockSyntax)context.Node;
+            var block = (BlockSyntax) context.Node;
 
             if (block.Statements.Any())
             {
@@ -64,11 +75,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     var currentStatement = block.Statements[i];
                     currentStatementLocation = currentStatement.GetLineSpan();
 
-                    if (previousStatementLocation.EndLinePosition.Line
-                        == currentStatementLocation.StartLinePosition.Line
-                        && !IsLastTokenMissing(previousStatement))
+                    if (previousStatementLocation.EndLinePosition.Line ==
+                            currentStatementLocation.StartLinePosition.Line &&
+                        !IsLastTokenMissing(previousStatement))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, block.Statements[i].GetLocation()));
+                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, block
+                                                                                   .Statements [i]
+                                                                                   .GetLocation()));
                     }
 
                     previousStatementLocation = currentStatementLocation;
@@ -79,7 +92,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static bool IsLastTokenMissing(StatementSyntax previousStatement)
         {
-            return previousStatement.GetLastToken(includeZeroWidth: true, includeSkipped: true).IsMissing;
+            return previousStatement.GetLastToken(includeZeroWidth : true, includeSkipped : true).IsMissing;
         }
     }
 }

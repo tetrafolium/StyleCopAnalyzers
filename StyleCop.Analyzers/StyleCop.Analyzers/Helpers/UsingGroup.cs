@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Using directive group type definitions.
     /// </summary>
-    internal enum UsingGroup
-    {
+    internal enum UsingGroup {
         /// <summary>
         /// The using directive group type is not known.
         /// </summary>

@@ -54,58 +54,76 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         internal const string ReplaceCharKey = "CharToReplace";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1629.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(DocumentationResources.SA1629Title), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1629MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1629Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1629.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1629Title),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1629MessageFormat),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1629Description),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableDictionary<string, string> NoCodeFixProperties = ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
+        private static readonly ImmutableDictionary<string, string> NoCodeFixProperties =
+            ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SA1629DocumentationTextMustEndWithAPeriod"/> class.
         /// </summary>
-        public SA1629DocumentationTextMustEndWithAPeriod()
-            : base(inheritDocSuppressesWarnings: false)
+        public SA1629DocumentationTextMustEndWithAPeriod() : base(inheritDocSuppressesWarnings : false)
         {
         }
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
-        protected override void HandleXmlElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings, bool needsComment, IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
+        protected override void HandleXmlElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings,
+                                                 bool needsComment, IEnumerable<XmlNodeSyntax> syntaxList,
+                                                 params Location[] diagnosticLocations)
         {
             foreach (var xmlElement in syntaxList.OfType<XmlElementSyntax>())
             {
-                HandleSectionOrBlockXmlElement(context, settings, xmlElement, startingWithFinalParagraph: true);
+                HandleSectionOrBlockXmlElement(context, settings, xmlElement, startingWithFinalParagraph : true);
             }
         }
 
         /// <inheritdoc/>
-        protected override void HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment, XElement completeDocumentation, params Location[] diagnosticLocations)
+        protected override void HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment,
+                                                            XElement completeDocumentation,
+                                                            params Location[] diagnosticLocations)
         {
             foreach (var node in completeDocumentation.Nodes().OfType<XElement>())
             {
                 var textWithoutTrailingWhitespace = node.Value.TrimEnd(' ', '\r', '\n');
                 if (!string.IsNullOrEmpty(textWithoutTrailingWhitespace))
                 {
-                    if (!textWithoutTrailingWhitespace.EndsWith(".", StringComparison.Ordinal)
-                        && !textWithoutTrailingWhitespace.EndsWith(".)", StringComparison.Ordinal))
+                    if (!textWithoutTrailingWhitespace.EndsWith(".", StringComparison.Ordinal) &&
+                        !textWithoutTrailingWhitespace.EndsWith(".)", StringComparison.Ordinal))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, diagnosticLocations[0], NoCodeFixProperties));
+                        context.ReportDiagnostic(
+                            Diagnostic.Create(Descriptor, diagnosticLocations[0], NoCodeFixProperties));
 
-                        // only report a single instance of the diagnostic, as they will all be reported on the same location anyway.
+                        // only report a single instance of the diagnostic, as they will all be reported on the same
+                        // location anyway.
                         break;
                     }
                 }
             }
         }
 
-        private static void HandleSectionOrBlockXmlElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings, XmlElementSyntax xmlElement, bool startingWithFinalParagraph)
+        private static void HandleSectionOrBlockXmlElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings,
+                                                           XmlElementSyntax xmlElement, bool startingWithFinalParagraph)
         {
             var startTag = xmlElement.StartTag?.Name?.LocalName.ValueText;
             if (settings.DocumentationRules.ExcludeFromPunctuationCheck.Contains(startTag))
@@ -125,21 +143,22 @@ namespace StyleCop.Analyzers.DocumentationRules
 
                         if (!string.IsNullOrEmpty(textWithoutTrailingWhitespace))
                         {
-                            if (!textWithoutTrailingWhitespace.EndsWith(".", StringComparison.Ordinal)
-                                && !textWithoutTrailingWhitespace.EndsWith(".)", StringComparison.Ordinal)
-                                && (startingWithFinalParagraph || !textWithoutTrailingWhitespace.EndsWith(":", StringComparison.Ordinal))
-                                && !textWithoutTrailingWhitespace.EndsWith("-or-", StringComparison.Ordinal))
+                            if (!textWithoutTrailingWhitespace.EndsWith(".", StringComparison.Ordinal) &&
+                                !textWithoutTrailingWhitespace.EndsWith(".)", StringComparison.Ordinal) &&
+                                (startingWithFinalParagraph ||
+                                 !textWithoutTrailingWhitespace.EndsWith(":", StringComparison.Ordinal)) &&
+                                !textWithoutTrailingWhitespace.EndsWith("-or-", StringComparison.Ordinal))
                             {
                                 int spanStart = textToken.SpanStart + textWithoutTrailingWhitespace.Length;
                                 ImmutableDictionary<string, string> properties = null;
-                                if (textWithoutTrailingWhitespace.EndsWith(",", StringComparison.Ordinal)
-                                    || textWithoutTrailingWhitespace.EndsWith(";", StringComparison.Ordinal))
+                                if (textWithoutTrailingWhitespace.EndsWith(",", StringComparison.Ordinal) ||
+                                    textWithoutTrailingWhitespace.EndsWith(";", StringComparison.Ordinal))
                                 {
                                     spanStart -= 1;
                                     SetReplaceChar();
                                 }
-                                else if (textWithoutTrailingWhitespace.EndsWith(",)", StringComparison.Ordinal)
-                                    || textWithoutTrailingWhitespace.EndsWith(";)", StringComparison.Ordinal))
+                                else if (textWithoutTrailingWhitespace.EndsWith(",)", StringComparison.Ordinal) ||
+                                         textWithoutTrailingWhitespace.EndsWith(";)", StringComparison.Ordinal))
                                 {
                                     spanStart -= 2;
                                     SetReplaceChar();
@@ -160,10 +179,14 @@ namespace StyleCop.Analyzers.DocumentationRules
                         }
                     }
                 }
-                else if (xmlElement.Content[i].IsInlineElement() && !currentParagraphDone)
+                else if (xmlElement
+                             .Content [i]
+                             .IsInlineElement() &&
+                         !currentParagraphDone)
                 {
                     // Treat empty XML elements as a "word not ending with a period"
-                    var location = Location.Create(xmlElement.SyntaxTree, new TextSpan(xmlElement.Content[i].Span.End, 1));
+                    var location =
+                        Location.Create(xmlElement.SyntaxTree, new TextSpan(xmlElement.Content[i].Span.End, 1));
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
                     currentParagraphDone = true;
                 }

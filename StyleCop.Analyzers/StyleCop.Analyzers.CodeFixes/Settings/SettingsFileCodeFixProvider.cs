@@ -22,90 +22,91 @@ namespace StyleCop.Analyzers.Settings
     [Shared]
     internal class SettingsFileCodeFixProvider : CodeFixProvider
     {
-        internal const string DefaultSettingsFileContent = @"{
-  // ACTION REQUIRED: This file was automatically added to your project, but it
-  // will not take effect until additional steps are taken to enable it. See the
-  // following page for additional information:
-  //
-  // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
+        internal const string DefaultSettingsFileContent =
+            @"{
+            // ACTION REQUIRED: This file was automatically added to your project, but it
+            // will not take effect until additional steps are taken to enable it. See the
+            // following page for additional information:
+            //
+            // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
 
-  ""$schema"": ""https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json"",
-  ""settings"": {
-    ""documentationRules"": {
-      ""companyName"": """ + DocumentationSettings.DefaultCompanyName + @"""
-    }
-  }
-}
-";
-
-        /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1600ElementsMustBeDocumented.DiagnosticId,
-                SA1601PartialElementsMustBeDocumented.DiagnosticId,
-                SA1602EnumerationItemsMustBeDocumented.DiagnosticId,
-                FileHeaderAnalyzers.SA1633DescriptorMissing.Id,
-                FileHeaderAnalyzers.SA1634Descriptor.Id,
-                FileHeaderAnalyzers.SA1635Descriptor.Id,
-                FileHeaderAnalyzers.SA1636Descriptor.Id,
-                FileHeaderAnalyzers.SA1637Descriptor.Id,
-                FileHeaderAnalyzers.SA1638Descriptor.Id,
-                FileHeaderAnalyzers.SA1639Descriptor.Id,
-                FileHeaderAnalyzers.SA1640Descriptor.Id,
-                FileHeaderAnalyzers.SA1641Descriptor.Id,
-                SA1649FileNameMustMatchTypeName.DiagnosticId);
-
-        /// <inheritdoc/>
-        public override Task RegisterCodeFixesAsync(CodeFixContext context)
+            "" $schema "" : "" https
+            : // raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json"",
+              "" settings "":
         {
-            var project = context.Document.Project;
-            var workspace = project.Solution.Workspace;
-
-            // check if the settings file already exists
-            if (project.AdditionalDocuments.Any(document => SettingsHelper.IsStyleCopSettingsFile(document.Name)))
+            "" documentationRules "":
             {
-                return SpecializedTasks.CompletedTask;
+                "" companyName "" : "" " + DocumentationSettings.DefaultCompanyName + @" ""
             }
+        }
+    }
+    ";
 
-            // check if we are allowed to add it
-            if (!workspace.CanApplyChange(ApplyChangesKind.AddAdditionalDocument))
-            {
-                return SpecializedTasks.CompletedTask;
-            }
+        /// <inheritdoc/>
+        public override ImmutableArray<string> FixableDiagnosticIds
+    {
+        get;
+    }
+    = ImmutableArray.Create(SA1600ElementsMustBeDocumented.DiagnosticId,
+                            SA1601PartialElementsMustBeDocumented.DiagnosticId,
+                            SA1602EnumerationItemsMustBeDocumented.DiagnosticId,
+                            FileHeaderAnalyzers.SA1633DescriptorMissing.Id, FileHeaderAnalyzers.SA1634Descriptor.Id,
+                            FileHeaderAnalyzers.SA1635Descriptor.Id, FileHeaderAnalyzers.SA1636Descriptor.Id,
+                            FileHeaderAnalyzers.SA1637Descriptor.Id, FileHeaderAnalyzers.SA1638Descriptor.Id,
+                            FileHeaderAnalyzers.SA1639Descriptor.Id, FileHeaderAnalyzers.SA1640Descriptor.Id,
+                            FileHeaderAnalyzers.SA1641Descriptor.Id, SA1649FileNameMustMatchTypeName.DiagnosticId);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        SettingsResources.SettingsFileCodeFix,
-                        cancellationToken => GetTransformedSolutionAsync(context.Document, cancellationToken),
-                        nameof(SettingsFileCodeFixProvider)),
-                    diagnostic);
-            }
+    /// <inheritdoc/>
+    public override Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        var project = context.Document.Project;
+        var workspace = project.Solution.Workspace;
 
+        // check if the settings file already exists
+        if (project.AdditionalDocuments.Any(document => SettingsHelper.IsStyleCopSettingsFile(document.Name)))
+        {
             return SpecializedTasks.CompletedTask;
         }
 
-        /// <inheritdoc/>
-        public override FixAllProvider GetFixAllProvider()
+        // check if we are allowed to add it
+        if (!workspace.CanApplyChange(ApplyChangesKind.AddAdditionalDocument))
         {
-            // Added this to make it explicitly clear that this code fix does not support fix all actions.
-            return null;
+            return SpecializedTasks.CompletedTask;
         }
 
-        private static Task<Solution> GetTransformedSolutionAsync(Document document, CancellationToken cancellationToken)
+        foreach (var diagnostic in context.Diagnostics)
         {
-            // Currently unused
-            _ = cancellationToken;
-
-            var project = document.Project;
-            var solution = project.Solution;
-
-            var newDocumentId = DocumentId.CreateNewId(project.Id);
-
-            var newSolution = solution.AddAdditionalDocument(newDocumentId, SettingsHelper.SettingsFileName, DefaultSettingsFileContent);
-
-            return Task.FromResult(newSolution);
+            context.RegisterCodeFix(
+                CodeAction.Create(SettingsResources.SettingsFileCodeFix,
+                                  cancellationToken => GetTransformedSolutionAsync(context.Document, cancellationToken),
+                                  nameof(SettingsFileCodeFixProvider)),
+                diagnostic);
         }
+
+        return SpecializedTasks.CompletedTask;
     }
+
+    /// <inheritdoc/>
+    public override FixAllProvider GetFixAllProvider()
+    {
+        // Added this to make it explicitly clear that this code fix does not support fix all actions.
+        return null;
+    }
+
+    private static Task<Solution> GetTransformedSolutionAsync(Document document, CancellationToken cancellationToken)
+    {
+        // Currently unused
+        _ = cancellationToken;
+
+        var project = document.Project;
+        var solution = project.Solution;
+
+        var newDocumentId = DocumentId.CreateNewId(project.Id);
+
+        var newSolution =
+            solution.AddAdditionalDocument(newDocumentId, SettingsHelper.SettingsFileName, DefaultSettingsFileContent);
+
+        return Task.FromResult(newSolution);
+    }
+}
 }

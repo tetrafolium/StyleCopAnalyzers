@@ -48,7 +48,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             get
             {
-                return new XmlFileHeader { IsMissing = true };
+                return new XmlFileHeader{IsMissing = true};
             }
         }
 
@@ -62,7 +62,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             get
             {
-                return new XmlFileHeader { IsMalformed = true };
+                return new XmlFileHeader{IsMalformed = true};
             }
         }
 
@@ -72,7 +72,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// True if the file header is missing.
         /// </value>
-        internal bool IsMissing { get; private set; }
+        internal bool IsMissing
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the file header contains a properly formatted XML structure.
@@ -80,7 +84,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// True if the file header is not properly formatted XML.
         /// </value>
-        internal bool IsMalformed { get; private set; }
+        internal bool IsMalformed
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets a XML element from the file header with the given tag name.
@@ -89,7 +97,8 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The requested node, or null if the node could not be found.</returns>
         internal XElement GetElement(string tagName)
         {
-            return this.headerXml.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals(tagName, StringComparison.Ordinal));
+            return this.headerXml.Descendants().FirstOrDefault(
+                e => e.Name.LocalName.Equals(tagName, StringComparison.Ordinal));
         }
 
         /// <summary>
@@ -115,12 +124,15 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The location representing the position of the given element in the source file.</returns>
         internal Location GetElementLocation(SyntaxTree syntaxTree, XElement element)
         {
-            var headerSourceText = syntaxTree.GetText().GetSubText(TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderEnd)).ToString();
+            var headerSourceText = syntaxTree.GetText()
+                                       .GetSubText(TextSpan.FromBounds(this.fileHeaderStart, this.fileHeaderEnd))
+                                       .ToString();
 
             var tagStart = "<" + element.Name.LocalName;
             var index = headerSourceText.IndexOf(tagStart);
 
-            var textSpan = TextSpan.FromBounds(this.fileHeaderStart + index, this.fileHeaderStart + index + tagStart.Length);
+            var textSpan =
+                TextSpan.FromBounds(this.fileHeaderStart + index, this.fileHeaderStart + index + tagStart.Length);
             return Location.Create(syntaxTree, textSpan);
         }
     }

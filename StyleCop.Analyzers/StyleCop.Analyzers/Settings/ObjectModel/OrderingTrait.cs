@@ -3,8 +3,7 @@
 
 namespace StyleCop.Analyzers.Settings.ObjectModel
 {
-    internal enum OrderingTrait
-    {
+    internal enum OrderingTrait {
         /// <summary>
         /// Elements are ordered according to their kind.
         /// </summary>

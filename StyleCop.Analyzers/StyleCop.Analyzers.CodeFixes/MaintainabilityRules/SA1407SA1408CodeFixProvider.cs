@@ -14,20 +14,24 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     using StyleCop.Analyzers.Helpers;
 
     /// <summary>
-    /// Implements a code fix for <see cref="SA1407ArithmeticExpressionsMustDeclarePrecedence"/> and  <see cref="SA1408ConditionalExpressionsMustDeclarePrecedence"/>.
+    /// Implements a code fix for <see cref="SA1407ArithmeticExpressionsMustDeclarePrecedence"/> and  <see
+    /// cref="SA1408ConditionalExpressionsMustDeclarePrecedence"/>.
     /// </summary>
     /// <remarks>
-    /// <para>To fix a violation of this rule, insert parenthesis within the arithmetic expression to declare the precedence of the operations.</para>
+    /// <para>To fix a violation of this rule, insert parenthesis within the arithmetic expression to declare the
+    /// precedence of the operations.</para>
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1407SA1408CodeFixProvider))]
     [Shared]
     internal class SA1407SA1408CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1407ArithmeticExpressionsMustDeclarePrecedence.DiagnosticId,
-                SA1408ConditionalExpressionsMustDeclarePrecedence.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1407ArithmeticExpressionsMustDeclarePrecedence.DiagnosticId,
+                                SA1408ConditionalExpressionsMustDeclarePrecedence.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -50,21 +54,21 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 if (node is BinaryExpressionSyntax syntax)
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            MaintainabilityResources.SA1407SA1408CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, root, syntax),
-                            nameof(SA1407SA1408CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(MaintainabilityResources.SA1407SA1408CodeFix,
+                                                              cancellationToken => GetTransformedDocumentAsync(
+                                                                  context.Document, root, syntax),
+                                                              nameof(SA1407SA1408CodeFixProvider)),
+                                            diagnostic);
                 }
             }
         }
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, BinaryExpressionSyntax syntax)
+        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root,
+                                                                  BinaryExpressionSyntax syntax)
         {
             var newNode = SyntaxFactory.ParenthesizedExpression(syntax.WithoutTrivia())
-                .WithTriviaFrom(syntax)
-                .WithoutFormatting();
+                              .WithTriviaFrom(syntax)
+                              .WithoutFormatting();
 
             var newSyntaxRoot = root.ReplaceNode(syntax, newNode);
 

@@ -27,8 +27,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1100CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,12 +44,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1100CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1100CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1100CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1100CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
@@ -54,15 +56,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static BaseExpressionSyntax GetBaseExpressionNode(SyntaxNode root, TextSpan sourceSpan)
         {
-            return (BaseExpressionSyntax)root.FindToken(sourceSpan.Start).Parent;
+            return (BaseExpressionSyntax) root.FindToken(sourceSpan.Start).Parent;
         }
 
         private static ThisExpressionSyntax RewriteBaseAsThis(BaseExpressionSyntax token)
         {
-            return SyntaxFactory.ThisExpression(SyntaxFactory.Token(SyntaxKind.ThisKeyword).WithTriviaFrom(token.Token));
+            return SyntaxFactory.ThisExpression(
+                SyntaxFactory.Token(SyntaxKind.ThisKeyword).WithTriviaFrom(token.Token));
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var node = GetBaseExpressionNode(root, diagnostic.Location.SourceSpan);
@@ -73,13 +77,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; }
-                = new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle
-                => ReadabilityResources.SA1100CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1100CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
@@ -94,7 +102,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     nodesToReplace.Add(GetBaseExpressionNode(syntaxRoot, diagnostic.Location.SourceSpan));
                 }
 
-                return syntaxRoot.ReplaceNodes(nodesToReplace, (originalNode, rewrittenNode) => RewriteBaseAsThis(rewrittenNode));
+                return syntaxRoot.ReplaceNodes(nodesToReplace,
+                                               (originalNode, rewrittenNode) => RewriteBaseAsThis(rewrittenNode));
             }
         }
     }

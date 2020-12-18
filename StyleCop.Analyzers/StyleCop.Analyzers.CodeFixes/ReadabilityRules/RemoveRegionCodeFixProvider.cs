@@ -14,7 +14,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
     using StyleCop.Analyzers.Helpers;
 
     /// <summary>
-    /// Implements a code fix for <see cref="SA1123DoNotPlaceRegionsWithinElements"/> and <see cref="SA1124DoNotUseRegions"/>.
+    /// Implements a code fix for <see cref="SA1123DoNotPlaceRegionsWithinElements"/> and <see
+    /// cref="SA1124DoNotUseRegions"/>.
     /// </summary>
     /// <remarks>
     /// <para>To fix a violation of this rule, remove the region.</para>
@@ -24,8 +25,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class RemoveRegionCodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1123DoNotPlaceRegionsWithinElements.DiagnosticId, SA1124DoNotUseRegions.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1123DoNotPlaceRegionsWithinElements.DiagnosticId, SA1124DoNotUseRegions.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -40,10 +44,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
             foreach (var diagnostic in context.Diagnostics)
             {
                 context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.RemoveRegionCodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic),
-                        nameof(RemoveRegionCodeFixProvider)),
+                    CodeAction.Create(ReadabilityResources.RemoveRegionCodeFix,
+                                      cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic),
+                                      nameof(RemoveRegionCodeFixProvider)),
                     diagnostic);
             }
 
@@ -53,12 +56,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
-            var node = syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+            var node = syntaxRoot?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                            : true, getInnermostNodeForTie
+                                            : true);
             if (node != null && node.IsKind(SyntaxKind.RegionDirectiveTrivia))
             {
                 var regionDirective = node as RegionDirectiveTriviaSyntax;
 
-                var newSyntaxRoot = syntaxRoot.RemoveNodes(regionDirective.GetRelatedDirectives(), SyntaxRemoveOptions.AddElasticMarker);
+                var newSyntaxRoot = syntaxRoot.RemoveNodes(regionDirective.GetRelatedDirectives(),
+                                                           SyntaxRemoveOptions.AddElasticMarker);
 
                 return document.WithSyntaxRoot(newSyntaxRoot);
             }

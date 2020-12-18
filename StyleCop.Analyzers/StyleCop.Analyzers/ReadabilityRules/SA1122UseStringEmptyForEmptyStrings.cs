@@ -35,19 +35,31 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1122UseStringEmptyForEmptyStrings"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1122";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1122.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1122Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1122MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1122Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1122.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1122Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1122MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1122Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly Action<SyntaxNodeAnalysisContext> StringLiteralExpressionAction = HandleStringLiteralExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> StringLiteralExpressionAction =
+            HandleStringLiteralExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -60,7 +72,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleStringLiteralExpression(SyntaxNodeAnalysisContext context)
         {
-            LiteralExpressionSyntax literalExpression = (LiteralExpressionSyntax)context.Node;
+            LiteralExpressionSyntax literalExpression = (LiteralExpressionSyntax) context.Node;
 
             var token = literalExpression.Token;
             if (token.IsKind(SyntaxKind.StringLiteralToken))
@@ -81,9 +93,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             ExpressionSyntax outermostExpression = FindOutermostExpression(literalExpression);
 
-            if (outermostExpression.Parent.IsKind(SyntaxKind.AttributeArgument)
-                || outermostExpression.Parent.IsKind(SyntaxKind.CaseSwitchLabel)
-                || outermostExpression.Parent.IsKind(SyntaxKindEx.ConstantPattern))
+            if (outermostExpression.Parent.IsKind(SyntaxKind.AttributeArgument) ||
+                outermostExpression.Parent.IsKind(SyntaxKind.CaseSwitchLabel) ||
+                outermostExpression.Parent.IsKind(SyntaxKindEx.ConstantPattern))
             {
                 return true;
             }
@@ -95,19 +107,21 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     return true;
                 }
 
-                if (!(equalsValueClause.Parent is VariableDeclaratorSyntax variableDeclaratorSyntax) || !(variableDeclaratorSyntax?.Parent is VariableDeclarationSyntax variableDeclarationSyntax))
+                if (!(equalsValueClause.Parent is VariableDeclaratorSyntax variableDeclaratorSyntax) ||
+                    !(variableDeclaratorSyntax?.Parent is VariableDeclarationSyntax variableDeclarationSyntax))
                 {
                     return false;
                 }
 
-                if (variableDeclarationSyntax.Parent is FieldDeclarationSyntax fieldDeclarationSyntax
-                    && fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
+                if (variableDeclarationSyntax.Parent is FieldDeclarationSyntax fieldDeclarationSyntax &&
+                    fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
                 {
                     return true;
                 }
 
-                if (variableDeclarationSyntax.Parent is LocalDeclarationStatementSyntax localDeclarationStatementSyntax
-                    && localDeclarationStatementSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
+                if (variableDeclarationSyntax.Parent is LocalDeclarationStatementSyntax
+                        localDeclarationStatementSyntax &&
+                    localDeclarationStatementSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
                 {
                     return true;
                 }

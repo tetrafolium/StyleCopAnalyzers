@@ -37,8 +37,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         /// Initializes a new instance of the <see cref="NamingSettings"/> class.
         /// </summary>
         /// <param name="namingSettingsObject">The JSON object containing the settings.</param>
-        protected internal NamingSettings(JsonObject namingSettingsObject)
-            : this()
+        protected internal NamingSettings(JsonObject namingSettingsObject) : this()
         {
             foreach (var kvp in namingSettingsObject)
             {
@@ -66,7 +65,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 
                 case "allowedNamespaceComponents":
                     kvp.AssertIsArray();
-                    this.allowedNamespaceComponents.AddRange(kvp.Value.AsJsonArray.Select(x => x.ToStringValue(kvp.Key)));
+                    this.allowedNamespaceComponents.AddRange(
+                        kvp.Value.AsJsonArray.Select(x => x.ToStringValue(kvp.Key)));
                     break;
 
                 case "includeInferredTupleElementNames":
@@ -83,16 +83,23 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public bool AllowCommonHungarianPrefixes { get; }
+        public bool AllowCommonHungarianPrefixes
+        {
+            get;
+        }
 
-        public ImmutableArray<string> AllowedHungarianPrefixes
-            => this.allowedHungarianPrefixes.ToImmutable();
+        public ImmutableArray<string> AllowedHungarianPrefixes => this.allowedHungarianPrefixes.ToImmutable();
 
-        public ImmutableArray<string> AllowedNamespaceComponents
-            => this.allowedNamespaceComponents.ToImmutable();
+        public ImmutableArray<string> AllowedNamespaceComponents => this.allowedNamespaceComponents.ToImmutable();
 
-        public bool IncludeInferredTupleElementNames { get; }
+        public bool IncludeInferredTupleElementNames
+        {
+            get;
+        }
 
-        public TupleElementNameCase TupleElementNameCasing { get; }
+        public TupleElementNameCase TupleElementNameCasing
+        {
+            get;
+        }
     }
 }

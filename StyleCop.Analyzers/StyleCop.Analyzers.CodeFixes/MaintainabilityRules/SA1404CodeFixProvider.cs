@@ -25,8 +25,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     internal class SA1404CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1404CodeAnalysisSuppressionMustHaveJustification.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1404CodeAnalysisSuppressionMustHaveJustification.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -47,10 +50,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 {
                     // In this case there is no justification at all
                     context.RegisterCodeFix(
-                        CodeAction.Create(
-                            MaintainabilityResources.SA1404CodeFix,
-                            token => AddJustificationToAttributeAsync(context.Document, root, attribute),
-                            nameof(SA1404CodeFixProvider) + "-Add"),
+                        CodeAction.Create(MaintainabilityResources.SA1404CodeFix,
+                                          token => AddJustificationToAttributeAsync(context.Document, root, attribute),
+                                          nameof(SA1404CodeFixProvider) + "-Add"),
                         diagnostic);
                     return;
                 }
@@ -58,29 +60,32 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 if (node is AttributeArgumentSyntax argument)
                 {
                     context.RegisterCodeFix(
-                        CodeAction.Create(
-                            MaintainabilityResources.SA1404CodeFix,
-                            token => UpdateValueOfArgumentAsync(context.Document, root, argument),
-                            nameof(SA1404CodeFixProvider) + "-Update"),
+                        CodeAction.Create(MaintainabilityResources.SA1404CodeFix,
+                                          token => UpdateValueOfArgumentAsync(context.Document, root, argument),
+                                          nameof(SA1404CodeFixProvider) + "-Update"),
                         diagnostic);
                     return;
                 }
             }
         }
 
-        private static Task<Document> UpdateValueOfArgumentAsync(Document document, SyntaxNode root, AttributeArgumentSyntax argument)
+        private static Task<Document> UpdateValueOfArgumentAsync(Document document, SyntaxNode root,
+                                                                 AttributeArgumentSyntax argument)
         {
             var newArgument = argument.WithExpression(GetNewAttributeValue());
             return Task.FromResult(document.WithSyntaxRoot(root.ReplaceNode(argument, newArgument)));
         }
 
-        private static Task<Document> AddJustificationToAttributeAsync(Document document, SyntaxNode syntaxRoot, AttributeSyntax attribute)
+        private static Task<Document> AddJustificationToAttributeAsync(Document document, SyntaxNode syntaxRoot,
+                                                                       AttributeSyntax attribute)
         {
             var attributeName = SyntaxFactory.IdentifierName(nameof(SuppressMessageAttribute.Justification));
-            var newArgument = SyntaxFactory.AttributeArgument(SyntaxFactory.NameEquals(attributeName), null, GetNewAttributeValue());
+            var newArgument =
+                SyntaxFactory.AttributeArgument(SyntaxFactory.NameEquals(attributeName), null, GetNewAttributeValue());
 
             var newArgumentList = attribute.ArgumentList.AddArguments(newArgument);
-            return Task.FromResult(document.WithSyntaxRoot(syntaxRoot.ReplaceNode(attribute.ArgumentList, newArgumentList)));
+            return Task.FromResult(
+                document.WithSyntaxRoot(syntaxRoot.ReplaceNode(attribute.ArgumentList, newArgumentList)));
         }
 
         private static LiteralExpressionSyntax GetNewAttributeValue()

@@ -16,7 +16,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     {
         public override Task<CodeAction> GetFixAsync(FixAllContext fixAllContext)
         {
-            string title = string.Format(MaintainabilityResources.SA1412CodeFix, fixAllContext.CodeActionEquivalenceKey.Substring(fixAllContext.CodeActionEquivalenceKey.IndexOf('.') + 1));
+            string title = string.Format(MaintainabilityResources.SA1412CodeFix,
+                                         fixAllContext.CodeActionEquivalenceKey.Substring(
+                                             fixAllContext.CodeActionEquivalenceKey.IndexOf('.') + 1));
 
             CodeAction fixAction;
             switch (fixAllContext.Scope)
@@ -51,38 +53,49 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             return Task.FromResult(fixAction);
         }
 
-        private static async Task<Solution> FixDocumentAsync(Solution solution, DocumentId documentId, ImmutableArray<Diagnostic> diagnostics, string codeActionEquivalenceKey, CancellationToken cancellationToken)
+        private static async Task<Solution> FixDocumentAsync(Solution solution, DocumentId documentId,
+                                                             ImmutableArray<Diagnostic> diagnostics,
+                                                             string codeActionEquivalenceKey,
+                                                             CancellationToken cancellationToken)
         {
             if (diagnostics.IsEmpty)
             {
                 return solution;
             }
 
-            string equivalenceKey = nameof(SA1412CodeFixProvider) + "." + diagnostics[0].Properties[SA1412StoreFilesAsUtf8.EncodingProperty];
+            string equivalenceKey = nameof(SA1412CodeFixProvider) + "." +
+                                    diagnostics[0].Properties[SA1412StoreFilesAsUtf8.EncodingProperty];
             if (codeActionEquivalenceKey != equivalenceKey)
             {
                 return solution;
             }
 
             Document document = solution.GetDocument(documentId);
-            return await SA1412CodeFixProvider.GetTransformedSolutionAsync(document, cancellationToken).ConfigureAwait(false);
+            return await SA1412CodeFixProvider.GetTransformedSolutionAsync(document, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         private static async Task<Solution> GetDocumentFixesAsync(FixAllContext fixAllContext)
         {
-            var documentDiagnosticsToFix = await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
+            var documentDiagnosticsToFix =
+                await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
             ImmutableArray<Diagnostic> diagnostics;
             if (!documentDiagnosticsToFix.TryGetValue(fixAllContext.Document, out diagnostics))
             {
                 return fixAllContext.Document.Project.Solution;
             }
 
-            return await FixDocumentAsync(fixAllContext.Document.Project.Solution, fixAllContext.Document.Id, diagnostics, fixAllContext.CodeActionEquivalenceKey, fixAllContext.CancellationToken).ConfigureAwait(false);
+            return await FixDocumentAsync(fixAllContext.Document.Project.Solution, fixAllContext.Document.Id,
+                                          diagnostics, fixAllContext.CodeActionEquivalenceKey,
+                                          fixAllContext.CancellationToken)
+                .ConfigureAwait(false);
         }
 
-        private static async Task<Solution> GetSolutionFixesAsync(FixAllContext fixAllContext, ImmutableArray<Document> documents)
+        private static async Task<Solution> GetSolutionFixesAsync(FixAllContext fixAllContext,
+                                                                  ImmutableArray<Document> documents)
         {
-            var documentDiagnosticsToFix = await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
+            var documentDiagnosticsToFix =
+                await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
 
             Solution solution = fixAllContext.Solution;
             foreach (var document in documents)
@@ -93,7 +106,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     continue;
                 }
 
-                solution = await FixDocumentAsync(solution, document.Id, diagnostics, fixAllContext.CodeActionEquivalenceKey, fixAllContext.CancellationToken).ConfigureAwait(false);
+                solution =
+                    await FixDocumentAsync(solution, document.Id, diagnostics, fixAllContext.CodeActionEquivalenceKey,
+                                           fixAllContext.CancellationToken)
+                        .ConfigureAwait(false);
             }
 
             return solution;
@@ -106,7 +122,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static Task<Solution> GetSolutionFixesAsync(FixAllContext fixAllContext)
         {
-            ImmutableArray<Document> documents = fixAllContext.Solution.Projects.SelectMany(i => i.Documents).ToImmutableArray();
+            ImmutableArray<Document> documents =
+                fixAllContext.Solution.Projects.SelectMany(i => i.Documents).ToImmutableArray();
             return GetSolutionFixesAsync(fixAllContext, documents);
         }
     }

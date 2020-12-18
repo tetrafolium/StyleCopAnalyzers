@@ -22,8 +22,11 @@ namespace StyleCop.Analyzers.Lightup
         static ConstantPatternSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(ConstantPatternSyntaxWrapper));
-            ExpressionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Expression));
-            WithExpressionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Expression));
+            ExpressionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
+                WrappedType, nameof(Expression));
+            WithExpressionAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(WrappedType,
+                                                                                                    nameof(Expression));
         }
 
         private ConstantPatternSyntaxWrapper(CSharpSyntaxNode node)
@@ -43,12 +46,12 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator ConstantPatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (ConstantPatternSyntaxWrapper)node.SyntaxNode;
+            return (ConstantPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator ConstantPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (ConstantPatternSyntaxWrapper)node.SyntaxNode;
+            return (ConstantPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator ConstantPatternSyntaxWrapper(SyntaxNode node)
@@ -63,7 +66,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new ConstantPatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new ConstantPatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(ConstantPatternSyntaxWrapper wrapper)

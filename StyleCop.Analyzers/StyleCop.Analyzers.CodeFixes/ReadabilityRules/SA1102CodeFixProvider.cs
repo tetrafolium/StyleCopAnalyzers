@@ -22,8 +22,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1102CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA110xQueryClauses.SA1102Descriptor.Id);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA110xQueryClauses.SA1102Descriptor.Id);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -36,18 +39,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1102CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1102CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1102CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1102CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -57,13 +60,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             var precedingToken = token.GetPreviousToken();
 
-            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>()
-            {
-                [precedingToken] = precedingToken.WithTrailingTrivia(SyntaxFactory.CarriageReturnLineFeed),
-                [token] = token.WithLeadingTrivia(indentationTrivia),
+            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
+                    [precedingToken] = precedingToken.WithTrailingTrivia(SyntaxFactory.CarriageReturnLineFeed),
+                    [ token ] = token.WithLeadingTrivia(indentationTrivia),
             };
 
-            var newSyntaxRoot = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]).WithoutFormatting();
+            var newSyntaxRoot =
+                syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]).WithoutFormatting();
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
     }

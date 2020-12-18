@@ -45,27 +45,35 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// The ID for diagnostics produced by the <see cref="SA1627DocumentationTextMustNotBeEmpty"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1627";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1627.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(DocumentationResources.SA1627Title), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1627MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1627Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1627.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1627Title),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1627MessageFormat),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(DocumentationResources.SA1627Description),
+                                          DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> XmlElementAction = HandleXmlElement;
         private static readonly Action<SyntaxNodeAnalysisContext> XmlEmptyElementAction = HandleXmlEmptyElement;
 
         private static readonly ImmutableArray<string> ElementsToCheck =
-            ImmutableArray.Create(
-                XmlCommentHelper.RemarksXmlTag,
-                XmlCommentHelper.PermissionXmlTag,
-                XmlCommentHelper.ExceptionXmlTag,
-                XmlCommentHelper.ExampleXmlTag);
+            ImmutableArray.Create(XmlCommentHelper.RemarksXmlTag, XmlCommentHelper.PermissionXmlTag,
+                                  XmlCommentHelper.ExceptionXmlTag, XmlCommentHelper.ExampleXmlTag);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -79,7 +87,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static void HandleXmlElement(SyntaxNodeAnalysisContext context)
         {
-            var element = (XmlElementSyntax)context.Node;
+            var element = (XmlElementSyntax) context.Node;
 
             var name = element.StartTag.Name.ToString();
             if (ElementsToCheck.Contains(name) && XmlCommentHelper.IsConsideredEmpty(element))
@@ -90,7 +98,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static void HandleXmlEmptyElement(SyntaxNodeAnalysisContext context)
         {
-            var elementSyntax = (XmlEmptyElementSyntax)context.Node;
+            var elementSyntax = (XmlEmptyElementSyntax) context.Node;
             var elementName = elementSyntax.Name.ToString();
             var elementLocation = elementSyntax.GetLocation();
 
@@ -106,7 +114,8 @@ namespace StyleCop.Analyzers.DocumentationRules
             }
         }
 
-        private static void HandleIncludedDocumentation(SyntaxNodeAnalysisContext context, XmlEmptyElementSyntax elementSyntax, Location elementLocation)
+        private static void HandleIncludedDocumentation(SyntaxNodeAnalysisContext context,
+                                                        XmlEmptyElementSyntax elementSyntax, Location elementLocation)
         {
             var memberDeclaration = elementSyntax.FirstAncestorOrSelf<MemberDeclarationSyntax>();
             if (memberDeclaration == null)
@@ -120,18 +129,21 @@ namespace StyleCop.Analyzers.DocumentationRules
                 return;
             }
 
-            var rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+            var rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes
+                                                                          : true, cancellationToken
+                                                                          : context.CancellationToken);
             var completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
-            if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag))
+            if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name ==
+                                                                                XmlCommentHelper.InheritdocXmlTag))
             {
                 // Ignore nodes with an <inheritdoc/> tag in the included XML.
                 return;
             }
 
             var emptyElements = completeDocumentation.Nodes()
-                .OfType<XElement>()
-                .Where(element => ElementsToCheck.Contains(element.Name.ToString()))
-                .Where(x => XmlCommentHelper.IsConsideredEmpty(x));
+                                    .OfType<XElement>()
+                                    .Where(element => ElementsToCheck.Contains(element.Name.ToString()))
+                                    .Where(x => XmlCommentHelper.IsConsideredEmpty(x));
 
             foreach (var emptyElement in emptyElements)
             {

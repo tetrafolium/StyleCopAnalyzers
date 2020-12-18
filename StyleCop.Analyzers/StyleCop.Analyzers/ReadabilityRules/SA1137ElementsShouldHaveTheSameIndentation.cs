@@ -23,16 +23,25 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1137ElementsShouldHaveTheSameIndentation"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1137";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1137.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1137Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1137MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1137Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1137.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1137Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1137MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1137Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> CompilationUnitAction = HandleCompilationUnit;
-        private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction = HandleNamespaceDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction =
+            HandleNamespaceDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> TypeDeclarationAction = HandleTypeDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> EnumDeclarationAction = HandleEnumDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction = HandleMethodDeclaration;
@@ -42,17 +51,23 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly Action<SyntaxNodeAnalysisContext> BaseParameterListAction = HandleBaseParameterList;
         private static readonly Action<SyntaxNodeAnalysisContext> BaseArgumentListAction = HandleBaseArgumentList;
         private static readonly Action<SyntaxNodeAnalysisContext> AttributeListAction = HandleAttributeList;
-        private static readonly Action<SyntaxNodeAnalysisContext> AttributeArgumentListAction = HandleAttributeArgumentList;
+        private static readonly Action<SyntaxNodeAnalysisContext> AttributeArgumentListAction =
+            HandleAttributeArgumentList;
         private static readonly Action<SyntaxNodeAnalysisContext> BlockAction = HandleBlock;
         private static readonly Action<SyntaxNodeAnalysisContext> SwitchStatementAction = HandleSwitchStatement;
-        private static readonly Action<SyntaxNodeAnalysisContext> InitializerExpressionAction = HandleInitializerExpression;
-        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousObjectCreationExpressionAction = HandleAnonymousObjectCreationExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> InitializerExpressionAction =
+            HandleInitializerExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousObjectCreationExpressionAction =
+            HandleAnonymousObjectCreationExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> TupleTypeAction = HandleTupleType;
         private static readonly Action<SyntaxNodeAnalysisContext> TupleExpressionAction = HandleTupleExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -75,14 +90,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
             context.RegisterSyntaxNodeAction(BlockAction, SyntaxKind.Block);
             context.RegisterSyntaxNodeAction(SwitchStatementAction, SyntaxKind.SwitchStatement);
             context.RegisterSyntaxNodeAction(InitializerExpressionAction, SyntaxKinds.InitializerExpression);
-            context.RegisterSyntaxNodeAction(AnonymousObjectCreationExpressionAction, SyntaxKind.AnonymousObjectCreationExpression);
+            context.RegisterSyntaxNodeAction(AnonymousObjectCreationExpressionAction,
+                                             SyntaxKind.AnonymousObjectCreationExpression);
             context.RegisterSyntaxNodeAction(TupleTypeAction, SyntaxKindEx.TupleType);
             context.RegisterSyntaxNodeAction(TupleExpressionAction, SyntaxKindEx.TupleExpression);
         }
 
         private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context)
         {
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
+            var compilationUnit = (CompilationUnitSyntax) context.Node;
 
             var elements = ImmutableList.CreateBuilder<SyntaxNode>();
 
@@ -96,7 +112,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
+            var namespaceDeclaration = (NamespaceDeclarationSyntax) context.Node;
 
             var elements = ImmutableList.CreateBuilder<SyntaxNode>();
 
@@ -109,7 +125,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+            var typeDeclaration = (TypeDeclarationSyntax) context.Node;
 
             CheckElements(context, typeDeclaration.ConstraintClauses);
 
@@ -120,7 +136,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleEnumDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+            var enumDeclaration = (EnumDeclarationSyntax) context.Node;
 
             var elements = ImmutableList.CreateBuilder<SyntaxNode>();
             foreach (EnumMemberDeclarationSyntax enumMemberDeclaration in enumDeclaration.Members)
@@ -134,14 +150,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+            var methodDeclaration = (MethodDeclarationSyntax) context.Node;
 
             CheckElements(context, methodDeclaration.ConstraintClauses);
         }
 
         private static void HandleAccessorList(SyntaxNodeAnalysisContext context)
         {
-            var accessorList = (AccessorListSyntax)context.Node;
+            var accessorList = (AccessorListSyntax) context.Node;
 
             var elements = ImmutableList.CreateBuilder<SyntaxNode>();
             AddMembersAndAttributes(elements, accessorList.Accessors);
@@ -150,13 +166,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleVariableDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var variableDeclaration = (VariableDeclarationSyntax)context.Node;
+            var variableDeclaration = (VariableDeclarationSyntax) context.Node;
             CheckElements(context, variableDeclaration.Variables);
         }
 
         private static void HandleTypeParameterList(SyntaxNodeAnalysisContext context)
         {
-            var typeParameterList = (TypeParameterListSyntax)context.Node;
+            var typeParameterList = (TypeParameterListSyntax) context.Node;
 
             var elements = ImmutableList.CreateBuilder<SyntaxNode>();
             AddMembersAndAttributes(elements, typeParameterList.Parameters);
@@ -165,7 +181,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBaseParameterList(SyntaxNodeAnalysisContext context)
         {
-            var baseParameterList = (BaseParameterListSyntax)context.Node;
+            var baseParameterList = (BaseParameterListSyntax) context.Node;
 
             var elements = ImmutableList.CreateBuilder<SyntaxNode>();
             AddMembersAndAttributes(elements, baseParameterList.Parameters);
@@ -174,28 +190,28 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBaseArgumentList(SyntaxNodeAnalysisContext context)
         {
-            var baseArgumentList = (BaseArgumentListSyntax)context.Node;
+            var baseArgumentList = (BaseArgumentListSyntax) context.Node;
 
             CheckElements(context, baseArgumentList.Arguments);
         }
 
         private static void HandleAttributeList(SyntaxNodeAnalysisContext context)
         {
-            var attributeList = (AttributeListSyntax)context.Node;
+            var attributeList = (AttributeListSyntax) context.Node;
 
             CheckElements(context, attributeList.Attributes);
         }
 
         private static void HandleAttributeArgumentList(SyntaxNodeAnalysisContext context)
         {
-            var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
+            var attributeArgumentList = (AttributeArgumentListSyntax) context.Node;
 
             CheckElements(context, attributeArgumentList.Arguments);
         }
 
         private static void HandleBlock(SyntaxNodeAnalysisContext context)
         {
-            var block = (BlockSyntax)context.Node;
+            var block = (BlockSyntax) context.Node;
 
             var statements = ImmutableList.CreateBuilder<StatementSyntax>();
             var labeledStatements = ImmutableList.CreateBuilder<StatementSyntax>();
@@ -206,7 +222,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 while (statementToAlign.IsKind(SyntaxKind.LabeledStatement))
                 {
                     labeledStatements.Add(statementToAlign);
-                    statementToAlign = ((LabeledStatementSyntax)statementToAlign).Statement;
+                    statementToAlign = ((LabeledStatementSyntax) statementToAlign).Statement;
                 }
 
                 statements.Add(statementToAlign);
@@ -218,7 +234,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleSwitchStatement(SyntaxNodeAnalysisContext context)
         {
-            var switchStatement = (SwitchStatementSyntax)context.Node;
+            var switchStatement = (SwitchStatementSyntax) context.Node;
 
             var labels = ImmutableList.CreateBuilder<SwitchLabelSyntax>();
             var statements = ImmutableList.CreateBuilder<StatementSyntax>();
@@ -227,9 +243,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
             foreach (SwitchSectionSyntax switchSection in switchStatement.Sections)
             {
                 labels.AddRange(switchSection.Labels);
-                if (switchSection.Statements.Count == 1 && switchSection.Statements[0].IsKind(SyntaxKind.Block))
+                if (switchSection.Statements.Count == 1 && switchSection
+                                                               .Statements [0]
+                                                               .IsKind(SyntaxKind.Block))
                 {
-                    blockStatements.Add((BlockSyntax)switchSection.Statements[0]);
+                    blockStatements.Add((BlockSyntax) switchSection.Statements[0]);
                     continue;
                 }
 
@@ -239,7 +257,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     while (statementToAlign.IsKind(SyntaxKind.LabeledStatement))
                     {
                         labeledStatements.Add(statementToAlign);
-                        statementToAlign = ((LabeledStatementSyntax)statementToAlign).Statement;
+                        statementToAlign = ((LabeledStatementSyntax) statementToAlign).Statement;
                     }
 
                     statements.Add(statementToAlign);
@@ -254,7 +272,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleInitializerExpression(SyntaxNodeAnalysisContext context)
         {
-            var initializerExpression = (InitializerExpressionSyntax)context.Node;
+            var initializerExpression = (InitializerExpressionSyntax) context.Node;
 
             CheckBraces(context, initializerExpression.OpenBraceToken, initializerExpression.CloseBraceToken);
             CheckElements(context, initializerExpression.Expressions);
@@ -262,28 +280,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var anonymousObjectCreationExpression = (AnonymousObjectCreationExpressionSyntax)context.Node;
+            var anonymousObjectCreationExpression = (AnonymousObjectCreationExpressionSyntax) context.Node;
 
-            CheckBraces(context, anonymousObjectCreationExpression.OpenBraceToken, anonymousObjectCreationExpression.CloseBraceToken);
+            CheckBraces(context, anonymousObjectCreationExpression.OpenBraceToken,
+                        anonymousObjectCreationExpression.CloseBraceToken);
             CheckElements(context, anonymousObjectCreationExpression.Initializers);
         }
 
         private static void HandleTupleType(SyntaxNodeAnalysisContext context)
         {
-            var tupleType = (TupleTypeSyntaxWrapper)context.Node;
+            var tupleType = (TupleTypeSyntaxWrapper) context.Node;
 
             CheckElements(context, tupleType.Elements);
         }
 
         private static void HandleTupleExpression(SyntaxNodeAnalysisContext context)
         {
-            var tupleExpression = (TupleExpressionSyntaxWrapper)context.Node;
+            var tupleExpression = (TupleExpressionSyntaxWrapper) context.Node;
 
             CheckElements(context, tupleExpression.Arguments);
         }
 
-        private static void AddMembersAndAttributes<T>(ImmutableList<SyntaxNode>.Builder elements, SeparatedSyntaxList<T> members)
-            where T : SyntaxNode
+        private static void AddMembersAndAttributes<T>(ImmutableList<SyntaxNode>.Builder elements,
+                                                       SeparatedSyntaxList<T> members) where T : SyntaxNode
         {
             foreach (SyntaxNode member in members)
             {
@@ -291,8 +310,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static void AddMembersAndAttributes<T>(ImmutableList<SyntaxNode>.Builder elements, SyntaxList<T> members)
-            where T : SyntaxNode
+        private static void AddMembersAndAttributes<T>(ImmutableList<SyntaxNode>.Builder elements,
+                                                       SyntaxList<T> members) where T : SyntaxNode
         {
             foreach (SyntaxNode member in members)
             {
@@ -309,18 +328,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.EnumDeclaration:
             case SyntaxKindEx.RecordDeclaration:
-                elements.AddRange(((BaseTypeDeclarationSyntax)member).AttributeLists);
+                elements.AddRange(((BaseTypeDeclarationSyntax) member).AttributeLists);
                 break;
 
             case SyntaxKind.FieldDeclaration:
             case SyntaxKind.EventFieldDeclaration:
-                elements.AddRange(((BaseFieldDeclarationSyntax)member).AttributeLists);
+                elements.AddRange(((BaseFieldDeclarationSyntax) member).AttributeLists);
                 break;
 
             case SyntaxKind.PropertyDeclaration:
             case SyntaxKind.EventDeclaration:
             case SyntaxKind.IndexerDeclaration:
-                elements.AddRange(((BasePropertyDeclarationSyntax)member).AttributeLists);
+                elements.AddRange(((BasePropertyDeclarationSyntax) member).AttributeLists);
                 break;
 
             case SyntaxKind.MethodDeclaration:
@@ -328,7 +347,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
             case SyntaxKind.DestructorDeclaration:
             case SyntaxKind.OperatorDeclaration:
             case SyntaxKind.ConversionOperatorDeclaration:
-                elements.AddRange(((BaseMethodDeclarationSyntax)member).AttributeLists);
+                elements.AddRange(((BaseMethodDeclarationSyntax) member).AttributeLists);
                 break;
 
             case SyntaxKind.GetAccessorDeclaration:
@@ -336,15 +355,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
             case SyntaxKind.AddAccessorDeclaration:
             case SyntaxKind.RemoveAccessorDeclaration:
             case SyntaxKind.UnknownAccessorDeclaration:
-                elements.AddRange(((AccessorDeclarationSyntax)member).AttributeLists);
+                elements.AddRange(((AccessorDeclarationSyntax) member).AttributeLists);
                 break;
 
             case SyntaxKind.TypeParameter:
-                elements.AddRange(((TypeParameterSyntax)member).AttributeLists);
+                elements.AddRange(((TypeParameterSyntax) member).AttributeLists);
                 break;
 
             case SyntaxKind.Parameter:
-                elements.AddRange(((ParameterSyntax)member).AttributeLists);
+                elements.AddRange(((ParameterSyntax) member).AttributeLists);
                 break;
 
             default:
@@ -354,8 +373,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             elements.Add(member);
         }
 
-        private static void CheckElements<T>(SyntaxNodeAnalysisContext context, SyntaxList<T> elements)
-            where T : SyntaxNode
+        private static void CheckElements<T>(SyntaxNodeAnalysisContext context, SyntaxList<T> elements) where T
+            : SyntaxNode
         {
             if (elements.Count < 2)
             {
@@ -365,8 +384,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             CheckElements(context, elements.ToImmutableList());
         }
 
-        private static void CheckElements<T>(SyntaxNodeAnalysisContext context, SeparatedSyntaxList<T> elements)
-            where T : SyntaxNode
+        private static void CheckElements<T>(SyntaxNodeAnalysisContext context, SeparatedSyntaxList<T> elements) where T
+            : SyntaxNode
         {
             if (elements.Count < 2)
             {
@@ -383,7 +402,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return;
             }
 
-            CheckElements(context, ((IEnumerable<SyntaxNode>)elements.UnderlyingList).ToImmutableList());
+            CheckElements(context, ((IEnumerable<SyntaxNode>) elements.UnderlyingList).ToImmutableList());
         }
 
         // BlockSyntax is analyzed separately because it needs to check both braces.
@@ -406,10 +425,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
             foreach (BlockSyntax element in elements)
             {
                 SyntaxTrivia openBraceIndentationTrivia = element.OpenBraceToken.LeadingTrivia.LastOrDefault();
-                string openBraceIndentation = openBraceIndentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia) ? openBraceIndentationTrivia.ToString() : string.Empty;
+                string openBraceIndentation = openBraceIndentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia)
+                                                  ? openBraceIndentationTrivia.ToString()
+                                                  : string.Empty;
 
                 SyntaxTrivia closeBraceIndentationTrivia = element.CloseBraceToken.LeadingTrivia.LastOrDefault();
-                string closeBraceIndentation = closeBraceIndentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia) ? closeBraceIndentationTrivia.ToString() : string.Empty;
+                string closeBraceIndentation = closeBraceIndentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia)
+                                                   ? closeBraceIndentationTrivia.ToString()
+                                                   : string.Empty;
 
                 if (first)
                 {
@@ -420,18 +443,20 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 if (!string.Equals(expectedIndentation, openBraceIndentation, StringComparison.Ordinal))
                 {
-                    ReportDiagnostic(context, element.OpenBraceToken, openBraceIndentationTrivia, openBraceIndentation, expectedIndentation);
+                    ReportDiagnostic(context, element.OpenBraceToken, openBraceIndentationTrivia, openBraceIndentation,
+                                     expectedIndentation);
                 }
 
                 if (!string.Equals(expectedIndentation, closeBraceIndentation, StringComparison.Ordinal))
                 {
-                    ReportDiagnostic(context, element.CloseBraceToken, closeBraceIndentationTrivia, closeBraceIndentation, expectedIndentation);
+                    ReportDiagnostic(context, element.CloseBraceToken, closeBraceIndentationTrivia,
+                                     closeBraceIndentation, expectedIndentation);
                 }
             }
         }
 
-        private static void CheckElements<T>(SyntaxNodeAnalysisContext context, ImmutableList<T> elements)
-            where T : SyntaxNode
+        private static void CheckElements<T>(SyntaxNodeAnalysisContext context, ImmutableList<T> elements) where T
+            : SyntaxNode
         {
             if (elements.Count < 2)
             {
@@ -460,7 +485,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             {
                 SyntaxToken firstToken = GetFirstTokenForAnalysis(element);
                 SyntaxTrivia indentationTrivia = firstToken.LeadingTrivia.LastOrDefault();
-                string indentation = indentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia) ? indentationTrivia.ToString() : string.Empty;
+                string indentation =
+                    indentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia) ? indentationTrivia.ToString() : string.Empty;
 
                 if (first)
                 {
@@ -476,15 +502,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static ImmutableList<T> CleanupElementsList<T>(ImmutableList<T> elements)
-                        where T : SyntaxNode
+        private static ImmutableList<T> CleanupElementsList<T>(ImmutableList<T> elements) where T : SyntaxNode
         {
-            return elements.RemoveAll(
-                element =>
-                {
-                    SyntaxToken firstToken = GetFirstTokenForAnalysis(element);
-                    return firstToken.IsMissingOrDefault() || !firstToken.IsFirstInLine(allowNonWhitespaceTrivia: false);
-                });
+            return elements.RemoveAll(element => {
+                SyntaxToken firstToken = GetFirstTokenForAnalysis(element);
+                return firstToken.IsMissingOrDefault() || !firstToken.IsFirstInLine(allowNonWhitespaceTrivia : false);
+            });
         }
 
         private static SyntaxToken GetFirstTokenForAnalysis(SyntaxNode node)
@@ -492,8 +515,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             SyntaxToken firstToken = node.GetFirstToken();
             if (!node.IsKind(SyntaxKind.AttributeList))
             {
-                while (firstToken.IsKind(SyntaxKind.OpenBracketToken)
-                    && firstToken.Parent.IsKind(SyntaxKind.AttributeList))
+                while (firstToken.IsKind(SyntaxKind.OpenBracketToken) &&
+                       firstToken.Parent.IsKind(SyntaxKind.AttributeList))
                 {
                     // Skip over the attribute list since it's not the focus of this check
                     firstToken = firstToken.Parent.GetLastToken().GetNextToken();
@@ -503,7 +526,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return firstToken;
         }
 
-        private static void CheckBraces(SyntaxNodeAnalysisContext context, SyntaxToken openBraceToken, SyntaxToken closeBraceToken)
+        private static void CheckBraces(SyntaxNodeAnalysisContext context, SyntaxToken openBraceToken,
+                                        SyntaxToken closeBraceToken)
         {
             if (openBraceToken.GetLine() == closeBraceToken.GetLine())
             {
@@ -518,21 +542,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
 
             SyntaxTrivia openBraceIndentationTrivia = openBraceToken.LeadingTrivia.LastOrDefault();
-            string openBraceIndentation = openBraceIndentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia) ? openBraceIndentationTrivia.ToString() : string.Empty;
+            string openBraceIndentation = openBraceIndentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia)
+                                              ? openBraceIndentationTrivia.ToString()
+                                              : string.Empty;
 
             SyntaxTrivia closeBraceIndentationTrivia = closeBraceToken.LeadingTrivia.LastOrDefault();
-            string closeBraceIndentation = closeBraceIndentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia) ? closeBraceIndentationTrivia.ToString() : string.Empty;
+            string closeBraceIndentation = closeBraceIndentationTrivia.IsKind(SyntaxKind.WhitespaceTrivia)
+                                               ? closeBraceIndentationTrivia.ToString()
+                                               : string.Empty;
 
             if (!string.Equals(openBraceIndentation, closeBraceIndentation, StringComparison.Ordinal))
             {
-                ReportDiagnostic(context, closeBraceToken, closeBraceIndentationTrivia, closeBraceIndentation, openBraceIndentation);
+                ReportDiagnostic(context, closeBraceToken, closeBraceIndentationTrivia, closeBraceIndentation,
+                                 openBraceIndentation);
             }
         }
 
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken token, SyntaxTrivia tokenLeadingTrivia, string indentation, string expectedIndentation)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken token,
+                                             SyntaxTrivia tokenLeadingTrivia, string indentation,
+                                             string expectedIndentation)
         {
             Location location = (indentation.Length == 0) ? token.GetLocation() : tokenLeadingTrivia.GetLocation();
-            ImmutableDictionary<string, string> properties = ImmutableDictionary.Create<string, string>().SetItem(ExpectedIndentationKey, expectedIndentation);
+            ImmutableDictionary<string, string> properties =
+                ImmutableDictionary.Create<string, string>().SetItem(ExpectedIndentationKey, expectedIndentation);
             context.ReportDiagnostic(Diagnostic.Create(Descriptor, location, properties));
         }
     }

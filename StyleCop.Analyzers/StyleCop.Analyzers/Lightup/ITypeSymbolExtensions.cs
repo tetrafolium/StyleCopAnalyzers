@@ -12,7 +12,8 @@ namespace StyleCop.Analyzers.Lightup
 
         static ITypeSymbolExtensions()
         {
-            IsTupleTypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ITypeSymbol, bool>(typeof(ITypeSymbol), nameof(IsTupleType));
+            IsTupleTypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ITypeSymbol, bool>(typeof(ITypeSymbol),
+                                                                                                 nameof(IsTupleType));
         }
 
         public static bool IsTupleType(this ITypeSymbol symbol)

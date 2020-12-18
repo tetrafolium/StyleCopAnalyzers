@@ -23,8 +23,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1120CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1120CommentsMustContainText.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1120CommentsMustContainText.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,18 +40,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1120CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1120CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1120CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1120CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var trivia = root.FindTrivia(diagnostic.Location.SourceSpan.Start, true);
@@ -97,7 +100,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var nodeBeforeStart = commentTrivia.SpanStart - 1;
             var nodeBefore = root.FindNode(new Microsoft.CodeAnalysis.Text.TextSpan(nodeBeforeStart, 1));
 
-            return nodeBefore.GetEndLine() == commentTrivia.GetLine() && !nodeBefore.GetLeadingTrivia().Contains(commentTrivia);
+            return nodeBefore.GetEndLine() == commentTrivia.GetLine() &&
+                   !nodeBefore.GetLeadingTrivia().Contains(commentTrivia);
         }
 
         private static bool TriviaHasTrailingContentOnLine(SyntaxNode root, SyntaxTrivia commentTrivia)
@@ -111,7 +115,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var nodeAfterTriviaStart = commentTrivia.Span.End + 1;
             var nodeAfterTrivia = root.FindNode(new Microsoft.CodeAnalysis.Text.TextSpan(nodeAfterTriviaStart, 1));
 
-            return nodeAfterTrivia.GetLine() == commentTrivia.GetEndLine() && !nodeAfterTrivia.GetTrailingTrivia().Contains(commentTrivia);
+            return nodeAfterTrivia.GetLine() == commentTrivia.GetEndLine() &&
+                   !nodeAfterTrivia.GetTrailingTrivia().Contains(commentTrivia);
         }
     }
 }

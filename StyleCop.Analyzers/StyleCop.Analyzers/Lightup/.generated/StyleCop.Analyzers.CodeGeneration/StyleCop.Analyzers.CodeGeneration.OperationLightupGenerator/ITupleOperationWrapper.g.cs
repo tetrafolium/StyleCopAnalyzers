@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static ITupleOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ITupleOperationWrapper));
-            ElementsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Elements));
-            NaturalTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(NaturalType));
+            ElementsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                WrappedType, nameof(Elements));
+            NaturalTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                WrappedType, nameof(NaturalType));
         }
 
         private ITupleOperationWrapper(IOperation operation)

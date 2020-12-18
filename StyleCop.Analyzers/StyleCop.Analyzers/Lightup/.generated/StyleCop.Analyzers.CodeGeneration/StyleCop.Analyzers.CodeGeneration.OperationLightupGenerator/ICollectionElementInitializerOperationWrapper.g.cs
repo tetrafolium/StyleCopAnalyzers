@@ -9,7 +9,8 @@ namespace StyleCop.Analyzers.Lightup
 
     internal readonly struct ICollectionElementInitializerOperationWrapper : IOperationWrapper
     {
-        internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.ICollectionElementInitializerOperation";
+        internal const string WrappedTypeName =
+            "Microsoft.CodeAnalysis.Operations.ICollectionElementInitializerOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IMethodSymbol> AddMethodAccessor;
         private static readonly Func<IOperation, ImmutableArray<IOperation>> ArgumentsAccessor;
@@ -18,9 +19,12 @@ namespace StyleCop.Analyzers.Lightup
         static ICollectionElementInitializerOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ICollectionElementInitializerOperationWrapper));
-            AddMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(AddMethod));
-            ArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Arguments));
-            IsDynamicAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsDynamic));
+            AddMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                WrappedType, nameof(AddMethod));
+            ArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                WrappedType, nameof(Arguments));
+            IsDynamicAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsDynamic));
         }
 
         private ICollectionElementInitializerOperationWrapper(IOperation operation)

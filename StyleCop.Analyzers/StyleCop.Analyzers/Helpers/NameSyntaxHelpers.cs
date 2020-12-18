@@ -51,11 +51,13 @@ namespace StyleCop.Analyzers.Helpers
             string right = second.ToNormalizedString();
 
             // First compare without considering case
-            int result = CultureInfo.InvariantCulture.CompareInfo.Compare(left, right, CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreWidth);
+            int result = CultureInfo.InvariantCulture.CompareInfo.Compare(
+                left, right, CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreWidth);
             if (result == 0)
             {
                 // Compare case if they matched
-                result = CultureInfo.InvariantCulture.CompareInfo.Compare(left, right, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreWidth);
+                result = CultureInfo.InvariantCulture.CompareInfo.Compare(
+                    left, right, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreWidth);
             }
 
             return result;
@@ -65,24 +67,25 @@ namespace StyleCop.Analyzers.Helpers
         {
             if (nameSyntax.IsKind(SyntaxKind.IdentifierName))
             {
-                var identifierNameSyntax = (IdentifierNameSyntax)nameSyntax;
+                var identifierNameSyntax = (IdentifierNameSyntax) nameSyntax;
                 builder.Append(identifierNameSyntax.Identifier.ValueText);
             }
             else if (nameSyntax.IsKind(SyntaxKind.QualifiedName))
             {
-                var qualifiedNameSyntax = (QualifiedNameSyntax)nameSyntax;
+                var qualifiedNameSyntax = (QualifiedNameSyntax) nameSyntax;
                 BuildName(qualifiedNameSyntax.Left, builder, includeAlias);
                 builder.Append(DotChar);
                 BuildName(qualifiedNameSyntax.Right, builder, includeAlias);
             }
             else if (nameSyntax.IsKind(SyntaxKind.GenericName))
             {
-                var genericNameSyntax = (GenericNameSyntax)nameSyntax;
-                builder.AppendFormat("{0}{1}", genericNameSyntax.Identifier.ValueText, genericNameSyntax.TypeArgumentList);
+                var genericNameSyntax = (GenericNameSyntax) nameSyntax;
+                builder.AppendFormat("{0}{1}", genericNameSyntax.Identifier.ValueText,
+                                     genericNameSyntax.TypeArgumentList);
             }
             else if (nameSyntax.IsKind(SyntaxKind.AliasQualifiedName))
             {
-                var aliasQualifiedNameSyntax = (AliasQualifiedNameSyntax)nameSyntax;
+                var aliasQualifiedNameSyntax = (AliasQualifiedNameSyntax) nameSyntax;
                 if (includeAlias)
                 {
                     builder.Append(aliasQualifiedNameSyntax.Alias.Identifier.ValueText);

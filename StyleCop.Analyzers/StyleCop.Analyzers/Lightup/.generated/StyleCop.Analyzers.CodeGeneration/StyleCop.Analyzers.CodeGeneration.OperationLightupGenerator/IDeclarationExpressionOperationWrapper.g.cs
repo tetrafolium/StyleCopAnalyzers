@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IDeclarationExpressionOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IDeclarationExpressionOperationWrapper));
-            ExpressionAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Expression));
+            ExpressionAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Expression));
         }
 
         private IDeclarationExpressionOperationWrapper(IOperation operation)

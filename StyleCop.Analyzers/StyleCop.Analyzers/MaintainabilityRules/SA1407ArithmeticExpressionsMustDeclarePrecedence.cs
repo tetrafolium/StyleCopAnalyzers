@@ -46,29 +46,35 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1407";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1407.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Title), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1407MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1407.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Title),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1407MessageFormat),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Description),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableArray<SyntaxKind> HandledBinaryExpressionKinds =
-            ImmutableArray.Create(
-                SyntaxKind.AddExpression,
-                SyntaxKind.SubtractExpression,
-                SyntaxKind.MultiplyExpression,
-                SyntaxKind.DivideExpression,
-                SyntaxKind.ModuloExpression,
-                SyntaxKind.LeftShiftExpression,
-                SyntaxKind.RightShiftExpression);
+        private static readonly ImmutableArray<SyntaxKind> HandledBinaryExpressionKinds = ImmutableArray.Create(
+            SyntaxKind.AddExpression, SyntaxKind.SubtractExpression, SyntaxKind.MultiplyExpression,
+            SyntaxKind.DivideExpression, SyntaxKind.ModuloExpression, SyntaxKind.LeftShiftExpression,
+            SyntaxKind.RightShiftExpression);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BinaryExpressionAction = HandleBinaryExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -81,7 +87,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context)
         {
-            BinaryExpressionSyntax binSyntax = (BinaryExpressionSyntax)context.Node;
+            BinaryExpressionSyntax binSyntax = (BinaryExpressionSyntax) context.Node;
 
             if (binSyntax.Left is BinaryExpressionSyntax left)
             {
@@ -105,12 +111,16 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         private static bool IsSameFamily(SyntaxToken operatorToken1, SyntaxToken operatorToken2)
         {
             bool isSameFamily = false;
-            isSameFamily |= (operatorToken1.IsKind(SyntaxKind.PlusToken) || operatorToken1.IsKind(SyntaxKind.MinusToken))
-                && (operatorToken2.IsKind(SyntaxKind.PlusToken) || operatorToken2.IsKind(SyntaxKind.MinusToken));
-            isSameFamily |= (operatorToken1.IsKind(SyntaxKind.AsteriskToken) || operatorToken1.IsKind(SyntaxKind.SlashToken))
-                && (operatorToken2.IsKind(SyntaxKind.AsteriskToken) || operatorToken2.IsKind(SyntaxKind.SlashToken));
-            isSameFamily |= (operatorToken1.IsKind(SyntaxKind.LessThanLessThanToken) || operatorToken1.IsKind(SyntaxKind.GreaterThanGreaterThanToken))
-                && (operatorToken2.IsKind(SyntaxKind.LessThanLessThanToken) || operatorToken2.IsKind(SyntaxKind.GreaterThanGreaterThanToken));
+            isSameFamily |=
+                (operatorToken1.IsKind(SyntaxKind.PlusToken) || operatorToken1.IsKind(SyntaxKind.MinusToken)) &&
+                (operatorToken2.IsKind(SyntaxKind.PlusToken) || operatorToken2.IsKind(SyntaxKind.MinusToken));
+            isSameFamily |=
+                (operatorToken1.IsKind(SyntaxKind.AsteriskToken) || operatorToken1.IsKind(SyntaxKind.SlashToken)) &&
+                (operatorToken2.IsKind(SyntaxKind.AsteriskToken) || operatorToken2.IsKind(SyntaxKind.SlashToken));
+            isSameFamily |= (operatorToken1.IsKind(SyntaxKind.LessThanLessThanToken) ||
+                             operatorToken1.IsKind(SyntaxKind.GreaterThanGreaterThanToken)) &&
+                            (operatorToken2.IsKind(SyntaxKind.LessThanLessThanToken) ||
+                             operatorToken2.IsKind(SyntaxKind.GreaterThanGreaterThanToken));
 
             return isSameFamily;
         }

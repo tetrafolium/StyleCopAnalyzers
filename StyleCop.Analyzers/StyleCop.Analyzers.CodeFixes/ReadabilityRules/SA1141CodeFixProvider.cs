@@ -22,8 +22,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1141CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1141UseTupleSyntax.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1141UseTupleSyntax.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,23 +40,23 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1141CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1141CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1141CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1141CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie : true);
             if (node.IsKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 // get the invocation node when processing ValueTuple.Create, as that needs to be replaced.
@@ -62,7 +65,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             var newNode = GetReplacementNode(semanticModel, node);
 
-            // doing our own formatting, as the default formatting for operators is incompatible with StyleCop.Analyzers.
+            // doing our own formatting, as the default formatting for operators is incompatible with
+            // StyleCop.Analyzers.
             var separatorRewriter = new SeparatorRewriter();
             newNode = separatorRewriter.Visit(newNode);
 
@@ -86,7 +90,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
             switch (node)
             {
             case QualifiedNameSyntax qualifiedNameSyntax:
-                return TransformGenericNameToTuple(semanticModel, (GenericNameSyntax)qualifiedNameSyntax.Right);
+                return TransformGenericNameToTuple(semanticModel, (GenericNameSyntax) qualifiedNameSyntax.Right);
 
             case GenericNameSyntax genericNameSyntax:
                 return TransformGenericNameToTuple(semanticModel, genericNameSyntax);
@@ -102,16 +106,21 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static SyntaxNode TransformGenericNameToTuple(SemanticModel semanticModel, GenericNameSyntax genericName)
+        private static SyntaxNode TransformGenericNameToTuple(SemanticModel semanticModel,
+                                                              GenericNameSyntax genericName)
         {
-            var implementationType = typeof(SeparatedSyntaxListWrapper<>.AutoWrapSeparatedSyntaxList<>).MakeGenericType(typeof(TupleElementSyntaxWrapper), SyntaxWrapperHelper.GetWrappedType(typeof(TupleElementSyntaxWrapper)));
-            var tupleElements = (SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>)Activator.CreateInstance(implementationType);
+            var implementationType =
+                typeof(SeparatedSyntaxListWrapper<>.AutoWrapSeparatedSyntaxList<>)
+                    .MakeGenericType(typeof(TupleElementSyntaxWrapper),
+                                     SyntaxWrapperHelper.GetWrappedType(typeof(TupleElementSyntaxWrapper)));
+            var tupleElements =
+                (SeparatedSyntaxListWrapper<TupleElementSyntaxWrapper>) Activator.CreateInstance(implementationType);
 
             foreach (var typeArgument in genericName.TypeArgumentList.Arguments)
             {
                 if (IsValueTuple(semanticModel, typeArgument))
                 {
-                    var tupleTypeSyntax = (TypeSyntax)GetReplacementNode(semanticModel, typeArgument);
+                    var tupleTypeSyntax = (TypeSyntax) GetReplacementNode(semanticModel, typeArgument);
                     tupleElements = tupleElements.Add(SyntaxFactoryEx.TupleElement(tupleTypeSyntax));
                 }
                 else
@@ -123,7 +132,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return SyntaxFactoryEx.TupleType(tupleElements);
         }
 
-        private static SyntaxNode TransformArgumentListToTuple(SemanticModel semanticModel, SeparatedSyntaxList<ArgumentSyntax> arguments)
+        private static SyntaxNode TransformArgumentListToTuple(SemanticModel semanticModel,
+                                                               SeparatedSyntaxList<ArgumentSyntax> arguments)
         {
             SeparatedSyntaxList<ArgumentSyntax> processedArguments = default;
 
@@ -157,8 +167,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private class SeparatorRewriter : CSharpSyntaxRewriter
         {
-            public SeparatorRewriter()
-                : base(false)
+            public SeparatorRewriter() : base(false)
             {
             }
 

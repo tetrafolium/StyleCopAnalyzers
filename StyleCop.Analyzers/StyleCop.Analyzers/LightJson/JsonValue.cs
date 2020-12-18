@@ -3,33 +3,33 @@
 
 namespace LightJson
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
-    using LightJson.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using LightJson.Serialization;
+
+/// <summary>
+/// A wrapper object that contains a valid JSON value.
+/// </summary>
+[DebuggerDisplay("{ToString(),nq}", Type = "JsonValue({Type})")]
+[DebuggerTypeProxy(typeof(JsonValueDebugView))]
+internal struct JsonValue
+{
+    /// <summary>
+    /// Represents a null JsonValue.
+    /// </summary>
+    public static readonly JsonValue Null = new JsonValue(JsonValueType.Null, default, null);
+
+    private readonly JsonValueType type;
+    private readonly object reference;
+    private readonly double value;
 
     /// <summary>
-    /// A wrapper object that contains a valid JSON value.
+    /// Initializes a new instance of the <see cref="JsonValue"/> struct, representing a Boolean value.
     /// </summary>
-    [DebuggerDisplay("{ToString(),nq}", Type = "JsonValue({Type})")]
-    [DebuggerTypeProxy(typeof(JsonValueDebugView))]
-    internal struct JsonValue
-    {
-        /// <summary>
-        /// Represents a null JsonValue.
-        /// </summary>
-        public static readonly JsonValue Null = new JsonValue(JsonValueType.Null, default, null);
-
-        private readonly JsonValueType type;
-        private readonly object reference;
-        private readonly double value;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JsonValue"/> struct, representing a Boolean value.
-        /// </summary>
-        /// <param name="value">The value to be wrapped.</param>
+    /// <param name="value">The value to be wrapped.</param>
         public JsonValue(bool? value)
         {
             if (value.HasValue)
@@ -195,7 +195,7 @@ namespace LightJson
                 }
 
                 var value = this.value;
-                return unchecked((int)value) == value;
+                return unchecked((int) value) == value;
             }
         }
 
@@ -276,7 +276,7 @@ namespace LightJson
                     return this.value != 0;
 
                 case JsonValueType.String:
-                    return (string)this.reference != string.Empty;
+                    return (string) this.reference != string.Empty;
 
                 case JsonValueType.Object:
                 case JsonValueType.Array:
@@ -309,7 +309,7 @@ namespace LightJson
                     return int.MinValue;
                 }
 
-                return (int)value;
+                return (int) value;
             }
         }
 
@@ -324,16 +324,15 @@ namespace LightJson
                 switch (this.Type)
                 {
                 case JsonValueType.Boolean:
-                    return (this.value == 1)
-                        ? 1
-                        : 0;
+                    return (this.value == 1) ? 1 : 0;
 
                 case JsonValueType.Number:
                     return this.value;
 
                 case JsonValueType.String:
                     double number;
-                    if (double.TryParse((string)this.reference, NumberStyles.Float, CultureInfo.InvariantCulture, out number))
+                    if (double.TryParse((string) this.reference, NumberStyles.Float, CultureInfo.InvariantCulture,
+                                        out number))
                     {
                         return number;
                     }
@@ -359,15 +358,13 @@ namespace LightJson
                 switch (this.Type)
                 {
                 case JsonValueType.Boolean:
-                    return (this.value == 1)
-                        ? "true"
-                        : "false";
+                    return (this.value == 1) ? "true" : "false";
 
                 case JsonValueType.Number:
                     return this.value.ToString(CultureInfo.InvariantCulture);
 
                 case JsonValueType.String:
-                    return (string)this.reference;
+                    return (string) this.reference;
 
                 default:
                     return null;
@@ -384,8 +381,7 @@ namespace LightJson
             get
             {
                 return this.IsJsonObject
-                    ? (JsonObject)this.reference
-                    : null;
+                    ?(JsonObject) this.reference : null;
             }
         }
 
@@ -398,8 +394,7 @@ namespace LightJson
             get
             {
                 return this.IsJsonArray
-                    ? (JsonArray)this.reference
-                    : null;
+                    ?(JsonArray) this.reference : null;
             }
         }
 
@@ -413,7 +408,7 @@ namespace LightJson
             {
                 DateTime value;
 
-                if (this.IsString && DateTime.TryParse((string)this.reference, out value))
+                if (this.IsString && DateTime.TryParse((string) this.reference, out value))
                 {
                     return value;
                 }
@@ -462,7 +457,7 @@ namespace LightJson
             {
                 if (this.IsJsonObject)
                 {
-                    return ((JsonObject)this.reference)[key];
+                    return ((JsonObject) this.reference)[key];
                 }
                 else
                 {
@@ -474,7 +469,7 @@ namespace LightJson
             {
                 if (this.IsJsonObject)
                 {
-                    ((JsonObject)this.reference)[key] = value;
+                    ((JsonObject) this.reference)[key] = value;
                 }
                 else
                 {
@@ -496,7 +491,7 @@ namespace LightJson
             {
                 if (this.IsJsonArray)
                 {
-                    return ((JsonArray)this.reference)[index];
+                    return ((JsonArray) this.reference)[index];
                 }
                 else
                 {
@@ -508,7 +503,7 @@ namespace LightJson
             {
                 if (this.IsJsonArray)
                 {
-                    ((JsonArray)this.reference)[index] = value;
+                    ((JsonArray) this.reference)[index] = value;
                 }
                 else
                 {
@@ -605,7 +600,7 @@ namespace LightJson
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
 #pragma warning disable IDE0055 // Fix formatting
-        public static explicit operator int?(JsonValue jsonValue)
+        public static explicit operator int ? (JsonValue jsonValue)
 #pragma warning restore IDE0055 // Fix formatting
         {
             if (jsonValue.IsNull)
@@ -614,7 +609,7 @@ namespace LightJson
             }
             else
             {
-                return (int)jsonValue;
+                return (int) jsonValue;
             }
         }
 
@@ -643,7 +638,7 @@ namespace LightJson
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
 #pragma warning disable IDE0055 // Fix formatting
-        public static explicit operator bool?(JsonValue jsonValue)
+        public static explicit operator bool ? (JsonValue jsonValue)
 #pragma warning restore IDE0055 // Fix formatting
         {
             if (jsonValue.IsNull)
@@ -652,7 +647,7 @@ namespace LightJson
             }
             else
             {
-                return (bool)jsonValue;
+                return (bool) jsonValue;
             }
         }
 
@@ -681,7 +676,7 @@ namespace LightJson
         /// JsonValue is not the desired type of the conversion.
         /// </exception>
 #pragma warning disable IDE0055 // Fix formatting
-        public static explicit operator double?(JsonValue jsonValue)
+        public static explicit operator double ? (JsonValue jsonValue)
 #pragma warning restore IDE0055 // Fix formatting
         {
             if (jsonValue.IsNull)
@@ -690,7 +685,7 @@ namespace LightJson
             }
             else
             {
-                return (double)jsonValue;
+                return (double) jsonValue;
             }
         }
 
@@ -785,9 +780,7 @@ namespace LightJson
         /// <param name="b">Second JsonValue to compare.</param>
         public static bool operator ==(JsonValue a, JsonValue b)
         {
-            return (a.Type == b.Type)
-                && (a.value == b.value)
-                && Equals(a.reference, b.reference);
+            return (a.Type == b.Type) && (a.value == b.value) && Equals(a.reference, b.reference);
         }
 
         /// <summary>
@@ -838,9 +831,8 @@ namespace LightJson
             }
             else
             {
-                return this.Type.GetHashCode()
-                    ^ this.value.GetHashCode()
-                    ^ EqualityComparer<object>.Default.GetHashCode(this.reference);
+                return this.Type.GetHashCode() ^ this.value.GetHashCode() ^
+                       EqualityComparer<object>.Default.GetHashCode(this.reference);
             }
         }
 
@@ -861,7 +853,7 @@ namespace LightJson
                 {
                     if (this.jsonValue.IsJsonObject)
                     {
-                        return (JsonObject)this.jsonValue.reference;
+                        return (JsonObject) this.jsonValue.reference;
                     }
                     else
                     {
@@ -877,7 +869,7 @@ namespace LightJson
                 {
                     if (this.jsonValue.IsJsonArray)
                     {
-                        return (JsonArray)this.jsonValue.reference;
+                        return (JsonArray) this.jsonValue.reference;
                     }
                     else
                     {
@@ -900,11 +892,11 @@ namespace LightJson
                 {
                     if (this.jsonValue.IsJsonObject)
                     {
-                        return (JsonObject)this.jsonValue.reference;
+                        return (JsonObject) this.jsonValue.reference;
                     }
                     else if (this.jsonValue.IsJsonArray)
                     {
-                        return (JsonArray)this.jsonValue.reference;
+                        return (JsonArray) this.jsonValue.reference;
                     }
                     else
                     {
@@ -913,5 +905,5 @@ namespace LightJson
                 }
             }
         }
-    }
+}
 }

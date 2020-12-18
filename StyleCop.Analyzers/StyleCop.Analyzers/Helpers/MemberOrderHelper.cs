@@ -16,21 +16,11 @@ namespace StyleCop.Analyzers.Helpers
     internal struct MemberOrderHelper
     {
         private static readonly ImmutableArray<SyntaxKind> TypeMemberOrder = ImmutableArray.Create(
-            SyntaxKind.ClassDeclaration,
-            SyntaxKind.StructDeclaration,
-            SyntaxKind.MethodDeclaration,
-            SyntaxKind.OperatorDeclaration,
-            SyntaxKind.ConversionOperatorDeclaration,
-            SyntaxKind.IndexerDeclaration,
-            SyntaxKind.PropertyDeclaration,
-            SyntaxKind.InterfaceDeclaration,
-            SyntaxKind.EnumDeclaration,
-            SyntaxKind.EventDeclaration,
-            SyntaxKind.DelegateDeclaration,
-            SyntaxKind.DestructorDeclaration,
-            SyntaxKind.ConstructorDeclaration,
-            SyntaxKind.FieldDeclaration,
-            SyntaxKind.NamespaceDeclaration);
+            SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.MethodDeclaration,
+            SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration, SyntaxKind.IndexerDeclaration,
+            SyntaxKind.PropertyDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration,
+            SyntaxKind.EventDeclaration, SyntaxKind.DelegateDeclaration, SyntaxKind.DestructorDeclaration,
+            SyntaxKind.ConstructorDeclaration, SyntaxKind.FieldDeclaration, SyntaxKind.NamespaceDeclaration);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberOrderHelper"/> struct.
@@ -58,7 +48,7 @@ namespace StyleCop.Analyzers.Helpers
                 case OrderingTrait.Accessibility:
                     // 3 bits are required to store this.
                     this.Priority <<= 3;
-                    this.Priority |= (int)GetAccessLevelForOrdering(member, modifiers) & 0x07;
+                    this.Priority |= (int) GetAccessLevelForOrdering(member, modifiers) & 0x07;
                     break;
 
                 case OrderingTrait.Constant:
@@ -95,8 +85,7 @@ namespace StyleCop.Analyzers.Helpers
         }
 
         [Flags]
-        private enum ModifierFlags
-        {
+        private enum ModifierFlags {
             /// <summary>
             /// No modifiers.
             /// </summary>
@@ -124,7 +113,10 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// The wrapped member.
         /// </value>
-        internal MemberDeclarationSyntax Member { get; }
+        internal MemberDeclarationSyntax Member
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the priority for this member.
@@ -132,17 +124,23 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// The priority for this member.
         /// </value>
-        internal int Priority { get; }
+        internal int Priority
+        {
+            get;
+        }
 
         internal static AccessLevel GetAccessLevelForOrdering(SyntaxNode member, SyntaxTokenList modifiers)
         {
             SyntaxKind type = member.Kind();
 
             AccessLevel accessibility;
-            if ((type == SyntaxKind.ConstructorDeclaration && modifiers.Any(SyntaxKind.StaticKeyword))
-                || (type == SyntaxKind.MethodDeclaration && ((MethodDeclarationSyntax)member).ExplicitInterfaceSpecifier != null)
-                || (type == SyntaxKind.PropertyDeclaration && ((PropertyDeclarationSyntax)member).ExplicitInterfaceSpecifier != null)
-                || (type == SyntaxKind.IndexerDeclaration && ((IndexerDeclarationSyntax)member).ExplicitInterfaceSpecifier != null))
+            if ((type == SyntaxKind.ConstructorDeclaration && modifiers.Any(SyntaxKind.StaticKeyword)) ||
+                (type == SyntaxKind.MethodDeclaration &&
+                 ((MethodDeclarationSyntax) member).ExplicitInterfaceSpecifier != null) ||
+                (type == SyntaxKind.PropertyDeclaration &&
+                 ((PropertyDeclarationSyntax) member).ExplicitInterfaceSpecifier != null) ||
+                (type == SyntaxKind.IndexerDeclaration &&
+                 ((IndexerDeclarationSyntax) member).ExplicitInterfaceSpecifier != null))
             {
                 accessibility = AccessLevel.Public;
             }
@@ -151,7 +149,8 @@ namespace StyleCop.Analyzers.Helpers
                 accessibility = AccessLevelHelper.GetAccessLevel(modifiers);
                 if (accessibility == AccessLevel.NotSpecified)
                 {
-                    if (member.Parent.IsKind(SyntaxKind.CompilationUnit) || member.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
+                    if (member.Parent.IsKind(SyntaxKind.CompilationUnit) ||
+                        member.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
                     {
                         accessibility = AccessLevel.Internal;
                     }

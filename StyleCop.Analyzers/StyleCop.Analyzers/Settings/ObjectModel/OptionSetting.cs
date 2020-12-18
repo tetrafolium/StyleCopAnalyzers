@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
     /// <summary>
     /// Specifies the possible values for an option.
     /// </summary>
-    internal enum OptionSetting
-    {
+    internal enum OptionSetting {
         /// <summary>
         /// The option is allowed, but not required.
         /// </summary>

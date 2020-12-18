@@ -38,19 +38,31 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1410RemoveDelegateParenthesisWhenPossible"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1410";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1410.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(MaintainabilityResources.SA1410Title), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1410MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1410Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1410.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1410Title),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1410MessageFormat),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1410Description),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
 
-        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousMethodExpressionAction =
+            HandleAnonymousMethodExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -63,7 +75,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (AnonymousMethodExpressionSyntax)context.Node;
+            var syntax = (AnonymousMethodExpressionSyntax) context.Node;
 
             // ignore if no parameter list exists
             if (syntax.ParameterList == null)
@@ -80,8 +92,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             // if the delegate is passed as a parameter, verify that there is no ambiguity.
             if (syntax.Parent.IsKind(SyntaxKind.Argument))
             {
-                var argumentSyntax = (ArgumentSyntax)syntax.Parent;
-                var argumentListSyntax = (ArgumentListSyntax)argumentSyntax.Parent;
+                var argumentSyntax = (ArgumentSyntax) syntax.Parent;
+                var argumentListSyntax = (ArgumentListSyntax) argumentSyntax.Parent;
 
                 switch (argumentListSyntax.Parent.Kind())
                 {
@@ -100,10 +112,14 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             context.ReportDiagnostic(Diagnostic.Create(Descriptor, syntax.ParameterList.GetLocation()));
         }
 
-        private static bool HasAmbiguousOverload(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethodExpression, SyntaxNode methodCallSyntax)
+        private static bool HasAmbiguousOverload(SyntaxNodeAnalysisContext context,
+                                                 AnonymousMethodExpressionSyntax anonymousMethodExpression,
+                                                 SyntaxNode methodCallSyntax)
         {
-            var nodeForSpeculation = methodCallSyntax.ReplaceNode(anonymousMethodExpression, anonymousMethodExpression.WithParameterList(null));
-            var speculativeSymbolInfo = context.SemanticModel.GetSpeculativeSymbolInfo(methodCallSyntax.SpanStart, nodeForSpeculation, SpeculativeBindingOption.BindAsExpression);
+            var nodeForSpeculation = methodCallSyntax.ReplaceNode(anonymousMethodExpression,
+                                                                  anonymousMethodExpression.WithParameterList(null));
+            var speculativeSymbolInfo = context.SemanticModel.GetSpeculativeSymbolInfo(
+                methodCallSyntax.SpanStart, nodeForSpeculation, SpeculativeBindingOption.BindAsExpression);
             return speculativeSymbolInfo.Symbol == null;
         }
     }

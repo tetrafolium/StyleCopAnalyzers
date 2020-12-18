@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IAnonymousFunctionOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IAnonymousFunctionOperationWrapper));
-            SymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(Symbol));
-            BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
+            SymbolAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(Symbol));
+            BodyAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
         }
 
         private IAnonymousFunctionOperationWrapper(IOperation operation)

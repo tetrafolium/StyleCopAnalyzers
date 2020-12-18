@@ -48,7 +48,7 @@ namespace LightJson.Serialization
                 throw new ArgumentNullException(nameof(source));
             }
 
-            using (var reader = new StringReader(source))
+            using(var reader = new StringReader(source))
             {
                 return Parse(reader);
             }
@@ -92,9 +92,7 @@ namespace LightJson.Serialization
                 return this.ReadNull();
 
             default:
-                throw new JsonParseException(
-                    ErrorType.InvalidOrUnexpectedCharacter,
-                    this.scanner.Position);
+                throw new JsonParseException(ErrorType.InvalidOrUnexpectedCharacter, this.scanner.Position);
             }
         }
 
@@ -122,8 +120,8 @@ namespace LightJson.Serialization
         {
             while (true)
             {
-                int next = this.scanner.Peek(throwAtEndOfFile: false);
-                if (next == -1 || !char.IsNumber((char)next))
+                int next = this.scanner.Peek(throwAtEndOfFile : false);
+                if (next == -1 || !char.IsNumber((char) next))
                 {
                     return;
                 }
@@ -150,13 +148,16 @@ namespace LightJson.Serialization
                 this.ReadDigits(builder);
             }
 
-            if (this.scanner.Peek(throwAtEndOfFile: false) == '.')
+            if (this.scanner.Peek(throwAtEndOfFile : false) == '.')
             {
                 builder.Append(this.scanner.Read());
                 this.ReadDigits(builder);
             }
 
-            if (this.scanner.Peek(throwAtEndOfFile: false) == 'e' || this.scanner.Peek(throwAtEndOfFile: false) == 'E')
+            if (this.scanner.Peek(throwAtEndOfFile
+                                  : false) == 'e' ||
+                this.scanner.Peek(throwAtEndOfFile
+                                  : false) == 'E')
             {
                 builder.Append(this.scanner.Read());
 
@@ -173,9 +174,7 @@ namespace LightJson.Serialization
                 this.ReadDigits(builder);
             }
 
-            return double.Parse(
-                builder.ToString(),
-                CultureInfo.InvariantCulture);
+            return double.Parse(builder.ToString(), CultureInfo.InvariantCulture);
         }
 
         private string ReadString()
@@ -220,9 +219,7 @@ namespace LightJson.Serialization
                         builder.Append(this.ReadUnicodeLiteral());
                         break;
                     default:
-                        throw new JsonParseException(
-                            ErrorType.InvalidOrUnexpectedCharacter,
-                            errorPosition);
+                        throw new JsonParseException(ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
                     }
                 }
                 else if (c == '"')
@@ -233,9 +230,7 @@ namespace LightJson.Serialization
                 {
                     if (char.IsControl(c))
                     {
-                        throw new JsonParseException(
-                            ErrorType.InvalidOrUnexpectedCharacter,
-                            errorPosition);
+                        throw new JsonParseException(ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
                     }
                     else
                     {
@@ -301,9 +296,7 @@ namespace LightJson.Serialization
                 return 15;
 
             default:
-                throw new JsonParseException(
-                    ErrorType.InvalidOrUnexpectedCharacter,
-                    errorPosition);
+                throw new JsonParseException(ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
             }
         }
 
@@ -316,7 +309,7 @@ namespace LightJson.Serialization
             value += this.ReadHexDigit() * 16;   // 16^1
             value += this.ReadHexDigit();        // 16^0
 
-            return (char)value;
+            return (char) value;
         }
 
         private JsonObject ReadObject()
@@ -345,9 +338,7 @@ namespace LightJson.Serialization
 
                     if (jsonObject.ContainsKey(key))
                     {
-                        throw new JsonParseException(
-                            ErrorType.DuplicateObjectKeys,
-                            errorPosition);
+                        throw new JsonParseException(ErrorType.DuplicateObjectKeys, errorPosition);
                     }
 
                     this.scanner.SkipWhitespace();
@@ -384,9 +375,7 @@ namespace LightJson.Serialization
                     }
                     else
                     {
-                        throw new JsonParseException(
-                            ErrorType.InvalidOrUnexpectedCharacter,
-                            errorPosition);
+                        throw new JsonParseException(ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
                     }
                 }
             }
@@ -443,9 +432,7 @@ namespace LightJson.Serialization
                     }
                     else
                     {
-                        throw new JsonParseException(
-                            ErrorType.InvalidOrUnexpectedCharacter,
-                            errorPosition);
+                        throw new JsonParseException(ErrorType.InvalidOrUnexpectedCharacter, errorPosition);
                     }
                 }
             }

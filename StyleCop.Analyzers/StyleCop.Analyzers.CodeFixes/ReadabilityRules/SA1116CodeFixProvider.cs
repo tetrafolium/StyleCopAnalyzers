@@ -26,8 +26,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1116CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1116SplitParametersMustStartOnLineAfterDeclaration.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1116SplitParametersMustStartOnLineAfterDeclaration.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -40,18 +43,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1116CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1116CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1116CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1116CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             SyntaxToken originalToken = root.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -71,10 +74,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
 
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
-            SyntaxTriviaList newTrivia =
-                SyntaxFactory.TriviaList(
-                    SyntaxFactory.CarriageReturnLineFeed,
-                    SyntaxFactory.Whitespace(lineText.Substring(0, indentLength) + IndentationHelper.GenerateIndentationString(settings.Indentation, 1)));
+            SyntaxTriviaList newTrivia = SyntaxFactory.TriviaList(
+                SyntaxFactory.CarriageReturnLineFeed,
+                SyntaxFactory.Whitespace(lineText.Substring(0, indentLength) +
+                                         IndentationHelper.GenerateIndentationString(settings.Indentation, 1)));
 
             SyntaxToken updatedToken = originalToken.WithLeadingTrivia(originalToken.LeadingTrivia.AddRange(newTrivia));
             SyntaxNode updatedRoot = root.ReplaceToken(originalToken, updatedToken);

@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IDynamicInvocationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IDynamicInvocationOperationWrapper));
-            OperationAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operation));
-            ArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Arguments));
+            OperationAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operation));
+            ArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                WrappedType, nameof(Arguments));
         }
 
         private IDynamicInvocationOperationWrapper(IOperation operation)

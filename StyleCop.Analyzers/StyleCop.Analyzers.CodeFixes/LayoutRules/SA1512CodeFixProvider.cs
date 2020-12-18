@@ -23,8 +23,11 @@ namespace StyleCop.Analyzers.LayoutRules
     internal class SA1512CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1512SingleLineCommentsMustNotBeFollowedByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1512SingleLineCommentsMustNotBeFollowedByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,37 +40,36 @@ namespace StyleCop.Analyzers.LayoutRules
         {
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        LayoutResources.SA1512CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1512CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(LayoutResources.SA1512CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1512CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var singleLineComment = syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start);
-            var commentArray = new[] { singleLineComment };
+            var commentArray = new[]{singleLineComment};
 
             var leadingTrivia = FixTriviaList(singleLineComment.Token.LeadingTrivia, commentArray);
             var trailingTrivia = FixTriviaList(singleLineComment.Token.TrailingTrivia, commentArray);
 
-            var newToken = singleLineComment.Token
-                .WithLeadingTrivia(leadingTrivia)
-                .WithTrailingTrivia(trailingTrivia);
+            var newToken = singleLineComment.Token.WithLeadingTrivia(leadingTrivia).WithTrailingTrivia(trailingTrivia);
 
             var newSyntaxRoot = syntaxRoot.ReplaceToken(singleLineComment.Token, newToken);
 
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
 
-        private static SyntaxTriviaList FixTriviaList(SyntaxTriviaList triviaList, IEnumerable<SyntaxTrivia> commentTrivias)
+        private static SyntaxTriviaList FixTriviaList(SyntaxTriviaList triviaList,
+                                                      IEnumerable<SyntaxTrivia> commentTrivias)
         {
             foreach (var singleLineComment in commentTrivias)
             {
@@ -82,7 +84,8 @@ namespace StyleCop.Analyzers.LayoutRules
                 index++;
                 while (index < triviaList.Count && index > 0)
                 {
-                    switch (triviaList[index].Kind())
+                    switch (triviaList [index]
+                                .Kind())
                     {
                     case SyntaxKind.EndOfLineTrivia:
                     case SyntaxKind.WhitespaceTrivia:
@@ -91,12 +94,14 @@ namespace StyleCop.Analyzers.LayoutRules
 
                     default:
 
-                        if (triviaList[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
+                        if (triviaList [index - 1]
+                                .IsKind(SyntaxKind.WhitespaceTrivia))
                         {
                             index--;
                         }
 
-                        triviaList = SyntaxTriviaList.Empty.AddRange(triviaList.Take(commentLocation + 2).Concat(triviaList.Skip(index)));
+                        triviaList = SyntaxTriviaList.Empty.AddRange(
+                            triviaList.Take(commentLocation + 2).Concat(triviaList.Skip(index)));
 
                         // We found the trivia so we don't have to loop any longer
                         index = -1;
@@ -106,12 +111,14 @@ namespace StyleCop.Analyzers.LayoutRules
 
                 if (index == triviaList.Count)
                 {
-                    if (triviaList[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
+                    if (triviaList [index - 1]
+                            .IsKind(SyntaxKind.WhitespaceTrivia))
                     {
                         index--;
                     }
 
-                    triviaList = SyntaxTriviaList.Empty.AddRange(triviaList.Take(commentLocation + 2).Concat(triviaList.Skip(index)));
+                    triviaList = SyntaxTriviaList.Empty.AddRange(
+                        triviaList.Take(commentLocation + 2).Concat(triviaList.Skip(index)));
                 }
             }
 
@@ -120,13 +127,17 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1512CodeFix;
+            protected override string CodeActionTitle => LayoutResources.SA1512CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
@@ -152,7 +163,8 @@ namespace StyleCop.Analyzers.LayoutRules
                     var newLeadingTrivia = FixTriviaList(token.LeadingTrivia, tokenWithTrivia);
                     var newTrailingTrivia = FixTriviaList(token.TrailingTrivia, tokenWithTrivia);
 
-                    replacements.Add(token, token.WithLeadingTrivia(newLeadingTrivia).WithTrailingTrivia(newTrailingTrivia));
+                    replacements.Add(token,
+                                     token.WithLeadingTrivia(newLeadingTrivia).WithTrailingTrivia(newTrailingTrivia));
                 }
 
                 return syntaxRoot.ReplaceTokens(replacements.Keys, (oldToken, newToken) => replacements[oldToken]);

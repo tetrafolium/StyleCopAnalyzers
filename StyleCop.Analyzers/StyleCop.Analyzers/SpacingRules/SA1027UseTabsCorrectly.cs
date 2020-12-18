@@ -26,13 +26,18 @@ namespace StyleCop.Analyzers.SpacingRules
         internal static readonly string ConvertToTabsBehavior = "ConvertToTabs";
         internal static readonly string ConvertToSpacesBehavior = "ConvertToSpaces";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1027.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(SpacingResources.SA1027Title), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1027MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1027Description), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1027.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(SpacingResources.SA1027Title), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(SpacingResources.SA1027MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(SpacingResources.SA1027Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings> SyntaxTreeAction = HandleSyntaxTree;
 
@@ -43,8 +48,11 @@ namespace StyleCop.Analyzers.SpacingRules
             ImmutableDictionary.Create<string, string>().SetItem(BehaviorKey, ConvertToSpacesBehavior);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -67,7 +75,9 @@ namespace StyleCop.Analyzers.SpacingRules
             ReportIncorrectTabUsage(context, settings.Indentation, excludedSpans);
         }
 
-        private static void ReportIncorrectTabUsage(SyntaxTreeAnalysisContext context, IndentationSettings indentationSettings, ImmutableArray<TextSpan> excludedSpans)
+        private static void ReportIncorrectTabUsage(SyntaxTreeAnalysisContext context,
+                                                    IndentationSettings indentationSettings,
+                                                    ImmutableArray<TextSpan> excludedSpans)
         {
             SyntaxTree syntaxTree = context.Tree;
             SourceText sourceText = syntaxTree.GetText(context.CancellationToken);
@@ -89,7 +99,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                     startIndex = nextExcludedSpan.End - 1;
                     excludedSpanIndex++;
-                    nextExcludedSpan = excludedSpanIndex < excludedSpans.Length ? excludedSpans[excludedSpanIndex] : lastExcludedSpan;
+                    nextExcludedSpan =
+                        excludedSpanIndex < excludedSpans.Length ? excludedSpans[excludedSpanIndex] : lastExcludedSpan;
                     continue;
                 }
 
@@ -147,22 +158,18 @@ namespace StyleCop.Analyzers.SpacingRules
                     int spaceCount = (endIndex - startIndex) - tabCount;
                     if (tabAfterSpace || spaceCount >= tabSize)
                     {
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(
-                                Descriptor,
-                                Location.Create(syntaxTree, TextSpan.FromBounds(startIndex, endIndex)),
-                                ConvertToTabsProperties));
+                        context.ReportDiagnostic(Diagnostic.Create(
+                            Descriptor, Location.Create(syntaxTree, TextSpan.FromBounds(startIndex, endIndex)),
+                            ConvertToTabsProperties));
                     }
                 }
                 else
                 {
                     if (tabCount > 0)
                     {
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(
-                                Descriptor,
-                                Location.Create(syntaxTree, TextSpan.FromBounds(startIndex, endIndex)),
-                                ConvertToSpacesProperties));
+                        context.ReportDiagnostic(Diagnostic.Create(
+                            Descriptor, Location.Create(syntaxTree, TextSpan.FromBounds(startIndex, endIndex)),
+                            ConvertToSpacesProperties));
                     }
                 }
 
@@ -176,7 +183,7 @@ namespace StyleCop.Analyzers.SpacingRules
             ImmutableArray<TextSpan>.Builder builder = ImmutableArray.CreateBuilder<TextSpan>();
 
             // Locate disabled text
-            foreach (var trivia in root.DescendantTrivia(descendIntoTrivia: true))
+            foreach (var trivia in root.DescendantTrivia(descendIntoTrivia : true))
             {
                 if (trivia.IsKind(SyntaxKind.DisabledTextTrivia))
                 {
@@ -194,7 +201,7 @@ namespace StyleCop.Analyzers.SpacingRules
             }
 
             // Locate string literals
-            foreach (var token in root.DescendantTokens(descendIntoTrivia: true))
+            foreach (var token in root.DescendantTokens(descendIntoTrivia : true))
             {
                 switch (token.Kind())
                 {

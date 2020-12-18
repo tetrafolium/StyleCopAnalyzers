@@ -7,8 +7,8 @@ namespace StyleCop.Analyzers.Helpers
 
     internal static class DictionaryExtensions
     {
-        public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
-          where TKey : notnull
+        public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key,
+                                                             TValue defaultValue) where TKey : notnull
         {
             if (!dictionary.TryGetValue(key, out var value))
             {

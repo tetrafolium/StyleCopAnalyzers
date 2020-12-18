@@ -24,8 +24,11 @@ namespace StyleCop.Analyzers.NamingRules
     internal class SA1309CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-          ImmutableArray.Create(SA1309FieldNamesMustNotBeginWithUnderscore.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1309FieldNamesMustNotBeginWithUnderscore.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -44,7 +47,7 @@ namespace StyleCop.Analyzers.NamingRules
                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
                 if (!string.IsNullOrEmpty(token.ValueText))
                 {
-                    var newName = token.ValueText.TrimStart(new[] { '_' });
+                    var newName = token.ValueText.TrimStart(new[]{'_'});
 
                     if (!SyntaxFacts.IsValidIdentifier(newName))
                     {
@@ -52,12 +55,11 @@ namespace StyleCop.Analyzers.NamingRules
                         continue;
                     }
 
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            string.Format(NamingResources.RenameToCodeFix, newName),
-                            cancellationToken => RenameHelper.RenameSymbolAsync(document, root, token, newName, cancellationToken),
-                            nameof(SA1309CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(string.Format(NamingResources.RenameToCodeFix, newName),
+                                                              cancellationToken => RenameHelper.RenameSymbolAsync(
+                                                                  document, root, token, newName, cancellationToken),
+                                                              nameof(SA1309CodeFixProvider)),
+                                            diagnostic);
                 }
             }
         }

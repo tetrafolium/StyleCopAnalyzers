@@ -17,26 +17,42 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     internal class SA1414TupleTypesInSignaturesShouldHaveElementNames : DiagnosticAnalyzer
     {
         /// <summary>
-        /// The ID for diagnostics produced by the <see cref="SA1414TupleTypesInSignaturesShouldHaveElementNames"/> analyzer.
+        /// The ID for diagnostics produced by the <see cref="SA1414TupleTypesInSignaturesShouldHaveElementNames"/>
+        /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1414";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1414.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(MaintainabilityResources.SA1414Title), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1414MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1414Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1414.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1414Title),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1414MessageFormat),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1414Description),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
         private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction = HandleMethodDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> ConstructorDeclarationAction = HandleConstructorDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> ConstructorDeclarationAction =
+            HandleConstructorDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> PropertyDeclarationAction = HandlePropertyDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction = HandleIndexerDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> ConversionOperatorDeclarationAction = HandleConversionOperatorDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> ConversionOperatorDeclarationAction =
+            HandleConversionOperatorDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> DelegateDeclarationAction = HandleDelegateDeclaration;
 
-        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -48,7 +64,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             context.RegisterSyntaxNodeAction(ConstructorDeclarationAction, SyntaxKind.ConstructorDeclaration);
             context.RegisterSyntaxNodeAction(PropertyDeclarationAction, SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(IndexerDeclarationAction, SyntaxKind.IndexerDeclaration);
-            context.RegisterSyntaxNodeAction(ConversionOperatorDeclarationAction, SyntaxKind.ConversionOperatorDeclaration);
+            context.RegisterSyntaxNodeAction(ConversionOperatorDeclarationAction,
+                                             SyntaxKind.ConversionOperatorDeclaration);
             context.RegisterSyntaxNodeAction(DelegateDeclarationAction, SyntaxKind.DelegateDeclaration);
         }
 
@@ -59,7 +76,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return;
             }
 
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+            var methodDeclaration = (MethodDeclarationSyntax) context.Node;
 
             CheckType(context, methodDeclaration.ReturnType);
             CheckParameterList(context, methodDeclaration.ParameterList);
@@ -72,7 +89,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return;
             }
 
-            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+            var constructorDeclaration = (ConstructorDeclarationSyntax) context.Node;
 
             CheckParameterList(context, constructorDeclaration.ParameterList);
         }
@@ -84,7 +101,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return;
             }
 
-            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
+            var propertyDeclaration = (PropertyDeclarationSyntax) context.Node;
 
             CheckType(context, propertyDeclaration.Type);
         }
@@ -96,7 +113,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return;
             }
 
-            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+            var indexerDeclaration = (IndexerDeclarationSyntax) context.Node;
 
             CheckType(context, indexerDeclaration.Type);
         }
@@ -108,7 +125,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return;
             }
 
-            var conversionOperatorDeclarion = (ConversionOperatorDeclarationSyntax)context.Node;
+            var conversionOperatorDeclarion = (ConversionOperatorDeclarationSyntax) context.Node;
 
             CheckType(context, conversionOperatorDeclarion.Type);
             CheckParameterList(context, conversionOperatorDeclarion.ParameterList);
@@ -121,7 +138,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return;
             }
 
-            var delegateDeclarion = (DelegateDeclarationSyntax)context.Node;
+            var delegateDeclarion = (DelegateDeclarationSyntax) context.Node;
 
             CheckType(context, delegateDeclarion.ReturnType);
             CheckParameterList(context, delegateDeclarion.ParameterList);
@@ -140,15 +157,15 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             switch (typeSyntax.Kind())
             {
             case SyntaxKindEx.TupleType:
-                CheckTupleType(context, (TupleTypeSyntaxWrapper)typeSyntax);
+                CheckTupleType(context, (TupleTypeSyntaxWrapper) typeSyntax);
                 break;
 
             case SyntaxKind.QualifiedName:
-                CheckType(context, ((QualifiedNameSyntax)typeSyntax).Right);
+                CheckType(context, ((QualifiedNameSyntax) typeSyntax).Right);
                 break;
 
             case SyntaxKind.GenericName:
-                CheckGenericName(context, (GenericNameSyntax)typeSyntax);
+                CheckGenericName(context, (GenericNameSyntax) typeSyntax);
                 break;
             }
         }

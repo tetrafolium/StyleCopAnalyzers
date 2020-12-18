@@ -36,8 +36,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         /// Initializes a new instance of the <see cref="IndentationSettings"/> class.
         /// </summary>
         /// <param name="indentationSettingsObject">The JSON object containing the settings.</param>
-        protected internal IndentationSettings(JsonObject indentationSettingsObject)
-            : this()
+        protected internal IndentationSettings(JsonObject indentationSettingsObject) : this()
         {
             foreach (var kvp in indentationSettingsObject)
             {
@@ -61,13 +60,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public int IndentationSize =>
-            this.indentationSize;
+        public int IndentationSize => this.indentationSize;
 
-        public int TabSize =>
-            this.tabSize;
+        public int TabSize => this.tabSize;
 
-        public bool UseTabs =>
-            this.useTabs;
+        public bool UseTabs => this.useTabs;
     }
 }

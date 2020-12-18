@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IArgumentOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IArgumentOperationWrapper));
-            ParameterAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(WrappedType, nameof(Parameter));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            ParameterAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(
+                WrappedType, nameof(Parameter));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
         }
 
         private IArgumentOperationWrapper(IOperation operation)
@@ -28,11 +30,14 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object ArgumentKind => throw new NotImplementedException("Property 'IArgumentOperation.ArgumentKind' has unsupported type 'ArgumentKind'");
+        public object ArgumentKind => throw new NotImplementedException(
+            "Property 'IArgumentOperation.ArgumentKind' has unsupported type 'ArgumentKind'");
         public IParameterSymbol Parameter => ParameterAccessor(this.WrappedOperation);
         public IOperation Value => ValueAccessor(this.WrappedOperation);
-        public object InConversion => throw new NotImplementedException("Property 'IArgumentOperation.InConversion' has unsupported type 'CommonConversion'");
-        public object OutConversion => throw new NotImplementedException("Property 'IArgumentOperation.OutConversion' has unsupported type 'CommonConversion'");
+        public object InConversion => throw new NotImplementedException(
+            "Property 'IArgumentOperation.InConversion' has unsupported type 'CommonConversion'");
+        public object OutConversion => throw new NotImplementedException(
+            "Property 'IArgumentOperation.OutConversion' has unsupported type 'CommonConversion'");
         public static IArgumentOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

@@ -47,7 +47,8 @@ namespace StyleCop.Analyzers.Helpers
             return string.Empty;
         }
 
-        internal static LiteralExpressionSyntax WithLiteralSuffix(this LiteralExpressionSyntax literalExpression, SyntaxKind syntaxKindKeyword)
+        internal static LiteralExpressionSyntax WithLiteralSuffix(this LiteralExpressionSyntax literalExpression,
+                                                                  SyntaxKind syntaxKindKeyword)
         {
             string textWithoutSuffix = literalExpression.StripLiteralSuffix();
 
@@ -83,7 +84,8 @@ namespace StyleCop.Analyzers.Helpers
                 break;
             }
 
-            return literalExpression.WithToken(SyntaxFactory.ParseToken(textWithoutSuffix + suffix).WithTriviaFrom(literalExpression.Token));
+            return literalExpression.WithToken(
+                SyntaxFactory.ParseToken(textWithoutSuffix + suffix).WithTriviaFrom(literalExpression.Token));
         }
     }
 }

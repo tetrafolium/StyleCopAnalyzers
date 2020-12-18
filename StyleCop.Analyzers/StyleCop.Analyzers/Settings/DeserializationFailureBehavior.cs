@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers
     /// <summary>
     /// Defines the behavior of various <see cref="SettingsHelper"/> methods in the event of a deserialization error.
     /// </summary>
-    internal enum DeserializationFailureBehavior
-    {
+    internal enum DeserializationFailureBehavior {
         /// <summary>
         /// When deserialization fails, return a default <see cref="StyleCopSettings"/> instance.
         /// </summary>

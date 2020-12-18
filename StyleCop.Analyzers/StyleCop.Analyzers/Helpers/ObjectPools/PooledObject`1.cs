@@ -12,8 +12,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
     /// this is RAII object to automatically release pooled object when its owning pool.
     /// </summary>
     /// <typeparam name="T">The type of the pooled object.</typeparam>
-    internal struct PooledObject<T> : IDisposable
-        where T : class
+    internal struct PooledObject<T> : IDisposable where T : class
     {
         private readonly Action<ObjectPool<T>, T> releaser;
         private readonly ObjectPool<T> pool;
@@ -55,7 +54,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
             return new PooledObject<HashSet<TItem>>(pool, Allocator, Releaser);
         }
 
-        public static PooledObject<Dictionary<TKey, TValue>> Create<TKey, TValue>(ObjectPool<Dictionary<TKey, TValue>> pool)
+        public static PooledObject<Dictionary<TKey, TValue>> Create<TKey, TValue>(
+            ObjectPool<Dictionary<TKey, TValue>> pool)
         {
             return new PooledObject<Dictionary<TKey, TValue>>(pool, Allocator, Releaser);
         }
@@ -119,7 +119,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
             return pool.AllocateAndClear();
         }
 
-        private static void Releaser<TKey, TValue>(ObjectPool<Dictionary<TKey, TValue>> pool, Dictionary<TKey, TValue> obj)
+        private static void Releaser<TKey, TValue>(ObjectPool<Dictionary<TKey, TValue>> pool,
+                                                   Dictionary<TKey, TValue> obj)
         {
             pool.ClearAndFree(obj);
         }

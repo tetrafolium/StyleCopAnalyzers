@@ -15,14 +15,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
     {
         protected override string CodeActionTitle => ReadabilityResources.SA1107CodeFix;
 
-        protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+        protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document,
+                                                                        ImmutableArray<Diagnostic> diagnostics)
         {
             if (diagnostics.IsEmpty)
             {
                 return null;
             }
 
-            DocumentEditor editor = await DocumentEditor.CreateAsync(document, fixAllContext.CancellationToken).ConfigureAwait(false);
+            DocumentEditor editor =
+                await DocumentEditor.CreateAsync(document, fixAllContext.CancellationToken).ConfigureAwait(false);
 
             SyntaxNode root = editor.GetChangedRoot();
 

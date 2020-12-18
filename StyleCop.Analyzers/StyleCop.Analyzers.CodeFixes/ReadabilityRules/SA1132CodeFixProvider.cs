@@ -28,8 +28,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1132CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1132DoNotCombineFields.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1132DoNotCombineFields.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,21 +45,21 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1132CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1132CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1132CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1132CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var baseFieldDeclaration = (BaseFieldDeclarationSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
+            var baseFieldDeclaration = (BaseFieldDeclarationSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
             List<BaseFieldDeclarationSyntax> newFieldDeclarations = SplitDeclaration(document, baseFieldDeclaration);
 
             if (newFieldDeclarations != null)
@@ -70,32 +73,27 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return document;
         }
 
-        private static List<BaseFieldDeclarationSyntax> SplitDeclaration(Document document, BaseFieldDeclarationSyntax baseFieldDeclaration)
+        private static List<BaseFieldDeclarationSyntax> SplitDeclaration(
+            Document document, BaseFieldDeclarationSyntax baseFieldDeclaration)
         {
             if (baseFieldDeclaration is FieldDeclarationSyntax fieldDeclaration)
             {
-                return DeclarationSplitter(
-                    document,
-                    fieldDeclaration.Declaration,
-                    fieldDeclaration.WithDeclaration,
-                    fieldDeclaration.SemicolonToken.TrailingTrivia);
+                return DeclarationSplitter(document, fieldDeclaration.Declaration, fieldDeclaration.WithDeclaration,
+                                           fieldDeclaration.SemicolonToken.TrailingTrivia);
             }
 
             if (baseFieldDeclaration is EventFieldDeclarationSyntax eventFieldDeclaration)
             {
-                return DeclarationSplitter(
-                    document,
-                    eventFieldDeclaration.Declaration,
-                    eventFieldDeclaration.WithDeclaration,
-                    eventFieldDeclaration.SemicolonToken.TrailingTrivia);
+                return DeclarationSplitter(document, eventFieldDeclaration.Declaration,
+                                           eventFieldDeclaration.WithDeclaration,
+                                           eventFieldDeclaration.SemicolonToken.TrailingTrivia);
             }
 
             return null;
         }
 
         private static List<BaseFieldDeclarationSyntax> DeclarationSplitter(
-            Document document,
-            VariableDeclarationSyntax declaration,
+            Document document, VariableDeclarationSyntax declaration,
             Func<VariableDeclarationSyntax, BaseFieldDeclarationSyntax> declarationFactory,
             SyntaxTriviaList declarationTrailingTrivia)
         {
@@ -108,7 +106,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
             {
                 if (previous == null)
                 {
-                    VariableDeclaratorSyntax variable = (VariableDeclaratorSyntax)nodeOrToken.AsNode();
+                    VariableDeclaratorSyntax variable = (VariableDeclaratorSyntax) nodeOrToken.AsNode();
                     variable = variable.WithIdentifier(variable.Identifier.WithoutLeadingWhitespace());
                     var variableDeclarator = SyntaxFactory.SingletonSeparatedList(variable);
                     previous = declarationFactory(declaration.WithVariables(variableDeclarator));
@@ -128,7 +126,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                         var nonWhitespaceTriviaIndex = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(triviaList, false);
                         if (nonWhitespaceTriviaIndex >= 0)
                         {
-                            switch (triviaList[nonWhitespaceTriviaIndex].Kind())
+                            switch (triviaList [nonWhitespaceTriviaIndex]
+                                        .Kind())
                             {
                             case SyntaxKind.SingleLineCommentTrivia:
                             case SyntaxKind.MultiLineCommentTrivia:
@@ -148,7 +147,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     {
                         if (!trailingTrivia.Last().IsKind(SyntaxKind.EndOfLineTrivia))
                         {
-                            trailingTrivia = trailingTrivia.WithoutTrailingWhitespace().Add(FormattingHelper.GetNewLineTrivia(document));
+                            trailingTrivia = trailingTrivia.WithoutTrailingWhitespace().Add(
+                                FormattingHelper.GetNewLineTrivia(document));
                         }
                     }
                     else

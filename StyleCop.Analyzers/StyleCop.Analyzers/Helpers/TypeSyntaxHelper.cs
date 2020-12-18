@@ -19,7 +19,7 @@ namespace StyleCop.Analyzers.Helpers
                 case SyntaxKind.ArrayType:
                 case SyntaxKind.NullableType:
                 case SyntaxKind.PointerType:
-                    syntax = (TypeSyntax)syntax.Parent;
+                    syntax = (TypeSyntax) syntax.Parent;
                     break;
 
                 default:
@@ -33,24 +33,24 @@ namespace StyleCop.Analyzers.Helpers
             switch (syntax.Parent.Kind())
             {
             case SyntaxKind.MethodDeclaration:
-                return ((MethodDeclarationSyntax)syntax.Parent).ReturnType == syntax;
+                return ((MethodDeclarationSyntax) syntax.Parent).ReturnType == syntax;
 
             case SyntaxKind.OperatorDeclaration:
-                return ((OperatorDeclarationSyntax)syntax.Parent).ReturnType == syntax;
+                return ((OperatorDeclarationSyntax) syntax.Parent).ReturnType == syntax;
 
             case SyntaxKind.ConversionOperatorDeclaration:
-                return ((ConversionOperatorDeclarationSyntax)syntax.Parent).Type == syntax;
+                return ((ConversionOperatorDeclarationSyntax) syntax.Parent).Type == syntax;
 
             case SyntaxKind.PropertyDeclaration:
             case SyntaxKind.IndexerDeclaration:
             case SyntaxKind.EventDeclaration:
-                return ((BasePropertyDeclarationSyntax)syntax.Parent).Type == syntax;
+                return ((BasePropertyDeclarationSyntax) syntax.Parent).Type == syntax;
 
             case SyntaxKind.VariableDeclaration:
-                return ((VariableDeclarationSyntax)syntax.Parent).Type == syntax;
+                return ((VariableDeclarationSyntax) syntax.Parent).Type == syntax;
 
             case SyntaxKindEx.LocalFunctionStatement:
-                return ((LocalFunctionStatementSyntaxWrapper)syntax.Parent).ReturnType == syntax;
+                return ((LocalFunctionStatementSyntaxWrapper) syntax.Parent).ReturnType == syntax;
 
             default:
                 return false;
@@ -61,7 +61,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             if (syntax.IsKind(SyntaxKindEx.RefType))
             {
-                syntax = ((RefTypeSyntaxWrapper)syntax).Type;
+                syntax = ((RefTypeSyntaxWrapper) syntax).Type;
             }
 
             return syntax;

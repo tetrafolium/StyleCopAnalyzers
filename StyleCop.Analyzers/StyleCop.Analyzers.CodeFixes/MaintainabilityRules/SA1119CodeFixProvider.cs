@@ -19,15 +19,20 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// Implements a code fix for <see cref="SA1119StatementMustNotUseUnnecessaryParenthesis"/>.
     /// </summary>
     /// <remarks>
-    /// <para>To fix a violation of this rule, insert parenthesis within the arithmetic expression to declare the precedence of the operations.</para>
+    /// <para>To fix a violation of this rule, insert parenthesis within the arithmetic expression to declare the
+    /// precedence of the operations.</para>
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1119CodeFixProvider))]
     [Shared]
     internal class SA1119CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1119StatementMustNotUseUnnecessaryParenthesis.DiagnosticId, SA1119StatementMustNotUseUnnecessaryParenthesis.ParenthesesDiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1119StatementMustNotUseUnnecessaryParenthesis.DiagnosticId,
+                                SA1119StatementMustNotUseUnnecessaryParenthesis.ParenthesesDiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -47,7 +52,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     continue;
                 }
 
-                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true, findInsideTrivia: true);
+                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                : true, findInsideTrivia
+                                                : true);
                 if (node.IsMissing)
                 {
                     continue;
@@ -55,38 +62,41 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 if (node is ParenthesizedExpressionSyntax syntax)
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            MaintainabilityResources.SA1119CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, root, syntax),
-                            nameof(SA1119CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(MaintainabilityResources.SA1119CodeFix,
+                                                              cancellationToken => GetTransformedDocumentAsync(
+                                                                  context.Document, root, syntax),
+                                                              nameof(SA1119CodeFixProvider)),
+                                            diagnostic);
                 }
             }
         }
 
         private static SyntaxNode GetReplacement(ParenthesizedExpressionSyntax oldNode)
         {
-            var leadingTrivia = SyntaxFactory.TriviaList(oldNode.OpenParenToken.GetAllTrivia().Concat(oldNode.Expression.GetLeadingTrivia()));
-            var trailingTrivia = oldNode.Expression.GetTrailingTrivia().AddRange(oldNode.CloseParenToken.GetAllTrivia());
+            var leadingTrivia = SyntaxFactory.TriviaList(
+                oldNode.OpenParenToken.GetAllTrivia().Concat(oldNode.Expression.GetLeadingTrivia()));
+            var trailingTrivia =
+                oldNode.Expression.GetTrailingTrivia().AddRange(oldNode.CloseParenToken.GetAllTrivia());
 
             // Workaround for Roslyn not handling elastic markers for directive trivia correctly.
             if (!leadingTrivia.Any())
             {
                 var previousToken = oldNode.OpenParenToken.GetPreviousToken();
-                if (!(previousToken.IsKind(SyntaxKind.OpenParenToken) || previousToken.IsKind(SyntaxKind.CloseParenToken))
-                    && (TriviaHelper.IndexOfTrailingWhitespace(previousToken.TrailingTrivia) == -1))
+                if (!(previousToken.IsKind(SyntaxKind.OpenParenToken) ||
+                      previousToken.IsKind(SyntaxKind.CloseParenToken)) &&
+                    (TriviaHelper.IndexOfTrailingWhitespace(previousToken.TrailingTrivia) == -1))
                 {
                     leadingTrivia = SyntaxFactory.TriviaList(SyntaxFactory.Space);
                 }
             }
 
-            return oldNode.Expression
-                .WithLeadingTrivia(leadingTrivia)
-                .WithTrailingTrivia(trailingTrivia.Any() ? trailingTrivia : SyntaxFactory.TriviaList(SyntaxFactory.ElasticMarker));
+            return oldNode.Expression.WithLeadingTrivia(leadingTrivia)
+                .WithTrailingTrivia(trailingTrivia.Any() ? trailingTrivia
+                                                         : SyntaxFactory.TriviaList(SyntaxFactory.ElasticMarker));
         }
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, ParenthesizedExpressionSyntax syntax)
+        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root,
+                                                                  ParenthesizedExpressionSyntax syntax)
         {
             var newSyntaxRoot = root.ReplaceNode(syntax, GetReplacement(syntax));
 
@@ -97,13 +107,17 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; }
-                = new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle
-                => MaintainabilityResources.SA1119CodeFix;
+            protected override string CodeActionTitle => MaintainabilityResources.SA1119CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
@@ -112,9 +126,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
-                var nodes = diagnostics.Select(diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true, findInsideTrivia: true));
+                var nodes = diagnostics.Select(
+                    diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                      : true, findInsideTrivia
+                                                      : true));
 
-                return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) => GetReplacement((ParenthesizedExpressionSyntax)rewrittenNode));
+                return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) => GetReplacement(
+                                                          (ParenthesizedExpressionSyntax) rewrittenNode));
             }
         }
     }

@@ -61,32 +61,39 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1118ParameterMustNotSpanMultipleLines"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1118";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1118.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1118Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1118MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1118Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1118.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1118Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1118MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1118Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BaseArgumentListAction = HandleBaseArgumentList;
-        private static readonly Action<SyntaxNodeAnalysisContext> AttributeArgumentListAction = HandleAttributeArgumentList;
+        private static readonly Action<SyntaxNodeAnalysisContext> AttributeArgumentListAction =
+            HandleAttributeArgumentList;
 
-        private static readonly SyntaxKind[] ArgumentExceptionSyntaxKinds =
-        {
-            SyntaxKind.AnonymousMethodExpression,
-            SyntaxKind.ParenthesizedLambdaExpression,
-            SyntaxKind.SimpleLambdaExpression,
-            SyntaxKind.InvocationExpression,
-            SyntaxKind.ObjectCreationExpression,
-            SyntaxKind.AnonymousObjectCreationExpression,
-            SyntaxKind.ArrayCreationExpression,
-            SyntaxKind.ImplicitArrayCreationExpression,
+        private static readonly SyntaxKind[] ArgumentExceptionSyntaxKinds = {
+            SyntaxKind.AnonymousMethodExpression, SyntaxKind.ParenthesizedLambdaExpression,
+            SyntaxKind.SimpleLambdaExpression,    SyntaxKind.InvocationExpression,
+            SyntaxKind.ObjectCreationExpression,  SyntaxKind.AnonymousObjectCreationExpression,
+            SyntaxKind.ArrayCreationExpression,   SyntaxKind.ImplicitArrayCreationExpression,
         };
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -100,7 +107,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleAttributeArgumentList(SyntaxNodeAnalysisContext context)
         {
-            var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
+            var attributeArgumentList = (AttributeArgumentListSyntax) context.Node;
 
             for (int i = 1; i < attributeArgumentList.Arguments.Count; i++)
             {
@@ -114,13 +121,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBaseArgumentList(SyntaxNodeAnalysisContext context)
         {
-            var argumentListSyntax = (BaseArgumentListSyntax)context.Node;
+            var argumentListSyntax = (BaseArgumentListSyntax) context.Node;
 
             for (int i = 1; i < argumentListSyntax.Arguments.Count; i++)
             {
                 var argument = argumentListSyntax.Arguments[i];
-                if (CheckIfArgumentIsMultiline(argument)
-                    && !IsArgumentOnExceptionList(argument.Expression))
+                if (CheckIfArgumentIsMultiline(argument) && !IsArgumentOnExceptionList(argument.Expression))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, argument.GetLocation()));
                 }
@@ -135,8 +141,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static bool IsArgumentOnExceptionList(ExpressionSyntax argumentExpression)
         {
-            return argumentExpression != null
-                && ArgumentExceptionSyntaxKinds.Any(argumentExpression.IsKind);
+            return argumentExpression != null && ArgumentExceptionSyntaxKinds.Any(argumentExpression.IsKind);
         }
     }
 }

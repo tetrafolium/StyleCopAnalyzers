@@ -26,8 +26,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     internal class SA1402CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1402FileMayOnlyContainASingleType.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1402FileMayOnlyContainASingleType.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,21 +44,21 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        MaintainabilityResources.SA1402CodeFix,
-                        cancellationToken => GetTransformedSolutionAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1402CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(MaintainabilityResources.SA1402CodeFix,
+                                                          cancellationToken => GetTransformedSolutionAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1402CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Solution> GetTransformedSolutionAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Solution> GetTransformedSolutionAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie : true);
             if (!(node is MemberDeclarationSyntax memberDeclarationSyntax))
             {
                 return document.Project.Solution;
@@ -65,7 +68,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             string suffix;
             FileNameHelpers.GetFileNameAndSuffix(document.Name, out suffix);
             var settings = document.Project.AnalyzerOptions.GetStyleCopSettings(cancellationToken);
-            string extractedDocumentName = FileNameHelpers.GetConventionalFileName(memberDeclarationSyntax, settings.DocumentationRules.FileNamingConvention) + suffix;
+            string extractedDocumentName =
+                FileNameHelpers.GetConventionalFileName(memberDeclarationSyntax,
+                                                        settings.DocumentationRules.FileNamingConvention) +
+                suffix;
 
             List<SyntaxNode> nodesToRemoveFromExtracted = new List<SyntaxNode>();
             SyntaxNode previous = node;
@@ -96,18 +102,22 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             }
 
             // Add the new file
-            SyntaxNode extractedDocumentNode = root.RemoveNodes(nodesToRemoveFromExtracted, SyntaxRemoveOptions.KeepUnbalancedDirectives);
-            Solution updatedSolution = document.Project.Solution.AddDocument(extractedDocumentId, extractedDocumentName, extractedDocumentNode, document.Folders);
+            SyntaxNode extractedDocumentNode =
+                root.RemoveNodes(nodesToRemoveFromExtracted, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+            Solution updatedSolution = document.Project.Solution.AddDocument(extractedDocumentId, extractedDocumentName,
+                                                                             extractedDocumentNode, document.Folders);
 
             // Make sure to also add the file to linked projects
             foreach (var linkedDocumentId in document.GetLinkedDocumentIds())
             {
                 DocumentId linkedExtractedDocumentId = DocumentId.CreateNewId(linkedDocumentId.ProjectId);
-                updatedSolution = updatedSolution.AddDocument(linkedExtractedDocumentId, extractedDocumentName, extractedDocumentNode, document.Folders);
+                updatedSolution = updatedSolution.AddDocument(linkedExtractedDocumentId, extractedDocumentName,
+                                                              extractedDocumentNode, document.Folders);
             }
 
             // Remove the type from its original location
-            updatedSolution = updatedSolution.WithDocumentSyntaxRoot(document.Id, root.RemoveNode(node, SyntaxRemoveOptions.KeepUnbalancedDirectives));
+            updatedSolution = updatedSolution.WithDocumentSyntaxRoot(
+                document.Id, root.RemoveNode(node, SyntaxRemoveOptions.KeepUnbalancedDirectives));
 
             return updatedSolution;
         }

@@ -44,19 +44,27 @@ namespace StyleCop.Analyzers.LayoutRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1513";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1513.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1513Title), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1513MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1513Description), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1513.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1513Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(LayoutResources.SA1513MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(LayoutResources.SA1513Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -80,8 +88,7 @@ namespace StyleCop.Analyzers.LayoutRules
             private readonly SyntaxTreeAnalysisContext context;
             private readonly Stack<SyntaxToken> bracesStack = new Stack<SyntaxToken>();
 
-            public BracesVisitor(SyntaxTreeAnalysisContext context)
-                : base(SyntaxWalkerDepth.Token)
+            public BracesVisitor(SyntaxTreeAnalysisContext context) : base(SyntaxWalkerDepth.Token)
             {
                 this.context = context;
             }
@@ -178,10 +185,11 @@ namespace StyleCop.Analyzers.LayoutRules
             {
                 var nextToken = token.GetNextToken(true, true);
 
-                if (nextToken.HasLeadingTrivia
-                    && (HasLeadingBlankLine(nextToken.LeadingTrivia) || StartsWithSpecialComment(nextToken.LeadingTrivia)))
+                if (nextToken.HasLeadingTrivia &&
+                    (HasLeadingBlankLine(nextToken.LeadingTrivia) || StartsWithSpecialComment(nextToken.LeadingTrivia)))
                 {
-                    // the close brace has a trailing blank line or is followed by a single line comment that starts with 4 slashes.
+                    // the close brace has a trailing blank line or is followed by a single line comment that starts
+                    // with 4 slashes.
                     return;
                 }
 
@@ -220,15 +228,15 @@ namespace StyleCop.Analyzers.LayoutRules
 
                     if (nextToken.IsKind(SyntaxKind.ElseKeyword))
                     {
-                        // the close brace is followed by else (no need to check for if -> the compiler will handle that)
+                        // the close brace is followed by else (no need to check for if -> the compiler will handle
+                        // that)
                         return;
                     }
 
                     if (IsPartOf<QueryExpressionSyntax>(token))
                     {
-                        if (nextToken.Parent is QueryClauseSyntax
-                            || nextToken.Parent is SelectOrGroupClauseSyntax
-                            || nextToken.Parent is QueryContinuationSyntax)
+                        if (nextToken.Parent is QueryClauseSyntax || nextToken.Parent is SelectOrGroupClauseSyntax ||
+                            nextToken.Parent is QueryContinuationSyntax)
                         {
                             // the close brace is part of a query expression
                             return;
@@ -236,12 +244,9 @@ namespace StyleCop.Analyzers.LayoutRules
                     }
 
                     if (nextToken.IsKind(SyntaxKind.SemicolonToken) &&
-                        (IsPartOf<VariableDeclaratorSyntax>(token) ||
-                         IsPartOf<YieldStatementSyntax>(token) ||
-                         IsPartOf<ArrowExpressionClauseSyntax>(token) ||
-                         IsPartOf<EqualsValueClauseSyntax>(token) ||
-                         IsPartOf<AssignmentExpressionSyntax>(token) ||
-                         IsPartOf<ReturnStatementSyntax>(token) ||
+                        (IsPartOf<VariableDeclaratorSyntax>(token) || IsPartOf<YieldStatementSyntax>(token) ||
+                         IsPartOf<ArrowExpressionClauseSyntax>(token) || IsPartOf<EqualsValueClauseSyntax>(token) ||
+                         IsPartOf<AssignmentExpressionSyntax>(token) || IsPartOf<ReturnStatementSyntax>(token) ||
                          IsPartOf<ObjectCreationExpressionSyntax>(token)))
                     {
                         // the close brace is part of a variable initialization statement or a return statement
@@ -250,8 +255,8 @@ namespace StyleCop.Analyzers.LayoutRules
 
                     if (nextToken.IsKind(SyntaxKind.CommaToken) || nextToken.IsKind(SyntaxKind.CloseParenToken))
                     {
-                        // The close brace is the end of an object initializer, anonymous function, lambda expression, etc.
-                        // Comma and close parenthesis never requires a preceeding blank line.
+                        // The close brace is the end of an object initializer, anonymous function, lambda expression,
+                        // etc. Comma and close parenthesis never requires a preceeding blank line.
                         return;
                     }
 
@@ -261,19 +266,16 @@ namespace StyleCop.Analyzers.LayoutRules
                         return;
                     }
 
-                    if (nextToken.IsKind(SyntaxKind.AddKeyword)
-                        || nextToken.IsKind(SyntaxKind.RemoveKeyword)
-                        || nextToken.IsKind(SyntaxKind.GetKeyword)
-                        || nextToken.IsKind(SyntaxKind.SetKeyword))
+                    if (nextToken.IsKind(SyntaxKind.AddKeyword) || nextToken.IsKind(SyntaxKind.RemoveKeyword) ||
+                        nextToken.IsKind(SyntaxKind.GetKeyword) || nextToken.IsKind(SyntaxKind.SetKeyword))
                     {
                         // the close brace is followed by an accessor (SA1516 will handle that)
                         return;
                     }
 
-                    if ((nextToken.IsKind(SyntaxKind.PrivateKeyword)
-                        || nextToken.IsKind(SyntaxKind.ProtectedKeyword)
-                        || nextToken.IsKind(SyntaxKind.InternalKeyword))
-                        && (nextToken.Parent is AccessorDeclarationSyntax))
+                    if ((nextToken.IsKind(SyntaxKind.PrivateKeyword) || nextToken.IsKind(SyntaxKind.ProtectedKeyword) ||
+                         nextToken.IsKind(SyntaxKind.InternalKeyword)) &&
+                        (nextToken.Parent is AccessorDeclarationSyntax))
                     {
                         // the close brace is followed by an accessor with an accessibility restriction.
                         return;
@@ -292,14 +294,16 @@ namespace StyleCop.Analyzers.LayoutRules
                     return;
                 }
 
-                var location = Location.Create(this.context.Tree, TextSpan.FromBounds(token.Span.End, nextToken.FullSpan.Start));
+                var location =
+                    Location.Create(this.context.Tree, TextSpan.FromBounds(token.Span.End, nextToken.FullSpan.Start));
                 this.context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
             }
 
             private bool IsOnSameLineAsOpeningBrace(SyntaxToken closeBrace)
             {
                 var matchingOpenBrace = this.bracesStack.Peek();
-                return matchingOpenBrace.GetLineSpan().EndLinePosition.Line == closeBrace.GetLineSpan().StartLinePosition.Line;
+                return matchingOpenBrace.GetLineSpan().EndLinePosition.Line ==
+                       closeBrace.GetLineSpan().StartLinePosition.Line;
             }
         }
     }

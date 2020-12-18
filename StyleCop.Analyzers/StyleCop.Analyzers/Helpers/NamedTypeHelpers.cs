@@ -87,13 +87,13 @@ namespace StyleCop.Analyzers.Helpers
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.StructDeclaration:
             case SyntaxKindEx.RecordDeclaration:
-                return ((TypeDeclarationSyntax)member).Identifier.Text;
+                return ((TypeDeclarationSyntax) member).Identifier.Text;
 
             case SyntaxKind.EnumDeclaration:
-                return ((EnumDeclarationSyntax)member).Identifier.Text;
+                return ((EnumDeclarationSyntax) member).Identifier.Text;
 
             case SyntaxKind.DelegateDeclaration:
-                return ((DelegateDeclarationSyntax)member).Identifier.Text;
+                return ((DelegateDeclarationSyntax) member).Identifier.Text;
 
             default:
                 throw new ArgumentException("Unhandled declaration kind: " + member.Kind());
@@ -103,19 +103,20 @@ namespace StyleCop.Analyzers.Helpers
         internal static Location GetNameOrIdentifierLocation(SyntaxNode member)
         {
             Location location = null;
-            location = location ?? (member as PropertyDeclarationSyntax)?.Identifier.GetLocation();
-            location = location ?? (member as FieldDeclarationSyntax)?.Declaration?.Variables.FirstOrDefault()?.Identifier.GetLocation();
-            location = location ?? (member as MethodDeclarationSyntax)?.Identifier.GetLocation();
-            location = location ?? (member as ConstructorDeclarationSyntax)?.Identifier.GetLocation();
-            location = location ?? (member as DestructorDeclarationSyntax)?.Identifier.GetLocation();
-            location = location ?? (member as BaseTypeDeclarationSyntax)?.Identifier.GetLocation();
-            location = location ?? (member as NamespaceDeclarationSyntax)?.Name.GetLocation();
-            location = location ?? (member as UsingDirectiveSyntax)?.Name.GetLocation();
-            location = location ?? (member as ExternAliasDirectiveSyntax)?.Identifier.GetLocation();
-            location = location ?? (member as AccessorDeclarationSyntax)?.Keyword.GetLocation();
-            location = location ?? (member as DelegateDeclarationSyntax)?.Identifier.GetLocation();
-            location = location ?? (member as EventDeclarationSyntax)?.Identifier.GetLocation();
-            location = location ?? (member as IndexerDeclarationSyntax)?.ThisKeyword.GetLocation();
+            location = location ??(member as PropertyDeclarationSyntax) ?.Identifier.GetLocation();
+            location = location ??(member as FieldDeclarationSyntax) ?.Declaration?.Variables.FirstOrDefault()
+                ?.Identifier.GetLocation();
+            location = location ??(member as MethodDeclarationSyntax) ?.Identifier.GetLocation();
+            location = location ??(member as ConstructorDeclarationSyntax) ?.Identifier.GetLocation();
+            location = location ??(member as DestructorDeclarationSyntax) ?.Identifier.GetLocation();
+            location = location ??(member as BaseTypeDeclarationSyntax) ?.Identifier.GetLocation();
+            location = location ??(member as NamespaceDeclarationSyntax) ?.Name.GetLocation();
+            location = location ??(member as UsingDirectiveSyntax) ?.Name.GetLocation();
+            location = location ??(member as ExternAliasDirectiveSyntax) ?.Identifier.GetLocation();
+            location = location ??(member as AccessorDeclarationSyntax) ?.Keyword.GetLocation();
+            location = location ??(member as DelegateDeclarationSyntax) ?.Identifier.GetLocation();
+            location = location ??(member as EventDeclarationSyntax) ?.Identifier.GetLocation();
+            location = location ??(member as IndexerDeclarationSyntax) ?.ThisKeyword.GetLocation();
             location = location ?? member.GetLocation();
             return location;
         }
@@ -177,13 +178,13 @@ namespace StyleCop.Analyzers.Helpers
 
             var typeSymbol = memberSymbol.ContainingType;
 
-            return typeSymbol != null && typeSymbol.AllInterfaces
-                .SelectMany(m => m.GetMembers(memberSymbol.Name))
-                .Select(typeSymbol.FindImplementationForInterfaceMember)
-                .Any(x => memberSymbol.Equals(x));
+            return typeSymbol != null && typeSymbol.AllInterfaces.SelectMany(m => m.GetMembers(memberSymbol.Name))
+                                             .Select(typeSymbol.FindImplementationForInterfaceMember)
+                                             .Any(x => memberSymbol.Equals(x));
         }
 
-        internal static INamedTypeSymbol TupleUnderlyingTypeOrSelf(this INamedTypeSymbol tupleSymbol)
-            => tupleSymbol.TupleUnderlyingType() ?? tupleSymbol;
+        internal static INamedTypeSymbol TupleUnderlyingTypeOrSelf(this INamedTypeSymbol tupleSymbol) =>
+            tupleSymbol.TupleUnderlyingType()
+            ?? tupleSymbol;
     }
 }

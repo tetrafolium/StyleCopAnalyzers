@@ -7,6 +7,6 @@ namespace StyleCop.Analyzers.Lightup
 
     internal static class SymbolDisplayLocalOptionsEx
     {
-        public const SymbolDisplayLocalOptions IncludeRef = (SymbolDisplayLocalOptions)4;
+        public const SymbolDisplayLocalOptions IncludeRef = (SymbolDisplayLocalOptions) 4;
     }
 }

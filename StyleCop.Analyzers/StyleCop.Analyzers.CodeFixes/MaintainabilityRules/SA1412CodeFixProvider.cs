@@ -25,8 +25,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     internal class SA1412CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1412StoreFilesAsUtf8.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1412StoreFilesAsUtf8.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,17 +45,18 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 string usedEncoding = diagnostic.Properties[SA1412StoreFilesAsUtf8.EncodingProperty];
 
                 context.RegisterCodeFix(
-                    CodeAction.Create(
-                        string.Format(MaintainabilityResources.SA1412CodeFix, usedEncoding),
-                        cancellationToken => GetTransformedSolutionAsync(context.Document, cancellationToken),
-                        nameof(SA1412CodeFixProvider) + "." + usedEncoding),
+                    CodeAction.Create(string.Format(MaintainabilityResources.SA1412CodeFix, usedEncoding),
+                                      cancellationToken =>
+                                          GetTransformedSolutionAsync(context.Document, cancellationToken),
+                                      nameof(SA1412CodeFixProvider) + "." + usedEncoding),
                     diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        internal static async Task<Solution> GetTransformedSolutionAsync(Document document, CancellationToken cancellationToken)
+        internal static async Task<Solution> GetTransformedSolutionAsync(Document document,
+                                                                         CancellationToken cancellationToken)
         {
             SourceText text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
@@ -64,7 +68,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             // Roslyn will not see an encoding change as a text change and assumes that
             // there is nothing to do.
             Solution solutionWithoutDocument = document.Project.Solution.RemoveDocument(document.Id);
-            return solutionWithoutDocument.AddDocument(DocumentId.CreateNewId(document.Project.Id), document.Name, text, document.Folders, document.FilePath);
+            return solutionWithoutDocument.AddDocument(DocumentId.CreateNewId(document.Project.Id), document.Name, text,
+                                                       document.Folders, document.FilePath);
         }
     }
 }

@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IConstructorBodyOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IConstructorBodyOperationWrapper));
-            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
-            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Initializer));
+            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                WrappedType, nameof(Locals));
+            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(Initializer));
         }
 
         private IConstructorBodyOperationWrapper(IOperation operation)
@@ -30,10 +32,12 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor(this.WrappedOperation);
         public IOperation Initializer => InitializerAccessor(this.WrappedOperation);
-        public IBlockOperationWrapper BlockBody => ((IMethodBodyBaseOperationWrapper)this).BlockBody;
-        public IBlockOperationWrapper ExpressionBody => ((IMethodBodyBaseOperationWrapper)this).ExpressionBody;
-        public static explicit operator IConstructorBodyOperationWrapper(IMethodBodyBaseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IMethodBodyBaseOperationWrapper(IConstructorBodyOperationWrapper wrapper) => IMethodBodyBaseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public IBlockOperationWrapper BlockBody =>((IMethodBodyBaseOperationWrapper) this).BlockBody;
+        public IBlockOperationWrapper ExpressionBody =>((IMethodBodyBaseOperationWrapper) this).ExpressionBody;
+        public static explicit operator IConstructorBodyOperationWrapper(IMethodBodyBaseOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IMethodBodyBaseOperationWrapper(IConstructorBodyOperationWrapper wrapper) =>
+            IMethodBodyBaseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IConstructorBodyOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

@@ -27,8 +27,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1128CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1128ConstructorInitializerMustBeOnOwnLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1128ConstructorInitializerMustBeOnOwnLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,79 +44,93 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1128CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1128CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1128CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1128CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
             var newLine = FormattingHelper.GetNewLineTrivia(document);
 
-            var constructorInitializer = (ConstructorInitializerSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
-            var constructorDeclaration = (ConstructorDeclarationSyntax)constructorInitializer.Parent;
+            var constructorInitializer =
+                (ConstructorInitializerSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
+            var constructorDeclaration = (ConstructorDeclarationSyntax) constructorInitializer.Parent;
 
-            var newConstructorDeclaration = ReformatConstructorDeclaration(constructorDeclaration, settings.Indentation, newLine);
+            var newConstructorDeclaration =
+                ReformatConstructorDeclaration(constructorDeclaration, settings.Indentation, newLine);
 
             var newSyntaxRoot = syntaxRoot.ReplaceNode(constructorDeclaration, newConstructorDeclaration);
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
 
-        private static ConstructorDeclarationSyntax ReformatConstructorDeclaration(ConstructorDeclarationSyntax constructorDeclaration, IndentationSettings indentationSettings, SyntaxTrivia newLine)
+        private static ConstructorDeclarationSyntax ReformatConstructorDeclaration(
+            ConstructorDeclarationSyntax constructorDeclaration, IndentationSettings indentationSettings,
+            SyntaxTrivia newLine)
         {
             var constructorInitializer = constructorDeclaration.Initializer;
 
-            var newParameterList = constructorDeclaration.ParameterList
-                .WithTrailingTrivia(constructorDeclaration.ParameterList.GetTrailingTrivia().WithoutTrailingWhitespace().Add(newLine));
+            var newParameterList = constructorDeclaration.ParameterList.WithTrailingTrivia(
+                constructorDeclaration.ParameterList.GetTrailingTrivia().WithoutTrailingWhitespace().Add(newLine));
 
             var indentationSteps = IndentationHelper.GetIndentationSteps(indentationSettings, constructorDeclaration);
             var indentation = IndentationHelper.GenerateWhitespaceTrivia(indentationSettings, indentationSteps + 1);
 
             var newColonTrailingTrivia = constructorInitializer.ColonToken.TrailingTrivia.WithoutTrailingWhitespace();
 
-            var newColonToken = constructorInitializer.ColonToken
-                .WithLeadingTrivia(indentation)
-                .WithTrailingTrivia(newColonTrailingTrivia);
+            var newColonToken = constructorInitializer.ColonToken.WithLeadingTrivia(indentation)
+                                    .WithTrailingTrivia(newColonTrailingTrivia);
 
-            var newInitializer = constructorInitializer
-                .WithColonToken(newColonToken)
-                .WithThisOrBaseKeyword(constructorInitializer.ThisOrBaseKeyword.WithLeadingTrivia(SyntaxFactory.Space));
+            var newInitializer = constructorInitializer.WithColonToken(newColonToken)
+                                     .WithThisOrBaseKeyword(constructorInitializer.ThisOrBaseKeyword.WithLeadingTrivia(
+                                         SyntaxFactory.Space));
 
-            return constructorDeclaration
-                .WithParameterList(newParameterList)
-                .WithInitializer(newInitializer);
+            return constructorDeclaration.WithParameterList(newParameterList).WithInitializer(newInitializer);
         }
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle { get; } =
-                ReadabilityResources.SA1128CodeFix;
+            protected override string CodeActionTitle
+            {
+                get;
+            }
+            = ReadabilityResources.SA1128CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
                     return null;
                 }
 
-                var syntaxRoot = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
-                var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, fixAllContext.CancellationToken);
+                var syntaxRoot =
+                    await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions,
+                                                                  fixAllContext.CancellationToken);
                 var newLine = FormattingHelper.GetNewLineTrivia(document);
 
-                var nodes = diagnostics.Select(diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent);
+                var nodes =
+                    diagnostics.Select(diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent);
 
-                return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) => ReformatConstructorDeclaration((ConstructorDeclarationSyntax)rewrittenNode, settings.Indentation, newLine));
+                return syntaxRoot.ReplaceNodes(
+                    nodes, (originalNode, rewrittenNode) => ReformatConstructorDeclaration(
+                               (ConstructorDeclarationSyntax) rewrittenNode, settings.Indentation, newLine));
             }
         }
     }

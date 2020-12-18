@@ -27,8 +27,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly SA1107FixAllProvider FixAllProvider = new SA1107FixAllProvider();
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1107CodeMustNotContainMultipleStatementsOnOneLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1107CodeMustNotContainMultipleStatementsOnOneLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,16 +45,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             foreach (var diagnostic in context.Diagnostics)
             {
-                var node = root?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+                var node = root?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                          : true, getInnermostNodeForTie
+                                          : true);
 
                 if (node?.Parent as BlockSyntax != null)
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            ReadabilityResources.SA1107CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, root, node),
-                            nameof(SA1107CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1107CodeFix,
+                                                              cancellationToken => GetTransformedDocumentAsync(
+                                                                  context.Document, root, node),
+                                                              nameof(SA1107CodeFixProvider)),
+                                            diagnostic);
                 }
             }
         }

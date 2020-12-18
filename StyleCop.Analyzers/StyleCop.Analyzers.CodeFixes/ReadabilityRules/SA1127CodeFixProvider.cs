@@ -26,8 +26,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1127CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1127GenericTypeConstraintsMustBeOnOwnLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1127GenericTypeConstraintsMustBeOnOwnLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -40,18 +43,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1127CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1127CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1127CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1127CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var whereToken = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -61,13 +64,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             var parentIndentation = GetParentIndentation(whereToken);
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
-            var indentationTrivia = SyntaxFactory.Whitespace(parentIndentation + IndentationHelper.GenerateIndentationString(settings.Indentation, 1));
+            var indentationTrivia = SyntaxFactory.Whitespace(
+                parentIndentation + IndentationHelper.GenerateIndentationString(settings.Indentation, 1));
 
-            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>()
-            {
-                [precedingToken] = precedingToken.WithTrailingTrivia(SyntaxFactory.CarriageReturnLineFeed),
-                [whereToken] = whereToken.WithLeadingTrivia(indentationTrivia),
-                [endToken] = endToken.WithTrailingTrivia(RemoveUnnecessaryWhitespaceTrivia(endToken).Add(SyntaxFactory.CarriageReturnLineFeed)),
+            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
+                    [precedingToken] = precedingToken.WithTrailingTrivia(SyntaxFactory.CarriageReturnLineFeed),
+                    [ whereToken ] = whereToken.WithLeadingTrivia(indentationTrivia),
+                    [ endToken ] = endToken.WithTrailingTrivia(
+                        RemoveUnnecessaryWhitespaceTrivia(endToken).Add(SyntaxFactory.CarriageReturnLineFeed)),
             };
 
             if (afterEndToken.IsKind(SyntaxKind.EqualsGreaterThanToken))
@@ -76,14 +80,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
             else if (afterEndToken.IsKind(SyntaxKind.OpenBraceToken))
             {
-                replaceMap.Add(afterEndToken, afterEndToken.WithLeadingTrivia(SyntaxFactory.Whitespace(parentIndentation)));
+                replaceMap.Add(afterEndToken,
+                               afterEndToken.WithLeadingTrivia(SyntaxFactory.Whitespace(parentIndentation)));
             }
             else if (afterEndToken.IsKind(SyntaxKind.WhereKeyword))
             {
                 replaceMap.Add(afterEndToken, afterEndToken.WithLeadingTrivia(indentationTrivia));
             }
 
-            var newSyntaxRoot = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]).WithoutFormatting();
+            var newSyntaxRoot =
+                syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]).WithoutFormatting();
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
 
@@ -91,9 +97,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             var parentTrivia = token.Parent.Parent.GetLeadingTrivia();
 
-            return parentTrivia
-                .LastOrDefault(SyntaxKind.WhitespaceTrivia)
-                .ToString();
+            return parentTrivia.LastOrDefault(SyntaxKind.WhitespaceTrivia).ToString();
         }
 
         // This function will remove any unnecessary whitespace or end-of-line trivia from a token.

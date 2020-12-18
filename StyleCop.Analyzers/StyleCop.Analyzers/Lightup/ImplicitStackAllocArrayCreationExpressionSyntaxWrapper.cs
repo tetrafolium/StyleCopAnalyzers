@@ -7,9 +7,11 @@ namespace StyleCop.Analyzers.Lightup
 
     internal partial struct ImplicitStackAllocArrayCreationExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
     {
-        public ImplicitStackAllocArrayCreationExpressionSyntaxWrapper AddInitializerExpressions(params ExpressionSyntax[] items)
+        public ImplicitStackAllocArrayCreationExpressionSyntaxWrapper AddInitializerExpressions(
+            params ExpressionSyntax[] items)
         {
-            return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(this.WithInitializer(this.Initializer.AddExpressions(items)));
+            return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(
+                this.WithInitializer(this.Initializer.AddExpressions(items)));
         }
     }
 }

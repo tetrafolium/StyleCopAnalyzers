@@ -24,8 +24,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     [Shared]
     internal class SA1129CodeFixProvider : CodeFixProvider
     {
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1129DoNotUseDefaultValueTypeConstructor.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1129DoNotUseDefaultValueTypeConstructor.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,41 +40,42 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1129CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1129CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1129CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1129CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var newExpression = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
-            var newSyntaxRoot = syntaxRoot.ReplaceNode(newExpression, GetReplacementNode(newExpression, semanticModel, cancellationToken));
+            var newExpression = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie : true);
+            var newSyntaxRoot = syntaxRoot.ReplaceNode(
+                newExpression, GetReplacementNode(newExpression, semanticModel, cancellationToken));
 
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
 
-        private static SyntaxNode GetReplacementNode(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static SyntaxNode GetReplacementNode(SyntaxNode node, SemanticModel semanticModel,
+                                                     CancellationToken cancellationToken)
         {
-            var newExpression = (ObjectCreationExpressionSyntax)node;
+            var newExpression = (ObjectCreationExpressionSyntax) node;
 
             var symbolInfo = semanticModel.GetSymbolInfo(newExpression.Type, cancellationToken);
             var namedTypeSymbol = symbolInfo.Symbol as INamedTypeSymbol;
 
             SyntaxNode replacement;
 
-            if (IsType<CancellationToken>(namedTypeSymbol)
-                || namedTypeSymbol?.SpecialType == SpecialType.System_IntPtr
-                || namedTypeSymbol?.SpecialType == SpecialType.System_UIntPtr
-                || IsType<Guid>(namedTypeSymbol))
+            if (IsType<CancellationToken>(namedTypeSymbol) ||
+                namedTypeSymbol?.SpecialType == SpecialType.System_IntPtr ||
+                namedTypeSymbol?.SpecialType == SpecialType.System_UIntPtr || IsType<Guid>(namedTypeSymbol))
             {
                 if (IsDefaultParameterValue(newExpression))
                 {
@@ -110,8 +114,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 replacement = SyntaxFactory.DefaultExpression(newExpression.Type);
             }
 
-            return replacement
-                .WithLeadingTrivia(newExpression.GetLeadingTrivia())
+            return replacement.WithLeadingTrivia(newExpression.GetLeadingTrivia())
                 .WithTrailingTrivia(newExpression.GetTrailingTrivia());
         }
 
@@ -135,10 +138,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return false;
             }
 
-            if (!string.Equals(
-                expectedType.Namespace,
-                namedTypeSymbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)),
-                StringComparison.Ordinal))
+            if (!string.Equals(expectedType.Namespace,
+                               namedTypeSymbol.ContainingNamespace?.ToDisplayString(
+                                   SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(
+                                       SymbolDisplayGlobalNamespaceStyle.Omitted)),
+                               StringComparison.Ordinal))
             {
                 return false;
             }
@@ -161,7 +165,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// </summary>
         /// <param name="namedTypeSymbol">The symbol.</param>
         /// <param name="foundMemberName">Will be set to the string name of the member, if one is found.</param>
-        /// <returns><see langword="true"/> if the syntax is an enumeration with a value of <c>0</c>; <see langword="false"/> otherwise.</returns>
+        /// <returns><see langword="true"/> if the syntax is an enumeration with a value of <c>0</c>; <see
+        /// langword="false"/> otherwise.</returns>
         private static bool IsEnumWithDefaultMember(INamedTypeSymbol namedTypeSymbol, out string foundMemberName)
         {
             foundMemberName = null;
@@ -171,12 +176,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return false;
             }
 
-            var foundMembers = namedTypeSymbol
-                .GetMembers()
-                .Where(m => m.Kind == SymbolKind.Field)
-                .OfType<IFieldSymbol>()
-                .Where(fs => fs.ConstantValue.Equals(0))
-                .ToList();
+            var foundMembers = namedTypeSymbol.GetMembers()
+                                   .Where(m => m.Kind == SymbolKind.Field)
+                                   .OfType<IFieldSymbol>()
+                                   .Where(fs => fs.ConstantValue.Equals(0))
+                                   .ToList();
 
             if (foundMembers.Count != 1)
             {
@@ -195,33 +199,41 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <returns>A new member access expression.</returns>
         private static SyntaxNode ConstructMemberAccessSyntax(TypeSyntax typeSyntax, string memberName)
         {
-            return SyntaxFactory.MemberAccessExpression(
-                SyntaxKind.SimpleMemberAccessExpression,
-                typeSyntax,
-                SyntaxFactory.IdentifierName(memberName));
+            return SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, typeSyntax,
+                                                        SyntaxFactory.IdentifierName(memberName));
         }
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                ReadabilityResources.SA1129CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1129CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
                     return null;
                 }
 
-                var syntaxRoot = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
-                var semanticModel = await document.GetSemanticModelAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                var syntaxRoot =
+                    await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                var semanticModel =
+                    await document.GetSemanticModelAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
 
-                var nodes = diagnostics.Select(diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true));
+                var nodes = diagnostics.Select(
+                    diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                      : true));
 
-                return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) => GetReplacementNode(rewrittenNode, semanticModel, fixAllContext.CancellationToken));
+                return syntaxRoot.ReplaceNodes(
+                    nodes, (originalNode, rewrittenNode) =>
+                               GetReplacementNode(rewrittenNode, semanticModel, fixAllContext.CancellationToken));
             }
         }
     }

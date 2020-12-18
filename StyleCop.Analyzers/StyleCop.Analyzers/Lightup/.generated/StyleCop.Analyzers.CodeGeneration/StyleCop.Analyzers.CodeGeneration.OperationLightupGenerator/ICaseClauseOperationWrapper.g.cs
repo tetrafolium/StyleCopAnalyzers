@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static ICaseClauseOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ICaseClauseOperationWrapper));
-            LabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(Label));
+            LabelAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(Label));
         }
 
         private ICaseClauseOperationWrapper(IOperation operation)
@@ -26,7 +27,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object CaseKind => throw new NotImplementedException("Property 'ICaseClauseOperation.CaseKind' has unsupported type 'CaseKind'");
+        public object CaseKind => throw new NotImplementedException(
+            "Property 'ICaseClauseOperation.CaseKind' has unsupported type 'CaseKind'");
         public ILabelSymbol Label => LabelAccessor(this.WrappedOperation);
         public static ICaseClauseOperationWrapper FromOperation(IOperation operation)
         {

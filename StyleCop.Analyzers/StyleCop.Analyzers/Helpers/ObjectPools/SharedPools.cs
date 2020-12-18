@@ -21,8 +21,8 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         /// </summary>
         /// <typeparam name="T">The type of the object pool.</typeparam>
         /// <returns>A default big object pool.</returns>
-        public static ObjectPool<T> BigDefault<T>()
-            where T : class, new()
+        public static ObjectPool<T> BigDefault<T>() where T : class
+        , new ()
         {
             return DefaultBigPool<T>.Instance;
         }
@@ -32,24 +32,28 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         /// </summary>
         /// <typeparam name="T">The type of the object pool.</typeparam>
         /// <returns>A default object pool.</returns>
-        public static ObjectPool<T> Default<T>()
-            where T : class, new()
+        public static ObjectPool<T> Default<T>() where T : class
+        , new ()
         {
             return DefaultNormalPool<T>.Instance;
         }
 
-        private static class DefaultBigPool<T>
-            where T : class, new()
+        private static class DefaultBigPool<T> where T : class, new ()
         {
-            public static ObjectPool<T> Instance { get; } =
-                new ObjectPool<T>(() => new T(), 100);
+            public static ObjectPool<T> Instance
+            {
+                get;
+            }
+            = new ObjectPool<T>(() => new T(), 100);
         }
 
-        private static class DefaultNormalPool<T>
-            where T : class, new()
+        private static class DefaultNormalPool<T> where T : class, new ()
         {
-            public static ObjectPool<T> Instance { get; } =
-                new ObjectPool<T>(() => new T(), 20);
+            public static ObjectPool<T> Instance
+            {
+                get;
+            }
+            = new ObjectPool<T>(() => new T(), 20);
         }
     }
 }

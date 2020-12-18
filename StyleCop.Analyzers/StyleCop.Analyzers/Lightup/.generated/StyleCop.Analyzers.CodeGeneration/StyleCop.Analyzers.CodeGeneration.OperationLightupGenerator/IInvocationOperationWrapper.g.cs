@@ -19,10 +19,14 @@ namespace StyleCop.Analyzers.Lightup
         static IInvocationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IInvocationOperationWrapper));
-            TargetMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(TargetMethod));
-            InstanceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Instance));
-            IsVirtualAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsVirtual));
-            ArgumentsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Arguments));
+            TargetMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                WrappedType, nameof(TargetMethod));
+            InstanceAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Instance));
+            IsVirtualAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsVirtual));
+            ArgumentsAccessor =
+                LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Arguments));
         }
 
         private IInvocationOperationWrapper(IOperation operation)

@@ -43,31 +43,50 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1110";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1110.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1110Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1110MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1110Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1110.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1110Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1110MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1110Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction = HandleMethodDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> LocalFunctionStatementAction = HandleLocalFunctionStatement;
-        private static readonly Action<SyntaxNodeAnalysisContext> ConstructorDeclarationAction = HandleConstructorDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction = HandleInvocationExpression;
-        private static readonly Action<SyntaxNodeAnalysisContext> ObjectCreationExpressionAction = HandleObjectCreationExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> LocalFunctionStatementAction =
+            HandleLocalFunctionStatement;
+        private static readonly Action<SyntaxNodeAnalysisContext> ConstructorDeclarationAction =
+            HandleConstructorDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction =
+            HandleInvocationExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> ObjectCreationExpressionAction =
+            HandleObjectCreationExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction = HandleIndexerDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> ElementAccessExpressionAction = HandleElementAccessExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> ElementAccessExpressionAction =
+            HandleElementAccessExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> AttributeAction = HandleAttribute;
         private static readonly Action<SyntaxNodeAnalysisContext> DelegateDeclarationAction = HandleDelegateDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
-        private static readonly Action<SyntaxNodeAnalysisContext> ArrayCreationExpressionAction = HandleArrayCreationExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousMethodExpressionAction =
+            HandleAnonymousMethodExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> ArrayCreationExpressionAction =
+            HandleArrayCreationExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> OperatorDeclarationAction = HandleOperatorDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> ConversionOperatorDeclarationAction = HandleConversionOperatorDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> ConversionOperatorDeclarationAction =
+            HandleConversionOperatorDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -87,16 +106,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
             context.RegisterSyntaxNodeAction(AnonymousMethodExpressionAction, SyntaxKind.AnonymousMethodExpression);
             context.RegisterSyntaxNodeAction(ArrayCreationExpressionAction, SyntaxKind.ArrayCreationExpression);
             context.RegisterSyntaxNodeAction(OperatorDeclarationAction, SyntaxKind.OperatorDeclaration);
-            context.RegisterSyntaxNodeAction(ConversionOperatorDeclarationAction, SyntaxKind.ConversionOperatorDeclaration);
+            context.RegisterSyntaxNodeAction(ConversionOperatorDeclarationAction,
+                                             SyntaxKind.ConversionOperatorDeclaration);
         }
 
         private static void HandleConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var conversionOperator = (ConversionOperatorDeclarationSyntax)context.Node;
+            var conversionOperator = (ConversionOperatorDeclarationSyntax) context.Node;
 
-            var identifierName = conversionOperator.ChildNodes()
-                .OfType<IdentifierNameSyntax>()
-                .FirstOrDefault();
+            var identifierName = conversionOperator.ChildNodes().OfType<IdentifierNameSyntax>().FirstOrDefault();
             if (identifierName == null || identifierName.Identifier.IsMissing)
             {
                 return;
@@ -107,13 +125,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
             if (parameterListSyntax != null && !parameterListSyntax.OpenParenToken.IsMissing)
             {
                 bool preserveLayout = parameterListSyntax.Parameters.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, parameterListSyntax.OpenParenToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, parameterListSyntax.OpenParenToken,
+                                                                     preserveLayout);
             }
         }
 
         private static void HandleOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
+            var operatorDeclaration = (OperatorDeclarationSyntax) context.Node;
 
             if (operatorDeclaration.OperatorToken.IsMissing)
             {
@@ -125,17 +144,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
             if (parameterListSyntax != null && !parameterListSyntax.OpenParenToken.IsMissing)
             {
                 bool preserveLayout = parameterListSyntax.Parameters.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, parameterListSyntax.OpenParenToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, parameterListSyntax.OpenParenToken,
+                                                                     preserveLayout);
             }
         }
 
         private static void HandleArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var array = (ArrayCreationExpressionSyntax)context.Node;
+            var array = (ArrayCreationExpressionSyntax) context.Node;
 
-            if (array.Type.IsMissing ||
-                array.Type.ElementType == null ||
-                !array.Type.RankSpecifiers.Any())
+            if (array.Type.IsMissing || array.Type.ElementType == null || !array.Type.RankSpecifiers.Any())
             {
                 return;
             }
@@ -145,47 +163,48 @@ namespace StyleCop.Analyzers.ReadabilityRules
             if (!firstSize.OpenBracketToken.IsMissing)
             {
                 bool preserveLayout = firstSize.Sizes.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, firstSize.OpenBracketToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, firstSize.OpenBracketToken,
+                                                                     preserveLayout);
             }
         }
 
         private static void HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
-            var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
+            var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
 
-            if (anonymousMethod.DelegateKeyword.IsMissing ||
-                anonymousMethod.ParameterList == null ||
-                anonymousMethod.ParameterList.IsMissing ||
-                anonymousMethod.ParameterList.OpenParenToken.IsMissing)
+            if (anonymousMethod.DelegateKeyword.IsMissing || anonymousMethod.ParameterList == null ||
+                anonymousMethod.ParameterList.IsMissing || anonymousMethod.ParameterList.OpenParenToken.IsMissing)
             {
                 return;
             }
 
             bool preserveLayout = anonymousMethod.ParameterList.Parameters.Any();
-            CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, anonymousMethod.ParameterList.OpenParenToken, preserveLayout);
+            CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, anonymousMethod.ParameterList.OpenParenToken,
+                                                                 preserveLayout);
         }
 
         private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
+            var delegateDeclaration = (DelegateDeclarationSyntax) context.Node;
 
-            if (!delegateDeclaration.Identifier.IsMissing &&
-                delegateDeclaration.ParameterList != null &&
+            if (!delegateDeclaration.Identifier.IsMissing && delegateDeclaration.ParameterList != null &&
                 !delegateDeclaration.ParameterList.OpenParenToken.IsMissing)
             {
                 bool preserveLayout = delegateDeclaration.ParameterList.Parameters.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, delegateDeclaration.ParameterList.OpenParenToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(
+                    context, delegateDeclaration.ParameterList.OpenParenToken, preserveLayout);
             }
         }
 
         private static void HandleAttribute(SyntaxNodeAnalysisContext context)
         {
-            var attribute = (AttributeSyntax)context.Node;
+            var attribute = (AttributeSyntax) context.Node;
 
             IdentifierNameSyntax identifierNameSyntax = null;
             if (attribute.Name is QualifiedNameSyntax qualifiedNameSyntax)
             {
-                identifierNameSyntax = qualifiedNameSyntax.DescendantNodes().OfType<IdentifierNameSyntax>().LastOrDefault();
+                identifierNameSyntax =
+                    qualifiedNameSyntax.DescendantNodes().OfType<IdentifierNameSyntax>().LastOrDefault();
             }
             else
             {
@@ -194,61 +213,60 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             if (identifierNameSyntax != null)
             {
-                if (attribute.ArgumentList != null &&
-                    !attribute.ArgumentList.OpenParenToken.IsMissing &&
+                if (attribute.ArgumentList != null && !attribute.ArgumentList.OpenParenToken.IsMissing &&
                     !identifierNameSyntax.Identifier.IsMissing)
                 {
                     bool preserveLayout = attribute.ArgumentList.Arguments.Any();
-                    CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, attribute.ArgumentList.OpenParenToken, preserveLayout);
+                    CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, attribute.ArgumentList.OpenParenToken,
+                                                                         preserveLayout);
                 }
             }
         }
 
         private static void HandleElementAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            var elementAccess = (ElementAccessExpressionSyntax)context.Node;
+            var elementAccess = (ElementAccessExpressionSyntax) context.Node;
 
-            if (elementAccess.Expression == null ||
-                elementAccess.ArgumentList.IsMissing ||
+            if (elementAccess.Expression == null || elementAccess.ArgumentList.IsMissing ||
                 elementAccess.ArgumentList.OpenBracketToken.IsMissing)
             {
                 return;
             }
 
             bool preserveLayout = elementAccess.ArgumentList.Arguments.Any();
-            CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, elementAccess.ArgumentList.OpenBracketToken, preserveLayout);
+            CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, elementAccess.ArgumentList.OpenBracketToken,
+                                                                 preserveLayout);
         }
 
         private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext obj)
         {
-            var indexerDeclaration = (IndexerDeclarationSyntax)obj.Node;
+            var indexerDeclaration = (IndexerDeclarationSyntax) obj.Node;
 
-            if (!indexerDeclaration.ThisKeyword.IsMissing &&
-                indexerDeclaration.ParameterList != null &&
+            if (!indexerDeclaration.ThisKeyword.IsMissing && indexerDeclaration.ParameterList != null &&
                 !indexerDeclaration.ParameterList.IsMissing &&
                 !indexerDeclaration.ParameterList.OpenBracketToken.IsMissing)
             {
                 bool preserveLayout = indexerDeclaration.ParameterList.Parameters.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(obj, indexerDeclaration.ParameterList.OpenBracketToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(
+                    obj, indexerDeclaration.ParameterList.OpenBracketToken, preserveLayout);
             }
         }
 
         private static void HandleObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
+            var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
             var identifier = GetIdentifier(objectCreation);
 
-            if (!identifier.HasValue
-                || identifier.Value.IsMissing)
+            if (!identifier.HasValue || identifier.Value.IsMissing)
             {
                 return;
             }
 
-            if (objectCreation.ArgumentList != null
-                && !objectCreation.ArgumentList.OpenParenToken.IsMissing)
+            if (objectCreation.ArgumentList != null && !objectCreation.ArgumentList.OpenParenToken.IsMissing)
             {
                 bool preserveLayout = objectCreation.ArgumentList.Arguments.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, objectCreation.ArgumentList.OpenParenToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(
+                    context, objectCreation.ArgumentList.OpenParenToken, preserveLayout);
             }
         }
 
@@ -257,15 +275,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
             switch (objectCreationExpressionSyntax.Type.Kind())
             {
             case SyntaxKind.QualifiedName:
-                var qualifiedNameSyntax = (QualifiedNameSyntax)objectCreationExpressionSyntax.Type;
-                var identifierNameSyntax = qualifiedNameSyntax.DescendantNodes().OfType<IdentifierNameSyntax>().LastOrDefault();
+                var qualifiedNameSyntax = (QualifiedNameSyntax) objectCreationExpressionSyntax.Type;
+                var identifierNameSyntax =
+                    qualifiedNameSyntax.DescendantNodes().OfType<IdentifierNameSyntax>().LastOrDefault();
                 return identifierNameSyntax?.Identifier;
 
             case SyntaxKind.IdentifierName:
-                return ((IdentifierNameSyntax)objectCreationExpressionSyntax.Type).Identifier;
+                return ((IdentifierNameSyntax) objectCreationExpressionSyntax.Type).Identifier;
 
             case SyntaxKind.GenericName:
-                return ((GenericNameSyntax)objectCreationExpressionSyntax.Type).Identifier;
+                return ((GenericNameSyntax) objectCreationExpressionSyntax.Type).Identifier;
 
             default:
                 return null;
@@ -274,10 +293,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
         {
-            var invocationExpression = (InvocationExpressionSyntax)context.Node;
+            var invocationExpression = (InvocationExpressionSyntax) context.Node;
 
-            var identifierNameSyntax = invocationExpression.Expression as IdentifierNameSyntax ??
-                                                        invocationExpression.Expression.DescendantNodes().OfType<IdentifierNameSyntax>().LastOrDefault();
+            var identifierNameSyntax =
+                invocationExpression.Expression as IdentifierNameSyntax ?? invocationExpression.Expression
+                    .DescendantNodes()
+                    .OfType<IdentifierNameSyntax>()
+                    .LastOrDefault();
 
             if (identifierNameSyntax != null)
             {
@@ -286,48 +308,53 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     !identifierNameSyntax.Identifier.IsMissing)
                 {
                     bool preserveLayout = invocationExpression.ArgumentList.Arguments.Any();
-                    CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, invocationExpression.ArgumentList.OpenParenToken, preserveLayout);
+                    CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(
+                        context, invocationExpression.ArgumentList.OpenParenToken, preserveLayout);
                 }
             }
         }
 
         private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var constructotDeclarationSyntax = (ConstructorDeclarationSyntax)context.Node;
-            if (constructotDeclarationSyntax.ParameterList != null
-                && !constructotDeclarationSyntax.ParameterList.OpenParenToken.IsMissing
-                && !constructotDeclarationSyntax.Identifier.IsMissing)
+            var constructotDeclarationSyntax = (ConstructorDeclarationSyntax) context.Node;
+            if (constructotDeclarationSyntax.ParameterList != null &&
+                !constructotDeclarationSyntax.ParameterList.OpenParenToken.IsMissing &&
+                !constructotDeclarationSyntax.Identifier.IsMissing)
             {
                 bool preserveLayout = constructotDeclarationSyntax.ParameterList.Parameters.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, constructotDeclarationSyntax.ParameterList.OpenParenToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(
+                    context, constructotDeclarationSyntax.ParameterList.OpenParenToken, preserveLayout);
             }
         }
 
         private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
-            if (methodDeclaration.ParameterList != null
-                && !methodDeclaration.ParameterList.OpenParenToken.IsMissing
-                && !methodDeclaration.Identifier.IsMissing)
+            var methodDeclaration = (MethodDeclarationSyntax) context.Node;
+            if (methodDeclaration.ParameterList != null && !methodDeclaration.ParameterList.OpenParenToken.IsMissing &&
+                !methodDeclaration.Identifier.IsMissing)
             {
                 bool preserveLayout = methodDeclaration.ParameterList.Parameters.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, methodDeclaration.ParameterList.OpenParenToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(
+                    context, methodDeclaration.ParameterList.OpenParenToken, preserveLayout);
             }
         }
 
         private static void HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
-            var localFunctionStatement = (LocalFunctionStatementSyntaxWrapper)context.Node;
-            if (localFunctionStatement.ParameterList != null
-                && !localFunctionStatement.ParameterList.OpenParenToken.IsMissing
-                && !localFunctionStatement.Identifier.IsMissing)
+            var localFunctionStatement = (LocalFunctionStatementSyntaxWrapper) context.Node;
+            if (localFunctionStatement.ParameterList != null &&
+                !localFunctionStatement.ParameterList.OpenParenToken.IsMissing &&
+                !localFunctionStatement.Identifier.IsMissing)
             {
                 bool preserveLayout = localFunctionStatement.ParameterList.Parameters.Any();
-                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(context, localFunctionStatement.ParameterList.OpenParenToken, preserveLayout);
+                CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(
+                    context, localFunctionStatement.ParameterList.OpenParenToken, preserveLayout);
             }
         }
 
-        private static void CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(SyntaxNodeAnalysisContext context, SyntaxToken openToken, bool preserveLayout)
+        private static void CheckIfLocationOfPreviousTokenAndOpenTokenAreTheSame(SyntaxNodeAnalysisContext context,
+                                                                                 SyntaxToken openToken,
+                                                                                 bool preserveLayout)
         {
             var previousToken = openToken.GetPreviousToken();
             if (previousToken.IsMissing)
@@ -337,11 +364,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             var prevTokenLine = previousToken.GetLineSpan();
             var openParenLine = openToken.GetLineSpan();
-            if (prevTokenLine.IsValid &&
-                openParenLine.IsValid &&
+            if (prevTokenLine.IsValid && openParenLine.IsValid &&
                 openParenLine.StartLinePosition.Line != prevTokenLine.StartLinePosition.Line)
             {
-                var properties = preserveLayout ? TokenSpacingProperties.RemovePrecedingPreserveLayout : TokenSpacingProperties.RemovePreceding;
+                var properties =
+                    preserveLayout ? TokenSpacingProperties.RemovePrecedingPreserveLayout
+                    : TokenSpacingProperties.RemovePreceding;
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, openToken.GetLocation(), properties));
             }
         }

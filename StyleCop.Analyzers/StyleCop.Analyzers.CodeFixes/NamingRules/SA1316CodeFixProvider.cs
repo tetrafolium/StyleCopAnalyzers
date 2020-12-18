@@ -21,8 +21,11 @@ namespace StyleCop.Analyzers.NamingRules
     internal class SA1316CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1316TupleElementNamesShouldUseCorrectCasing.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1316TupleElementNamesShouldUseCorrectCasing.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -36,13 +39,15 @@ namespace StyleCop.Analyzers.NamingRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                if (diagnostic.Properties.TryGetValue(SA1316TupleElementNamesShouldUseCorrectCasing.ExpectedTupleElementNameKey, out string fixedTupleElementName))
+                if (diagnostic.Properties.TryGetValue(
+                        SA1316TupleElementNamesShouldUseCorrectCasing.ExpectedTupleElementNameKey,
+                        out string fixedTupleElementName))
                 {
                     context.RegisterCodeFix(
-                        CodeAction.Create(
-                            NamingResources.SA1316CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, fixedTupleElementName, cancellationToken),
-                            nameof(SA1316CodeFixProvider)),
+                        CodeAction.Create(NamingResources.SA1316CodeFix,
+                                          cancellationToken => GetTransformedDocumentAsync(
+                                              context.Document, diagnostic, fixedTupleElementName, cancellationToken),
+                                          nameof(SA1316CodeFixProvider)),
                         diagnostic);
                 }
             }
@@ -50,13 +55,16 @@ namespace StyleCop.Analyzers.NamingRules
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, string fixedTupleElementName, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        string fixedTupleElementName,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var identifierToken = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start);
 
-            var newSyntaxRoot = syntaxRoot.ReplaceToken(identifierToken, SyntaxFactory.Identifier(fixedTupleElementName).WithTriviaFrom(identifierToken));
+            var newSyntaxRoot = syntaxRoot.ReplaceToken(
+                identifierToken, SyntaxFactory.Identifier(fixedTupleElementName).WithTriviaFrom(identifierToken));
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
     }

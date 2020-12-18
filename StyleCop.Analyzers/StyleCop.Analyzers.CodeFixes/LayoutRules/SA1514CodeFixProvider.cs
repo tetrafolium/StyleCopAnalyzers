@@ -21,8 +21,11 @@ namespace StyleCop.Analyzers.LayoutRules
     internal class SA1514CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1514ElementDocumentationHeaderMustBePrecededByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1514ElementDocumentationHeaderMustBePrecededByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,18 +38,18 @@ namespace StyleCop.Analyzers.LayoutRules
         {
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        LayoutResources.SA1514CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1514CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(LayoutResources.SA1514CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1514CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
@@ -56,13 +59,16 @@ namespace StyleCop.Analyzers.LayoutRules
 
             // Keep any leading whitespace with the documentation header
             var index = documentationHeaderIndex - 1;
-            while ((index >= 0) && triviaList[index].IsKind(SyntaxKind.WhitespaceTrivia))
+            while ((index >= 0) && triviaList [index]
+                                       .IsKind(SyntaxKind.WhitespaceTrivia))
             {
                 index--;
             }
 
-            var newLeadingTrivia = documentationHeader.Token.LeadingTrivia.Insert(index + 1, SyntaxFactory.CarriageReturnLineFeed);
-            var newSyntaxRoot = syntaxRoot.ReplaceToken(documentationHeader.Token, documentationHeader.Token.WithLeadingTrivia(newLeadingTrivia));
+            var newLeadingTrivia =
+                documentationHeader.Token.LeadingTrivia.Insert(index + 1, SyntaxFactory.CarriageReturnLineFeed);
+            var newSyntaxRoot = syntaxRoot.ReplaceToken(documentationHeader.Token,
+                                                        documentationHeader.Token.WithLeadingTrivia(newLeadingTrivia));
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
     }

@@ -62,22 +62,31 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         public const string DiagnosticId = "SA1503";
 
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1503.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1503Title), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1503MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1503Description), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1503.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1503Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(LayoutResources.SA1503MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(LayoutResources.SA1503Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         private static readonly Action<SyntaxNodeAnalysisContext> IfStatementAction = HandleIfStatement;
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> UsingStatementAction = HandleUsingStatement;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> UsingStatementAction =
+            HandleUsingStatement;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -86,18 +95,27 @@ namespace StyleCop.Analyzers.LayoutRules
             context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(IfStatementAction, SyntaxKind.IfStatement);
-            context.RegisterSyntaxNodeAction(ctx => CheckChildStatement(ctx, ((DoStatementSyntax)ctx.Node).Statement), SyntaxKind.DoStatement);
-            context.RegisterSyntaxNodeAction(ctx => CheckChildStatement(ctx, ((WhileStatementSyntax)ctx.Node).Statement), SyntaxKind.WhileStatement);
-            context.RegisterSyntaxNodeAction(ctx => CheckChildStatement(ctx, ((ForStatementSyntax)ctx.Node).Statement), SyntaxKind.ForStatement);
-            context.RegisterSyntaxNodeAction(ctx => CheckChildStatement(ctx, ((ForEachStatementSyntax)ctx.Node).Statement), SyntaxKind.ForEachStatement);
-            context.RegisterSyntaxNodeAction(ctx => CheckChildStatement(ctx, ((FixedStatementSyntax)ctx.Node).Statement), SyntaxKind.FixedStatement);
+            context.RegisterSyntaxNodeAction(ctx => CheckChildStatement(ctx, ((DoStatementSyntax) ctx.Node).Statement),
+                                             SyntaxKind.DoStatement);
+            context.RegisterSyntaxNodeAction(ctx =>
+                                                 CheckChildStatement(ctx, ((WhileStatementSyntax) ctx.Node).Statement),
+                                             SyntaxKind.WhileStatement);
+            context.RegisterSyntaxNodeAction(ctx => CheckChildStatement(ctx, ((ForStatementSyntax) ctx.Node).Statement),
+                                             SyntaxKind.ForStatement);
+            context.RegisterSyntaxNodeAction(
+                ctx => CheckChildStatement(ctx, ((ForEachStatementSyntax) ctx.Node).Statement),
+                SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(ctx =>
+                                                 CheckChildStatement(ctx, ((FixedStatementSyntax) ctx.Node).Statement),
+                                             SyntaxKind.FixedStatement);
             context.RegisterSyntaxNodeAction(UsingStatementAction, SyntaxKind.UsingStatement);
-            context.RegisterSyntaxNodeAction(ctx => CheckChildStatement(ctx, ((LockStatementSyntax)ctx.Node).Statement), SyntaxKind.LockStatement);
+            context.RegisterSyntaxNodeAction(
+                ctx => CheckChildStatement(ctx, ((LockStatementSyntax) ctx.Node).Statement), SyntaxKind.LockStatement);
         }
 
         private static void HandleIfStatement(SyntaxNodeAnalysisContext context)
         {
-            var ifStatement = (IfStatementSyntax)context.Node;
+            var ifStatement = (IfStatementSyntax) context.Node;
             if (ifStatement.Parent.IsKind(SyntaxKind.ElseClause))
             {
                 // this will be analyzed as a clause of the outer if statement
@@ -105,7 +123,8 @@ namespace StyleCop.Analyzers.LayoutRules
             }
 
             List<StatementSyntax> clauses = new List<StatementSyntax>();
-            for (IfStatementSyntax current = ifStatement; current != null; current = current.Else?.Statement as IfStatementSyntax)
+            for (IfStatementSyntax current = ifStatement; current != null;
+                 current = current.Else?.Statement as IfStatementSyntax)
             {
                 clauses.Add(current.Statement);
                 if (current.Else != null && !(current.Else.Statement is IfStatementSyntax))
@@ -131,8 +150,9 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleUsingStatement(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var usingStatement = (UsingStatementSyntax)context.Node;
-            if (settings.LayoutRules.AllowConsecutiveUsings && usingStatement.Statement.IsKind(SyntaxKind.UsingStatement))
+            var usingStatement = (UsingStatementSyntax) context.Node;
+            if (settings.LayoutRules.AllowConsecutiveUsings &&
+                usingStatement.Statement.IsKind(SyntaxKind.UsingStatement))
             {
                 return;
             }

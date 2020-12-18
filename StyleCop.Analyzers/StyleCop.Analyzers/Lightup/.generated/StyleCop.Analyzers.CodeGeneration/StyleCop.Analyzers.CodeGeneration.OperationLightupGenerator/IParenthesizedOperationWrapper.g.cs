@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IParenthesizedOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IParenthesizedOperationWrapper));
-            OperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
+            OperandAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
         }
 
         private IParenthesizedOperationWrapper(IOperation operation)

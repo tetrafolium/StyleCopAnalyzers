@@ -34,30 +34,44 @@ namespace StyleCop.Analyzers.SpacingRules
         /// The ID for diagnostics produced by the <see cref="SA1009ClosingParenthesisMustBeSpacedCorrectly"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1009";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1009.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(SpacingResources.SA1009Title), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1009Description), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1009.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(SpacingResources.SA1009Title), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(SpacingResources.SA1009Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly LocalizableString MessageNotPreceded = new LocalizableResourceString(nameof(SpacingResources.SA1009MessageNotPreceded), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString MessageNotFollowed = new LocalizableResourceString(nameof(SpacingResources.SA1009MessageNotFollowed), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString MessageFollowed = new LocalizableResourceString(nameof(SpacingResources.SA1009MessageFollowed), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageNotPreceded =
+            new LocalizableResourceString(nameof(SpacingResources.SA1009MessageNotPreceded),
+                                          SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageNotFollowed =
+            new LocalizableResourceString(nameof(SpacingResources.SA1009MessageNotFollowed),
+                                          SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageFollowed = new LocalizableResourceString(
+            nameof(SpacingResources.SA1009MessageFollowed), SpacingResources.ResourceManager, typeof(SpacingResources));
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotPreceded = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorNotFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotFollowed = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorFollowed = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorNotPreceded);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(DescriptorNotPreceded);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -71,7 +85,7 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens(descendIntoTrivia: true))
+            foreach (var token in root.DescendantTokens(descendIntoTrivia : true))
             {
                 if (token.IsKind(SyntaxKind.CloseParenToken))
                 {
@@ -105,9 +119,9 @@ namespace StyleCop.Analyzers.SpacingRules
                 // - they are on the same line
                 // - the open paren is part of a parenthesized expression or a tuple expression.
                 precedesStickyCharacter =
-                        !(token.Parent.IsKind(SyntaxKind.IfStatement)
-                        && (token.GetLine() == nextToken.GetLine())
-                        && (nextToken.Parent.IsKind(SyntaxKind.ParenthesizedExpression) || nextToken.Parent.IsKind(SyntaxKindEx.TupleExpression)));
+                    !(token.Parent.IsKind(SyntaxKind.IfStatement) && (token.GetLine() == nextToken.GetLine()) &&
+                      (nextToken.Parent.IsKind(SyntaxKind.ParenthesizedExpression) ||
+                       nextToken.Parent.IsKind(SyntaxKindEx.TupleExpression)));
                 break;
 
             case SyntaxKind.CloseParenToken:
@@ -168,11 +182,10 @@ namespace StyleCop.Analyzers.SpacingRules
                 break;
 
             case SyntaxKind.ColonToken:
-                bool requireSpace =
-                    nextToken.Parent.IsKind(SyntaxKind.ConditionalExpression)
-                    || nextToken.Parent.IsKind(SyntaxKind.BaseConstructorInitializer)
-                    || nextToken.Parent.IsKind(SyntaxKind.ThisConstructorInitializer)
-                    || nextToken.Parent.IsKind(SyntaxKind.BaseList);
+                bool requireSpace = nextToken.Parent.IsKind(SyntaxKind.ConditionalExpression) ||
+                                    nextToken.Parent.IsKind(SyntaxKind.BaseConstructorInitializer) ||
+                                    nextToken.Parent.IsKind(SyntaxKind.ThisConstructorInitializer) ||
+                                    nextToken.Parent.IsKind(SyntaxKind.BaseList);
                 precedesStickyCharacter = !requireSpace;
                 break;
 
@@ -186,7 +199,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 precedesStickyCharacter = nextToken.Parent is InterpolationSyntax;
                 break;
 
-            case SyntaxKind.ExclamationToken when nextToken.Parent.IsKind(SyntaxKindEx.SuppressNullableWarningExpression):
+            case SyntaxKind.ExclamationToken when nextToken.Parent.IsKind(
+                SyntaxKindEx.SuppressNullableWarningExpression):
                 precedesStickyCharacter = true;
                 break;
 
@@ -211,8 +225,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                     break;
                 }
-                else if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia)
-                    || trivia.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                else if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
+                         trivia.IsKind(SyntaxKind.MultiLineCommentTrivia))
                 {
                     lastInLine = false;
                     precedesStickyCharacter = false;
@@ -231,9 +245,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 }
                 else
                 {
-                    properties = token.IsFirstInLine()
-                        ? TokenSpacingProperties.RemovePreceding
-                        : TokenSpacingProperties.RemoveImmediatePreceding;
+                    properties = token.IsFirstInLine() ? TokenSpacingProperties.RemovePreceding
+                                                       : TokenSpacingProperties.RemoveImmediatePreceding;
                 }
 
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotPreceded, token.GetLocation(), properties));
@@ -245,7 +258,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                     // Closing parenthesis should{} be {followed} by a space.
                     var properties = TokenSpacingProperties.InsertFollowing;
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                     context.ReportDiagnostic(Diagnostic.Create(DescriptorFollowed, token.GetLocation(), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                 }
@@ -253,7 +267,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 {
                     // Closing parenthesis should{ not} be {followed} by a space.
                     var properties = TokenSpacingProperties.RemoveFollowing;
-#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)
+#pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
+                               // (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                     context.ReportDiagnostic(Diagnostic.Create(DescriptorNotFollowed, token.GetLocation(), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
                 }

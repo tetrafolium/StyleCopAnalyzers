@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IArrayElementReferenceOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IArrayElementReferenceOperationWrapper));
-            ArrayReferenceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(ArrayReference));
-            IndicesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Indices));
+            ArrayReferenceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(ArrayReference));
+            IndicesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                WrappedType, nameof(Indices));
         }
 
         private IArrayElementReferenceOperationWrapper(IOperation operation)

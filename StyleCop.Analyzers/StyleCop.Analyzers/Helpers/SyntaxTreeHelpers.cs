@@ -20,8 +20,8 @@ namespace StyleCop.Analyzers.Helpers
         /// <para>This allows many analyzers that run on every token in the file to avoid checking
         /// the same state in the document repeatedly.</para>
         /// </remarks>
-        private static Tuple<WeakReference<Compilation>, ConcurrentDictionary<SyntaxTree, bool>> usingAliasCache
-            = Tuple.Create(new WeakReference<Compilation>(null), default(ConcurrentDictionary<SyntaxTree, bool>));
+        private static Tuple<WeakReference<Compilation>, ConcurrentDictionary<SyntaxTree, bool>> usingAliasCache =
+            Tuple.Create(new WeakReference<Compilation>(null), default(ConcurrentDictionary<SyntaxTree, bool>));
 
         public static ConcurrentDictionary<SyntaxTree, bool> GetOrCreateUsingAliasCache(this Compilation compilation)
         {
@@ -30,7 +30,8 @@ namespace StyleCop.Analyzers.Helpers
             Compilation cachedCompilation;
             if (!cache.Item1.TryGetTarget(out cachedCompilation) || cachedCompilation != compilation)
             {
-                var replacementCache = Tuple.Create(new WeakReference<Compilation>(compilation), new ConcurrentDictionary<SyntaxTree, bool>());
+                var replacementCache = Tuple.Create(new WeakReference<Compilation>(compilation),
+                                                    new ConcurrentDictionary<SyntaxTree, bool>());
                 while (true)
                 {
                     var prior = Interlocked.CompareExchange(ref usingAliasCache, replacementCache, cache);
@@ -63,10 +64,10 @@ namespace StyleCop.Analyzers.Helpers
         public static bool IsWhitespaceOnly(this SyntaxTree tree, CancellationToken cancellationToken)
         {
             var root = tree.GetRoot(cancellationToken);
-            var firstToken = root.GetFirstToken(includeZeroWidth: true);
+            var firstToken = root.GetFirstToken(includeZeroWidth : true);
 
-            return firstToken.IsKind(SyntaxKind.EndOfFileToken)
-                && TriviaHelper.IndexOfFirstNonWhitespaceTrivia(firstToken.LeadingTrivia) == -1;
+            return firstToken.IsKind(SyntaxKind.EndOfFileToken) &&
+                   TriviaHelper.IndexOfFirstNonWhitespaceTrivia(firstToken.LeadingTrivia) == -1;
         }
 
         internal static bool ContainsUsingAlias(this SyntaxTree tree, ConcurrentDictionary<SyntaxTree, bool> cache)
@@ -89,7 +90,8 @@ namespace StyleCop.Analyzers.Helpers
 
         private static bool ContainsUsingAliasNoCache(SyntaxTree tree)
         {
-            var nodes = tree.GetRoot().DescendantNodes(node => node.IsKind(SyntaxKind.CompilationUnit) || node.IsKind(SyntaxKind.NamespaceDeclaration));
+            var nodes = tree.GetRoot().DescendantNodes(node => node.IsKind(SyntaxKind.CompilationUnit) ||
+                                                               node.IsKind(SyntaxKind.NamespaceDeclaration));
 
             return nodes.OfType<UsingDirectiveSyntax>().Any(x => x.Alias != null);
         }

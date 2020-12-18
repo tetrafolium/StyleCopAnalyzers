@@ -31,19 +31,27 @@ namespace StyleCop.Analyzers.NamingRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1303";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1303.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(NamingResources.SA1303Title), NamingResources.ResourceManager, typeof(NamingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1303MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1303Description), NamingResources.ResourceManager, typeof(NamingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1303.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(NamingResources.SA1303Title), NamingResources.ResourceManager, typeof(NamingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(NamingResources.SA1303MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(NamingResources.SA1303Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SymbolAnalysisContext> FieldDeclarationAction = Analyzer.HandleFieldDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -58,7 +66,8 @@ namespace StyleCop.Analyzers.NamingRules
         {
             public static void HandleFieldDeclaration(SymbolAnalysisContext context)
             {
-                if (!(context.Symbol is IFieldSymbol symbol) || !symbol.IsConst || symbol.ContainingType?.TypeKind == TypeKind.Enum)
+                if (!(context.Symbol is IFieldSymbol symbol) || !symbol.IsConst ||
+                    symbol.ContainingType?.TypeKind == TypeKind.Enum)
                 {
                     return;
                 }
@@ -76,9 +85,7 @@ namespace StyleCop.Analyzers.NamingRules
                  * See DotNetAnalyzers/StyleCopAnalyzers#369 for additional information:
                  * https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/369
                  */
-                if (!string.IsNullOrEmpty(symbol.Name) &&
-                    char.IsLower(symbol.Name[0]) &&
-                    symbol.Locations.Any())
+                if (!string.IsNullOrEmpty(symbol.Name) && char.IsLower(symbol.Name[0]) && symbol.Locations.Any())
                 {
                     foreach (var location in context.Symbol.Locations)
                     {

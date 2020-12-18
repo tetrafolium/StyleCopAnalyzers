@@ -15,9 +15,14 @@ namespace StyleCop.Analyzers.Lightup
 
         static INamedTypeSymbolExtensions()
         {
-            TupleUnderlyingTypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol, INamedTypeSymbol>(typeof(INamedTypeSymbol), nameof(TupleUnderlyingType));
-            TupleElementsAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol, ImmutableArray<IFieldSymbol>>(typeof(INamedTypeSymbol), nameof(TupleElements));
-            IsSerializableAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol, bool>(typeof(INamedTypeSymbol), nameof(IsSerializable));
+            TupleUnderlyingTypeAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol, INamedTypeSymbol>(
+                    typeof(INamedTypeSymbol), nameof(TupleUnderlyingType));
+            TupleElementsAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol, ImmutableArray<IFieldSymbol>>(
+                    typeof(INamedTypeSymbol), nameof(TupleElements));
+            IsSerializableAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<INamedTypeSymbol, bool>(
+                typeof(INamedTypeSymbol), nameof(IsSerializable));
         }
 
         public static INamedTypeSymbol TupleUnderlyingType(this INamedTypeSymbol symbol)

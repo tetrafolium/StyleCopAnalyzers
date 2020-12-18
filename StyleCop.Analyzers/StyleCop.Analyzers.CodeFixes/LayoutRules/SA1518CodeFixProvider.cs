@@ -22,8 +22,11 @@ namespace StyleCop.Analyzers.LayoutRules
     internal class SA1518CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1518UseLineEndingsCorrectlyAtEndOfFile.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1518UseLineEndingsCorrectlyAtEndOfFile.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -34,14 +37,16 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            var settings = SettingsHelper.GetStyleCopSettings(context.Document.Project.AnalyzerOptions, context.CancellationToken);
+            var settings =
+                SettingsHelper.GetStyleCopSettings(context.Document.Project.AnalyzerOptions, context.CancellationToken);
             foreach (var diagnostic in context.Diagnostics)
             {
                 context.RegisterCodeFix(
-                    CodeAction.Create(
-                        LayoutResources.SA1518CodeFix,
-                        cancellationToken => FixEndOfFileAsync(context.Document, diagnostic, settings.LayoutRules.NewlineAtEndOfFile, cancellationToken),
-                        nameof(SA1518CodeFixProvider)),
+                    CodeAction.Create(LayoutResources.SA1518CodeFix,
+                                      cancellationToken =>
+                                          FixEndOfFileAsync(context.Document, diagnostic,
+                                                            settings.LayoutRules.NewlineAtEndOfFile, cancellationToken),
+                                      nameof(SA1518CodeFixProvider)),
                     diagnostic);
             }
 
@@ -53,10 +58,12 @@ namespace StyleCop.Analyzers.LayoutRules
         /// </summary>
         /// <param name="document">The document to be changed.</param>
         /// <param name="diagnostic">The diagnostic to fix.</param>
-        /// <param name="newlineAtEndOfFile">A <see cref="OptionSetting"/> value indicating the desired behavior.</param>
-        /// <param name="cancellationToken">The cancellation token associated with the fix action.</param>
-        /// <returns>The transformed document.</returns>
-        private static async Task<Document> FixEndOfFileAsync(Document document, Diagnostic diagnostic, OptionSetting newlineAtEndOfFile, CancellationToken cancellationToken)
+        /// <param name="newlineAtEndOfFile">A <see cref="OptionSetting"/> value indicating the desired
+        /// behavior.</param> <param name="cancellationToken">The cancellation token associated with the fix
+        /// action.</param> <returns>The transformed document.</returns>
+        private static async Task<Document> FixEndOfFileAsync(Document document, Diagnostic diagnostic,
+                                                              OptionSetting newlineAtEndOfFile,
+                                                              CancellationToken cancellationToken)
         {
             var text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
             string replacement = newlineAtEndOfFile == OptionSetting.Omit ? string.Empty : "\r\n";
@@ -65,21 +72,29 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1518CodeFix;
+            protected override string CodeActionTitle => LayoutResources.SA1518CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
                     return null;
                 }
 
-                var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, fixAllContext.CancellationToken);
-                Document updatedDocument = await FixEndOfFileAsync(document, diagnostics[0], settings.LayoutRules.NewlineAtEndOfFile, fixAllContext.CancellationToken).ConfigureAwait(false);
+                var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions,
+                                                                  fixAllContext.CancellationToken);
+                Document updatedDocument =
+                    await FixEndOfFileAsync(document, diagnostics[0], settings.LayoutRules.NewlineAtEndOfFile,
+                                            fixAllContext.CancellationToken)
+                        .ConfigureAwait(false);
                 return await updatedDocument.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
             }
         }

@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IIsNullOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IIsNullOperationWrapper));
-            OperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
+            OperandAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
         }
 
         private IIsNullOperationWrapper(IOperation operation)

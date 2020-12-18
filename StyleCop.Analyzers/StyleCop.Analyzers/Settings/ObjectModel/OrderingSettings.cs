@@ -9,12 +9,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
     internal class OrderingSettings
     {
         private static readonly ImmutableArray<OrderingTrait> DefaultElementOrder =
-            ImmutableArray.Create(
-                OrderingTrait.Kind,
-                OrderingTrait.Accessibility,
-                OrderingTrait.Constant,
-                OrderingTrait.Static,
-                OrderingTrait.Readonly);
+            ImmutableArray.Create(OrderingTrait.Kind, OrderingTrait.Accessibility, OrderingTrait.Constant,
+                                  OrderingTrait.Static, OrderingTrait.Readonly);
 
         /// <summary>
         /// This is the backing field for the <see cref="ElementOrder"/> property.
@@ -51,8 +47,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         /// Initializes a new instance of the <see cref="OrderingSettings"/> class.
         /// </summary>
         /// <param name="orderingSettingsObject">The JSON object containing the settings.</param>
-        protected internal OrderingSettings(JsonObject orderingSettingsObject)
-            : this()
+        protected internal OrderingSettings(JsonObject orderingSettingsObject) : this()
         {
             foreach (var kvp in orderingSettingsObject)
             {
@@ -93,13 +88,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public bool SystemUsingDirectivesFirst =>
-            this.systemUsingDirectivesFirst;
+        public bool SystemUsingDirectivesFirst => this.systemUsingDirectivesFirst;
 
-        public UsingDirectivesPlacement UsingDirectivesPlacement =>
-            this.usingDirectivesPlacement;
+        public UsingDirectivesPlacement UsingDirectivesPlacement => this.usingDirectivesPlacement;
 
-        public OptionSetting BlankLinesBetweenUsingGroups =>
-            this.blankLinesBetweenUsingGroups;
+        public OptionSetting BlankLinesBetweenUsingGroups => this.blankLinesBetweenUsingGroups;
     }
 }

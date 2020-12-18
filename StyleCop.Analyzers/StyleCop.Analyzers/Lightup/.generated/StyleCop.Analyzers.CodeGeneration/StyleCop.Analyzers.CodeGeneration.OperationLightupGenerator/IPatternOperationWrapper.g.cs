@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IPatternOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IPatternOperationWrapper));
-            InputTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(InputType));
-            NarrowedTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(NarrowedType));
+            InputTypeAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(InputType));
+            NarrowedTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                WrappedType, nameof(NarrowedType));
         }
 
         private IPatternOperationWrapper(IOperation operation)

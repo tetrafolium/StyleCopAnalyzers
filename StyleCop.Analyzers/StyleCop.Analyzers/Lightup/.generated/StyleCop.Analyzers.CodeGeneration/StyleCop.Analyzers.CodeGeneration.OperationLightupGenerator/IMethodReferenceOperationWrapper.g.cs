@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IMethodReferenceOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IMethodReferenceOperationWrapper));
-            MethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(Method));
-            IsVirtualAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsVirtual));
+            MethodAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(Method));
+            IsVirtualAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsVirtual));
         }
 
         private IMethodReferenceOperationWrapper(IOperation operation)
@@ -30,10 +32,12 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IMethodSymbol Method => MethodAccessor(this.WrappedOperation);
         public bool IsVirtual => IsVirtualAccessor(this.WrappedOperation);
-        public IOperation Instance => ((IMemberReferenceOperationWrapper)this).Instance;
-        public ISymbol Member => ((IMemberReferenceOperationWrapper)this).Member;
-        public static explicit operator IMethodReferenceOperationWrapper(IMemberReferenceOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IMemberReferenceOperationWrapper(IMethodReferenceOperationWrapper wrapper) => IMemberReferenceOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public IOperation Instance =>((IMemberReferenceOperationWrapper) this).Instance;
+        public ISymbol Member =>((IMemberReferenceOperationWrapper) this).Member;
+        public static explicit operator IMethodReferenceOperationWrapper(IMemberReferenceOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IMemberReferenceOperationWrapper(IMethodReferenceOperationWrapper wrapper) =>
+            IMemberReferenceOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IMethodReferenceOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

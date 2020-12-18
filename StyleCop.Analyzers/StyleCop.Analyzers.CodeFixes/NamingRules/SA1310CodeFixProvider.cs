@@ -25,8 +25,11 @@ namespace StyleCop.Analyzers.NamingRules
     internal class SA1310CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-          ImmutableArray.Create(SA1310FieldNamesMustNotContainUnderscore.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1310FieldNamesMustNotContainUnderscore.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -48,10 +51,10 @@ namespace StyleCop.Analyzers.NamingRules
                 if (proposedName != currentName)
                 {
                     context.RegisterCodeFix(
-                        CodeAction.Create(
-                            string.Format(NamingResources.RenameToCodeFix, proposedName),
-                            cancellationToken => RenameHelper.RenameSymbolAsync(document, root, token, proposedName, cancellationToken),
-                            nameof(SA1310CodeFixProvider)),
+                        CodeAction.Create(string.Format(NamingResources.RenameToCodeFix, proposedName),
+                                          cancellationToken => RenameHelper.RenameSymbolAsync(
+                                              document, root, token, proposedName, cancellationToken),
+                                          nameof(SA1310CodeFixProvider)),
                         diagnostic);
                 }
             }

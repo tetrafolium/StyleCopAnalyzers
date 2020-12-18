@@ -66,38 +66,35 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <see cref="SA1514ElementDocumentationHeaderMustBePrecededByBlankLine"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1514";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1514.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1514Title), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1514MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1514Description), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1514.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1514Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(LayoutResources.SA1514MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(LayoutResources.SA1514Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds =
-            ImmutableArray.Create(
-                SyntaxKind.ClassDeclaration,
-                SyntaxKind.StructDeclaration,
-                SyntaxKind.InterfaceDeclaration,
-                SyntaxKind.EnumDeclaration,
-                SyntaxKind.EnumMemberDeclaration,
-                SyntaxKind.MethodDeclaration,
-                SyntaxKind.ConstructorDeclaration,
-                SyntaxKind.DestructorDeclaration,
-                SyntaxKind.PropertyDeclaration,
-                SyntaxKind.IndexerDeclaration,
-                SyntaxKind.FieldDeclaration,
-                SyntaxKind.DelegateDeclaration,
-                SyntaxKind.EventDeclaration,
-                SyntaxKind.EventFieldDeclaration,
-                SyntaxKind.OperatorDeclaration,
-                SyntaxKind.ConversionOperatorDeclaration);
+        private static readonly ImmutableArray<SyntaxKind> HandledSyntaxKinds = ImmutableArray.Create(
+            SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration,
+            SyntaxKind.EnumDeclaration, SyntaxKind.EnumMemberDeclaration, SyntaxKind.MethodDeclaration,
+            SyntaxKind.ConstructorDeclaration, SyntaxKind.DestructorDeclaration, SyntaxKind.PropertyDeclaration,
+            SyntaxKind.IndexerDeclaration, SyntaxKind.FieldDeclaration, SyntaxKind.DelegateDeclaration,
+            SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.OperatorDeclaration,
+            SyntaxKind.ConversionOperatorDeclaration);
 
         private static readonly Action<SyntaxNodeAnalysisContext> DeclarationAction = HandleDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -111,7 +108,8 @@ namespace StyleCop.Analyzers.LayoutRules
         private static void HandleDeclaration(SyntaxNodeAnalysisContext context)
         {
             var nodeTriviaList = context.Node.GetLeadingTrivia();
-            var documentationHeaderIndex = context.Node.GetLeadingTrivia().IndexOf(SyntaxKind.SingleLineDocumentationCommentTrivia);
+            var documentationHeaderIndex =
+                context.Node.GetLeadingTrivia().IndexOf(SyntaxKind.SingleLineDocumentationCommentTrivia);
 
             if (documentationHeaderIndex == -1)
             {
@@ -126,10 +124,9 @@ namespace StyleCop.Analyzers.LayoutRules
             for (var i = documentationHeaderIndex - 1; !done && (i >= 0); i--)
             {
                 var trivia = triviaList[i];
-                if (trivia.IsDirective
-                    && !trivia.IsKind(SyntaxKind.EndIfDirectiveTrivia)
-                    && !trivia.IsKind(SyntaxKind.RegionDirectiveTrivia)
-                    && !trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
+                if (trivia.IsDirective && !trivia.IsKind(SyntaxKind.EndIfDirectiveTrivia) &&
+                    !trivia.IsKind(SyntaxKind.RegionDirectiveTrivia) &&
+                    !trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
                 {
                     return;
                 }
@@ -175,8 +172,9 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static Location GetDiagnosticLocation(SyntaxTrivia documentationHeader)
         {
-            var documentationHeaderStructure = (DocumentationCommentTriviaSyntax)documentationHeader.GetStructure();
-            return Location.Create(documentationHeaderStructure.SyntaxTree, documentationHeaderStructure.GetLeadingTrivia().Span);
+            var documentationHeaderStructure = (DocumentationCommentTriviaSyntax) documentationHeader.GetStructure();
+            return Location.Create(documentationHeaderStructure.SyntaxTree,
+                                   documentationHeaderStructure.GetLeadingTrivia().Span);
         }
     }
 }

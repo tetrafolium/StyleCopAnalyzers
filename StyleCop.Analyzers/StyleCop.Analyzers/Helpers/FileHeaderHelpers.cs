@@ -23,7 +23,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The copyright string, as parsed from the file header.</returns>
         internal static FileHeader ParseFileHeader(SyntaxNode root)
         {
-            var firstToken = root.GetFirstToken(includeZeroWidth: true);
+            var firstToken = root.GetFirstToken(includeZeroWidth : true);
             var firstNonWhitespaceTrivia = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(firstToken.LeadingTrivia, true);
 
             if (firstNonWhitespaceTrivia == -1)
@@ -66,7 +66,8 @@ namespace StyleCop.Analyzers.Helpers
                         var endIndex = triviaString.LastIndexOf("*/", StringComparison.Ordinal);
                         if (endIndex == -1)
                         {
-                            // While editing, it is possible to have a multiline comment trivia that does not contain the closing '*/' yet.
+                            // While editing, it is possible to have a multiline comment trivia that does not contain
+                            // the closing '*/' yet.
                             return FileHeader.MissingFileHeader;
                         }
 
@@ -119,7 +120,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The parsed file header.</returns>
         internal static XmlFileHeader ParseXmlFileHeader(SyntaxNode root)
         {
-            var firstToken = root.GetFirstToken(includeZeroWidth: true);
+            var firstToken = root.GetFirstToken(includeZeroWidth : true);
             string xmlString;
             int fileHeaderStart;
             int fileHeaderEnd;
@@ -130,14 +131,18 @@ namespace StyleCop.Analyzers.Helpers
                 return XmlFileHeader.MissingFileHeader;
             }
 
-            switch (firstToken.LeadingTrivia[firstNonWhitespaceTrivia].Kind())
+            switch (firstToken
+                        .LeadingTrivia [firstNonWhitespaceTrivia]
+                        .Kind())
             {
             case SyntaxKind.SingleLineCommentTrivia:
-                xmlString = ProcessSingleLineCommentsHeader(firstToken.LeadingTrivia, firstNonWhitespaceTrivia, out fileHeaderStart, out fileHeaderEnd);
+                xmlString = ProcessSingleLineCommentsHeader(firstToken.LeadingTrivia, firstNonWhitespaceTrivia,
+                                                            out fileHeaderStart, out fileHeaderEnd);
                 break;
 
             case SyntaxKind.MultiLineCommentTrivia:
-                xmlString = ProcessMultiLineCommentsHeader(firstToken.LeadingTrivia[firstNonWhitespaceTrivia], out fileHeaderStart, out fileHeaderEnd);
+                xmlString = ProcessMultiLineCommentsHeader(firstToken.LeadingTrivia[firstNonWhitespaceTrivia],
+                                                           out fileHeaderStart, out fileHeaderEnd);
                 break;
 
             default:
@@ -167,7 +172,8 @@ namespace StyleCop.Analyzers.Helpers
             }
         }
 
-        private static string ProcessSingleLineCommentsHeader(SyntaxTriviaList triviaList, int startIndex, out int fileHeaderStart, out int fileHeaderEnd)
+        private static string ProcessSingleLineCommentsHeader(SyntaxTriviaList triviaList, int startIndex,
+                                                              out int fileHeaderStart, out int fileHeaderEnd)
         {
             var sb = StringBuilderPool.Allocate();
             var endOfLineCount = 0;
@@ -222,7 +228,8 @@ namespace StyleCop.Analyzers.Helpers
             return StringBuilderPool.ReturnAndFree(sb);
         }
 
-        private static string ProcessMultiLineCommentsHeader(SyntaxTrivia multiLineComment, out int fileHeaderStart, out int fileHeaderEnd)
+        private static string ProcessMultiLineCommentsHeader(SyntaxTrivia multiLineComment, out int fileHeaderStart,
+                                                             out int fileHeaderEnd)
         {
             var sb = StringBuilderPool.Allocate();
 

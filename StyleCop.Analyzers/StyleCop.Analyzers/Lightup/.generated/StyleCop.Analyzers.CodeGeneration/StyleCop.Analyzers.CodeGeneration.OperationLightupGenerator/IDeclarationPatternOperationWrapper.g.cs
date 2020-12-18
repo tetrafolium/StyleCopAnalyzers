@@ -18,9 +18,12 @@ namespace StyleCop.Analyzers.Lightup
         static IDeclarationPatternOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IDeclarationPatternOperationWrapper));
-            MatchedTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(MatchedType));
-            MatchesNullAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(MatchesNull));
-            DeclaredSymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(WrappedType, nameof(DeclaredSymbol));
+            MatchedTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                WrappedType, nameof(MatchedType));
+            MatchesNullAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(MatchesNull));
+            DeclaredSymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
+                WrappedType, nameof(DeclaredSymbol));
         }
 
         private IDeclarationPatternOperationWrapper(IOperation operation)
@@ -33,10 +36,12 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol MatchedType => MatchedTypeAccessor(this.WrappedOperation);
         public bool MatchesNull => MatchesNullAccessor(this.WrappedOperation);
         public ISymbol DeclaredSymbol => DeclaredSymbolAccessor(this.WrappedOperation);
-        public ITypeSymbol InputType => ((IPatternOperationWrapper)this).InputType;
-        public ITypeSymbol NarrowedType => ((IPatternOperationWrapper)this).NarrowedType;
-        public static explicit operator IDeclarationPatternOperationWrapper(IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IPatternOperationWrapper(IDeclarationPatternOperationWrapper wrapper) => IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
+        public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
+        public static explicit operator IDeclarationPatternOperationWrapper(IPatternOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IPatternOperationWrapper(IDeclarationPatternOperationWrapper wrapper) =>
+            IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IDeclarationPatternOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

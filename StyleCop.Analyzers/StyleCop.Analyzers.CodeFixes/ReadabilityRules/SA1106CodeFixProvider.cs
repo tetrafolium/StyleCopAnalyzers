@@ -23,8 +23,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1106CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; }
-            = ImmutableArray.Create(SA1106CodeMustNotContainEmptyStatements.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1106CodeMustNotContainEmptyStatements.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,18 +40,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1106CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1106CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1106CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1106CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
@@ -58,10 +61,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return await RemoveSemicolonTextAsync(document, token, cancellationToken).ConfigureAwait(false);
             }
 
-            return await RemoveEmptyStatementAsync(document, root, (EmptyStatementSyntax)token.Parent, cancellationToken).ConfigureAwait(false);
+            return await RemoveEmptyStatementAsync(document, root, (EmptyStatementSyntax) token.Parent,
+                                                   cancellationToken)
+                .ConfigureAwait(false);
         }
 
-        private static async Task<Document> RemoveEmptyStatementAsync(Document document, SyntaxNode root, EmptyStatementSyntax node, CancellationToken cancellationToken)
+        private static async Task<Document> RemoveEmptyStatementAsync(Document document, SyntaxNode root,
+                                                                      EmptyStatementSyntax node,
+                                                                      CancellationToken cancellationToken)
         {
             SyntaxNode newRoot;
 
@@ -70,7 +77,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             case SyntaxKind.Block:
             case SyntaxKind.SwitchSection:
                 // empty statements in a block or switch section can be removed
-                return await RemoveSemicolonTextAsync(document, node.SemicolonToken, cancellationToken).ConfigureAwait(false);
+                return await RemoveSemicolonTextAsync(document, node.SemicolonToken, cancellationToken)
+                    .ConfigureAwait(false);
 
             case SyntaxKind.IfStatement:
             case SyntaxKind.ElseClause:
@@ -83,14 +91,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             case SyntaxKind.LabeledStatement:
                 // handle this case as a text manipulation for simplicity
-                return await RemoveSemicolonTextAsync(document, node.SemicolonToken, cancellationToken).ConfigureAwait(false);
+                return await RemoveSemicolonTextAsync(document, node.SemicolonToken, cancellationToken)
+                    .ConfigureAwait(false);
 
             default:
                 return document;
             }
         }
 
-        private static async Task<Document> RemoveSemicolonTextAsync(Document document, SyntaxToken token, CancellationToken cancellationToken)
+        private static async Task<Document> RemoveSemicolonTextAsync(Document document, SyntaxToken token,
+                                                                     CancellationToken cancellationToken)
         {
             TextChange textChange;
 
@@ -115,7 +125,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 whitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(previousToken.TrailingTrivia);
                 if (whitespaceIndex >= 0)
                 {
-                    spanToRemove = TextSpan.FromBounds(previousToken.TrailingTrivia[whitespaceIndex].Span.Start, token.Span.End);
+                    spanToRemove =
+                        TextSpan.FromBounds(previousToken.TrailingTrivia[whitespaceIndex].Span.Start, token.Span.End);
                 }
                 else
                 {

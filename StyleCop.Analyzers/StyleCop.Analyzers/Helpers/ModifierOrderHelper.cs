@@ -11,15 +11,15 @@ namespace StyleCop.Analyzers.OrderingRules
         /// <summary>
         /// Represents modifier type for implementing SA1206 rule.
         /// </summary>
-        internal enum ModifierType
-        {
+        internal enum ModifierType {
             /// <summary>
             /// Represents default value.
             /// </summary>
             None,
 
             /// <summary>
-            /// Represents any of access modifiers, i.e <see langword="public"/>, <see langword="protected"/>, <see langword="internal"/>, <see langword="private"/>.
+            /// Represents any of access modifiers, i.e <see langword="public"/>, <see langword="protected"/>, <see
+            /// langword="internal"/>, <see langword="private"/>.
             /// </summary>
             Access,
 
@@ -29,7 +29,10 @@ namespace StyleCop.Analyzers.OrderingRules
             Static,
 
             /// <summary>
-            /// Represents other modifiers, i.e <see langword="partial"/>, <see langword="virtual"/>, <see langword="abstract"/>, <see langword="override"/>, <see langword="extern"/>, <see langword="unsafe"/>, <see langword="new"/>, <see langword="async"/>, <see langword="const"/>, <see langword="sealed"/>, <see langword="readonly"/>, <see langword="volatile"/>, <see langword="fixed"/>, <see langword="ref"/>.
+            /// Represents other modifiers, i.e <see langword="partial"/>, <see langword="virtual"/>, <see
+            /// langword="abstract"/>, <see langword="override"/>, <see langword="extern"/>, <see langword="unsafe"/>,
+            /// <see langword="new"/>, <see langword="async"/>, <see langword="const"/>, <see langword="sealed"/>, <see
+            /// langword="readonly"/>, <see langword="volatile"/>, <see langword="fixed"/>, <see langword="ref"/>.
             /// </summary>
             Other,
         }

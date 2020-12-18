@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static ILockOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ILockOperationWrapper));
-            LockedValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(LockedValue));
-            BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
+            LockedValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(LockedValue));
+            BodyAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
         }
 
         private ILockOperationWrapper(IOperation operation)

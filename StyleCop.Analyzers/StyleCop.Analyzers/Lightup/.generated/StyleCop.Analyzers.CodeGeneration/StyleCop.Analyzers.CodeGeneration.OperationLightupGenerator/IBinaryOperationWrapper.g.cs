@@ -21,12 +21,18 @@ namespace StyleCop.Analyzers.Lightup
         static IBinaryOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IBinaryOperationWrapper));
-            LeftOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(LeftOperand));
-            RightOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(RightOperand));
-            IsLiftedAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsLifted));
-            IsCheckedAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsChecked));
-            IsCompareTextAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsCompareText));
-            OperatorMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(OperatorMethod));
+            LeftOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(LeftOperand));
+            RightOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(RightOperand));
+            IsLiftedAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsLifted));
+            IsCheckedAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsChecked));
+            IsCompareTextAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsCompareText));
+            OperatorMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                WrappedType, nameof(OperatorMethod));
         }
 
         private IBinaryOperationWrapper(IOperation operation)
@@ -36,7 +42,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object OperatorKind => throw new NotImplementedException("Property 'IBinaryOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
+        public object OperatorKind => throw new NotImplementedException(
+            "Property 'IBinaryOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
         public IOperation LeftOperand => LeftOperandAccessor(this.WrappedOperation);
         public IOperation RightOperand => RightOperandAccessor(this.WrappedOperation);
         public bool IsLifted => IsLiftedAccessor(this.WrappedOperation);

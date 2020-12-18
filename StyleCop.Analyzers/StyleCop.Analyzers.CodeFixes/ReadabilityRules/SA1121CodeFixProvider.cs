@@ -27,8 +27,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1121CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1121UseBuiltInTypeAlias.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1121UseBuiltInTypeAlias.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,18 +44,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1121CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1121CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1121CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1121CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static SyntaxNode ComputeReplacement(SemanticModel semanticModel, SyntaxNode node, CancellationToken cancellationToken)
+        private static SyntaxNode ComputeReplacement(SemanticModel semanticModel, SyntaxNode node,
+                                                     CancellationToken cancellationToken)
         {
             if (node.Parent is MemberAccessExpressionSyntax memberAccess)
             {
@@ -83,7 +86,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return newNode.WithTriviaFrom(node).WithoutFormatting();
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
@@ -92,7 +96,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return document;
             }
 
-            var node = root.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+            var node = root.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                     : true, getInnermostNodeForTie
+                                     : true);
 
             var newNode = ComputeReplacement(semanticModel, node, cancellationToken);
 
@@ -102,13 +108,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; }
-                = new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle
-                => ReadabilityResources.SA1121CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1121CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
@@ -116,17 +126,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 }
 
                 var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
-                var semanticModel = await document.GetSemanticModelAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
+                var semanticModel =
+                    await document.GetSemanticModelAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
 
                 List<SyntaxNode> nodesToReplace = new List<SyntaxNode>(diagnostics.Length);
                 foreach (var diagnostic in diagnostics)
                 {
-                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                                   : true, getInnermostNodeForTie
+                                                   : true);
 
                     nodesToReplace.Add(node);
                 }
 
-                return syntaxRoot.ReplaceNodes(nodesToReplace, (originalNode, rewrittenNode) => ComputeReplacement(semanticModel, originalNode, fixAllContext.CancellationToken));
+                return syntaxRoot.ReplaceNodes(nodesToReplace, (originalNode, rewrittenNode) =>
+                                                                   ComputeReplacement(semanticModel, originalNode,
+                                                                                      fixAllContext.CancellationToken));
             }
         }
     }

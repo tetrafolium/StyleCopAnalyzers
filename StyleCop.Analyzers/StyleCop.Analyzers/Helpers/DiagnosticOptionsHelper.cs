@@ -18,10 +18,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Determines if the diagnostic identified by the given identifier is currently suppressed.
         /// </summary>
-        /// <param name="context">The context that will be used to determine if the diagnostic is currently suppressed.</param>
-        /// <param name="descriptor">The diagnostic descriptor to check.</param>
-        /// <returns>True if the diagnostic is currently suppressed.</returns>
-        internal static bool IsAnalyzerSuppressed(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor)
+        /// <param name="context">The context that will be used to determine if the diagnostic is currently
+        /// suppressed.</param> <param name="descriptor">The diagnostic descriptor to check.</param> <returns>True if
+        /// the diagnostic is currently suppressed.</returns>
+        internal static bool IsAnalyzerSuppressed(this SyntaxNodeAnalysisContext context,
+                                                  DiagnosticDescriptor descriptor)
         {
             return context.SemanticModel.Compilation.IsAnalyzerSuppressed(descriptor);
         }
@@ -29,10 +30,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Determines if the diagnostic identified by the given identifier is currently suppressed.
         /// </summary>
-        /// <param name="context">The context that will be used to determine if the diagnostic is currently suppressed.</param>
-        /// <param name="descriptor">The diagnostic descriptor to check.</param>
-        /// <returns>True if the diagnostic is currently suppressed.</returns>
-        internal static bool IsAnalyzerSuppressed(this CompilationStartAnalysisContext context, DiagnosticDescriptor descriptor)
+        /// <param name="context">The context that will be used to determine if the diagnostic is currently
+        /// suppressed.</param> <param name="descriptor">The diagnostic descriptor to check.</param> <returns>True if
+        /// the diagnostic is currently suppressed.</returns>
+        internal static bool IsAnalyzerSuppressed(this CompilationStartAnalysisContext context,
+                                                  DiagnosticDescriptor descriptor)
         {
             return context.Compilation.IsAnalyzerSuppressed(descriptor);
         }
@@ -40,9 +42,9 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Determines if the diagnostic identified by the given identifier is currently suppressed.
         /// </summary>
-        /// <param name="compilation">The compilation that will be used to determine if the diagnostic is currently suppressed.</param>
-        /// <param name="descriptor">The diagnostic descriptor to check.</param>
-        /// <returns>True if the diagnostic is currently suppressed.</returns>
+        /// <param name="compilation">The compilation that will be used to determine if the diagnostic is currently
+        /// suppressed.</param> <param name="descriptor">The diagnostic descriptor to check.</param> <returns>True if
+        /// the diagnostic is currently suppressed.</returns>
         internal static bool IsAnalyzerSuppressed(this Compilation compilation, DiagnosticDescriptor descriptor)
         {
             return compilation.Options.IsAnalyzerSuppressed(descriptor);
@@ -51,10 +53,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <summary>
         /// Determines if the diagnostic identified by the given identifier is currently suppressed.
         /// </summary>
-        /// <param name="compilationOptions">The compilation options that will be used to determine if the diagnostic is currently suppressed.</param>
-        /// <param name="descriptor">The diagnostic descriptor to check.</param>
+        /// <param name="compilationOptions">The compilation options that will be used to determine if the diagnostic is
+        /// currently suppressed.</param> <param name="descriptor">The diagnostic descriptor to check.</param>
         /// <returns>True if the diagnostic is currently suppressed.</returns>
-        internal static bool IsAnalyzerSuppressed(this CompilationOptions compilationOptions, DiagnosticDescriptor descriptor)
+        internal static bool IsAnalyzerSuppressed(this CompilationOptions compilationOptions,
+                                                  DiagnosticDescriptor descriptor)
         {
             switch (descriptor.GetEffectiveSeverity(compilationOptions))
             {

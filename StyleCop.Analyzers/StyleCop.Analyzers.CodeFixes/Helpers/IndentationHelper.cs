@@ -58,7 +58,8 @@ namespace StyleCop.Analyzers.Helpers
         {
             // If the token does not belong to a syntax tree, it is a modified token and it is assumed that
             // the caller makes sure that the token is the first token on a line.
-            return token.SyntaxTree != null
+            return token.SyntaxTree !=
+                   null
                 ? GetIndentationSteps(indentationSettings, token.SyntaxTree, token.LeadingTrivia)
                 : GetIndentationStepsUnchecked(indentationSettings, token.LeadingTrivia);
         }
@@ -93,17 +94,20 @@ namespace StyleCop.Analyzers.Helpers
         /// <param name="indentationSettings">The indentation settings to use.</param>
         /// <param name="indentationSteps">The amount of indentation steps.</param>
         /// <returns>A <see cref="SyntaxTrivia"/> containing the indentation whitespace.</returns>
-        public static SyntaxTrivia GenerateWhitespaceTrivia(IndentationSettings indentationSettings, int indentationSteps)
+        public static SyntaxTrivia GenerateWhitespaceTrivia(IndentationSettings indentationSettings,
+                                                            int indentationSteps)
         {
             return SyntaxFactory.Whitespace(GenerateIndentationString(indentationSettings, indentationSteps));
         }
 
-        private static int GetIndentationSteps(IndentationSettings indentationSettings, SyntaxTree syntaxTree, SyntaxTriviaList leadingTrivia)
+        private static int GetIndentationSteps(IndentationSettings indentationSettings, SyntaxTree syntaxTree,
+                                               SyntaxTriviaList leadingTrivia)
         {
             var triviaSpan = syntaxTree.GetLineSpan(leadingTrivia.FullSpan);
 
             // There is no indentation when the leading trivia doesn't begin at the start of the line.
-            if ((triviaSpan.StartLinePosition == triviaSpan.EndLinePosition) && (triviaSpan.StartLinePosition.Character > 0))
+            if ((triviaSpan.StartLinePosition == triviaSpan.EndLinePosition) &&
+                (triviaSpan.StartLinePosition.Character > 0))
             {
                 return 0;
             }
@@ -111,7 +115,8 @@ namespace StyleCop.Analyzers.Helpers
             return GetIndentationStepsUnchecked(indentationSettings, leadingTrivia);
         }
 
-        private static int GetIndentationStepsUnchecked(IndentationSettings indentationSettings, SyntaxTriviaList leadingTrivia)
+        private static int GetIndentationStepsUnchecked(IndentationSettings indentationSettings,
+                                                        SyntaxTriviaList leadingTrivia)
         {
             var builder = StringBuilderPool.Allocate();
 

@@ -19,10 +19,14 @@ namespace StyleCop.Analyzers.Lightup
         static ILoopOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ILoopOperationWrapper));
-            BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
-            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
-            ContinueLabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(ContinueLabel));
-            ExitLabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(ExitLabel));
+            BodyAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
+            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                WrappedType, nameof(Locals));
+            ContinueLabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
+                WrappedType, nameof(ContinueLabel));
+            ExitLabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
+                WrappedType, nameof(ExitLabel));
         }
 
         private ILoopOperationWrapper(IOperation operation)
@@ -32,7 +36,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object LoopKind => throw new NotImplementedException("Property 'ILoopOperation.LoopKind' has unsupported type 'LoopKind'");
+        public object LoopKind =>
+            throw new NotImplementedException("Property 'ILoopOperation.LoopKind' has unsupported type 'LoopKind'");
         public IOperation Body => BodyAccessor(this.WrappedOperation);
         public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor(this.WrappedOperation);
         public ILabelSymbol ContinueLabel => ContinueLabelAccessor(this.WrappedOperation);

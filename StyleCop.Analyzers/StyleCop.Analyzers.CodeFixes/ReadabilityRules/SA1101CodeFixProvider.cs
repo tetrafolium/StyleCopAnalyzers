@@ -28,8 +28,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly ThisExpressionSyntax ThisExpressionSyntax = SyntaxFactory.ThisExpression();
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1101PrefixLocalCallsWithThis.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1101PrefixLocalCallsWithThis.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -44,26 +47,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             foreach (var diagnostic in context.Diagnostics)
             {
-                if (!(root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is SimpleNameSyntax node))
+                if (!(root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                    : true) is SimpleNameSyntax node))
                 {
                     return;
                 }
 
                 context.RegisterCodeFix(
-                    CodeAction.Create(
-                        ReadabilityResources.SA1101CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, root, node),
-                        nameof(SA1101CodeFixProvider)),
+                    CodeAction.Create(ReadabilityResources.SA1101CodeFix,
+                                      cancellationToken => GetTransformedDocumentAsync(context.Document, root, node),
+                                      nameof(SA1101CodeFixProvider)),
                     diagnostic);
             }
         }
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, SimpleNameSyntax node)
+        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root,
+                                                                  SimpleNameSyntax node)
         {
             var qualifiedExpression =
-                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ThisExpressionSyntax, node.WithoutTrivia().WithoutFormatting())
-                .WithTriviaFrom(node)
-                .WithoutFormatting();
+                SyntaxFactory
+                    .MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ThisExpressionSyntax,
+                                            node.WithoutTrivia().WithoutFormatting())
+                    .WithTriviaFrom(node)
+                    .WithoutFormatting();
 
             var newSyntaxRoot = root.ReplaceNode(node, qualifiedExpression);
 
@@ -72,13 +78,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                   new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                ReadabilityResources.SA1101CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1101CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
@@ -90,7 +100,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 foreach (Diagnostic diagnostic in diagnostics)
                 {
-                    if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is SimpleNameSyntax node) || node.IsMissing)
+                    if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is SimpleNameSyntax node) ||
+                        node.IsMissing)
                     {
                         continue;
                     }
@@ -98,10 +109,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     nodesNeedingQualification.Add(node);
                 }
 
-                return syntaxRoot.ReplaceNodes(nodesNeedingQualification, (originalNode, rewrittenNode) =>
-                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ThisExpressionSyntax, (SimpleNameSyntax)rewrittenNode.WithoutTrivia().WithoutFormatting())
-                .WithTriviaFrom(rewrittenNode)
-                .WithoutFormatting());
+                return syntaxRoot.ReplaceNodes(
+                    nodesNeedingQualification,
+                    (originalNode, rewrittenNode) =>
+                        SyntaxFactory
+                            .MemberAccessExpression(
+                                SyntaxKind.SimpleMemberAccessExpression, ThisExpressionSyntax,
+                                (SimpleNameSyntax) rewrittenNode.WithoutTrivia().WithoutFormatting())
+                            .WithTriviaFrom(rewrittenNode)
+                            .WithoutFormatting());
             }
         }
     }

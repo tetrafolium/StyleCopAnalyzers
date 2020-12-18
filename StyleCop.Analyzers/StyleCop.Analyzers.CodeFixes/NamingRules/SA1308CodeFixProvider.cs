@@ -24,8 +24,11 @@ namespace StyleCop.Analyzers.NamingRules
     internal class SA1308CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1308VariableNamesMustNotBePrefixed.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1308VariableNamesMustNotBePrefixed.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -49,9 +52,9 @@ namespace StyleCop.Analyzers.NamingRules
                 // the fix is applied there are no more violations of this rule.
                 for (int i = 0; i < token.ValueText.Length; i += 2)
                 {
-                    if (string.Compare("m_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0
-                        || string.Compare("s_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0
-                        || string.Compare("t_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0)
+                    if (string.Compare("m_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0 ||
+                        string.Compare("s_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0 ||
+                        string.Compare("t_", 0, token.ValueText, i, 2, StringComparison.Ordinal) == 0)
                     {
                         numberOfCharsToRemove += 2;
                         continue;
@@ -60,19 +63,19 @@ namespace StyleCop.Analyzers.NamingRules
                     break;
                 }
 
-                // The prefix is the full variable name. In this case we cannot generate a valid variable name and thus will not offer a code fix.
+                // The prefix is the full variable name. In this case we cannot generate a valid variable name and thus
+                // will not offer a code fix.
                 if (token.ValueText.Length == numberOfCharsToRemove)
                 {
                     continue;
                 }
 
                 var newName = token.ValueText.Substring(numberOfCharsToRemove);
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        string.Format(NamingResources.RenameToCodeFix, newName),
-                        cancellationToken => RenameHelper.RenameSymbolAsync(document, root, token, newName, cancellationToken),
-                        nameof(SA1308CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(string.Format(NamingResources.RenameToCodeFix, newName),
+                                                          cancellationToken => RenameHelper.RenameSymbolAsync(
+                                                              document, root, token, newName, cancellationToken),
+                                                          nameof(SA1308CodeFixProvider)),
+                                        diagnostic);
             }
         }
     }

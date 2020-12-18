@@ -26,8 +26,11 @@ namespace StyleCop.Analyzers.SpacingRules
     internal class SA1003CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1003SymbolsMustBeSpacedCorrectly.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1003SymbolsMustBeSpacedCorrectly.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,24 +45,24 @@ namespace StyleCop.Analyzers.SpacingRules
             {
                 if (diagnostic.Properties.ContainsKey(SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction))
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            SpacingResources.SA1003CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                            nameof(SA1003CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(SpacingResources.SA1003CodeFix,
+                                                              cancellationToken => GetTransformedDocumentAsync(
+                                                                  context.Document, diagnostic, cancellationToken),
+                                                              nameof(SA1003CodeFixProvider)),
+                                            diagnostic);
                 }
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var replacements = new Dictionary<SyntaxToken, SyntaxToken>();
 
-            var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start, findInsideTrivia: true);
+            var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start, findInsideTrivia : true);
             SyntaxToken followingToken;
 
             switch (diagnostic.Properties[SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction])
@@ -74,30 +77,36 @@ namespace StyleCop.Analyzers.SpacingRules
 
             case SA1003SymbolsMustBeSpacedCorrectly.RemoveBeforeTag:
                 var precedingToken = token.GetPreviousToken();
-                replacements[precedingToken] = precedingToken.WithTrailingTrivia(precedingToken.TrailingTrivia.WithoutTrailingWhitespace());
+                replacements[precedingToken] =
+                    precedingToken.WithTrailingTrivia(precedingToken.TrailingTrivia.WithoutTrailingWhitespace());
                 replacements[token] = token.WithLeadingTrivia(token.LeadingTrivia.WithoutLeadingWhitespace());
                 break;
 
             case SA1003SymbolsMustBeSpacedCorrectly.RemoveAfterTag:
                 followingToken = token.GetNextToken();
                 replacements[token] = token.WithTrailingTrivia(token.TrailingTrivia.WithoutLeadingWhitespace());
-                replacements[followingToken] = followingToken.WithLeadingTrivia(followingToken.LeadingTrivia.WithoutLeadingWhitespace());
+                replacements[followingToken] =
+                    followingToken.WithLeadingTrivia(followingToken.LeadingTrivia.WithoutLeadingWhitespace());
                 break;
 
             case SA1003SymbolsMustBeSpacedCorrectly.RemoveEndOfLineTag:
                 followingToken = token.GetNextToken();
                 replacements[token] = token.WithTrailingTrivia(token.TrailingTrivia.WithoutTrailingWhitespace());
-                replacements[followingToken] = followingToken.WithLeadingTrivia(followingToken.LeadingTrivia.WithoutLeadingWhitespace());
+                replacements[followingToken] =
+                    followingToken.WithLeadingTrivia(followingToken.LeadingTrivia.WithoutLeadingWhitespace());
                 break;
 
             case SA1003SymbolsMustBeSpacedCorrectly.RemoveEndOfLineWithTrailingSpaceTag:
                 followingToken = token.GetNextToken();
-                replacements[token] = token.WithTrailingTrivia(token.TrailingTrivia.WithoutTrailingWhitespace().Add(SyntaxFactory.Space));
-                replacements[followingToken] = followingToken.WithLeadingTrivia(followingToken.LeadingTrivia.WithoutLeadingWhitespace());
+                replacements[token] =
+                    token.WithTrailingTrivia(token.TrailingTrivia.WithoutTrailingWhitespace().Add(SyntaxFactory.Space));
+                replacements[followingToken] =
+                    followingToken.WithLeadingTrivia(followingToken.LeadingTrivia.WithoutLeadingWhitespace());
                 break;
             }
 
-            var newSyntaxRoot = syntaxRoot.ReplaceTokens(replacements.Keys, (original, maybeRewritten) => replacements[original]);
+            var newSyntaxRoot =
+                syntaxRoot.ReplaceTokens(replacements.Keys, (original, maybeRewritten) => replacements[original]);
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
     }

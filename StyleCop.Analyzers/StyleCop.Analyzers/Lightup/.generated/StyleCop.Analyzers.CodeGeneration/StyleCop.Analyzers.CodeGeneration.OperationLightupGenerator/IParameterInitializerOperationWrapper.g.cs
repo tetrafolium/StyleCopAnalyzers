@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IParameterInitializerOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IParameterInitializerOperationWrapper));
-            ParameterAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(WrappedType, nameof(Parameter));
+            ParameterAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(
+                WrappedType, nameof(Parameter));
         }
 
         private IParameterInitializerOperationWrapper(IOperation operation)
@@ -27,10 +28,13 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IParameterSymbol Parameter => ParameterAccessor(this.WrappedOperation);
-        public ImmutableArray<ILocalSymbol> Locals => ((ISymbolInitializerOperationWrapper)this).Locals;
-        public IOperation Value => ((ISymbolInitializerOperationWrapper)this).Value;
-        public static explicit operator IParameterInitializerOperationWrapper(ISymbolInitializerOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ISymbolInitializerOperationWrapper(IParameterInitializerOperationWrapper wrapper) => ISymbolInitializerOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public ImmutableArray<ILocalSymbol> Locals =>((ISymbolInitializerOperationWrapper) this).Locals;
+        public IOperation Value =>((ISymbolInitializerOperationWrapper) this).Value;
+        public static explicit operator IParameterInitializerOperationWrapper(
+            ISymbolInitializerOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ISymbolInitializerOperationWrapper(
+            IParameterInitializerOperationWrapper wrapper) =>
+            ISymbolInitializerOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IParameterInitializerOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

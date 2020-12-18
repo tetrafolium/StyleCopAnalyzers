@@ -25,8 +25,11 @@ namespace StyleCop.Analyzers.LayoutRules
     internal class SA1504CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1504AllAccessorsMustBeSingleLineOrMultiLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1504AllAccessorsMustBeSingleLineOrMultiLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -64,7 +67,9 @@ namespace StyleCop.Analyzers.LayoutRules
                     if (accessor.Body.Statements.Count == 1)
                     {
                         // only offer single line fix when the statement is on a single line
-                        var lineSpan = accessor.Body.Statements[0].GetLineSpan();
+                        var lineSpan = accessor.Body
+                                           .Statements [0]
+                                           .GetLineSpan();
                         if (lineSpan.StartLinePosition.Line != lineSpan.EndLinePosition.Line)
                         {
                             canOfferSingleLineFix = false;
@@ -83,30 +88,30 @@ namespace StyleCop.Analyzers.LayoutRules
                 if (canOfferSingleLineFix)
                 {
                     context.RegisterCodeFix(
-                        CodeAction.Create(
-                            LayoutResources.SA1504CodeFixSingleLine,
-                            cancellationToken => GetTransformedDocumentForSingleLineAsync(context.Document, diagnostic, cancellationToken),
-                            nameof(SA1504CodeFixProvider) + "SingleLine"),
+                        CodeAction.Create(LayoutResources.SA1504CodeFixSingleLine,
+                                          cancellationToken => GetTransformedDocumentForSingleLineAsync(
+                                              context.Document, diagnostic, cancellationToken),
+                                          nameof(SA1504CodeFixProvider) + "SingleLine"),
                         diagnostic);
                 }
 
                 context.RegisterCodeFix(
-                    CodeAction.Create(
-                        LayoutResources.SA1504CodeFixMultipleLines,
-                        cancellationToken => GetTransformedDocumentForMutipleLinesAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1504CodeFixProvider) + "MultipleLines"),
+                    CodeAction.Create(LayoutResources.SA1504CodeFixMultipleLines,
+                                      cancellationToken => GetTransformedDocumentForMutipleLinesAsync(
+                                          context.Document, diagnostic, cancellationToken),
+                                      nameof(SA1504CodeFixProvider) + "MultipleLines"),
                     diagnostic);
             }
         }
 
         private static bool IsAllowedTrivia(SyntaxTrivia trivia)
         {
-            return trivia.IsKind(SyntaxKind.WhitespaceTrivia)
-                || trivia.IsKind(SyntaxKind.EndOfLineTrivia)
-                || (trivia.IsKind(SyntaxKind.MultiLineCommentTrivia) && !trivia.SpansMultipleLines());
+            return trivia.IsKind(SyntaxKind.WhitespaceTrivia) || trivia.IsKind(SyntaxKind.EndOfLineTrivia) ||
+                   (trivia.IsKind(SyntaxKind.MultiLineCommentTrivia) && !trivia.SpansMultipleLines());
         }
 
-        private static async Task<Document> GetTransformedDocumentForSingleLineAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentForSingleLineAsync(
+            Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
@@ -117,23 +122,26 @@ namespace StyleCop.Analyzers.LayoutRules
 
             foreach (var accessor in accessorList.Accessors)
             {
-                replacements[accessor] = ReformatAccessorAsSingleLine(settings.Indentation, accessor);
+                replacements [accessor]
+                = ReformatAccessorAsSingleLine(settings.Indentation, accessor);
             }
 
-            var newSyntaxRoot = syntaxRoot.ReplaceNodes(replacements.Keys, (original, maybeRewritten) => replacements[original]);
+            var newSyntaxRoot =
+                syntaxRoot.ReplaceNodes(replacements.Keys, (original, maybeRewritten) => replacements[original]);
             return document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
         }
 
-        private static SyntaxNode ReformatAccessorAsSingleLine(IndentationSettings indentationSettings, AccessorDeclarationSyntax accessor)
+        private static SyntaxNode ReformatAccessorAsSingleLine(IndentationSettings indentationSettings,
+                                                               AccessorDeclarationSyntax accessor)
         {
-            var newAccessor = accessor
-                .WithModifiers(ReformatModifiersAsSingleLine(accessor.Modifiers))
-                .WithKeyword(ReformatKeywordAsSingleLine(accessor.Keyword))
-                .WithBody(ReformatBodyAsSingleLine(accessor.Body));
+            var newAccessor = accessor.WithModifiers(ReformatModifiersAsSingleLine(accessor.Modifiers))
+                                  .WithKeyword(ReformatKeywordAsSingleLine(accessor.Keyword))
+                                  .WithBody(ReformatBodyAsSingleLine(accessor.Body));
 
-            var accessorList = (AccessorListSyntax)accessor.Parent;
+            var accessorList = (AccessorListSyntax) accessor.Parent;
 
-            var indentationSteps = IndentationHelper.GetIndentationSteps(indentationSettings, accessorList.OpenBraceToken);
+            var indentationSteps =
+                IndentationHelper.GetIndentationSteps(indentationSettings, accessorList.OpenBraceToken);
             var indentation = IndentationHelper.GenerateWhitespaceTrivia(indentationSettings, indentationSteps + 1);
 
             newAccessor = newAccessor.WithLeadingTrivia(newAccessor.GetLeadingTrivia().Insert(0, indentation));
@@ -147,29 +155,33 @@ namespace StyleCop.Analyzers.LayoutRules
                 return modifiers;
             }
 
-            var reformattedModifiers = modifiers.Select(t => t.WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(t.LeadingTrivia)).WithTrailingTrivia(ReformatTriviaList(t.TrailingTrivia)));
+            var reformattedModifiers =
+                modifiers.Select(t => t.WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(t.LeadingTrivia))
+                                          .WithTrailingTrivia(ReformatTriviaList(t.TrailingTrivia)));
             return SyntaxFactory.TokenList(reformattedModifiers);
         }
 
         private static SyntaxToken ReformatKeywordAsSingleLine(SyntaxToken keyword)
         {
-            return keyword
-                .WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(keyword.LeadingTrivia))
+            return keyword.WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(keyword.LeadingTrivia))
                 .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(keyword.TrailingTrivia));
         }
 
         private static BlockSyntax ReformatBodyAsSingleLine(BlockSyntax body)
         {
-            var newOpenBraceToken = body.OpenBraceToken
-                .WithLeadingTrivia(ReformatTriviaList(body.OpenBraceToken.LeadingTrivia))
-                .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(body.OpenBraceToken.TrailingTrivia));
+            var newOpenBraceToken =
+                body.OpenBraceToken.WithLeadingTrivia(ReformatTriviaList(body.OpenBraceToken.LeadingTrivia))
+                    .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(body.OpenBraceToken.TrailingTrivia));
 
             SyntaxList<StatementSyntax> newStatements;
             if (body.Statements.Count > 0)
             {
-                var reformattedStatement = body.Statements[0]
-                    .WithLeadingTrivia(ReformatTriviaList(body.Statements[0].GetLeadingTrivia()))
-                    .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(body.Statements[0].GetTrailingTrivia()));
+                var reformattedStatement =
+                    body.Statements [0]
+                        .WithLeadingTrivia(ReformatTriviaList(body.Statements [0]
+                                                                  .GetLeadingTrivia()))
+                        .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(body.Statements [0]
+                                                                                  .GetTrailingTrivia()));
 
                 newStatements = SyntaxFactory.List<StatementSyntax>().Add(reformattedStatement);
             }
@@ -178,14 +190,16 @@ namespace StyleCop.Analyzers.LayoutRules
                 newStatements = body.Statements;
             }
 
-            var newCloseBraceToken = body.CloseBraceToken
-                .WithLeadingTrivia(ReformatTriviaList(body.CloseBraceToken.LeadingTrivia))
-                .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(body.CloseBraceToken.TrailingTrivia).Add(SyntaxFactory.CarriageReturnLineFeed));
+            var newCloseBraceToken =
+                body.CloseBraceToken.WithLeadingTrivia(ReformatTriviaList(body.CloseBraceToken.LeadingTrivia))
+                    .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(body.CloseBraceToken.TrailingTrivia)
+                                            .Add(SyntaxFactory.CarriageReturnLineFeed));
 
             return body.Update(newOpenBraceToken, newStatements, newCloseBraceToken);
         }
 
-        private static async Task<Document> GetTransformedDocumentForMutipleLinesAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentForMutipleLinesAsync(
+            Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
@@ -200,45 +214,59 @@ namespace StyleCop.Analyzers.LayoutRules
                 if (accessor != accessorList.Accessors.Last())
                 {
                     // insert an empty line between accessors
-                    reformattedAccessor = reformattedAccessor.WithTrailingTrivia(reformattedAccessor.GetTrailingTrivia().Add(SyntaxFactory.CarriageReturnLineFeed));
+                    reformattedAccessor = reformattedAccessor.WithTrailingTrivia(
+                        reformattedAccessor.GetTrailingTrivia().Add(SyntaxFactory.CarriageReturnLineFeed));
                 }
 
                 replacements[accessor] = reformattedAccessor;
             }
 
-            var newSyntaxRoot = syntaxRoot.ReplaceNodes(replacements.Keys, (original, maybeRewritten) => replacements[original]);
+            var newSyntaxRoot =
+                syntaxRoot.ReplaceNodes(replacements.Keys, (original, maybeRewritten) => replacements[original]);
             return document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
         }
 
-        private static SyntaxNode ReformatAccessorAsMultipleLines(IndentationSettings indentationSettings, AccessorDeclarationSyntax accessor)
+        private static SyntaxNode ReformatAccessorAsMultipleLines(IndentationSettings indentationSettings,
+                                                                  AccessorDeclarationSyntax accessor)
         {
-            var accessorList = (AccessorListSyntax)accessor.Parent;
-            var indentationSteps = IndentationHelper.GetIndentationSteps(indentationSettings, accessorList.OpenBraceToken) + 1;
+            var accessorList = (AccessorListSyntax) accessor.Parent;
+            var indentationSteps =
+                IndentationHelper.GetIndentationSteps(indentationSettings, accessorList.OpenBraceToken) + 1;
             var indentation = IndentationHelper.GenerateWhitespaceTrivia(indentationSettings, indentationSteps);
-            var indentationStatements = IndentationHelper.GenerateWhitespaceTrivia(indentationSettings, indentationSteps + 1);
+            var indentationStatements =
+                IndentationHelper.GenerateWhitespaceTrivia(indentationSettings, indentationSteps + 1);
 
-            var newAccessor = accessor
-                .WithModifiers(ReformatModifiersAsMultipleLines(accessor.Modifiers, indentation))
-                .WithKeyword(ReformatKeywordAsMultipleLines(accessor.Keyword, indentation, accessor.Modifiers.Count == 0))
-                .WithBody(ReformatBodyAsMultipleLines(accessor.Body, indentation, indentationStatements));
+            var newAccessor =
+                accessor.WithModifiers(ReformatModifiersAsMultipleLines(accessor.Modifiers, indentation))
+                    .WithKeyword(
+                        ReformatKeywordAsMultipleLines(accessor.Keyword, indentation, accessor.Modifiers.Count == 0))
+                    .WithBody(ReformatBodyAsMultipleLines(accessor.Body, indentation, indentationStatements));
 
             return newAccessor;
         }
 
-        private static SyntaxTokenList ReformatModifiersAsMultipleLines(SyntaxTokenList modifiers, SyntaxTrivia indentation)
+        private static SyntaxTokenList ReformatModifiersAsMultipleLines(SyntaxTokenList modifiers,
+                                                                        SyntaxTrivia indentation)
         {
             if (modifiers.Count == 0)
             {
                 return modifiers;
             }
 
-            var reformattedModifiers = modifiers.Select(t => t.WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(t.LeadingTrivia)).WithTrailingTrivia(ReformatTriviaList(t.TrailingTrivia))).ToArray();
-            reformattedModifiers[0] = reformattedModifiers[0].WithLeadingTrivia(reformattedModifiers[0].LeadingTrivia.Insert(0, indentation));
+            var reformattedModifiers =
+                modifiers
+                    .Select(t => t.WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(t.LeadingTrivia))
+                                     .WithTrailingTrivia(ReformatTriviaList(t.TrailingTrivia)))
+                    .ToArray();
+            reformattedModifiers[0] =
+                reformattedModifiers [0]
+                    .WithLeadingTrivia(reformattedModifiers[0].LeadingTrivia.Insert(0, indentation));
 
             return SyntaxFactory.TokenList(reformattedModifiers);
         }
 
-        private static SyntaxToken ReformatKeywordAsMultipleLines(SyntaxToken keyword, SyntaxTrivia indentation, bool insertIdentation)
+        private static SyntaxToken ReformatKeywordAsMultipleLines(SyntaxToken keyword, SyntaxTrivia indentation,
+                                                                  bool insertIdentation)
         {
             var newLeadingTrivia = ReformatTriviaListNoLeadingSpace(keyword.LeadingTrivia);
             if (insertIdentation)
@@ -246,14 +274,14 @@ namespace StyleCop.Analyzers.LayoutRules
                 newLeadingTrivia = newLeadingTrivia.Insert(0, indentation);
             }
 
-            var newTrailingTrivia = ReformatTriviaListNoTrailingSpace(keyword.TrailingTrivia).Add(SyntaxFactory.CarriageReturnLineFeed);
+            var newTrailingTrivia =
+                ReformatTriviaListNoTrailingSpace(keyword.TrailingTrivia).Add(SyntaxFactory.CarriageReturnLineFeed);
 
-            return keyword
-                .WithLeadingTrivia(newLeadingTrivia)
-                .WithTrailingTrivia(newTrailingTrivia);
+            return keyword.WithLeadingTrivia(newLeadingTrivia).WithTrailingTrivia(newTrailingTrivia);
         }
 
-        private static BlockSyntax ReformatBodyAsMultipleLines(BlockSyntax body, SyntaxTrivia indentation, SyntaxTrivia indentationStatements)
+        private static BlockSyntax ReformatBodyAsMultipleLines(BlockSyntax body, SyntaxTrivia indentation,
+                                                               SyntaxTrivia indentationStatements)
         {
             SyntaxTriviaList reformattedOpenBraceTrailingTrivia;
             SyntaxTriviaList reformattedCloseBraceLeadingTrivia;
@@ -265,32 +293,41 @@ namespace StyleCop.Analyzers.LayoutRules
 
                 foreach (var statement in body.Statements)
                 {
-                    var reformattedStatement = statement
-                        .WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(statement.GetLeadingTrivia()).Insert(0, indentationStatements))
-                        .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(statement.GetTrailingTrivia()).Add(SyntaxFactory.CarriageReturnLineFeed));
+                    var reformattedStatement =
+                        statement
+                            .WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(statement.GetLeadingTrivia())
+                                                   .Insert(0, indentationStatements))
+                            .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(statement.GetTrailingTrivia())
+                                                    .Add(SyntaxFactory.CarriageReturnLineFeed));
                     statements.Add(reformattedStatement);
                 }
 
                 newStatements = SyntaxFactory.List<StatementSyntax>().AddRange(statements);
 
-                reformattedOpenBraceTrailingTrivia = ReformatTriviaListNoTrailingSpace(body.OpenBraceToken.TrailingTrivia);
-                reformattedCloseBraceLeadingTrivia = ReformatTriviaListNoLeadingSpace(body.CloseBraceToken.LeadingTrivia);
+                reformattedOpenBraceTrailingTrivia =
+                    ReformatTriviaListNoTrailingSpace(body.OpenBraceToken.TrailingTrivia);
+                reformattedCloseBraceLeadingTrivia =
+                    ReformatTriviaListNoLeadingSpace(body.CloseBraceToken.LeadingTrivia);
             }
             else
             {
-                var triviaBetweenBraces = TriviaHelper.MergeTriviaLists(body.OpenBraceToken.TrailingTrivia, body.CloseBraceToken.LeadingTrivia);
+                var triviaBetweenBraces = TriviaHelper.MergeTriviaLists(body.OpenBraceToken.TrailingTrivia,
+                                                                        body.CloseBraceToken.LeadingTrivia);
                 reformattedOpenBraceTrailingTrivia = ReformatTriviaListNoTrailingSpace(triviaBetweenBraces);
                 newStatements = body.Statements;
                 reformattedCloseBraceLeadingTrivia = SyntaxFactory.TriviaList();
             }
 
-            var newOpenBraceToken = body.OpenBraceToken
-                .WithLeadingTrivia(ReformatTriviaListNoLeadingSpace(body.OpenBraceToken.LeadingTrivia).Insert(0, indentation))
-                .WithTrailingTrivia(reformattedOpenBraceTrailingTrivia.Add(SyntaxFactory.CarriageReturnLineFeed));
+            var newOpenBraceToken =
+                body.OpenBraceToken
+                    .WithLeadingTrivia(
+                        ReformatTriviaListNoLeadingSpace(body.OpenBraceToken.LeadingTrivia).Insert(0, indentation))
+                    .WithTrailingTrivia(reformattedOpenBraceTrailingTrivia.Add(SyntaxFactory.CarriageReturnLineFeed));
 
-            var newCloseBraceToken = body.CloseBraceToken
-                .WithLeadingTrivia(reformattedCloseBraceLeadingTrivia.Insert(0, indentation))
-                .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(body.CloseBraceToken.TrailingTrivia).Add(SyntaxFactory.CarriageReturnLineFeed));
+            var newCloseBraceToken =
+                body.CloseBraceToken.WithLeadingTrivia(reformattedCloseBraceLeadingTrivia.Insert(0, indentation))
+                    .WithTrailingTrivia(ReformatTriviaListNoTrailingSpace(body.CloseBraceToken.TrailingTrivia)
+                                            .Add(SyntaxFactory.CarriageReturnLineFeed));
 
             return body.Update(newOpenBraceToken, newStatements, newCloseBraceToken);
         }
@@ -302,7 +339,7 @@ namespace StyleCop.Analyzers.LayoutRules
                 node = node.Parent;
             }
 
-            return (AccessorListSyntax)node;
+            return (AccessorListSyntax) node;
         }
 
         private static SyntaxTriviaList ReformatTriviaList(IReadOnlyList<SyntaxTrivia> triviaList)
@@ -312,7 +349,8 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static SyntaxTriviaList ReformatTriviaListNoTrailingSpace(IReadOnlyList<SyntaxTrivia> triviaList)
         {
-            return SyntaxFactory.TriviaList(triviaList.Where(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia)).SelectMany(ExpandComment));
+            return SyntaxFactory.TriviaList(
+                triviaList.Where(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia)).SelectMany(ExpandComment));
         }
 
         private static SyntaxTriviaList ReformatTriviaListNoLeadingSpace(IReadOnlyList<SyntaxTrivia> triviaList)

@@ -27,8 +27,11 @@ namespace StyleCop.Analyzers.SpacingRules
     internal class SA1005CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1005SingleLineCommentsMustBeginWithSingleSpace.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1005SingleLineCommentsMustBeginWithSingleSpace.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -43,16 +46,16 @@ namespace StyleCop.Analyzers.SpacingRules
 
             foreach (var diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        SpacingResources.SA1005CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic.Location, cancellationToken),
-                        nameof(SA1005CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(SpacingResources.SA1005CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic.Location, cancellationToken),
+                                                          nameof(SA1005CodeFixProvider)),
+                                        diagnostic);
             }
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Location location, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Location location,
+                                                                        CancellationToken cancellationToken)
         {
             var text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
             var sourceSpan = location.SourceSpan;
@@ -78,13 +81,17 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                SpacingResources.SA1005CodeFix;
+            protected override string CodeActionTitle => SpacingResources.SA1005CodeFix;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {

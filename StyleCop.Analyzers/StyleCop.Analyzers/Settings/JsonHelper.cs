@@ -79,8 +79,7 @@ namespace StyleCop.Analyzers
         /// <typeparam name="TEnum">The type of enum to convert to.</typeparam>
         /// <param name="jsonValue">The key value pair identifying the JSON value.</param>
         /// <returns>The enum value contained within the JSON value.</returns>
-        internal static TEnum ToEnumValue<TEnum>(this KeyValuePair<string, JsonValue> jsonValue)
-            where TEnum : struct
+        internal static TEnum ToEnumValue<TEnum>(this KeyValuePair<string, JsonValue> jsonValue) where TEnum : struct
         {
             if (!jsonValue.Value.IsString)
             {
@@ -90,7 +89,8 @@ namespace StyleCop.Analyzers
             TEnum result;
             if (!Enum.TryParse(jsonValue.Value.AsString, true, out result))
             {
-                throw new InvalidSettingsException($"{jsonValue.Key} cannot contain enum value '{jsonValue.Value.AsString}'");
+                throw new InvalidSettingsException(
+                    $"{jsonValue.Key} cannot contain enum value '{jsonValue.Value.AsString}'");
             }
 
             return result;
@@ -103,8 +103,7 @@ namespace StyleCop.Analyzers
         /// <param name="jsonValue">The key value pair identifying the JSON value.</param>
         /// <param name="elementName">The element name to report in exceptions.</param>
         /// <returns>The enum value contained within the JSON value.</returns>
-        internal static TEnum ToEnumValue<TEnum>(this JsonValue jsonValue, string elementName)
-            where TEnum : struct
+        internal static TEnum ToEnumValue<TEnum>(this JsonValue jsonValue, string elementName) where TEnum : struct
         {
             if (!jsonValue.IsString)
             {

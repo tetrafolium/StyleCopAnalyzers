@@ -19,10 +19,14 @@ namespace StyleCop.Analyzers.Lightup
         static ISwitchExpressionArmOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ISwitchExpressionArmOperationWrapper));
-            PatternAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Pattern));
-            GuardAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Guard));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
-            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
+            PatternAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Pattern));
+            GuardAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Guard));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                WrappedType, nameof(Locals));
         }
 
         private ISwitchExpressionArmOperationWrapper(IOperation operation)
@@ -32,7 +36,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public IPatternOperationWrapper Pattern => IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
+        public IPatternOperationWrapper Pattern =>
+            IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
         public IOperation Guard => GuardAccessor(this.WrappedOperation);
         public IOperation Value => ValueAccessor(this.WrappedOperation);
         public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor(this.WrappedOperation);

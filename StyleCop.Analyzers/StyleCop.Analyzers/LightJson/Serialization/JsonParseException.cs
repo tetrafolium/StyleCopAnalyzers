@@ -16,29 +16,28 @@ namespace LightJson.Serialization
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonParseException"/> class.
         /// </summary>
-        public JsonParseException()
-            : base(GetDefaultMessage(ErrorType.Unknown))
+        public JsonParseException() : base(GetDefaultMessage(ErrorType.Unknown))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonParseException"/> class with the given error type and position.
+        /// Initializes a new instance of the <see cref="JsonParseException"/> class with the given error type and
+        /// position.
         /// </summary>
         /// <param name="type">The error type that describes the cause of the error.</param>
         /// <param name="position">The position in the text where the error occurred.</param>
-        public JsonParseException(ErrorType type, TextPosition position)
-            : this(GetDefaultMessage(type), type, position)
+        public JsonParseException(ErrorType type, TextPosition position) : this(GetDefaultMessage(type), type, position)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonParseException"/> class with the given message, error type, and position.
+        /// Initializes a new instance of the <see cref="JsonParseException"/> class with the given message, error type,
+        /// and position.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="type">The error type that describes the cause of the error.</param>
         /// <param name="position">The position in the text where the error occurred.</param>
-        public JsonParseException(string message, ErrorType type, TextPosition position)
-            : base(message)
+        public JsonParseException(string message, ErrorType type, TextPosition position) : base(message)
         {
             this.Type = type;
             this.Position = position;
@@ -47,8 +46,7 @@ namespace LightJson.Serialization
         /// <summary>
         /// Enumerates the types of errors that can occur when parsing a JSON message.
         /// </summary>
-        public enum ErrorType : int
-        {
+        public enum ErrorType : int {
             /// <summary>
             /// Indicates that the cause of the error is unknown.
             /// </summary>
@@ -74,13 +72,21 @@ namespace LightJson.Serialization
         /// Gets the text position where the error occurred.
         /// </summary>
         /// <value>The text position where the error occurred.</value>
-        public TextPosition Position { get; private set; }
+        public TextPosition Position
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets the type of error that caused the exception to be thrown.
         /// </summary>
         /// <value>The type of error that caused the exception to be thrown.</value>
-        public ErrorType Type { get; private set; }
+        public ErrorType Type
+        {
+            get;
+            private set;
+        }
 
         private static string GetDefaultMessage(ErrorType type)
         {

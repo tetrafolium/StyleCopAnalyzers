@@ -22,17 +22,27 @@ namespace StyleCop.Analyzers.OrderingRules
     [Shared]
     internal class SA1205CodeFixProvider : CodeFixProvider
     {
-        private static readonly ImmutableArray<SyntaxKind> PublicAccessibilityKeywords = ImmutableArray.Create(SyntaxKind.PublicKeyword);
-        private static readonly ImmutableArray<SyntaxKind> InternalAccessibilityKeywords = ImmutableArray.Create(SyntaxKind.InternalKeyword);
-        private static readonly ImmutableArray<SyntaxKind> ProtectedAccessibilityKeywords = ImmutableArray.Create(SyntaxKind.ProtectedKeyword);
-        private static readonly ImmutableArray<SyntaxKind> ProtectedOrInternalAccessibilityKeywords = ImmutableArray.Create(SyntaxKind.ProtectedKeyword, SyntaxKind.InternalKeyword);
-        private static readonly ImmutableArray<SyntaxKind> ProtectedAndInternalAccessibilityKeywords = ImmutableArray.Create(SyntaxKind.PrivateKeyword, SyntaxKind.ProtectedKeyword);
-        private static readonly ImmutableArray<SyntaxKind> PrivateAccessibilityKeywords = ImmutableArray.Create(SyntaxKind.PrivateKeyword);
-        private static readonly ImmutableArray<SyntaxKind> UnexpectedAccessibilityKeywords = ImmutableArray.Create<SyntaxKind>();
+        private static readonly ImmutableArray<SyntaxKind> PublicAccessibilityKeywords =
+            ImmutableArray.Create(SyntaxKind.PublicKeyword);
+        private static readonly ImmutableArray<SyntaxKind> InternalAccessibilityKeywords =
+            ImmutableArray.Create(SyntaxKind.InternalKeyword);
+        private static readonly ImmutableArray<SyntaxKind> ProtectedAccessibilityKeywords =
+            ImmutableArray.Create(SyntaxKind.ProtectedKeyword);
+        private static readonly ImmutableArray<SyntaxKind> ProtectedOrInternalAccessibilityKeywords =
+            ImmutableArray.Create(SyntaxKind.ProtectedKeyword, SyntaxKind.InternalKeyword);
+        private static readonly ImmutableArray<SyntaxKind> ProtectedAndInternalAccessibilityKeywords =
+            ImmutableArray.Create(SyntaxKind.PrivateKeyword, SyntaxKind.ProtectedKeyword);
+        private static readonly ImmutableArray<SyntaxKind> PrivateAccessibilityKeywords =
+            ImmutableArray.Create(SyntaxKind.PrivateKeyword);
+        private static readonly ImmutableArray<SyntaxKind> UnexpectedAccessibilityKeywords =
+            ImmutableArray.Create<SyntaxKind>();
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1205PartialElementsMustDeclareAccess.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1205PartialElementsMustDeclareAccess.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -45,18 +55,18 @@ namespace StyleCop.Analyzers.OrderingRules
         {
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        OrderingResources.SA1205CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1205CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(OrderingResources.SA1205CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1205CodeFixProvider)),
+                                        diagnostic);
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
@@ -71,7 +81,8 @@ namespace StyleCop.Analyzers.OrderingRules
 
             var keywordToken = typeDeclarationNode.Keyword;
 
-            var replacementModifiers = DeclarationModifiersHelper.AddModifiers(typeDeclarationNode.Modifiers, ref keywordToken, accessModifierKinds);
+            var replacementModifiers = DeclarationModifiersHelper.AddModifiers(typeDeclarationNode.Modifiers,
+                                                                               ref keywordToken, accessModifierKinds);
             var replacementNode = ReplaceModifiers(typeDeclarationNode, replacementModifiers);
             replacementNode = ReplaceKeyword(replacementNode, keywordToken);
             var newSyntaxRoot = syntaxRoot.ReplaceNode(typeDeclarationNode, replacementNode);
@@ -107,13 +118,13 @@ namespace StyleCop.Analyzers.OrderingRules
             switch (node.Kind())
             {
             case SyntaxKind.ClassDeclaration:
-                return ((ClassDeclarationSyntax)node).WithModifiers(modifiers);
+                return ((ClassDeclarationSyntax) node).WithModifiers(modifiers);
             case SyntaxKind.InterfaceDeclaration:
-                return ((InterfaceDeclarationSyntax)node).WithModifiers(modifiers);
+                return ((InterfaceDeclarationSyntax) node).WithModifiers(modifiers);
             case SyntaxKind.StructDeclaration:
-                return ((StructDeclarationSyntax)node).WithModifiers(modifiers);
+                return ((StructDeclarationSyntax) node).WithModifiers(modifiers);
             case SyntaxKindEx.RecordDeclaration:
-                return ((RecordDeclarationSyntaxWrapper)node).WithModifiers(modifiers);
+                return ((RecordDeclarationSyntaxWrapper) node).WithModifiers(modifiers);
             }
 
             return node;
@@ -126,13 +137,13 @@ namespace StyleCop.Analyzers.OrderingRules
             switch (node.Kind())
             {
             case SyntaxKind.ClassDeclaration:
-                return ((ClassDeclarationSyntax)node).WithKeyword(keyword);
+                return ((ClassDeclarationSyntax) node).WithKeyword(keyword);
             case SyntaxKind.InterfaceDeclaration:
-                return ((InterfaceDeclarationSyntax)node).WithKeyword(keyword);
+                return ((InterfaceDeclarationSyntax) node).WithKeyword(keyword);
             case SyntaxKind.StructDeclaration:
-                return ((StructDeclarationSyntax)node).WithKeyword(keyword);
+                return ((StructDeclarationSyntax) node).WithKeyword(keyword);
             case SyntaxKindEx.RecordDeclaration:
-                return ((RecordDeclarationSyntaxWrapper)node).WithKeyword(keyword);
+                return ((RecordDeclarationSyntaxWrapper) node).WithKeyword(keyword);
             }
 
             return node;

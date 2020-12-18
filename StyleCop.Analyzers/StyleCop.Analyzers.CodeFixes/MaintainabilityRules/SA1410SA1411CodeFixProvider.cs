@@ -13,20 +13,24 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     using StyleCop.Analyzers.Helpers;
 
     /// <summary>
-    /// Implements a code fix for <see cref="SA1410RemoveDelegateParenthesisWhenPossible"/> and <see cref="SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis"/>.
+    /// Implements a code fix for <see cref="SA1410RemoveDelegateParenthesisWhenPossible"/> and <see
+    /// cref="SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis"/>.
     /// </summary>
     /// <remarks>
-    /// <para>To fix a violation of this rule, insert parenthesis within the arithmetic expression to declare the precedence of the operations.</para>
+    /// <para>To fix a violation of this rule, insert parenthesis within the arithmetic expression to declare the
+    /// precedence of the operations.</para>
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1410SA1411CodeFixProvider))]
     [Shared]
     internal class SA1410SA1411CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1410RemoveDelegateParenthesisWhenPossible.DiagnosticId,
-                SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1410RemoveDelegateParenthesisWhenPossible.DiagnosticId,
+                                SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,7 +45,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
             foreach (var diagnostic in context.Diagnostics)
             {
-                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie : true);
                 if (node.IsMissing)
                 {
                     continue;
@@ -52,12 +56,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
                 if (node != null)
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            MaintainabilityResources.SA1410SA1411CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, root, node),
-                            nameof(SA1410SA1411CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(MaintainabilityResources.SA1410SA1411CodeFix,
+                                                              cancellationToken => GetTransformedDocumentAsync(
+                                                                  context.Document, root, node),
+                                                              nameof(SA1410SA1411CodeFixProvider)),
+                                            diagnostic);
                 }
             }
         }
@@ -76,9 +79,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             // The removing operation has not changed the location of the previous token
             var newPreviousToken = newSyntaxRoot.FindToken(previousToken.Span.Start);
 
-            var newTrailingTrivia = newPreviousToken.TrailingTrivia.AddRange(firstToken.GetAllTrivia()).AddRange(lastToken.GetAllTrivia());
+            var newTrailingTrivia =
+                newPreviousToken.TrailingTrivia.AddRange(firstToken.GetAllTrivia()).AddRange(lastToken.GetAllTrivia());
 
-            newSyntaxRoot = newSyntaxRoot.ReplaceToken(newPreviousToken, newPreviousToken.WithTrailingTrivia(newTrailingTrivia));
+            newSyntaxRoot =
+                newSyntaxRoot.ReplaceToken(newPreviousToken, newPreviousToken.WithTrailingTrivia(newTrailingTrivia));
 
             return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
         }

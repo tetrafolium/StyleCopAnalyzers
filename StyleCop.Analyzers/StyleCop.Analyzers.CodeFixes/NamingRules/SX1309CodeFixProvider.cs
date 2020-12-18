@@ -24,10 +24,12 @@ namespace StyleCop.Analyzers.NamingRules
     internal class SX1309CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SX1309FieldNamesMustBeginWithUnderscore.DiagnosticId,
-                SX1309SStaticFieldNamesMustBeginWithUnderscore.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SX1309FieldNamesMustBeginWithUnderscore.DiagnosticId,
+                                SX1309SStaticFieldNamesMustBeginWithUnderscore.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -47,12 +49,11 @@ namespace StyleCop.Analyzers.NamingRules
                 if (!string.IsNullOrEmpty(token.ValueText))
                 {
                     string newName = '_' + token.ValueText;
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            string.Format(NamingResources.RenameToCodeFix, newName),
-                            cancellationToken => RenameHelper.RenameSymbolAsync(document, root, token, newName, cancellationToken),
-                            nameof(SX1309CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(string.Format(NamingResources.RenameToCodeFix, newName),
+                                                              cancellationToken => RenameHelper.RenameSymbolAsync(
+                                                                  document, root, token, newName, cancellationToken),
+                                                              nameof(SX1309CodeFixProvider)),
+                                            diagnostic);
                 }
             }
         }

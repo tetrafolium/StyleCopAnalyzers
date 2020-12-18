@@ -30,19 +30,27 @@ namespace StyleCop.Analyzers.SpacingRules
         /// The ID for diagnostics produced by the <see cref="SA1028CodeMustNotContainTrailingWhitespace"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1028";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1028.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(SpacingResources.SA1028Title), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1028MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1028Description), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1028.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(SpacingResources.SA1028Title), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(SpacingResources.SA1028MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(SpacingResources.SA1028Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc />
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc />
         public override void Initialize(AnalysisContext context)
@@ -69,7 +77,7 @@ namespace StyleCop.Analyzers.SpacingRules
             var text = context.Tree.GetText(context.CancellationToken);
 
             SyntaxTrivia previousTrivia = default;
-            foreach (var trivia in root.DescendantTrivia(descendIntoTrivia: true))
+            foreach (var trivia in root.DescendantTrivia(descendIntoTrivia : true))
             {
                 switch (trivia.Kind())
                 {
@@ -93,7 +101,8 @@ namespace StyleCop.Analyzers.SpacingRules
                         TextSpan trailinMessageWhitespace = FindTrailingWhitespace(text, previousTrivia.Span);
                         if (!trailinMessageWhitespace.IsEmpty)
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(Descriptor, Location.Create(context.Tree, trailinMessageWhitespace)));
+                            context.ReportDiagnostic(
+                                Diagnostic.Create(Descriptor, Location.Create(context.Tree, trailinMessageWhitespace)));
                         }
                     }
 
@@ -103,7 +112,8 @@ namespace StyleCop.Analyzers.SpacingRules
                     TextSpan trailingWhitespace = FindTrailingWhitespace(text, trivia.Span);
                     if (!trailingWhitespace.IsEmpty)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, Location.Create(context.Tree, trailingWhitespace)));
+                        context.ReportDiagnostic(
+                            Diagnostic.Create(Descriptor, Location.Create(context.Tree, trailingWhitespace)));
                     }
 
                     break;
@@ -115,7 +125,8 @@ namespace StyleCop.Analyzers.SpacingRules
                         trailingWhitespace = FindTrailingWhitespace(text, line.Span);
                         if (!trailingWhitespace.IsEmpty)
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(Descriptor, Location.Create(context.Tree, trailingWhitespace)));
+                            context.ReportDiagnostic(
+                                Diagnostic.Create(Descriptor, Location.Create(context.Tree, trailingWhitespace)));
                         }
 
                         if (line.EndIncludingLineBreak == text.Length)
@@ -132,16 +143,17 @@ namespace StyleCop.Analyzers.SpacingRules
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
                     SyntaxToken previousToken = default;
-                    foreach (var token in trivia.GetStructure().DescendantTokens(descendIntoTrivia: true))
+                    foreach (var token in trivia.GetStructure().DescendantTokens(descendIntoTrivia : true))
                     {
-                        if (token.IsKind(SyntaxKind.XmlTextLiteralNewLineToken)
-                            && previousToken.IsKind(SyntaxKind.XmlTextLiteralToken)
-                            && previousToken.Span.End == token.SpanStart)
+                        if (token.IsKind(SyntaxKind.XmlTextLiteralNewLineToken) &&
+                            previousToken.IsKind(SyntaxKind.XmlTextLiteralToken) &&
+                            previousToken.Span.End == token.SpanStart)
                         {
                             trailingWhitespace = FindTrailingWhitespace(text, previousToken.Span);
                             if (!trailingWhitespace.IsEmpty)
                             {
-                                context.ReportDiagnostic(Diagnostic.Create(Descriptor, Location.Create(context.Tree, trailingWhitespace)));
+                                context.ReportDiagnostic(
+                                    Diagnostic.Create(Descriptor, Location.Create(context.Tree, trailingWhitespace)));
                             }
                         }
 
@@ -157,7 +169,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 previousTrivia = trivia;
             }
 
-            if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia) && previousTrivia.Span.End == previousTrivia.SyntaxTree.Length)
+            if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia) &&
+                previousTrivia.Span.End == previousTrivia.SyntaxTree.Length)
             {
                 // Report whitespace at the end of the last line in the document
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, previousTrivia.GetLocation()));

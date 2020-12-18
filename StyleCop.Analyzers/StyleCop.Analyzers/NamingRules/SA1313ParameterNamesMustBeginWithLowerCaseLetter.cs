@@ -16,10 +16,12 @@ namespace StyleCop.Analyzers.NamingRules
     /// The name of a parameter in C# does not begin with a lower-case letter.
     /// </summary>
     /// <remarks>
-    /// <para>A violation of this rule occurs when the name of a parameter does not begin with a lower-case letter.</para>
+    /// <para>A violation of this rule occurs when the name of a parameter does not begin with a lower-case
+    /// letter.</para>
     ///
     /// <para>An exception to this rule is made for lambda parameters named <c>_</c> and <c>__</c>. These parameters are
-    /// often used to designate a placeholder parameter which is not actually used in the body of the lambda expression.</para>
+    /// often used to designate a placeholder parameter which is not actually used in the body of the lambda
+    /// expression.</para>
     ///
     /// <para>If the parameter name is intended to match the name of an item associated with Win32 or COM, and thus
     /// needs to begin with an upper-case letter, place the parameter within a special <c>NativeMethods</c> class. A
@@ -31,22 +33,31 @@ namespace StyleCop.Analyzers.NamingRules
     internal class SA1313ParameterNamesMustBeginWithLowerCaseLetter : DiagnosticAnalyzer
     {
         /// <summary>
-        /// The ID for diagnostics produced by the <see cref="SA1313ParameterNamesMustBeginWithLowerCaseLetter"/> analyzer.
+        /// The ID for diagnostics produced by the <see cref="SA1313ParameterNamesMustBeginWithLowerCaseLetter"/>
+        /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1313";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1313.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(NamingResources.SA1313Title), NamingResources.ResourceManager, typeof(NamingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1313MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1313Description), NamingResources.ResourceManager, typeof(NamingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1313.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(NamingResources.SA1313Title), NamingResources.ResourceManager, typeof(NamingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(NamingResources.SA1313MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(NamingResources.SA1313Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> ParameterAction = HandleParameter;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -59,7 +70,7 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void HandleParameter(SyntaxNodeAnalysisContext context)
         {
-            ParameterSyntax syntax = (ParameterSyntax)context.Node;
+            ParameterSyntax syntax = (ParameterSyntax) context.Node;
             if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax))
             {
                 return;
@@ -104,8 +115,8 @@ namespace StyleCop.Analyzers.NamingRules
                 return true;
             }
 
-            if (syntax.Parent.Parent.IsKind(SyntaxKind.ParenthesizedLambdaExpression)
-                || syntax.Parent.Parent.IsKind(SyntaxKind.AnonymousMethodExpression))
+            if (syntax.Parent.Parent.IsKind(SyntaxKind.ParenthesizedLambdaExpression) ||
+                syntax.Parent.Parent.IsKind(SyntaxKind.AnonymousMethodExpression))
             {
                 return true;
             }
@@ -129,13 +140,15 @@ namespace StyleCop.Analyzers.NamingRules
                 return false;
             }
 
-            var methodDeclaration = (MethodDeclarationSyntax)declaringMember;
+            var methodDeclaration = (MethodDeclarationSyntax) declaringMember;
             var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration);
 
             if (methodSymbol.IsOverride)
             {
-                // OverridenMethod can be null in case of an invalid method declaration -> exit because there is no meaningful analysis to be done.
-                if ((methodSymbol.OverriddenMethod == null) || (methodSymbol.OverriddenMethod.Parameters[index].Name == syntax.Identifier.ValueText))
+                // OverridenMethod can be null in case of an invalid method declaration -> exit because there is no
+                // meaningful analysis to be done.
+                if ((methodSymbol.OverriddenMethod == null) ||
+                    (methodSymbol.OverriddenMethod.Parameters[index].Name == syntax.Identifier.ValueText))
                 {
                     return true;
                 }

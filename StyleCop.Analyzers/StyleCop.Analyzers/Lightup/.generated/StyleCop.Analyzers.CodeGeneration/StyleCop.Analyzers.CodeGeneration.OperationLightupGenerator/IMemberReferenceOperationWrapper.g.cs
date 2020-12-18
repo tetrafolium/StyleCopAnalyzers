@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IMemberReferenceOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IMemberReferenceOperationWrapper));
-            InstanceAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Instance));
-            MemberAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(WrappedType, nameof(Member));
+            InstanceAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Instance));
+            MemberAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(WrappedType, nameof(Member));
         }
 
         private IMemberReferenceOperationWrapper(IOperation operation)

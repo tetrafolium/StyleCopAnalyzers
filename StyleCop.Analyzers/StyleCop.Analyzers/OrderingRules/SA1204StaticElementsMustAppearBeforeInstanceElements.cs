@@ -18,8 +18,8 @@ namespace StyleCop.Analyzers.OrderingRules
     /// </summary>
     /// <remarks>
     /// <para>A violation of this rule occurs when a static element is positioned beneath an instance element of the
-    /// same type. All static elements should be placed above all instance elements of the same type to make it easier to
-    /// see the interface exposed from the instance and static version of the class.</para>
+    /// same type. All static elements should be placed above all instance elements of the same type to make it easier
+    /// to see the interface exposed from the instance and static version of the class.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     internal class SA1204StaticElementsMustAppearBeforeInstanceElements : DiagnosticAnalyzer
@@ -29,24 +29,36 @@ namespace StyleCop.Analyzers.OrderingRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1204";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1204.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(OrderingResources.SA1204Title), OrderingResources.ResourceManager, typeof(OrderingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1204MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1204Description), OrderingResources.ResourceManager, typeof(OrderingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1204.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(OrderingResources.SA1204Title), OrderingResources.ResourceManager, typeof(OrderingResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(OrderingResources.SA1204MessageFormat),
+                                          OrderingResources.ResourceManager, typeof(OrderingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(OrderingResources.SA1204Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
             ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration);
 
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> CompilationUnitAction = HandleCompilationUnit;
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> NamespaceDeclarationAction = HandleNamespaceDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> TypeDeclarationAction = HandleTypeDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> CompilationUnitAction =
+            HandleCompilationUnit;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> NamespaceDeclarationAction =
+            HandleNamespaceDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> TypeDeclarationAction =
+            HandleTypeDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -68,7 +80,7 @@ namespace StyleCop.Analyzers.OrderingRules
                 return;
             }
 
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
+            var compilationUnit = (CompilationUnitSyntax) context.Node;
 
             HandleMemberList(context, elementOrder, staticIndex, compilationUnit.Members);
         }
@@ -82,7 +94,7 @@ namespace StyleCop.Analyzers.OrderingRules
                 return;
             }
 
-            var compilationUnit = (NamespaceDeclarationSyntax)context.Node;
+            var compilationUnit = (NamespaceDeclarationSyntax) context.Node;
 
             HandleMemberList(context, elementOrder, staticIndex, compilationUnit.Members);
         }
@@ -96,12 +108,14 @@ namespace StyleCop.Analyzers.OrderingRules
                 return;
             }
 
-            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+            var typeDeclaration = (TypeDeclarationSyntax) context.Node;
 
             HandleMemberList(context, elementOrder, staticIndex, typeDeclaration.Members);
         }
 
-        private static void HandleMemberList(SyntaxNodeAnalysisContext context, ImmutableArray<OrderingTrait> elementOrder, int staticIndex, SyntaxList<MemberDeclarationSyntax> members)
+        private static void HandleMemberList(SyntaxNodeAnalysisContext context,
+                                             ImmutableArray<OrderingTrait> elementOrder, int staticIndex,
+                                             SyntaxList<MemberDeclarationSyntax> members)
         {
             var previousSyntaxKind = SyntaxKind.None;
             var previousAccessLevel = AccessLevel.NotSpecified;
@@ -114,7 +128,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 var modifiers = member.GetModifiers();
 
                 var currentSyntaxKind = member.Kind();
-                currentSyntaxKind = currentSyntaxKind == SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration : currentSyntaxKind;
+                currentSyntaxKind = currentSyntaxKind == SyntaxKind.EventFieldDeclaration ? SyntaxKind.EventDeclaration
+                    : currentSyntaxKind;
                 var currentAccessLevel = MemberOrderHelper.GetAccessLevelForOrdering(member, modifiers);
                 bool currentMemberConstant = modifiers.Any(SyntaxKind.ConstKeyword);
                 bool currentMemberReadonly = currentMemberConstant || modifiers.Any(SyntaxKind.ReadOnlyKeyword);
@@ -166,11 +181,9 @@ namespace StyleCop.Analyzers.OrderingRules
                 {
                     if (currentMemberStatic && !previousMemberStatic)
                     {
-                        context.ReportDiagnostic(
-                            Diagnostic.Create(
-                                Descriptor,
-                                NamedTypeHelpers.GetNameOrIdentifierLocation(member),
-                                AccessLevelHelper.GetName(currentAccessLevel)));
+                        context.ReportDiagnostic(Diagnostic.Create(Descriptor,
+                                                                   NamedTypeHelpers.GetNameOrIdentifierLocation(member),
+                                                                   AccessLevelHelper.GetName(currentAccessLevel)));
                     }
                 }
 

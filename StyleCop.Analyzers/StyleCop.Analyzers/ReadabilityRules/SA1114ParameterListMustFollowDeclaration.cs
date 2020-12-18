@@ -47,33 +47,53 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1114ParameterListMustFollowDeclaration"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1114";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1114.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1114Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1114MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1114Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1114.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1114Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1114MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1114Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly ImmutableArray<SyntaxKind> BaseMethodDeclarationKinds =
-            ImmutableArray.Create(SyntaxKind.MethodDeclaration, SyntaxKind.ConstructorDeclaration, SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
+            ImmutableArray.Create(SyntaxKind.MethodDeclaration, SyntaxKind.ConstructorDeclaration,
+                                  SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
 
-        private static readonly Action<SyntaxNodeAnalysisContext> BaseMethodDeclarationAction = HandleBaseMethodDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> LocalFunctionStatementAction = HandleLocalFunctionStatement;
-        private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction = HandleInvocationExpression;
-        private static readonly Action<SyntaxNodeAnalysisContext> ObjectCreationExpressionAction = HandleObjectCreationExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> BaseMethodDeclarationAction =
+            HandleBaseMethodDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> LocalFunctionStatementAction =
+            HandleLocalFunctionStatement;
+        private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction =
+            HandleInvocationExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> ObjectCreationExpressionAction =
+            HandleObjectCreationExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction = HandleIndexerDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> ArrayCreationExpressionAction = HandleArrayCreationExpression;
-        private static readonly Action<SyntaxNodeAnalysisContext> ElementAccessExpressionAction = HandleElementAccessExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> ArrayCreationExpressionAction =
+            HandleArrayCreationExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> ElementAccessExpressionAction =
+            HandleElementAccessExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> AttributeAction = HandleAttribute;
         private static readonly Action<SyntaxNodeAnalysisContext> AttributeListAction = HandleAttributeList;
         private static readonly Action<SyntaxNodeAnalysisContext> DelegateDeclarationAction = HandleDelegateDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousMethodExpressionAction = HandleAnonymousMethodExpression;
-        private static readonly Action<SyntaxNodeAnalysisContext> ParenthesizedLambdaExpressionAction = HandleParenthesizedLambdaExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> AnonymousMethodExpressionAction =
+            HandleAnonymousMethodExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> ParenthesizedLambdaExpressionAction =
+            HandleParenthesizedLambdaExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -92,49 +112,50 @@ namespace StyleCop.Analyzers.ReadabilityRules
             context.RegisterSyntaxNodeAction(AttributeListAction, SyntaxKind.AttributeList);
             context.RegisterSyntaxNodeAction(DelegateDeclarationAction, SyntaxKind.DelegateDeclaration);
             context.RegisterSyntaxNodeAction(AnonymousMethodExpressionAction, SyntaxKind.AnonymousMethodExpression);
-            context.RegisterSyntaxNodeAction(ParenthesizedLambdaExpressionAction, SyntaxKind.ParenthesizedLambdaExpression);
+            context.RegisterSyntaxNodeAction(ParenthesizedLambdaExpressionAction,
+                                             SyntaxKind.ParenthesizedLambdaExpression);
         }
 
         private static void HandleParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
         {
-            var lambdaExpression = (ParenthesizedLambdaExpressionSyntax)context.Node;
+            var lambdaExpression = (ParenthesizedLambdaExpressionSyntax) context.Node;
             AnalyzeParametersList(context, lambdaExpression.ParameterList);
         }
 
         private static void HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
-            var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
+            var anonymousMethod = (AnonymousMethodExpressionSyntax) context.Node;
             AnalyzeParametersList(context, anonymousMethod.ParameterList);
         }
 
         private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
+            var delegateDeclaration = (DelegateDeclarationSyntax) context.Node;
             AnalyzeParametersList(context, delegateDeclaration.ParameterList);
         }
 
         private static void HandleAttributeList(SyntaxNodeAnalysisContext context)
         {
-            var attributesList = (AttributeListSyntax)context.Node;
+            var attributesList = (AttributeListSyntax) context.Node;
 
             AnalyzeAttributeList(context, attributesList);
         }
 
         private static void HandleAttribute(SyntaxNodeAnalysisContext context)
         {
-            var attribute = (AttributeSyntax)context.Node;
+            var attribute = (AttributeSyntax) context.Node;
             AnalyzeArgumentList(context, attribute.ArgumentList);
         }
 
         private static void HandleElementAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            var elementAccess = (ElementAccessExpressionSyntax)context.Node;
+            var elementAccess = (ElementAccessExpressionSyntax) context.Node;
             AnalyzeArgumentList(context, elementAccess.ArgumentList);
         }
 
         private static void HandleArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var arrayCreation = (ArrayCreationExpressionSyntax)context.Node;
+            var arrayCreation = (ArrayCreationExpressionSyntax) context.Node;
             if (arrayCreation.Type == null)
             {
                 return;
@@ -145,13 +166,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+            var indexerDeclaration = (IndexerDeclarationSyntax) context.Node;
             AnalyzeBracketParametersList(context, indexerDeclaration.ParameterList);
         }
 
         private static void HandleObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
+            var objectCreation = (ObjectCreationExpressionSyntax) context.Node;
             if (objectCreation?.ArgumentList != null)
             {
                 AnalyzeArgumentList(context, objectCreation.ArgumentList);
@@ -160,25 +181,26 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
         {
-            var invocationExpression = (InvocationExpressionSyntax)context.Node;
+            var invocationExpression = (InvocationExpressionSyntax) context.Node;
             AnalyzeArgumentList(context, invocationExpression.ArgumentList);
         }
 
         private static void HandleBaseMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var methodDeclaration = (BaseMethodDeclarationSyntax)context.Node;
+            var methodDeclaration = (BaseMethodDeclarationSyntax) context.Node;
 
             AnalyzeParametersList(context, methodDeclaration.ParameterList);
         }
 
         private static void HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
-            var localFunctionStatement = (LocalFunctionStatementSyntaxWrapper)context.Node;
+            var localFunctionStatement = (LocalFunctionStatementSyntaxWrapper) context.Node;
 
             AnalyzeParametersList(context, localFunctionStatement.ParameterList);
         }
 
-        private static void AnalyzeRankSpecifiers(SyntaxNodeAnalysisContext context, ArrayCreationExpressionSyntax arrayCreation)
+        private static void AnalyzeRankSpecifiers(SyntaxNodeAnalysisContext context,
+                                                  ArrayCreationExpressionSyntax arrayCreation)
         {
             if (!arrayCreation.Type.RankSpecifiers.Any())
             {
@@ -188,8 +210,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
             foreach (var arrayRankSpecifierSyntax in arrayCreation.Type.RankSpecifiers)
             {
                 var openBracketToken = arrayRankSpecifierSyntax.OpenBracketToken;
-                if (openBracketToken.IsMissing ||
-                    arrayRankSpecifierSyntax.IsMissing ||
+                if (openBracketToken.IsMissing || arrayRankSpecifierSyntax.IsMissing ||
                     !arrayRankSpecifierSyntax.Sizes.Any())
                 {
                     return;
@@ -220,9 +241,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static void AnalyzeAttributeList(SyntaxNodeAnalysisContext context, AttributeListSyntax attributesList)
         {
             var openBracketToken = attributesList.OpenBracketToken;
-            if (openBracketToken.IsMissing ||
-                attributesList.IsMissing ||
-                !attributesList.Attributes.Any())
+            if (openBracketToken.IsMissing || attributesList.IsMissing || !attributesList.Attributes.Any())
             {
                 return;
             }
@@ -248,12 +267,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context, BracketedArgumentListSyntax argumentListSyntax)
+        private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context,
+                                                BracketedArgumentListSyntax argumentListSyntax)
         {
             var openBracketToken = argumentListSyntax.OpenBracketToken;
-            if (openBracketToken.IsMissing ||
-                argumentListSyntax.IsMissing ||
-                !argumentListSyntax.Arguments.Any())
+            if (openBracketToken.IsMissing || argumentListSyntax.IsMissing || !argumentListSyntax.Arguments.Any())
             {
                 return;
             }
@@ -283,12 +301,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context, AttributeArgumentListSyntax argumentListSyntax)
+        private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context,
+                                                AttributeArgumentListSyntax argumentListSyntax)
         {
-            if (argumentListSyntax == null ||
-                argumentListSyntax.OpenParenToken.IsMissing ||
-                argumentListSyntax.IsMissing ||
-                !argumentListSyntax.Arguments.Any())
+            if (argumentListSyntax == null || argumentListSyntax.OpenParenToken.IsMissing ||
+                argumentListSyntax.IsMissing || !argumentListSyntax.Arguments.Any())
             {
                 return;
             }
@@ -318,12 +335,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context, ArgumentListSyntax argumentListSyntax)
+        private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context,
+                                                ArgumentListSyntax argumentListSyntax)
         {
             var openParenToken = argumentListSyntax.OpenParenToken;
-            if (openParenToken.IsMissing ||
-                argumentListSyntax.IsMissing ||
-                !argumentListSyntax.Arguments.Any())
+            if (openParenToken.IsMissing || argumentListSyntax.IsMissing || !argumentListSyntax.Arguments.Any())
             {
                 return;
             }
@@ -353,12 +369,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static void AnalyzeBracketParametersList(SyntaxNodeAnalysisContext context, BracketedParameterListSyntax parameterListSyntax)
+        private static void AnalyzeBracketParametersList(SyntaxNodeAnalysisContext context,
+                                                         BracketedParameterListSyntax parameterListSyntax)
         {
             var openBracketToken = parameterListSyntax.OpenBracketToken;
-            if (openBracketToken.IsMissing ||
-                parameterListSyntax.IsMissing ||
-                !parameterListSyntax.Parameters.Any())
+            if (openBracketToken.IsMissing || parameterListSyntax.IsMissing || !parameterListSyntax.Parameters.Any())
             {
                 return;
             }
@@ -384,12 +399,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
         }
 
-        private static void AnalyzeParametersList(SyntaxNodeAnalysisContext context, ParameterListSyntax parameterListSyntax)
+        private static void AnalyzeParametersList(SyntaxNodeAnalysisContext context,
+                                                  ParameterListSyntax parameterListSyntax)
         {
-            if (parameterListSyntax == null ||
-                parameterListSyntax.OpenParenToken.IsMissing ||
-                parameterListSyntax.IsMissing ||
-                !parameterListSyntax.Parameters.Any())
+            if (parameterListSyntax == null || parameterListSyntax.OpenParenToken.IsMissing ||
+                parameterListSyntax.IsMissing || !parameterListSyntax.Parameters.Any())
             {
                 return;
             }
@@ -397,9 +411,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var firstParameter = parameterListSyntax.Parameters[0];
             int firstParameterLine;
 
-            if (firstParameter.HasLeadingTrivia && firstParameter.GetLeadingTrivia().All(trivia => IsValidTrivia(trivia)))
+            if (firstParameter.HasLeadingTrivia &&
+                firstParameter.GetLeadingTrivia().All(trivia => IsValidTrivia(trivia)))
             {
-                firstParameterLine = firstParameter.SyntaxTree.GetLineSpan(firstParameter.FullSpan).StartLinePosition.Line;
+                firstParameterLine =
+                    firstParameter.SyntaxTree.GetLineSpan(firstParameter.FullSpan).StartLinePosition.Line;
             }
             else
             {

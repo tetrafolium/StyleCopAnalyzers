@@ -24,8 +24,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         /// Initializes a new instance of the <see cref="ReadabilitySettings"/> class.
         /// </summary>
         /// <param name="readabilitySettingsObject">The JSON object containing the settings.</param>
-        protected internal ReadabilitySettings(JsonObject readabilitySettingsObject)
-            : this()
+        protected internal ReadabilitySettings(JsonObject readabilitySettingsObject) : this()
         {
             foreach (var kvp in readabilitySettingsObject)
             {
@@ -41,7 +40,6 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public bool AllowBuiltInTypeAliases =>
-            this.allowBuiltInTypeAliases;
+        public bool AllowBuiltInTypeAliases => this.allowBuiltInTypeAliases;
     }
 }

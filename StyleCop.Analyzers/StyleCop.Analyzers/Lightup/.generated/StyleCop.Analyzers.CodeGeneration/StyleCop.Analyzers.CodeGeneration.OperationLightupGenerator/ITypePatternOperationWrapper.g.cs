@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static ITypePatternOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ITypePatternOperationWrapper));
-            MatchedTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(MatchedType));
+            MatchedTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                WrappedType, nameof(MatchedType));
         }
 
         private ITypePatternOperationWrapper(IOperation operation)
@@ -27,10 +28,12 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ITypeSymbol MatchedType => MatchedTypeAccessor(this.WrappedOperation);
-        public ITypeSymbol InputType => ((IPatternOperationWrapper)this).InputType;
-        public ITypeSymbol NarrowedType => ((IPatternOperationWrapper)this).NarrowedType;
-        public static explicit operator ITypePatternOperationWrapper(IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IPatternOperationWrapper(ITypePatternOperationWrapper wrapper) => IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
+        public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
+        public static explicit operator ITypePatternOperationWrapper(IPatternOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IPatternOperationWrapper(ITypePatternOperationWrapper wrapper) =>
+            IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static ITypePatternOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

@@ -30,8 +30,12 @@ namespace StyleCop.Analyzers.DocumentationRules
     internal class SA1609SA1610CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1609PropertyDocumentationMustHaveValue.DiagnosticId, SA1610PropertyDocumentationMustHaveValueText.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1609PropertyDocumentationMustHaveValue.DiagnosticId,
+                                SA1610PropertyDocumentationMustHaveValueText.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -46,12 +50,11 @@ namespace StyleCop.Analyzers.DocumentationRules
             {
                 if (!diagnostic.Properties.ContainsKey(PropertyDocumentationBase.NoCodeFixKey))
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            DocumentationResources.SA1609SA1610CodeFix,
-                            cancellationToken => this.GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                            nameof(SA1609SA1610CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(DocumentationResources.SA1609SA1610CodeFix,
+                                                              cancellationToken => this.GetTransformedDocumentAsync(
+                                                                  context.Document, diagnostic, cancellationToken),
+                                                              nameof(SA1609SA1610CodeFixProvider)),
+                                            diagnostic);
                 }
             }
 
@@ -75,12 +78,13 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static SyntaxTrivia GetLastDocumentationCommentExteriorTrivia(SyntaxNode node)
         {
-            return node
-                .DescendantTrivia(descendIntoTrivia: true)
+            return node.DescendantTrivia(descendIntoTrivia
+                                         : true)
                 .LastOrDefault(trivia => trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia));
         }
 
-        private async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                 CancellationToken cancellationToken)
         {
             var documentRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan);
@@ -89,19 +93,22 @@ namespace StyleCop.Analyzers.DocumentationRules
                 return document;
             }
 
-            PropertyDeclarationSyntax propertyDeclarationSyntax = syntax.FirstAncestorOrSelf<PropertyDeclarationSyntax>();
+            PropertyDeclarationSyntax propertyDeclarationSyntax =
+                syntax.FirstAncestorOrSelf<PropertyDeclarationSyntax>();
             if (propertyDeclarationSyntax == null)
             {
                 return document;
             }
 
-            DocumentationCommentTriviaSyntax documentationComment = propertyDeclarationSyntax.GetDocumentationCommentTriviaSyntax();
+            DocumentationCommentTriviaSyntax documentationComment =
+                propertyDeclarationSyntax.GetDocumentationCommentTriviaSyntax();
             if (documentationComment == null)
             {
                 return document;
             }
 
-            if (!(documentationComment.Content.GetFirstXmlElement(XmlCommentHelper.SummaryXmlTag) is XmlElementSyntax summaryElement))
+            if (!(documentationComment.Content.GetFirstXmlElement(XmlCommentHelper.SummaryXmlTag)
+                      is XmlElementSyntax summaryElement))
             {
                 return document;
             }
@@ -122,9 +129,11 @@ namespace StyleCop.Analyzers.DocumentationRules
                 content = XmlSyntaxFactory.List(XmlSyntaxFactory.PlaceholderElement(content));
             }
 
-            string newLineText = document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
+            string newLineText =
+                document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
 
-            XmlElementSyntax valueElement = XmlSyntaxFactory.MultiLineElement(XmlCommentHelper.ValueXmlTag, newLineText, content);
+            XmlElementSyntax valueElement =
+                XmlSyntaxFactory.MultiLineElement(XmlCommentHelper.ValueXmlTag, newLineText, content);
 
             XmlNodeSyntax leadingNewLine = XmlSyntaxFactory.NewLine(newLineText);
 
@@ -138,7 +147,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 valueElement = valueElement.ReplaceExteriorTrivia(exteriorTrivia);
             }
 
-            // Try to replace an existing <value> element if the comment contains one. Otherwise, add it as a new element.
+            // Try to replace an existing <value> element if the comment contains one. Otherwise, add it as a new
+            // element.
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             SyntaxNode newRoot;
             XmlNodeSyntax existingValue = documentationComment.Content.GetFirstXmlElement(XmlCommentHelper.ValueXmlTag);
@@ -148,10 +158,9 @@ namespace StyleCop.Analyzers.DocumentationRules
             }
             else
             {
-                DocumentationCommentTriviaSyntax newDocumentationComment = documentationComment.WithContent(
-                    documentationComment.Content.InsertRange(
-                        documentationComment.Content.Count - 1,
-                        XmlSyntaxFactory.List(leadingNewLine, valueElement)));
+                DocumentationCommentTriviaSyntax newDocumentationComment =
+                    documentationComment.WithContent(documentationComment.Content.InsertRange(
+                        documentationComment.Content.Count - 1, XmlSyntaxFactory.List(leadingNewLine, valueElement)));
 
                 newRoot = root.ReplaceNode(documentationComment, newDocumentationComment);
             }
@@ -202,9 +211,11 @@ namespace StyleCop.Analyzers.DocumentationRules
             if (index >= 0)
             {
                 bool additionalCharacters = index + prefix.Length < text.Length;
-                text = text.Substring(0, index)
-                    + (additionalCharacters ? char.ToUpperInvariant(text[index + prefix.Length]).ToString() : string.Empty)
-                    + text.Substring(index + (additionalCharacters ? (prefix.Length + 1) : prefix.Length));
+                text = text.Substring(0, index) +
+                       (additionalCharacters ? char.ToUpperInvariant(text[index + prefix.Length]).ToString()
+                        : string.Empty) +
+                       text.Substring(index + (additionalCharacters ?(prefix.Length + 1)
+                                               : prefix.Length));
             }
 
             index = valueText.IndexOf(prefix);
@@ -213,7 +224,8 @@ namespace StyleCop.Analyzers.DocumentationRules
                 valueText = valueText.Remove(index, prefix.Length);
             }
 
-            SyntaxToken replaced = SyntaxFactory.Token(prefixToken.LeadingTrivia, prefixToken.Kind(), text, valueText, prefixToken.TrailingTrivia);
+            SyntaxToken replaced = SyntaxFactory.Token(prefixToken.LeadingTrivia, prefixToken.Kind(), text, valueText,
+                                                       prefixToken.TrailingTrivia);
             summaryContent = summaryContent.Replace(firstText, firstText.ReplaceToken(prefixToken, replaced));
             return true;
         }

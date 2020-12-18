@@ -39,20 +39,32 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1101PrefixLocalCallsWithThis"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1101";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1101.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1101Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1101MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1101Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1101.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1101Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1101MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1101Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly Action<SyntaxNodeAnalysisContext> MemberAccessExpressionAction = HandleMemberAccessExpression;
+        private static readonly Action<SyntaxNodeAnalysisContext> MemberAccessExpressionAction =
+            HandleMemberAccessExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> SimpleNameAction = HandleSimpleName;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -71,7 +83,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <param name="context">The analysis context for a <see cref="SyntaxNode"/>.</param>
         private static void HandleMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            MemberAccessExpressionSyntax syntax = (MemberAccessExpressionSyntax)context.Node;
+            MemberAccessExpressionSyntax syntax = (MemberAccessExpressionSyntax) context.Node;
             IdentifierNameSyntax nameExpression = syntax.Expression as IdentifierNameSyntax;
             HandleIdentifierNameImpl(context, nameExpression);
         }
@@ -96,7 +108,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return;
 
             case SyntaxKind.SimpleAssignmentExpression:
-                if (((AssignmentExpressionSyntax)context.Node.Parent).Left == context.Node)
+                if (((AssignmentExpressionSyntax) context.Node.Parent).Left == context.Node)
                 {
                     if (context.Node.Parent.Parent.IsKind(SyntaxKind.ObjectInitializerExpression))
                     {
@@ -118,7 +130,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 break;
 
             case SyntaxKind.NameEquals:
-                if (((NameEqualsSyntax)context.Node.Parent).Name != context.Node)
+                if (((NameEqualsSyntax) context.Node.Parent).Name != context.Node)
                 {
                     break;
                 }
@@ -135,7 +147,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 break;
 
-            case SyntaxKind.Argument when IsPartOfConstructorInitializer((SimpleNameSyntax)context.Node):
+            case SyntaxKind.Argument when IsPartOfConstructorInitializer((SimpleNameSyntax) context.Node):
                 // constructor invocations cannot contain this.
                 return;
 
@@ -143,7 +155,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 break;
             }
 
-            HandleIdentifierNameImpl(context, (SimpleNameSyntax)context.Node);
+            HandleIdentifierNameImpl(context, (SimpleNameSyntax) context.Node);
         }
 
         private static void HandleIdentifierNameImpl(SyntaxNodeAnalysisContext context, SimpleNameSyntax nameExpression)
@@ -211,7 +223,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 // and can be removed when the underlying bug in roslyn is resolved
                 if (nameExpression.Parent is MemberAccessExpressionSyntax)
                 {
-                    var memberAccessSymbol = context.SemanticModel.GetSymbolInfo(nameExpression.Parent, context.CancellationToken).Symbol;
+                    var memberAccessSymbol =
+                        context.SemanticModel.GetSymbolInfo(nameExpression.Parent, context.CancellationToken).Symbol;
 
                     switch (memberAccessSymbol?.Kind)
                     {
@@ -257,13 +270,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 case SyntaxKind.EventDeclaration:
                 case SyntaxKind.IndexerDeclaration:
-                    var basePropertySyntax = (BasePropertyDeclarationSyntax)node;
+                    var basePropertySyntax = (BasePropertyDeclarationSyntax) node;
                     return !basePropertySyntax.Modifiers.Any(SyntaxKind.StaticKeyword);
 
                 case SyntaxKind.PropertyDeclaration:
-                    var propertySyntax = (PropertyDeclarationSyntax)node;
-                    return !propertySyntax.Modifiers.Any(SyntaxKind.StaticKeyword)
-                        && propertySyntax.Initializer == null;
+                    var propertySyntax = (PropertyDeclarationSyntax) node;
+                    return !propertySyntax.Modifiers.Any(SyntaxKind.StaticKeyword) &&
+                           propertySyntax.Initializer == null;
 
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
@@ -272,7 +285,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 case SyntaxKind.ConstructorDeclaration:
                 case SyntaxKind.DestructorDeclaration:
                 case SyntaxKind.MethodDeclaration:
-                    var baseMethodSyntax = (BaseMethodDeclarationSyntax)node;
+                    var baseMethodSyntax = (BaseMethodDeclarationSyntax) node;
                     return !baseMethodSyntax.Modifiers.Any(SyntaxKind.StaticKeyword);
 
                 case SyntaxKind.Attribute:

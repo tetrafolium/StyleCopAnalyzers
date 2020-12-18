@@ -29,21 +29,43 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1135UsingDirectivesMustBeQualified"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1135";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1135.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1135Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormatNamespace = new LocalizableResourceString(nameof(ReadabilityResources.SA1135MessageFormatNamespace), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormatType = new LocalizableResourceString(nameof(ReadabilityResources.SA1135MessageFormatType), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1135Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1135.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1135Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormatNamespace =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1135MessageFormatNamespace),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormatType =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1135MessageFormatType),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1135Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        public static DiagnosticDescriptor DescriptorNamespace { get; } =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatNamespace, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        public static DiagnosticDescriptor DescriptorNamespace
+        {
+            get;
+        }
+        = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatNamespace, AnalyzerCategory.ReadabilityRules,
+                                   DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                                   HelpLink);
 
-        public static DiagnosticDescriptor DescriptorType { get; } =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatType, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        public static DiagnosticDescriptor DescriptorType
+        {
+            get;
+        }
+        = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatType, AnalyzerCategory.ReadabilityRules,
+                                   DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                                   HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorNamespace);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(DescriptorNamespace);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -61,11 +83,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleUsingDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var usingDirective = (UsingDirectiveSyntax)context.Node;
+            var usingDirective = (UsingDirectiveSyntax) context.Node;
             CheckUsingDeclaration(context, usingDirective);
         }
 
-        private static void CheckUsingDeclaration(SyntaxNodeAnalysisContext context, UsingDirectiveSyntax usingDirective)
+        private static void CheckUsingDeclaration(SyntaxNodeAnalysisContext context,
+                                                  UsingDirectiveSyntax usingDirective)
         {
             if (!usingDirective.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
             {
@@ -86,8 +109,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return;
             }
 
-            if (symbol is INamedTypeSymbol typeSymbol
-                && typeSymbol.IsTupleType())
+            if (symbol is INamedTypeSymbol typeSymbol && typeSymbol.IsTupleType())
             {
                 symbol = typeSymbol.TupleUnderlyingTypeOrSelf();
             }
@@ -95,19 +117,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
             string symbolString = symbol.ToQualifiedString(usingDirective.Name);
 
             string usingString = UsingDirectiveSyntaxToCanonicalString(usingDirective);
-            if ((symbolString != usingString) && !usingDirective.StartsWithAlias(context.SemanticModel, context.CancellationToken))
+            if ((symbolString != usingString) &&
+                !usingDirective.StartsWithAlias(context.SemanticModel, context.CancellationToken))
             {
                 switch (symbol.Kind)
                 {
                 case SymbolKind.Namespace:
-                    context.ReportDiagnostic(Diagnostic.Create(DescriptorNamespace, usingDirective.GetLocation(), symbolString));
+                    context.ReportDiagnostic(
+                        Diagnostic.Create(DescriptorNamespace, usingDirective.GetLocation(), symbolString));
                     break;
 
                 case SymbolKind.NamedType:
-                    var containingNamespace = ((NamespaceDeclarationSyntax)usingDirective.Parent).Name.ToString();
+                    var containingNamespace = ((NamespaceDeclarationSyntax) usingDirective.Parent).Name.ToString();
                     if (containingNamespace != symbol.ContainingNamespace.ToString())
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(DescriptorType, usingDirective.GetLocation(), symbolString));
+                        context.ReportDiagnostic(
+                            Diagnostic.Create(DescriptorType, usingDirective.GetLocation(), symbolString));
                     }
 
                     break;
@@ -186,7 +211,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
             default:
                 if (TupleTypeSyntaxWrapper.IsInstance(type))
                 {
-                    var tupleType = (TupleTypeSyntaxWrapper)type;
+                    var tupleType = (TupleTypeSyntaxWrapper) type;
 
                     builder.Append("(");
 

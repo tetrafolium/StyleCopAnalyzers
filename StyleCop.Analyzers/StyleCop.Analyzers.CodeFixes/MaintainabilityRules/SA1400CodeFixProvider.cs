@@ -26,8 +26,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     internal class SA1400CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1400AccessModifierMustBeDeclared.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1400AccessModifierMustBeDeclared.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,7 +44,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             foreach (var diagnostic in context.Diagnostics)
             {
-                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie : true);
                 if (node == null || node.IsMissing)
                 {
                     continue;
@@ -53,78 +56,79 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                     continue;
                 }
 
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        MaintainabilityResources.SA1400CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, root, declarationNode),
-                        nameof(SA1400CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(MaintainabilityResources.SA1400CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, root, declarationNode),
+                                                          nameof(SA1400CodeFixProvider)),
+                                        diagnostic);
             }
         }
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, SyntaxNode declarationNode)
+        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root,
+                                                                  SyntaxNode declarationNode)
         {
             SyntaxNode updatedDeclarationNode;
             switch (declarationNode.Kind())
             {
             case SyntaxKind.ClassDeclaration:
-                updatedDeclarationNode = HandleClassDeclaration((ClassDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleClassDeclaration((ClassDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.InterfaceDeclaration:
-                updatedDeclarationNode = HandleInterfaceDeclaration((InterfaceDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleInterfaceDeclaration((InterfaceDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.EnumDeclaration:
-                updatedDeclarationNode = HandleEnumDeclaration((EnumDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleEnumDeclaration((EnumDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.StructDeclaration:
-                updatedDeclarationNode = HandleStructDeclaration((StructDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleStructDeclaration((StructDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKindEx.RecordDeclaration:
-                updatedDeclarationNode = HandleRecordDeclaration((RecordDeclarationSyntaxWrapper)declarationNode);
+                updatedDeclarationNode = HandleRecordDeclaration((RecordDeclarationSyntaxWrapper) declarationNode);
                 break;
 
             case SyntaxKind.DelegateDeclaration:
-                updatedDeclarationNode = HandleDelegateDeclaration((DelegateDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleDelegateDeclaration((DelegateDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.EventDeclaration:
-                updatedDeclarationNode = HandleEventDeclaration((EventDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleEventDeclaration((EventDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.EventFieldDeclaration:
-                updatedDeclarationNode = HandleEventFieldDeclaration((EventFieldDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleEventFieldDeclaration((EventFieldDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.MethodDeclaration:
-                updatedDeclarationNode = HandleMethodDeclaration((MethodDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleMethodDeclaration((MethodDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.PropertyDeclaration:
-                updatedDeclarationNode = HandlePropertyDeclaration((PropertyDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandlePropertyDeclaration((PropertyDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.FieldDeclaration:
-                updatedDeclarationNode = HandleFieldDeclaration((FieldDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleFieldDeclaration((FieldDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.OperatorDeclaration:
-                updatedDeclarationNode = HandleOperatorDeclaration((OperatorDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleOperatorDeclaration((OperatorDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.ConversionOperatorDeclaration:
-                updatedDeclarationNode = HandleConversionOperatorDeclaration((ConversionOperatorDeclarationSyntax)declarationNode);
+                updatedDeclarationNode =
+                    HandleConversionOperatorDeclaration((ConversionOperatorDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.IndexerDeclaration:
-                updatedDeclarationNode = HandleIndexerDeclaration((IndexerDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleIndexerDeclaration((IndexerDeclarationSyntax) declarationNode);
                 break;
 
             case SyntaxKind.ConstructorDeclaration:
-                updatedDeclarationNode = HandleConstructorDeclaration((ConstructorDeclarationSyntax)declarationNode);
+                updatedDeclarationNode = HandleConstructorDeclaration((ConstructorDeclarationSyntax) declarationNode);
                 break;
 
             default:
@@ -144,11 +148,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             }
 
             SyntaxKind defaultVisibility = IsNestedType(node) ? SyntaxKind.PrivateKeyword : SyntaxKind.InternalKeyword;
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
-            return node
-                .WithKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
+            return node.WithKeyword(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleInterfaceDeclaration(InterfaceDeclarationSyntax node)
@@ -160,11 +162,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             }
 
             SyntaxKind defaultVisibility = IsNestedType(node) ? SyntaxKind.PrivateKeyword : SyntaxKind.InternalKeyword;
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
-            return node
-                .WithKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
+            return node.WithKeyword(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleEnumDeclaration(EnumDeclarationSyntax node)
@@ -176,11 +176,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             }
 
             SyntaxKind defaultVisibility = IsNestedType(node) ? SyntaxKind.PrivateKeyword : SyntaxKind.InternalKeyword;
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
-            return node
-                .WithEnumKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
+            return node.WithEnumKeyword(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleStructDeclaration(StructDeclarationSyntax node)
@@ -192,11 +190,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             }
 
             SyntaxKind defaultVisibility = IsNestedType(node) ? SyntaxKind.PrivateKeyword : SyntaxKind.InternalKeyword;
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
-            return node
-                .WithKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
+            return node.WithKeyword(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleRecordDeclaration(RecordDeclarationSyntaxWrapper node)
@@ -208,12 +204,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             }
 
             SyntaxKind defaultVisibility = IsNestedType(node) ? SyntaxKind.PrivateKeyword : SyntaxKind.InternalKeyword;
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
-            return node
-                .WithKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .SyntaxNode
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
+            return node.WithKeyword(triviaToken).WithModifiers(modifiers).SyntaxNode.WithoutFormatting();
         }
 
         private static SyntaxNode HandleDelegateDeclaration(DelegateDeclarationSyntax node)
@@ -225,11 +218,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             }
 
             SyntaxKind defaultVisibility = IsNestedType(node) ? SyntaxKind.PrivateKeyword : SyntaxKind.InternalKeyword;
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
-            return node
-                .WithDelegateKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, defaultVisibility);
+            return node.WithDelegateKeyword(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleEventDeclaration(EventDeclarationSyntax node)
@@ -240,11 +231,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, SyntaxKind.PrivateKeyword);
-            return node
-                .WithEventKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, SyntaxKind.PrivateKeyword);
+            return node.WithEventKeyword(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleEventFieldDeclaration(EventFieldDeclarationSyntax node)
@@ -255,11 +244,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, SyntaxKind.PrivateKeyword);
-            return node
-                .WithEventKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, SyntaxKind.PrivateKeyword);
+            return node.WithEventKeyword(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleMethodDeclaration(MethodDeclarationSyntax node)
@@ -270,11 +257,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref type, SyntaxKind.PrivateKeyword);
-            return node
-                .WithReturnType(type)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref type, SyntaxKind.PrivateKeyword);
+            return node.WithReturnType(type).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandlePropertyDeclaration(PropertyDeclarationSyntax node)
@@ -285,11 +270,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref type, SyntaxKind.PrivateKeyword);
-            return node
-                .WithType(type)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref type, SyntaxKind.PrivateKeyword);
+            return node.WithType(type).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleFieldDeclaration(FieldDeclarationSyntax node)
@@ -300,11 +283,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref declaration, SyntaxKind.PrivateKeyword);
-            return node
-                .WithDeclaration(declaration)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref declaration, SyntaxKind.PrivateKeyword);
+            return node.WithDeclaration(declaration).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleOperatorDeclaration(OperatorDeclarationSyntax node)
@@ -315,11 +296,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref type, SyntaxKind.PublicKeyword);
-            return node
-                .WithReturnType(type)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref type, SyntaxKind.PublicKeyword);
+            return node.WithReturnType(type).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleConversionOperatorDeclaration(ConversionOperatorDeclarationSyntax node)
@@ -330,11 +309,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, SyntaxKind.PublicKeyword);
-            return node
-                .WithImplicitOrExplicitKeyword(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, SyntaxKind.PublicKeyword);
+            return node.WithImplicitOrExplicitKeyword(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleIndexerDeclaration(IndexerDeclarationSyntax node)
@@ -345,11 +322,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref type, SyntaxKind.PrivateKeyword);
-            return node
-                .WithType(type)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref type, SyntaxKind.PrivateKeyword);
+            return node.WithType(type).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode HandleConstructorDeclaration(ConstructorDeclarationSyntax node)
@@ -360,11 +335,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return null;
             }
 
-            SyntaxTokenList modifiers = DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, SyntaxKind.PrivateKeyword);
-            return node
-                .WithIdentifier(triviaToken)
-                .WithModifiers(modifiers)
-                .WithoutFormatting();
+            SyntaxTokenList modifiers =
+                DeclarationModifiersHelper.AddModifier(node.Modifiers, ref triviaToken, SyntaxKind.PrivateKeyword);
+            return node.WithIdentifier(triviaToken).WithModifiers(modifiers).WithoutFormatting();
         }
 
         private static SyntaxNode FindParentDeclarationNode(SyntaxNode node)

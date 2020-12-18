@@ -14,7 +14,8 @@ namespace StyleCop.Analyzers.DocumentationRules
     using StyleCop.Analyzers.Settings.ObjectModel;
 
     /// <summary>
-    /// This is the base class for analyzers which examine the <c>&lt;value&gt;</c> text of a documentation comment on a property declaration.
+    /// This is the base class for analyzers which examine the <c>&lt;value&gt;</c> text of a documentation comment on a
+    /// property declaration.
     /// </summary>
     internal abstract class PropertyDocumentationBase : DiagnosticAnalyzer
     {
@@ -34,7 +35,10 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// Gets the XML tag within the property documentation that should be handled.
         /// </summary>
         /// <value>The XML tag to handle.</value>
-        protected abstract string XmlTagToHandle { get; }
+        protected abstract string XmlTagToHandle
+        {
+            get;
+        }
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -58,23 +62,30 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// element, this value will be <see langword="null"/>, even if the XML documentation comment also included an
         /// <c>&lt;include&gt;</c> element.</param>
         /// <param name="diagnosticLocation">The location where diagnostics, if any, should be reported.</param>
-        protected abstract void HandleXmlElement(SyntaxNodeAnalysisContext context, bool needsComment, XmlNodeSyntax syntax, XElement completeDocumentation, Location diagnosticLocation);
+        protected abstract void HandleXmlElement(SyntaxNodeAnalysisContext context, bool needsComment,
+                                                 XmlNodeSyntax syntax, XElement completeDocumentation,
+                                                 Location diagnosticLocation);
 
         private void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (PropertyDeclarationSyntax)context.Node;
+            var node = (PropertyDeclarationSyntax) context.Node;
             if (node.Identifier.IsMissing)
             {
                 return;
             }
 
-            Accessibility declaredAccessibility = node.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
-            Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
-            bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, node.Kind(), node.Parent.Kind(), declaredAccessibility, effectiveAccessibility);
+            Accessibility declaredAccessibility =
+                node.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
+            Accessibility effectiveAccessibility =
+                node.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
+            bool needsComment = SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, node.Kind(),
+                                                                            node.Parent.Kind(), declaredAccessibility,
+                                                                            effectiveAccessibility);
             this.HandleDeclaration(context, needsComment, node, node.Identifier.GetLocation());
         }
 
-        private void HandleDeclaration(SyntaxNodeAnalysisContext context, bool needsComment, SyntaxNode node, Location location)
+        private void HandleDeclaration(SyntaxNodeAnalysisContext context, bool needsComment, SyntaxNode node,
+                                       Location location)
         {
             var documentation = node.GetDocumentationCommentTriviaSyntax();
             if (documentation == null)
@@ -98,9 +109,12 @@ namespace StyleCop.Analyzers.DocumentationRules
                 if (relevantXmlElement != null)
                 {
                     var declaration = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
-                    var rawDocumentation = declaration?.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+                    var rawDocumentation = declaration?.GetDocumentationCommentXml(expandIncludes
+                                                                                   : true, cancellationToken
+                                                                                   : context.CancellationToken);
                     completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
-                    if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag))
+                    if (completeDocumentation.Nodes().OfType<XElement>().Any(
+                            element => element.Name == XmlCommentHelper.InheritdocXmlTag))
                     {
                         // Ignore nodes with an <inheritdoc/> tag in the included XML.
                         return;

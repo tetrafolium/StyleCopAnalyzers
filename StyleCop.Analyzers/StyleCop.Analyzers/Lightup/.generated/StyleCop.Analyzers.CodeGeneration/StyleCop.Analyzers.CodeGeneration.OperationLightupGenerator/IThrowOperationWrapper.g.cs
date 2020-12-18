@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IThrowOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IThrowOperationWrapper));
-            ExceptionAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Exception));
+            ExceptionAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Exception));
         }
 
         private IThrowOperationWrapper(IOperation operation)

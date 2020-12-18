@@ -45,7 +45,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             get
             {
-                return new FileHeader { IsMissing = true };
+                return new FileHeader{IsMissing = true};
             }
         }
 
@@ -55,7 +55,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// True if the file header is missing.
         /// </value>
-        internal bool IsMissing { get; private set; }
+        internal bool IsMissing
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets the copyright text, as parsed from the header.
@@ -63,7 +67,10 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// The copyright text, as parsed from the header.
         /// </value>
-        internal string CopyrightText { get; }
+        internal string CopyrightText
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the location representing the start of the file header.

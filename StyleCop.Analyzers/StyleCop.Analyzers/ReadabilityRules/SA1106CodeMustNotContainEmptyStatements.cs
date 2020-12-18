@@ -25,21 +25,33 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1106CodeMustNotContainEmptyStatements"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1106";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1106.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1106Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1106MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1106Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1106.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1106Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1106MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1106Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
 
         private static readonly Action<SyntaxNodeAnalysisContext> EmptyStatementAction = HandleEmptyStatement;
         private static readonly Action<SyntaxNodeAnalysisContext> BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction = HandleNamespaceDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction =
+            HandleNamespaceDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -54,10 +66,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var declaration = (BaseTypeDeclarationSyntax)context.Node;
+            var declaration = (BaseTypeDeclarationSyntax) context.Node;
 
-            if (declaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken)
-                && !declaration.OpenBraceToken.IsKind(SyntaxKind.None))
+            if (declaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken) &&
+                !declaration.OpenBraceToken.IsKind(SyntaxKind.None))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, declaration.SemicolonToken.GetLocation()));
             }
@@ -65,7 +77,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var declaration = (NamespaceDeclarationSyntax)context.Node;
+            var declaration = (NamespaceDeclarationSyntax) context.Node;
 
             if (declaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken))
             {
@@ -75,7 +87,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleEmptyStatement(SyntaxNodeAnalysisContext context)
         {
-            EmptyStatementSyntax syntax = (EmptyStatementSyntax)context.Node;
+            EmptyStatementSyntax syntax = (EmptyStatementSyntax) context.Node;
 
             if (syntax.Parent is LabeledStatementSyntax labeledStatementSyntax)
             {

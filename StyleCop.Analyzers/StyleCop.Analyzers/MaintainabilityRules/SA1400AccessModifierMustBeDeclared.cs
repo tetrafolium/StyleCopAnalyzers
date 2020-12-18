@@ -29,26 +29,39 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1400AccessModifierMustBeDeclared"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1400";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1400.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(MaintainabilityResources.SA1400Title), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1400MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1400Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1400.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1400Title),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1400MessageFormat),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(MaintainabilityResources.SA1400Description),
+                                          MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> DelegateDeclarationAction = HandleDelegateDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> EventDeclarationAction = HandleEventDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction = HandleMethodDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> PropertyDeclarationAction = HandlePropertyDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> BaseFieldDeclarationAction = HandleBaseFieldDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> BaseFieldDeclarationAction =
+            HandleBaseFieldDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction = HandleIndexerDeclaration;
-        private static readonly Action<SyntaxNodeAnalysisContext> ConstructorDeclarationAction = HandleConstructorDeclaration;
+        private static readonly Action<SyntaxNodeAnalysisContext> ConstructorDeclarationAction =
+            HandleConstructorDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -68,19 +81,19 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (BaseTypeDeclarationSyntax)context.Node;
+            var syntax = (BaseTypeDeclarationSyntax) context.Node;
             CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
         }
 
         private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (DelegateDeclarationSyntax)context.Node;
+            var syntax = (DelegateDeclarationSyntax) context.Node;
             CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
         }
 
         private static void HandleEventDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (EventDeclarationSyntax)context.Node;
+            var syntax = (EventDeclarationSyntax) context.Node;
             if (syntax.ExplicitInterfaceSpecifier != null)
             {
                 return;
@@ -96,7 +109,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (MethodDeclarationSyntax)context.Node;
+            var syntax = (MethodDeclarationSyntax) context.Node;
             if (syntax.ExplicitInterfaceSpecifier != null)
             {
                 return;
@@ -112,7 +125,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (PropertyDeclarationSyntax)context.Node;
+            var syntax = (PropertyDeclarationSyntax) context.Node;
             if (syntax.ExplicitInterfaceSpecifier != null)
             {
                 return;
@@ -128,7 +141,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleBaseFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (BaseFieldDeclarationSyntax)context.Node;
+            var syntax = (BaseFieldDeclarationSyntax) context.Node;
             if (syntax.Parent.IsKind(SyntaxKind.InterfaceDeclaration))
             {
                 // this can occur for event field declarations
@@ -141,7 +154,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
                 return;
             }
 
-            VariableDeclaratorSyntax declarator = declarationSyntax.Variables.FirstOrDefault(i => !i.Identifier.IsMissing);
+            VariableDeclaratorSyntax declarator =
+                declarationSyntax.Variables.FirstOrDefault(i => !i.Identifier.IsMissing);
             if (declarator == null)
             {
                 return;
@@ -152,7 +166,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (IndexerDeclarationSyntax)context.Node;
+            var syntax = (IndexerDeclarationSyntax) context.Node;
             if (syntax.ExplicitInterfaceSpecifier != null)
             {
                 return;
@@ -168,11 +182,12 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (ConstructorDeclarationSyntax)context.Node;
+            var syntax = (ConstructorDeclarationSyntax) context.Node;
             CheckAccessModifiers(context, syntax.Identifier, syntax.Modifiers);
         }
 
-        private static void CheckAccessModifiers(SyntaxNodeAnalysisContext context, SyntaxToken identifier, SyntaxTokenList modifiers, SyntaxNode declarationNode = null)
+        private static void CheckAccessModifiers(SyntaxNodeAnalysisContext context, SyntaxToken identifier,
+                                                 SyntaxTokenList modifiers, SyntaxNode declarationNode = null)
         {
             if (identifier.IsMissing)
             {
@@ -207,7 +222,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             }
 
             // missing access modifier
-            ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declarationNode ?? context.Node, context.CancellationToken);
+            ISymbol symbol =
+                context.SemanticModel.GetDeclaredSymbol(declarationNode ?? context.Node, context.CancellationToken);
             string name = symbol?.Name;
             if (string.IsNullOrEmpty(name))
             {

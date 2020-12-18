@@ -76,11 +76,12 @@ namespace StyleCop.Analyzers.Helpers
 
         /// <summary>
         /// This helper is used by documentation diagnostics to check if a XML comment should be considered empty.
-        /// A comment is empty if it does not have any text in any XML element and it does not have an empty XML element in it.
+        /// A comment is empty if it does not have any text in any XML element and it does not have an empty XML element
+        /// in it.
         /// </summary>
         /// <param name="xmlSyntax">The XML syntax that should be checked.</param>
-        /// <param name="considerEmptyElements">Flag indicating if empty elements should be considered or assumed non-empty.</param>
-        /// <returns>true, if the comment should be considered empty, false otherwise.</returns>
+        /// <param name="considerEmptyElements">Flag indicating if empty elements should be considered or assumed
+        /// non-empty.</param> <returns>true, if the comment should be considered empty, false otherwise.</returns>
         internal static bool IsConsideredEmpty(XmlNodeSyntax xmlSyntax, bool considerEmptyElements = false)
         {
             if (xmlSyntax is XmlTextSyntax text)
@@ -133,7 +134,8 @@ namespace StyleCop.Analyzers.Helpers
 
         /// <summary>
         /// This helper is used by documentation diagnostics to check if an XML comment should be considered empty.
-        /// A comment is empty if it does not have any text in any XML element and it does not have an empty XML element in it.
+        /// A comment is empty if it does not have any text in any XML element and it does not have an empty XML element
+        /// in it.
         /// </summary>
         /// <param name="node">The XML node that should be checked.</param>
         /// <returns>true, if the comment should be considered empty, false otherwise.</returns>
@@ -282,8 +284,7 @@ namespace StyleCop.Analyzers.Helpers
             return result;
         }
 
-        internal static T GetFirstAttributeOrDefault<T>(XmlNodeSyntax nodeSyntax)
-            where T : XmlAttributeSyntax
+        internal static T GetFirstAttributeOrDefault<T>(XmlNodeSyntax nodeSyntax) where T : XmlAttributeSyntax
         {
             if (nodeSyntax is XmlEmptyElementSyntax emptyElementSyntax)
             {

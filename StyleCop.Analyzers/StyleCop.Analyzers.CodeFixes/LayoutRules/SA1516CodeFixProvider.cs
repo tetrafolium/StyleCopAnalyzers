@@ -23,8 +23,11 @@ namespace StyleCop.Analyzers.LayoutRules
     internal class SA1516CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1516ElementsMustBeSeparatedByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1516ElementsMustBeSeparatedByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -45,20 +48,22 @@ namespace StyleCop.Analyzers.LayoutRules
                     continue;
                 }
 
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        insertBlankLine.Value ? LayoutResources.SA1516CodeFixInsert : LayoutResources.SA1516CodeFixRemove,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, syntaxRoot, diagnostic, insertBlankLine.Value, context.CancellationToken),
-                        nameof(SA1516CodeFixProvider)),
-                    diagnostic);
+                context.RegisterCodeFix(CodeAction.Create(insertBlankLine.Value ? LayoutResources.SA1516CodeFixInsert
+                                                          : LayoutResources.SA1516CodeFixRemove,
+                                                            cancellationToken => GetTransformedDocumentAsync(
+                                                                context.Document, syntaxRoot, diagnostic,
+                                                                insertBlankLine.Value, context.CancellationToken),
+                                                            nameof(SA1516CodeFixProvider)),
+                                        diagnostic);
             }
         }
 
-        private static bool? DetermineCodeFixAction(Diagnostic diagnostic)
+        private static bool ? DetermineCodeFixAction(Diagnostic diagnostic)
         {
             string codeFixAction;
 
-            if (!diagnostic.Properties.TryGetValue(SA1516ElementsMustBeSeparatedByBlankLine.CodeFixActionKey, out codeFixAction))
+            if (!diagnostic.Properties.TryGetValue(SA1516ElementsMustBeSeparatedByBlankLine.CodeFixActionKey,
+                                                   out codeFixAction))
             {
                 return null;
             }
@@ -76,12 +81,14 @@ namespace StyleCop.Analyzers.LayoutRules
             }
         }
 
-        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode syntaxRoot, Diagnostic diagnostic, bool insertBlankLine, CancellationToken cancellationToken)
+        private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode syntaxRoot,
+                                                                  Diagnostic diagnostic, bool insertBlankLine,
+                                                                  CancellationToken cancellationToken)
         {
             // Currently unused
             _ = cancellationToken;
 
-            var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie : true);
             node = GetRelevantNode(node);
 
             if (node == null)
@@ -158,13 +165,17 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private class FixAll : DocumentBasedFixAllProvider
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+            public static FixAllProvider Instance
+            {
+                get;
+            }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1516CodeFixAll;
+            protected override string CodeActionTitle => LayoutResources.SA1516CodeFixAll;
 
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
             {
                 if (diagnostics.IsEmpty)
                 {
@@ -173,7 +184,8 @@ namespace StyleCop.Analyzers.LayoutRules
 
                 var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
-                // Using token replacement, because node replacement will do nothing when replacing child nodes from a replaced parent node.
+                // Using token replacement, because node replacement will do nothing when replacing child nodes from a
+                // replaced parent node.
                 Dictionary<SyntaxToken, SyntaxToken> replaceMap = new Dictionary<SyntaxToken, SyntaxToken>();
 
                 foreach (var diagnostic in diagnostics)
@@ -184,14 +196,15 @@ namespace StyleCop.Analyzers.LayoutRules
                         continue;
                     }
 
-                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie : true);
                     node = GetRelevantNode(node);
 
                     if (node != null)
                     {
                         var firstToken = node.GetFirstToken();
 
-                        replaceMap[firstToken] = ProcessToken(firstToken, insertBlankLine.Value);
+                        replaceMap [firstToken]
+                        = ProcessToken(firstToken, insertBlankLine.Value);
                     }
                 }
 

@@ -25,8 +25,11 @@ namespace StyleCop.Analyzers.DocumentationRules
     internal class SA1617CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,19 +44,19 @@ namespace StyleCop.Analyzers.DocumentationRules
             {
                 if (!diagnostic.Properties.ContainsKey(SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey))
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            DocumentationResources.SA1617CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                            nameof(SA1617CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(DocumentationResources.SA1617CodeFix,
+                                                              cancellationToken => GetTransformedDocumentAsync(
+                                                                  context.Document, diagnostic, cancellationToken),
+                                                              nameof(SA1617CodeFixProvider)),
+                                            diagnostic);
                 }
             }
 
             return SpecializedTasks.CompletedTask;
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var node = root.FindNode(diagnostic.Location.SourceSpan);
@@ -83,8 +86,8 @@ namespace StyleCop.Analyzers.DocumentationRules
             List<SyntaxNode> nodesToFix = new List<SyntaxNode>();
             nodesToFix.Add(returnsElement);
 
-            if (previous is XmlTextSyntax previousAsTextSyntax
-                && XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax))
+            if (previous is XmlTextSyntax previousAsTextSyntax &&
+                XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax))
             {
                 nodesToFix.Add(previous);
             }

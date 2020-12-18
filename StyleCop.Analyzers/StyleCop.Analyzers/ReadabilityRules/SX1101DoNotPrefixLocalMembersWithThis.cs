@@ -18,19 +18,30 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SX1101DoNotPrefixLocalMembersWithThis"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SX1101";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1101.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SX1101Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SX1101MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SX1101Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1101.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SX1101Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SX1101MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SX1101Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.DisabledAlternative, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.DisabledAlternative, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
 
         private static readonly Action<SyntaxNodeAnalysisContext> ThisExpressionAction = HandleThisExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -48,8 +59,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 return;
             }
 
-            var memberAccessExpression = (MemberAccessExpressionSyntax)context.Node.Parent;
-            var originalSymbolInfo = context.SemanticModel.GetSymbolInfo(memberAccessExpression, context.CancellationToken);
+            var memberAccessExpression = (MemberAccessExpressionSyntax) context.Node.Parent;
+            var originalSymbolInfo =
+                context.SemanticModel.GetSymbolInfo(memberAccessExpression, context.CancellationToken);
             if (originalSymbolInfo.Symbol == null)
             {
                 return;
@@ -62,24 +74,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
             StatementSyntax statement = context.Node.FirstAncestorOrSelf<StatementSyntax>();
             if (statement != null)
             {
-                var modifiedStatement = statement.ReplaceNode(memberAccessExpression, memberAccessExpression.Name.WithAdditionalAnnotations(annotation));
+                var modifiedStatement = statement.ReplaceNode(
+                    memberAccessExpression, memberAccessExpression.Name.WithAdditionalAnnotations(annotation));
                 speculationRoot = modifiedStatement;
-                if (!context.SemanticModel.TryGetSpeculativeSemanticModel(statement.SpanStart, modifiedStatement, out speculativeModel))
+                if (!context.SemanticModel.TryGetSpeculativeSemanticModel(statement.SpanStart, modifiedStatement,
+                                                                          out speculativeModel))
                 {
                     return;
                 }
             }
             else
             {
-                ArrowExpressionClauseSyntax arrowExpressionClause = context.Node.FirstAncestorOrSelf<ArrowExpressionClauseSyntax>();
+                ArrowExpressionClauseSyntax arrowExpressionClause =
+                    context.Node.FirstAncestorOrSelf<ArrowExpressionClauseSyntax>();
                 if (arrowExpressionClause == null)
                 {
                     return;
                 }
 
-                var modifiedArrowExpressionClause = arrowExpressionClause.ReplaceNode(memberAccessExpression, memberAccessExpression.Name.WithAdditionalAnnotations(annotation));
+                var modifiedArrowExpressionClause = arrowExpressionClause.ReplaceNode(
+                    memberAccessExpression, memberAccessExpression.Name.WithAdditionalAnnotations(annotation));
                 speculationRoot = modifiedArrowExpressionClause;
-                if (!context.SemanticModel.TryGetSpeculativeSemanticModel(arrowExpressionClause.SpanStart, modifiedArrowExpressionClause, out speculativeModel))
+                if (!context.SemanticModel.TryGetSpeculativeSemanticModel(
+                        arrowExpressionClause.SpanStart, modifiedArrowExpressionClause, out speculativeModel))
                 {
                     return;
                 }

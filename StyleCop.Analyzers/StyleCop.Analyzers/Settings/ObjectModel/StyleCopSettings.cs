@@ -63,8 +63,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             this.documentationRules = new DocumentationSettings();
         }
 
-        protected internal StyleCopSettings(JsonObject settingsObject)
-            : this()
+        protected internal StyleCopSettings(JsonObject settingsObject) : this()
         {
             foreach (var kvp in settingsObject)
             {
@@ -117,28 +116,20 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public IndentationSettings Indentation =>
-            this.indentation;
+        public IndentationSettings Indentation => this.indentation;
 
-        public SpacingSettings SpacingRules =>
-            this.spacingRules;
+        public SpacingSettings SpacingRules => this.spacingRules;
 
-        public ReadabilitySettings ReadabilityRules =>
-            this.readabilityRules;
+        public ReadabilitySettings ReadabilityRules => this.readabilityRules;
 
-        public OrderingSettings OrderingRules =>
-            this.orderingRules;
+        public OrderingSettings OrderingRules => this.orderingRules;
 
-        public NamingSettings NamingRules =>
-            this.namingRules;
+        public NamingSettings NamingRules => this.namingRules;
 
-        public MaintainabilitySettings MaintainabilityRules =>
-            this.maintainabilityRules;
+        public MaintainabilitySettings MaintainabilityRules => this.maintainabilityRules;
 
-        public LayoutSettings LayoutRules =>
-            this.layoutRules;
+        public LayoutSettings LayoutRules => this.layoutRules;
 
-        public DocumentationSettings DocumentationRules =>
-            this.documentationRules;
+        public DocumentationSettings DocumentationRules => this.documentationRules;
     }
 }

@@ -16,7 +16,9 @@ namespace StyleCop.Analyzers.Lightup
         static IPropertyInitializerOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IPropertyInitializerOperationWrapper));
-            InitializedPropertiesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IPropertySymbol>>(WrappedType, nameof(InitializedProperties));
+            InitializedPropertiesAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IPropertySymbol>>(
+                    WrappedType, nameof(InitializedProperties));
         }
 
         private IPropertyInitializerOperationWrapper(IOperation operation)
@@ -26,11 +28,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public ImmutableArray<IPropertySymbol> InitializedProperties => InitializedPropertiesAccessor(this.WrappedOperation);
-        public ImmutableArray<ILocalSymbol> Locals => ((ISymbolInitializerOperationWrapper)this).Locals;
-        public IOperation Value => ((ISymbolInitializerOperationWrapper)this).Value;
-        public static explicit operator IPropertyInitializerOperationWrapper(ISymbolInitializerOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ISymbolInitializerOperationWrapper(IPropertyInitializerOperationWrapper wrapper) => ISymbolInitializerOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public ImmutableArray<IPropertySymbol> InitializedProperties =>
+            InitializedPropertiesAccessor(this.WrappedOperation);
+        public ImmutableArray<ILocalSymbol> Locals =>((ISymbolInitializerOperationWrapper) this).Locals;
+        public IOperation Value =>((ISymbolInitializerOperationWrapper) this).Value;
+        public static explicit operator IPropertyInitializerOperationWrapper(
+            ISymbolInitializerOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ISymbolInitializerOperationWrapper(
+            IPropertyInitializerOperationWrapper wrapper) =>
+            ISymbolInitializerOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IPropertyInitializerOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

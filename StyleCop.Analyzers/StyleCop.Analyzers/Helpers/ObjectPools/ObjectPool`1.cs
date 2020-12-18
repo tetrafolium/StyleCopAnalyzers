@@ -26,8 +26,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
     ///    If there is no intent for reusing the object, do not use pool - just use "new".
     /// </summary>
     /// <typeparam name="T">The type of the objects in this cache.</typeparam>
-    internal class ObjectPool<T>
-            where T : class
+    internal class ObjectPool<T> where T : class
     {
         private readonly Element[] items;
 
@@ -40,8 +39,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
         // expect to be able to satisfy most requests from it.
         private T firstItem;
 
-        internal ObjectPool(Func<T> factory)
-            : this(factory, Environment.ProcessorCount * 2)
+        internal ObjectPool(Func<T> factory) : this(factory, Environment.ProcessorCount * 2)
         {
         }
 

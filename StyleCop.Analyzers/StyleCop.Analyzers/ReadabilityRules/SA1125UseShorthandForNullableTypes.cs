@@ -26,19 +26,30 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// The ID for diagnostics produced by the <see cref="SA1125UseShorthandForNullableTypes"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1125";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1125.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1125Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1125MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1125Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1125.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1125Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1125MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1125Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> GenericNameAction = HandleGenericName;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -51,7 +62,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleGenericName(SyntaxNodeAnalysisContext context)
         {
-            GenericNameSyntax genericNameSyntax = (GenericNameSyntax)context.Node;
+            GenericNameSyntax genericNameSyntax = (GenericNameSyntax) context.Node;
 
             if (genericNameSyntax.Identifier.IsMissing || genericNameSyntax.Identifier.ValueText != "Nullable")
             {
@@ -69,7 +80,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 // cref="Nullable{T}.Value"
                 return;
             }
-            else if (genericNameSyntax.Parent is QualifiedNameSyntax && genericNameSyntax.Parent.Parent is QualifiedCrefSyntax)
+            else if (genericNameSyntax.Parent is QualifiedNameSyntax &&
+                     genericNameSyntax.Parent.Parent is QualifiedCrefSyntax)
             {
                 // cref="System.Nullable{T}.Value"
                 return;
@@ -95,7 +107,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             }
 
             SemanticModel semanticModel = context.SemanticModel;
-            INamedTypeSymbol symbol = semanticModel.GetSymbolInfo(genericNameSyntax, context.CancellationToken).Symbol as INamedTypeSymbol;
+            INamedTypeSymbol symbol =
+                semanticModel.GetSymbolInfo(genericNameSyntax, context.CancellationToken).Symbol as INamedTypeSymbol;
             if (symbol?.OriginalDefinition?.SpecialType != SpecialType.System_Nullable_T)
             {
                 return;

@@ -17,15 +17,18 @@ namespace StyleCop.Analyzers.Lightup
         public LocalFunctionStatementSyntaxWrapper AddTypeParameterListParameters(params TypeParameterSyntax[] items)
         {
             var typeParameterList = this.TypeParameterList ?? SyntaxFactory.TypeParameterList();
-            return this.WithTypeParameterList(typeParameterList.WithParameters(typeParameterList.Parameters.AddRange(items)));
+            return this.WithTypeParameterList(
+                typeParameterList.WithParameters(typeParameterList.Parameters.AddRange(items)));
         }
 
         public LocalFunctionStatementSyntaxWrapper AddParameterListParameters(params ParameterSyntax[] items)
         {
-            return this.WithParameterList(this.ParameterList.WithParameters(this.ParameterList.Parameters.AddRange(items)));
+            return this.WithParameterList(
+                this.ParameterList.WithParameters(this.ParameterList.Parameters.AddRange(items)));
         }
 
-        public LocalFunctionStatementSyntaxWrapper AddConstraintClauses(params TypeParameterConstraintClauseSyntax[] items)
+        public LocalFunctionStatementSyntaxWrapper AddConstraintClauses(
+            params TypeParameterConstraintClauseSyntax[] items)
         {
             return this.WithConstraintClauses(this.ConstraintClauses.AddRange(items));
         }

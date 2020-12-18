@@ -14,8 +14,9 @@ namespace StyleCop.Analyzers
     /// but not limited to the following:</para>
     /// <list type="bullet">
     /// <item><description>Visual Studio provides a built-in diagnostic.</description></item>
-    /// <item><description>The diagnostic is vaguely defined, so there is no clear direction for the implementation.</description></item>
-    /// <item><description>The diagnostic has been superseded by a fine-grained set of new rules for customization.</description></item>
+    /// <item><description>The diagnostic is vaguely defined, so there is no clear direction for the
+    /// implementation.</description></item> <item><description>The diagnostic has been superseded by a fine-grained set
+    /// of new rules for customization.</description></item>
     /// </list>
     /// <para>The <see cref="Reason"/> should be provided.</para>
     /// </remarks>
@@ -25,7 +26,8 @@ namespace StyleCop.Analyzers
         /// <summary>
         /// Initializes a new instance of the <see cref="NoDiagnosticAttribute"/> class.
         /// </summary>
-        /// <param name="reason">The reason why the <see cref="DiagnosticAnalyzer"/> does not have an implementation.</param>
+        /// <param name="reason">The reason why the <see cref="DiagnosticAnalyzer"/> does not have an
+        /// implementation.</param>
         public NoDiagnosticAttribute(string reason)
         {
             this.Reason = reason;

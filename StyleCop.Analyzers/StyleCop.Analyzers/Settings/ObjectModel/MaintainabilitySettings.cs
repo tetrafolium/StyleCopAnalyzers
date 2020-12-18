@@ -31,8 +31,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         /// Initializes a new instance of the <see cref="MaintainabilitySettings"/> class.
         /// </summary>
         /// <param name="maintainabilitySettingsObject">The JSON object containing the settings.</param>
-        protected internal MaintainabilitySettings(JsonObject maintainabilitySettingsObject)
-            : this()
+        protected internal MaintainabilitySettings(JsonObject maintainabilitySettingsObject) : this()
         {
             foreach (var kvp in maintainabilitySettingsObject)
             {

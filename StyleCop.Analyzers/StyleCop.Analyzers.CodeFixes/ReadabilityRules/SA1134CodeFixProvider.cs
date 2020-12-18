@@ -23,8 +23,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
     internal class SA1134CodeFixProvider : CodeFixProvider
     {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1134AttributesMustNotShareLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get;
+        }
+        = ImmutableArray.Create(SA1134AttributesMustNotShareLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,26 +45,28 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 // Do not offer the code fix if the error is found at an invalid node (like IncompleteMemberSyntax)
                 if (syntaxRoot.FindNode(diagnostic.Location.SourceSpan) is AttributeListSyntax)
                 {
-                    context.RegisterCodeFix(
-                        CodeAction.Create(
-                            ReadabilityResources.SA1134CodeFix,
-                            cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                            nameof(SA1134CodeFixProvider)),
-                        diagnostic);
+                    context.RegisterCodeFix(CodeAction.Create(ReadabilityResources.SA1134CodeFix,
+                                                              cancellationToken => GetTransformedDocumentAsync(
+                                                                  context.Document, diagnostic, cancellationToken),
+                                                              nameof(SA1134CodeFixProvider)),
+                                            diagnostic);
                 }
             }
         }
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
 
-            var attributeListSyntax = (AttributeListSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
+            var attributeListSyntax = (AttributeListSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
 
             // use the containing type to determine the indentation level, anything else is less reliable.
             var containingType = attributeListSyntax.Parent?.Parent;
-            var indentationSteps = (containingType != null) ? IndentationHelper.GetIndentationSteps(settings.Indentation, containingType) + 1 : 0;
+            var indentationSteps = (containingType != null)
+                                       ? IndentationHelper.GetIndentationSteps(settings.Indentation, containingType) + 1
+                                       : 0;
             var indentationTrivia = IndentationHelper.GenerateWhitespaceTrivia(settings.Indentation, indentationSteps);
 
             var tokensToReplace = new Dictionary<SyntaxToken, SyntaxToken>();
@@ -71,7 +76,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 var token = attributeListSyntax.OpenBracketToken;
                 var prevToken = token.GetPreviousToken();
 
-                tokensToReplace[prevToken] = prevToken.WithTrailingTrivia(prevToken.TrailingTrivia.WithoutTrailingWhitespace().Add(SyntaxFactory.CarriageReturnLineFeed));
+                tokensToReplace[prevToken] = prevToken.WithTrailingTrivia(
+                    prevToken.TrailingTrivia.WithoutTrailingWhitespace().Add(SyntaxFactory.CarriageReturnLineFeed));
 
                 var newLeadingTrivia = token.LeadingTrivia.Insert(0, indentationTrivia);
                 tokensToReplace[token] = token.WithLeadingTrivia(newLeadingTrivia);
@@ -82,13 +88,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 var token = attributeListSyntax.CloseBracketToken;
                 var nextToken = token.GetNextToken();
 
-                tokensToReplace[token] = token.WithTrailingTrivia(token.TrailingTrivia.WithoutTrailingWhitespace().Add(SyntaxFactory.CarriageReturnLineFeed));
+                tokensToReplace[token] = token.WithTrailingTrivia(
+                    token.TrailingTrivia.WithoutTrailingWhitespace().Add(SyntaxFactory.CarriageReturnLineFeed));
 
                 var newLeadingTrivia = nextToken.LeadingTrivia.Insert(0, indentationTrivia);
                 tokensToReplace[nextToken] = nextToken.WithLeadingTrivia(newLeadingTrivia);
             }
 
-            var newSyntaxRoot = syntaxRoot.ReplaceTokens(tokensToReplace.Keys, (original, rewritten) => tokensToReplace[original]);
+            var newSyntaxRoot =
+                syntaxRoot.ReplaceTokens(tokensToReplace.Keys, (original, rewritten) => tokensToReplace[original]);
             var newDocument = document.WithSyntaxRoot(newSyntaxRoot.WithoutFormatting());
 
             return newDocument;

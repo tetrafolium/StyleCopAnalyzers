@@ -48,19 +48,27 @@ namespace StyleCop.Analyzers.SpacingRules
         /// analyzer.
         /// </summary>
         public const string DiagnosticId = "SA1004";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1004.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(SpacingResources.SA1004Title), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1004MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1004Description), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1004.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(SpacingResources.SA1004Title), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(SpacingResources.SA1004MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(SpacingResources.SA1004Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -74,7 +82,7 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var trivia in root.DescendantTrivia(descendIntoTrivia: true))
+            foreach (var trivia in root.DescendantTrivia(descendIntoTrivia : true))
             {
                 switch (trivia.Kind())
                 {
@@ -88,7 +96,8 @@ namespace StyleCop.Analyzers.SpacingRules
             }
         }
 
-        private static void HandleDocumentationCommentExteriorTrivia(SyntaxTreeAnalysisContext context, SyntaxTrivia trivia)
+        private static void HandleDocumentationCommentExteriorTrivia(SyntaxTreeAnalysisContext context,
+                                                                     SyntaxTrivia trivia)
         {
             SyntaxToken token = trivia.Token;
             if (token.IsMissing)
@@ -148,8 +157,8 @@ namespace StyleCop.Analyzers.SpacingRules
                 if (token.Text.StartsWith("  ", StringComparison.Ordinal))
                 {
                     SyntaxKind grandparentKind = token.Parent?.Parent?.Kind() ?? SyntaxKind.None;
-                    if (grandparentKind != SyntaxKind.SingleLineDocumentationCommentTrivia
-                        && grandparentKind != SyntaxKind.MultiLineDocumentationCommentTrivia)
+                    if (grandparentKind != SyntaxKind.SingleLineDocumentationCommentTrivia &&
+                        grandparentKind != SyntaxKind.MultiLineDocumentationCommentTrivia)
                     {
                         // Allow extra indentation for nested text and elements.
                         return;

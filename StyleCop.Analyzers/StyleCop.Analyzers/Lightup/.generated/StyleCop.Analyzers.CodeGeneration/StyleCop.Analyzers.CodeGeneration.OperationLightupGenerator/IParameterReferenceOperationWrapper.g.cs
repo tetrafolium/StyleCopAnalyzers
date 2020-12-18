@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IParameterReferenceOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IParameterReferenceOperationWrapper));
-            ParameterAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(WrappedType, nameof(Parameter));
+            ParameterAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IParameterSymbol>(
+                WrappedType, nameof(Parameter));
         }
 
         private IParameterReferenceOperationWrapper(IOperation operation)

@@ -28,7 +28,8 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         /// <summary>
         /// The default value for the <see cref="ExcludeFromPunctuationCheck"/> property.
         /// </summary>
-        internal static readonly ImmutableArray<string> DefaultExcludeFromPunctuationCheck = ImmutableArray.Create("seealso");
+        internal static readonly ImmutableArray<string> DefaultExcludeFromPunctuationCheck =
+            ImmutableArray.Create("seealso");
 
         /// <summary>
         /// This is the backing field for the <see cref="CompanyName"/> property.
@@ -128,8 +129,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         /// Initializes a new instance of the <see cref="DocumentationSettings"/> class.
         /// </summary>
         /// <param name="documentationSettingsObject">The JSON object containing the settings.</param>
-        protected internal DocumentationSettings(JsonObject documentationSettingsObject)
-            : this()
+        protected internal DocumentationSettings(JsonObject documentationSettingsObject) : this()
         {
             foreach (var kvp in documentationSettingsObject)
             {
@@ -245,29 +245,21 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public bool DocumentExposedElements =>
-            this.documentExposedElements;
+        public bool DocumentExposedElements => this.documentExposedElements;
 
-        public bool DocumentInternalElements =>
-            this.documentInternalElements;
+        public bool DocumentInternalElements => this.documentInternalElements;
 
-        public bool DocumentPrivateElements =>
-            this.documentPrivateElements;
+        public bool DocumentPrivateElements => this.documentPrivateElements;
 
-        public bool DocumentInterfaces =>
-            this.documentInterfaces;
+        public bool DocumentInterfaces => this.documentInterfaces;
 
-        public bool DocumentPrivateFields =>
-            this.documentPrivateFields;
+        public bool DocumentPrivateFields => this.documentPrivateFields;
 
-        public FileNamingConvention FileNamingConvention =>
-            this.fileNamingConvention;
+        public FileNamingConvention FileNamingConvention => this.fileNamingConvention;
 
-        public string DocumentationCulture =>
-            this.documentationCulture;
+        public string DocumentationCulture => this.documentationCulture;
 
-        public ImmutableArray<string> ExcludeFromPunctuationCheck
-            => this.excludeFromPunctuationCheck;
+        public ImmutableArray<string> ExcludeFromPunctuationCheck => this.excludeFromPunctuationCheck;
 
         public string GetCopyrightText(string fileName)
         {

@@ -21,21 +21,31 @@ namespace StyleCop.Analyzers.SpecialRules
         /// The ID for diagnostics produced by the <see cref="SA0002InvalidSettingsFile"/> analyzer.
         /// </summary>
         public const string DiagnosticId = "SA0002";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0002.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(SpecialResources.SA0002Title), SpecialResources.ResourceManager, typeof(SpecialResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpecialResources.SA0002MessageFormat), SpecialResources.ResourceManager, typeof(SpecialResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpecialResources.SA0002Description), SpecialResources.ResourceManager, typeof(SpecialResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0002.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(SpecialResources.SA0002Title), SpecialResources.ResourceManager, typeof(SpecialResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(SpecialResources.SA0002MessageFormat), SpecialResources.ResourceManager, typeof(SpecialResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(SpecialResources.SA0002Description), SpecialResources.ResourceManager, typeof(SpecialResources));
 
         private static readonly DiagnosticDescriptor Descriptor =
-#pragma warning disable RS1033 // Define diagnostic description correctly (Description ends with formatted exception text)
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+#pragma warning disable RS1033 // Define diagnostic description correctly (Description ends with formatted exception
+                               // text)
+            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules,
+                                     DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description,
+                                     HelpLink);
 #pragma warning restore RS1033 // Define diagnostic description correctly
 
         private static readonly Action<CompilationAnalysisContext> CompilationAction = HandleCompilation;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -50,14 +60,17 @@ namespace StyleCop.Analyzers.SpecialRules
         {
             try
             {
-                SettingsHelper.GetStyleCopSettings(context.Options, DeserializationFailureBehavior.ThrowException, context.CancellationToken);
+                SettingsHelper.GetStyleCopSettings(context.Options, DeserializationFailureBehavior.ThrowException,
+                                                   context.CancellationToken);
             }
-            catch (Exception ex) when (ex is JsonParseException || ex is InvalidSettingsException)
+            catch (Exception ex) when(ex is JsonParseException || ex is InvalidSettingsException)
             {
                 string details = ex.Message;
                 string completeDescription = string.Format(Description.ToString(CultureInfo.CurrentCulture), details);
 
-                var completeDescriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, completeDescription, HelpLink);
+                var completeDescriptor = new DiagnosticDescriptor(
+                    DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules, DiagnosticSeverity.Warning,
+                    AnalyzerConstants.EnabledByDefault, completeDescription, HelpLink);
                 context.ReportDiagnostic(Diagnostic.Create(completeDescriptor, Location.None));
             }
         }

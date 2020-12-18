@@ -35,7 +35,8 @@ namespace StyleCop.Analyzers.Helpers
             return content.GetXmlElements(elementName).FirstOrDefault();
         }
 
-        public static IEnumerable<XmlNodeSyntax> GetXmlElements(this SyntaxList<XmlNodeSyntax> content, string elementName)
+        public static IEnumerable<XmlNodeSyntax> GetXmlElements(this SyntaxList<XmlNodeSyntax> content,
+                                                                string elementName)
         {
             foreach (XmlNodeSyntax syntax in content)
             {
@@ -61,18 +62,20 @@ namespace StyleCop.Analyzers.Helpers
             }
         }
 
-        public static T ReplaceExteriorTrivia<T>(this T node, SyntaxTrivia trivia)
-            where T : XmlNodeSyntax
+        public static T ReplaceExteriorTrivia<T>(this T node, SyntaxTrivia trivia) where T : XmlNodeSyntax
         {
             // Make sure to include a space after the '///' characters.
             SyntaxTrivia triviaWithSpace = SyntaxFactory.DocumentationCommentExterior(trivia.ToString() + " ");
 
-            return node.ReplaceTrivia(
-                node.DescendantTrivia(descendIntoTrivia: true).Where(i => i.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia)),
-                (originalTrivia, rewrittenTrivia) => SelectExteriorTrivia(rewrittenTrivia, trivia, triviaWithSpace));
+            return node.ReplaceTrivia(node.DescendantTrivia(descendIntoTrivia
+                                                            : true)
+                                          .Where(i => i.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia)),
+                                      (originalTrivia, rewrittenTrivia) =>
+                                          SelectExteriorTrivia(rewrittenTrivia, trivia, triviaWithSpace));
         }
 
-        public static SyntaxList<XmlNodeSyntax> WithoutFirstAndLastNewlines(this SyntaxList<XmlNodeSyntax> summaryContent)
+        public static SyntaxList<XmlNodeSyntax> WithoutFirstAndLastNewlines(
+            this SyntaxList<XmlNodeSyntax> summaryContent)
         {
             if (summaryContent.Count == 0)
             {
@@ -171,7 +174,8 @@ namespace StyleCop.Analyzers.Helpers
             if (summaryContent.Count > 0)
             {
                 // Make sure to remove the leading trivia
-                summaryContent = summaryContent.Replace(summaryContent[0], summaryContent[0].WithLeadingTrivia());
+                summaryContent = summaryContent.Replace(summaryContent[0], summaryContent [0]
+                                                                               .WithLeadingTrivia());
 
                 // Remove leading spaces (between the <para> start tag and the start of the paragraph content)
                 if (summaryContent[0] is XmlTextSyntax firstTextSyntax && firstTextSyntax.TextTokens.Count > 0)
@@ -181,14 +185,12 @@ namespace StyleCop.Analyzers.Helpers
                     string trimmed = firstTokenText.TrimStart();
                     if (trimmed != firstTokenText)
                     {
-                        SyntaxToken newFirstToken = SyntaxFactory.Token(
-                            firstTextToken.LeadingTrivia,
-                            firstTextToken.Kind(),
-                            trimmed,
-                            firstTextToken.ValueText.TrimStart(),
-                            firstTextToken.TrailingTrivia);
+                        SyntaxToken newFirstToken =
+                            SyntaxFactory.Token(firstTextToken.LeadingTrivia, firstTextToken.Kind(), trimmed,
+                                                firstTextToken.ValueText.TrimStart(), firstTextToken.TrailingTrivia);
 
-                        summaryContent = summaryContent.Replace(firstTextSyntax, firstTextSyntax.ReplaceToken(firstTextToken, newFirstToken));
+                        summaryContent = summaryContent.Replace(
+                            firstTextSyntax, firstTextSyntax.ReplaceToken(firstTextToken, newFirstToken));
                     }
                 }
             }
@@ -203,8 +205,7 @@ namespace StyleCop.Analyzers.Helpers
 
         public static bool IsXmlWhitespace(this SyntaxToken node)
         {
-            return node.IsKind(SyntaxKind.XmlTextLiteralToken)
-                && string.IsNullOrWhiteSpace(node.Text);
+            return node.IsKind(SyntaxKind.XmlTextLiteralToken) && string.IsNullOrWhiteSpace(node.Text);
         }
 
         /// <summary>
@@ -216,34 +217,39 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>A <see cref="SyntaxNode"/> equivalent to the input <paramref name="node"/>, adjusted by moving any
         /// trailing trivia from <see cref="SyntaxKind.XmlTextLiteralNewLineToken"/> tokens to be leading trivia of the
         /// following token.</returns>
-        public static T AdjustDocumentationCommentNewLineTrivia<T>(this T node)
-            where T : SyntaxNode
+        public static T AdjustDocumentationCommentNewLineTrivia<T>(this T node) where T : SyntaxNode
         {
             var tokensForAdjustment =
                 from token in node.DescendantTokens()
-                where token.IsKind(SyntaxKind.XmlTextLiteralNewLineToken)
-                where token.HasTrailingTrivia
-                let next = token.GetNextToken(includeZeroWidth: true, includeSkipped: true, includeDirectives: true, includeDocumentationComments: true)
-                where !next.IsMissingOrDefault()
-                select new KeyValuePair<SyntaxToken, SyntaxToken>(token, next);
+                    where token.IsKind(SyntaxKind.XmlTextLiteralNewLineToken) where token.HasTrailingTrivia let next =
+                    token
+                        .GetNextToken(includeZeroWidth
+                                      : true, includeSkipped
+                                      : true, includeDirectives
+                                      : true, includeDocumentationComments
+                                      : true) where !next.IsMissingOrDefault()
+                            select new KeyValuePair<SyntaxToken, SyntaxToken>(token, next);
 
             Dictionary<SyntaxToken, SyntaxToken> replacements = new Dictionary<SyntaxToken, SyntaxToken>();
             foreach (var pair in tokensForAdjustment)
             {
                 replacements[pair.Key] = pair.Key.WithTrailingTrivia();
-                replacements[pair.Value] = pair.Value.WithLeadingTrivia(pair.Value.LeadingTrivia.InsertRange(0, pair.Key.TrailingTrivia));
+                replacements[pair.Value] =
+                    pair.Value.WithLeadingTrivia(pair.Value.LeadingTrivia.InsertRange(0, pair.Key.TrailingTrivia));
             }
 
-            return node.ReplaceTokens(replacements.Keys, (originalToken, rewrittenToken) => replacements[originalToken]);
+            return node.ReplaceTokens(replacements.Keys,
+                                      (originalToken, rewrittenToken) => replacements[originalToken]);
         }
 
         public static XmlNameSyntax GetName(this XmlNodeSyntax element)
         {
-            return (element as XmlElementSyntax)?.StartTag?.Name
-                ?? (element as XmlEmptyElementSyntax)?.Name;
+            return (element as XmlElementSyntax) ?.StartTag?.Name
+                ??(element as XmlEmptyElementSyntax) ?.Name;
         }
 
-        private static SyntaxTrivia SelectExteriorTrivia(SyntaxTrivia rewrittenTrivia, SyntaxTrivia trivia, SyntaxTrivia triviaWithSpace)
+        private static SyntaxTrivia SelectExteriorTrivia(SyntaxTrivia rewrittenTrivia, SyntaxTrivia trivia,
+                                                         SyntaxTrivia triviaWithSpace)
         {
             // if the trivia had a trailing space, make sure to preserve it
             if (rewrittenTrivia.ToString().EndsWith(" "))
