@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class BaseMethodDeclarationSyntaxExtensions
-    {
+    internal static class BaseMethodDeclarationSyntaxExtensions {
         private static readonly Func<BaseMethodDeclarationSyntax, ArrowExpressionClauseSyntax> ExpressionBodyAccessor;
 
         static BaseMethodDeclarationSyntaxExtensions()
@@ -18,19 +17,17 @@ namespace StyleCop.Analyzers.Lightup
 
         public static ArrowExpressionClauseSyntax ExpressionBody(this BaseMethodDeclarationSyntax syntax)
         {
-            if (!LightupHelpers.SupportsCSharp7)
-            {
+            if (!LightupHelpers.SupportsCSharp7) {
                 // Prior to C# 7, the ExpressionBody properties did not override a base method.
-                switch (syntax.Kind())
-                {
+                switch (syntax.Kind()) {
                 case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)syntax).ExpressionBody;
+                    return ((MethodDeclarationSyntax) syntax).ExpressionBody;
 
                 case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)syntax).ExpressionBody;
+                    return ((OperatorDeclarationSyntax) syntax).ExpressionBody;
 
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)syntax).ExpressionBody;
+                    return ((ConversionOperatorDeclarationSyntax) syntax).ExpressionBody;
 
                 default:
                     break;

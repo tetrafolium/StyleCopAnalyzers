@@ -18,11 +18,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1413CodeFixProvider))]
     [Shared]
-    internal class SA1413CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1413CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1413UseTrailingCommasInMultiLineInitializers.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1413UseTrailingCommasInMultiLineInitializers.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -33,8 +32,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         MaintainabilityResources.SA1413CodeFix,

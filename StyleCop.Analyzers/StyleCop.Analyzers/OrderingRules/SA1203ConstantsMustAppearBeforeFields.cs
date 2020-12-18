@@ -21,8 +21,7 @@ namespace StyleCop.Analyzers.OrderingRules
     /// different considerations for the compiler, different naming requirements, etc.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1203ConstantsMustAppearBeforeFields : DiagnosticAnalyzer
-    {
+    internal class SA1203ConstantsMustAppearBeforeFields : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1203ConstantsMustAppearBeforeFields"/> analyzer.
         /// </summary>
@@ -32,17 +31,15 @@ namespace StyleCop.Analyzers.OrderingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1203MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1203Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
-            ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration);
+        private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds = ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration);
 
         private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> TypeDeclarationAction = HandleTypeDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -57,12 +54,11 @@ namespace StyleCop.Analyzers.OrderingRules
         {
             var elementOrder = settings.OrderingRules.ElementOrder;
             int constantIndex = elementOrder.IndexOf(OrderingTrait.Constant);
-            if (constantIndex < 0)
-            {
+            if (constantIndex < 0) {
                 return;
             }
 
-            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+            var typeDeclaration = (TypeDeclarationSyntax) context.Node;
 
             var members = typeDeclaration.Members;
             var previousFieldConstant = true;
@@ -70,10 +66,8 @@ namespace StyleCop.Analyzers.OrderingRules
             var previousFieldReadonly = false;
             var previousAccessLevel = AccessLevel.NotSpecified;
 
-            foreach (var member in members)
-            {
-                if (!(member is FieldDeclarationSyntax field))
-                {
+            foreach (var member in members) {
+                if (!(member is FieldDeclarationSyntax field)) {
                     continue;
                 }
 
@@ -82,29 +76,24 @@ namespace StyleCop.Analyzers.OrderingRules
                 bool currentFieldReadonly = currentFieldConstant || field.Modifiers.Any(SyntaxKind.ReadOnlyKeyword);
                 bool currentFieldStatic = currentFieldConstant || field.Modifiers.Any(SyntaxKind.StaticKeyword);
                 bool compareConst = true;
-                for (int j = 0; compareConst && j < constantIndex; j++)
-                {
-                    switch (elementOrder[j])
-                    {
+                for (int j = 0; compareConst && j < constantIndex; j++) {
+                    switch (elementOrder[j]) {
                     case OrderingTrait.Accessibility:
-                        if (currentAccessLevel != previousAccessLevel)
-                        {
+                        if (currentAccessLevel != previousAccessLevel) {
                             compareConst = false;
                         }
 
                         continue;
 
                     case OrderingTrait.Readonly:
-                        if (currentFieldReadonly != previousFieldReadonly)
-                        {
+                        if (currentFieldReadonly != previousFieldReadonly) {
                             compareConst = false;
                         }
 
                         continue;
 
                     case OrderingTrait.Static:
-                        if (currentFieldStatic != previousFieldStatic)
-                        {
+                        if (currentFieldStatic != previousFieldStatic) {
                             compareConst = false;
                         }
 
@@ -120,10 +109,8 @@ namespace StyleCop.Analyzers.OrderingRules
                     }
                 }
 
-                if (compareConst)
-                {
-                    if (!previousFieldConstant && currentFieldConstant)
-                    {
+                if (compareConst) {
+                    if (!previousFieldConstant && currentFieldConstant) {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, NamedTypeHelpers.GetNameOrIdentifierLocation(member)));
                     }
                 }

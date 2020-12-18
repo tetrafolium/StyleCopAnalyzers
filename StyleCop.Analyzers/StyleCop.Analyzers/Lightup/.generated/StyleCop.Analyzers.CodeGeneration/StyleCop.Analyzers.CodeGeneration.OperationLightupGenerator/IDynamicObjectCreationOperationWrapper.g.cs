@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IDynamicObjectCreationOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IDynamicObjectCreationOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IDynamicObjectCreationOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> InitializerAccessor;
@@ -32,13 +31,11 @@ namespace StyleCop.Analyzers.Lightup
         public ImmutableArray<IOperation> Arguments => ArgumentsAccessor(this.WrappedOperation);
         public static IDynamicObjectCreationOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Provides helper methods for working with source file locations.
     /// </summary>
-    internal static class LocationHelpers
-    {
+    internal static class LocationHelpers {
         /// <summary>
         /// Gets the location in terms of path, line and column for a given token.
         /// </summary>

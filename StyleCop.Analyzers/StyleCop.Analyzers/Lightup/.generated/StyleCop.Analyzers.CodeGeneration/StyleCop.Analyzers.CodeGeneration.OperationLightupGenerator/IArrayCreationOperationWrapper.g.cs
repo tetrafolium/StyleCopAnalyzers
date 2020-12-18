@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IArrayCreationOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IArrayCreationOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IArrayCreationOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ImmutableArray<IOperation>> DimensionSizesAccessor;
@@ -32,13 +31,11 @@ namespace StyleCop.Analyzers.Lightup
         public IArrayInitializerOperationWrapper Initializer => IArrayInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
         public static IArrayCreationOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

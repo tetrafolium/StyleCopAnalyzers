@@ -11,14 +11,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
     using Microsoft.CodeAnalysis.Editing;
     using StyleCop.Analyzers.Helpers;
 
-    internal class SA1107FixAllProvider : DocumentBasedFixAllProvider
-    {
+    internal class SA1107FixAllProvider : DocumentBasedFixAllProvider {
         protected override string CodeActionTitle => ReadabilityResources.SA1107CodeFix;
 
         protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
         {
-            if (diagnostics.IsEmpty)
-            {
+            if (diagnostics.IsEmpty) {
                 return null;
             }
 
@@ -29,19 +27,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
             ImmutableList<SyntaxNode> nodesToChange = ImmutableList.Create<SyntaxNode>();
 
             // Make sure all nodes we care about are tracked
-            foreach (var diagnostic in diagnostics)
-            {
+            foreach (var diagnostic in diagnostics) {
                 var location = diagnostic.Location;
                 var syntaxNode = root.FindNode(location.SourceSpan);
-                if (syntaxNode != null)
-                {
+                if (syntaxNode != null) {
                     editor.TrackNode(syntaxNode);
                     nodesToChange = nodesToChange.Add(syntaxNode);
                 }
             }
 
-            foreach (var node in nodesToChange)
-            {
+            foreach (var node in nodesToChange) {
                 editor.ReplaceNode(node, node.WithLeadingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed));
             }
 

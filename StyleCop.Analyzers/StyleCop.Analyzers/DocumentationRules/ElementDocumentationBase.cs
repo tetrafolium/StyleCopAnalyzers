@@ -17,8 +17,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// <summary>
     /// This is the base class for analyzers which examine the <c>&lt;param&gt;</c> text of a documentation comment on an element declaration.
     /// </summary>
-    internal abstract class ElementDocumentationBase : DiagnosticAnalyzer
-    {
+    internal abstract class ElementDocumentationBase : DiagnosticAnalyzer {
         private readonly string matchElementName;
         private readonly bool inheritDocSuppressesWarnings;
 
@@ -95,9 +94,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleMethodDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (MethodDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (MethodDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -109,9 +107,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (ConstructorDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (ConstructorDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -123,9 +120,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (DelegateDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (DelegateDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -137,9 +133,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (IndexerDeclarationSyntax)context.Node;
-            if (node.ThisKeyword.IsMissing)
-            {
+            var node = (IndexerDeclarationSyntax) context.Node;
+            if (node.ThisKeyword.IsMissing) {
                 return;
             }
 
@@ -151,9 +146,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleOperatorDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (OperatorDeclarationSyntax)context.Node;
-            if (node.OperatorToken.IsMissing)
-            {
+            var node = (OperatorDeclarationSyntax) context.Node;
+            if (node.OperatorToken.IsMissing) {
                 return;
             }
 
@@ -165,7 +159,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleConversionOperatorDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (ConversionOperatorDeclarationSyntax)context.Node;
+            var node = (ConversionOperatorDeclarationSyntax) context.Node;
 
             Accessibility declaredAccessibility = node.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
             Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
@@ -175,7 +169,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (BaseTypeDeclarationSyntax)context.Node;
+            var node = (BaseTypeDeclarationSyntax) context.Node;
 
             Accessibility declaredAccessibility = node.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
             Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
@@ -185,7 +179,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleFieldDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (FieldDeclarationSyntax)context.Node;
+            var node = (FieldDeclarationSyntax) context.Node;
 
             Accessibility declaredAccessibility = node.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
             Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
@@ -195,7 +189,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (PropertyDeclarationSyntax)context.Node;
+            var node = (PropertyDeclarationSyntax) context.Node;
 
             Accessibility declaredAccessibility = node.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
             Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
@@ -205,7 +199,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleEnumMemberDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (EnumMemberDeclarationSyntax)context.Node;
+            var node = (EnumMemberDeclarationSyntax) context.Node;
 
             Accessibility declaredAccessibility = node.GetDeclaredAccessibility();
             Accessibility effectiveAccessibility = node.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
@@ -216,44 +210,38 @@ namespace StyleCop.Analyzers.DocumentationRules
         private void HandleDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings, bool needsComment, SyntaxNode node, params Location[] locations)
         {
             var documentation = node.GetDocumentationCommentTriviaSyntax();
-            if (documentation == null)
-            {
+            if (documentation == null) {
                 // missing documentation is reported by SA1600, SA1601, and SA1602
                 return;
             }
 
             if (this.inheritDocSuppressesWarnings
-                && documentation.Content.GetFirstXmlElement(XmlCommentHelper.InheritdocXmlTag) != null)
-            {
+                && documentation.Content.GetFirstXmlElement(XmlCommentHelper.InheritdocXmlTag) != null) {
                 // Ignore nodes with an <inheritdoc/> tag.
                 return;
             }
 
-            var hasIncludedDocumentation =
-                documentation.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag) is object;
+            var hasIncludedDocumentation = documentation.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag) is object;
 
-            if (hasIncludedDocumentation)
-            {
+            if (hasIncludedDocumentation) {
                 var declaration = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
-                var rawDocumentation = declaration?.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+                var rawDocumentation = declaration?.GetDocumentationCommentXml(expandIncludes
+                                                                               : true, cancellationToken
+                                                                               : context.CancellationToken);
                 var completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
 
-                if (this.inheritDocSuppressesWarnings &&
-                    completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag))
-                {
+                if (this.inheritDocSuppressesWarnings && completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag)) {
                     // Ignore nodes with an <inheritdoc/> tag in the included XML.
                     return;
                 }
 
                 this.HandleCompleteDocumentation(context, needsComment, completeDocumentation, locations);
-            }
-            else
-            {
+            } else {
                 IEnumerable<XmlNodeSyntax> matchingXmlElements = string.IsNullOrEmpty(this.matchElementName)
                     ? documentation.Content
-                        .Where(x => x is XmlElementSyntax || x is XmlEmptyElementSyntax)
-                        .Where(x => !string.Equals(x.GetName()?.ToString(), XmlCommentHelper.IncludeXmlTag, StringComparison.Ordinal))
-                    : documentation.Content.GetXmlElements(this.matchElementName);
+                          .Where(x => x is XmlElementSyntax || x is XmlEmptyElementSyntax)
+                          .Where(x => !string.Equals(x.GetName() ?.ToString(), XmlCommentHelper.IncludeXmlTag, StringComparison.Ordinal))
+                      : documentation.Content.GetXmlElements(this.matchElementName);
 
                 this.HandleXmlElement(context, settings, needsComment, matchingXmlElements, locations);
             }

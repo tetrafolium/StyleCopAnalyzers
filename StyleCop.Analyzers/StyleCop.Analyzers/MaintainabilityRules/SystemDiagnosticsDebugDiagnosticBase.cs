@@ -12,8 +12,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// A base class for <see cref="System.Diagnostics.Debug"/> diagnostics.
     /// It is used to share code in diagnostics <see cref="SA1405DebugAssertMustProvideMessageText"/> and <see cref="SA1406DebugFailMustProvideMessageText"/>.
     /// </summary>
-    internal abstract class SystemDiagnosticsDebugDiagnosticBase : DiagnosticAnalyzer
-    {
+    internal abstract class SystemDiagnosticsDebugDiagnosticBase : DiagnosticAnalyzer {
         /// <summary>
         /// Analyzes a <see cref="InvocationExpressionSyntax"/> node to add a diagnostic to static method calls in <see cref="System.Diagnostics.Debug"/>.
         /// The diagnostic is added if the parameter count is lower than <paramref name="parameterIndex"/> or the string given at the index can be evaluated to null, string.Empty or just whitespaces.
@@ -24,34 +23,26 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// <param name="descriptor">The descriptor of the diagnostic that should be added.</param>
         protected internal static void HandleInvocationExpression(SyntaxNodeAnalysisContext context, string methodName, int parameterIndex, DiagnosticDescriptor descriptor)
         {
-            var invocationExpressionSyntax = (InvocationExpressionSyntax)context.Node;
+            var invocationExpressionSyntax = (InvocationExpressionSyntax) context.Node;
             var memberAccessExpressionSyntax = invocationExpressionSyntax.Expression as MemberAccessExpressionSyntax;
             var identifierNameSyntax = invocationExpressionSyntax.Expression as IdentifierNameSyntax;
             var name = memberAccessExpressionSyntax?.Name?.Identifier.ValueText ?? identifierNameSyntax?.Identifier.ValueText;
-            if (name == methodName)
-            {
-                if (context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol symbolInfo)
-                {
+            if (name == methodName) {
+                if (context.SemanticModel.GetSymbolInfo(invocationExpressionSyntax).Symbol is IMethodSymbol symbolInfo) {
                     var debugType = context.SemanticModel.Compilation.GetTypeByMetadataName(typeof(Debug).FullName);
 
                     if (Equals(symbolInfo.ContainingType, debugType)
-                        && symbolInfo.Name == methodName)
-                    {
-                        if ((invocationExpressionSyntax.ArgumentList?.Arguments.Count ?? 0) <= parameterIndex)
-                        {
+                        && symbolInfo.Name == methodName) {
+                        if ((invocationExpressionSyntax.ArgumentList?.Arguments.Count ?? 0) <= parameterIndex) {
                             // Wrong overload was used, e.g. Debug.Assert(bool condition)
                             context.ReportDiagnostic(Diagnostic.Create(descriptor, invocationExpressionSyntax.GetLocation()));
-                        }
-                        else
-                        {
+                        } else {
                             var messageParameter = invocationExpressionSyntax.ArgumentList?.Arguments[parameterIndex];
-                            if (messageParameter?.Expression != null)
-                            {
+                            if (messageParameter?.Expression != null) {
                                 Optional<object> constantValue = context.SemanticModel.GetConstantValue(messageParameter.Expression);
 
                                 // Report a diagnostic if the message is constant and null or whitespace
-                                if (constantValue.HasValue && string.IsNullOrWhiteSpace(constantValue.Value as string))
-                                {
+                                if (constantValue.HasValue && string.IsNullOrWhiteSpace(constantValue.Value as string)) {
                                     context.ReportDiagnostic(Diagnostic.Create(descriptor, invocationExpressionSyntax.GetLocation()));
                                 }
                             }

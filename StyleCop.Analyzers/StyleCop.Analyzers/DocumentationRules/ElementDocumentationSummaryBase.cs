@@ -16,8 +16,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// <summary>
     /// This is the base class for analyzers which examine the <c>&lt;summary&gt;</c> text of a documentation comment.
     /// </summary>
-    internal abstract class ElementDocumentationSummaryBase : DiagnosticAnalyzer
-    {
+    internal abstract class ElementDocumentationSummaryBase : DiagnosticAnalyzer {
         private readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> typeDeclarationAction;
         private readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> methodDeclarationAction;
         private readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> constructorDeclarationAction;
@@ -76,14 +75,12 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleTypeDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (BaseTypeDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (BaseTypeDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
-            if (node.Modifiers.Any(SyntaxKind.PartialKeyword))
-            {
+            if (node.Modifiers.Any(SyntaxKind.PartialKeyword)) {
                 // partial elements are handled by PartialElementDocumentationSummaryBase
                 return;
             }
@@ -96,9 +93,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (DelegateDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (DelegateDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -110,14 +106,12 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleMethodDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (MethodDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (MethodDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
-            if (node.Modifiers.Any(SyntaxKind.PartialKeyword))
-            {
+            if (node.Modifiers.Any(SyntaxKind.PartialKeyword)) {
                 // partial elements are handled by PartialElementDocumentationSummaryBase
                 return;
             }
@@ -130,9 +124,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (ConstructorDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (ConstructorDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -144,9 +137,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleDestructorDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (DestructorDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (DestructorDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -158,9 +150,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (PropertyDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (PropertyDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -172,9 +163,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (IndexerDeclarationSyntax)context.Node;
-            if (node.ThisKeyword.IsMissing)
-            {
+            var node = (IndexerDeclarationSyntax) context.Node;
+            if (node.ThisKeyword.IsMissing) {
                 return;
             }
 
@@ -186,9 +176,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleFieldDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (BaseFieldDeclarationSyntax)context.Node;
-            if (node.Declaration == null)
-            {
+            var node = (BaseFieldDeclarationSyntax) context.Node;
+            if (node.Declaration == null) {
                 return;
             }
 
@@ -196,11 +185,9 @@ namespace StyleCop.Analyzers.DocumentationRules
 
             int insertionIndex = 0;
 
-            foreach (var variable in node.Declaration.Variables)
-            {
+            foreach (var variable in node.Declaration.Variables) {
                 var identifier = variable.Identifier;
-                if (!identifier.IsMissing)
-                {
+                if (!identifier.IsMissing) {
                     locations[insertionIndex++] = identifier.GetLocation();
                 }
             }
@@ -218,9 +205,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandleEventDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (EventDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (EventDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -233,26 +219,24 @@ namespace StyleCop.Analyzers.DocumentationRules
         private void HandleDeclaration(SyntaxNodeAnalysisContext context, bool needsComment, SyntaxNode node, params Location[] locations)
         {
             var documentation = node.GetDocumentationCommentTriviaSyntax();
-            if (documentation == null)
-            {
+            if (documentation == null) {
                 // missing documentation is reported by SA1600, SA1601, and SA1602
                 return;
             }
 
             XElement completeDocumentation = null;
             var relevantXmlElement = documentation.Content.GetFirstXmlElement(XmlCommentHelper.SummaryXmlTag);
-            if (relevantXmlElement == null)
-            {
+            if (relevantXmlElement == null) {
                 relevantXmlElement = documentation.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag);
-                if (relevantXmlElement != null)
-                {
+                if (relevantXmlElement != null) {
                     var declaration = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
-                    if (declaration == null)
-                    {
+                    if (declaration == null) {
                         return;
                     }
 
-                    var rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+                    var rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes
+                                                                                  : true, cancellationToken
+                                                                                  : context.CancellationToken);
                     completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
                 }
             }

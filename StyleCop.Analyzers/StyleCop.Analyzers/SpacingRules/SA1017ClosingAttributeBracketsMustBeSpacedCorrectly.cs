@@ -20,8 +20,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// character on the line.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1017ClosingAttributeBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1017ClosingAttributeBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1017ClosingAttributeBracketsMustBeSpacedCorrectly"/>
         /// analyzer.
@@ -32,14 +31,13 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1017MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1017Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -53,10 +51,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                switch (token.Kind())
-                {
+            foreach (var token in root.DescendantTokens()) {
+                switch (token.Kind()) {
                 case SyntaxKind.CloseBracketToken:
                     HandleCloseBracketToken(context, token);
                     break;
@@ -69,29 +65,24 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleCloseBracketToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
-            if (!token.Parent.IsKind(SyntaxKind.AttributeList))
-            {
+            if (!token.Parent.IsKind(SyntaxKind.AttributeList)) {
                 return;
             }
 
-            if (token.IsFirstInLine())
-            {
+            if (token.IsFirstInLine()) {
                 return;
             }
 
             SyntaxToken precedingToken = token.GetPreviousToken();
-            if (!precedingToken.HasTrailingTrivia)
-            {
+            if (!precedingToken.HasTrailingTrivia) {
                 return;
             }
 
-            if (!precedingToken.TrailingTrivia.Last().IsKind(SyntaxKind.WhitespaceTrivia))
-            {
+            if (!precedingToken.TrailingTrivia.Last().IsKind(SyntaxKind.WhitespaceTrivia)) {
                 return;
             }
 

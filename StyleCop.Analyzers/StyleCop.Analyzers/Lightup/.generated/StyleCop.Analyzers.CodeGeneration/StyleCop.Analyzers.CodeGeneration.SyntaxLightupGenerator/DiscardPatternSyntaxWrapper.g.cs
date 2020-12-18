@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct DiscardPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct DiscardPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.DiscardPatternSyntax";
         private static readonly Type WrappedType;
 
@@ -43,27 +42,25 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator DiscardPatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (DiscardPatternSyntaxWrapper)node.SyntaxNode;
+            return (DiscardPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator DiscardPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (DiscardPatternSyntaxWrapper)node.SyntaxNode;
+            return (DiscardPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator DiscardPatternSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new DiscardPatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new DiscardPatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(DiscardPatternSyntaxWrapper wrapper)

@@ -20,11 +20,10 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1509CodeFixProvider))]
     [Shared]
-    internal class SA1509CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1509CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1509OpeningBracesMustNotBePrecededByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1509OpeningBracesMustNotBePrecededByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,8 +34,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         LayoutResources.SA1509CodeFix,
@@ -73,19 +71,15 @@ namespace StyleCop.Analyzers.LayoutRules
             var lineOfOpenBrace = openBrace.GetLineSpan().StartLinePosition.Line;
             var lineToCheck = lineOfOpenBrace - 1;
 
-            while (lineToCheck > -1)
-            {
+            while (lineToCheck > -1) {
                 var trivias = openBrace.LeadingTrivia
-                    .Where(t => t.GetLineSpan().StartLinePosition.Line == lineToCheck)
-                    .ToList();
+                                  .Where(t => t.GetLineSpan().StartLinePosition.Line == lineToCheck)
+                                  .ToList();
                 var endOfLineTrivia = trivias.Where(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).ToList();
-                if (endOfLineTrivia.Any() && trivias.Except(endOfLineTrivia).All(t => t.IsKind(SyntaxKind.WhitespaceTrivia)))
-                {
+                if (endOfLineTrivia.Any() && trivias.Except(endOfLineTrivia).All(t => t.IsKind(SyntaxKind.WhitespaceTrivia))) {
                     lineToCheck--;
                     result.AddRange(trivias);
-                }
-                else
-                {
+                } else {
                     break;
                 }
             }

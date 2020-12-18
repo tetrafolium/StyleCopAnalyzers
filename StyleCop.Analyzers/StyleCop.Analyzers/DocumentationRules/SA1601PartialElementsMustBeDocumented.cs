@@ -65,8 +65,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// SDK documentation tools.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1601PartialElementsMustBeDocumented : DiagnosticAnalyzer
-    {
+    internal class SA1601PartialElementsMustBeDocumented : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1601PartialElementsMustBeDocumented"/> analyzer.
         /// </summary>
@@ -76,18 +75,16 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1601MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1601Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableArray<SyntaxKind> BaseTypeDeclarationKinds =
-            ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration);
+        private static readonly ImmutableArray<SyntaxKind> BaseTypeDeclarationKinds = ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration);
 
         private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> BaseTypeDeclarationAction = Analyzer.HandleBaseTypeDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> MethodDeclarationAction = Analyzer.HandleMethodDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -99,27 +96,22 @@ namespace StyleCop.Analyzers.DocumentationRules
             context.RegisterSyntaxNodeAction(MethodDeclarationAction, SyntaxKind.MethodDeclaration);
         }
 
-        private static class Analyzer
-        {
+        private static class Analyzer {
             public static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
             {
-                if (context.GetDocumentationMode() == DocumentationMode.None)
-                {
+                if (context.GetDocumentationMode() == DocumentationMode.None) {
                     return;
                 }
 
-                BaseTypeDeclarationSyntax declaration = (BaseTypeDeclarationSyntax)context.Node;
-                if (!declaration.Modifiers.Any(SyntaxKind.PartialKeyword))
-                {
+                BaseTypeDeclarationSyntax declaration = (BaseTypeDeclarationSyntax) context.Node;
+                if (!declaration.Modifiers.Any(SyntaxKind.PartialKeyword)) {
                     return;
                 }
 
                 Accessibility declaredAccessibility = declaration.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
                 Accessibility effectiveAccessibility = declaration.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
-                if (SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, declaration.Kind(), declaration.Parent.Kind(), declaredAccessibility, effectiveAccessibility))
-                {
-                    if (!XmlCommentHelper.HasDocumentation(declaration))
-                    {
+                if (SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, declaration.Kind(), declaration.Parent.Kind(), declaredAccessibility, effectiveAccessibility)) {
+                    if (!XmlCommentHelper.HasDocumentation(declaration)) {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, declaration.Identifier.GetLocation()));
                     }
                 }
@@ -127,23 +119,19 @@ namespace StyleCop.Analyzers.DocumentationRules
 
             public static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
             {
-                if (context.GetDocumentationMode() == DocumentationMode.None)
-                {
+                if (context.GetDocumentationMode() == DocumentationMode.None) {
                     return;
                 }
 
-                MethodDeclarationSyntax declaration = (MethodDeclarationSyntax)context.Node;
-                if (!declaration.Modifiers.Any(SyntaxKind.PartialKeyword))
-                {
+                MethodDeclarationSyntax declaration = (MethodDeclarationSyntax) context.Node;
+                if (!declaration.Modifiers.Any(SyntaxKind.PartialKeyword)) {
                     return;
                 }
 
                 Accessibility declaredAccessibility = declaration.GetDeclaredAccessibility(context.SemanticModel, context.CancellationToken);
                 Accessibility effectiveAccessibility = declaration.GetEffectiveAccessibility(context.SemanticModel, context.CancellationToken);
-                if (SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, declaration.Kind(), declaration.Parent.Kind(), declaredAccessibility, effectiveAccessibility))
-                {
-                    if (!XmlCommentHelper.HasDocumentation(declaration))
-                    {
+                if (SA1600ElementsMustBeDocumented.NeedsComment(settings.DocumentationRules, declaration.Kind(), declaration.Parent.Kind(), declaredAccessibility, effectiveAccessibility)) {
+                    if (!XmlCommentHelper.HasDocumentation(declaration)) {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, declaration.Identifier.GetLocation()));
                     }
                 }

@@ -20,13 +20,12 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1410SA1411CodeFixProvider))]
     [Shared]
-    internal class SA1410SA1411CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1410SA1411CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1410RemoveDelegateParenthesisWhenPossible.DiagnosticId,
-                SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(
+            SA1410RemoveDelegateParenthesisWhenPossible.DiagnosticId,
+            SA1411AttributeConstructorMustNotUseUnnecessaryParenthesis.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -39,19 +38,17 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
-                if (node.IsMissing)
-                {
+            foreach (var diagnostic in context.Diagnostics) {
+                SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                : true);
+                if (node.IsMissing) {
                     continue;
                 }
 
                 // Check if we are interested in this node
                 node = (SyntaxNode)(node as ParameterListSyntax) ?? node as AttributeArgumentListSyntax;
 
-                if (node != null)
-                {
+                if (node != null) {
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             MaintainabilityResources.SA1410SA1411CodeFix,

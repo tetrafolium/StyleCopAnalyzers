@@ -19,11 +19,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1102CodeFixProvider))]
     [Shared]
-    internal class SA1102CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1102CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA110xQueryClauses.SA1102Descriptor.Id);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA110xQueryClauses.SA1102Descriptor.Id);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -34,8 +33,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1102CodeFix,
@@ -57,10 +55,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             var precedingToken = token.GetPreviousToken();
 
-            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>()
-            {
-                [precedingToken] = precedingToken.WithTrailingTrivia(SyntaxFactory.CarriageReturnLineFeed),
-                [token] = token.WithLeadingTrivia(indentationTrivia),
+            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
+                    [precedingToken] = precedingToken.WithTrailingTrivia(SyntaxFactory.CarriageReturnLineFeed),
+                [ token ] = token.WithLeadingTrivia(indentationTrivia),
             };
 
             var newSyntaxRoot = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]).WithoutFormatting();

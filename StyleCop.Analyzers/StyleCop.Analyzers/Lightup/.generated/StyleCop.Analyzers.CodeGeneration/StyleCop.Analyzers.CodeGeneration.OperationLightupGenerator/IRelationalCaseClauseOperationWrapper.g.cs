@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IRelationalCaseClauseOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IRelationalCaseClauseOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IRelationalCaseClauseOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> ValueAccessor;
@@ -28,19 +27,17 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation Value => ValueAccessor(this.WrappedOperation);
         public object Relation => throw new NotImplementedException("Property 'IRelationalCaseClauseOperation.Relation' has unsupported type 'BinaryOperatorKind'");
-        public object CaseKind => ((ICaseClauseOperationWrapper)this).CaseKind;
-        public ILabelSymbol Label => ((ICaseClauseOperationWrapper)this).Label;
+        public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
+        public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
         public static explicit operator IRelationalCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator ICaseClauseOperationWrapper(IRelationalCaseClauseOperationWrapper wrapper) => ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IRelationalCaseClauseOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

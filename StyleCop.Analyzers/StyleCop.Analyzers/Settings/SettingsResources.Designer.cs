@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StyleCop.Analyzers.Settings {
+namespace StyleCop.Analyzers.Settings
+{
     using System;
     using System.Reflection;
-    
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -24,21 +24,24 @@ namespace StyleCop.Analyzers.Settings {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsResources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SettingsResources() {
+        internal SettingsResources()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StyleCop.Analyzers.Settings.SettingsResources", typeof(SettingsResources).GetTypeInfo().Assembly);
                     resourceMan = temp;
@@ -46,26 +49,31 @@ namespace StyleCop.Analyzers.Settings {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Add StyleCop settings file to the project.
         /// </summary>
-        internal static string SettingsFileCodeFix {
-            get {
+        internal static string SettingsFileCodeFix
+        {
+            get
+            {
                 return ResourceManager.GetString("SettingsFileCodeFix", resourceCulture);
             }
         }

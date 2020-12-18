@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct ICaseClauseOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct ICaseClauseOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.ICaseClauseOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ILabelSymbol> LabelAccessor;
@@ -30,13 +29,11 @@ namespace StyleCop.Analyzers.Lightup
         public ILabelSymbol Label => LabelAccessor(this.WrappedOperation);
         public static ICaseClauseOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

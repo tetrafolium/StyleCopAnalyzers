@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal static class INamedTypeSymbolExtensions
-    {
+    internal static class INamedTypeSymbolExtensions {
         private static readonly Func<INamedTypeSymbol, INamedTypeSymbol> TupleUnderlyingTypeAccessor;
         private static readonly Func<INamedTypeSymbol, ImmutableArray<IFieldSymbol>> TupleElementsAccessor;
         private static readonly Func<INamedTypeSymbol, bool> IsSerializableAccessor;

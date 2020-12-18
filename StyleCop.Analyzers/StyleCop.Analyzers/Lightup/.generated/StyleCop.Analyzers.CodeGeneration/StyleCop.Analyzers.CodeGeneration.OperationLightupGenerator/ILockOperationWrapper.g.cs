@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct ILockOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct ILockOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.ILockOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> LockedValueAccessor;
@@ -32,13 +31,11 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation Body => BodyAccessor(this.WrappedOperation);
         public static ILockOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

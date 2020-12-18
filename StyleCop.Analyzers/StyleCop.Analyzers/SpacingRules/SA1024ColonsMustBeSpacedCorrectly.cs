@@ -57,8 +57,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1024ColonsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1024ColonsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1024ColonsMustBeSpacedCorrectly"/> analyzer.
         /// </summary>
@@ -75,19 +74,16 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotPreceded = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorPreceded =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessagePreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorPreceded = new DiagnosticDescriptor(DiagnosticId, Title, MessagePreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorFollowed = new DiagnosticDescriptor(DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorNotPreceded);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(DescriptorNotPreceded);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -101,10 +97,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                if (token.Kind() == SyntaxKind.ColonToken)
-                {
+            foreach (var token in root.DescendantTokens()) {
+                if (token.Kind() == SyntaxKind.ColonToken) {
                     HandleColonToken(context, token);
                 }
             }
@@ -112,15 +106,13 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleColonToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
             bool requireBefore;
             var checkRequireAfter = true;
-            switch (token.Parent.Kind())
-            {
+            switch (token.Parent.Kind()) {
             case SyntaxKind.BaseList:
             case SyntaxKind.BaseConstructorInitializer:
             case SyntaxKind.ThisConstructorInitializer:
@@ -149,39 +141,32 @@ namespace StyleCop.Analyzers.SpacingRules
 
             // check for a following space
             bool missingFollowingSpace = true;
-            if (token.HasTrailingTrivia)
-            {
-                if (token.TrailingTrivia.First().IsKind(SyntaxKind.WhitespaceTrivia))
-                {
+            if (token.HasTrailingTrivia) {
+                if (token.TrailingTrivia.First().IsKind(SyntaxKind.WhitespaceTrivia)) {
                     missingFollowingSpace = false;
-                }
-                else if (token.TrailingTrivia.First().IsKind(SyntaxKind.EndOfLineTrivia))
-                {
+                } else if (token.TrailingTrivia.First().IsKind(SyntaxKind.EndOfLineTrivia)) {
                     missingFollowingSpace = false;
                 }
             }
 
             bool hasPrecedingSpace = token.HasLeadingTrivia;
-            if (!hasPrecedingSpace)
-            {
+            if (!hasPrecedingSpace) {
                 // only the first token on the line has leading trivia, and those are ignored
                 SyntaxToken precedingToken = token.GetPreviousToken();
                 var combinedTrivia = TriviaHelper.MergeTriviaLists(precedingToken.TrailingTrivia, token.LeadingTrivia);
-                if (combinedTrivia.Count > 0 && !combinedTrivia.Last().IsKind(SyntaxKind.MultiLineCommentTrivia))
-                {
+                if (combinedTrivia.Count > 0 && !combinedTrivia.Last().IsKind(SyntaxKind.MultiLineCommentTrivia)) {
                     hasPrecedingSpace = true;
                 }
             }
 
-            if (hasPrecedingSpace != requireBefore)
-            {
+            if (hasPrecedingSpace != requireBefore) {
                 // colon should{ not}? be {preceded}{} by a space
                 var properties = requireBefore ? TokenSpacingProperties.InsertPreceding : TokenSpacingProperties.RemovePreceding;
-                context.ReportDiagnostic(Diagnostic.Create(requireBefore ? DescriptorPreceded : DescriptorNotPreceded, token.GetLocation(), properties));
+                context.ReportDiagnostic(Diagnostic.Create(requireBefore ? DescriptorPreceded
+                                                           : DescriptorNotPreceded, token.GetLocation(), properties));
             }
 
-            if (missingFollowingSpace && checkRequireAfter)
-            {
+            if (missingFollowingSpace && checkRequireAfter) {
                 // colon should{} be {followed}{} by a space
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorFollowed, token.GetLocation(), TokenSpacingProperties.InsertFollowing));

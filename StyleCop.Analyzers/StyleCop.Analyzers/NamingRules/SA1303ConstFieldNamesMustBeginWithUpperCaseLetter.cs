@@ -24,8 +24,7 @@ namespace StyleCop.Analyzers.NamingRules
     /// within a <c>NativeMethods</c> class.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1303ConstFieldNamesMustBeginWithUpperCaseLetter : DiagnosticAnalyzer
-    {
+    internal class SA1303ConstFieldNamesMustBeginWithUpperCaseLetter : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1303ConstFieldNamesMustBeginWithUpperCaseLetter"/>
         /// analyzer.
@@ -36,14 +35,13 @@ namespace StyleCop.Analyzers.NamingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1303MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1303Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SymbolAnalysisContext> FieldDeclarationAction = Analyzer.HandleFieldDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -54,17 +52,14 @@ namespace StyleCop.Analyzers.NamingRules
             context.RegisterSymbolAction(FieldDeclarationAction, SymbolKind.Field);
         }
 
-        private static class Analyzer
-        {
+        private static class Analyzer {
             public static void HandleFieldDeclaration(SymbolAnalysisContext context)
             {
-                if (!(context.Symbol is IFieldSymbol symbol) || !symbol.IsConst || symbol.ContainingType?.TypeKind == TypeKind.Enum)
-                {
+                if (!(context.Symbol is IFieldSymbol symbol) || !symbol.IsConst || symbol.ContainingType?.TypeKind == TypeKind.Enum) {
                     return;
                 }
 
-                if (NamedTypeHelpers.IsContainedInNativeMethodsClass(symbol.ContainingType))
-                {
+                if (NamedTypeHelpers.IsContainedInNativeMethodsClass(symbol.ContainingType)) {
                     return;
                 }
 
@@ -76,14 +71,9 @@ namespace StyleCop.Analyzers.NamingRules
                  * See DotNetAnalyzers/StyleCopAnalyzers#369 for additional information:
                  * https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/369
                  */
-                if (!string.IsNullOrEmpty(symbol.Name) &&
-                    char.IsLower(symbol.Name[0]) &&
-                    symbol.Locations.Any())
-                {
-                    foreach (var location in context.Symbol.Locations)
-                    {
-                        if (!location.IsInSource)
-                        {
+                if (!string.IsNullOrEmpty(symbol.Name) && char.IsLower(symbol.Name[0]) && symbol.Locations.Any()) {
+                    foreach (var location in context.Symbol.Locations) {
+                        if (!location.IsInSource) {
                             // assume symbols not defined in a source document are "out of reach"
                             return;
                         }

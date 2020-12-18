@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Lightup
     using System;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class StackAllocArrayCreationExpressionSyntaxExtensions
-    {
+    internal static class StackAllocArrayCreationExpressionSyntaxExtensions {
         private static readonly Func<StackAllocArrayCreationExpressionSyntax, InitializerExpressionSyntax> InitializerAccessor;
         private static readonly Func<StackAllocArrayCreationExpressionSyntax, InitializerExpressionSyntax, StackAllocArrayCreationExpressionSyntax> WithInitializerAccessor;
 

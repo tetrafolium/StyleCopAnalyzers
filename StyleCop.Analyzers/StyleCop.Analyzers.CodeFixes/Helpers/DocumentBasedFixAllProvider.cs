@@ -14,15 +14,13 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Provides a base class to write a <see cref="FixAllProvider"/> that fixes documents independently.
     /// </summary>
-    internal abstract class DocumentBasedFixAllProvider : FixAllProvider
-    {
+    internal abstract class DocumentBasedFixAllProvider : FixAllProvider {
         protected abstract string CodeActionTitle { get; }
 
         public override Task<CodeAction> GetFixAsync(FixAllContext fixAllContext)
         {
             CodeAction fixAction;
-            switch (fixAllContext.Scope)
-            {
+            switch (fixAllContext.Scope) {
             case FixAllScope.Document:
                 fixAction = CodeAction.Create(
                     this.CodeActionTitle,
@@ -70,14 +68,12 @@ namespace StyleCop.Analyzers.Helpers
         {
             var documentDiagnosticsToFix = await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
             ImmutableArray<Diagnostic> diagnostics;
-            if (!documentDiagnosticsToFix.TryGetValue(fixAllContext.Document, out diagnostics))
-            {
+            if (!documentDiagnosticsToFix.TryGetValue(fixAllContext.Document, out diagnostics)) {
                 return fixAllContext.Document;
             }
 
             var newRoot = await this.FixAllInDocumentAsync(fixAllContext, fixAllContext.Document, diagnostics).ConfigureAwait(false);
-            if (newRoot == null)
-            {
+            if (newRoot == null) {
                 return fixAllContext.Document;
             }
 
@@ -90,11 +86,9 @@ namespace StyleCop.Analyzers.Helpers
 
             Solution solution = fixAllContext.Solution;
             List<Task<SyntaxNode>> newDocuments = new List<Task<SyntaxNode>>(documents.Length);
-            foreach (var document in documents)
-            {
+            foreach (var document in documents) {
                 ImmutableArray<Diagnostic> diagnostics;
-                if (!documentDiagnosticsToFix.TryGetValue(document, out diagnostics))
-                {
+                if (!documentDiagnosticsToFix.TryGetValue(document, out diagnostics)) {
                     newDocuments.Add(document.GetSyntaxRootAsync(fixAllContext.CancellationToken));
                     continue;
                 }
@@ -102,11 +96,10 @@ namespace StyleCop.Analyzers.Helpers
                 newDocuments.Add(this.FixAllInDocumentAsync(fixAllContext, document, diagnostics));
             }
 
-            for (int i = 0; i < documents.Length; i++)
-            {
-                var newDocumentRoot = await newDocuments[i].ConfigureAwait(false);
-                if (newDocumentRoot == null)
-                {
+            for (int i = 0; i < documents.Length; i++) {
+                var newDocumentRoot = await newDocuments [i]
+                                          .ConfigureAwait(false);
+                if (newDocumentRoot == null) {
                     continue;
                 }
 

@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// This class contains helper methods for argument validation.
     /// </summary>
-    internal static class Requires
-    {
+    internal static class Requires {
         /// <summary>
         /// Validates that an argument is not null.
         /// </summary>
@@ -22,8 +21,7 @@ namespace StyleCop.Analyzers.Helpers
         public static void NotNull<T>(T argument, string parameterName)
             where T : class
         {
-            if (argument == null)
-            {
+            if (argument == null) {
                 throw new ArgumentNullException(parameterName);
             }
         }

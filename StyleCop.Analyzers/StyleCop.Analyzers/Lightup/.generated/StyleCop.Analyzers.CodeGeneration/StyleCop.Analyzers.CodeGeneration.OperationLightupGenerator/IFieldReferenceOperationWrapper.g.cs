@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IFieldReferenceOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IFieldReferenceOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IFieldReferenceOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IFieldSymbol> FieldAccessor;
@@ -30,19 +29,17 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IFieldSymbol Field => FieldAccessor(this.WrappedOperation);
         public bool IsDeclaration => IsDeclarationAccessor(this.WrappedOperation);
-        public IOperation Instance => ((IMemberReferenceOperationWrapper)this).Instance;
-        public ISymbol Member => ((IMemberReferenceOperationWrapper)this).Member;
+        public IOperation Instance =>((IMemberReferenceOperationWrapper) this).Instance;
+        public ISymbol Member =>((IMemberReferenceOperationWrapper) this).Member;
         public static explicit operator IFieldReferenceOperationWrapper(IMemberReferenceOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator IMemberReferenceOperationWrapper(IFieldReferenceOperationWrapper wrapper) => IMemberReferenceOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IFieldReferenceOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

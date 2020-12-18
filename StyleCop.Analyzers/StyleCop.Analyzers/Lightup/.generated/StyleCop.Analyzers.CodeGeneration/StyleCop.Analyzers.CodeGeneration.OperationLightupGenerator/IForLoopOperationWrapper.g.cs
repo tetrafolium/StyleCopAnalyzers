@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IForLoopOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IForLoopOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IForLoopOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ImmutableArray<IOperation>> BeforeAccessor;
@@ -36,22 +35,20 @@ namespace StyleCop.Analyzers.Lightup
         public ImmutableArray<ILocalSymbol> ConditionLocals => ConditionLocalsAccessor(this.WrappedOperation);
         public IOperation Condition => ConditionAccessor(this.WrappedOperation);
         public ImmutableArray<IOperation> AtLoopBottom => AtLoopBottomAccessor(this.WrappedOperation);
-        public object LoopKind => ((ILoopOperationWrapper)this).LoopKind;
-        public IOperation Body => ((ILoopOperationWrapper)this).Body;
-        public ImmutableArray<ILocalSymbol> Locals => ((ILoopOperationWrapper)this).Locals;
-        public ILabelSymbol ContinueLabel => ((ILoopOperationWrapper)this).ContinueLabel;
-        public ILabelSymbol ExitLabel => ((ILoopOperationWrapper)this).ExitLabel;
+        public object LoopKind =>((ILoopOperationWrapper) this).LoopKind;
+        public IOperation Body =>((ILoopOperationWrapper) this).Body;
+        public ImmutableArray<ILocalSymbol> Locals =>((ILoopOperationWrapper) this).Locals;
+        public ILabelSymbol ContinueLabel =>((ILoopOperationWrapper) this).ContinueLabel;
+        public ILabelSymbol ExitLabel =>((ILoopOperationWrapper) this).ExitLabel;
         public static explicit operator IForLoopOperationWrapper(ILoopOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator ILoopOperationWrapper(IForLoopOperationWrapper wrapper) => ILoopOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IForLoopOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

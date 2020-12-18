@@ -16,21 +16,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(IndentationCodeFixProvider))]
     [Shared]
-    internal class IndentationCodeFixProvider : CodeFixProvider
-    {
+    internal class IndentationCodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1137ElementsShouldHaveTheSameIndentation.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1137ElementsShouldHaveTheSameIndentation.DiagnosticId);
 
         /// <inheritdoc/>
-        public sealed override FixAllProvider GetFixAllProvider() =>
-            FixAll.Instance;
+        public sealed override FixAllProvider GetFixAllProvider() => FixAll.Instance;
 
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.IndentationCodeFix,
@@ -47,8 +44,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
             TextChange textChange;
-            if (!TryGetTextChange(diagnostic, syntaxRoot, out textChange))
-            {
+            if (!TryGetTextChange(diagnostic, syntaxRoot, out textChange)) {
                 return document;
             }
 
@@ -59,8 +55,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static bool TryGetTextChange(Diagnostic diagnostic, SyntaxNode syntaxRoot, out TextChange textChange)
         {
             string replacement;
-            if (!diagnostic.Properties.TryGetValue(SA1137ElementsShouldHaveTheSameIndentation.ExpectedIndentationKey, out replacement))
-            {
+            if (!diagnostic.Properties.TryGetValue(SA1137ElementsShouldHaveTheSameIndentation.ExpectedIndentationKey, out replacement)) {
                 textChange = default;
                 return false;
             }
@@ -68,13 +63,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var trivia = syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start);
 
             TextSpan originalSpan;
-            if (trivia == default)
-            {
+            if (trivia == default) {
                 // The warning was reported on a token because the line is not indented
                 originalSpan = new TextSpan(diagnostic.Location.SourceSpan.Start, 0);
-            }
-            else
-            {
+            } else {
                 originalSpan = trivia.Span;
             }
 
@@ -82,18 +74,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return true;
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                ReadabilityResources.IndentationCodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.IndentationCodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -101,11 +90,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 List<TextChange> changes = new List<TextChange>();
 
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     TextChange textChange;
-                    if (TryGetTextChange(diagnostic, syntaxRoot, out textChange))
-                    {
+                    if (TryGetTextChange(diagnostic, syntaxRoot, out textChange)) {
                         changes.Add(textChange);
                     }
                 }

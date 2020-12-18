@@ -28,8 +28,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// <para>It is also possible to place multiple parts of the same partial type within the same file.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1402FileMayOnlyContainASingleType : DiagnosticAnalyzer
-    {
+    internal class SA1402FileMayOnlyContainASingleType : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1402FileMayOnlyContainASingleType"/> analyzer.
         /// </summary>
@@ -39,14 +38,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1402MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1402Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -67,24 +65,20 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             var fileName = FileNameHelpers.GetFileNameAndSuffix(context.Tree.FilePath, out suffix);
             var preferredTypeNode = typeNodes.FirstOrDefault(n => FileNameHelpers.GetConventionalFileName(n, settings.DocumentationRules.FileNamingConvention) == fileName) ?? typeNodes.FirstOrDefault();
 
-            if (preferredTypeNode == null)
-            {
+            if (preferredTypeNode == null) {
                 return;
             }
 
             var foundTypeName = NamedTypeHelpers.GetNameOrIdentifier(preferredTypeNode);
             var isPartialType = NamedTypeHelpers.IsPartialDeclaration(preferredTypeNode);
 
-            foreach (var typeNode in typeNodes)
-            {
-                if (typeNode == preferredTypeNode || (isPartialType && foundTypeName == NamedTypeHelpers.GetNameOrIdentifier(typeNode)))
-                {
+            foreach (var typeNode in typeNodes) {
+                if (typeNode == preferredTypeNode || (isPartialType && foundTypeName == NamedTypeHelpers.GetNameOrIdentifier(typeNode))) {
                     continue;
                 }
 
                 var location = NamedTypeHelpers.GetNameOrIdentifierLocation(typeNode);
-                if (location != null)
-                {
+                if (location != null) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
                 }
             }
@@ -92,7 +86,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static IEnumerable<MemberDeclarationSyntax> GetTopLevelTypeDeclarations(SyntaxNode root, StyleCopSettings settings)
         {
-            var allTypeDeclarations = root.DescendantNodes(descendIntoChildren: node => ContainsTopLevelTypeDeclarations(node)).OfType<MemberDeclarationSyntax>().ToList();
+            var allTypeDeclarations = root.DescendantNodes(descendIntoChildren
+                                                           : node => ContainsTopLevelTypeDeclarations(node))
+                                          .OfType<MemberDeclarationSyntax>()
+                                          .ToList();
             var relevantTypeDeclarations = allTypeDeclarations.Where(x => IsRelevantType(x, settings)).ToList();
             return relevantTypeDeclarations;
         }
@@ -107,8 +104,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             var topLevelTypes = settings.MaintainabilityRules.TopLevelTypes;
             var isRelevant = false;
 
-            switch (node.Kind())
-            {
+            switch (node.Kind()) {
             case SyntaxKind.ClassDeclaration:
                 isRelevant = topLevelTypes.Contains(TopLevelType.Class);
                 break;

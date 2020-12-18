@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct ImplicitStackAllocArrayCreationExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
-    {
+    internal readonly partial struct ImplicitStackAllocArrayCreationExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.ImplicitStackAllocArrayCreationExpressionSyntax";
         private static readonly Type WrappedType;
 
@@ -79,17 +78,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator ImplicitStackAllocArrayCreationExpressionSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper((ExpressionSyntax)node);
+            return new ImplicitStackAllocArrayCreationExpressionSyntaxWrapper((ExpressionSyntax) node);
         }
 
         public static implicit operator ExpressionSyntax(ImplicitStackAllocArrayCreationExpressionSyntaxWrapper wrapper)

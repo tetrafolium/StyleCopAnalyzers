@@ -14,8 +14,7 @@ namespace StyleCop.Analyzers.OrderingRules
     /// <summary>
     /// Implements a code fix for all misaligned using statements.
     /// </summary>
-    internal sealed partial class UsingCodeFixProvider
-    {
+    internal sealed partial class UsingCodeFixProvider {
         /// <summary>
         /// Contains a map of the different regions of a source file.
         /// </summary>
@@ -28,8 +27,7 @@ namespace StyleCop.Analyzers.OrderingRules
         /// <item><description>region directives</description></item>
         /// </list>
         /// </remarks>
-        private class SourceMap
-        {
+        private class SourceMap {
             private readonly TreeTextSpan regionRoot;
             private readonly TreeTextSpan pragmaWarningRoot;
 
@@ -72,48 +70,41 @@ namespace StyleCop.Analyzers.OrderingRules
                 var textSpan = node.GetLocation().SourceSpan;
 
                 var containingSpans = this.pragmaWarningRoot.Children
-                    .Where(child => (textSpan.Start >= child.Start) && (textSpan.End <= child.End))
-                    .ToList();
+                                          .Where(child =>(textSpan.Start >= child.Start) && (textSpan.End <= child.End))
+                                          .ToList();
 
                 var containingConditionalSpan = this.ConditionalRoot.GetContainingSpan(textSpan);
-                if (containingConditionalSpan != this.ConditionalRoot)
-                {
+                if (containingConditionalSpan != this.ConditionalRoot) {
                     containingSpans.Add(containingConditionalSpan);
                 }
 
                 var containingRegionSpan = this.regionRoot.GetContainingSpan(textSpan);
-                if (containingRegionSpan != this.regionRoot)
-                {
+                if (containingRegionSpan != this.regionRoot) {
                     containingSpans.Add(containingRegionSpan);
                 }
 
-                if (containingSpans.Count == 0)
-                {
+                if (containingSpans.Count == 0) {
                     return TreeTextSpan.Empty;
                 }
 
-                for (var i = containingSpans.Count - 1; i > 0; i--)
-                {
-                    if (containingSpans[i].Contains(containingSpans[i - 1]))
-                    {
+                for (var i = containingSpans.Count - 1; i > 0; i--) {
+                    if (containingSpans [i]
+                            .Contains(containingSpans[i - 1])) {
                         containingSpans.RemoveAt(i);
-                    }
-                    else if (containingSpans[i - 1].Contains(containingSpans[i]))
-                    {
+                    } else if (containingSpans [i - 1]
+                                   .Contains(containingSpans[i])) {
                         containingSpans.RemoveAt(i - 1);
                     }
                 }
 
-                if (containingSpans.Count == 1)
-                {
+                if (containingSpans.Count == 1) {
                     return containingSpans[0];
                 }
 
                 var newStart = int.MinValue;
                 var newEnd = int.MaxValue;
 
-                foreach (var span in containingSpans)
-                {
+                foreach (var span in containingSpans) {
                     newStart = Math.Max(newStart, span.Start);
                     newEnd = Math.Min(newEnd, span.End);
                 }
@@ -123,8 +114,7 @@ namespace StyleCop.Analyzers.OrderingRules
 
             private static void ProcessNodeMembers(TreeTextSpan.Builder builder, SyntaxList<MemberDeclarationSyntax> members)
             {
-                foreach (var namespaceDeclaration in members.OfType<NamespaceDeclarationSyntax>())
-                {
+                foreach (var namespaceDeclaration in members.OfType<NamespaceDeclarationSyntax>()) {
                     var childBuilder = builder.AddChild(namespaceDeclaration.FullSpan.Start);
                     childBuilder.SetEnd(namespaceDeclaration.FullSpan.End);
 
@@ -141,10 +131,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 var conditionalBuilder = SetupBuilder(compilationUnit, conditionalStack);
                 var regionBuilder = SetupBuilder(compilationUnit, regionStack);
 
-                for (var directiveTrivia = compilationUnit.GetFirstDirective(); directiveTrivia != null; directiveTrivia = directiveTrivia.GetNextDirective())
-                {
-                    switch (directiveTrivia.Kind())
-                    {
+                for (var directiveTrivia = compilationUnit.GetFirstDirective(); directiveTrivia != null; directiveTrivia = directiveTrivia.GetNextDirective()) {
+                    switch (directiveTrivia.Kind()) {
                     case SyntaxKind.IfDirectiveTrivia:
                         AddNewDirectiveTriviaSpan(conditionalStack, directiveTrivia);
                         break;
@@ -208,8 +196,7 @@ namespace StyleCop.Analyzers.OrderingRules
             private static TreeTextSpan FinalizeBuilder(TreeTextSpan.Builder builder, Stack<TreeTextSpan.Builder> stack, int end)
             {
                 // close all spans (including the root) that have not been closed yet
-                while (stack.Count > 0)
-                {
+                while (stack.Count > 0) {
                     var span = stack.Pop();
                     span.SetEnd(end);
                 }
@@ -225,17 +212,13 @@ namespace StyleCop.Analyzers.OrderingRules
                 var map = new Dictionary<string, PragmaWarningDirectiveTriviaSyntax>();
                 var builder = TreeTextSpan.CreateBuilder(compilationUnit.SpanStart);
 
-                foreach (var pragmaWarning in pragmaWarningList.Cast<PragmaWarningDirectiveTriviaSyntax>())
-                {
+                foreach (var pragmaWarning in pragmaWarningList.Cast<PragmaWarningDirectiveTriviaSyntax>()) {
                     var errorCodes = GetErrorCodes(pragmaWarning);
 
-                    switch (pragmaWarning.DisableOrRestoreKeyword.Kind())
-                    {
+                    switch (pragmaWarning.DisableOrRestoreKeyword.Kind()) {
                     case SyntaxKind.DisableKeyword:
-                        foreach (var errorCode in errorCodes)
-                        {
-                            if (!map.ContainsKey(errorCode))
-                            {
+                        foreach (var errorCode in errorCodes) {
+                            if (!map.ContainsKey(errorCode)) {
                                 // only add it if the warning isn't disabled already
                                 map[errorCode] = pragmaWarning;
                             }
@@ -244,12 +227,10 @@ namespace StyleCop.Analyzers.OrderingRules
                         break;
 
                     case SyntaxKind.RestoreKeyword:
-                        foreach (var errorCode in errorCodes)
-                        {
+                        foreach (var errorCode in errorCodes) {
                             PragmaWarningDirectiveTriviaSyntax startOfSpan;
 
-                            if (map.TryGetValue(errorCode, out startOfSpan))
-                            {
+                            if (map.TryGetValue(errorCode, out startOfSpan)) {
                                 map.Remove(errorCode);
 
                                 var childSpan = builder.AddChild(startOfSpan.FullSpan.Start);
@@ -262,8 +243,7 @@ namespace StyleCop.Analyzers.OrderingRules
                 }
 
                 // create spans for all pragma warning disable statements that have not been closed.
-                foreach (var pragmaWarning in map.Values)
-                {
+                foreach (var pragmaWarning in map.Values) {
                     var childSpan = builder.AddChild(pragmaWarning.FullSpan.Start);
                     childSpan.SetEnd(compilationUnit.FullSpan.End);
                 }

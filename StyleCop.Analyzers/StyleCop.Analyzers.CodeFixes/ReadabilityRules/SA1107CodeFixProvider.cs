@@ -22,13 +22,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1107CodeFixProvider))]
     [Shared]
-    internal class SA1107CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1107CodeFixProvider : CodeFixProvider {
         private static readonly SA1107FixAllProvider FixAllProvider = new SA1107FixAllProvider();
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1107CodeMustNotContainMultipleStatementsOnOneLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1107CodeMustNotContainMultipleStatementsOnOneLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -40,12 +39,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                var node = root?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+            foreach (var diagnostic in context.Diagnostics) {
+                var node = root?.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                          : true, getInnermostNodeForTie
+                                          : true);
 
-                if (node?.Parent as BlockSyntax != null)
-                {
+                if (node?.Parent as BlockSyntax != null) {
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             ReadabilityResources.SA1107CodeFix,

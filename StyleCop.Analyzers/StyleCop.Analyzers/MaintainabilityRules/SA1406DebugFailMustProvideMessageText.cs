@@ -23,8 +23,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoCodeFix("No message is available for Debug.Fail")]
-    internal class SA1406DebugFailMustProvideMessageText : SystemDiagnosticsDebugDiagnosticBase
-    {
+    internal class SA1406DebugFailMustProvideMessageText : SystemDiagnosticsDebugDiagnosticBase {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1406DebugFailMustProvideMessageText"/> analyzer.
         /// </summary>
@@ -34,14 +33,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1406MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1406Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> InvocationExpressionAction = HandleInvocationExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)

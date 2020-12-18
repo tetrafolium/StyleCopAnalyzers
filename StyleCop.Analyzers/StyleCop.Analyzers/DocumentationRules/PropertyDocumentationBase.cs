@@ -16,8 +16,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// <summary>
     /// This is the base class for analyzers which examine the <c>&lt;value&gt;</c> text of a documentation comment on a property declaration.
     /// </summary>
-    internal abstract class PropertyDocumentationBase : DiagnosticAnalyzer
-    {
+    internal abstract class PropertyDocumentationBase : DiagnosticAnalyzer {
         /// <summary>
         /// The key used for signalling that no codefix should be offered.
         /// </summary>
@@ -62,9 +61,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            var node = (PropertyDeclarationSyntax)context.Node;
-            if (node.Identifier.IsMissing)
-            {
+            var node = (PropertyDeclarationSyntax) context.Node;
+            if (node.Identifier.IsMissing) {
                 return;
             }
 
@@ -77,14 +75,12 @@ namespace StyleCop.Analyzers.DocumentationRules
         private void HandleDeclaration(SyntaxNodeAnalysisContext context, bool needsComment, SyntaxNode node, Location location)
         {
             var documentation = node.GetDocumentationCommentTriviaSyntax();
-            if (documentation == null)
-            {
+            if (documentation == null) {
                 // missing documentation is reported by SA1600, SA1601, and SA1602
                 return;
             }
 
-            if (documentation.Content.GetFirstXmlElement(XmlCommentHelper.InheritdocXmlTag) != null)
-            {
+            if (documentation.Content.GetFirstXmlElement(XmlCommentHelper.InheritdocXmlTag) != null) {
                 // Ignore nodes with an <inheritdoc/> tag.
                 return;
             }
@@ -92,16 +88,15 @@ namespace StyleCop.Analyzers.DocumentationRules
             XElement completeDocumentation = null;
 
             var relevantXmlElement = documentation.Content.GetFirstXmlElement(this.XmlTagToHandle);
-            if (relevantXmlElement == null)
-            {
+            if (relevantXmlElement == null) {
                 relevantXmlElement = documentation.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag);
-                if (relevantXmlElement != null)
-                {
+                if (relevantXmlElement != null) {
                     var declaration = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
-                    var rawDocumentation = declaration?.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+                    var rawDocumentation = declaration?.GetDocumentationCommentXml(expandIncludes
+                                                                                   : true, cancellationToken
+                                                                                   : context.CancellationToken);
                     completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
-                    if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag))
-                    {
+                    if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag)) {
                         // Ignore nodes with an <inheritdoc/> tag in the included XML.
                         return;
                     }

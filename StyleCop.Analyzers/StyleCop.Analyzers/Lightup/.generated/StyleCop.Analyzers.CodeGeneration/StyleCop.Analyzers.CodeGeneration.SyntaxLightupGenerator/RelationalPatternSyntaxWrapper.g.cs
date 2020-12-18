@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct RelationalPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct RelationalPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.RelationalPatternSyntax";
         private static readonly Type WrappedType;
 
@@ -55,27 +54,25 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator RelationalPatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (RelationalPatternSyntaxWrapper)node.SyntaxNode;
+            return (RelationalPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator RelationalPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (RelationalPatternSyntaxWrapper)node.SyntaxNode;
+            return (RelationalPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator RelationalPatternSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new RelationalPatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new RelationalPatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(RelationalPatternSyntaxWrapper wrapper)

@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IDeclarationExpressionOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IDeclarationExpressionOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IDeclarationExpressionOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> ExpressionAccessor;
@@ -29,13 +28,11 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation Expression => ExpressionAccessor(this.WrappedOperation);
         public static IDeclarationExpressionOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

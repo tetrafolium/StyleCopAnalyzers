@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IIncrementOrDecrementOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IIncrementOrDecrementOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IIncrementOrDecrementOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, bool> IsPostfixAccessor;
@@ -41,13 +40,11 @@ namespace StyleCop.Analyzers.Lightup
         public IMethodSymbol OperatorMethod => OperatorMethodAccessor(this.WrappedOperation);
         public static IIncrementOrDecrementOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

@@ -21,8 +21,7 @@ namespace StyleCop.Analyzers.OrderingRules
     /// cleaner and easier to read, and can help make it easier to identify the types used throughout the code.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1209UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives : DiagnosticAnalyzer
-    {
+    internal class SA1209UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1209UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives"/> analyzer.
@@ -33,15 +32,14 @@ namespace StyleCop.Analyzers.OrderingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1209MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1209Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> CompilationUnitAction = HandleCompilationUnit;
         private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction = HandleNamespaceDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -55,29 +53,26 @@ namespace StyleCop.Analyzers.OrderingRules
 
         private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context)
         {
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
+            var compilationUnit = (CompilationUnitSyntax) context.Node;
 
             ProcessUsingsAndReportDiagnostic(compilationUnit.Usings, context);
         }
 
         private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
+            var namespaceDeclaration = (NamespaceDeclarationSyntax) context.Node;
 
             ProcessUsingsAndReportDiagnostic(namespaceDeclaration.Usings, context);
         }
 
         private static void ProcessUsingsAndReportDiagnostic(SyntaxList<UsingDirectiveSyntax> usings, SyntaxNodeAnalysisContext context)
         {
-            for (int i = 0; i < usings.Count; i++)
-            {
+            for (int i = 0; i < usings.Count; i++) {
                 var usingDirective = usings[i];
                 var notLastUsingDirective = i + 1 < usings.Count;
-                if (usingDirective.Alias != null && notLastUsingDirective)
-                {
+                if (usingDirective.Alias != null && notLastUsingDirective) {
                     var nextUsingDirective = usings[i + 1];
-                    if (nextUsingDirective.Alias == null && nextUsingDirective.StaticKeyword.IsKind(SyntaxKind.None) && !nextUsingDirective.IsPrecededByPreprocessorDirective())
-                    {
+                    if (nextUsingDirective.Alias == null && nextUsingDirective.StaticKeyword.IsKind(SyntaxKind.None) && !nextUsingDirective.IsPrecededByPreprocessorDirective()) {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, usingDirective.GetLocation()));
                     }
                 }

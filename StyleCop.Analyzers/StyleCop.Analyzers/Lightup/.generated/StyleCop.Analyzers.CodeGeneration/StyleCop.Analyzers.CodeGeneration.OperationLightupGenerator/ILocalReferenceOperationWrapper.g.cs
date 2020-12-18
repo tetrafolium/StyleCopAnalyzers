@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct ILocalReferenceOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct ILocalReferenceOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.ILocalReferenceOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ILocalSymbol> LocalAccessor;
@@ -32,13 +31,11 @@ namespace StyleCop.Analyzers.Lightup
         public bool IsDeclaration => IsDeclarationAccessor(this.WrappedOperation);
         public static ILocalReferenceOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

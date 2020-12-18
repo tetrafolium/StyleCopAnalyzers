@@ -20,11 +20,10 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1512CodeFixProvider))]
     [Shared]
-    internal class SA1512CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1512CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1512SingleLineCommentsMustNotBeFollowedByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1512SingleLineCommentsMustNotBeFollowedByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,8 +34,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         LayoutResources.SA1512CodeFix,
@@ -53,14 +51,14 @@ namespace StyleCop.Analyzers.LayoutRules
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var singleLineComment = syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start);
-            var commentArray = new[] { singleLineComment };
+            var commentArray = new[]{ singleLineComment };
 
             var leadingTrivia = FixTriviaList(singleLineComment.Token.LeadingTrivia, commentArray);
             var trailingTrivia = FixTriviaList(singleLineComment.Token.TrailingTrivia, commentArray);
 
             var newToken = singleLineComment.Token
-                .WithLeadingTrivia(leadingTrivia)
-                .WithTrailingTrivia(trailingTrivia);
+                               .WithLeadingTrivia(leadingTrivia)
+                               .WithTrailingTrivia(trailingTrivia);
 
             var newSyntaxRoot = syntaxRoot.ReplaceToken(singleLineComment.Token, newToken);
 
@@ -69,21 +67,18 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static SyntaxTriviaList FixTriviaList(SyntaxTriviaList triviaList, IEnumerable<SyntaxTrivia> commentTrivias)
         {
-            foreach (var singleLineComment in commentTrivias)
-            {
+            foreach (var singleLineComment in commentTrivias) {
                 int commentLocation = triviaList.IndexOf(singleLineComment);
-                if (commentLocation == -1)
-                {
+                if (commentLocation == -1) {
                     continue;
                 }
 
                 int index = commentLocation + 1;
 
                 index++;
-                while (index < triviaList.Count && index > 0)
-                {
-                    switch (triviaList[index].Kind())
-                    {
+                while (index < triviaList.Count && index > 0) {
+                    switch (triviaList [index]
+                                .Kind()) {
                     case SyntaxKind.EndOfLineTrivia:
                     case SyntaxKind.WhitespaceTrivia:
                         index++;
@@ -91,8 +86,8 @@ namespace StyleCop.Analyzers.LayoutRules
 
                     default:
 
-                        if (triviaList[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
-                        {
+                        if (triviaList [index - 1]
+                                .IsKind(SyntaxKind.WhitespaceTrivia)) {
                             index--;
                         }
 
@@ -104,10 +99,9 @@ namespace StyleCop.Analyzers.LayoutRules
                     }
                 }
 
-                if (index == triviaList.Count)
-                {
-                    if (triviaList[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
-                    {
+                if (index == triviaList.Count) {
+                    if (triviaList [index - 1]
+                            .IsKind(SyntaxKind.WhitespaceTrivia)) {
                         index--;
                     }
 
@@ -118,18 +112,15 @@ namespace StyleCop.Analyzers.LayoutRules
             return triviaList;
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1512CodeFix;
+            protected override string CodeActionTitle => LayoutResources.SA1512CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -137,8 +128,7 @@ namespace StyleCop.Analyzers.LayoutRules
 
                 List<SyntaxTrivia> trivias = new List<SyntaxTrivia>();
 
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     trivias.Add(syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start));
                 }
 
@@ -146,8 +136,7 @@ namespace StyleCop.Analyzers.LayoutRules
 
                 Dictionary<SyntaxToken, SyntaxToken> replacements = new Dictionary<SyntaxToken, SyntaxToken>();
 
-                foreach (var tokenWithTrivia in tokensWithTrivia)
-                {
+                foreach (var tokenWithTrivia in tokensWithTrivia) {
                     var token = tokenWithTrivia.Key;
                     var newLeadingTrivia = FixTriviaList(token.LeadingTrivia, tokenWithTrivia);
                     var newTrailingTrivia = FixTriviaList(token.TrailingTrivia, tokenWithTrivia);

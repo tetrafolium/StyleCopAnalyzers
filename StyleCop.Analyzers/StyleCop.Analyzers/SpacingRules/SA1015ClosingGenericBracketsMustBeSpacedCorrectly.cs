@@ -23,8 +23,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// open parenthesis).</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1015ClosingGenericBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1015ClosingGenericBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1015ClosingGenericBracketsMustBeSpacedCorrectly"/>
         /// analyzer.
@@ -41,19 +40,16 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotPreceded = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorNotFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotFollowed = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorFollowed = new DiagnosticDescriptor(DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorNotPreceded);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(DescriptorNotPreceded);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -67,10 +63,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                if (token.IsKind(SyntaxKind.GreaterThanToken))
-                {
+            foreach (var token in root.DescendantTokens()) {
+                if (token.IsKind(SyntaxKind.GreaterThanToken)) {
                     HandleGreaterThanToken(context, token);
                 }
             }
@@ -78,13 +72,11 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleGreaterThanToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
-            switch (token.Parent.Kind())
-            {
+            switch (token.Parent.Kind()) {
             case SyntaxKind.TypeArgumentList:
             case SyntaxKind.TypeParameterList:
                 break;
@@ -101,11 +93,9 @@ namespace StyleCop.Analyzers.SpacingRules
             bool allowTrailingNoSpace;
             bool allowTrailingSpace;
 
-            if (!lastInLine)
-            {
+            if (!lastInLine) {
                 SyntaxToken nextToken = token.GetNextToken();
-                switch (nextToken.Kind())
-                {
+                switch (nextToken.Kind()) {
                 case SyntaxKind.OpenParenToken:
                 // DotToken isn't listed above, but it's required for reasonable member access formatting
                 case SyntaxKind.DotToken:
@@ -136,32 +126,25 @@ namespace StyleCop.Analyzers.SpacingRules
                     allowTrailingSpace = true;
                     break;
                 }
-            }
-            else
-            {
+            } else {
                 allowTrailingNoSpace = true;
                 allowTrailingSpace = true;
             }
 
-            if (!firstInLine && precededBySpace)
-            {
+            if (!firstInLine && precededBySpace) {
                 // Closing generic bracket should{ not} be {preceded} by a space.
                 var properties = TokenSpacingProperties.RemovePreceding;
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotPreceded, token.GetLocation(), properties));
             }
 
-            if (!lastInLine)
-            {
-                if (!allowTrailingNoSpace && !followedBySpace)
-                {
+            if (!lastInLine) {
+                if (!allowTrailingNoSpace && !followedBySpace) {
                     // Closing generic bracket should{} be {followed} by a space.
                     var properties = TokenSpacingProperties.InsertFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                     context.ReportDiagnostic(Diagnostic.Create(DescriptorFollowed, token.GetLocation(), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-                }
-                else if (!allowTrailingSpace && followedBySpace)
-                {
+                } else if (!allowTrailingSpace && followedBySpace) {
                     // Closing generic bracket should{ not} be {followed} by a space.
                     var properties = TokenSpacingProperties.RemoveFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)

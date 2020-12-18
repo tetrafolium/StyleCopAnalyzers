@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IRangeCaseClauseOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IRangeCaseClauseOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IRangeCaseClauseOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> MinimumValueAccessor;
@@ -30,19 +29,17 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation MinimumValue => MinimumValueAccessor(this.WrappedOperation);
         public IOperation MaximumValue => MaximumValueAccessor(this.WrappedOperation);
-        public object CaseKind => ((ICaseClauseOperationWrapper)this).CaseKind;
-        public ILabelSymbol Label => ((ICaseClauseOperationWrapper)this).Label;
+        public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
+        public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
         public static explicit operator IRangeCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator ICaseClauseOperationWrapper(IRangeCaseClauseOperationWrapper wrapper) => ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IRangeCaseClauseOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

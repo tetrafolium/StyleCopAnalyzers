@@ -39,8 +39,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// reader to make assumptions about the code.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1407ArithmeticExpressionsMustDeclarePrecedence : DiagnosticAnalyzer
-    {
+    internal class SA1407ArithmeticExpressionsMustDeclarePrecedence : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1407ArithmeticExpressionsMustDeclarePrecedence"/>
         /// analyzer.
@@ -51,24 +50,22 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1407MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1407Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableArray<SyntaxKind> HandledBinaryExpressionKinds =
-            ImmutableArray.Create(
-                SyntaxKind.AddExpression,
-                SyntaxKind.SubtractExpression,
-                SyntaxKind.MultiplyExpression,
-                SyntaxKind.DivideExpression,
-                SyntaxKind.ModuloExpression,
-                SyntaxKind.LeftShiftExpression,
-                SyntaxKind.RightShiftExpression);
+        private static readonly ImmutableArray<SyntaxKind> HandledBinaryExpressionKinds = ImmutableArray.Create(
+            SyntaxKind.AddExpression,
+            SyntaxKind.SubtractExpression,
+            SyntaxKind.MultiplyExpression,
+            SyntaxKind.DivideExpression,
+            SyntaxKind.ModuloExpression,
+            SyntaxKind.LeftShiftExpression,
+            SyntaxKind.RightShiftExpression);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BinaryExpressionAction = HandleBinaryExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -81,22 +78,18 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleBinaryExpression(SyntaxNodeAnalysisContext context)
         {
-            BinaryExpressionSyntax binSyntax = (BinaryExpressionSyntax)context.Node;
+            BinaryExpressionSyntax binSyntax = (BinaryExpressionSyntax) context.Node;
 
-            if (binSyntax.Left is BinaryExpressionSyntax left)
-            {
+            if (binSyntax.Left is BinaryExpressionSyntax left) {
                 // Check if the operations are of the same kind
-                if (!IsSameFamily(binSyntax.OperatorToken, left.OperatorToken))
-                {
+                if (!IsSameFamily(binSyntax.OperatorToken, left.OperatorToken)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, left.GetLocation()));
                 }
             }
 
-            if (binSyntax.Right is BinaryExpressionSyntax right)
-            {
+            if (binSyntax.Right is BinaryExpressionSyntax right) {
                 // Check if the operations are of the same kind
-                if (!IsSameFamily(binSyntax.OperatorToken, right.OperatorToken))
-                {
+                if (!IsSameFamily(binSyntax.OperatorToken, right.OperatorToken)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, right.GetLocation()));
                 }
             }

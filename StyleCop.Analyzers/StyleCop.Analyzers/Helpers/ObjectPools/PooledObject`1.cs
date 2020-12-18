@@ -13,7 +13,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
     /// </summary>
     /// <typeparam name="T">The type of the pooled object.</typeparam>
     internal struct PooledObject<T> : IDisposable
-        where T : class
+                                          where T : class
     {
         private readonly Action<ObjectPool<T>, T> releaser;
         private readonly ObjectPool<T> pool;
@@ -67,8 +67,7 @@ namespace StyleCop.Analyzers.Helpers.ObjectPools
 
         public void Dispose()
         {
-            if (this.pooledObject != null)
-            {
+            if (this.pooledObject != null) {
                 this.releaser(this.pool, this.pooledObject);
                 this.pooledObject = null;
             }

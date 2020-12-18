@@ -20,11 +20,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1120CodeFixProvider))]
     [Shared]
-    internal class SA1120CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1120CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1120CommentsMustContainText.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1120CommentsMustContainText.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,8 +34,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1120CodeFix,
@@ -60,21 +58,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
             triviaToRemove.Add(trivia);
 
             bool hasTrailingContent = TriviaHasTrailingContentOnLine(root, trivia);
-            if (!hasTrailingContent && diagnosticIndex > 0)
-            {
+            if (!hasTrailingContent && diagnosticIndex > 0) {
                 var previousTrivia = triviaList[diagnosticIndex - 1];
-                if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                {
+                if (previousTrivia.IsKind(SyntaxKind.WhitespaceTrivia)) {
                     triviaToRemove.Add(previousTrivia);
                 }
             }
 
             bool hasLeadingContent = TriviaHasLeadingContentOnLine(root, trivia);
-            if (!hasLeadingContent && diagnosticIndex < triviaList.Count - 1)
-            {
+            if (!hasLeadingContent && diagnosticIndex < triviaList.Count - 1) {
                 var nextTrivia = triviaList[diagnosticIndex + 1];
-                if (nextTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
-                {
+                if (nextTrivia.IsKind(SyntaxKind.EndOfLineTrivia)) {
                     triviaToRemove.Add(nextTrivia);
                 }
             }
@@ -88,8 +82,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static bool TriviaHasLeadingContentOnLine(SyntaxNode root, SyntaxTrivia commentTrivia)
         {
-            if (commentTrivia.SpanStart == 0)
-            {
+            if (commentTrivia.SpanStart == 0) {
                 // It is impossible to have leading content at the start of the file.
                 return false;
             }
@@ -102,8 +95,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static bool TriviaHasTrailingContentOnLine(SyntaxNode root, SyntaxTrivia commentTrivia)
         {
-            if (commentTrivia.Span.End == root.Span.End)
-            {
+            if (commentTrivia.Span.End == root.Span.End) {
                 // It is impossible to have trailing content at the end of the file.
                 return false;
             }

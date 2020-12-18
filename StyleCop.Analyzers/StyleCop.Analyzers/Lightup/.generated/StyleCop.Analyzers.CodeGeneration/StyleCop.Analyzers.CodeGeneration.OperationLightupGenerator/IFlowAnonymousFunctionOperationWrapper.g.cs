@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IFlowAnonymousFunctionOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IFlowAnonymousFunctionOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IFlowAnonymousFunctionOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IMethodSymbol> SymbolAccessor;
@@ -29,13 +28,11 @@ namespace StyleCop.Analyzers.Lightup
         public IMethodSymbol Symbol => SymbolAccessor(this.WrappedOperation);
         public static IFlowAnonymousFunctionOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

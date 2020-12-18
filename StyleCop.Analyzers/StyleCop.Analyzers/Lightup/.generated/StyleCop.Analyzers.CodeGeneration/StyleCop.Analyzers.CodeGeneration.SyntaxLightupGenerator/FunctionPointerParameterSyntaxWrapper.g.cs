@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct FunctionPointerParameterSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct FunctionPointerParameterSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerParameterSyntax";
         private static readonly Type WrappedType;
         private static readonly Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>, CSharpSyntaxNode> WithAttributeListsAccessor;
@@ -38,7 +37,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((BaseParameterSyntaxWrapper)this).AttributeLists;
+                return ((BaseParameterSyntaxWrapper) this).AttributeLists;
             }
         }
 
@@ -46,7 +45,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((BaseParameterSyntaxWrapper)this).Modifiers;
+                return ((BaseParameterSyntaxWrapper) this).Modifiers;
             }
         }
 
@@ -54,28 +53,26 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((BaseParameterSyntaxWrapper)this).Type;
+                return ((BaseParameterSyntaxWrapper) this).Type;
             }
         }
 
         public static explicit operator FunctionPointerParameterSyntaxWrapper(BaseParameterSyntaxWrapper node)
         {
-            return (FunctionPointerParameterSyntaxWrapper)node.SyntaxNode;
+            return (FunctionPointerParameterSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator FunctionPointerParameterSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new FunctionPointerParameterSyntaxWrapper((CSharpSyntaxNode)node);
+            return new FunctionPointerParameterSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator BaseParameterSyntaxWrapper(FunctionPointerParameterSyntaxWrapper wrapper)

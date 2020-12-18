@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IDynamicMemberReferenceOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IDynamicMemberReferenceOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IDynamicMemberReferenceOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> InstanceAccessor;
@@ -38,13 +37,11 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol ContainingType => ContainingTypeAccessor(this.WrappedOperation);
         public static IDynamicMemberReferenceOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

@@ -22,16 +22,15 @@ namespace StyleCop.Analyzers.OrderingRules
     /// </summary>
     [NoCodeFix("Disabled until stable")]
     [Shared]
-    internal class ElementOrderCodeFixProvider : CodeFixProvider
-    {
+    internal class ElementOrderCodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1201ElementsMustAppearInTheCorrectOrder.DiagnosticId,
-                SA1202ElementsMustBeOrderedByAccess.DiagnosticId,
-                SA1203ConstantsMustAppearBeforeFields.DiagnosticId,
-                SA1204StaticElementsMustAppearBeforeInstanceElements.DiagnosticId,
-                SA1214ReadonlyElementsMustAppearBeforeNonReadonlyElements.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(
+            SA1201ElementsMustAppearInTheCorrectOrder.DiagnosticId,
+            SA1202ElementsMustBeOrderedByAccess.DiagnosticId,
+            SA1203ConstantsMustAppearBeforeFields.DiagnosticId,
+            SA1204StaticElementsMustAppearBeforeInstanceElements.DiagnosticId,
+            SA1214ReadonlyElementsMustAppearBeforeNonReadonlyElements.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,8 +41,7 @@ namespace StyleCop.Analyzers.OrderingRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         OrderingResources.ElementOrderCodeFix,
@@ -62,8 +60,7 @@ namespace StyleCop.Analyzers.OrderingRules
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var memberDeclaration = syntaxRoot.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberDeclarationSyntax>();
-            if (memberDeclaration == null)
-            {
+            if (memberDeclaration == null) {
                 return document;
             }
 
@@ -77,19 +74,16 @@ namespace StyleCop.Analyzers.OrderingRules
             var parentDeclaration = memberDeclaration.Parent;
             var memberToMove = new MemberOrderHelper(memberDeclaration, elementOrder);
 
-            if (parentDeclaration is TypeDeclarationSyntax)
-            {
-                return HandleTypeDeclaration(memberToMove, (TypeDeclarationSyntax)parentDeclaration, elementOrder, syntaxRoot, indentationSettings);
+            if (parentDeclaration is TypeDeclarationSyntax) {
+                return HandleTypeDeclaration(memberToMove, (TypeDeclarationSyntax) parentDeclaration, elementOrder, syntaxRoot, indentationSettings);
             }
 
-            if (parentDeclaration is NamespaceDeclarationSyntax)
-            {
-                return HandleNamespaceDeclaration(memberToMove, (NamespaceDeclarationSyntax)parentDeclaration, elementOrder, syntaxRoot, indentationSettings);
+            if (parentDeclaration is NamespaceDeclarationSyntax) {
+                return HandleNamespaceDeclaration(memberToMove, (NamespaceDeclarationSyntax) parentDeclaration, elementOrder, syntaxRoot, indentationSettings);
             }
 
-            if (parentDeclaration is CompilationUnitSyntax)
-            {
-                return HandleCompilationUnitDeclaration(memberToMove, (CompilationUnitSyntax)parentDeclaration, elementOrder, syntaxRoot, indentationSettings);
+            if (parentDeclaration is CompilationUnitSyntax) {
+                return HandleCompilationUnitDeclaration(memberToMove, (CompilationUnitSyntax) parentDeclaration, elementOrder, syntaxRoot, indentationSettings);
             }
 
             return syntaxRoot;
@@ -115,20 +109,17 @@ namespace StyleCop.Analyzers.OrderingRules
             var memberIndex = members.IndexOf(memberOrder.Member);
             MemberOrderHelper target = default;
 
-            for (var i = memberIndex - 1; i >= 0; --i)
-            {
+            for (var i = memberIndex - 1; i >= 0; --i) {
                 var orderHelper = new MemberOrderHelper(members[i], elementOrder);
-                if (orderHelper.Priority < memberOrder.Priority)
-                {
+                if (orderHelper.Priority < memberOrder.Priority) {
                     target = orderHelper;
-                }
-                else
-                {
+                } else {
                     break;
                 }
             }
 
-            return target.Member != null ? MoveMember(syntaxRoot, memberOrder.Member, target.Member, indentationSettings) : syntaxRoot;
+            return target.Member != null ? MoveMember(syntaxRoot, memberOrder.Member, target.Member, indentationSettings)
+                : syntaxRoot;
         }
 
         private static SyntaxNode MoveMember(SyntaxNode syntaxRoot, MemberDeclarationSyntax member, MemberDeclarationSyntax targetMember, IndentationSettings indentationSettings)
@@ -138,25 +129,22 @@ namespace StyleCop.Analyzers.OrderingRules
             syntaxRoot = syntaxRoot.TrackNodes(member, targetMember, firstToken.Parent);
             var memberToMove = syntaxRoot.GetCurrentNode(member);
             var targetMemberTracked = syntaxRoot.GetCurrentNode(targetMember);
-            if (!memberToMove.HasLeadingTrivia)
-            {
+            if (!memberToMove.HasLeadingTrivia) {
                 var targetIndentationLevel = IndentationHelper.GetIndentationSteps(indentationSettings, targetMember);
                 var indentationString = IndentationHelper.GenerateIndentationString(indentationSettings, targetIndentationLevel);
                 memberToMove = memberToMove.WithLeadingTrivia(SyntaxFactory.Whitespace(indentationString));
             }
 
             if (!HasLeadingBlankLines(targetMember)
-                && HasLeadingBlankLines(member))
-            {
+                && HasLeadingBlankLines(member)) {
                 memberToMove = memberToMove.WithTrailingTrivia(memberToMove.GetTrailingTrivia().Add(SyntaxFactory.CarriageReturnLineFeed));
                 memberToMove = memberToMove.WithLeadingTrivia(GetLeadingTriviaWithoutLeadingBlankLines(memberToMove));
             }
 
-            syntaxRoot = syntaxRoot.InsertNodesBefore(targetMemberTracked, new[] { memberToMove });
+            syntaxRoot = syntaxRoot.InsertNodesBefore(targetMemberTracked, new[]{ memberToMove });
             var fieldToMoveTracked = syntaxRoot.GetCurrentNodes(member).Last();
             syntaxRoot = syntaxRoot.RemoveNode(fieldToMoveTracked, SyntaxRemoveOptions.KeepNoTrivia);
-            if (fileHeader.Any())
-            {
+            if (fileHeader.Any()) {
                 var oldFirstToken = syntaxRoot.GetCurrentNode(firstToken.Parent).ChildTokens().First();
                 syntaxRoot = syntaxRoot.ReplaceToken(oldFirstToken, oldFirstToken.WithLeadingTrivia(StripFileHeader(oldFirstToken.LeadingTrivia)));
                 var newFirstToken = syntaxRoot.GetFirstToken();
@@ -177,11 +165,10 @@ namespace StyleCop.Analyzers.OrderingRules
             var onBlankLine = false;
             var hasHeader = false;
             var fileHeader = new List<SyntaxTrivia>();
-            for (var i = 0; i < newLeadingTrivia.Count; i++)
-            {
+            for (var i = 0; i < newLeadingTrivia.Count; i++) {
                 bool done = false;
-                switch (newLeadingTrivia[i].Kind())
-                {
+                switch (newLeadingTrivia [i]
+                            .Kind()) {
                 case SyntaxKind.SingleLineCommentTrivia:
                 case SyntaxKind.MultiLineCommentTrivia:
                     fileHeader.Add(newLeadingTrivia[i]);
@@ -196,12 +183,9 @@ namespace StyleCop.Analyzers.OrderingRules
                 case SyntaxKind.EndOfLineTrivia:
                     fileHeader.Add(newLeadingTrivia[i]);
 
-                    if (onBlankLine)
-                    {
+                    if (onBlankLine) {
                         done = true;
-                    }
-                    else
-                    {
+                    } else {
                         onBlankLine = true;
                     }
 
@@ -212,13 +196,13 @@ namespace StyleCop.Analyzers.OrderingRules
                     break;
                 }
 
-                if (done)
-                {
+                if (done) {
                     break;
                 }
             }
 
-            return hasHeader ? SyntaxTriviaList.Empty.AddRange(fileHeader) : SyntaxTriviaList.Empty;
+            return hasHeader ? SyntaxTriviaList.Empty.AddRange(fileHeader)
+                : SyntaxTriviaList.Empty;
         }
 
         private static bool HasLeadingBlankLines(SyntaxNode node)
@@ -232,17 +216,16 @@ namespace StyleCop.Analyzers.OrderingRules
             var leadingTrivia = node.GetLeadingTrivia();
 
             var skipIndex = 0;
-            for (var i = 0; i < leadingTrivia.Count; i++)
-            {
+            for (var i = 0; i < leadingTrivia.Count; i++) {
                 var currentTrivia = leadingTrivia[i];
-                if (currentTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
-                {
+                if (currentTrivia.IsKind(SyntaxKind.EndOfLineTrivia)) {
                     skipIndex = i + 1;
-                }
-                else if (!currentTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                {
+                } else if (!currentTrivia.IsKind(SyntaxKind.WhitespaceTrivia)) {
                     // Preceded by whitespace
-                    skipIndex = i > 0 && leadingTrivia[i - 1].IsKind(SyntaxKind.WhitespaceTrivia) ? i - 1 : i;
+                    skipIndex = i > 0 && leadingTrivia [i - 1]
+                                             .IsKind(SyntaxKind.WhitespaceTrivia)
+                        ? i - 1
+                        : i;
                     break;
                 }
             }
@@ -250,16 +233,15 @@ namespace StyleCop.Analyzers.OrderingRules
             return SyntaxFactory.TriviaList(leadingTrivia.Skip(skipIndex));
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } = new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
             protected override string CodeActionTitle => OrderingResources.ElementOrderCodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -268,11 +250,9 @@ namespace StyleCop.Analyzers.OrderingRules
                 var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
                 var trackedDiagnosticMembers = new List<MemberDeclarationSyntax>();
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     var memberDeclaration = syntaxRoot.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberDeclarationSyntax>();
-                    if (memberDeclaration == null)
-                    {
+                    if (memberDeclaration == null) {
                         continue;
                     }
 
@@ -281,8 +261,7 @@ namespace StyleCop.Analyzers.OrderingRules
 
                 syntaxRoot = syntaxRoot.TrackNodes(trackedDiagnosticMembers);
 
-                foreach (var member in trackedDiagnosticMembers)
-                {
+                foreach (var member in trackedDiagnosticMembers) {
                     var memberDeclaration = syntaxRoot.GetCurrentNode(member);
                     syntaxRoot = UpdateSyntaxRoot(memberDeclaration, elementOrder, syntaxRoot, settings.Indentation);
                 }

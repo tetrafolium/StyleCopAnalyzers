@@ -21,8 +21,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// unless it is the first character on the line.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1001CommasMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1001CommasMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1001CommasMustBeSpacedCorrectly"/> analyzer.
         /// </summary>
@@ -32,14 +31,13 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1001MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1001Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -53,10 +51,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                switch (token.Kind())
-                {
+            foreach (var token in root.DescendantTokens()) {
+                switch (token.Kind()) {
                 case SyntaxKind.CommaToken:
                     HandleCommaToken(context, token);
                     break;
@@ -69,8 +65,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleCommaToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
@@ -79,41 +74,31 @@ namespace StyleCop.Analyzers.SpacingRules
 
             // check for things like $"{x,5}"
             var shouldNotHaveFollowingSpace = token.Parent.IsKind(SyntaxKind.InterpolationAlignmentClause);
-            if (token.HasTrailingTrivia)
-            {
-                if (token.TrailingTrivia.First().IsKind(SyntaxKind.WhitespaceTrivia))
-                {
+            if (token.HasTrailingTrivia) {
+                if (token.TrailingTrivia.First().IsKind(SyntaxKind.WhitespaceTrivia)) {
+                    missingFollowingSpace = false;
+                } else if (token.TrailingTrivia.First().IsKind(SyntaxKind.EndOfLineTrivia)) {
                     missingFollowingSpace = false;
                 }
-                else if (token.TrailingTrivia.First().IsKind(SyntaxKind.EndOfLineTrivia))
-                {
-                    missingFollowingSpace = false;
-                }
-            }
-            else
-            {
+            } else {
                 SyntaxToken nextToken = token.GetNextToken();
-                if (nextToken.IsKind(SyntaxKind.CommaToken) || nextToken.IsKind(SyntaxKind.GreaterThanToken) || nextToken.IsKind(SyntaxKind.CloseBracketToken))
-                {
+                if (nextToken.IsKind(SyntaxKind.CommaToken) || nextToken.IsKind(SyntaxKind.GreaterThanToken) || nextToken.IsKind(SyntaxKind.CloseBracketToken)) {
                     // make an exception for things like typeof(Func<,>), typeof(Func<,,>), and int[,]
                     missingFollowingSpace = false;
                 }
             }
 
-            if (token.IsFirstInLine() || token.IsPrecededByWhitespace(context.CancellationToken))
-            {
+            if (token.IsFirstInLine() || token.IsPrecededByWhitespace(context.CancellationToken)) {
                 // comma should{ not} be {preceded} by whitespace
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemovePrecedingPreserveLayout, " not", "preceded"));
             }
 
-            if (missingFollowingSpace && !shouldNotHaveFollowingSpace)
-            {
+            if (missingFollowingSpace && !shouldNotHaveFollowingSpace) {
                 // comma should{} be {followed} by whitespace
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.InsertFollowing, string.Empty, "followed"));
             }
 
-            if (!missingFollowingSpace && shouldNotHaveFollowingSpace)
-            {
+            if (!missingFollowingSpace && shouldNotHaveFollowingSpace) {
                 // comma should{ not} be {followed} by whitespace
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemoveFollowing, " not", "followed"));
             }

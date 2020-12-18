@@ -32,8 +32,7 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1511WhileDoFooterMustNotBePrecededByBlankLine : DiagnosticAnalyzer
-    {
+    internal class SA1511WhileDoFooterMustNotBePrecededByBlankLine : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1511WhileDoFooterMustNotBePrecededByBlankLine"/>
         /// analyzer.
@@ -44,14 +43,13 @@ namespace StyleCop.Analyzers.LayoutRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1511MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1511Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> DoStatementAction = HandleDoStatement;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -64,11 +62,10 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleDoStatement(SyntaxNodeAnalysisContext context)
         {
-            var doStatement = (DoStatementSyntax)context.Node;
+            var doStatement = (DoStatementSyntax) context.Node;
             var whileKeyword = doStatement.WhileKeyword;
 
-            if (!whileKeyword.IsPrecededByBlankLines())
-            {
+            if (!whileKeyword.IsPrecededByBlankLines()) {
                 return;
             }
 

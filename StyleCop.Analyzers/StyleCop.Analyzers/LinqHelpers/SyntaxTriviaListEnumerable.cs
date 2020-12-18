@@ -11,8 +11,7 @@ namespace System.Linq
     /// This class supports a subset of LINQ operations on <see cref="SyntaxTriviaList"/> without requiring boxing of
     /// operands as an <see cref="IEnumerable{T}"/>.
     /// </summary>
-    internal static class SyntaxTriviaListEnumerable
-    {
+    internal static class SyntaxTriviaListEnumerable {
         /// <summary>
         /// Determines if a <see cref="SyntaxTriviaList"/> contains a specific <see cref="SyntaxTrivia"/>.
         /// </summary>
@@ -47,15 +46,12 @@ namespace System.Linq
         /// </returns>
         internal static bool Any(this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
         {
-            if (predicate == null)
-            {
+            if (predicate == null) {
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            foreach (SyntaxTrivia trivia in list)
-            {
-                if (predicate(trivia))
-                {
+            foreach (SyntaxTrivia trivia in list) {
+                if (predicate(trivia)) {
                     return true;
                 }
             }
@@ -79,15 +75,12 @@ namespace System.Linq
         /// </returns>
         internal static bool All(this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
         {
-            if (predicate == null)
-            {
+            if (predicate == null) {
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            foreach (SyntaxTrivia trivia in list)
-            {
-                if (!predicate(trivia))
-                {
+            foreach (SyntaxTrivia trivia in list) {
+                if (!predicate(trivia)) {
                     return false;
                 }
             }
@@ -105,10 +98,8 @@ namespace System.Linq
         /// found.</returns>
         internal static SyntaxTrivia LastOrDefault(this SyntaxTriviaList list, SyntaxKind kind)
         {
-            foreach (var trivia in list.Reverse())
-            {
-                if (trivia.IsKind(kind))
-                {
+            foreach (var trivia in list.Reverse()) {
+                if (trivia.IsKind(kind)) {
                     return trivia;
                 }
             }

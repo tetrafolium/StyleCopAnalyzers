@@ -3,8 +3,7 @@
 
 namespace StyleCop.Analyzers.Settings.ObjectModel
 {
-    internal enum TopLevelType
-    {
+    internal enum TopLevelType {
         /// <summary>
         /// Classes are considered top-level types.
         /// </summary>

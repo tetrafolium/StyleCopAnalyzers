@@ -20,8 +20,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// incremented or decremented.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1020IncrementDecrementSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1020IncrementDecrementSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1020IncrementDecrementSymbolsMustBeSpacedCorrectly"/>
         /// analyzer.
@@ -32,14 +31,13 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1020MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1020Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -53,10 +51,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                switch (token.Kind())
-                {
+            foreach (var token in root.DescendantTokens()) {
+                switch (token.Kind()) {
                 case SyntaxKind.MinusMinusToken:
                 case SyntaxKind.PlusPlusToken:
                     HandleIncrementDecrementToken(context, token);
@@ -70,24 +66,18 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleIncrementDecrementToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
-            switch (token.Parent.Kind())
-            {
+            switch (token.Parent.Kind()) {
             case SyntaxKind.PreIncrementExpression:
             case SyntaxKind.PreDecrementExpression:
-                if (token.HasTrailingTrivia)
-                {
+                if (token.HasTrailingTrivia) {
                     string symbolName;
-                    if (token.IsKind(SyntaxKind.MinusMinusToken))
-                    {
+                    if (token.IsKind(SyntaxKind.MinusMinusToken)) {
                         symbolName = "Decrement";
-                    }
-                    else
-                    {
+                    } else {
                         symbolName = "Increment";
                     }
 
@@ -101,15 +91,11 @@ namespace StyleCop.Analyzers.SpacingRules
             case SyntaxKind.PostIncrementExpression:
             case SyntaxKind.PostDecrementExpression:
                 SyntaxToken previousToken = token.GetPreviousToken();
-                if (!previousToken.IsMissing && previousToken.HasTrailingTrivia)
-                {
+                if (!previousToken.IsMissing && previousToken.HasTrailingTrivia) {
                     string symbolName;
-                    if (token.IsKind(SyntaxKind.MinusMinusToken))
-                    {
+                    if (token.IsKind(SyntaxKind.MinusMinusToken)) {
                         symbolName = "Decrement";
-                    }
-                    else
-                    {
+                    } else {
                         symbolName = "Increment";
                     }
 

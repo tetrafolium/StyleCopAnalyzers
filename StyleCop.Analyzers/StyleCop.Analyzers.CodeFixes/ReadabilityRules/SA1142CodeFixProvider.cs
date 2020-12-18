@@ -18,19 +18,17 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1142CodeFixProvider))]
     [Shared]
-    internal class SA1142CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1142CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1142ReferToTupleElementsByName.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1142ReferToTupleElementsByName.DiagnosticId);
 
         public override FixAllProvider GetFixAllProvider() => FixAll.Instance;
 
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1142CodeFix,
@@ -47,7 +45,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                           : true);
             var replacementNode = GetReplacementNode(semanticModel, node);
 
             var newSyntaxRoot = syntaxRoot.ReplaceNode(node, replacementNode);
@@ -56,15 +55,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static SyntaxNode GetReplacementNode(SemanticModel semanticModel, SyntaxNode fieldName)
         {
-            var fieldSymbol = (IFieldSymbol)semanticModel.GetSymbolInfo(fieldName.Parent).Symbol;
+            var fieldSymbol = (IFieldSymbol) semanticModel.GetSymbolInfo(fieldName.Parent).Symbol;
             var fieldNameSymbol = fieldSymbol.ContainingType.GetMembers().OfType<IFieldSymbol>().Single(fs => !Equals(fs, fieldSymbol) && Equals(fs.CorrespondingTupleField(), fieldSymbol));
 
             return SyntaxFactory.IdentifierName(fieldNameSymbol.Name).WithTriviaFrom(fieldName);
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } = new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
             /// <inheritdoc/>
             protected override string CodeActionTitle => ReadabilityResources.SA1142CodeFix;
@@ -77,10 +76,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 var replaceMap = new Dictionary<SyntaxNode, SyntaxNode>();
 
-                foreach (var diagnostic in diagnostics)
-                {
-                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
-                    replaceMap[node] = GetReplacementNode(semanticModel, node);
+                foreach (var diagnostic in diagnostics) {
+                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                   : true);
+                    replaceMap [node]
+                    = GetReplacementNode(semanticModel, node);
                 }
 
                 return syntaxRoot.ReplaceNodes(replaceMap.Keys, (original, rewritten) => replaceMap[original]);

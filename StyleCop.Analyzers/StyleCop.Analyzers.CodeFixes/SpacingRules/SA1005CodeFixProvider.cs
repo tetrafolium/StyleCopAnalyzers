@@ -24,11 +24,10 @@ namespace StyleCop.Analyzers.SpacingRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1005CodeFixProvider))]
     [Shared]
-    internal class SA1005CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1005CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1005SingleLineCommentsMustBeginWithSingleSpace.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1005SingleLineCommentsMustBeginWithSingleSpace.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,8 +40,7 @@ namespace StyleCop.Analyzers.SpacingRules
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         SpacingResources.SA1005CodeFix,
@@ -65,10 +63,8 @@ namespace StyleCop.Analyzers.SpacingRules
             var subText = text.GetSubText(sourceSpan).ToString();
 
             int i = 2;
-            for (; i < subText.Length; i++)
-            {
-                if (!char.IsWhiteSpace(subText[i]))
-                {
+            for (; i < subText.Length; i++) {
+                if (!char.IsWhiteSpace(subText[i])) {
                     break;
                 }
             }
@@ -76,18 +72,15 @@ namespace StyleCop.Analyzers.SpacingRules
             return new TextChange(new TextSpan(sourceSpan.Start + 2, i - 2), " ");
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                SpacingResources.SA1005CodeFix;
+            protected override string CodeActionTitle => SpacingResources.SA1005CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -95,8 +88,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 List<TextChange> changes = new List<TextChange>();
 
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     var sourceSpan = diagnostic.Location.SourceSpan;
                     changes.Add(GetTextChange(text, sourceSpan));
                 }

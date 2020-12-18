@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IInstanceReferenceOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IInstanceReferenceOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IInstanceReferenceOperation";
         private static readonly Type WrappedType;
         private readonly IOperation operation;
@@ -27,13 +26,11 @@ namespace StyleCop.Analyzers.Lightup
         public object ReferenceKind => throw new NotImplementedException("Property 'IInstanceReferenceOperation.ReferenceKind' has unsupported type 'InstanceReferenceKind'");
         public static IInstanceReferenceOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

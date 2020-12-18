@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct RecordDeclarationSyntaxWrapper : ISyntaxWrapper<TypeDeclarationSyntax>
-    {
+    internal readonly partial struct RecordDeclarationSyntaxWrapper : ISyntaxWrapper<TypeDeclarationSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.RecordDeclarationSyntax";
         private static readonly Type WrappedType;
 
@@ -153,17 +152,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator RecordDeclarationSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new RecordDeclarationSyntaxWrapper((TypeDeclarationSyntax)node);
+            return new RecordDeclarationSyntaxWrapper((TypeDeclarationSyntax) node);
         }
 
         public static implicit operator TypeDeclarationSyntax(RecordDeclarationSyntaxWrapper wrapper)

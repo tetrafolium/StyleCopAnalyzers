@@ -18,8 +18,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// access symbol should not have whitespace on either side, unless it is the first character on the line.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1019MemberAccessSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1019MemberAccessSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1019MemberAccessSymbolsMustBeSpacedCorrectly"/>
         /// analyzer.
@@ -35,16 +34,14 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotPreceded = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorNotFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotFollowed = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorNotPreceded);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(DescriptorNotPreceded);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -58,10 +55,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                switch (token.Kind())
-                {
+            foreach (var token in root.DescendantTokens()) {
+                switch (token.Kind()) {
                 case SyntaxKind.DotToken:
                     HandleDotToken(context, token);
                     break;
@@ -83,8 +78,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleDotToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
@@ -93,13 +87,11 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleQuestionToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
-            if (!token.Parent.IsKind(SyntaxKind.ConditionalAccessExpression))
-            {
+            if (!token.Parent.IsKind(SyntaxKind.ConditionalAccessExpression)) {
                 return;
             }
 
@@ -112,15 +104,13 @@ namespace StyleCop.Analyzers.SpacingRules
             bool precededBySpace = firstInLine || token.IsPrecededByWhitespace(context.CancellationToken);
             bool followedBySpace = token.IsFollowedByWhitespace();
 
-            if (!firstInLine && precededBySpace)
-            {
+            if (!firstInLine && precededBySpace) {
                 // Member access symbol '{.}' should not be {preceded} by a space.
                 var properties = TokenSpacingProperties.RemovePreceding;
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotPreceded, token.GetLocation(), properties, token.Text));
             }
 
-            if (followedBySpace)
-            {
+            if (followedBySpace) {
                 // Member access symbol '{.}' should not be {followed} by a space.
                 var properties = TokenSpacingProperties.RemoveFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)

@@ -22,11 +22,10 @@ namespace StyleCop.Analyzers.SpacingRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1027CodeFixProvider))]
     [Shared]
-    internal class SA1027CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1027CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1027UseTabsCorrectly.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1027UseTabsCorrectly.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,8 +36,7 @@ namespace StyleCop.Analyzers.SpacingRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         SpacingResources.SA1027CodeFix,
@@ -65,8 +63,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
             bool useTabs = false;
             string behavior;
-            if (diagnostic.Properties.TryGetValue(SA1027UseTabsCorrectly.BehaviorKey, out behavior))
-            {
+            if (diagnostic.Properties.TryGetValue(SA1027UseTabsCorrectly.BehaviorKey, out behavior)) {
                 useTabs = behavior == SA1027UseTabsCorrectly.ConvertToTabsBehavior;
             }
 
@@ -74,66 +71,49 @@ namespace StyleCop.Analyzers.SpacingRules
             StringBuilder replacement = StringBuilderPool.Allocate();
             int spaceCount = 0;
             int column = 0;
-            for (int i = 0; i < text.Length; i++)
-            {
+            for (int i = 0; i < text.Length; i++) {
                 char c = text[i];
-                if (c == '\t')
-                {
+                if (c == '\t') {
                     var offsetWithinTabColumn = column % indentationSettings.TabSize;
                     var tabWidth = indentationSettings.TabSize - offsetWithinTabColumn;
 
-                    if (i >= span.Start - startLine.Start)
-                    {
-                        if (useTabs)
-                        {
+                    if (i >= span.Start - startLine.Start) {
+                        if (useTabs) {
                             replacement.Length -= spaceCount;
                             replacement.Append('\t');
                             spaceCount = 0;
-                        }
-                        else
-                        {
+                        } else {
                             replacement.Append(' ', tabWidth);
                         }
                     }
 
                     column += tabWidth;
-                }
-                else
-                {
-                    if (i >= span.Start - startLine.Start)
-                    {
+                } else {
+                    if (i >= span.Start - startLine.Start) {
                         replacement.Append(c);
-                        if (c == ' ')
-                        {
+                        if (c == ' ') {
                             spaceCount++;
-                            if (useTabs)
-                            {
+                            if (useTabs) {
                                 // Note that we account for column not yet being incremented
                                 var offsetWithinTabColumn = (column + 1) % indentationSettings.TabSize;
-                                if (offsetWithinTabColumn == 0)
-                                {
+                                if (offsetWithinTabColumn == 0) {
                                     // We reached a tab stop.
                                     replacement.Length -= spaceCount;
                                     replacement.Append('\t');
                                     spaceCount = 0;
                                 }
                             }
-                        }
-                        else
-                        {
+                        } else {
                             spaceCount = 0;
                         }
                     }
 
-                    if (c == '\r' || c == '\n')
-                    {
+                    if (c == '\r' || c == '\n') {
                         // Handle newlines. We can ignore CR/LF/CRLF issues because we are only tracking column position
                         // in a line, and not the line numbers themselves.
                         column = 0;
                         spaceCount = 0;
-                    }
-                    else
-                    {
+                    } else {
                         column++;
                     }
                 }
@@ -142,18 +122,15 @@ namespace StyleCop.Analyzers.SpacingRules
             return new TextChange(span, StringBuilderPool.ReturnAndFree(replacement));
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
+        private class FixAll : DocumentBasedFixAllProvider {
             public static FixAllProvider Instance { get; }
-                = new FixAll();
+            = new FixAll();
 
-            protected override string CodeActionTitle
-                => SpacingResources.SA1027CodeFix;
+            protected override string CodeActionTitle => SpacingResources.SA1027CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -161,8 +138,7 @@ namespace StyleCop.Analyzers.SpacingRules
                 SourceText sourceText = await document.GetTextAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
 
                 List<TextChange> changes = new List<TextChange>();
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     changes.Add(FixDiagnostic(settings.Indentation, sourceText, diagnostic));
                 }
 

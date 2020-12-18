@@ -14,8 +14,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoCodeFix("Cannot generate appropriate names.")]
-    internal class SA1414TupleTypesInSignaturesShouldHaveElementNames : DiagnosticAnalyzer
-    {
+    internal class SA1414TupleTypesInSignaturesShouldHaveElementNames : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1414TupleTypesInSignaturesShouldHaveElementNames"/> analyzer.
         /// </summary>
@@ -36,7 +35,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -54,12 +54,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+            var methodDeclaration = (MethodDeclarationSyntax) context.Node;
 
             CheckType(context, methodDeclaration.ReturnType);
             CheckParameterList(context, methodDeclaration.ParameterList);
@@ -67,48 +66,44 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
-            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+            var constructorDeclaration = (ConstructorDeclarationSyntax) context.Node;
 
             CheckParameterList(context, constructorDeclaration.ParameterList);
         }
 
         private static void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
-            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
+            var propertyDeclaration = (PropertyDeclarationSyntax) context.Node;
 
             CheckType(context, propertyDeclaration.Type);
         }
 
         private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
-            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+            var indexerDeclaration = (IndexerDeclarationSyntax) context.Node;
 
             CheckType(context, indexerDeclaration.Type);
         }
 
         private static void HandleConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
-            var conversionOperatorDeclarion = (ConversionOperatorDeclarationSyntax)context.Node;
+            var conversionOperatorDeclarion = (ConversionOperatorDeclarationSyntax) context.Node;
 
             CheckType(context, conversionOperatorDeclarion.Type);
             CheckParameterList(context, conversionOperatorDeclarion.ParameterList);
@@ -116,12 +111,11 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
-            var delegateDeclarion = (DelegateDeclarationSyntax)context.Node;
+            var delegateDeclarion = (DelegateDeclarationSyntax) context.Node;
 
             CheckType(context, delegateDeclarion.ReturnType);
             CheckParameterList(context, delegateDeclarion.ParameterList);
@@ -129,38 +123,34 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void CheckParameterList(SyntaxNodeAnalysisContext context, ParameterListSyntax parameterList)
         {
-            foreach (var parameter in parameterList.Parameters)
-            {
+            foreach (var parameter in parameterList.Parameters) {
                 CheckType(context, parameter.Type);
             }
         }
 
         private static void CheckType(SyntaxNodeAnalysisContext context, TypeSyntax typeSyntax)
         {
-            switch (typeSyntax.Kind())
-            {
+            switch (typeSyntax.Kind()) {
             case SyntaxKindEx.TupleType:
-                CheckTupleType(context, (TupleTypeSyntaxWrapper)typeSyntax);
+                CheckTupleType(context, (TupleTypeSyntaxWrapper) typeSyntax);
                 break;
 
             case SyntaxKind.QualifiedName:
-                CheckType(context, ((QualifiedNameSyntax)typeSyntax).Right);
+                CheckType(context, ((QualifiedNameSyntax) typeSyntax).Right);
                 break;
 
             case SyntaxKind.GenericName:
-                CheckGenericName(context, (GenericNameSyntax)typeSyntax);
+                CheckGenericName(context, (GenericNameSyntax) typeSyntax);
                 break;
             }
         }
 
         private static void CheckTupleType(SyntaxNodeAnalysisContext context, TupleTypeSyntaxWrapper tupleTypeSyntax)
         {
-            foreach (var tupleElementSyntax in tupleTypeSyntax.Elements)
-            {
+            foreach (var tupleElementSyntax in tupleTypeSyntax.Elements) {
                 CheckType(context, tupleElementSyntax.Type);
 
-                if (tupleElementSyntax.Identifier.IsKind(SyntaxKind.None))
-                {
+                if (tupleElementSyntax.Identifier.IsKind(SyntaxKind.None)) {
                     var location = tupleElementSyntax.SyntaxNode.GetLocation();
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
                 }
@@ -169,8 +159,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void CheckGenericName(SyntaxNodeAnalysisContext context, GenericNameSyntax genericNameSyntax)
         {
-            foreach (var typeArgument in genericNameSyntax.TypeArgumentList.Arguments)
-            {
+            foreach (var typeArgument in genericNameSyntax.TypeArgumentList.Arguments) {
                 CheckType(context, typeArgument);
             }
         }

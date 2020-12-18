@@ -37,8 +37,7 @@ namespace StyleCop.Analyzers.LayoutRules
     /// braces are followed by blank lines.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1505OpeningBracesMustNotBeFollowedByBlankLine : DiagnosticAnalyzer
-    {
+    internal class SA1505OpeningBracesMustNotBeFollowedByBlankLine : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1505OpeningBracesMustNotBeFollowedByBlankLine"/>
         /// analyzer.
@@ -49,8 +48,7 @@ namespace StyleCop.Analyzers.LayoutRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1505MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1505Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BlockAction = HandleBlock;
         private static readonly Action<SyntaxNodeAnalysisContext> InitializerExpressionAction = HandleInitializerExpression;
@@ -61,8 +59,8 @@ namespace StyleCop.Analyzers.LayoutRules
         private static readonly Action<SyntaxNodeAnalysisContext> AccessorListAction = HandleAccessorList;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -81,56 +79,54 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleBlock(SyntaxNodeAnalysisContext context)
         {
-            var block = (BlockSyntax)context.Node;
+            var block = (BlockSyntax) context.Node;
             AnalyzeOpenBrace(context, block.OpenBraceToken);
         }
 
         private static void HandleInitializerExpression(SyntaxNodeAnalysisContext context)
         {
-            var expression = (InitializerExpressionSyntax)context.Node;
+            var expression = (InitializerExpressionSyntax) context.Node;
             AnalyzeOpenBrace(context, expression.OpenBraceToken);
         }
 
         private static void HandleAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var expression = (AnonymousObjectCreationExpressionSyntax)context.Node;
+            var expression = (AnonymousObjectCreationExpressionSyntax) context.Node;
             AnalyzeOpenBrace(context, expression.OpenBraceToken);
         }
 
         private static void HandleSwitchStatement(SyntaxNodeAnalysisContext context)
         {
-            var switchStatement = (SwitchStatementSyntax)context.Node;
+            var switchStatement = (SwitchStatementSyntax) context.Node;
             AnalyzeOpenBrace(context, switchStatement.OpenBraceToken);
         }
 
         private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
+            var namespaceDeclaration = (NamespaceDeclarationSyntax) context.Node;
             AnalyzeOpenBrace(context, namespaceDeclaration.OpenBraceToken);
         }
 
         private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var typeDeclaration = (BaseTypeDeclarationSyntax)context.Node;
+            var typeDeclaration = (BaseTypeDeclarationSyntax) context.Node;
             AnalyzeOpenBrace(context, typeDeclaration.OpenBraceToken);
         }
 
         private static void HandleAccessorList(SyntaxNodeAnalysisContext context)
         {
-            var accessorList = (AccessorListSyntax)context.Node;
+            var accessorList = (AccessorListSyntax) context.Node;
             AnalyzeOpenBrace(context, accessorList.OpenBraceToken);
         }
 
         private static void AnalyzeOpenBrace(SyntaxNodeAnalysisContext context, SyntaxToken openBraceToken)
         {
             var nextToken = openBraceToken.GetNextToken();
-            if (nextToken.IsMissingOrDefault())
-            {
+            if (nextToken.IsMissingOrDefault()) {
                 return;
             }
 
-            if ((GetLine(nextToken) - GetLine(openBraceToken)) < 2)
-            {
+            if ((GetLine(nextToken) - GetLine(openBraceToken)) < 2) {
                 // there will be no blank lines when the opening brace and the following token are not at least two lines apart.
                 return;
             }
@@ -139,8 +135,8 @@ namespace StyleCop.Analyzers.LayoutRules
 
             // skip everything until the first end of line (as this is considered part of the line of the opening brace)
             var startIndex = 0;
-            while ((startIndex < separatingTrivia.Count) && !separatingTrivia[startIndex].IsKind(SyntaxKind.EndOfLineTrivia))
-            {
+            while ((startIndex < separatingTrivia.Count) && !separatingTrivia [startIndex]
+                                                                 .IsKind(SyntaxKind.EndOfLineTrivia)) {
                 startIndex++;
             }
 
@@ -148,10 +144,9 @@ namespace StyleCop.Analyzers.LayoutRules
 
             var done = false;
             var eolCount = 0;
-            for (var i = startIndex; !done && (i < separatingTrivia.Count); i++)
-            {
-                switch (separatingTrivia[i].Kind())
-                {
+            for (var i = startIndex; !done && (i < separatingTrivia.Count); i++) {
+                switch (separatingTrivia [i]
+                            .Kind()) {
                 case SyntaxKind.WhitespaceTrivia:
                     break;
                 case SyntaxKind.EndOfLineTrivia:
@@ -163,8 +158,7 @@ namespace StyleCop.Analyzers.LayoutRules
                 }
             }
 
-            if (eolCount > 0)
-            {
+            if (eolCount > 0) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, openBraceToken.GetLocation()));
             }
         }

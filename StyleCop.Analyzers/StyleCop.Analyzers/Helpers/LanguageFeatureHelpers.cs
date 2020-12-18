@@ -10,8 +10,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Helper methods for checking specific language versions.
     /// </summary>
-    internal static class LanguageFeatureHelpers
-    {
+    internal static class LanguageFeatureHelpers {
         /// <summary>
         /// Checks if the tuple language feature is supported.
         /// </summary>

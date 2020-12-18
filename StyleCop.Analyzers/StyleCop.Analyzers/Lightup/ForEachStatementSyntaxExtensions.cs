@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class ForEachStatementSyntaxExtensions
-    {
+    internal static class ForEachStatementSyntaxExtensions {
         private static readonly Func<ForEachStatementSyntax, SyntaxToken> AwaitKeywordAccessor;
         private static readonly Func<ForEachStatementSyntax, SyntaxToken, ForEachStatementSyntax> WithAwaitKeywordAccessor;
 

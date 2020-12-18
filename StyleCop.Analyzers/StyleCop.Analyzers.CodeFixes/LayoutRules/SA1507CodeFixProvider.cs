@@ -20,11 +20,10 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1507CodeFixProvider))]
     [Shared]
-    internal class SA1507CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1507CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1507CodeMustNotContainMultipleBlankLinesInARow.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1507CodeMustNotContainMultipleBlankLinesInARow.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,8 +34,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         LayoutResources.SA1507CodeFix,
@@ -58,18 +56,15 @@ namespace StyleCop.Analyzers.LayoutRules
             return document.WithText(sourceText.WithChanges(textChange));
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1507CodeFix;
+            protected override string CodeActionTitle => LayoutResources.SA1507CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -78,8 +73,7 @@ namespace StyleCop.Analyzers.LayoutRules
 
                 List<TextChange> changes = new List<TextChange>();
 
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     changes.Add(new TextChange(diagnostic.Location.SourceSpan, newLine));
                 }
 

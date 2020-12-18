@@ -19,11 +19,10 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1518CodeFixProvider))]
     [Shared]
-    internal class SA1518CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1518CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1518UseLineEndingsCorrectlyAtEndOfFile.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1518UseLineEndingsCorrectlyAtEndOfFile.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,8 +34,7 @@ namespace StyleCop.Analyzers.LayoutRules
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var settings = SettingsHelper.GetStyleCopSettings(context.Document.Project.AnalyzerOptions, context.CancellationToken);
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         LayoutResources.SA1518CodeFix,
@@ -63,18 +61,15 @@ namespace StyleCop.Analyzers.LayoutRules
             return document.WithText(text.WithChanges(new TextChange(diagnostic.Location.SourceSpan, replacement)));
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1518CodeFix;
+            protected override string CodeActionTitle => LayoutResources.SA1518CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 

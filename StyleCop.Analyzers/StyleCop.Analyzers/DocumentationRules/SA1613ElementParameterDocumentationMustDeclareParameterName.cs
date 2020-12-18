@@ -25,8 +25,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// which is missing a <c>name</c> attribute, or which contains an empty <c>name</c> attribute.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1613ElementParameterDocumentationMustDeclareParameterName : ElementDocumentationBase
-    {
+    internal class SA1613ElementParameterDocumentationMustDeclareParameterName : ElementDocumentationBase {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1613ElementParameterDocumentationMustDeclareParameterName"/> analyzer.
@@ -37,8 +36,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1613MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1613Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SA1613ElementParameterDocumentationMustDeclareParameterName"/> class.
@@ -46,24 +44,24 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <remarks><para>The presence of a &lt;inheritdoc/&gt; tag should NOT suppress warnings from this diagnostic.
         /// See DotNetAnalyzers/StyleCopAnalyzers#631.</para></remarks>
         public SA1613ElementParameterDocumentationMustDeclareParameterName()
-            : base(matchElementName: XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings: false)
+            : base(matchElementName
+                   : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
+                   : false)
         {
         }
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         protected override void HandleXmlElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings, bool needsComment, IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
         {
-            foreach (var syntax in syntaxList)
-            {
+            foreach (var syntax in syntaxList) {
                 var nameParameter = XmlCommentHelper.GetFirstAttributeOrDefault<XmlNameAttributeSyntax>(syntax);
                 var parameterValue = nameParameter?.Identifier?.Identifier.ValueText;
 
-                if (string.IsNullOrWhiteSpace(parameterValue))
-                {
+                if (string.IsNullOrWhiteSpace(parameterValue)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, nameParameter?.GetLocation() ?? syntax.GetLocation()));
                 }
             }
@@ -73,15 +71,13 @@ namespace StyleCop.Analyzers.DocumentationRules
         protected override void HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment, XElement completeDocumentation, params Location[] diagnosticLocations)
         {
             var xmlParamTags = completeDocumentation.Nodes()
-                .OfType<XElement>()
-                .Where(e => e.Name == XmlCommentHelper.ParamXmlTag);
+                                   .OfType<XElement>()
+                                   .Where(e => e.Name == XmlCommentHelper.ParamXmlTag);
 
-            foreach (var paramTag in xmlParamTags)
-            {
-                var name = paramTag.Attributes().FirstOrDefault(a => a.Name == "name")?.Value;
+            foreach (var paramTag in xmlParamTags) {
+                var name = paramTag.Attributes().FirstOrDefault(a => a.Name == "name") ?.Value;
 
-                if (string.IsNullOrWhiteSpace(name))
-                {
+                if (string.IsNullOrWhiteSpace(name)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, diagnosticLocations.First()));
                 }
             }

@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IPatternOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IPatternOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IPatternOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ITypeSymbol> InputTypeAccessor;
@@ -32,13 +31,11 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol NarrowedType => NarrowedTypeAccessor(this.WrappedOperation);
         public static IPatternOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

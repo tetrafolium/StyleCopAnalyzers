@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class ArgumentSyntaxExtensions
-    {
+    internal static class ArgumentSyntaxExtensions {
         private static readonly Func<ArgumentSyntax, SyntaxToken> RefKindKeywordAccessor;
         private static readonly Func<ArgumentSyntax, SyntaxToken, ArgumentSyntax> WithRefKindKeywordAccessor;
 

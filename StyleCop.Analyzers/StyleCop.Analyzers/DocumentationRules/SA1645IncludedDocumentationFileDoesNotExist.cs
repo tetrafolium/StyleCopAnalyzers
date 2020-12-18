@@ -32,8 +32,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoDiagnostic("This is already handled by the compiler with warning CS1589.")]
-    internal class SA1645IncludedDocumentationFileDoesNotExist : DiagnosticAnalyzer
-    {
+    internal class SA1645IncludedDocumentationFileDoesNotExist : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1645IncludedDocumentationFileDoesNotExist"/> analyzer.
         /// </summary>
@@ -49,8 +48,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         [ExcludeFromCodeCoverage]

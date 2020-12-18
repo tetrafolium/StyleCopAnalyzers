@@ -6,15 +6,13 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
     using System.Collections.Immutable;
     using LightJson;
 
-    internal class OrderingSettings
-    {
-        private static readonly ImmutableArray<OrderingTrait> DefaultElementOrder =
-            ImmutableArray.Create(
-                OrderingTrait.Kind,
-                OrderingTrait.Accessibility,
-                OrderingTrait.Constant,
-                OrderingTrait.Static,
-                OrderingTrait.Readonly);
+    internal class OrderingSettings {
+        private static readonly ImmutableArray<OrderingTrait> DefaultElementOrder = ImmutableArray.Create(
+            OrderingTrait.Kind,
+            OrderingTrait.Accessibility,
+            OrderingTrait.Constant,
+            OrderingTrait.Static,
+            OrderingTrait.Readonly);
 
         /// <summary>
         /// This is the backing field for the <see cref="ElementOrder"/> property.
@@ -54,14 +52,11 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         protected internal OrderingSettings(JsonObject orderingSettingsObject)
             : this()
         {
-            foreach (var kvp in orderingSettingsObject)
-            {
-                switch (kvp.Key)
-                {
+            foreach (var kvp in orderingSettingsObject) {
+                switch (kvp.Key) {
                 case "elementOrder":
                     kvp.AssertIsArray();
-                    foreach (var value in kvp.Value.AsJsonArray)
-                    {
+                    foreach (var value in kvp.Value.AsJsonArray) {
                         this.elementOrder.Add(value.ToEnumValue<OrderingTrait>(kvp.Key));
                     }
 
@@ -93,13 +88,10 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public bool SystemUsingDirectivesFirst =>
-            this.systemUsingDirectivesFirst;
+        public bool SystemUsingDirectivesFirst => this.systemUsingDirectivesFirst;
 
-        public UsingDirectivesPlacement UsingDirectivesPlacement =>
-            this.usingDirectivesPlacement;
+        public UsingDirectivesPlacement UsingDirectivesPlacement => this.usingDirectivesPlacement;
 
-        public OptionSetting BlankLinesBetweenUsingGroups =>
-            this.blankLinesBetweenUsingGroups;
+        public OptionSetting BlankLinesBetweenUsingGroups => this.blankLinesBetweenUsingGroups;
     }
 }

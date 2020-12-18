@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct ICollectionElementInitializerOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct ICollectionElementInitializerOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.ICollectionElementInitializerOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IMethodSymbol> AddMethodAccessor;
@@ -35,13 +34,11 @@ namespace StyleCop.Analyzers.Lightup
         public bool IsDynamic => IsDynamicAccessor(this.WrappedOperation);
         public static ICollectionElementInitializerOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

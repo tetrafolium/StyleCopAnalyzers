@@ -6,18 +6,15 @@ namespace StyleCop.Analyzers.Helpers
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class LiteralExpressionHelpers
-    {
+    internal static class LiteralExpressionHelpers {
         internal static string StripLiteralSuffix(this LiteralExpressionSyntax literalExpressionSyntax)
         {
             var literalText = literalExpressionSyntax.Token.Text;
 
             bool isBase16 = literalText.Length > 2 && (literalText[1] == 'x' || literalText[1] == 'X');
 
-            for (int i = literalText.Length - 1; i >= 0; i--)
-            {
-                switch (literalText[i])
-                {
+            for (int i = literalText.Length - 1; i >= 0; i--) {
+                switch (literalText[i]) {
                 case 'L':
                 case 'U':
                 case 'M':
@@ -29,12 +26,9 @@ namespace StyleCop.Analyzers.Helpers
                 case 'F':
                 case 'd':
                 case 'f':
-                    if (isBase16)
-                    {
+                    if (isBase16) {
                         goto default;
-                    }
-                    else
-                    {
+                    } else {
                         continue;
                     }
 
@@ -52,8 +46,7 @@ namespace StyleCop.Analyzers.Helpers
             string textWithoutSuffix = literalExpression.StripLiteralSuffix();
 
             string suffix;
-            switch (syntaxKindKeyword)
-            {
+            switch (syntaxKindKeyword) {
             case SyntaxKind.UIntKeyword:
                 suffix = "U";
                 break;

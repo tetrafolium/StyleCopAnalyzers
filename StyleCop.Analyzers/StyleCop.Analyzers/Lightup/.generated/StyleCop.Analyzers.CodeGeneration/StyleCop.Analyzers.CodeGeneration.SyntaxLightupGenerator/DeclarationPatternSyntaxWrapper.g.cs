@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct DeclarationPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct DeclarationPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.DeclarationPatternSyntax";
         private static readonly Type WrappedType;
 
@@ -49,33 +48,31 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (VariableDesignationSyntaxWrapper)DesignationAccessor(this.SyntaxNode);
+                return (VariableDesignationSyntaxWrapper) DesignationAccessor(this.SyntaxNode);
             }
         }
 
         public static explicit operator DeclarationPatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (DeclarationPatternSyntaxWrapper)node.SyntaxNode;
+            return (DeclarationPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator DeclarationPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (DeclarationPatternSyntaxWrapper)node.SyntaxNode;
+            return (DeclarationPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator DeclarationPatternSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new DeclarationPatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new DeclarationPatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(DeclarationPatternSyntaxWrapper wrapper)

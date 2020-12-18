@@ -36,8 +36,7 @@ namespace StyleCop.Analyzers.LayoutRules
     /// readability and maintainability of the code.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1520UseBracesConsistently : DiagnosticAnalyzer
-    {
+    internal class SA1520UseBracesConsistently : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1520UseBracesConsistently"/> analyzer.
         /// </summary>
@@ -49,15 +48,14 @@ namespace StyleCop.Analyzers.LayoutRules
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1520Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         private static readonly Action<SyntaxNodeAnalysisContext> IfStatementAction = HandleIfStatement;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -70,54 +68,45 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleIfStatement(SyntaxNodeAnalysisContext context)
         {
-            var ifStatement = (IfStatementSyntax)context.Node;
-            if (ifStatement.Parent.IsKind(SyntaxKind.ElseClause))
-            {
+            var ifStatement = (IfStatementSyntax) context.Node;
+            if (ifStatement.Parent.IsKind(SyntaxKind.ElseClause)) {
                 // this will be analyzed as a clause of the outer if statement
                 return;
             }
 
             List<StatementSyntax> clauses = new List<StatementSyntax>();
-            for (IfStatementSyntax current = ifStatement; current != null; current = current.Else?.Statement as IfStatementSyntax)
-            {
+            for (IfStatementSyntax current = ifStatement; current != null; current = current.Else?.Statement as IfStatementSyntax) {
                 clauses.Add(current.Statement);
-                if (current.Else != null && !(current.Else.Statement is IfStatementSyntax))
-                {
+                if (current.Else != null && !(current.Else.Statement is IfStatementSyntax)) {
                     clauses.Add(current.Else.Statement);
                 }
             }
 
-            if (clauses.All(i => i is BlockSyntax))
-            {
+            if (clauses.All(i => i is BlockSyntax)) {
                 // consistent inclusion of braces
                 return;
             }
 
-            if (!clauses.OfType<BlockSyntax>().Any())
-            {
+            if (!clauses.OfType<BlockSyntax>().Any()) {
                 // consistent lack of braces
                 return;
             }
 
-            foreach (StatementSyntax clause in clauses)
-            {
+            foreach (StatementSyntax clause in clauses) {
                 CheckChildStatement(context, clause);
             }
         }
 
         private static void CheckChildStatement(SyntaxNodeAnalysisContext context, StatementSyntax childStatement)
         {
-            if (childStatement is BlockSyntax)
-            {
+            if (childStatement is BlockSyntax) {
                 return;
             }
 
-            if (!context.IsAnalyzerSuppressed(SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.Descriptor))
-            {
+            if (!context.IsAnalyzerSuppressed(SA1519BracesMustNotBeOmittedFromMultiLineChildStatement.Descriptor)) {
                 // diagnostics for multi-line statements is handled by SA1519, as long as it's not suppressed
                 FileLinePositionSpan lineSpan = childStatement.GetLineSpan();
-                if (lineSpan.StartLinePosition.Line != lineSpan.EndLinePosition.Line)
-                {
+                if (lineSpan.StartLinePosition.Line != lineSpan.EndLinePosition.Line) {
                     return;
                 }
             }

@@ -24,11 +24,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1100CodeFixProvider))]
     [Shared]
-    internal class SA1100CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1100CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -39,8 +38,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1100CodeFix,
@@ -54,7 +52,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static BaseExpressionSyntax GetBaseExpressionNode(SyntaxNode root, TextSpan sourceSpan)
         {
-            return (BaseExpressionSyntax)root.FindToken(sourceSpan.Start).Parent;
+            return (BaseExpressionSyntax) root.FindToken(sourceSpan.Start).Parent;
         }
 
         private static ThisExpressionSyntax RewriteBaseAsThis(BaseExpressionSyntax token)
@@ -71,26 +69,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return document.WithSyntaxRoot(newSyntaxRoot);
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
+        private class FixAll : DocumentBasedFixAllProvider {
             public static FixAllProvider Instance { get; }
-                = new FixAll();
+            = new FixAll();
 
-            protected override string CodeActionTitle
-                => ReadabilityResources.SA1100CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1100CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
                 var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
                 List<BaseExpressionSyntax> nodesToReplace = new List<BaseExpressionSyntax>(diagnostics.Length);
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     nodesToReplace.Add(GetBaseExpressionNode(syntaxRoot, diagnostic.Location.SourceSpan));
                 }
 

@@ -14,8 +14,7 @@ namespace StyleCop.Analyzers.NamingRules
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoDiagnostic("This rule has no behavior by design.")]
     [NoCodeFix("Don't fix what isn't broken.")]
-    internal class SA1301ElementMustBeginWithLowerCaseLetter : DiagnosticAnalyzer
-    {
+    internal class SA1301ElementMustBeginWithLowerCaseLetter : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1301ElementMustBeginWithLowerCaseLetter"/> analyzer.
         /// </summary>
@@ -31,8 +30,8 @@ namespace StyleCop.Analyzers.NamingRules
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         [ExcludeFromCodeCoverage]

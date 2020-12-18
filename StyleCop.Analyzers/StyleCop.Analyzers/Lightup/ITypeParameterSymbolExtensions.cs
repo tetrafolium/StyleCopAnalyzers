@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Lightup
     using System;
     using Microsoft.CodeAnalysis;
 
-    internal static class ITypeParameterSymbolExtensions
-    {
+    internal static class ITypeParameterSymbolExtensions {
         private static readonly Func<ITypeParameterSymbol, bool> HasUnmanagedTypeConstraintAccessor;
 
         static ITypeParameterSymbolExtensions()

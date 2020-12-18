@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IPropertyInitializerOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IPropertyInitializerOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IPropertyInitializerOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ImmutableArray<IPropertySymbol>> InitializedPropertiesAccessor;
@@ -27,19 +26,17 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ImmutableArray<IPropertySymbol> InitializedProperties => InitializedPropertiesAccessor(this.WrappedOperation);
-        public ImmutableArray<ILocalSymbol> Locals => ((ISymbolInitializerOperationWrapper)this).Locals;
-        public IOperation Value => ((ISymbolInitializerOperationWrapper)this).Value;
+        public ImmutableArray<ILocalSymbol> Locals =>((ISymbolInitializerOperationWrapper) this).Locals;
+        public IOperation Value =>((ISymbolInitializerOperationWrapper) this).Value;
         public static explicit operator IPropertyInitializerOperationWrapper(ISymbolInitializerOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator ISymbolInitializerOperationWrapper(IPropertyInitializerOperationWrapper wrapper) => ISymbolInitializerOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IPropertyInitializerOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

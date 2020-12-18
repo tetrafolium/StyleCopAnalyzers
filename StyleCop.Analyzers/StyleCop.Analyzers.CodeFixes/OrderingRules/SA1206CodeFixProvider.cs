@@ -21,11 +21,10 @@ namespace StyleCop.Analyzers.OrderingRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1206CodeFixProvider))]
     [Shared]
-    internal sealed class SA1206CodeFixProvider : CodeFixProvider
-    {
+    internal sealed class SA1206CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1206DeclarationKeywordsMustFollowOrder.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1206DeclarationKeywordsMustFollowOrder.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -36,8 +35,7 @@ namespace StyleCop.Analyzers.OrderingRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         OrderingResources.ModifierOrderCodeFix,
@@ -54,14 +52,12 @@ namespace StyleCop.Analyzers.OrderingRules
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var memberDeclaration = syntaxRoot.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberDeclarationSyntax>();
-            if (memberDeclaration == null)
-            {
+            if (memberDeclaration == null) {
                 return document;
             }
 
             var modifierTokenToFix = memberDeclaration.FindToken(diagnostic.Location.SourceSpan.Start);
-            if (GetModifierType(modifierTokenToFix) == ModifierType.None)
-            {
+            if (GetModifierType(modifierTokenToFix) == ModifierType.None) {
                 return document;
             }
 
@@ -119,23 +115,18 @@ namespace StyleCop.Analyzers.OrderingRules
 
             // the modifier to fix is of type other, so we need to sort the whole list of
             // modifier list
-            if (GetModifierType(modifierToFix) == ModifierType.Other)
-            {
+            if (GetModifierType(modifierToFix) == ModifierType.Other) {
                 beforeIncluding = accessModifiers
-                    .Concat(staticModifiers)
-                    .Concat(otherModifiers);
-            }
-            else if (GetModifierType(modifierToFix) == ModifierType.Static)
-            {
+                                      .Concat(staticModifiers)
+                                      .Concat(otherModifiers);
+            } else if (GetModifierType(modifierToFix) == ModifierType.Static) {
                 beforeIncluding = accessModifiers
-                    .Concat(staticModifiers.TakeWhile(modifier => modifier != modifierToFix))
-                    .Concat(new[] { modifierToFix });
-            }
-            else
-            {
+                                      .Concat(staticModifiers.TakeWhile(modifier => modifier != modifierToFix))
+                                      .Concat(new[]{ modifierToFix });
+            } else {
                 beforeIncluding = accessModifiers
-                    .TakeWhile(modifier => modifier != modifierToFix)
-                    .Concat(new[] { modifierToFix });
+                                      .TakeWhile(modifier => modifier != modifierToFix)
+                                      .Concat(new[]{ modifierToFix });
             }
 
             var after = modifiers.Where(modifier => !beforeIncluding.Contains(modifier));
@@ -156,16 +147,15 @@ namespace StyleCop.Analyzers.OrderingRules
                 newModifiers.Zip(oldModifiers, (m1, m2) => m1.WithTriviaFrom(m2)));
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } = new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
             protected override string CodeActionTitle => OrderingResources.ModifierOrderCodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -174,17 +164,14 @@ namespace StyleCop.Analyzers.OrderingRules
                 // because all modifiers can be fixed in one run, we
                 // only need to store each declaration once
                 var trackedDiagnosticMembers = new HashSet<MemberDeclarationSyntax>();
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     var memberDeclaration = syntaxRoot.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberDeclarationSyntax>();
-                    if (memberDeclaration == null)
-                    {
+                    if (memberDeclaration == null) {
                         continue;
                     }
 
                     var modifierToken = memberDeclaration.FindToken(diagnostic.Location.SourceSpan.Start);
-                    if (GetModifierType(modifierToken) == ModifierType.None)
-                    {
+                    if (GetModifierType(modifierToken) == ModifierType.None) {
                         continue;
                     }
 
@@ -193,8 +180,7 @@ namespace StyleCop.Analyzers.OrderingRules
 
                 syntaxRoot = syntaxRoot.TrackNodes(trackedDiagnosticMembers);
 
-                foreach (var member in trackedDiagnosticMembers)
-                {
+                foreach (var member in trackedDiagnosticMembers) {
                     var memberDeclaration = syntaxRoot.GetCurrentNode(member);
                     var newModifierList = FullySortModifiers(memberDeclaration.GetModifiers());
                     syntaxRoot = UpdateSyntaxRoot(memberDeclaration, newModifierList, syntaxRoot);

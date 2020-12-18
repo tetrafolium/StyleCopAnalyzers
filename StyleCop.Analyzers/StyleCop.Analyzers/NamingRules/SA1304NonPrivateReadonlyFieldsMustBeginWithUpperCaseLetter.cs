@@ -26,8 +26,7 @@ namespace StyleCop.Analyzers.NamingRules
     /// within a <c>NativeMethods</c> class.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1304NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter : DiagnosticAnalyzer
-    {
+    internal class SA1304NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1304NonPrivateReadonlyFieldsMustBeginWithUpperCaseLetter"/> analyzer.
@@ -38,14 +37,13 @@ namespace StyleCop.Analyzers.NamingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1304MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1304Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction = HandleFieldDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -58,58 +56,48 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax)context.Node;
-            if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax))
-            {
+            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax) context.Node;
+            if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax)) {
                 return;
             }
 
-            if (!syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword))
-            {
+            if (!syntax.Modifiers.Any(SyntaxKind.ReadOnlyKeyword)) {
                 // this analyzer only applies to readonly fields
                 return;
             }
 
             if (!syntax.Modifiers.Any(SyntaxKind.PublicKeyword)
                 && !syntax.Modifiers.Any(SyntaxKind.ProtectedKeyword)
-                && !syntax.Modifiers.Any(SyntaxKind.InternalKeyword))
-            {
+                && !syntax.Modifiers.Any(SyntaxKind.InternalKeyword)) {
                 // this analyzer only applies to non-private fields
                 return;
             }
 
-            if (!syntax.Modifiers.Any(SyntaxKind.InternalKeyword))
-            {
+            if (!syntax.Modifiers.Any(SyntaxKind.InternalKeyword)) {
                 // SA1307 is taken precedence here. SA1307 should be reported if the field is accessible.
                 // So if SA1307 is enabled this diagnostic will only be reported for internal fields.
-                if (!context.IsAnalyzerSuppressed(SA1307AccessibleFieldsMustBeginWithUpperCaseLetter.Descriptor))
-                {
+                if (!context.IsAnalyzerSuppressed(SA1307AccessibleFieldsMustBeginWithUpperCaseLetter.Descriptor)) {
                     return;
                 }
             }
 
             var variables = syntax.Declaration?.Variables;
-            if (variables == null)
-            {
+            if (variables == null) {
                 return;
             }
 
-            foreach (VariableDeclaratorSyntax variableDeclarator in variables.Value)
-            {
-                if (variableDeclarator == null)
-                {
+            foreach (VariableDeclaratorSyntax variableDeclarator in variables.Value) {
+                if (variableDeclarator == null) {
                     continue;
                 }
 
                 var identifier = variableDeclarator.Identifier;
-                if (identifier.IsMissing)
-                {
+                if (identifier.IsMissing) {
                     continue;
                 }
 
                 string name = identifier.ValueText;
-                if (string.IsNullOrEmpty(name) || !char.IsLower(name[0]))
-                {
+                if (string.IsNullOrEmpty(name) || !char.IsLower(name[0])) {
                     continue;
                 }
 

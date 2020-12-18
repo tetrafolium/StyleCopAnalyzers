@@ -11,8 +11,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Helper class containing methods for determining query indentation.
     /// </summary>
-    internal static class QueryIndentationHelpers
-    {
+    internal static class QueryIndentationHelpers {
         /// <summary>
         /// Gets a whitespace trivia containing the proper amount of indentation for new lines in the given query.
         /// </summary>
@@ -25,8 +24,7 @@ namespace StyleCop.Analyzers.Helpers
             var indentationSteps = IndentationHelper.GetIndentationSteps(indentationSettings, firstTokenOnTextLine);
 
             // add an extra indentation step when the first from clause is not properly indented yet
-            if (!firstTokenOnTextLine.IsKind(SyntaxKind.OpenParenToken) && (firstTokenOnTextLine != queryExpression.FromClause.FromKeyword))
-            {
+            if (!firstTokenOnTextLine.IsKind(SyntaxKind.OpenParenToken) && (firstTokenOnTextLine != queryExpression.FromClause.FromKeyword)) {
                 indentationSteps++;
             }
 
@@ -42,12 +40,11 @@ namespace StyleCop.Analyzers.Helpers
         internal static SyntaxTrivia GetQueryIndentationTrivia(IndentationSettings indentationSettings, SyntaxToken token)
         {
             var currentNode = token.Parent;
-            while (!currentNode.IsKind(SyntaxKind.QueryExpression))
-            {
+            while (!currentNode.IsKind(SyntaxKind.QueryExpression)) {
                 currentNode = currentNode.Parent;
             }
 
-            return GetQueryIndentationTrivia(indentationSettings, (QueryExpressionSyntax)currentNode);
+            return GetQueryIndentationTrivia(indentationSettings, (QueryExpressionSyntax) currentNode);
         }
     }
 }

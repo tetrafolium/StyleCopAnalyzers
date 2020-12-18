@@ -55,8 +55,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1118ParameterMustNotSpanMultipleLines : DiagnosticAnalyzer
-    {
+    internal class SA1118ParameterMustNotSpanMultipleLines : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1118ParameterMustNotSpanMultipleLines"/> analyzer.
         /// </summary>
@@ -66,14 +65,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1118MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1118Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BaseArgumentListAction = HandleBaseArgumentList;
         private static readonly Action<SyntaxNodeAnalysisContext> AttributeArgumentListAction = HandleAttributeArgumentList;
 
-        private static readonly SyntaxKind[] ArgumentExceptionSyntaxKinds =
-        {
+        private static readonly SyntaxKind[] ArgumentExceptionSyntaxKinds = {
             SyntaxKind.AnonymousMethodExpression,
             SyntaxKind.ParenthesizedLambdaExpression,
             SyntaxKind.SimpleLambdaExpression,
@@ -85,8 +82,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         };
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -100,13 +97,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleAttributeArgumentList(SyntaxNodeAnalysisContext context)
         {
-            var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
+            var attributeArgumentList = (AttributeArgumentListSyntax) context.Node;
 
-            for (int i = 1; i < attributeArgumentList.Arguments.Count; i++)
-            {
+            for (int i = 1; i < attributeArgumentList.Arguments.Count; i++) {
                 var argument = attributeArgumentList.Arguments[i];
-                if (CheckIfArgumentIsMultiline(argument))
-                {
+                if (CheckIfArgumentIsMultiline(argument)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, argument.GetLocation()));
                 }
             }
@@ -114,14 +109,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBaseArgumentList(SyntaxNodeAnalysisContext context)
         {
-            var argumentListSyntax = (BaseArgumentListSyntax)context.Node;
+            var argumentListSyntax = (BaseArgumentListSyntax) context.Node;
 
-            for (int i = 1; i < argumentListSyntax.Arguments.Count; i++)
-            {
+            for (int i = 1; i < argumentListSyntax.Arguments.Count; i++) {
                 var argument = argumentListSyntax.Arguments[i];
                 if (CheckIfArgumentIsMultiline(argument)
-                    && !IsArgumentOnExceptionList(argument.Expression))
-                {
+                    && !IsArgumentOnExceptionList(argument.Expression)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, argument.GetLocation()));
                 }
             }

@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal partial struct LocalFunctionStatementSyntaxWrapper : ISyntaxWrapper<StatementSyntax>
-    {
+    internal partial struct LocalFunctionStatementSyntaxWrapper : ISyntaxWrapper<StatementSyntax> {
         public LocalFunctionStatementSyntaxWrapper AddModifiers(params SyntaxToken[] items)
         {
             return this.WithModifiers(this.Modifiers.AddRange(items));

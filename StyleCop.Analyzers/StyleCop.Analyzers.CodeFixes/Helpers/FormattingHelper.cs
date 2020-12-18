@@ -10,8 +10,7 @@ namespace StyleCop.Analyzers.Helpers
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.Formatting;
 
-    internal static class FormattingHelper
-    {
+    internal static class FormattingHelper {
         public static SyntaxTrivia GetNewLineTrivia(Document document)
         {
             return SyntaxFactory.SyntaxTrivia(SyntaxKind.EndOfLineTrivia, document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp));
@@ -35,11 +34,14 @@ namespace StyleCop.Analyzers.Helpers
              *  2. Transform the resulting node itself
              */
             TNode result = node.ReplaceSyntax(
-                node.DescendantNodes(descendIntoTrivia: true),
+                node.DescendantNodes(descendIntoTrivia
+                                     : true),
                 (originalNode, rewrittenNode) => WithoutFormattingImpl(rewrittenNode),
-                node.DescendantTokens(descendIntoTrivia: true),
+                node.DescendantTokens(descendIntoTrivia
+                                      : true),
                 (originalToken, rewrittenToken) => WithoutFormattingImpl(rewrittenToken),
-                node.DescendantTrivia(descendIntoTrivia: true),
+                node.DescendantTrivia(descendIntoTrivia
+                                      : true),
                 (originalTrivia, rewrittenTrivia) => WithoutFormattingImpl(rewrittenTrivia));
 
             return WithoutFormattingImpl(result);
@@ -81,13 +83,11 @@ namespace StyleCop.Analyzers.Helpers
              *  2. Remove formatting from the resulting trivia
              */
             SyntaxTrivia result = trivia;
-            if (trivia.HasStructure)
-            {
+            if (trivia.HasStructure) {
                 // GetStructure() returns SyntaxNode instead of StructuredTriviaSyntax. For C# code, this should always
                 // be an actual instance of StructuredTriviaSyntax, but we handle the case where it is not by leaving
                 // the structure node unaltered rather than throwing some sort of exception.
-                if (trivia.GetStructure() is StructuredTriviaSyntax structure)
-                {
+                if (trivia.GetStructure() is StructuredTriviaSyntax structure) {
                     result = SyntaxFactory.Trivia(structure.WithoutFormatting());
                 }
             }

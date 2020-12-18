@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IRecursivePatternOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IRecursivePatternOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IRecursivePatternOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ITypeSymbol> MatchedTypeAccessor;
@@ -39,19 +38,17 @@ namespace StyleCop.Analyzers.Lightup
         public ImmutableArray<IOperation> DeconstructionSubpatterns => DeconstructionSubpatternsAccessor(this.WrappedOperation);
         public ImmutableArray<IOperation> PropertySubpatterns => PropertySubpatternsAccessor(this.WrappedOperation);
         public ISymbol DeclaredSymbol => DeclaredSymbolAccessor(this.WrappedOperation);
-        public ITypeSymbol InputType => ((IPatternOperationWrapper)this).InputType;
-        public ITypeSymbol NarrowedType => ((IPatternOperationWrapper)this).NarrowedType;
+        public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
+        public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
         public static explicit operator IRecursivePatternOperationWrapper(IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator IPatternOperationWrapper(IRecursivePatternOperationWrapper wrapper) => IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IRecursivePatternOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

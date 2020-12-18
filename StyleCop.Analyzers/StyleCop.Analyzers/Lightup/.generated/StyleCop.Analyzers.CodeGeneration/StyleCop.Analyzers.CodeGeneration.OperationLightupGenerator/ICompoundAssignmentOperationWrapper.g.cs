@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct ICompoundAssignmentOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct ICompoundAssignmentOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.ICompoundAssignmentOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, bool> IsLiftedAccessor;
@@ -36,19 +35,17 @@ namespace StyleCop.Analyzers.Lightup
         public bool IsLifted => IsLiftedAccessor(this.WrappedOperation);
         public bool IsChecked => IsCheckedAccessor(this.WrappedOperation);
         public IMethodSymbol OperatorMethod => OperatorMethodAccessor(this.WrappedOperation);
-        public IOperation Target => ((IAssignmentOperationWrapper)this).Target;
-        public IOperation Value => ((IAssignmentOperationWrapper)this).Value;
+        public IOperation Target =>((IAssignmentOperationWrapper) this).Target;
+        public IOperation Value =>((IAssignmentOperationWrapper) this).Value;
         public static explicit operator ICompoundAssignmentOperationWrapper(IAssignmentOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator IAssignmentOperationWrapper(ICompoundAssignmentOperationWrapper wrapper) => IAssignmentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static ICompoundAssignmentOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

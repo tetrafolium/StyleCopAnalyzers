@@ -23,13 +23,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1101CodeFixProvider))]
     [Shared]
-    internal class SA1101CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1101CodeFixProvider : CodeFixProvider {
         private static readonly ThisExpressionSyntax ThisExpressionSyntax = SyntaxFactory.ThisExpression();
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1101PrefixLocalCallsWithThis.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1101PrefixLocalCallsWithThis.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,10 +41,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                if (!(root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is SimpleNameSyntax node))
-                {
+            foreach (var diagnostic in context.Diagnostics) {
+                if (!(root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                    : true) is SimpleNameSyntax node)) {
                     return;
                 }
 
@@ -60,48 +58,39 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, SimpleNameSyntax node)
         {
-            var qualifiedExpression =
-                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ThisExpressionSyntax, node.WithoutTrivia().WithoutFormatting())
-                .WithTriviaFrom(node)
-                .WithoutFormatting();
+            var qualifiedExpression = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ThisExpressionSyntax, node.WithoutTrivia().WithoutFormatting())
+                                          .WithTriviaFrom(node)
+                                          .WithoutFormatting();
 
             var newSyntaxRoot = root.ReplaceNode(node, qualifiedExpression);
 
             return Task.FromResult(document.WithSyntaxRoot(newSyntaxRoot));
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                   new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                ReadabilityResources.SA1101CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1101CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
                 SyntaxNode syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
                 List<SyntaxNode> nodesNeedingQualification = new List<SyntaxNode>(diagnostics.Length);
 
-                foreach (Diagnostic diagnostic in diagnostics)
-                {
-                    if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is SimpleNameSyntax node) || node.IsMissing)
-                    {
+                foreach (Diagnostic diagnostic in diagnostics) {
+                    if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is SimpleNameSyntax node) || node.IsMissing) {
                         continue;
                     }
 
                     nodesNeedingQualification.Add(node);
                 }
 
-                return syntaxRoot.ReplaceNodes(nodesNeedingQualification, (originalNode, rewrittenNode) =>
-                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ThisExpressionSyntax, (SimpleNameSyntax)rewrittenNode.WithoutTrivia().WithoutFormatting())
-                .WithTriviaFrom(rewrittenNode)
-                .WithoutFormatting());
+                return syntaxRoot.ReplaceNodes(nodesNeedingQualification, (originalNode, rewrittenNode) => SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ThisExpressionSyntax, (SimpleNameSyntax) rewrittenNode.WithoutTrivia().WithoutFormatting()).WithTriviaFrom(rewrittenNode).WithoutFormatting());
             }
         }
     }

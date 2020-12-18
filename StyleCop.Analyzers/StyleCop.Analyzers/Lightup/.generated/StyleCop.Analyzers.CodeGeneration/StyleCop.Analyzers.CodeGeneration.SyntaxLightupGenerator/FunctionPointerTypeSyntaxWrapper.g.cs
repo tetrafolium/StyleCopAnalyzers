@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct FunctionPointerTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax>
-    {
+    internal readonly partial struct FunctionPointerTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerTypeSyntax";
         private static readonly Type WrappedType;
 
@@ -65,7 +64,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (FunctionPointerCallingConventionSyntaxWrapper)CallingConventionAccessor(this.SyntaxNode);
+                return (FunctionPointerCallingConventionSyntaxWrapper) CallingConventionAccessor(this.SyntaxNode);
             }
         }
 
@@ -73,23 +72,21 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (FunctionPointerParameterListSyntaxWrapper)ParameterListAccessor(this.SyntaxNode);
+                return (FunctionPointerParameterListSyntaxWrapper) ParameterListAccessor(this.SyntaxNode);
             }
         }
 
         public static explicit operator FunctionPointerTypeSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new FunctionPointerTypeSyntaxWrapper((TypeSyntax)node);
+            return new FunctionPointerTypeSyntaxWrapper((TypeSyntax) node);
         }
 
         public static implicit operator TypeSyntax(FunctionPointerTypeSyntaxWrapper wrapper)

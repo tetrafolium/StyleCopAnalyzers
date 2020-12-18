@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class MemberDeclarationSyntaxExtensions
-    {
+    internal static class MemberDeclarationSyntaxExtensions {
         private static readonly Func<MemberDeclarationSyntax, SyntaxList<AttributeListSyntax>> AttributeListsAccessor;
         private static readonly Func<MemberDeclarationSyntax, SyntaxTokenList> ModifiersAccessor;
         private static readonly Func<MemberDeclarationSyntax, SyntaxList<AttributeListSyntax>, MemberDeclarationSyntax> WithAttributeListsAccessor;

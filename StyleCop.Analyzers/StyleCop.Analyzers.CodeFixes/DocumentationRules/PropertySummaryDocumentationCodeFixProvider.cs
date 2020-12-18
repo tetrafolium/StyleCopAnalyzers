@@ -20,13 +20,12 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(PropertySummaryDocumentationCodeFixProvider))]
     [Shared]
-    internal class PropertySummaryDocumentationCodeFixProvider : CodeFixProvider
-    {
+    internal class PropertySummaryDocumentationCodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                PropertySummaryDocumentationAnalyzer.SA1623Descriptor.Id,
-                PropertySummaryDocumentationAnalyzer.SA1624Descriptor.Id);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(
+            PropertySummaryDocumentationAnalyzer.SA1623Descriptor.Id,
+            PropertySummaryDocumentationAnalyzer.SA1624Descriptor.Id);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,10 +36,8 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                if (!diagnostic.Properties.ContainsKey(PropertySummaryDocumentationAnalyzer.NoCodeFixKey))
-                {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
+                if (!diagnostic.Properties.ContainsKey(PropertySummaryDocumentationAnalyzer.NoCodeFixKey)) {
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             DocumentationResources.PropertySummaryStartTextCodeFix,
@@ -60,10 +57,9 @@ namespace StyleCop.Analyzers.DocumentationRules
             var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
             var documentation = node.GetDocumentationCommentTriviaSyntax();
 
-            var summaryElement = (XmlElementSyntax)documentation.Content.GetFirstXmlElement(XmlCommentHelper.SummaryXmlTag);
+            var summaryElement = (XmlElementSyntax) documentation.Content.GetFirstXmlElement(XmlCommentHelper.SummaryXmlTag);
             var textElement = XmlCommentHelper.TryGetFirstTextElementWithContent(summaryElement);
-            if (textElement == null)
-            {
+            if (textElement == null) {
                 return document;
             }
 
@@ -72,8 +68,7 @@ namespace StyleCop.Analyzers.DocumentationRules
 
             // preserve leading whitespace
             int index = 0;
-            while (text.Length > index && char.IsWhiteSpace(text, index))
-            {
+            while (text.Length > index && char.IsWhiteSpace(text, index)) {
                 index++;
             }
 
@@ -82,17 +77,13 @@ namespace StyleCop.Analyzers.DocumentationRules
             // process the current documentation string
             string modifiedText;
             string textToRemove;
-            if (diagnostic.Properties.TryGetValue(PropertySummaryDocumentationAnalyzer.TextToRemoveKey, out textToRemove))
-            {
+            if (diagnostic.Properties.TryGetValue(PropertySummaryDocumentationAnalyzer.TextToRemoveKey, out textToRemove)) {
                 modifiedText = text.Substring(text.IndexOf(textToRemove) + textToRemove.Length).TrimStart();
-            }
-            else
-            {
+            } else {
                 modifiedText = text.Substring(index);
             }
 
-            if (modifiedText.Length > 0)
-            {
+            if (modifiedText.Length > 0) {
                 modifiedText = char.ToLowerInvariant(modifiedText[0]) + modifiedText.Substring(1);
             }
 

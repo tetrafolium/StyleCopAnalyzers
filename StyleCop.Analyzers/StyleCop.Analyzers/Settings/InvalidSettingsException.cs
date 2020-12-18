@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers
     /// <summary>
     /// Exception thrown when an invalid settings have been encountered.
     /// </summary>
-    internal class InvalidSettingsException : Exception
-    {
+    internal class InvalidSettingsException : Exception {
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidSettingsException"/> class.
         /// </summary>

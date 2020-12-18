@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IVariableDeclaratorOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IVariableDeclaratorOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IVariableDeclaratorOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ILocalSymbol> SymbolAccessor;
@@ -35,13 +34,11 @@ namespace StyleCop.Analyzers.Lightup
         public ImmutableArray<IOperation> IgnoredArguments => IgnoredArgumentsAccessor(this.WrappedOperation);
         public static IVariableDeclaratorOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

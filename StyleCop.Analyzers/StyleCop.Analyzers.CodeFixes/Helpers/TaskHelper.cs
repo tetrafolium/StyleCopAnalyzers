@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Helpers
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class TaskHelper
-    {
+    internal static class TaskHelper {
         public static bool IsTaskReturningMethod(SemanticModel semanticModel, MethodDeclarationSyntax methodDeclarationSyntax, CancellationToken cancellationToken)
         {
             return IsTaskType(semanticModel, methodDeclarationSyntax.ReturnType, cancellationToken);
@@ -24,18 +23,15 @@ namespace StyleCop.Analyzers.Helpers
         public static bool IsTaskType(SemanticModel semanticModel, TypeSyntax typeSyntax, CancellationToken cancellationToken)
         {
             SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(typeSyntax, cancellationToken);
-            if (!(symbolInfo.Symbol is INamedTypeSymbol namedTypeSymbol))
-            {
+            if (!(symbolInfo.Symbol is INamedTypeSymbol namedTypeSymbol)) {
                 return false;
             }
 
-            if (!string.Equals(nameof(Task), namedTypeSymbol.Name, StringComparison.Ordinal))
-            {
+            if (!string.Equals(nameof(Task), namedTypeSymbol.Name, StringComparison.Ordinal)) {
                 return false;
             }
 
-            if (!string.Equals(typeof(Task).Namespace, namedTypeSymbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)), StringComparison.Ordinal))
-            {
+            if (!string.Equals(typeof(Task).Namespace, namedTypeSymbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)), StringComparison.Ordinal)) {
                 return false;
             }
 

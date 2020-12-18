@@ -3,8 +3,7 @@
 
 namespace StyleCop.Analyzers.Settings.ObjectModel
 {
-    internal enum TupleElementNameCase
-    {
+    internal enum TupleElementNameCase {
         /// <summary>
         /// Tuple element names must use camelCase.
         /// </summary>

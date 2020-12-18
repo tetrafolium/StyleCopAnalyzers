@@ -25,13 +25,12 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1651CodeFixProvider))]
     [Shared]
-    internal class SA1651CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1651CodeFixProvider : CodeFixProvider {
         private static readonly SyntaxAnnotation NodeToReplaceAnnotation = new SyntaxAnnotation(nameof(NodeToReplaceAnnotation));
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1651DoNotUsePlaceholderElements.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1651DoNotUsePlaceholderElements.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -42,29 +41,26 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <inheritdoc/>
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                if (diagnostic.Properties.ContainsKey(SA1651DoNotUsePlaceholderElements.NoCodeFixKey))
-                {
+            foreach (var diagnostic in context.Diagnostics) {
+                if (diagnostic.Properties.ContainsKey(SA1651DoNotUsePlaceholderElements.NoCodeFixKey)) {
                     // skip diagnostics that should not offer a code fix.
                     continue;
                 }
 
                 var documentRoot = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-                SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
-                if (syntax == null)
-                {
+                SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                                          : true, getInnermostNodeForTie
+                                                          : true);
+                if (syntax == null) {
                     continue;
                 }
 
-                if (!(syntax is XmlElementSyntax xmlElementSyntax))
-                {
+                if (!(syntax is XmlElementSyntax xmlElementSyntax)) {
                     // We continue even for placeholders if they are empty elements (XmlEmptyElementSyntax)
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(xmlElementSyntax.Content.ToString()))
-                {
+                if (string.IsNullOrWhiteSpace(xmlElementSyntax.Content.ToString())) {
                     // The placeholder hasn't been updated yet.
                     continue;
                 }
@@ -84,21 +80,24 @@ namespace StyleCop.Analyzers.DocumentationRules
 
             var leadingTrivia = elementSyntax.StartTag.GetLeadingTrivia();
             leadingTrivia = leadingTrivia.AddRange(elementSyntax.StartTag.GetTrailingTrivia());
-            leadingTrivia = leadingTrivia.AddRange(content[0].GetLeadingTrivia());
-            content = content.Replace(content[0], content[0].WithLeadingTrivia(leadingTrivia));
+            leadingTrivia = leadingTrivia.AddRange(content [0]
+                                                       .GetLeadingTrivia());
+            content = content.Replace(content[0], content [0]
+                                                      .WithLeadingTrivia(leadingTrivia));
 
-            var trailingTrivia = content[content.Count - 1].GetTrailingTrivia();
+            var trailingTrivia = content [content.Count - 1]
+                                     .GetTrailingTrivia();
             trailingTrivia = trailingTrivia.AddRange(elementSyntax.EndTag.GetLeadingTrivia());
             trailingTrivia = trailingTrivia.AddRange(elementSyntax.EndTag.GetTrailingTrivia());
-            content = content.Replace(content[content.Count - 1], content[content.Count - 1].WithTrailingTrivia(trailingTrivia));
+            content = content.Replace(content[content.Count - 1], content [content.Count - 1]
+                                                                      .WithTrailingTrivia(trailingTrivia));
 
             return content;
         }
 
         private async Task<Document> GetTransformedDocumentAsync(Document document, XmlElementSyntax elementSyntax, CancellationToken cancellationToken)
         {
-            if (elementSyntax.Content.Count == 0)
-            {
+            if (elementSyntax.Content.Count == 0) {
                 return document;
             }
 
@@ -107,23 +106,24 @@ namespace StyleCop.Analyzers.DocumentationRules
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAll Instance { get; } = new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAll Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle { get; } = DocumentationResources.SA1651CodeFix;
+            protected override string CodeActionTitle { get; }
+            = DocumentationResources.SA1651CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
                 var syntaxRoot = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
                 var elements = new List<XmlElementSyntax>();
 
-                foreach (var diagnostic in diagnostics)
-                {
-                    if ((syntaxRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true) is XmlElementSyntax xmlElement)
+                foreach (var diagnostic in diagnostics) {
+                    if ((syntaxRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                             : true, getInnermostNodeForTie
+                                             : true) is XmlElementSyntax xmlElement)
                         && (xmlElement.Content.Count > 0)
-                        && !string.IsNullOrWhiteSpace(xmlElement.Content.ToString()))
-                    {
+                        && !string.IsNullOrWhiteSpace(xmlElement.Content.ToString())) {
                         elements.Add(xmlElement);
                     }
                 }
@@ -134,8 +134,7 @@ namespace StyleCop.Analyzers.DocumentationRules
             }
         }
 
-        private class FixAllVisitor : CSharpSyntaxRewriter
-        {
+        private class FixAllVisitor : CSharpSyntaxRewriter {
             public FixAllVisitor()
                 : base(true)
             {
@@ -146,15 +145,11 @@ namespace StyleCop.Analyzers.DocumentationRules
                 list = base.VisitList(list);
 
                 var index = 0;
-                while (index < list.Count)
-                {
+                while (index < list.Count) {
                     var element = list[index];
-                    if (element.HasAnnotation(NodeToReplaceAnnotation))
-                    {
+                    if (element.HasAnnotation(NodeToReplaceAnnotation)) {
                         list = list.ReplaceRange(element, RemovePlaceHolder(element as XmlElementSyntax).Cast<TNode>());
-                    }
-                    else
-                    {
+                    } else {
                         index++;
                     }
                 }

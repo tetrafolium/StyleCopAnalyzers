@@ -23,8 +23,7 @@ namespace StyleCop.Analyzers.OrderingRules
     /// the namespaces that are being used by the code.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1208SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives : DiagnosticAnalyzer
-    {
+    internal class SA1208SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1208SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives"/> analyzer.
@@ -35,15 +34,14 @@ namespace StyleCop.Analyzers.OrderingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1208MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1208Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> CompilationUnitAction = HandleCompilationUnit;
         private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> NamespaceDeclarationAction = HandleNamespaceDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -57,12 +55,11 @@ namespace StyleCop.Analyzers.OrderingRules
 
         private static void HandleCompilationUnit(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            if (!settings.OrderingRules.SystemUsingDirectivesFirst)
-            {
+            if (!settings.OrderingRules.SystemUsingDirectivesFirst) {
                 return;
             }
 
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
+            var compilationUnit = (CompilationUnitSyntax) context.Node;
 
             var usings = compilationUnit.Usings;
 
@@ -71,12 +68,11 @@ namespace StyleCop.Analyzers.OrderingRules
 
         private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context, StyleCopSettings settings)
         {
-            if (!settings.OrderingRules.SystemUsingDirectivesFirst)
-            {
+            if (!settings.OrderingRules.SystemUsingDirectivesFirst) {
                 return;
             }
 
-            var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
+            var namespaceDeclaration = (NamespaceDeclarationSyntax) context.Node;
 
             var usings = namespaceDeclaration.Usings;
 
@@ -86,19 +82,15 @@ namespace StyleCop.Analyzers.OrderingRules
         private static void ProcessUsingsAndReportDiagnostic(SyntaxList<UsingDirectiveSyntax> usings, SyntaxNodeAnalysisContext context)
         {
             string systemUsingDirectivesShouldBeBeforeThisName = null;
-            for (var i = 1; i < usings.Count; i++)
-            {
+            for (var i = 1; i < usings.Count; i++) {
                 var usingDirective = usings[i];
 
-                if (usingDirective.Alias != null || !usingDirective.StaticKeyword.IsKind(SyntaxKind.None) || usingDirective.IsPrecededByPreprocessorDirective())
-                {
+                if (usingDirective.Alias != null || !usingDirective.StaticKeyword.IsKind(SyntaxKind.None) || usingDirective.IsPrecededByPreprocessorDirective()) {
                     continue;
                 }
 
-                if (usingDirective.IsSystemUsingDirective() && !usingDirective.HasNamespaceAliasQualifier())
-                {
-                    if (systemUsingDirectivesShouldBeBeforeThisName != null)
-                    {
+                if (usingDirective.IsSystemUsingDirective() && !usingDirective.HasNamespaceAliasQualifier()) {
+                    if (systemUsingDirectivesShouldBeBeforeThisName != null) {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, usingDirective.GetLocation(), usingDirective.Name.ToNormalizedString(), systemUsingDirectivesShouldBeBeforeThisName));
                         continue;
                     }
@@ -107,8 +99,7 @@ namespace StyleCop.Analyzers.OrderingRules
 
                     if (!previousUsing.IsSystemUsingDirective()
                         || previousUsing.HasNamespaceAliasQualifier()
-                        || previousUsing.StaticKeyword.Kind() != SyntaxKind.None)
-                    {
+                        || previousUsing.StaticKeyword.Kind() != SyntaxKind.None) {
                         systemUsingDirectivesShouldBeBeforeThisName = previousUsing.Name.ToNormalizedString();
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, usingDirective.GetLocation(), usingDirective.Name.ToNormalizedString(), systemUsingDirectivesShouldBeBeforeThisName));
                     }

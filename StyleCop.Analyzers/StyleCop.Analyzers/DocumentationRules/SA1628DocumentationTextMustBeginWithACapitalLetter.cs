@@ -35,8 +35,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoDiagnostic("This diagnostic has an unacceptable rate of false positives.")]
-    internal class SA1628DocumentationTextMustBeginWithACapitalLetter : DiagnosticAnalyzer
-    {
+    internal class SA1628DocumentationTextMustBeginWithACapitalLetter : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1628DocumentationTextMustBeginWithACapitalLetter"/>
         /// analyzer.
@@ -53,8 +52,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         [ExcludeFromCodeCoverage]

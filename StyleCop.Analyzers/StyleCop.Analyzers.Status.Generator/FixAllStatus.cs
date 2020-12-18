@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Status.Generator
     /// <summary>
     /// This enum captures the status of the implementation of a fix all provider.
     /// </summary>
-    public enum FixAllStatus
-    {
+    public enum FixAllStatus {
         /// <summary>
         /// No fix all provider is implemented for the given code fix.
         /// </summary>

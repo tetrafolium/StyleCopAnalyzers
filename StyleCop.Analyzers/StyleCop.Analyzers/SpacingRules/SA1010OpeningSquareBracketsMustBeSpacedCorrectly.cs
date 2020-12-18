@@ -22,8 +22,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// line.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1010OpeningSquareBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1010OpeningSquareBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1010OpeningSquareBracketsMustBeSpacedCorrectly"/>
         /// analyzer.
@@ -39,16 +38,14 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotPreceded = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorNotFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotFollowed = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorNotPreceded);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(DescriptorNotPreceded);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -62,13 +59,10 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                if (token.IsKind(SyntaxKind.OpenBracketToken) && !token.IsMissing)
-                {
+            foreach (var token in root.DescendantTokens()) {
+                if (token.IsKind(SyntaxKind.OpenBracketToken) && !token.IsMissing) {
                     // attribute brackets are handled separately
-                    if (!token.Parent.IsKind(SyntaxKind.AttributeList))
-                    {
+                    if (!token.Parent.IsKind(SyntaxKind.AttributeList)) {
                         HandleOpenBracketToken(context, token);
                     }
                 }
@@ -81,16 +75,13 @@ namespace StyleCop.Analyzers.SpacingRules
             bool precededBySpace = true;
             bool ignorePrecedingSpaceProblem = false;
 
-            if (!firstInLine)
-            {
+            if (!firstInLine) {
                 precededBySpace = token.IsPrecededByWhitespace(context.CancellationToken);
 
                 // ignore if handled by SA1026
-                if (precededBySpace)
-                {
+                if (precededBySpace) {
                     var previousToken = token.GetPreviousToken();
-                    if (previousToken.IsKind(SyntaxKind.NewKeyword) || previousToken.IsKind(SyntaxKind.StackAllocKeyword))
-                    {
+                    if (previousToken.IsKind(SyntaxKind.NewKeyword) || previousToken.IsKind(SyntaxKind.StackAllocKeyword)) {
                         ignorePrecedingSpaceProblem = true;
                     }
                 }
@@ -99,14 +90,12 @@ namespace StyleCop.Analyzers.SpacingRules
             bool followedBySpace = token.IsFollowedByWhitespace();
             bool lastInLine = token.IsLastInLine();
 
-            if (!firstInLine && precededBySpace && !ignorePrecedingSpaceProblem && !IsPartOfIndexInitializer(token))
-            {
+            if (!firstInLine && precededBySpace && !ignorePrecedingSpaceProblem && !IsPartOfIndexInitializer(token)) {
                 // Opening square bracket should {not be preceded} by a space.
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotPreceded, token.GetLocation(), TokenSpacingProperties.RemovePreceding));
             }
 
-            if (!lastInLine && followedBySpace)
-            {
+            if (!lastInLine && followedBySpace) {
                 // Opening square bracket should {not be followed} by a space.
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotFollowed, token.GetLocation(), TokenSpacingProperties.RemoveFollowing));

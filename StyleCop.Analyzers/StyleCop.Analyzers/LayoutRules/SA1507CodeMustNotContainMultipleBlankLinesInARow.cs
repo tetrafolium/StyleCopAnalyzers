@@ -39,8 +39,7 @@ namespace StyleCop.Analyzers.LayoutRules
     /// row.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1507CodeMustNotContainMultipleBlankLinesInARow : DiagnosticAnalyzer
-    {
+    internal class SA1507CodeMustNotContainMultipleBlankLinesInARow : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1507CodeMustNotContainMultipleBlankLinesInARow"/>
         /// analyzer.
@@ -53,15 +52,14 @@ namespace StyleCop.Analyzers.LayoutRules
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1507Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -74,17 +72,15 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
-            if (context.Tree.IsWhitespaceOnly(context.CancellationToken))
-            {
+            if (context.Tree.IsWhitespaceOnly(context.CancellationToken)) {
                 // Handling of empty documents is now the responsibility of the analyzers
                 return;
             }
 
             SyntaxNode root = context.Tree.GetRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens(descendIntoTrivia: false))
-            {
-                if (token.IsKind(SyntaxKind.EndOfFileToken))
-                {
+            foreach (var token in root.DescendantTokens(descendIntoTrivia
+                                                        : false)) {
+                if (token.IsKind(SyntaxKind.EndOfFileToken)) {
                     // If the file ends with blanks lines, ignore them, they will be handled by SA1518.
                     continue;
                 }
@@ -93,10 +89,9 @@ namespace StyleCop.Analyzers.LayoutRules
                 int blankLineEndIndex = -1;
                 int blankLineCount = 0;
                 SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
-                for (int i = 0; i < leadingTrivia.Count; i++)
-                {
-                    switch (leadingTrivia[i].Kind())
-                    {
+                for (int i = 0; i < leadingTrivia.Count; i++) {
+                    switch (leadingTrivia [i]
+                                .Kind()) {
                     case SyntaxKind.WhitespaceTrivia:
                         break;
 
@@ -119,18 +114,14 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void ReportDiagnosticIfNecessary(SyntaxTreeAnalysisContext context, SyntaxTriviaList leadingTrivia, int blankLineIndex, int blankLineEndIndex, int blankLineCount)
         {
-            if (blankLineIndex < 0 || blankLineEndIndex <= blankLineIndex)
-            {
+            if (blankLineIndex < 0 || blankLineEndIndex <= blankLineIndex) {
                 // nothing to report
                 return;
             }
 
-            if (blankLineIndex > 0)
-            {
+            if (blankLineIndex > 0) {
                 var triviaBeforeBlankLines = leadingTrivia[blankLineIndex - 1];
-                if (triviaBeforeBlankLines.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
-                    triviaBeforeBlankLines.IsKind(SyntaxKind.MultiLineCommentTrivia))
-                {
+                if (triviaBeforeBlankLines.IsKind(SyntaxKind.SingleLineCommentTrivia) || triviaBeforeBlankLines.IsKind(SyntaxKind.MultiLineCommentTrivia)) {
                     // when blank lines appear after a comment, skip the first one
                     // because that's part of the end of the comment trivia.
                     blankLineIndex++;
@@ -138,14 +129,12 @@ namespace StyleCop.Analyzers.LayoutRules
                 }
             }
 
-            if (blankLineCount < 2)
-            {
+            if (blankLineCount < 2) {
                 // only care about multiple blank lines in a row
                 return;
             }
 
-            if (leadingTrivia[blankLineIndex].SpanStart == 0)
-            {
+            if (leadingTrivia[blankLineIndex].SpanStart == 0) {
                 // blank lines at the beginning are reported by SA1517
                 return;
             }

@@ -21,11 +21,10 @@ namespace StyleCop.Analyzers.NamingRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1309CodeFixProvider))]
     [Shared]
-    internal class SA1309CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1309CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-          ImmutableArray.Create(SA1309FieldNamesMustNotBeginWithUnderscore.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1309FieldNamesMustNotBeginWithUnderscore.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -39,15 +38,12 @@ namespace StyleCop.Analyzers.NamingRules
             var document = context.Document;
             var root = await document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
-                if (!string.IsNullOrEmpty(token.ValueText))
-                {
-                    var newName = token.ValueText.TrimStart(new[] { '_' });
+                if (!string.IsNullOrEmpty(token.ValueText)) {
+                    var newName = token.ValueText.TrimStart(new[]{ '_' });
 
-                    if (!SyntaxFacts.IsValidIdentifier(newName))
-                    {
+                    if (!SyntaxFacts.IsValidIdentifier(newName)) {
                         // The proposed name was not legal, so no code fix will be offered.
                         continue;
                     }

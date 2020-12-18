@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Describes an element's access level.
     /// </summary>
-    internal enum AccessLevel
-    {
+    internal enum AccessLevel {
         /// <summary>No access level specified.</summary>
         NotSpecified,
 

@@ -15,8 +15,7 @@ namespace StyleCop.Analyzers.SpecialRules
     /// </summary>
     [NoCodeFix("No automatic code fix is possible for general JSON syntax errors.")]
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA0002InvalidSettingsFile : DiagnosticAnalyzer
-    {
+    internal class SA0002InvalidSettingsFile : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA0002InvalidSettingsFile"/> analyzer.
         /// </summary>
@@ -34,8 +33,8 @@ namespace StyleCop.Analyzers.SpecialRules
         private static readonly Action<CompilationAnalysisContext> CompilationAction = HandleCompilation;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -48,12 +47,9 @@ namespace StyleCop.Analyzers.SpecialRules
 
         private static void HandleCompilation(CompilationAnalysisContext context)
         {
-            try
-            {
+            try {
                 SettingsHelper.GetStyleCopSettings(context.Options, DeserializationFailureBehavior.ThrowException, context.CancellationToken);
-            }
-            catch (Exception ex) when (ex is JsonParseException || ex is InvalidSettingsException)
-            {
+            } catch (Exception ex) when(ex is JsonParseException || ex is InvalidSettingsException) {
                 string details = ex.Message;
                 string completeDescription = string.Format(Description.ToString(CultureInfo.CurrentCulture), details);
 

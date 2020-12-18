@@ -24,11 +24,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1121CodeFixProvider))]
     [Shared]
-    internal class SA1121CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1121CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1121UseBuiltInTypeAlias.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1121UseBuiltInTypeAlias.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -39,8 +38,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1121CodeFix,
@@ -54,10 +52,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static SyntaxNode ComputeReplacement(SemanticModel semanticModel, SyntaxNode node, CancellationToken cancellationToken)
         {
-            if (node.Parent is MemberAccessExpressionSyntax memberAccess)
-            {
-                if (node == memberAccess.Name)
-                {
+            if (node.Parent is MemberAccessExpressionSyntax memberAccess) {
+                if (node == memberAccess.Name) {
                     node = memberAccess;
                 }
             }
@@ -65,18 +61,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var type = semanticModel.GetSymbolInfo(node, cancellationToken).Symbol as INamedTypeSymbol;
 
             PredefinedTypeSyntax typeSyntax;
-            if (!SpecialTypeHelper.TryGetPredefinedType(type.SpecialType, out typeSyntax))
-            {
+            if (!SpecialTypeHelper.TryGetPredefinedType(type.SpecialType, out typeSyntax)) {
                 return node;
             }
 
             SyntaxNode newNode;
-            if (node is CrefSyntax)
-            {
+            if (node is CrefSyntax) {
                 newNode = SyntaxFactory.TypeCref(typeSyntax);
-            }
-            else
-            {
+            } else {
                 newNode = typeSyntax;
             }
 
@@ -87,12 +79,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-            if (semanticModel == null)
-            {
+            if (semanticModel == null) {
                 return document;
             }
 
-            var node = root.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+            var node = root.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                     : true, getInnermostNodeForTie
+                                     : true);
 
             var newNode = ComputeReplacement(semanticModel, node, cancellationToken);
 
@@ -100,18 +93,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
+        private class FixAll : DocumentBasedFixAllProvider {
             public static FixAllProvider Instance { get; }
-                = new FixAll();
+            = new FixAll();
 
-            protected override string CodeActionTitle
-                => ReadabilityResources.SA1121CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1121CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -119,9 +109,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 var semanticModel = await document.GetSemanticModelAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
 
                 List<SyntaxNode> nodesToReplace = new List<SyntaxNode>(diagnostics.Length);
-                foreach (var diagnostic in diagnostics)
-                {
-                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+                foreach (var diagnostic in diagnostics) {
+                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, findInsideTrivia
+                                                   : true, getInnermostNodeForTie
+                                                   : true);
 
                     nodesToReplace.Add(node);
                 }

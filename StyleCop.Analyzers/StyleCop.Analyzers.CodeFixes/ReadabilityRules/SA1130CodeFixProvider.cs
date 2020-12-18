@@ -22,13 +22,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1130CodeFixProvider))]
     [Shared]
-    internal class SA1130CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1130CodeFixProvider : CodeFixProvider {
         private static readonly SyntaxToken ParameterListSeparator = SyntaxFactory.Token(SyntaxKind.CommaToken).WithTrailingTrivia(SyntaxFactory.Space);
 
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1130UseLambdaSyntax.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1130UseLambdaSyntax.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -39,10 +38,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                if (!(await CanFixAsync(context, diagnostic).ConfigureAwait(false)))
-                {
+            foreach (var diagnostic in context.Diagnostics) {
+                if (!(await CanFixAsync(context, diagnostic).ConfigureAwait(false))) {
                     continue;
                 }
 
@@ -60,7 +57,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var syntaxRoot = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             var semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-            var anonymousMethod = (AnonymousMethodExpressionSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            var anonymousMethod = (AnonymousMethodExpressionSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                                                        : true);
 
             var newNode = ReplaceWithLambda(semanticModel, anonymousMethod);
 
@@ -73,12 +71,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
             SyntaxNode lambdaExpression;
             SyntaxToken arrowToken;
 
-            if (parameterList == null)
-            {
+            if (parameterList == null) {
                 ImmutableArray<string> argumentList = ImmutableArray<string>.Empty;
 
-                switch (anonymousMethod.Parent.Kind())
-                {
+                switch (anonymousMethod.Parent.Kind()) {
                 case SyntaxKind.Argument:
                     argumentList = GetMethodInvocationArgumentList(semanticModel, anonymousMethod);
                     break;
@@ -91,8 +87,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 case SyntaxKind.SubtractAssignmentExpression:
                     var list = GetAssignmentArgumentList(semanticModel, anonymousMethod);
 
-                    if (list == null)
-                    {
+                    if (list == null) {
                         return null;
                     }
 
@@ -102,8 +97,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 case SyntaxKind.ArrowExpressionClause:
                 case SyntaxKind.ReturnStatement:
                     argumentList = GetMemberReturnTypeArgumentList(semanticModel, anonymousMethod);
-                    if (argumentList.IsEmpty)
-                    {
+                    if (argumentList.IsEmpty) {
                         return null;
                     }
 
@@ -117,49 +111,42 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     : SyntaxFactory.SeparatedList<ParameterSyntax>();
 
                 parameterList = SyntaxFactory.ParameterList(newList)
-                    .WithLeadingTrivia(anonymousMethod.DelegateKeyword.LeadingTrivia);
+                                    .WithLeadingTrivia(anonymousMethod.DelegateKeyword.LeadingTrivia);
 
                 arrowToken = SyntaxFactory.Token(SyntaxKind.EqualsGreaterThanToken)
-                    .WithTrailingTrivia(anonymousMethod.DelegateKeyword.TrailingTrivia);
-            }
-            else
-            {
+                                 .WithTrailingTrivia(anonymousMethod.DelegateKeyword.TrailingTrivia);
+            } else {
                 parameterList = parameterList.WithLeadingTrivia(anonymousMethod.DelegateKeyword.TrailingTrivia);
 
                 arrowToken = SyntaxFactory.Token(SyntaxKind.EqualsGreaterThanToken)
-                    .WithTrailingTrivia(SyntaxFactory.ElasticSpace);
+                                 .WithTrailingTrivia(SyntaxFactory.ElasticSpace);
             }
 
-            foreach (var parameter in parameterList.Parameters)
-            {
-                if (!IsValid(parameter))
-                {
+            foreach (var parameter in parameterList.Parameters) {
+                if (!IsValid(parameter)) {
                     return anonymousMethod;
                 }
             }
 
-            if (parameterList.Parameters.Count == 1)
-            {
+            if (parameterList.Parameters.Count == 1) {
                 var parameterSyntax = RemoveType(parameterList.Parameters[0]);
 
                 var trailingTrivia = parameterSyntax.GetTrailingTrivia()
-                    .Concat(parameterList.CloseParenToken.LeadingTrivia)
-                    .Concat(parameterList.CloseParenToken.TrailingTrivia.WithoutTrailingWhitespace())
-                    .Concat(new[] { SyntaxFactory.ElasticSpace });
+                                         .Concat(parameterList.CloseParenToken.LeadingTrivia)
+                                         .Concat(parameterList.CloseParenToken.TrailingTrivia.WithoutTrailingWhitespace())
+                                         .Concat(new[]{ SyntaxFactory.ElasticSpace });
                 var leadingTrivia = parameterList.OpenParenToken.LeadingTrivia
-                    .Concat(parameterList.OpenParenToken.TrailingTrivia)
-                    .Concat(parameterSyntax.GetLeadingTrivia());
+                                        .Concat(parameterList.OpenParenToken.TrailingTrivia)
+                                        .Concat(parameterSyntax.GetLeadingTrivia());
 
                 parameterSyntax = parameterSyntax
-                    .WithLeadingTrivia(leadingTrivia)
-                    .WithTrailingTrivia(trailingTrivia);
+                                      .WithLeadingTrivia(leadingTrivia)
+                                      .WithTrailingTrivia(trailingTrivia);
 
                 lambdaExpression = SyntaxFactory.SimpleLambdaExpression(anonymousMethod.AsyncKeyword, parameterSyntax, arrowToken, anonymousMethod.Body);
-            }
-            else
-            {
+            } else {
                 var parameterListSyntax = RemoveType(parameterList)
-                    .WithTrailingTrivia(parameterList.GetTrailingTrivia().WithoutTrailingWhitespace().Add(SyntaxFactory.ElasticSpace));
+                                              .WithTrailingTrivia(parameterList.GetTrailingTrivia().WithoutTrailingWhitespace().Add(SyntaxFactory.ElasticSpace));
                 lambdaExpression = SyntaxFactory.ParenthesizedLambdaExpression(anonymousMethod.AsyncKeyword, parameterListSyntax, arrowToken, anonymousMethod.Body);
             }
 
@@ -169,8 +156,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static ImmutableArray<string> GetMethodInvocationArgumentList(SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            var argumentSyntax = (ArgumentSyntax)anonymousMethod.Parent;
-            var argumentListSyntax = (BaseArgumentListSyntax)argumentSyntax.Parent;
+            var argumentSyntax = (ArgumentSyntax) anonymousMethod.Parent;
+            var argumentListSyntax = (BaseArgumentListSyntax) argumentSyntax.Parent;
             var originalInvocableExpression = argumentListSyntax.Parent;
 
             var originalSymbolInfo = semanticModel.GetSymbolInfo(originalInvocableExpression);
@@ -181,48 +168,48 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static ImmutableArray<string> GetEqualsArgumentList(SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            var equalsValueClauseSyntax = (EqualsValueClauseSyntax)anonymousMethod.Parent;
-            var variableDeclaration = (VariableDeclarationSyntax)equalsValueClauseSyntax.Parent.Parent;
+            var equalsValueClauseSyntax = (EqualsValueClauseSyntax) anonymousMethod.Parent;
+            var variableDeclaration = (VariableDeclarationSyntax) equalsValueClauseSyntax.Parent.Parent;
 
             var symbol = semanticModel.GetSymbolInfo(variableDeclaration.Type);
-            var namedTypeSymbol = (INamedTypeSymbol)symbol.Symbol;
+            var namedTypeSymbol = (INamedTypeSymbol) symbol.Symbol;
             return namedTypeSymbol.DelegateInvokeMethod.Parameters.Select(ps => ps.Name).ToImmutableArray();
         }
 
-        private static ImmutableArray<string>? GetAssignmentArgumentList(SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod)
+        private static ImmutableArray<string> ? GetAssignmentArgumentList(SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            var assignmentExpressionSyntax = (AssignmentExpressionSyntax)anonymousMethod.Parent;
+            var assignmentExpressionSyntax = (AssignmentExpressionSyntax) anonymousMethod.Parent;
 
             var symbol = semanticModel.GetSymbolInfo(assignmentExpressionSyntax.Left);
 
-            if (symbol.Symbol == null)
-            {
+            if (symbol.Symbol == null) {
                 return null;
             }
 
-            var eventSymbol = (IEventSymbol)symbol.Symbol;
-            var namedTypeSymbol = (INamedTypeSymbol)eventSymbol.Type;
+            var eventSymbol = (IEventSymbol) symbol.Symbol;
+            var namedTypeSymbol = (INamedTypeSymbol) eventSymbol.Type;
             return namedTypeSymbol.DelegateInvokeMethod.Parameters.Select(ps => ps.Name).ToImmutableArray();
         }
 
         private static ImmutableArray<string> GetMemberReturnTypeArgumentList(SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod)
         {
             var enclosingSymbol = semanticModel.GetEnclosingSymbol(anonymousMethod.Parent.SpanStart);
-            return !(((IMethodSymbol)enclosingSymbol).ReturnType is INamedTypeSymbol returnType) ? ImmutableArray<string>.Empty : returnType.DelegateInvokeMethod.Parameters.Select(ps => ps.Name).ToImmutableArray();
+            return !(((IMethodSymbol) enclosingSymbol).ReturnType is INamedTypeSymbol returnType) ? ImmutableArray<string>.Empty : returnType.DelegateInvokeMethod.Parameters.Select(ps => ps.Name).ToImmutableArray();
         }
 
         private static List<ParameterSyntax> GenerateUniqueParameterNames(SemanticModel semanticModel, AnonymousMethodExpressionSyntax anonymousMethod, ImmutableArray<string> argumentNames)
         {
             var parameters = new List<ParameterSyntax>();
 
-            foreach (var argumentName in argumentNames)
-            {
+            foreach (var argumentName in argumentNames) {
                 var baseName = argumentName;
                 var newName = baseName;
                 var index = 0;
 
-                while (semanticModel.LookupSymbols(anonymousMethod.SpanStart, name: newName).Length > 0)
-                {
+                while (semanticModel.LookupSymbols(anonymousMethod.SpanStart, name
+                                                   : newName)
+                           .Length
+                    > 0) {
                     index++;
                     newName = baseName + index;
                 }
@@ -242,8 +229,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             var syntax = parameterSyntax.WithType(null);
 
-            if (parameterSyntax.Type != null)
-            {
+            if (parameterSyntax.Type != null) {
                 syntax = syntax.WithLeadingTrivia(parameterSyntax.Type.GetLeadingTrivia().Concat(parameterSyntax.Type.GetTrailingTrivia()));
             }
 
@@ -265,7 +251,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var anonymousMethod = (AnonymousMethodExpressionSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            var anonymousMethod = (AnonymousMethodExpressionSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                                                        : true);
 
             var newNode = ReplaceWithLambda(semanticModel, anonymousMethod);
 
@@ -275,10 +262,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
             return newDocument;
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
             protected override string CodeActionTitle => ReadabilityResources.SA1130CodeFix;
 
@@ -289,18 +275,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 var nodes = new List<AnonymousMethodExpressionSyntax>();
 
-                foreach (var diagnostic in diagnostics)
-                {
-                    var node = (AnonymousMethodExpressionSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+                foreach (var diagnostic in diagnostics) {
+                    var node = (AnonymousMethodExpressionSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                                                     : true);
                     nodes.Add(node);
                 }
 
-                return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) =>
-                {
+                return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) => {
                     var newNode = ReplaceWithLambda(semanticModel, rewrittenNode);
 
-                    if (newNode == null)
-                    {
+                    if (newNode == null) {
                         return rewrittenNode;
                     }
 

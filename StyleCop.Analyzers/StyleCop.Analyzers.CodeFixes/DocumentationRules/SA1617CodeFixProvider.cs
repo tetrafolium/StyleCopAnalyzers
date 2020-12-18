@@ -22,11 +22,10 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1617CodeFixProvider))]
     [Shared]
-    internal class SA1617CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1617CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1617VoidReturnValueMustNotBeDocumented.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,10 +36,8 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                if (!diagnostic.Properties.ContainsKey(SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey))
-                {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
+                if (!diagnostic.Properties.ContainsKey(SA1617VoidReturnValueMustNotBeDocumented.NoCodeFixKey)) {
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             DocumentationResources.SA1617CodeFix,
@@ -62,18 +59,15 @@ namespace StyleCop.Analyzers.DocumentationRules
             // Check if the return value is documented
             var returnsElement = documentation.Content.GetFirstXmlElement(XmlCommentHelper.ReturnsXmlTag);
 
-            if (returnsElement == null)
-            {
+            if (returnsElement == null) {
                 return document;
             }
 
             // Find the node previous to the <returns> node to determine if it is an XML comment indicator. If so, we
             // will remove that node from the syntax tree as well.
             SyntaxNode previous = null;
-            foreach (var item in documentation.ChildNodes())
-            {
-                if (item.Equals(returnsElement))
-                {
+            foreach (var item in documentation.ChildNodes()) {
+                if (item.Equals(returnsElement)) {
                     break;
                 }
 
@@ -84,8 +78,7 @@ namespace StyleCop.Analyzers.DocumentationRules
             nodesToFix.Add(returnsElement);
 
             if (previous is XmlTextSyntax previousAsTextSyntax
-                && XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax))
-            {
+                && XmlCommentHelper.IsConsideredEmpty(previousAsTextSyntax)) {
                 nodesToFix.Add(previous);
             }
 

@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct BinaryPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct BinaryPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.BinaryPatternSyntax";
         private static readonly Type WrappedType;
 
@@ -45,7 +44,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PatternSyntaxWrapper)LeftAccessor(this.SyntaxNode);
+                return (PatternSyntaxWrapper) LeftAccessor(this.SyntaxNode);
             }
         }
 
@@ -61,33 +60,31 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PatternSyntaxWrapper)RightAccessor(this.SyntaxNode);
+                return (PatternSyntaxWrapper) RightAccessor(this.SyntaxNode);
             }
         }
 
         public static explicit operator BinaryPatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (BinaryPatternSyntaxWrapper)node.SyntaxNode;
+            return (BinaryPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator BinaryPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (BinaryPatternSyntaxWrapper)node.SyntaxNode;
+            return (BinaryPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator BinaryPatternSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new BinaryPatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new BinaryPatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(BinaryPatternSyntaxWrapper wrapper)

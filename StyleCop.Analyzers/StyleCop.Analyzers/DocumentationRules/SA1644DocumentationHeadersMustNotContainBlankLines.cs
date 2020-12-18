@@ -53,8 +53,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1644DocumentationHeadersMustNotContainBlankLines : DiagnosticAnalyzer
-    {
+    internal class SA1644DocumentationHeadersMustNotContainBlankLines : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1644DocumentationHeadersMustNotContainBlankLines"/>
         /// analyzer.
@@ -71,8 +70,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
 #pragma warning disable RS1025 // Configure generated code analysis

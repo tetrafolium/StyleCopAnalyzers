@@ -16,11 +16,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SX1101CodeFixProvider))]
     [Shared]
-    internal class SX1101CodeFixProvider : CodeFixProvider
-    {
+    internal class SX1101CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SX1101DoNotPrefixLocalMembersWithThis.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SX1101DoNotPrefixLocalMembersWithThis.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -31,8 +30,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SX1101CodeFix,
@@ -48,8 +46,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is ThisExpressionSyntax node))
-            {
+            if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                      : true) is ThisExpressionSyntax node)) {
                 return document;
             }
 
@@ -60,22 +58,19 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static SyntaxNode GenerateReplacementNode(ThisExpressionSyntax node)
         {
-            var parent = (MemberAccessExpressionSyntax)node.Parent;
+            var parent = (MemberAccessExpressionSyntax) node.Parent;
             return parent.Name.WithTriviaFrom(parent);
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                   new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                ReadabilityResources.SX1101CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SX1101CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -83,14 +78,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 var replaceMap = new Dictionary<SyntaxNode, SyntaxNode>();
 
-                foreach (Diagnostic diagnostic in diagnostics)
-                {
-                    if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is ThisExpressionSyntax node) || node.IsMissing)
-                    {
+                foreach (Diagnostic diagnostic in diagnostics) {
+                    if (!(syntaxRoot.FindNode(diagnostic.Location.SourceSpan, false, true) is ThisExpressionSyntax node) || node.IsMissing) {
                         continue;
                     }
 
-                    replaceMap[node.Parent] = GenerateReplacementNode(node);
+                    replaceMap [node.Parent]
+                    = GenerateReplacementNode(node);
                 }
 
                 return syntaxRoot.ReplaceNodes(replaceMap.Keys, (originalNode, rewrittenNode) => replaceMap[originalNode]);

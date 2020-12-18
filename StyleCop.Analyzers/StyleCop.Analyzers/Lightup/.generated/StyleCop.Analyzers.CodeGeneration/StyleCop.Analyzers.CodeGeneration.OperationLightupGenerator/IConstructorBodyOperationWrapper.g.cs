@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IConstructorBodyOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IConstructorBodyOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IConstructorBodyOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ImmutableArray<ILocalSymbol>> LocalsAccessor;
@@ -30,19 +29,17 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ImmutableArray<ILocalSymbol> Locals => LocalsAccessor(this.WrappedOperation);
         public IOperation Initializer => InitializerAccessor(this.WrappedOperation);
-        public IBlockOperationWrapper BlockBody => ((IMethodBodyBaseOperationWrapper)this).BlockBody;
-        public IBlockOperationWrapper ExpressionBody => ((IMethodBodyBaseOperationWrapper)this).ExpressionBody;
+        public IBlockOperationWrapper BlockBody =>((IMethodBodyBaseOperationWrapper) this).BlockBody;
+        public IBlockOperationWrapper ExpressionBody =>((IMethodBodyBaseOperationWrapper) this).ExpressionBody;
         public static explicit operator IConstructorBodyOperationWrapper(IMethodBodyBaseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator IMethodBodyBaseOperationWrapper(IConstructorBodyOperationWrapper wrapper) => IMethodBodyBaseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IConstructorBodyOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

@@ -42,8 +42,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1413UseTrailingCommasInMultiLineInitializers : DiagnosticAnalyzer
-    {
+    internal class SA1413UseTrailingCommasInMultiLineInitializers : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1413UseTrailingCommasInMultiLineInitializers"/> analyzer.
         /// </summary>
@@ -53,20 +52,18 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1413MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1413Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> HandleObjectInitializerAction = HandleObjectInitializer;
         private static readonly Action<SyntaxNodeAnalysisContext> HandleAnonymousObjectInitializerAction = HandleAnonymousObjectInitializer;
         private static readonly Action<SyntaxNodeAnalysisContext> HandleEnumDeclarationAction = HandleEnumDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> HandleSwitchExpressionAction = HandleSwitchExpression;
 
-        private static readonly ImmutableArray<SyntaxKind> ObjectInitializerKinds =
-            ImmutableArray.Create(SyntaxKind.ObjectInitializerExpression, SyntaxKind.ArrayInitializerExpression, SyntaxKind.CollectionInitializerExpression, SyntaxKindEx.WithInitializerExpression);
+        private static readonly ImmutableArray<SyntaxKind> ObjectInitializerKinds = ImmutableArray.Create(SyntaxKind.ObjectInitializerExpression, SyntaxKind.ArrayInitializerExpression, SyntaxKind.CollectionInitializerExpression, SyntaxKindEx.WithInitializerExpression);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -82,57 +79,49 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static void HandleEnumDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var initializer = (EnumDeclarationSyntax)context.Node;
+            var initializer = (EnumDeclarationSyntax) context.Node;
             var lastMember = initializer.Members.LastOrDefault();
-            if (lastMember == null || !initializer.SpansMultipleLines())
-            {
+            if (lastMember == null || !initializer.SpansMultipleLines()) {
                 return;
             }
 
-            if (initializer.Members.Count != initializer.Members.SeparatorCount)
-            {
+            if (initializer.Members.Count != initializer.Members.SeparatorCount) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, lastMember.GetLocation()));
             }
         }
 
         private static void HandleObjectInitializer(SyntaxNodeAnalysisContext context)
         {
-            var initializer = (InitializerExpressionSyntax)context.Node;
-            if (initializer == null || !initializer.SpansMultipleLines())
-            {
+            var initializer = (InitializerExpressionSyntax) context.Node;
+            if (initializer == null || !initializer.SpansMultipleLines()) {
                 return;
             }
 
-            if (initializer.Expressions.SeparatorCount < initializer.Expressions.Count)
-            {
+            if (initializer.Expressions.SeparatorCount < initializer.Expressions.Count) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, initializer.Expressions.Last().GetLocation()));
             }
         }
 
         private static void HandleAnonymousObjectInitializer(SyntaxNodeAnalysisContext context)
         {
-            var initializer = (AnonymousObjectCreationExpressionSyntax)context.Node;
-            if (initializer == null || !initializer.SpansMultipleLines())
-            {
+            var initializer = (AnonymousObjectCreationExpressionSyntax) context.Node;
+            if (initializer == null || !initializer.SpansMultipleLines()) {
                 return;
             }
 
-            if (initializer.Initializers.SeparatorCount < initializer.Initializers.Count)
-            {
+            if (initializer.Initializers.SeparatorCount < initializer.Initializers.Count) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, initializer.Initializers.Last().GetLocation()));
             }
         }
 
         private static void HandleSwitchExpression(SyntaxNodeAnalysisContext context)
         {
-            var switchExpression = (SwitchExpressionSyntaxWrapper)context.Node;
-            if (switchExpression.SyntaxNode == null || !switchExpression.SyntaxNode.SpansMultipleLines())
-            {
+            var switchExpression = (SwitchExpressionSyntaxWrapper) context.Node;
+            if (switchExpression.SyntaxNode == null || !switchExpression.SyntaxNode.SpansMultipleLines()) {
                 return;
             }
 
-            if (switchExpression.Arms.SeparatorCount < switchExpression.Arms.Count)
-            {
+            if (switchExpression.Arms.SeparatorCount < switchExpression.Arms.Count) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, switchExpression.Arms.Last().SyntaxNode.GetLocation()));
             }
         }

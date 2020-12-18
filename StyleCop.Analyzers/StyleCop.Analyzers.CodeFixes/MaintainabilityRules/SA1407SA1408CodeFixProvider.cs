@@ -21,13 +21,12 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1407SA1408CodeFixProvider))]
     [Shared]
-    internal class SA1407SA1408CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1407SA1408CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA1407ArithmeticExpressionsMustDeclarePrecedence.DiagnosticId,
-                SA1408ConditionalExpressionsMustDeclarePrecedence.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(
+            SA1407ArithmeticExpressionsMustDeclarePrecedence.DiagnosticId,
+            SA1408ConditionalExpressionsMustDeclarePrecedence.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -40,16 +39,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan);
-                if (node.IsMissing)
-                {
+                if (node.IsMissing) {
                     continue;
                 }
 
-                if (node is BinaryExpressionSyntax syntax)
-                {
+                if (node is BinaryExpressionSyntax syntax) {
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             MaintainabilityResources.SA1407SA1408CodeFix,
@@ -63,8 +59,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         private static Task<Document> GetTransformedDocumentAsync(Document document, SyntaxNode root, BinaryExpressionSyntax syntax)
         {
             var newNode = SyntaxFactory.ParenthesizedExpression(syntax.WithoutTrivia())
-                .WithTriviaFrom(syntax)
-                .WithoutFormatting();
+                              .WithTriviaFrom(syntax)
+                              .WithoutFormatting();
 
             var newSyntaxRoot = root.ReplaceNode(syntax, newNode);
 

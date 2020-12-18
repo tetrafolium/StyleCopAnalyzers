@@ -21,13 +21,12 @@ namespace StyleCop.Analyzers.NamingRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SX1309CodeFixProvider))]
     [Shared]
-    internal class SX1309CodeFixProvider : CodeFixProvider
-    {
+    internal class SX1309CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SX1309FieldNamesMustBeginWithUnderscore.DiagnosticId,
-                SX1309SStaticFieldNamesMustBeginWithUnderscore.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(
+            SX1309FieldNamesMustBeginWithUnderscore.DiagnosticId,
+            SX1309SStaticFieldNamesMustBeginWithUnderscore.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -41,11 +40,9 @@ namespace StyleCop.Analyzers.NamingRules
             var document = context.Document;
             var root = await document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
-                if (!string.IsNullOrEmpty(token.ValueText))
-                {
+                if (!string.IsNullOrEmpty(token.ValueText)) {
                     string newName = '_' + token.ValueText;
                     context.RegisterCodeFix(
                         CodeAction.Create(

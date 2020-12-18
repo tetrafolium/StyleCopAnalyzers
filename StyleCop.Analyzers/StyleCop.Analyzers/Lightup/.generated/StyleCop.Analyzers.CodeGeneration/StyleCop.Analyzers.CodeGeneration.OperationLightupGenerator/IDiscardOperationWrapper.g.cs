@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IDiscardOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IDiscardOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IDiscardOperation";
         private static readonly Type WrappedType;
         private readonly IOperation operation;
@@ -27,13 +26,11 @@ namespace StyleCop.Analyzers.Lightup
         public object DiscardSymbol => throw new NotImplementedException("Property 'IDiscardOperation.DiscardSymbol' has unsupported type 'IDiscardSymbol'");
         public static IDiscardOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

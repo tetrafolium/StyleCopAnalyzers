@@ -9,15 +9,18 @@ namespace StyleCop.Analyzers.Status.Generator
     /// <summary>
     /// Represents a diagnostic in the StyleCop.Analyzers project.
     /// </summary>
-    public class StyleCopDiagnostic
-    {
+    public class StyleCopDiagnostic {
         /// <summary>
         /// Gets or sets the ID of the diagnostic, including the prefix 'SA' or 'SX'.
         /// </summary>
         /// <value>
         /// The ID of the diagnostic including, the prefix 'SA' or 'SX'.
         /// </value>
-        public string Id { get; set; }
+        public string Id
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the short name if the diagnostic that is used in the class name.
@@ -25,7 +28,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <value>
         /// The short name if the diagnostic that is used in the class name.
         /// </value>
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the diagnostic is implemented.
@@ -33,7 +40,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <value>
         /// <see langword="true"/> if the diagnostic is implemented; otherwise <see langword="false"/>.
         /// </value>
-        public bool HasImplementation { get; set; }
+        public bool HasImplementation
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the diagnostic is enabled. This can indicate if the
@@ -48,7 +59,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <item><description>DisabledByDefault</description></item>
         /// </list>
         /// </value>
-        public string Status { get; set; }
+        public string Status
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating the code fix status for the diagnostic.
@@ -57,7 +72,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// A value indicating the code fix status for the diagnostic.
         /// </value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public CodeFixStatus CodeFixStatus { get; set; }
+        public CodeFixStatus CodeFixStatus
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets a value that represents how the fix all functionality is implemented.
@@ -66,7 +85,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// A value that represents how the fix all functionality is implemented.
         /// </value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public FixAllStatus FixAllStatus { get; set; }
+        public FixAllStatus FixAllStatus
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the reason why a code fix is not implemented, or <see langword="null"/> if there is
@@ -76,7 +99,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// The reason why a code fix is not implemented, or <see langword="null"/> if there is
         /// no reason.
         /// </value>
-        public string NoCodeFixReason { get; set; }
+        public string NoCodeFixReason
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the title of this diagnostic.
@@ -84,7 +111,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <value>
         /// The title of this diagnostic.
         /// </value>
-        public string Title { get; set; }
+        public string Title
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the category of this diagnostic.
@@ -92,7 +123,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <value>
         /// The category of this diagnostic.
         /// </value>
-        public string Category { get; set; }
+        public string Category
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the help link for this diagnostic.
@@ -100,7 +135,11 @@ namespace StyleCop.Analyzers.Status.Generator
         /// <value>
         /// The help link for this diagnostic.
         /// </value>
-        public string HelpLink { get; set; }
+        public string HelpLink
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Creates an instance of the <see cref="StyleCopDiagnostic"/> class

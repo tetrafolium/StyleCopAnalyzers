@@ -20,11 +20,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1106CodeFixProvider))]
     [Shared]
-    internal class SA1106CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1106CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
         public override ImmutableArray<string> FixableDiagnosticIds { get; }
-            = ImmutableArray.Create(SA1106CodeMustNotContainEmptyStatements.DiagnosticId);
+        = ImmutableArray.Create(SA1106CodeMustNotContainEmptyStatements.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,8 +34,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1106CodeFix,
@@ -53,20 +51,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var token = root.FindToken(diagnostic.Location.SourceSpan.Start);
 
-            if (!token.Parent.IsKind(SyntaxKind.EmptyStatement))
-            {
+            if (!token.Parent.IsKind(SyntaxKind.EmptyStatement)) {
                 return await RemoveSemicolonTextAsync(document, token, cancellationToken).ConfigureAwait(false);
             }
 
-            return await RemoveEmptyStatementAsync(document, root, (EmptyStatementSyntax)token.Parent, cancellationToken).ConfigureAwait(false);
+            return await RemoveEmptyStatementAsync(document, root, (EmptyStatementSyntax) token.Parent, cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task<Document> RemoveEmptyStatementAsync(Document document, SyntaxNode root, EmptyStatementSyntax node, CancellationToken cancellationToken)
         {
             SyntaxNode newRoot;
 
-            switch (node.Parent.Kind())
-            {
+            switch (node.Parent.Kind()) {
             case SyntaxKind.Block:
             case SyntaxKind.SwitchSection:
                 // empty statements in a block or switch section can be removed
@@ -96,8 +92,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
             TextLine line = sourceText.Lines.GetLineFromPosition(token.SpanStart);
-            if (sourceText.ToString(line.Span).Trim() == token.Text)
-            {
+            if (sourceText.ToString(line.Span).Trim() == token.Text) {
                 // remove the line containing the semicolon token
                 textChange = new TextChange(line.SpanIncludingLineBreak, string.Empty);
                 return document.WithText(sourceText.WithChanges(textChange));
@@ -105,20 +100,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             TextSpan spanToRemove;
             var whitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(token.LeadingTrivia);
-            if (whitespaceIndex >= 0)
-            {
+            if (whitespaceIndex >= 0) {
                 spanToRemove = TextSpan.FromBounds(token.LeadingTrivia[whitespaceIndex].Span.Start, token.Span.End);
-            }
-            else
-            {
+            } else {
                 var previousToken = token.GetPreviousToken();
                 whitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(previousToken.TrailingTrivia);
-                if (whitespaceIndex >= 0)
-                {
+                if (whitespaceIndex >= 0) {
                     spanToRemove = TextSpan.FromBounds(previousToken.TrailingTrivia[whitespaceIndex].Span.Start, token.Span.End);
-                }
-                else
-                {
+                } else {
                     spanToRemove = token.Span;
                 }
             }

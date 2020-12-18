@@ -8,8 +8,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
     using System.Text.RegularExpressions;
     using LightJson;
 
-    internal class NamingSettings
-    {
+    internal class NamingSettings {
         /// <summary>
         /// This is the backing field for the <see cref="AllowedHungarianPrefixes"/> property.
         /// </summary>
@@ -40,22 +39,18 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         protected internal NamingSettings(JsonObject namingSettingsObject)
             : this()
         {
-            foreach (var kvp in namingSettingsObject)
-            {
-                switch (kvp.Key)
-                {
+            foreach (var kvp in namingSettingsObject) {
+                switch (kvp.Key) {
                 case "allowCommonHungarianPrefixes":
                     this.AllowCommonHungarianPrefixes = kvp.ToBooleanValue();
                     break;
 
                 case "allowedHungarianPrefixes":
                     kvp.AssertIsArray();
-                    foreach (var prefixJsonValue in kvp.Value.AsJsonArray)
-                    {
+                    foreach (var prefixJsonValue in kvp.Value.AsJsonArray) {
                         var prefix = prefixJsonValue.ToStringValue(kvp.Key);
 
-                        if (!Regex.IsMatch(prefix, "^[a-z]{1,2}$"))
-                        {
+                        if (!Regex.IsMatch(prefix, "^[a-z]{1,2}$")) {
                             continue;
                         }
 
@@ -85,11 +80,9 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 
         public bool AllowCommonHungarianPrefixes { get; }
 
-        public ImmutableArray<string> AllowedHungarianPrefixes
-            => this.allowedHungarianPrefixes.ToImmutable();
+        public ImmutableArray<string> AllowedHungarianPrefixes => this.allowedHungarianPrefixes.ToImmutable();
 
-        public ImmutableArray<string> AllowedNamespaceComponents
-            => this.allowedNamespaceComponents.ToImmutable();
+        public ImmutableArray<string> AllowedNamespaceComponents => this.allowedNamespaceComponents.ToImmutable();
 
         public bool IncludeInferredTupleElementNames { get; }
 

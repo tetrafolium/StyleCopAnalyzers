@@ -16,8 +16,7 @@ namespace StyleCop.Analyzers.OrderingRules
     /// An readonly element is positioned beneath a non-readonly element.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1214ReadonlyElementsMustAppearBeforeNonReadonlyElements : DiagnosticAnalyzer
-    {
+    internal class SA1214ReadonlyElementsMustAppearBeforeNonReadonlyElements : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1214ReadonlyElementsMustAppearBeforeNonReadonlyElements"/> analyzer.
@@ -28,17 +27,15 @@ namespace StyleCop.Analyzers.OrderingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1214MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1214Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds =
-            ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration);
+        private static readonly ImmutableArray<SyntaxKind> TypeDeclarationKinds = ImmutableArray.Create(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration);
 
         private static readonly Action<SyntaxNodeAnalysisContext, StyleCopSettings> TypeDeclarationAction = HandleTypeDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -53,12 +50,11 @@ namespace StyleCop.Analyzers.OrderingRules
         {
             var elementOrder = settings.OrderingRules.ElementOrder;
             int readonlyIndex = elementOrder.IndexOf(OrderingTrait.Readonly);
-            if (readonlyIndex < 0)
-            {
+            if (readonlyIndex < 0) {
                 return;
             }
 
-            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+            var typeDeclaration = (TypeDeclarationSyntax) context.Node;
 
             // This variable is null when the previous member is not a field.
             FieldDeclarationSyntax previousField = null;
@@ -66,10 +62,8 @@ namespace StyleCop.Analyzers.OrderingRules
             var previousFieldStatic = false;
             var previousFieldReadonly = false;
             var previousAccessLevel = AccessLevel.NotSpecified;
-            foreach (var member in typeDeclaration.Members)
-            {
-                if (!(member is FieldDeclarationSyntax field))
-                {
+            foreach (var member in typeDeclaration.Members) {
+                if (!(member is FieldDeclarationSyntax field)) {
                     previousField = null;
                     continue;
                 }
@@ -79,8 +73,7 @@ namespace StyleCop.Analyzers.OrderingRules
                 bool currentFieldConst = modifiers.Any(SyntaxKind.ConstKeyword);
                 bool currentFieldStatic = currentFieldConst || modifiers.Any(SyntaxKind.StaticKeyword);
                 bool currentFieldReadonly = currentFieldConst || modifiers.Any(SyntaxKind.ReadOnlyKeyword);
-                if (previousField == null)
-                {
+                if (previousField == null) {
                     previousField = field;
                     previousFieldConst = currentFieldConst;
                     previousFieldStatic = currentFieldStatic;
@@ -90,33 +83,28 @@ namespace StyleCop.Analyzers.OrderingRules
                 }
 
                 bool compareReadonly = true;
-                for (int j = 0; compareReadonly && j < readonlyIndex; j++)
-                {
-                    switch (elementOrder[j])
-                    {
+                for (int j = 0; compareReadonly && j < readonlyIndex; j++) {
+                    switch (elementOrder[j]) {
                     case OrderingTrait.Kind:
                         // This analyzer only ever looks at sequences of fields.
                         continue;
 
                     case OrderingTrait.Accessibility:
-                        if (previousAccessLevel != currentAccessLevel)
-                        {
+                        if (previousAccessLevel != currentAccessLevel) {
                             compareReadonly = false;
                         }
 
                         continue;
 
                     case OrderingTrait.Constant:
-                        if (previousFieldConst != currentFieldConst)
-                        {
+                        if (previousFieldConst != currentFieldConst) {
                             compareReadonly = false;
                         }
 
                         continue;
 
                     case OrderingTrait.Static:
-                        if (previousFieldStatic != currentFieldStatic)
-                        {
+                        if (previousFieldStatic != currentFieldStatic) {
                             compareReadonly = false;
                         }
 
@@ -128,10 +116,8 @@ namespace StyleCop.Analyzers.OrderingRules
                     }
                 }
 
-                if (compareReadonly)
-                {
-                    if (currentFieldReadonly && !previousFieldReadonly)
-                    {
+                if (compareReadonly) {
+                    if (currentFieldReadonly && !previousFieldReadonly) {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, NamedTypeHelpers.GetNameOrIdentifierLocation(member)));
                     }
                 }

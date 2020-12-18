@@ -36,8 +36,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoDiagnostic("This diagnostic was determined to be too subjective and/or misleading to developers.")]
     [NoCodeFix("Cannot generate documentation")]
-    internal class SA1631DocumentationMustMeetCharacterPercentage : DiagnosticAnalyzer
-    {
+    internal class SA1631DocumentationMustMeetCharacterPercentage : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1631DocumentationMustMeetCharacterPercentage"/>
         /// analyzer.
@@ -54,8 +53,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         [ExcludeFromCodeCoverage]

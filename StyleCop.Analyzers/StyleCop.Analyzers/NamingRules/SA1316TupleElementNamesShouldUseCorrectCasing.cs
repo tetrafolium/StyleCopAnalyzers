@@ -15,8 +15,7 @@ namespace StyleCop.Analyzers.NamingRules
     /// Field names within a tuple declaration should have the correct casing.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1316TupleElementNamesShouldUseCorrectCasing : DiagnosticAnalyzer
-    {
+    internal class SA1316TupleElementNamesShouldUseCorrectCasing : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1316TupleElementNamesShouldUseCorrectCasing"/> analyzer.
         /// </summary>
@@ -32,15 +31,14 @@ namespace StyleCop.Analyzers.NamingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1316MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1316Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> TupleTypeAction = HandleTupleTypeAction;
         private static readonly Action<SyntaxNodeAnalysisContext> TupleExpressionAction = HandleTupleExpressionAction;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -54,39 +52,33 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void HandleTupleTypeAction(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
             var settings = context.Options.GetStyleCopSettings(context.CancellationToken);
-            var tupleType = (TupleTypeSyntaxWrapper)context.Node;
+            var tupleType = (TupleTypeSyntaxWrapper) context.Node;
 
-            foreach (var tupleElement in tupleType.Elements)
-            {
+            foreach (var tupleElement in tupleType.Elements) {
                 CheckTupleElement(context, settings, tupleElement);
             }
         }
 
         private static void HandleTupleExpressionAction(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsInferredTupleElementNames())
-            {
+            if (!context.SupportsInferredTupleElementNames()) {
                 return;
             }
 
             var settings = context.Options.GetStyleCopSettings(context.CancellationToken);
-            if (!settings.NamingRules.IncludeInferredTupleElementNames)
-            {
+            if (!settings.NamingRules.IncludeInferredTupleElementNames) {
                 return;
             }
 
-            var tupleExpression = (TupleExpressionSyntaxWrapper)context.Node;
-            foreach (var argument in tupleExpression.Arguments)
-            {
+            var tupleExpression = (TupleExpressionSyntaxWrapper) context.Node;
+            foreach (var argument in tupleExpression.Arguments) {
                 var inferredMemberName = SyntaxFactsEx.TryGetInferredMemberName(argument.NameColon?.Name ?? argument.Expression);
-                if (inferredMemberName != null)
-                {
+                if (inferredMemberName != null) {
                     CheckName(context, settings, inferredMemberName, argument.Expression.GetLocation(), false);
                 }
             }
@@ -94,8 +86,7 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void CheckTupleElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings, TupleElementSyntaxWrapper tupleElement)
         {
-            if (tupleElement.Identifier == default)
-            {
+            if (tupleElement.Identifier == default) {
                 return;
             }
 
@@ -104,8 +95,7 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void CheckName(SyntaxNodeAnalysisContext context, StyleCopSettings settings, string tupleElementName, Location location, bool prepareCodeFix)
         {
-            if (tupleElementName == "_")
-            {
+            if (tupleElementName == "_") {
                 return;
             }
 
@@ -114,8 +104,7 @@ namespace StyleCop.Analyzers.NamingRules
             bool reportDiagnostic;
             string fixedName;
 
-            switch (settings.NamingRules.TupleElementNameCasing)
-            {
+            switch (settings.NamingRules.TupleElementNameCasing) {
             case TupleElementNameCase.PascalCase:
                 reportDiagnostic = firstCharacterIsLower;
                 fixedName = char.ToUpper(tupleElementName[0]) + tupleElementName.Substring(1);
@@ -127,12 +116,10 @@ namespace StyleCop.Analyzers.NamingRules
                 break;
             }
 
-            if (reportDiagnostic)
-            {
+            if (reportDiagnostic) {
                 var diagnosticProperties = ImmutableDictionary.CreateBuilder<string, string>();
 
-                if (prepareCodeFix)
-                {
+                if (prepareCodeFix) {
                     diagnosticProperties.Add(ExpectedTupleElementNameKey, fixedName);
                 }
 

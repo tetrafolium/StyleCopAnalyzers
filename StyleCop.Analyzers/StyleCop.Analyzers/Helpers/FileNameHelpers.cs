@@ -8,19 +8,15 @@ namespace StyleCop.Analyzers.Helpers
     using StyleCop.Analyzers.Settings.ObjectModel;
     using Path = System.IO.Path;
 
-    internal static class FileNameHelpers
-    {
+    internal static class FileNameHelpers {
         internal static string GetFileNameAndSuffix(string path, out string suffix)
         {
             string fileName = Path.GetFileName(path);
             int firstDot = fileName.IndexOf('.');
-            if (firstDot >= 0)
-            {
+            if (firstDot >= 0) {
                 suffix = fileName.Substring(firstDot);
                 fileName = fileName.Substring(0, firstDot);
-            }
-            else
-            {
+            } else {
                 suffix = string.Empty;
             }
 
@@ -29,15 +25,12 @@ namespace StyleCop.Analyzers.Helpers
 
         internal static string GetConventionalFileName(MemberDeclarationSyntax declaration, FileNamingConvention convention)
         {
-            if (declaration is TypeDeclarationSyntax typeDeclaration)
-            {
-                if (typeDeclaration.TypeParameterList == null)
-                {
+            if (declaration is TypeDeclarationSyntax typeDeclaration) {
+                if (typeDeclaration.TypeParameterList == null) {
                     return GetSimpleFileName(typeDeclaration);
                 }
 
-                switch (convention)
-                {
+                switch (convention) {
                 case FileNamingConvention.Metadata:
                     return GetMetadataFileName(typeDeclaration);
 

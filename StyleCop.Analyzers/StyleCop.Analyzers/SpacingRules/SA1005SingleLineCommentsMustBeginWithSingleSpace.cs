@@ -47,8 +47,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1005SingleLineCommentsMustBeginWithSingleSpace : DiagnosticAnalyzer
-    {
+    internal class SA1005SingleLineCommentsMustBeginWithSingleSpace : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1005SingleLineCommentsMustBeginWithSingleSpace"/>
         /// analyzer.
@@ -59,14 +58,13 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1005MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1005Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -84,10 +82,8 @@ namespace StyleCop.Analyzers.SpacingRules
             bool isFirstSingleLineTrivia = true;
             int newLineCount = 0;
 
-            foreach (var trivia in root.DescendantTrivia())
-            {
-                switch (trivia.Kind())
-                {
+            foreach (var trivia in root.DescendantTrivia()) {
+                switch (trivia.Kind()) {
                 case SyntaxKind.SingleLineCommentTrivia:
                     HandleSingleLineCommentTrivia(context, trivia, isFirstSingleLineTrivia);
                     isFirstSingleLineTrivia = false;
@@ -96,8 +92,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 case SyntaxKind.EndOfLineTrivia:
                     newLineCount++;
-                    if (newLineCount == 2)
-                    {
+                    if (newLineCount == 2) {
                         isFirstSingleLineTrivia = true;
                         newLineCount = 0;
                     }
@@ -117,20 +112,17 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSingleLineCommentTrivia(SyntaxTreeAnalysisContext context, SyntaxTrivia trivia, bool isFirstSingleLineTrivia)
         {
             string text = trivia.ToFullString();
-            if (text.Equals(@"//"))
-            {
+            if (text.Equals(@"//")) {
                 return;
             }
 
             // special case: commented code or documentation if the parsers documentation mode is DocumentationMode.None
-            if (text.StartsWith(@"///", StringComparison.Ordinal))
-            {
+            if (text.StartsWith(@"///", StringComparison.Ordinal)) {
                 return;
             }
 
             // Special case: multiple dashes at start of comment
-            if (text.StartsWith(@"//--", StringComparison.Ordinal))
-            {
+            if (text.StartsWith(@"//--", StringComparison.Ordinal)) {
                 return;
             }
 

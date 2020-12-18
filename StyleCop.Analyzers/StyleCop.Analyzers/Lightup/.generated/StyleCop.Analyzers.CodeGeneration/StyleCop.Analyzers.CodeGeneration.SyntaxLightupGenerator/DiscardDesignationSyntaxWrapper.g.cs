@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct DiscardDesignationSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct DiscardDesignationSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.DiscardDesignationSyntax";
         private static readonly Type WrappedType;
 
@@ -43,22 +42,20 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator DiscardDesignationSyntaxWrapper(VariableDesignationSyntaxWrapper node)
         {
-            return (DiscardDesignationSyntaxWrapper)node.SyntaxNode;
+            return (DiscardDesignationSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator DiscardDesignationSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new DiscardDesignationSyntaxWrapper((CSharpSyntaxNode)node);
+            return new DiscardDesignationSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator VariableDesignationSyntaxWrapper(DiscardDesignationSyntaxWrapper wrapper)

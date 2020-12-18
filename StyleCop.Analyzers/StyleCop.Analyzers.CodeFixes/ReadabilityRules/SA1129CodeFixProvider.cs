@@ -22,10 +22,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1129CodeFixProvider))]
     [Shared]
-    internal class SA1129CodeFixProvider : CodeFixProvider
-    {
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1129DoNotUseDefaultValueTypeConstructor.DiagnosticId);
+    internal class SA1129CodeFixProvider : CodeFixProvider {
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1129DoNotUseDefaultValueTypeConstructor.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,8 +34,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1129CodeFix,
@@ -53,7 +51,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var newExpression = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            var newExpression = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                    : true);
             var newSyntaxRoot = syntaxRoot.ReplaceNode(newExpression, GetReplacementNode(newExpression, semanticModel, cancellationToken));
 
             return document.WithSyntaxRoot(newSyntaxRoot);
@@ -61,7 +60,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static SyntaxNode GetReplacementNode(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            var newExpression = (ObjectCreationExpressionSyntax)node;
+            var newExpression = (ObjectCreationExpressionSyntax) node;
 
             var symbolInfo = semanticModel.GetSymbolInfo(newExpression.Type, cancellationToken);
             var namedTypeSymbol = symbolInfo.Symbol as INamedTypeSymbol;
@@ -71,42 +70,27 @@ namespace StyleCop.Analyzers.ReadabilityRules
             if (IsType<CancellationToken>(namedTypeSymbol)
                 || namedTypeSymbol?.SpecialType == SpecialType.System_IntPtr
                 || namedTypeSymbol?.SpecialType == SpecialType.System_UIntPtr
-                || IsType<Guid>(namedTypeSymbol))
-            {
-                if (IsDefaultParameterValue(newExpression))
-                {
+                || IsType<Guid>(namedTypeSymbol)) {
+                if (IsDefaultParameterValue(newExpression)) {
                     replacement = SyntaxFactory.DefaultExpression(newExpression.Type);
-                }
-                else
-                {
+                } else {
                     string fieldName;
-                    if (IsType<CancellationToken>(namedTypeSymbol))
-                    {
+                    if (IsType<CancellationToken>(namedTypeSymbol)) {
                         fieldName = nameof(CancellationToken.None);
-                    }
-                    else if (namedTypeSymbol.SpecialType == SpecialType.System_IntPtr)
-                    {
+                    } else if (namedTypeSymbol.SpecialType == SpecialType.System_IntPtr) {
                         fieldName = nameof(IntPtr.Zero);
-                    }
-                    else if (namedTypeSymbol.SpecialType == SpecialType.System_UIntPtr)
-                    {
+                    } else if (namedTypeSymbol.SpecialType == SpecialType.System_UIntPtr) {
                         fieldName = nameof(IntPtr.Zero);
-                    }
-                    else
-                    {
+                    } else {
                         Debug.Assert(IsType<Guid>(namedTypeSymbol), "Assertion failed: IsType<Guid>(namedTypeSymbol)");
                         fieldName = nameof(Guid.Empty);
                     }
 
                     replacement = ConstructMemberAccessSyntax(newExpression.Type, fieldName);
                 }
-            }
-            else if (IsEnumWithDefaultMember(namedTypeSymbol, out string memberName))
-            {
+            } else if (IsEnumWithDefaultMember(namedTypeSymbol, out string memberName)) {
                 replacement = ConstructMemberAccessSyntax(newExpression.Type, memberName);
-            }
-            else
-            {
+            } else {
                 replacement = SyntaxFactory.DefaultExpression(newExpression.Type);
             }
 
@@ -123,23 +107,20 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <returns><see langword="true"/> if the syntax matches the type; <see langword="false"/> otherwise.</returns>
         private static bool IsType<T>(INamedTypeSymbol namedTypeSymbol)
         {
-            if (namedTypeSymbol == null)
-            {
+            if (namedTypeSymbol == null) {
                 return false;
             }
 
             var expectedType = typeof(T);
 
-            if (!string.Equals(expectedType.Name, namedTypeSymbol.Name, StringComparison.Ordinal))
-            {
+            if (!string.Equals(expectedType.Name, namedTypeSymbol.Name, StringComparison.Ordinal)) {
                 return false;
             }
 
             if (!string.Equals(
-                expectedType.Namespace,
-                namedTypeSymbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)),
-                StringComparison.Ordinal))
-            {
+                    expectedType.Namespace,
+                    namedTypeSymbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)),
+                    StringComparison.Ordinal)) {
                 return false;
             }
 
@@ -148,8 +129,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static bool IsDefaultParameterValue(ObjectCreationExpressionSyntax expression)
         {
-            if (expression.Parent.Parent is ParameterSyntax parameterSyntax)
-            {
+            if (expression.Parent.Parent is ParameterSyntax parameterSyntax) {
                 return parameterSyntax.Parent.Parent is BaseMethodDeclarationSyntax;
             }
 
@@ -166,20 +146,18 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             foundMemberName = null;
 
-            if (namedTypeSymbol == null || namedTypeSymbol.TypeKind != TypeKind.Enum)
-            {
+            if (namedTypeSymbol == null || namedTypeSymbol.TypeKind != TypeKind.Enum) {
                 return false;
             }
 
             var foundMembers = namedTypeSymbol
-                .GetMembers()
-                .Where(m => m.Kind == SymbolKind.Field)
-                .OfType<IFieldSymbol>()
-                .Where(fs => fs.ConstantValue.Equals(0))
-                .ToList();
+                                   .GetMembers()
+                                   .Where(m => m.Kind == SymbolKind.Field)
+                                   .OfType<IFieldSymbol>()
+                                   .Where(fs => fs.ConstantValue.Equals(0))
+                                   .ToList();
 
-            if (foundMembers.Count != 1)
-            {
+            if (foundMembers.Count != 1) {
                 return false;
             }
 
@@ -201,25 +179,23 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 SyntaxFactory.IdentifierName(memberName));
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                ReadabilityResources.SA1129CodeFix;
+            protected override string CodeActionTitle => ReadabilityResources.SA1129CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
                 var syntaxRoot = await document.GetSyntaxRootAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
                 var semanticModel = await document.GetSemanticModelAsync(fixAllContext.CancellationToken).ConfigureAwait(false);
 
-                var nodes = diagnostics.Select(diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true));
+                var nodes = diagnostics.Select(diagnostic => syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                                                 : true));
 
                 return syntaxRoot.ReplaceNodes(nodes, (originalNode, rewrittenNode) => GetReplacementNode(rewrittenNode, semanticModel, fixAllContext.CancellationToken));
             }

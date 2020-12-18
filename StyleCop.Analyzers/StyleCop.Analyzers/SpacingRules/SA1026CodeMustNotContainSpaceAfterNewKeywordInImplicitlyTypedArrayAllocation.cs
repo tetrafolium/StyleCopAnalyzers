@@ -25,8 +25,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1026CodeMustNotContainSpaceAfterNewKeywordInImplicitlyTypedArrayAllocation : DiagnosticAnalyzer
-    {
+    internal class SA1026CodeMustNotContainSpaceAfterNewKeywordInImplicitlyTypedArrayAllocation : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1026CodeMustNotContainSpaceAfterNewKeywordInImplicitlyTypedArrayAllocation"/> analyzer.
@@ -37,15 +36,14 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1026MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1026Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> ImplicitArrayCreationExpressionAction = HandleImplicitArrayCreationExpression;
         private static readonly Action<SyntaxNodeAnalysisContext> ImplicitStackAllocArrayCreationExpressionAction = HandleImplicitStackAllocArrayCreationExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -59,22 +57,20 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var arrayCreation = (ImplicitArrayCreationExpressionSyntax)context.Node;
+            var arrayCreation = (ImplicitArrayCreationExpressionSyntax) context.Node;
             var newKeywordToken = arrayCreation.NewKeyword;
 
-            if (newKeywordToken.IsFollowedByWhitespace() || newKeywordToken.IsLastInLine())
-            {
+            if (newKeywordToken.IsFollowedByWhitespace() || newKeywordToken.IsLastInLine()) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, newKeywordToken.GetLocation(), TokenSpacingProperties.RemoveFollowing, "new"));
             }
         }
 
         private static void HandleImplicitStackAllocArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var arrayCreation = (ImplicitStackAllocArrayCreationExpressionSyntaxWrapper)context.Node;
+            var arrayCreation = (ImplicitStackAllocArrayCreationExpressionSyntaxWrapper) context.Node;
             var stackAllocKeywordToken = arrayCreation.StackAllocKeyword;
 
-            if (stackAllocKeywordToken.IsFollowedByWhitespace() || stackAllocKeywordToken.IsLastInLine())
-            {
+            if (stackAllocKeywordToken.IsFollowedByWhitespace() || stackAllocKeywordToken.IsLastInLine()) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, stackAllocKeywordToken.GetLocation(), TokenSpacingProperties.RemoveFollowing, "stackalloc"));
             }
         }

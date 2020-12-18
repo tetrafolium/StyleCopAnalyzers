@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Helpers
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    internal static class SpacingExtensions
-    {
+    internal static class SpacingExtensions {
         public static bool IsMissingOrDefault(this SyntaxToken token)
         {
             return token.IsKind(SyntaxKind.None)
@@ -17,8 +16,7 @@ namespace StyleCop.Analyzers.Helpers
 
         public static SyntaxToken WithoutLeadingWhitespace(this SyntaxToken token, bool removeEndOfLineTrivia = false)
         {
-            if (!token.HasLeadingTrivia)
-            {
+            if (!token.HasLeadingTrivia) {
                 return token;
             }
 
@@ -27,14 +25,12 @@ namespace StyleCop.Analyzers.Helpers
 
         public static SyntaxTriviaList WithoutWhitespace(this SyntaxTriviaList syntaxTriviaList, bool removeEndOfLineTrivia = false)
         {
-            if (syntaxTriviaList.Count == 0)
-            {
+            if (syntaxTriviaList.Count == 0) {
                 return syntaxTriviaList;
             }
 
             var trivia = syntaxTriviaList.Where(i => !i.IsKind(SyntaxKind.WhitespaceTrivia));
-            if (removeEndOfLineTrivia)
-            {
+            if (removeEndOfLineTrivia) {
                 trivia = trivia.Where(i => !i.IsKind(SyntaxKind.EndOfLineTrivia));
             }
 

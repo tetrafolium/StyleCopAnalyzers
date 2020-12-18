@@ -20,11 +20,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1134CodeFixProvider))]
     [Shared]
-    internal class SA1134CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1134CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1134AttributesMustNotShareLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1134AttributesMustNotShareLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,11 +36,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             var syntaxRoot = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 // Do not offer the code fix if the error is found at an invalid node (like IncompleteMemberSyntax)
-                if (syntaxRoot.FindNode(diagnostic.Location.SourceSpan) is AttributeListSyntax)
-                {
+                if (syntaxRoot.FindNode(diagnostic.Location.SourceSpan) is AttributeListSyntax) {
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             ReadabilityResources.SA1134CodeFix,
@@ -57,7 +54,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
 
-            var attributeListSyntax = (AttributeListSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
+            var attributeListSyntax = (AttributeListSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
 
             // use the containing type to determine the indentation level, anything else is less reliable.
             var containingType = attributeListSyntax.Parent?.Parent;
@@ -66,8 +63,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             var tokensToReplace = new Dictionary<SyntaxToken, SyntaxToken>();
 
-            if (diagnostic.Properties.ContainsKey(SA1134AttributesMustNotShareLine.FixWithNewLineBeforeKey))
-            {
+            if (diagnostic.Properties.ContainsKey(SA1134AttributesMustNotShareLine.FixWithNewLineBeforeKey)) {
                 var token = attributeListSyntax.OpenBracketToken;
                 var prevToken = token.GetPreviousToken();
 
@@ -77,8 +73,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 tokensToReplace[token] = token.WithLeadingTrivia(newLeadingTrivia);
             }
 
-            if (diagnostic.Properties.ContainsKey(SA1134AttributesMustNotShareLine.FixWithNewLineAfterKey))
-            {
+            if (diagnostic.Properties.ContainsKey(SA1134AttributesMustNotShareLine.FixWithNewLineAfterKey)) {
                 var token = attributeListSyntax.CloseBracketToken;
                 var nextToken = token.GetNextToken();
 

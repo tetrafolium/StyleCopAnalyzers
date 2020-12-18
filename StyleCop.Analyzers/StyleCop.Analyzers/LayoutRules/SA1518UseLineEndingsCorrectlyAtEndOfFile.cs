@@ -22,8 +22,7 @@ namespace StyleCop.Analyzers.LayoutRules
     /// <para>A violation of this rule occurs when one or more blank lines are at the end of the file.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1518UseLineEndingsCorrectlyAtEndOfFile : DiagnosticAnalyzer
-    {
+    internal class SA1518UseLineEndingsCorrectlyAtEndOfFile : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1518UseLineEndingsCorrectlyAtEndOfFile"/> analyzer.
         /// </summary>
@@ -40,21 +39,18 @@ namespace StyleCop.Analyzers.LayoutRules
         private static readonly LocalizableString DescriptionOmit = new LocalizableResourceString(nameof(LayoutResources.SA1518DescriptionOmit), LayoutResources.ResourceManager, typeof(LayoutResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor DescriptorAllow =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatAllow, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionAllow, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorAllow = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatAllow, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionAllow, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorRequire =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatRequire, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionRequire, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorRequire = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatRequire, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionRequire, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorOmit =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatOmit, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionOmit, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorOmit = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormatOmit, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, DescriptionOmit, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorAllow);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(DescriptorAllow);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -67,74 +63,59 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context, StyleCopSettings settings)
         {
-            var endOfFileToken = context.Tree.GetRoot().GetLastToken(includeZeroWidth: true);
+            var endOfFileToken = context.Tree.GetRoot().GetLastToken(includeZeroWidth
+                                                                     : true);
             TextSpan reportedSpan = new TextSpan(endOfFileToken.SpanStart, 0);
 
             SyntaxTrivia precedingTrivia = default;
             bool checkPrecedingToken;
-            if (endOfFileToken.HasLeadingTrivia)
-            {
+            if (endOfFileToken.HasLeadingTrivia) {
                 var leadingTrivia = endOfFileToken.LeadingTrivia;
                 var trailingWhitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(leadingTrivia);
-                if (trailingWhitespaceIndex > 0)
-                {
+                if (trailingWhitespaceIndex > 0) {
                     checkPrecedingToken = false;
                     reportedSpan = TextSpan.FromBounds(leadingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
                     precedingTrivia = leadingTrivia[trailingWhitespaceIndex - 1];
-                }
-                else if (trailingWhitespaceIndex == 0)
-                {
+                } else if (trailingWhitespaceIndex == 0) {
                     checkPrecedingToken = true;
                     reportedSpan = TextSpan.FromBounds(leadingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
-                }
-                else
-                {
+                } else {
                     checkPrecedingToken = false;
                     precedingTrivia = leadingTrivia.Last();
                 }
-            }
-            else
-            {
+            } else {
                 checkPrecedingToken = true;
             }
 
-            if (checkPrecedingToken)
-            {
-                var previousToken = endOfFileToken.GetPreviousToken(includeZeroWidth: true, includeSkipped: true, includeDirectives: true, includeDocumentationComments: true);
+            if (checkPrecedingToken) {
+                var previousToken = endOfFileToken.GetPreviousToken(includeZeroWidth
+                                                                    : true, includeSkipped
+                                                                    : true, includeDirectives
+                                                                    : true, includeDocumentationComments
+                                                                    : true);
                 var trailingWhitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(previousToken.TrailingTrivia);
-                if (trailingWhitespaceIndex > 0)
-                {
+                if (trailingWhitespaceIndex > 0) {
                     reportedSpan = TextSpan.FromBounds(previousToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
                     precedingTrivia = previousToken.TrailingTrivia[trailingWhitespaceIndex - 1];
-                }
-                else if (trailingWhitespaceIndex == 0)
-                {
+                } else if (trailingWhitespaceIndex == 0) {
                     reportedSpan = TextSpan.FromBounds(previousToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
                     precedingTrivia = default;
-                }
-                else
-                {
-                    if (previousToken.TrailingTrivia.Count > 0)
-                    {
+                } else {
+                    if (previousToken.TrailingTrivia.Count > 0) {
                         precedingTrivia = previousToken.TrailingTrivia.Last();
                     }
                 }
             }
 
-            if (precedingTrivia.IsDirective)
-            {
+            if (precedingTrivia.IsDirective) {
                 if (precedingTrivia.GetStructure() is DirectiveTriviaSyntax directiveTriviaSyntax
-                    && directiveTriviaSyntax.EndOfDirectiveToken.HasTrailingTrivia)
-                {
+                    && directiveTriviaSyntax.EndOfDirectiveToken.HasTrailingTrivia) {
                     var trailingWhitespaceIndex = TriviaHelper.IndexOfTrailingWhitespace(directiveTriviaSyntax.EndOfDirectiveToken.TrailingTrivia);
-                    if (trailingWhitespaceIndex >= 0)
-                    {
+                    if (trailingWhitespaceIndex >= 0) {
                         reportedSpan = TextSpan.FromBounds(directiveTriviaSyntax.EndOfDirectiveToken.TrailingTrivia[trailingWhitespaceIndex].SpanStart, reportedSpan.End);
                     }
                 }
-            }
-            else if (precedingTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
-            {
+            } else if (precedingTrivia.IsKind(SyntaxKind.EndOfLineTrivia)) {
                 reportedSpan = TextSpan.FromBounds(precedingTrivia.SpanStart, reportedSpan.End);
             }
 
@@ -144,11 +125,9 @@ namespace StyleCop.Analyzers.LayoutRules
             int secondNewline = firstNewline >= 0 ? trailingWhitespaceText.IndexOf('\n', firstNewline + 1) : -1;
 
             DiagnosticDescriptor descriptorToReport;
-            switch (settings.LayoutRules.NewlineAtEndOfFile)
-            {
+            switch (settings.LayoutRules.NewlineAtEndOfFile) {
             case OptionSetting.Omit:
-                if (firstNewline < 0)
-                {
+                if (firstNewline < 0) {
                     return;
                 }
 
@@ -156,8 +135,7 @@ namespace StyleCop.Analyzers.LayoutRules
                 break;
 
             case OptionSetting.Require:
-                if (firstNewline >= 0 && firstNewline == trailingWhitespaceText.Length - 1)
-                {
+                if (firstNewline >= 0 && firstNewline == trailingWhitespaceText.Length - 1) {
                     return;
                 }
 
@@ -166,12 +144,10 @@ namespace StyleCop.Analyzers.LayoutRules
 
             case OptionSetting.Allow:
             default:
-                if (secondNewline < 0)
-                {
+                if (secondNewline < 0) {
                     // 1. A newline is allowed but not required
                     // 2. If a newline is included, it cannot be followed by whitespace
-                    if (firstNewline < 0 || firstNewline == trailingWhitespaceText.Length - 1)
-                    {
+                    if (firstNewline < 0 || firstNewline == trailingWhitespaceText.Length - 1) {
                         return;
                     }
                 }

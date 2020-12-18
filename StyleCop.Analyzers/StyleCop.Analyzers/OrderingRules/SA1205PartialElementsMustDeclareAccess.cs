@@ -19,8 +19,7 @@ namespace StyleCop.Analyzers.OrderingRules
     /// <para>A violation of this rule occurs when the partial elements does not have an access modifier defined.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1205PartialElementsMustDeclareAccess : DiagnosticAnalyzer
-    {
+    internal class SA1205PartialElementsMustDeclareAccess : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1205PartialElementsMustDeclareAccess"/> analyzer.
         /// </summary>
@@ -30,14 +29,13 @@ namespace StyleCop.Analyzers.OrderingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1205MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1205Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> TypeDeclarationAction = HandleTypeDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -50,15 +48,13 @@ namespace StyleCop.Analyzers.OrderingRules
 
         private static void HandleTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var typeDeclarationNode = (TypeDeclarationSyntax)context.Node;
+            var typeDeclarationNode = (TypeDeclarationSyntax) context.Node;
 
-            if (typeDeclarationNode.Modifiers.Any(SyntaxKind.PartialKeyword))
-            {
+            if (typeDeclarationNode.Modifiers.Any(SyntaxKind.PartialKeyword)) {
                 if (!typeDeclarationNode.Modifiers.Any(SyntaxKind.PublicKeyword)
                     && !typeDeclarationNode.Modifiers.Any(SyntaxKind.InternalKeyword)
                     && !typeDeclarationNode.Modifiers.Any(SyntaxKind.ProtectedKeyword)
-                    && !typeDeclarationNode.Modifiers.Any(SyntaxKind.PrivateKeyword))
-                {
+                    && !typeDeclarationNode.Modifiers.Any(SyntaxKind.PrivateKeyword)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, typeDeclarationNode.Identifier.GetLocation()));
                 }
             }

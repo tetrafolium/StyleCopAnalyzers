@@ -19,13 +19,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1104SA1105CodeFixProvider))]
     [Shared]
-    internal class SA1104SA1105CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1104SA1105CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(
-                SA110xQueryClauses.SA1104Descriptor.Id,
-                SA110xQueryClauses.SA1105Descriptor.Id);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(
+            SA110xQueryClauses.SA1104Descriptor.Id,
+            SA110xQueryClauses.SA1105Descriptor.Id);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -36,8 +35,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1104SA1105CodeFix,
@@ -61,10 +59,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var triviaList = precedingToken.TrailingTrivia.AddRange(token.LeadingTrivia);
             var processedTriviaList = triviaList.WithoutTrailingWhitespace().Add(SyntaxFactory.CarriageReturnLineFeed);
 
-            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>()
-            {
-                [precedingToken] = precedingToken.WithTrailingTrivia(processedTriviaList),
-                [token] = token.WithLeadingTrivia(indentationTrivia),
+            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
+                    [precedingToken] = precedingToken.WithTrailingTrivia(processedTriviaList),
+                [ token ] = token.WithLeadingTrivia(indentationTrivia),
             };
 
             var newSyntaxRoot = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]).WithoutFormatting();

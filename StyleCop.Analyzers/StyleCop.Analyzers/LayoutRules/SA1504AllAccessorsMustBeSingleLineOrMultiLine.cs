@@ -60,8 +60,7 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1504AllAccessorsMustBeSingleLineOrMultiLine : DiagnosticAnalyzer
-    {
+    internal class SA1504AllAccessorsMustBeSingleLineOrMultiLine : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1504AllAccessorsMustBeSingleLineOrMultiLine"/> analyzer.
         /// </summary>
@@ -72,14 +71,13 @@ namespace StyleCop.Analyzers.LayoutRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1504MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1504Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> AccessorListAction = HandleAccessorList;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -92,37 +90,30 @@ namespace StyleCop.Analyzers.LayoutRules
 
         private static void HandleAccessorList(SyntaxNodeAnalysisContext context)
         {
-            var accessorList = (AccessorListSyntax)context.Node;
+            var accessorList = (AccessorListSyntax) context.Node;
 
-            if (accessorList.Accessors.Count < 2)
-            {
+            if (accessorList.Accessors.Count < 2) {
                 return;
             }
 
             var hasSingleLineAccessor = false;
             var hasMultipleLinesAccessor = false;
 
-            foreach (var accessor in accessorList.Accessors)
-            {
+            foreach (var accessor in accessorList.Accessors) {
                 // never report when any accessor has no body.
-                if (accessor.Body == null)
-                {
+                if (accessor.Body == null) {
                     return;
                 }
 
                 var fileLinePositionSpan = accessor.GetLineSpan();
-                if (fileLinePositionSpan.StartLinePosition.Line == fileLinePositionSpan.EndLinePosition.Line)
-                {
+                if (fileLinePositionSpan.StartLinePosition.Line == fileLinePositionSpan.EndLinePosition.Line) {
                     hasSingleLineAccessor = true;
-                }
-                else
-                {
+                } else {
                     hasMultipleLinesAccessor = true;
                 }
             }
 
-            if (hasSingleLineAccessor && hasMultipleLinesAccessor)
-            {
+            if (hasSingleLineAccessor && hasMultipleLinesAccessor) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, accessorList.Accessors.First().Keyword.GetLocation()));
             }
         }

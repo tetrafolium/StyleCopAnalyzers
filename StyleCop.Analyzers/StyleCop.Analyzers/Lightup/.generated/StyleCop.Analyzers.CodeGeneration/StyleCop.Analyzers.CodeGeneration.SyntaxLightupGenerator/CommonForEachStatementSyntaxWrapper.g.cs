@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct CommonForEachStatementSyntaxWrapper : ISyntaxWrapper<StatementSyntax>
-    {
+    internal readonly partial struct CommonForEachStatementSyntaxWrapper : ISyntaxWrapper<StatementSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.CommonForEachStatementSyntax";
         private static readonly Type WrappedType;
 
@@ -115,17 +114,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator CommonForEachStatementSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new CommonForEachStatementSyntaxWrapper((StatementSyntax)node);
+            return new CommonForEachStatementSyntaxWrapper((StatementSyntax) node);
         }
 
         public static implicit operator StatementSyntax(CommonForEachStatementSyntaxWrapper wrapper)

@@ -28,11 +28,10 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1615SA1616CodeFixProvider))]
     [Shared]
-    internal class SA1615SA1616CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1615SA1616CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1615ElementReturnValueMustBeDocumented.DiagnosticId, SA1616ElementReturnValueDocumentationMustHaveText.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1615ElementReturnValueMustBeDocumented.DiagnosticId, SA1616ElementReturnValueDocumentationMustHaveText.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -43,8 +42,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         DocumentationResources.SA1615SA1616CodeFix,
@@ -60,20 +58,17 @@ namespace StyleCop.Analyzers.DocumentationRules
         {
             var documentRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             SyntaxNode syntax = documentRoot.FindNode(diagnostic.Location.SourceSpan);
-            if (syntax == null)
-            {
+            if (syntax == null) {
                 return document;
             }
 
             MethodDeclarationSyntax methodDeclarationSyntax = syntax.FirstAncestorOrSelf<MethodDeclarationSyntax>();
             DelegateDeclarationSyntax delegateDeclarationSyntax = syntax.FirstAncestorOrSelf<DelegateDeclarationSyntax>();
-            if (methodDeclarationSyntax == null && delegateDeclarationSyntax == null)
-            {
+            if (methodDeclarationSyntax == null && delegateDeclarationSyntax == null) {
                 return document;
             }
 
-            DocumentationCommentTriviaSyntax documentationComment =
-                methodDeclarationSyntax?.GetDocumentationCommentTriviaSyntax()
+            DocumentationCommentTriviaSyntax documentationComment = methodDeclarationSyntax?.GetDocumentationCommentTriviaSyntax()
                 ?? delegateDeclarationSyntax?.GetDocumentationCommentTriviaSyntax();
             bool canIgnoreDocumentation =
                 documentationComment == null
@@ -81,35 +76,29 @@ namespace StyleCop.Analyzers.DocumentationRules
                     .Where(x => x is XmlElementSyntax || x is XmlEmptyElementSyntax)
                     .All(x => string.Equals(x.GetName()?.ToString(), XmlCommentHelper.IncludeXmlTag));
 
-            if (canIgnoreDocumentation)
-            {
+            if (canIgnoreDocumentation) {
                 return document;
             }
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             bool isTask;
             bool isAsynchronousTestMethod;
-            if (methodDeclarationSyntax != null)
-            {
+            if (methodDeclarationSyntax != null) {
                 isTask = TaskHelper.IsTaskReturningMethod(semanticModel, methodDeclarationSyntax, cancellationToken);
                 isAsynchronousTestMethod = isTask && IsAsynchronousTestMethod(semanticModel, methodDeclarationSyntax, cancellationToken);
-            }
-            else
-            {
+            } else {
                 isTask = TaskHelper.IsTaskReturningMethod(semanticModel, delegateDeclarationSyntax, cancellationToken);
                 isAsynchronousTestMethod = false;
             }
 
             XmlNodeSyntax returnsElement = documentationComment.Content.GetFirstXmlElement(XmlCommentHelper.ReturnsXmlTag);
-            if (returnsElement != null && !isTask)
-            {
+            if (returnsElement != null && !isTask) {
                 // This code fix doesn't know how to do anything more than document Task-returning methods.
                 return document;
             }
 
             SyntaxList<XmlNodeSyntax> content = XmlSyntaxFactory.List();
-            if (isTask)
-            {
+            if (isTask) {
                 content = content.Add(XmlSyntaxFactory.Text("A "));
                 content = content.Add(XmlSyntaxFactory.SeeElement(SyntaxFactory.TypeCref(SyntaxFactory.ParseTypeName("global::System.Threading.Tasks.Task"))).WithAdditionalAnnotations(Simplifier.Annotation));
                 string operationKind = isAsynchronousTestMethod ? "unit test" : "operation";
@@ -123,23 +112,17 @@ namespace StyleCop.Analyzers.DocumentationRules
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             SyntaxNode newRoot;
 
-            if (returnsElement != null)
-            {
-                if (returnsElement is XmlEmptyElementSyntax emptyElement)
-                {
+            if (returnsElement != null) {
+                if (returnsElement is XmlEmptyElementSyntax emptyElement) {
                     XmlElementSyntax updatedReturns = XmlSyntaxFactory.Element(XmlCommentHelper.ReturnsXmlTag, content)
-                        .WithLeadingTrivia(returnsElement.GetLeadingTrivia())
-                        .WithTrailingTrivia(returnsElement.GetTrailingTrivia());
+                                                          .WithLeadingTrivia(returnsElement.GetLeadingTrivia())
+                                                          .WithTrailingTrivia(returnsElement.GetTrailingTrivia());
+                    newRoot = root.ReplaceNode(returnsElement, updatedReturns);
+                } else {
+                    XmlElementSyntax updatedReturns = ((XmlElementSyntax) returnsElement).WithContent(content);
                     newRoot = root.ReplaceNode(returnsElement, updatedReturns);
                 }
-                else
-                {
-                    XmlElementSyntax updatedReturns = ((XmlElementSyntax)returnsElement).WithContent(content);
-                    newRoot = root.ReplaceNode(returnsElement, updatedReturns);
-                }
-            }
-            else
-            {
+            } else {
                 string newLineText = document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
 
                 returnsElement = XmlSyntaxFactory.Element(XmlCommentHelper.ReturnsXmlTag, content);
@@ -150,8 +133,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                 // manually apply the indentation from the last line of the existing comment to each new line of the
                 // generated content.
                 SyntaxTrivia exteriorTrivia = GetLastDocumentationCommentExteriorTrivia(documentationComment);
-                if (!exteriorTrivia.Token.IsMissing)
-                {
+                if (!exteriorTrivia.Token.IsMissing) {
                     leadingNewLine = leadingNewLine.ReplaceExteriorTrivia(exteriorTrivia);
                     returnsElement = returnsElement.ReplaceExteriorTrivia(exteriorTrivia);
                 }
@@ -169,25 +151,20 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static bool IsAsynchronousTestMethod(SemanticModel semanticModel, MethodDeclarationSyntax methodDeclarationSyntax, CancellationToken cancellationToken)
         {
-            foreach (AttributeListSyntax attributeList in methodDeclarationSyntax.AttributeLists)
-            {
-                if (attributeList.Target != null)
-                {
+            foreach (AttributeListSyntax attributeList in methodDeclarationSyntax.AttributeLists) {
+                if (attributeList.Target != null) {
                     continue;
                 }
 
-                foreach (AttributeSyntax attribute in attributeList.Attributes)
-                {
-                    if (!(semanticModel.GetSymbolInfo(attribute.Name, cancellationToken).Symbol is IMethodSymbol methodSymbol))
-                    {
+                foreach (AttributeSyntax attribute in attributeList.Attributes) {
+                    if (!(semanticModel.GetSymbolInfo(attribute.Name, cancellationToken).Symbol is IMethodSymbol methodSymbol)) {
                         continue;
                     }
 
                     if (string.Equals(methodSymbol.ContainingType.Name, "TestMethodAttribute", StringComparison.Ordinal)
                         || string.Equals(methodSymbol.ContainingType.Name, "FactAttribute", StringComparison.Ordinal)
                         || string.Equals(methodSymbol.ContainingType.Name, "TheoryAttribute", StringComparison.Ordinal)
-                        || string.Equals(methodSymbol.ContainingType.Name, "TestAttribute", StringComparison.Ordinal))
-                    {
+                        || string.Equals(methodSymbol.ContainingType.Name, "TestAttribute", StringComparison.Ordinal)) {
                         return true;
                     }
                 }
@@ -199,7 +176,8 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static SyntaxTrivia GetLastDocumentationCommentExteriorTrivia(SyntaxNode node)
         {
             return node
-                .DescendantTrivia(descendIntoTrivia: true)
+                .DescendantTrivia(descendIntoTrivia
+                                  : true)
                 .LastOrDefault(trivia => trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia));
         }
     }

@@ -24,8 +24,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// line.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1021NegativeSignsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1021NegativeSignsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1021NegativeSignsMustBeSpacedCorrectly"/> analyzer.
         /// </summary>
@@ -35,14 +34,13 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1021MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1021Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -56,10 +54,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                switch (token.Kind())
-                {
+            foreach (var token in root.DescendantTokens()) {
+                switch (token.Kind()) {
                 case SyntaxKind.MinusToken:
                     HandleMinusToken(context, token);
                     break;
@@ -72,19 +68,16 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleMinusToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
-            if (!token.Parent.IsKind(SyntaxKind.UnaryMinusExpression))
-            {
+            if (!token.Parent.IsKind(SyntaxKind.UnaryMinusExpression)) {
                 return;
             }
 
             var isInInterpolationAlignmentClause = token.Parent.Parent.IsKind(SyntaxKind.InterpolationAlignmentClause);
-            if (isInInterpolationAlignmentClause && !token.IsFollowedByWhitespace())
-            {
+            if (isInInterpolationAlignmentClause && !token.IsFollowedByWhitespace()) {
                 // SA1001 is already handling the case like: line.Append($"{testResult.DisplayName, -75}");
                 // Where the extra space before the minus sign is undesirable.
                 return;
@@ -98,34 +91,27 @@ namespace StyleCop.Analyzers.SpacingRules
             bool interpolatedUnaryExpression = token.IsInterpolatedUnaryExpression();
             bool lastInLine = token.IsLastInLine();
 
-            if (!firstInLine)
-            {
+            if (!firstInLine) {
                 precededBySpace = token.IsPrecededByWhitespace(context.CancellationToken);
                 SyntaxToken precedingToken = token.GetPreviousToken();
 
-                followsSpecialCharacter =
-                    precedingToken.IsKind(SyntaxKind.OpenBracketToken)
+                followsSpecialCharacter = precedingToken.IsKind(SyntaxKind.OpenBracketToken)
                     || precedingToken.IsKind(SyntaxKind.OpenParenToken)
                     || precedingToken.IsKind(SyntaxKind.CloseParenToken)
                     || (precedingToken.IsKind(SyntaxKind.OpenBraceToken) && interpolatedUnaryExpression);
             }
 
-            if (!firstInLine && !isInInterpolationAlignmentClause)
-            {
-                if (!followsSpecialCharacter && !precededBySpace)
-                {
+            if (!firstInLine && !isInInterpolationAlignmentClause) {
+                if (!followsSpecialCharacter && !precededBySpace) {
                     // Negative sign should{} be {preceded} by a space.
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.InsertPreceding, string.Empty, "preceded"));
-                }
-                else if (followsSpecialCharacter && precededBySpace)
-                {
+                } else if (followsSpecialCharacter && precededBySpace) {
                     // Negative sign should{ not} be {preceded} by a space.
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemovePreceding, " not", "preceded"));
                 }
             }
 
-            if (lastInLine || followedBySpace)
-            {
+            if (lastInLine || followedBySpace) {
                 // Negative sign should{ not} be {followed} by a space.
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), TokenSpacingProperties.RemoveFollowing, " not", "followed"));
             }

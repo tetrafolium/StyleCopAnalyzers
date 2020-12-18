@@ -24,8 +24,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// <para>A violation of this rule occurs when the <c>&lt;value&gt;</c> tag for a property is missing.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1609PropertyDocumentationMustHaveValue : PropertyDocumentationBase
-    {
+    internal class SA1609PropertyDocumentationMustHaveValue : PropertyDocumentationBase {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1609PropertyDocumentationMustHaveValue"/> analyzer.
         /// </summary>
@@ -35,12 +34,11 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1609MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1609Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.DisabledByDefault, Description, HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         protected override string XmlTagToHandle => XmlCommentHelper.ValueXmlTag;
@@ -48,28 +46,22 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <inheritdoc/>
         protected override void HandleXmlElement(SyntaxNodeAnalysisContext context, bool needsComment, XmlNodeSyntax syntax, XElement completeDocumentation, Location diagnosticLocation)
         {
-            if (!needsComment)
-            {
+            if (!needsComment) {
                 // A missing 'value' documentation is allowed for this element.
                 return;
             }
 
             var properties = ImmutableDictionary.Create<string, string>();
 
-            if (completeDocumentation != null)
-            {
+            if (completeDocumentation != null) {
                 var hasValueTag = completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.ValueXmlTag);
-                if (hasValueTag)
-                {
+                if (hasValueTag) {
                     return;
                 }
 
                 properties = properties.Add(NoCodeFixKey, string.Empty);
-            }
-            else
-            {
-                if (syntax != null)
-                {
+            } else {
+                if (syntax != null) {
                     return;
                 }
             }

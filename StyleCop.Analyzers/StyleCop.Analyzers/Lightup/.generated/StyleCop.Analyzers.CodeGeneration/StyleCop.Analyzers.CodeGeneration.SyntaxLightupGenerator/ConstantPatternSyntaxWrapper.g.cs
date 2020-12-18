@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct ConstantPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct ConstantPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.ConstantPatternSyntax";
         private static readonly Type WrappedType;
 
@@ -43,27 +42,25 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator ConstantPatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (ConstantPatternSyntaxWrapper)node.SyntaxNode;
+            return (ConstantPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator ConstantPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (ConstantPatternSyntaxWrapper)node.SyntaxNode;
+            return (ConstantPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator ConstantPatternSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new ConstantPatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new ConstantPatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(ConstantPatternSyntaxWrapper wrapper)

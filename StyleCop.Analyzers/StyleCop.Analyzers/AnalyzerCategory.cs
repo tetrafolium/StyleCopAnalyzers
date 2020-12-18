@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers
     /// <summary>
     /// Class defining the analyzer category constants.
     /// </summary>
-    internal static class AnalyzerCategory
-    {
+    internal static class AnalyzerCategory {
         /// <summary>
         /// Category definition for documentation rules.
         /// </summary>

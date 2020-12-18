@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct PatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct PatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.PatternSyntax";
         private static readonly Type WrappedType;
 
@@ -30,22 +29,20 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator PatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (PatternSyntaxWrapper)node.SyntaxNode;
+            return (PatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator PatternSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new PatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new PatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator ExpressionOrPatternSyntaxWrapper(PatternSyntaxWrapper wrapper)

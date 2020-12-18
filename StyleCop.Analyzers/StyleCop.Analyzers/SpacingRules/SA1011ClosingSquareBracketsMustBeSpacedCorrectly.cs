@@ -27,8 +27,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// followed by certain types of operator symbols.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1011ClosingSquareBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1011ClosingSquareBracketsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1011ClosingSquareBracketsMustBeSpacedCorrectly"/>
         /// analyzer.
@@ -39,14 +38,13 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1011MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1011Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -60,10 +58,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                if (token.IsKind(SyntaxKind.CloseBracketToken))
-                {
+            foreach (var token in root.DescendantTokens()) {
+                if (token.IsKind(SyntaxKind.CloseBracketToken)) {
                     HandleCloseBracketToken(context, token);
                 }
             }
@@ -71,14 +67,12 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleCloseBracketToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
             // attribute brackets are handled separately
-            if (token.Parent.IsKind(SyntaxKind.AttributeList))
-            {
+            if (token.Parent.IsKind(SyntaxKind.AttributeList)) {
                 return;
             }
 
@@ -91,11 +85,9 @@ namespace StyleCop.Analyzers.SpacingRules
             // Tests for this rule have a lot of exclusions which are supposed to be caught by other rules
             bool suppressFollowingSpaceError = true;
 
-            if (!lastInLine)
-            {
+            if (!lastInLine) {
                 SyntaxToken nextToken = token.GetNextToken();
-                switch (nextToken.Kind())
-                {
+                switch (nextToken.Kind()) {
                 case SyntaxKind.CloseBracketToken:
                 case SyntaxKind.OpenParenToken:
                 case SyntaxKind.CommaToken:
@@ -141,29 +133,22 @@ namespace StyleCop.Analyzers.SpacingRules
                     precedesSpecialCharacter = false;
                     break;
                 }
-            }
-            else
-            {
+            } else {
                 precedesSpecialCharacter = false;
             }
 
-            if (!firstInLine && precededBySpace)
-            {
+            if (!firstInLine && precededBySpace) {
                 // Closing square bracket should{ not} be {preceded} by a space.
                 var properties = TokenSpacingProperties.RemovePreceding;
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), properties, " not", "preceded"));
             }
 
-            if (!lastInLine)
-            {
-                if (!precedesSpecialCharacter && !followedBySpace)
-                {
+            if (!lastInLine) {
+                if (!precedesSpecialCharacter && !followedBySpace) {
                     // Closing square bracket should{} be {followed} by a space.
                     var properties = TokenSpacingProperties.InsertFollowing;
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), properties, string.Empty, "followed"));
-                }
-                else if (precedesSpecialCharacter && followedBySpace && !suppressFollowingSpaceError)
-                {
+                } else if (precedesSpecialCharacter && followedBySpace && !suppressFollowingSpaceError) {
                     // Closing square brackets should {not} be {followed} by a space
                     var properties = TokenSpacingProperties.RemoveFollowing;
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, token.GetLocation(), properties, " not", "followed"));

@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IRelationalPatternOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IRelationalPatternOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IRelationalPatternOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> ValueAccessor;
@@ -28,19 +27,17 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public object OperatorKind => throw new NotImplementedException("Property 'IRelationalPatternOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
         public IOperation Value => ValueAccessor(this.WrappedOperation);
-        public ITypeSymbol InputType => ((IPatternOperationWrapper)this).InputType;
-        public ITypeSymbol NarrowedType => ((IPatternOperationWrapper)this).NarrowedType;
+        public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
+        public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
         public static explicit operator IRelationalPatternOperationWrapper(IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
         public static implicit operator IPatternOperationWrapper(IRelationalPatternOperationWrapper wrapper) => IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IRelationalPatternOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IReDimClauseOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IReDimClauseOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IReDimClauseOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> OperandAccessor;
@@ -32,13 +31,11 @@ namespace StyleCop.Analyzers.Lightup
         public ImmutableArray<IOperation> DimensionSizes => DimensionSizesAccessor(this.WrappedOperation);
         public static IReDimClauseOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

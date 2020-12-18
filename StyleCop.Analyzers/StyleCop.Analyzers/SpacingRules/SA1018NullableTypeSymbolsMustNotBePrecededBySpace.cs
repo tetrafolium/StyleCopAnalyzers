@@ -21,8 +21,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// <para>A nullable type symbol should never be preceded by whitespace.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1018NullableTypeSymbolsMustNotBePrecededBySpace : DiagnosticAnalyzer
-    {
+    internal class SA1018NullableTypeSymbolsMustNotBePrecededBySpace : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1018NullableTypeSymbolsMustNotBePrecededBySpace"/>
         /// analyzer.
@@ -33,14 +32,13 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1018MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1018Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> NullableTypeAction = HandleNullableType;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -53,16 +51,14 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleNullableType(SyntaxNodeAnalysisContext context)
         {
-            var nullableType = (NullableTypeSyntax)context.Node;
+            var nullableType = (NullableTypeSyntax) context.Node;
             var questionToken = nullableType.QuestionToken;
 
-            if (questionToken.IsMissing)
-            {
+            if (questionToken.IsMissing) {
                 return;
             }
 
-            if (nullableType.ElementType.IsMissing)
-            {
+            if (nullableType.ElementType.IsMissing) {
                 return;
             }
 
@@ -72,8 +68,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
             SyntaxToken precedingToken = questionToken.GetPreviousToken();
             var triviaList = TriviaHelper.MergeTriviaLists(precedingToken.TrailingTrivia, questionToken.LeadingTrivia);
-            if (triviaList.Any(t => t.IsKind(SyntaxKind.WhitespaceTrivia) || t.IsKind(SyntaxKind.EndOfLineTrivia)))
-            {
+            if (triviaList.Any(t => t.IsKind(SyntaxKind.WhitespaceTrivia) || t.IsKind(SyntaxKind.EndOfLineTrivia))) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, questionToken.GetLocation()));
             }
         }

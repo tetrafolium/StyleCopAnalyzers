@@ -15,8 +15,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// The code contains a tab or space character which is not consistent with the current project settings.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1027UseTabsCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1027UseTabsCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1027UseTabsCorrectly"/> analyzer.
         /// </summary>
@@ -31,20 +30,17 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpacingResources.SA1027MessageFormat), SpacingResources.ResourceManager, typeof(SpacingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpacingResources.SA1027Description), SpacingResources.ResourceManager, typeof(SpacingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxTreeAnalysisContext, StyleCopSettings> SyntaxTreeAction = HandleSyntaxTree;
 
-        private static readonly ImmutableDictionary<string, string> ConvertToTabsProperties =
-            ImmutableDictionary.Create<string, string>().SetItem(BehaviorKey, ConvertToTabsBehavior);
+        private static readonly ImmutableDictionary<string, string> ConvertToTabsProperties = ImmutableDictionary.Create<string, string>().SetItem(BehaviorKey, ConvertToTabsBehavior);
 
-        private static readonly ImmutableDictionary<string, string> ConvertToSpacesProperties =
-            ImmutableDictionary.Create<string, string>().SetItem(BehaviorKey, ConvertToSpacesBehavior);
+        private static readonly ImmutableDictionary<string, string> ConvertToSpacesProperties = ImmutableDictionary.Create<string, string>().SetItem(BehaviorKey, ConvertToSpacesBehavior);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -59,8 +55,7 @@ namespace StyleCop.Analyzers.SpacingRules
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
             ImmutableArray<TextSpan> excludedSpans;
-            if (!LocateExcludedSpans(root, out excludedSpans))
-            {
+            if (!LocateExcludedSpans(root, out excludedSpans)) {
                 return;
             }
 
@@ -83,10 +78,8 @@ namespace StyleCop.Analyzers.SpacingRules
             TextSpan nextExcludedSpan = !excludedSpans.IsEmpty ? excludedSpans[0] : lastExcludedSpan;
 
             int lastLineStart = 0;
-            for (int startIndex = 0; startIndex < length; startIndex++)
-            {
-                if (startIndex == nextExcludedSpan.Start)
-                {
+            for (int startIndex = 0; startIndex < length; startIndex++) {
+                if (startIndex == nextExcludedSpan.Start) {
                     startIndex = nextExcludedSpan.End - 1;
                     excludedSpanIndex++;
                     nextExcludedSpan = excludedSpanIndex < excludedSpans.Length ? excludedSpans[excludedSpanIndex] : lastExcludedSpan;
@@ -96,8 +89,7 @@ namespace StyleCop.Analyzers.SpacingRules
                 int tabCount = 0;
                 bool containsSpaces = false;
                 bool tabAfterSpace = false;
-                switch (completeText[startIndex])
-                {
+                switch (completeText[startIndex]) {
                 case ' ':
                     containsSpaces = true;
                     break;
@@ -118,46 +110,34 @@ namespace StyleCop.Analyzers.SpacingRules
                 }
 
                 int endIndex;
-                for (endIndex = startIndex + 1; endIndex < length; endIndex++)
-                {
-                    if (endIndex == nextExcludedSpan.Start)
-                    {
+                for (endIndex = startIndex + 1; endIndex < length; endIndex++) {
+                    if (endIndex == nextExcludedSpan.Start) {
                         break;
                     }
 
-                    if (completeText[endIndex] == ' ')
-                    {
+                    if (completeText[endIndex] == ' ') {
                         containsSpaces = true;
-                    }
-                    else if (completeText[endIndex] == '\t')
-                    {
+                    } else if (completeText[endIndex] == '\t') {
                         tabCount++;
                         tabAfterSpace = containsSpaces;
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
                 }
 
-                if (useTabs && startIndex == lastLineStart)
-                {
+                if (useTabs && startIndex == lastLineStart) {
                     // For the case we care about in the following condition (tabAfterSpace is false), spaceCount is
                     // the number of consecutive trailing spaces.
                     int spaceCount = (endIndex - startIndex) - tabCount;
-                    if (tabAfterSpace || spaceCount >= tabSize)
-                    {
+                    if (tabAfterSpace || spaceCount >= tabSize) {
                         context.ReportDiagnostic(
                             Diagnostic.Create(
                                 Descriptor,
                                 Location.Create(syntaxTree, TextSpan.FromBounds(startIndex, endIndex)),
                                 ConvertToTabsProperties));
                     }
-                }
-                else
-                {
-                    if (tabCount > 0)
-                    {
+                } else {
+                    if (tabCount > 0) {
                         context.ReportDiagnostic(
                             Diagnostic.Create(
                                 Descriptor,
@@ -176,16 +156,12 @@ namespace StyleCop.Analyzers.SpacingRules
             ImmutableArray<TextSpan>.Builder builder = ImmutableArray.CreateBuilder<TextSpan>();
 
             // Locate disabled text
-            foreach (var trivia in root.DescendantTrivia(descendIntoTrivia: true))
-            {
-                if (trivia.IsKind(SyntaxKind.DisabledTextTrivia))
-                {
+            foreach (var trivia in root.DescendantTrivia(descendIntoTrivia
+                                                         : true)) {
+                if (trivia.IsKind(SyntaxKind.DisabledTextTrivia)) {
                     builder.Add(trivia.Span);
-                }
-                else if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                {
-                    if (trivia.ToString().StartsWith("////"))
-                    {
+                } else if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia)) {
+                    if (trivia.ToString().StartsWith("////")) {
                         // Exclude comments starting with //// because they could contain commented code which contains
                         // string or character literals, and we don't want to change the contents of those strings.
                         builder.Add(trivia.Span);
@@ -194,13 +170,11 @@ namespace StyleCop.Analyzers.SpacingRules
             }
 
             // Locate string literals
-            foreach (var token in root.DescendantTokens(descendIntoTrivia: true))
-            {
-                switch (token.Kind())
-                {
+            foreach (var token in root.DescendantTokens(descendIntoTrivia
+                                                        : true)) {
+                switch (token.Kind()) {
                 case SyntaxKind.XmlTextLiteralToken:
-                    if (token.Parent.IsKind(SyntaxKind.XmlCDataSection))
-                    {
+                    if (token.Parent.IsKind(SyntaxKind.XmlCDataSection)) {
                         builder.Add(token.Span);
                     }
 
@@ -229,18 +203,15 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void ReduceTextSpans(ImmutableArray<TextSpan>.Builder sortedTextSpans)
         {
-            if (sortedTextSpans.Count == 0)
-            {
+            if (sortedTextSpans.Count == 0) {
                 return;
             }
 
             int currentIndex = 0;
-            for (int nextIndex = 1; nextIndex < sortedTextSpans.Count; nextIndex++)
-            {
+            for (int nextIndex = 1; nextIndex < sortedTextSpans.Count; nextIndex++) {
                 TextSpan current = sortedTextSpans[currentIndex];
                 TextSpan next = sortedTextSpans[nextIndex];
-                if (current.End < next.Start)
-                {
+                if (current.End < next.Start) {
                     // Increment currentIndex this iteration
                     currentIndex++;
                     sortedTextSpans[currentIndex] = next;

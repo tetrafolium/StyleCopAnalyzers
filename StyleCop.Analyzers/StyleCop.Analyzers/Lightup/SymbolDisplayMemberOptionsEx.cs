@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Lightup
 {
     using Microsoft.CodeAnalysis;
 
-    internal static class SymbolDisplayMemberOptionsEx
-    {
-        public const SymbolDisplayMemberOptions IncludeRef = (SymbolDisplayMemberOptions)128;
+    internal static class SymbolDisplayMemberOptionsEx {
+        public const SymbolDisplayMemberOptions IncludeRef = (SymbolDisplayMemberOptions) 128;
     }
 }

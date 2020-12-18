@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
     using LightJson;
 
-    internal class SpacingSettings
-    {
+    internal class SpacingSettings {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpacingSettings"/> class.
         /// </summary>

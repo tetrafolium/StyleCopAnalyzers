@@ -15,8 +15,7 @@ namespace StyleCop.Analyzers.SpecialRules
     /// </summary>
     [NoCodeFix("The necessary actions for this code fix are not supported by the analysis infrastructure.")]
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA0001XmlCommentAnalysisDisabled : DiagnosticAnalyzer
-    {
+    internal class SA0001XmlCommentAnalysisDisabled : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA0001XmlCommentAnalysisDisabled"/> analyzer.
         /// </summary>
@@ -26,14 +25,13 @@ namespace StyleCop.Analyzers.SpecialRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(SpecialResources.SA0001MessageFormat), SpecialResources.ResourceManager, typeof(SpecialResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(SpecialResources.SA0001Description), SpecialResources.ResourceManager, typeof(SpecialResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.SpecialRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<CompilationStartAnalysisContext> CompilationStartAction = HandleCompilationStart;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -51,24 +49,20 @@ namespace StyleCop.Analyzers.SpecialRules
             context.RegisterCompilationEndAction(analyzer.HandleCompilation);
         }
 
-        private sealed class Analyzer
-        {
+        private sealed class Analyzer {
             private bool documentationAnalysisDisabled;
 
             public void HandleCompilation(CompilationAnalysisContext context)
             {
-                if (Volatile.Read(ref this.documentationAnalysisDisabled))
-                {
+                if (Volatile.Read(ref this.documentationAnalysisDisabled)) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, Location.None));
                 }
             }
 
             public void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
             {
-                if (context.Tree.Options.DocumentationMode == DocumentationMode.None)
-                {
-                    if (context.Tree.IsWhitespaceOnly(context.CancellationToken))
-                    {
+                if (context.Tree.Options.DocumentationMode == DocumentationMode.None) {
+                    if (context.Tree.IsWhitespaceOnly(context.CancellationToken)) {
                         // Handling of empty documents is now the responsibility of the analyzers
                         return;
                     }

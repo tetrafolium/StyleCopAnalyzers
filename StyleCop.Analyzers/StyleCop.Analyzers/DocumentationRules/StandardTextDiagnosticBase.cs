@@ -16,8 +16,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// <summary>
     /// A base class for diagnostics <see cref="SA1642ConstructorSummaryDocumentationMustBeginWithStandardText"/> and <see cref="SA1643DestructorSummaryDocumentationMustBeginWithStandardText"/> to share common code.
     /// </summary>
-    internal abstract class StandardTextDiagnosticBase : DiagnosticAnalyzer
-    {
+    internal abstract class StandardTextDiagnosticBase : DiagnosticAnalyzer {
         /// <summary>
         /// The key used for signalling that no codefix should be offered.
         /// </summary>
@@ -28,8 +27,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <summary>
         /// Describes the result of matching a summary element to a specific desired wording.
         /// </summary>
-        public enum MatchResult
-        {
+        public enum MatchResult {
             /// <summary>
             /// The analysis could not be completed due to errors in the syntax tree or a comment structure which was
             /// not accounted for.
@@ -62,58 +60,49 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// <returns>A <see cref="MatchResult"/> describing the result of the analysis.</returns>
         protected static MatchResult HandleDeclaration(SyntaxNodeAnalysisContext context, string firstTextPart, string secondTextPart, DiagnosticDescriptor diagnosticDescriptor)
         {
-            var declarationSyntax = (BaseMethodDeclarationSyntax)context.Node;
+            var declarationSyntax = (BaseMethodDeclarationSyntax) context.Node;
             var documentationStructure = declarationSyntax.GetDocumentationCommentTriviaSyntax();
-            if (documentationStructure == null)
-            {
+            if (documentationStructure == null) {
                 return MatchResult.Unknown;
             }
 
             Location diagnosticLocation;
             ImmutableDictionary<string, string> diagnosticProperties;
 
-            if (documentationStructure.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag) is XmlEmptyElementSyntax includeElement)
-            {
+            if (documentationStructure.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag) is XmlEmptyElementSyntax includeElement) {
                 diagnosticLocation = includeElement.GetLocation();
                 diagnosticProperties = NoCodeFixProperties;
 
                 var declaration = context.SemanticModel.GetDeclaredSymbol(declarationSyntax, context.CancellationToken);
-                if (declaration == null)
-                {
+                if (declaration == null) {
                     return MatchResult.Unknown;
                 }
 
-                var rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+                var rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes
+                                                                              : true, cancellationToken
+                                                                              : context.CancellationToken);
                 var completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
 
                 var summaryElement = completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(element => element.Name == XmlCommentHelper.SummaryXmlTag);
-                if (summaryElement == null)
-                {
+                if (summaryElement == null) {
                     return MatchResult.Unknown;
                 }
 
                 var summaryNodes = summaryElement.Nodes().ToList();
-                if (summaryNodes.Count >= 3)
-                {
+                if (summaryNodes.Count >= 3) {
                     if (summaryNodes[0] is XText firstTextPartNode
                         && summaryNodes[1] is XElement classReferencePart
-                        && summaryNodes[2] is XText secondTextPartNode)
-                    {
-                        if (TextPartsMatch(firstTextPart, secondTextPart, firstTextPartNode, secondTextPartNode))
-                        {
-                            if (SeeTagIsCorrect(context, classReferencePart, declarationSyntax))
-                            {
+                        && summaryNodes[2] is XText secondTextPartNode) {
+                        if (TextPartsMatch(firstTextPart, secondTextPart, firstTextPartNode, secondTextPartNode)) {
+                            if (SeeTagIsCorrect(context, classReferencePart, declarationSyntax)) {
                                 // We found a correct standard text
                                 return MatchResult.FoundMatch;
                             }
                         }
                     }
                 }
-            }
-            else
-            {
-                if (!(documentationStructure.Content.GetFirstXmlElement(XmlCommentHelper.SummaryXmlTag) is XmlElementSyntax summaryElement))
-                {
+            } else {
+                if (!(documentationStructure.Content.GetFirstXmlElement(XmlCommentHelper.SummaryXmlTag) is XmlElementSyntax summaryElement)) {
                     return MatchResult.Unknown;
                 }
 
@@ -121,17 +110,13 @@ namespace StyleCop.Analyzers.DocumentationRules
                 diagnosticProperties = ImmutableDictionary.Create<string, string>();
 
                 // Check if the summary content could be a correct standard text
-                if (summaryElement.Content.Count >= 3)
-                {
+                if (summaryElement.Content.Count >= 3) {
                     // Standard text has the form <part1><see><part2>
                     if (summaryElement.Content[0] is XmlTextSyntax firstTextPartSyntax
                         && summaryElement.Content[1] is XmlEmptyElementSyntax classReferencePart
-                        && summaryElement.Content[2] is XmlTextSyntax secondTextPartSyntax)
-                    {
-                        if (TextPartsMatch(firstTextPart, secondTextPart, firstTextPartSyntax, secondTextPartSyntax))
-                        {
-                            if (SeeTagIsCorrect(context, classReferencePart, declarationSyntax))
-                            {
+                        && summaryElement.Content[2] is XmlTextSyntax secondTextPartSyntax) {
+                        if (TextPartsMatch(firstTextPart, secondTextPart, firstTextPartSyntax, secondTextPartSyntax)) {
+                            if (SeeTagIsCorrect(context, classReferencePart, declarationSyntax)) {
                                 // We found a correct standard text
                                 return MatchResult.FoundMatch;
                             }
@@ -142,8 +127,7 @@ namespace StyleCop.Analyzers.DocumentationRules
                 }
             }
 
-            if (diagnosticDescriptor != null)
-            {
+            if (diagnosticDescriptor != null) {
                 context.ReportDiagnostic(Diagnostic.Create(diagnosticDescriptor, diagnosticLocation, diagnosticProperties));
             }
 
@@ -155,14 +139,12 @@ namespace StyleCop.Analyzers.DocumentationRules
         {
             XmlCrefAttributeSyntax crefAttribute = XmlCommentHelper.GetFirstAttributeOrDefault<XmlCrefAttributeSyntax>(classReferencePart);
             CrefSyntax crefSyntax = crefAttribute?.Cref;
-            if (crefAttribute == null)
-            {
+            if (crefAttribute == null) {
                 return false;
             }
 
             SemanticModel semanticModel = context.SemanticModel;
-            if (!(semanticModel.GetSymbolInfo(crefSyntax, context.CancellationToken).Symbol is INamedTypeSymbol actualSymbol))
-            {
+            if (!(semanticModel.GetSymbolInfo(crefSyntax, context.CancellationToken).Symbol is INamedTypeSymbol actualSymbol)) {
                 return false;
             }
 
@@ -173,22 +155,20 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static bool SeeTagIsCorrect(SyntaxNodeAnalysisContext context, XElement classReferencePart, BaseMethodDeclarationSyntax constructorDeclarationSyntax)
         {
             var crefAttribute = classReferencePart.Attribute(XmlCommentHelper.CrefArgumentName);
-            if (crefAttribute == null)
-            {
+            if (crefAttribute == null) {
                 return false;
             }
 
             var typeName = crefAttribute.Value.Split(':').Last();
 
             SemanticModel semanticModel = context.SemanticModel;
-            var foundSymbols = semanticModel.LookupNamespacesAndTypes(constructorDeclarationSyntax.SpanStart, name: typeName);
-            if (foundSymbols.Length != 1)
-            {
+            var foundSymbols = semanticModel.LookupNamespacesAndTypes(constructorDeclarationSyntax.SpanStart, name
+                                                                      : typeName);
+            if (foundSymbols.Length != 1) {
                 return false;
             }
 
-            if (!(foundSymbols[0] is INamedTypeSymbol actualSymbol))
-            {
+            if (!(foundSymbols[0] is INamedTypeSymbol actualSymbol)) {
                 return false;
             }
 
@@ -198,21 +178,21 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static bool TextPartsMatch(string firstText, string secondText, XmlTextSyntax firstTextPart, XmlTextSyntax secondTextPart)
         {
-            string firstTextPartText = XmlCommentHelper.GetText(firstTextPart, normalizeWhitespace: true);
-            if (firstText != firstTextPartText.TrimStart())
-            {
+            string firstTextPartText = XmlCommentHelper.GetText(firstTextPart, normalizeWhitespace
+                                                                : true);
+            if (firstText != firstTextPartText.TrimStart()) {
                 return false;
             }
 
-            string secondTextPartText = XmlCommentHelper.GetText(secondTextPart, normalizeWhitespace: true);
+            string secondTextPartText = XmlCommentHelper.GetText(secondTextPart, normalizeWhitespace
+                                                                 : true);
             return secondTextPartText.StartsWith(secondText, StringComparison.Ordinal);
         }
 
         private static bool TextPartsMatch(string firstText, string secondText, XText firstTextPart, XText secondTextPart)
         {
             string firstTextPartText = firstTextPart.Value.TrimStart();
-            if (!string.Equals(firstText, firstTextPartText, StringComparison.Ordinal))
-            {
+            if (!string.Equals(firstText, firstTextPartText, StringComparison.Ordinal)) {
                 return false;
             }
 

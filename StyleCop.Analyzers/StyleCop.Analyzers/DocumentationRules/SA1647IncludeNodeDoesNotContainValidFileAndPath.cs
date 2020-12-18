@@ -33,8 +33,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoDiagnostic("This is already handled by the compiler with warning CS1590.")]
     [NoCodeFix("Cannot generate documentation")]
-    internal class SA1647IncludeNodeDoesNotContainValidFileAndPath : DiagnosticAnalyzer
-    {
+    internal class SA1647IncludeNodeDoesNotContainValidFileAndPath : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1647IncludeNodeDoesNotContainValidFileAndPath"/>
         /// analyzer.
@@ -51,8 +50,8 @@ namespace StyleCop.Analyzers.DocumentationRules
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         [ExcludeFromCodeCoverage]

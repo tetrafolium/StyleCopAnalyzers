@@ -13,8 +13,7 @@ namespace StyleCop.Analyzers.Helpers
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CodeFixes;
 
-    internal static class FixAllContextHelper
-    {
+    internal static class FixAllContextHelper {
         public static async Task<ImmutableDictionary<Document, ImmutableArray<Diagnostic>>> GetDocumentDiagnosticsToFixAsync(FixAllContext fixAllContext)
         {
             var allDiagnostics = ImmutableArray<Diagnostic>.Empty;
@@ -23,11 +22,9 @@ namespace StyleCop.Analyzers.Helpers
             var document = fixAllContext.Document;
             var project = fixAllContext.Project;
 
-            switch (fixAllContext.Scope)
-            {
+            switch (fixAllContext.Scope) {
             case FixAllScope.Document:
-                if (document != null)
-                {
+                if (document != null) {
                     var documentDiagnostics = await fixAllContext.GetDocumentDiagnosticsAsync(document).ConfigureAwait(false);
                     return ImmutableDictionary<Document, ImmutableArray<Diagnostic>>.Empty.SetItem(document, documentDiagnostics);
                 }
@@ -41,18 +38,16 @@ namespace StyleCop.Analyzers.Helpers
 
             case FixAllScope.Solution:
                 projectsToFix = project.Solution.Projects
-                    .Where(p => p.Language == project.Language)
-                    .ToImmutableArray();
+                                    .Where(p => p.Language == project.Language)
+                                    .ToImmutableArray();
 
                 var diagnostics = new ConcurrentDictionary<ProjectId, ImmutableArray<Diagnostic>>();
                 var tasks = new Task[projectsToFix.Length];
-                for (int i = 0; i < projectsToFix.Length; i++)
-                {
+                for (int i = 0; i < projectsToFix.Length; i++) {
                     fixAllContext.CancellationToken.ThrowIfCancellationRequested();
                     var projectToFix = projectsToFix[i];
                     tasks[i] = Task.Run(
-                        async () =>
-                        {
+                        async() => {
                             var projectDiagnostics = await GetAllDiagnosticsAsync(fixAllContext, projectToFix).ConfigureAwait(false);
                             diagnostics.TryAdd(projectToFix.Id, projectDiagnostics);
                         },
@@ -64,8 +59,7 @@ namespace StyleCop.Analyzers.Helpers
                 break;
             }
 
-            if (allDiagnostics.IsEmpty)
-            {
+            if (allDiagnostics.IsEmpty) {
                 return ImmutableDictionary<Document, ImmutableArray<Diagnostic>>.Empty;
             }
 
@@ -75,10 +69,8 @@ namespace StyleCop.Analyzers.Helpers
         public static async Task<ImmutableDictionary<Project, ImmutableArray<Diagnostic>>> GetProjectDiagnosticsToFixAsync(FixAllContext fixAllContext)
         {
             var project = fixAllContext.Project;
-            if (project != null)
-            {
-                switch (fixAllContext.Scope)
-                {
+            if (project != null) {
+                switch (fixAllContext.Scope) {
                 case FixAllScope.Project:
                     var diagnostics = await fixAllContext.GetProjectDiagnosticsAsync(project).ConfigureAwait(false);
                     return ImmutableDictionary<Project, ImmutableArray<Diagnostic>>.Empty.SetItem(project, diagnostics);
@@ -86,25 +78,19 @@ namespace StyleCop.Analyzers.Helpers
                 case FixAllScope.Solution:
                     var projectsAndDiagnostics = new ConcurrentDictionary<Project, ImmutableArray<Diagnostic>>();
                     var tasks = new List<Task>(project.Solution.ProjectIds.Count);
-                    Func<Project, Task> projectAction =
-                        async proj =>
-                        {
-                            if (fixAllContext.CancellationToken.IsCancellationRequested)
-                            {
-                                return;
-                            }
+                    Func<Project, Task> projectAction = async proj => {
+                        if (fixAllContext.CancellationToken.IsCancellationRequested) {
+                            return;
+                        }
 
-                            var projectDiagnostics = await fixAllContext.GetProjectDiagnosticsAsync(proj).ConfigureAwait(false);
-                            if (projectDiagnostics.Any())
-                            {
-                                projectsAndDiagnostics.TryAdd(proj, projectDiagnostics);
-                            }
-                        };
+                        var projectDiagnostics = await fixAllContext.GetProjectDiagnosticsAsync(proj).ConfigureAwait(false);
+                        if (projectDiagnostics.Any()) {
+                            projectsAndDiagnostics.TryAdd(proj, projectDiagnostics);
+                        }
+                    };
 
-                    foreach (var proj in project.Solution.Projects)
-                    {
-                        if (fixAllContext.CancellationToken.IsCancellationRequested)
-                        {
+                    foreach (var proj in project.Solution.Projects) {
+                        if (fixAllContext.CancellationToken.IsCancellationRequested) {
                             break;
                         }
 
@@ -140,8 +126,7 @@ namespace StyleCop.Analyzers.Helpers
             var treeToDocumentMap = await GetTreeToDocumentMapAsync(projects, cancellationToken).ConfigureAwait(false);
 
             var builder = ImmutableDictionary.CreateBuilder<Document, ImmutableArray<Diagnostic>>();
-            foreach (var documentAndDiagnostics in diagnostics.GroupBy(d => GetReportedDocument(d, treeToDocumentMap)))
-            {
+            foreach (var documentAndDiagnostics in diagnostics.GroupBy(d => GetReportedDocument(d, treeToDocumentMap))) {
                 cancellationToken.ThrowIfCancellationRequested();
                 var document = documentAndDiagnostics.Key;
                 var diagnosticsForDocument = documentAndDiagnostics.ToImmutableArray();
@@ -154,11 +139,9 @@ namespace StyleCop.Analyzers.Helpers
         private static async Task<ImmutableDictionary<SyntaxTree, Document>> GetTreeToDocumentMapAsync(ImmutableArray<Project> projects, CancellationToken cancellationToken)
         {
             var builder = ImmutableDictionary.CreateBuilder<SyntaxTree, Document>();
-            foreach (var project in projects)
-            {
+            foreach (var project in projects) {
                 cancellationToken.ThrowIfCancellationRequested();
-                foreach (var document in project.Documents)
-                {
+                foreach (var document in project.Documents) {
                     cancellationToken.ThrowIfCancellationRequested();
                     var tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
                     builder.Add(tree, document);
@@ -171,11 +154,9 @@ namespace StyleCop.Analyzers.Helpers
         private static Document GetReportedDocument(Diagnostic diagnostic, ImmutableDictionary<SyntaxTree, Document> treeToDocumentsMap)
         {
             var tree = diagnostic.Location.SourceTree;
-            if (tree != null)
-            {
+            if (tree != null) {
                 Document document;
-                if (treeToDocumentsMap.TryGetValue(tree, out document))
-                {
+                if (treeToDocumentsMap.TryGetValue(tree, out document)) {
                     return document;
                 }
             }

@@ -21,11 +21,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1103CodeFixProvider))]
     [Shared]
-    internal class SA1103CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1103CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA110xQueryClauses.SA1103Descriptor.Id);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA110xQueryClauses.SA1103Descriptor.Id);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -38,12 +37,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             var syntaxRoot = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                var queryExpression = (QueryExpressionSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent;
+            foreach (var diagnostic in context.Diagnostics) {
+                var queryExpression = (QueryExpressionSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent;
 
-                if (queryExpression.DescendantTrivia().All(AcceptableSingleLineTrivia))
-                {
+                if (queryExpression.DescendantTrivia().All(AcceptableSingleLineTrivia)) {
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             ReadabilityResources.SA1103CodeFixSingleLine,
@@ -63,8 +60,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static bool AcceptableSingleLineTrivia(SyntaxTrivia trivia)
         {
-            switch (trivia.Kind())
-            {
+            switch (trivia.Kind()) {
             case SyntaxKind.WhitespaceTrivia:
             case SyntaxKind.EndOfLineTrivia:
                 return true;
@@ -81,24 +77,23 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static async Task<Document> GetTransformedDocumentFromSingleLineAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var queryExpression = (QueryExpressionSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent;
+            var queryExpression = (QueryExpressionSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent;
             var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>();
 
             var nodeList = CreateQueryNodeList(queryExpression);
 
-            for (var i = 0; i < nodeList.Length; i++)
-            {
-                var token = nodeList[i].GetFirstToken();
+            for (var i = 0; i < nodeList.Length; i++) {
+                var token = nodeList [i]
+                                .GetFirstToken();
                 var precedingToken = token.GetPreviousToken();
 
                 var triviaList = precedingToken.TrailingTrivia.AddRange(token.LeadingTrivia);
                 var processedTriviaList = triviaList
-                    .Where(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia))
-                    .ToSyntaxTriviaList()
-                    .Add(SyntaxFactory.Space);
+                                              .Where(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                                              .ToSyntaxTriviaList()
+                                              .Add(SyntaxFactory.Space);
 
-                if (processedTriviaList.Count > 1)
-                {
+                if (processedTriviaList.Count > 1) {
                     processedTriviaList = processedTriviaList.Insert(0, SyntaxFactory.Space);
                 }
 
@@ -113,7 +108,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static async Task<Document> GetTransformedDocumentForMultipleLinesAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var queryExpression = (QueryExpressionSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent;
+            var queryExpression = (QueryExpressionSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan).Parent;
             var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>();
 
             var nodeList = CreateQueryNodeList(queryExpression);
@@ -121,13 +116,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var settings = SettingsHelper.GetStyleCopSettings(document.Project.AnalyzerOptions, cancellationToken);
             var indentationTrivia = QueryIndentationHelpers.GetQueryIndentationTrivia(settings.Indentation, queryExpression);
 
-            for (var i = 1; i < nodeList.Length; i++)
-            {
-                var token = nodeList[i].GetFirstToken();
+            for (var i = 1; i < nodeList.Length; i++) {
+                var token = nodeList [i]
+                                .GetFirstToken();
                 var precedingToken = token.GetPreviousToken();
 
-                if (precedingToken.GetLine() == token.GetLine())
-                {
+                if (precedingToken.GetLine() == token.GetLine()) {
                     var triviaList = precedingToken.TrailingTrivia.AddRange(token.LeadingTrivia);
                     var processedTriviaList = triviaList.WithoutTrailingWhitespace().Add(SyntaxFactory.CarriageReturnLineFeed);
 
@@ -154,13 +148,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
         {
             queryNodes.AddRange(body.Clauses);
 
-            if (!body.SelectOrGroup.IsMissing)
-            {
+            if (!body.SelectOrGroup.IsMissing) {
                 queryNodes.Add(body.SelectOrGroup);
             }
 
-            if (body.Continuation != null)
-            {
+            if (body.Continuation != null) {
                 ProcessQueryBody(body.Continuation.Body, queryNodes);
             }
         }

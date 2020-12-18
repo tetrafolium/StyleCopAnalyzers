@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.CodeAnalysis;
 
-    internal static class AnalyzerConstants
-    {
+    internal static class AnalyzerConstants {
         static AnalyzerConstants()
         {
 #if DEBUG
@@ -30,7 +29,10 @@ namespace StyleCop.Analyzers
         /// </value>
         [ExcludeFromCodeCoverage]
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:Property summary documentation should match accessors.", Justification = "This property behaves more like an opaque value than a Boolean.")]
-        internal static bool DisabledNoTests { get; }
+        internal static bool DisabledNoTests
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets a reference value which can be passed to

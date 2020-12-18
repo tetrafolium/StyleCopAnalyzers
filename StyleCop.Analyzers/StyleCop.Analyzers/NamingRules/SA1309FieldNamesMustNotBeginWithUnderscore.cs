@@ -31,8 +31,7 @@ namespace StyleCop.Analyzers.NamingRules
     /// <c>NativeMethods</c> class.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1309FieldNamesMustNotBeginWithUnderscore : DiagnosticAnalyzer
-    {
+    internal class SA1309FieldNamesMustNotBeginWithUnderscore : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1309FieldNamesMustNotBeginWithUnderscore"/> analyzer.
         /// </summary>
@@ -42,14 +41,13 @@ namespace StyleCop.Analyzers.NamingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1309MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1309Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction = HandleFieldDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -62,33 +60,27 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax)context.Node;
-            if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax))
-            {
+            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax) context.Node;
+            if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax)) {
                 return;
             }
 
             var variables = syntax.Declaration?.Variables;
-            if (variables == null)
-            {
+            if (variables == null) {
                 return;
             }
 
-            foreach (VariableDeclaratorSyntax variableDeclarator in variables.Value)
-            {
-                if (variableDeclarator == null)
-                {
+            foreach (VariableDeclaratorSyntax variableDeclarator in variables.Value) {
+                if (variableDeclarator == null) {
                     continue;
                 }
 
                 var identifier = variableDeclarator.Identifier;
-                if (identifier.IsMissing)
-                {
+                if (identifier.IsMissing) {
                     continue;
                 }
 
-                if (!identifier.ValueText.StartsWith("_", StringComparison.Ordinal))
-                {
+                if (!identifier.ValueText.StartsWith("_", StringComparison.Ordinal)) {
                     continue;
                 }
 

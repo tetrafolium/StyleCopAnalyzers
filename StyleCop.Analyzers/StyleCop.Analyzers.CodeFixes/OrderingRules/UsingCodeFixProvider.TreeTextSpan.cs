@@ -12,13 +12,11 @@ namespace StyleCop.Analyzers.OrderingRules
     /// <summary>
     /// Implements a code fix for all misaligned using statements.
     /// </summary>
-    internal sealed partial class UsingCodeFixProvider
-    {
+    internal sealed partial class UsingCodeFixProvider {
         /// <summary>
         /// Immutable class representing a text span with a collection of children.
         /// </summary>
-        private class TreeTextSpan : IEquatable<TreeTextSpan>, IComparable<TreeTextSpan>
-        {
+        private class TreeTextSpan : IEquatable<TreeTextSpan>, IComparable<TreeTextSpan> {
             /// <summary>
             /// Initializes a new instance of the <see cref="TreeTextSpan"/> class.
             /// </summary>
@@ -32,7 +30,8 @@ namespace StyleCop.Analyzers.OrderingRules
                 this.Children = children;
             }
 
-            internal static TreeTextSpan Empty { get; } = new TreeTextSpan(0, 0, ImmutableArray<TreeTextSpan>.Empty);
+            internal static TreeTextSpan Empty { get; }
+            = new TreeTextSpan(0, 0, ImmutableArray<TreeTextSpan>.Empty);
 
             /// <summary>
             /// Gets the start position of the span.
@@ -83,7 +82,7 @@ namespace StyleCop.Analyzers.OrderingRules
             /// <inheritdoc/>
             public override bool Equals(object obj)
             {
-                return (obj is TreeTextSpan) && this.Equals((TreeTextSpan)obj);
+                return (obj is TreeTextSpan) && this.Equals((TreeTextSpan) obj);
             }
 
             /// <inheritdoc/>
@@ -99,8 +98,7 @@ namespace StyleCop.Analyzers.OrderingRules
             public int CompareTo(TreeTextSpan other)
             {
                 var diff = this.Start - other.Start;
-                if (diff == 0)
-                {
+                if (diff == 0) {
                     diff = this.End - other.End;
                 }
 
@@ -135,16 +133,13 @@ namespace StyleCop.Analyzers.OrderingRules
             /// <returns>The <see cref="TreeTextSpan"/> that is the best match, or null if there is no match.</returns>
             internal TreeTextSpan GetContainingSpan(TextSpan textSpan)
             {
-                if ((textSpan.Start < this.Start) || (textSpan.End > this.End))
-                {
+                if ((textSpan.Start < this.Start) || (textSpan.End > this.End)) {
                     return Empty;
                 }
 
-                foreach (var span in this.Children)
-                {
+                foreach (var span in this.Children) {
                     var childSpan = span.GetContainingSpan(textSpan);
-                    if (childSpan != Empty)
-                    {
+                    if (childSpan != Empty) {
                         return childSpan;
                     }
                 }
@@ -155,8 +150,7 @@ namespace StyleCop.Analyzers.OrderingRules
             /// <summary>
             /// Helper class that can be used to construct a tree of <see cref="TreeTextSpan"/> objects.
             /// </summary>
-            internal class Builder
-            {
+            internal class Builder {
                 private readonly List<Builder> children = new List<Builder>();
                 private readonly int start;
                 private int end = int.MaxValue;
@@ -206,18 +200,15 @@ namespace StyleCop.Analyzers.OrderingRules
                 {
                     Builder newFiller;
 
-                    if (this.children.Count == 0)
-                    {
+                    if (this.children.Count == 0) {
                         return;
                     }
 
                     var previousEnd = int.MaxValue;
-                    for (var i = 0; i < this.children.Count; i++)
-                    {
+                    for (var i = 0; i < this.children.Count; i++) {
                         var child = this.children[i];
 
-                        if (child.start > previousEnd)
-                        {
+                        if (child.start > previousEnd) {
                             newFiller = new Builder(previousEnd, child.start);
                             this.children.Insert(i, newFiller);
                             i++;
@@ -228,8 +219,7 @@ namespace StyleCop.Analyzers.OrderingRules
                         previousEnd = child.end;
                     }
 
-                    if (previousEnd < this.end)
-                    {
+                    if (previousEnd < this.end) {
                         newFiller = new Builder(previousEnd, this.end);
                         this.children.Add(newFiller);
                     }

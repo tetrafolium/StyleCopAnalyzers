@@ -40,8 +40,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1629DocumentationTextMustEndWithAPeriod : ElementDocumentationBase
-    {
+    internal class SA1629DocumentationTextMustEndWithAPeriod : ElementDocumentationBase {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1629DocumentationTextMustEndWithAPeriod"/> analyzer.
         /// </summary>
@@ -59,8 +58,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1629MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1629Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly ImmutableDictionary<string, string> NoCodeFixProperties = ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
 
@@ -68,34 +66,32 @@ namespace StyleCop.Analyzers.DocumentationRules
         /// Initializes a new instance of the <see cref="SA1629DocumentationTextMustEndWithAPeriod"/> class.
         /// </summary>
         public SA1629DocumentationTextMustEndWithAPeriod()
-            : base(inheritDocSuppressesWarnings: false)
+            : base(inheritDocSuppressesWarnings
+                   : false)
         {
         }
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         protected override void HandleXmlElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings, bool needsComment, IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
         {
-            foreach (var xmlElement in syntaxList.OfType<XmlElementSyntax>())
-            {
-                HandleSectionOrBlockXmlElement(context, settings, xmlElement, startingWithFinalParagraph: true);
+            foreach (var xmlElement in syntaxList.OfType<XmlElementSyntax>()) {
+                HandleSectionOrBlockXmlElement(context, settings, xmlElement, startingWithFinalParagraph
+                                               : true);
             }
         }
 
         /// <inheritdoc/>
         protected override void HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment, XElement completeDocumentation, params Location[] diagnosticLocations)
         {
-            foreach (var node in completeDocumentation.Nodes().OfType<XElement>())
-            {
+            foreach (var node in completeDocumentation.Nodes().OfType<XElement>()) {
                 var textWithoutTrailingWhitespace = node.Value.TrimEnd(' ', '\r', '\n');
-                if (!string.IsNullOrEmpty(textWithoutTrailingWhitespace))
-                {
+                if (!string.IsNullOrEmpty(textWithoutTrailingWhitespace)) {
                     if (!textWithoutTrailingWhitespace.EndsWith(".", StringComparison.Ordinal)
-                        && !textWithoutTrailingWhitespace.EndsWith(".)", StringComparison.Ordinal))
-                    {
+                        && !textWithoutTrailingWhitespace.EndsWith(".)", StringComparison.Ordinal)) {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, diagnosticLocations[0], NoCodeFixProperties));
 
                         // only report a single instance of the diagnostic, as they will all be reported on the same location anyway.
@@ -108,39 +104,30 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static void HandleSectionOrBlockXmlElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings, XmlElementSyntax xmlElement, bool startingWithFinalParagraph)
         {
             var startTag = xmlElement.StartTag?.Name?.LocalName.ValueText;
-            if (settings.DocumentationRules.ExcludeFromPunctuationCheck.Contains(startTag))
-            {
+            if (settings.DocumentationRules.ExcludeFromPunctuationCheck.Contains(startTag)) {
                 return;
             }
 
             var currentParagraphDone = false;
-            for (var i = xmlElement.Content.Count - 1; i >= 0; i--)
-            {
-                if (xmlElement.Content[i] is XmlTextSyntax contentNode)
-                {
-                    for (var j = contentNode.TextTokens.Count - 1; !currentParagraphDone && (j >= 0); j--)
-                    {
+            for (var i = xmlElement.Content.Count - 1; i >= 0; i--) {
+                if (xmlElement.Content[i] is XmlTextSyntax contentNode) {
+                    for (var j = contentNode.TextTokens.Count - 1; !currentParagraphDone && (j >= 0); j--) {
                         var textToken = contentNode.TextTokens[j];
                         var textWithoutTrailingWhitespace = textToken.Text.TrimEnd(' ', '\r', '\n');
 
-                        if (!string.IsNullOrEmpty(textWithoutTrailingWhitespace))
-                        {
+                        if (!string.IsNullOrEmpty(textWithoutTrailingWhitespace)) {
                             if (!textWithoutTrailingWhitespace.EndsWith(".", StringComparison.Ordinal)
                                 && !textWithoutTrailingWhitespace.EndsWith(".)", StringComparison.Ordinal)
                                 && (startingWithFinalParagraph || !textWithoutTrailingWhitespace.EndsWith(":", StringComparison.Ordinal))
-                                && !textWithoutTrailingWhitespace.EndsWith("-or-", StringComparison.Ordinal))
-                            {
+                                && !textWithoutTrailingWhitespace.EndsWith("-or-", StringComparison.Ordinal)) {
                                 int spanStart = textToken.SpanStart + textWithoutTrailingWhitespace.Length;
                                 ImmutableDictionary<string, string> properties = null;
                                 if (textWithoutTrailingWhitespace.EndsWith(",", StringComparison.Ordinal)
-                                    || textWithoutTrailingWhitespace.EndsWith(";", StringComparison.Ordinal))
-                                {
+                                    || textWithoutTrailingWhitespace.EndsWith(";", StringComparison.Ordinal)) {
                                     spanStart -= 1;
                                     SetReplaceChar();
-                                }
-                                else if (textWithoutTrailingWhitespace.EndsWith(",)", StringComparison.Ordinal)
-                                    || textWithoutTrailingWhitespace.EndsWith(";)", StringComparison.Ordinal))
-                                {
+                                } else if (textWithoutTrailingWhitespace.EndsWith(",)", StringComparison.Ordinal)
+                                    || textWithoutTrailingWhitespace.EndsWith(";)", StringComparison.Ordinal)) {
                                     spanStart -= 2;
                                     SetReplaceChar();
                                 }
@@ -159,18 +146,15 @@ namespace StyleCop.Analyzers.DocumentationRules
                             currentParagraphDone = true;
                         }
                     }
-                }
-                else if (xmlElement.Content[i].IsInlineElement() && !currentParagraphDone)
-                {
+                } else if (xmlElement.Content [i]
+                               .IsInlineElement()
+                    && !currentParagraphDone) {
                     // Treat empty XML elements as a "word not ending with a period"
                     var location = Location.Create(xmlElement.SyntaxTree, new TextSpan(xmlElement.Content[i].Span.End, 1));
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
                     currentParagraphDone = true;
-                }
-                else if (xmlElement.Content[i] is XmlElementSyntax childXmlElement)
-                {
-                    switch (childXmlElement.StartTag?.Name?.LocalName.ValueText)
-                    {
+                } else if (xmlElement.Content[i] is XmlElementSyntax childXmlElement) {
+                    switch (childXmlElement.StartTag?.Name?.LocalName.ValueText) {
                     case XmlCommentHelper.NoteXmlTag:
                     case XmlCommentHelper.ParaXmlTag:
                         // Recursively handle <note> and <para> elements
@@ -181,17 +165,13 @@ namespace StyleCop.Analyzers.DocumentationRules
                         break;
                     }
 
-                    if (childXmlElement.IsBlockElement())
-                    {
+                    if (childXmlElement.IsBlockElement()) {
                         currentParagraphDone = false;
                         startingWithFinalParagraph = false;
                     }
-                }
-                else if (xmlElement.Content[i] is XmlEmptyElementSyntax emptyElement)
-                {
+                } else if (xmlElement.Content[i] is XmlEmptyElementSyntax emptyElement) {
                     // Treat the empty element <para/> as a paragraph separator
-                    if (emptyElement.Name?.LocalName.ValueText == XmlCommentHelper.ParaXmlTag)
-                    {
+                    if (emptyElement.Name?.LocalName.ValueText == XmlCommentHelper.ParaXmlTag) {
                         currentParagraphDone = false;
                         startingWithFinalParagraph = false;
                     }

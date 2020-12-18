@@ -14,8 +14,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     using StyleCop.Analyzers.Lightup;
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1142ReferToTupleElementsByName : DiagnosticAnalyzer
-    {
+    internal class SA1142ReferToTupleElementsByName : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1142ReferToTupleElementsByName"/> analyzer.
         /// </summary>
@@ -32,7 +31,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -40,27 +40,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
 
-            if (LightupHelpers.SupportsIOperation)
-            {
+            if (LightupHelpers.SupportsIOperation) {
                 context.RegisterOperationAction(FieldReferenceOperationAction, OperationKindEx.FieldReference);
-            }
-            else
-            {
+            } else {
                 context.RegisterSyntaxNodeAction(SimpleMemberAccessExpressionAction, SyntaxKind.SimpleMemberAccessExpression);
             }
         }
 
         private static void HandleFieldReferenceOperation(OperationAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
             var fieldReference = IFieldReferenceOperationWrapper.FromOperation(context.Operation);
 
-            if (CheckFieldName(fieldReference.Field))
-            {
+            if (CheckFieldName(fieldReference.Field)) {
                 var location = fieldReference.WrappedOperation.Syntax is MemberAccessExpressionSyntax memberAccessExpression
                     ? memberAccessExpression.Name.GetLocation()
                     : fieldReference.WrappedOperation.Syntax.GetLocation();
@@ -70,34 +65,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!context.SupportsTuples())
-            {
+            if (!context.SupportsTuples()) {
                 return;
             }
 
-            var memberAccessExpression = (MemberAccessExpressionSyntax)context.Node;
+            var memberAccessExpression = (MemberAccessExpressionSyntax) context.Node;
 
-            if (!(context.SemanticModel.GetSymbolInfo(memberAccessExpression).Symbol is IFieldSymbol fieldSymbol))
-            {
+            if (!(context.SemanticModel.GetSymbolInfo(memberAccessExpression).Symbol is IFieldSymbol fieldSymbol)) {
                 return;
             }
 
-            if (CheckFieldName(fieldSymbol))
-            {
+            if (CheckFieldName(fieldSymbol)) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, memberAccessExpression.Name.GetLocation()));
             }
         }
 
         private static bool CheckFieldName(IFieldSymbol fieldSymbol)
         {
-            if (!fieldSymbol.ContainingType.IsTupleType())
-            {
+            if (!fieldSymbol.ContainingType.IsTupleType()) {
                 return false;
             }
 
             // check if this already is a proper tuple field name
-            if (!Equals(fieldSymbol.CorrespondingTupleField(), fieldSymbol))
-            {
+            if (!Equals(fieldSymbol.CorrespondingTupleField(), fieldSymbol)) {
                 return false;
             }
 

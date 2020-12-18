@@ -20,11 +20,10 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1508CodeFixProvider))]
     [Shared]
-    internal class SA1508CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1508CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1508ClosingBracesMustNotBePrecededByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1508ClosingBracesMustNotBePrecededByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -35,8 +34,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         LayoutResources.SA1508CodeFix,
@@ -59,8 +57,8 @@ namespace StyleCop.Analyzers.LayoutRules
 
             // skip all leading whitespace for the close brace
             var index = triviaList.Count - 1;
-            while (triviaList[index].IsKind(SyntaxKind.WhitespaceTrivia))
-            {
+            while (triviaList [index]
+                       .IsKind(SyntaxKind.WhitespaceTrivia)) {
                 index--;
             }
 
@@ -68,10 +66,9 @@ namespace StyleCop.Analyzers.LayoutRules
 
             var done = false;
             var lastEndOfLineIndex = -1;
-            while (!done && index >= 0)
-            {
-                switch (triviaList[index].Kind())
-                {
+            while (!done && index >= 0) {
+                switch (triviaList [index]
+                            .Kind()) {
                 case SyntaxKind.WhitespaceTrivia:
                     break;
                 case SyntaxKind.EndOfLineTrivia:
@@ -85,10 +82,9 @@ namespace StyleCop.Analyzers.LayoutRules
                 index--;
             }
 
-            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>()
-            {
-                [previousToken] = previousToken.WithTrailingTrivia(triviaList.Take(lastEndOfLineIndex + 1)),
-                [closeBraceToken] = closeBraceToken.WithLeadingTrivia(triviaList.Skip(firstLeadingWhitespace)),
+            var replaceMap = new Dictionary<SyntaxToken, SyntaxToken>(){
+                    [previousToken] = previousToken.WithTrailingTrivia(triviaList.Take(lastEndOfLineIndex + 1)),
+                [ closeBraceToken ] = closeBraceToken.WithLeadingTrivia(triviaList.Skip(firstLeadingWhitespace)),
             };
 
             var newSyntaxRoot = syntaxRoot.ReplaceTokens(replaceMap.Keys, (t1, t2) => replaceMap[t1]);

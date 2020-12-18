@@ -18,11 +18,10 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1514CodeFixProvider))]
     [Shared]
-    internal class SA1514CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1514CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1514ElementDocumentationHeaderMustBePrecededByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1514ElementDocumentationHeaderMustBePrecededByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -33,8 +32,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         LayoutResources.SA1514CodeFix,
@@ -56,8 +54,8 @@ namespace StyleCop.Analyzers.LayoutRules
 
             // Keep any leading whitespace with the documentation header
             var index = documentationHeaderIndex - 1;
-            while ((index >= 0) && triviaList[index].IsKind(SyntaxKind.WhitespaceTrivia))
-            {
+            while ((index >= 0) && triviaList [index]
+                                       .IsKind(SyntaxKind.WhitespaceTrivia)) {
                 index--;
             }
 

@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IStaticLocalInitializationSemaphoreOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IStaticLocalInitializationSemaphoreOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IStaticLocalInitializationSemaphoreOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, ILocalSymbol> LocalAccessor;
@@ -29,13 +28,11 @@ namespace StyleCop.Analyzers.Lightup
         public ILocalSymbol Local => LocalAccessor(this.WrappedOperation);
         public static IStaticLocalInitializationSemaphoreOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

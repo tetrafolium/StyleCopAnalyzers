@@ -10,8 +10,7 @@ namespace StyleCop.Analyzers
     /// <summary>
     /// Class containing helper methods to work with LightJson more easily.
     /// </summary>
-    internal static class JsonHelper
-    {
+    internal static class JsonHelper {
         /// <summary>
         /// Converts a JSON value to a boolean.
         /// </summary>
@@ -19,8 +18,7 @@ namespace StyleCop.Analyzers
         /// <returns>The boolean value contained within the JSON value.</returns>
         internal static bool ToBooleanValue(this KeyValuePair<string, JsonValue> jsonValue)
         {
-            if (!jsonValue.Value.IsBoolean)
-            {
+            if (!jsonValue.Value.IsBoolean) {
                 throw new InvalidSettingsException($"{jsonValue.Key} must contain a boolean value");
             }
 
@@ -34,8 +32,7 @@ namespace StyleCop.Analyzers
         /// <returns>The integer value contained within the JSON value.</returns>
         internal static int ToInt32Value(this KeyValuePair<string, JsonValue> jsonValue)
         {
-            if (!jsonValue.Value.IsInteger)
-            {
+            if (!jsonValue.Value.IsInteger) {
                 throw new InvalidSettingsException($"{jsonValue.Key} must contain an integer value");
             }
 
@@ -49,8 +46,7 @@ namespace StyleCop.Analyzers
         /// <returns>The string value contained within the JSON value.</returns>
         internal static string ToStringValue(this KeyValuePair<string, JsonValue> jsonValue)
         {
-            if (!jsonValue.Value.IsString)
-            {
+            if (!jsonValue.Value.IsString) {
                 throw new InvalidSettingsException($"{jsonValue.Key} must contain a string value");
             }
 
@@ -65,8 +61,7 @@ namespace StyleCop.Analyzers
         /// <returns>The string value contained within the JSON value.</returns>
         internal static string ToStringValue(this JsonValue jsonValue, string elementName)
         {
-            if (!jsonValue.IsString)
-            {
+            if (!jsonValue.IsString) {
                 throw new InvalidSettingsException($"{elementName} must contain a string value");
             }
 
@@ -82,14 +77,12 @@ namespace StyleCop.Analyzers
         internal static TEnum ToEnumValue<TEnum>(this KeyValuePair<string, JsonValue> jsonValue)
             where TEnum : struct
         {
-            if (!jsonValue.Value.IsString)
-            {
+            if (!jsonValue.Value.IsString) {
                 throw new InvalidSettingsException($"{jsonValue.Key} must contain an enum (string) value");
             }
 
             TEnum result;
-            if (!Enum.TryParse(jsonValue.Value.AsString, true, out result))
-            {
+            if (!Enum.TryParse(jsonValue.Value.AsString, true, out result)) {
                 throw new InvalidSettingsException($"{jsonValue.Key} cannot contain enum value '{jsonValue.Value.AsString}'");
             }
 
@@ -106,14 +99,12 @@ namespace StyleCop.Analyzers
         internal static TEnum ToEnumValue<TEnum>(this JsonValue jsonValue, string elementName)
             where TEnum : struct
         {
-            if (!jsonValue.IsString)
-            {
+            if (!jsonValue.IsString) {
                 throw new InvalidSettingsException($"{elementName} must contain an enum (string) value");
             }
 
             TEnum result;
-            if (!Enum.TryParse(jsonValue.AsString, true, out result))
-            {
+            if (!Enum.TryParse(jsonValue.AsString, true, out result)) {
                 throw new InvalidSettingsException($"{elementName} cannot contain enum value '{jsonValue.AsString}'");
             }
 
@@ -126,8 +117,7 @@ namespace StyleCop.Analyzers
         /// <param name="jsonValue">The key value pair identifying the JSON value.</param>
         internal static void AssertIsArray(this KeyValuePair<string, JsonValue> jsonValue)
         {
-            if (!jsonValue.Value.IsJsonArray)
-            {
+            if (!jsonValue.Value.IsJsonArray) {
                 throw new InvalidSettingsException($"{jsonValue.Key} must contain an array");
             }
         }
@@ -138,8 +128,7 @@ namespace StyleCop.Analyzers
         /// <param name="jsonValue">The key value pair identifying the JSON value.</param>
         internal static void AssertIsObject(this KeyValuePair<string, JsonValue> jsonValue)
         {
-            if (!jsonValue.Value.IsJsonObject)
-            {
+            if (!jsonValue.Value.IsJsonObject) {
                 throw new InvalidSettingsException($"{jsonValue.Key} must contain an object");
             }
         }

@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct ForEachVariableStatementSyntaxWrapper : ISyntaxWrapper<StatementSyntax>
-    {
+    internal readonly partial struct ForEachVariableStatementSyntaxWrapper : ISyntaxWrapper<StatementSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.ForEachVariableStatementSyntax";
         private static readonly Type WrappedType;
 
@@ -61,7 +60,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).AwaitKeyword;
+                return ((CommonForEachStatementSyntaxWrapper) this).AwaitKeyword;
             }
         }
 
@@ -69,7 +68,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).ForEachKeyword;
+                return ((CommonForEachStatementSyntaxWrapper) this).ForEachKeyword;
             }
         }
 
@@ -77,7 +76,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).OpenParenToken;
+                return ((CommonForEachStatementSyntaxWrapper) this).OpenParenToken;
             }
         }
 
@@ -93,7 +92,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).InKeyword;
+                return ((CommonForEachStatementSyntaxWrapper) this).InKeyword;
             }
         }
 
@@ -101,7 +100,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).Expression;
+                return ((CommonForEachStatementSyntaxWrapper) this).Expression;
             }
         }
 
@@ -109,7 +108,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).CloseParenToken;
+                return ((CommonForEachStatementSyntaxWrapper) this).CloseParenToken;
             }
         }
 
@@ -117,28 +116,26 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((CommonForEachStatementSyntaxWrapper)this).Statement;
+                return ((CommonForEachStatementSyntaxWrapper) this).Statement;
             }
         }
 
         public static explicit operator ForEachVariableStatementSyntaxWrapper(CommonForEachStatementSyntaxWrapper node)
         {
-            return (ForEachVariableStatementSyntaxWrapper)node.SyntaxNode;
+            return (ForEachVariableStatementSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator ForEachVariableStatementSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new ForEachVariableStatementSyntaxWrapper((StatementSyntax)node);
+            return new ForEachVariableStatementSyntaxWrapper((StatementSyntax) node);
         }
 
         public static implicit operator CommonForEachStatementSyntaxWrapper(ForEachVariableStatementSyntaxWrapper wrapper)

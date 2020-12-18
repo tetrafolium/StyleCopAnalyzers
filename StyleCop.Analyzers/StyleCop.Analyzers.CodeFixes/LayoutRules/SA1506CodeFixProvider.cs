@@ -18,11 +18,10 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1506CodeFixProvider))]
     [Shared]
-    internal class SA1506CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1506CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1506ElementDocumentationHeadersMustNotBeFollowedByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1506ElementDocumentationHeadersMustNotBeFollowedByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -33,8 +32,7 @@ namespace StyleCop.Analyzers.LayoutRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         LayoutResources.SA1506CodeFix,
@@ -57,19 +55,15 @@ namespace StyleCop.Analyzers.LayoutRules
 
             int currentLineStart = index + 1;
             bool onBlankLine = true;
-            for (int currentIndex = currentLineStart; currentIndex < triviaList.Count; currentIndex++)
-            {
-                switch (triviaList[currentIndex].Kind())
-                {
+            for (int currentIndex = currentLineStart; currentIndex < triviaList.Count; currentIndex++) {
+                switch (triviaList [currentIndex]
+                            .Kind()) {
                 case SyntaxKind.EndOfLineTrivia:
-                    if (onBlankLine)
-                    {
+                    if (onBlankLine) {
                         triviaList = triviaList.RemoveRange(currentLineStart, currentIndex - currentLineStart + 1);
                         currentIndex = currentLineStart - 1;
                         continue;
-                    }
-                    else
-                    {
+                    } else {
                         currentLineStart = currentIndex + 1;
                         onBlankLine = true;
                         break;
@@ -79,14 +73,12 @@ namespace StyleCop.Analyzers.LayoutRules
                     break;
 
                 default:
-                    if (triviaList[currentIndex].HasBuiltinEndLine())
-                    {
+                    if (triviaList [currentIndex]
+                            .HasBuiltinEndLine()) {
                         currentLineStart = currentIndex + 1;
                         onBlankLine = true;
                         break;
-                    }
-                    else
-                    {
+                    } else {
                         onBlankLine = false;
                         break;
                     }

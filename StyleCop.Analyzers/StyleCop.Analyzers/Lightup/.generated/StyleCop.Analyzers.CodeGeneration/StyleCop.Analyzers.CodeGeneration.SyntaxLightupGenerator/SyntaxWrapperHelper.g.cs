@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    internal static class SyntaxWrapperHelper
-    {
+    internal static class SyntaxWrapperHelper {
         private static readonly ImmutableDictionary<Type, Type> WrappedTypes;
 
         static SyntaxWrapperHelper()
@@ -80,8 +79,7 @@ namespace StyleCop.Analyzers.Lightup
         /// <returns>The wrapped type, or null if there is no info.</returns>
         internal static Type GetWrappedType(Type wrapperType)
         {
-            if (WrappedTypes.TryGetValue(wrapperType, out Type wrappedType))
-            {
+            if (WrappedTypes.TryGetValue(wrapperType, out Type wrappedType)) {
                 return wrappedType;
             }
 

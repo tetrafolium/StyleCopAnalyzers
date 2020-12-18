@@ -22,8 +22,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// tag.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1604ElementDocumentationMustHaveSummary : ElementDocumentationSummaryBase
-    {
+    internal class SA1604ElementDocumentationMustHaveSummary : ElementDocumentationSummaryBase {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1604ElementDocumentationMustHaveSummary"/> analyzer.
         /// </summary>
@@ -32,52 +31,42 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString Title = new LocalizableResourceString(nameof(DocumentationResources.SA1604Title), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1604MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1604Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         protected override void HandleXmlElement(SyntaxNodeAnalysisContext context, bool needsComment, DocumentationCommentTriviaSyntax documentation, XmlNodeSyntax syntax, XElement completeDocumentation, Location[] diagnosticLocations)
         {
-            if (!needsComment)
-            {
+            if (!needsComment) {
                 // A missing summary is allowed for this element.
                 return;
             }
 
-            if (completeDocumentation != null)
-            {
+            if (completeDocumentation != null) {
                 // We are working with an <include> element
-                if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.SummaryXmlTag))
-                {
+                if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.SummaryXmlTag)) {
                     return;
                 }
 
-                if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag))
-                {
+                if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag)) {
                     // Ignore nodes with an <inheritdoc/> tag in the included XML.
                     return;
                 }
-            }
-            else
-            {
-                if (syntax != null)
-                {
+            } else {
+                if (syntax != null) {
                     return;
                 }
 
-                if (documentation?.Content.GetFirstXmlElement(XmlCommentHelper.InheritdocXmlTag) != null)
-                {
+                if (documentation?.Content.GetFirstXmlElement(XmlCommentHelper.InheritdocXmlTag) != null) {
                     // Ignore nodes with an <inheritdoc/> tag.
                     return;
                 }
             }
 
-            foreach (var location in diagnosticLocations)
-            {
+            foreach (var location in diagnosticLocations) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
             }
         }

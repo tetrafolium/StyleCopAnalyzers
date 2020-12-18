@@ -19,8 +19,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// an extra, empty statement in the code.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1106CodeMustNotContainEmptyStatements : DiagnosticAnalyzer
-    {
+    internal class SA1106CodeMustNotContainEmptyStatements : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1106CodeMustNotContainEmptyStatements"/> analyzer.
         /// </summary>
@@ -30,16 +29,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1106MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1106Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink, WellKnownDiagnosticTags.Unnecessary);
 
         private static readonly Action<SyntaxNodeAnalysisContext> EmptyStatementAction = HandleEmptyStatement;
         private static readonly Action<SyntaxNodeAnalysisContext> BaseTypeDeclarationAction = HandleBaseTypeDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> NamespaceDeclarationAction = HandleNamespaceDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -54,46 +52,39 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var declaration = (BaseTypeDeclarationSyntax)context.Node;
+            var declaration = (BaseTypeDeclarationSyntax) context.Node;
 
             if (declaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken)
-                && !declaration.OpenBraceToken.IsKind(SyntaxKind.None))
-            {
+                && !declaration.OpenBraceToken.IsKind(SyntaxKind.None)) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, declaration.SemicolonToken.GetLocation()));
             }
         }
 
         private static void HandleNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var declaration = (NamespaceDeclarationSyntax)context.Node;
+            var declaration = (NamespaceDeclarationSyntax) context.Node;
 
-            if (declaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken))
-            {
+            if (declaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken)) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, declaration.SemicolonToken.GetLocation()));
             }
         }
 
         private static void HandleEmptyStatement(SyntaxNodeAnalysisContext context)
         {
-            EmptyStatementSyntax syntax = (EmptyStatementSyntax)context.Node;
+            EmptyStatementSyntax syntax = (EmptyStatementSyntax) context.Node;
 
-            if (syntax.Parent is LabeledStatementSyntax labeledStatementSyntax)
-            {
-                if (labeledStatementSyntax.Parent is BlockSyntax blockSyntax)
-                {
-                    for (int i = blockSyntax.Statements.Count - 1; i >= 0; i--)
-                    {
+            if (syntax.Parent is LabeledStatementSyntax labeledStatementSyntax) {
+                if (labeledStatementSyntax.Parent is BlockSyntax blockSyntax) {
+                    for (int i = blockSyntax.Statements.Count - 1; i >= 0; i--) {
                         StatementSyntax statement = blockSyntax.Statements[i];
 
                         // allow an empty statement to be used for a label, but only if no non-empty statements exist
                         // before the end of the block
-                        if (blockSyntax.Statements[i] == labeledStatementSyntax)
-                        {
+                        if (blockSyntax.Statements[i] == labeledStatementSyntax) {
                             return;
                         }
 
-                        if (!statement.IsKind(SyntaxKind.EmptyStatement))
-                        {
+                        if (!statement.IsKind(SyntaxKind.EmptyStatement)) {
                             break;
                         }
                     }

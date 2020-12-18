@@ -53,8 +53,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoDiagnostic("This diagnostic requires deep semantic analysis which is more suited to a usage-based analysis toolset as opposed to a style-based analysis toolset.")]
-    internal class SA1409RemoveUnnecessaryCode : DiagnosticAnalyzer
-    {
+    internal class SA1409RemoveUnnecessaryCode : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1409RemoveUnnecessaryCode"/> analyzer.
         /// </summary>
@@ -70,8 +69,8 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 #pragma warning restore RS2000 // Add analyzer diagnostic IDs to analyzer release.
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         [ExcludeFromCodeCoverage]

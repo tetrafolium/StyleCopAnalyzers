@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct RecursivePatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct RecursivePatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.RecursivePatternSyntax";
         private static readonly Type WrappedType;
 
@@ -57,7 +56,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PositionalPatternClauseSyntaxWrapper)PositionalPatternClauseAccessor(this.SyntaxNode);
+                return (PositionalPatternClauseSyntaxWrapper) PositionalPatternClauseAccessor(this.SyntaxNode);
             }
         }
 
@@ -65,7 +64,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PropertyPatternClauseSyntaxWrapper)PropertyPatternClauseAccessor(this.SyntaxNode);
+                return (PropertyPatternClauseSyntaxWrapper) PropertyPatternClauseAccessor(this.SyntaxNode);
             }
         }
 
@@ -73,33 +72,31 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (VariableDesignationSyntaxWrapper)DesignationAccessor(this.SyntaxNode);
+                return (VariableDesignationSyntaxWrapper) DesignationAccessor(this.SyntaxNode);
             }
         }
 
         public static explicit operator RecursivePatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (RecursivePatternSyntaxWrapper)node.SyntaxNode;
+            return (RecursivePatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator RecursivePatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (RecursivePatternSyntaxWrapper)node.SyntaxNode;
+            return (RecursivePatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator RecursivePatternSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new RecursivePatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new RecursivePatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(RecursivePatternSyntaxWrapper wrapper)

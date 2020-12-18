@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax>
-    {
+    internal readonly partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.TupleTypeSyntax";
         private static readonly Type WrappedType;
 
@@ -67,17 +66,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator TupleTypeSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new TupleTypeSyntaxWrapper((TypeSyntax)node);
+            return new TupleTypeSyntaxWrapper((TypeSyntax) node);
         }
 
         public static implicit operator TypeSyntax(TupleTypeSyntaxWrapper wrapper)

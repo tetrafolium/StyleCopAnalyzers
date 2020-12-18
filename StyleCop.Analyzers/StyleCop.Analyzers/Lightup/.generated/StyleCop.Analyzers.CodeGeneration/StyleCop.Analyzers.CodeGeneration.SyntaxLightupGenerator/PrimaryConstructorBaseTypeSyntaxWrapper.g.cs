@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct PrimaryConstructorBaseTypeSyntaxWrapper : ISyntaxWrapper<BaseTypeSyntax>
-    {
+    internal readonly partial struct PrimaryConstructorBaseTypeSyntaxWrapper : ISyntaxWrapper<BaseTypeSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.PrimaryConstructorBaseTypeSyntax";
         private static readonly Type WrappedType;
 
@@ -53,17 +52,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator PrimaryConstructorBaseTypeSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new PrimaryConstructorBaseTypeSyntaxWrapper((BaseTypeSyntax)node);
+            return new PrimaryConstructorBaseTypeSyntaxWrapper((BaseTypeSyntax) node);
         }
 
         public static implicit operator BaseTypeSyntax(PrimaryConstructorBaseTypeSyntaxWrapper wrapper)

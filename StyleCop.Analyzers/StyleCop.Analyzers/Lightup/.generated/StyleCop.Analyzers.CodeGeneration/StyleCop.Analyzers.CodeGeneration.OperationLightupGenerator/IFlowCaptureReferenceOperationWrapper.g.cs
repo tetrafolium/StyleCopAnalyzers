@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IFlowCaptureReferenceOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IFlowCaptureReferenceOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IFlowCaptureReferenceOperation";
         private static readonly Type WrappedType;
         private readonly IOperation operation;
@@ -27,13 +26,11 @@ namespace StyleCop.Analyzers.Lightup
         public object Id => throw new NotImplementedException("Property 'IFlowCaptureReferenceOperation.Id' has unsupported type 'CaptureId'");
         public static IFlowCaptureReferenceOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

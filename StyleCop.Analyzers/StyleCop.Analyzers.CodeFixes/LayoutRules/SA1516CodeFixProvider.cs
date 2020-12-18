@@ -20,11 +20,10 @@ namespace StyleCop.Analyzers.LayoutRules
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1516CodeFixProvider))]
     [Shared]
-    internal class SA1516CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1516CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1516ElementsMustBeSeparatedByBlankLine.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1516ElementsMustBeSeparatedByBlankLine.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,34 +36,31 @@ namespace StyleCop.Analyzers.LayoutRules
         {
             var syntaxRoot = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
+            foreach (Diagnostic diagnostic in context.Diagnostics) {
                 var insertBlankLine = DetermineCodeFixAction(diagnostic);
-                if (insertBlankLine == null)
-                {
+                if (insertBlankLine == null) {
                     continue;
                 }
 
                 context.RegisterCodeFix(
                     CodeAction.Create(
-                        insertBlankLine.Value ? LayoutResources.SA1516CodeFixInsert : LayoutResources.SA1516CodeFixRemove,
+                        insertBlankLine.Value ? LayoutResources.SA1516CodeFixInsert
+                        : LayoutResources.SA1516CodeFixRemove,
                         cancellationToken => GetTransformedDocumentAsync(context.Document, syntaxRoot, diagnostic, insertBlankLine.Value, context.CancellationToken),
                         nameof(SA1516CodeFixProvider)),
                     diagnostic);
             }
         }
 
-        private static bool? DetermineCodeFixAction(Diagnostic diagnostic)
+        private static bool ? DetermineCodeFixAction(Diagnostic diagnostic)
         {
             string codeFixAction;
 
-            if (!diagnostic.Properties.TryGetValue(SA1516ElementsMustBeSeparatedByBlankLine.CodeFixActionKey, out codeFixAction))
-            {
+            if (!diagnostic.Properties.TryGetValue(SA1516ElementsMustBeSeparatedByBlankLine.CodeFixActionKey, out codeFixAction)) {
                 return null;
             }
 
-            switch (codeFixAction)
-            {
+            switch (codeFixAction) {
             case SA1516ElementsMustBeSeparatedByBlankLine.InsertBlankLineValue:
                 return true;
 
@@ -81,11 +77,11 @@ namespace StyleCop.Analyzers.LayoutRules
             // Currently unused
             _ = cancellationToken;
 
-            var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+            var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                           : true);
             node = GetRelevantNode(node);
 
-            if (node == null)
-            {
+            if (node == null) {
                 return Task.FromResult(document);
             }
 
@@ -103,12 +99,9 @@ namespace StyleCop.Analyzers.LayoutRules
             var leadingTrivia = token.LeadingTrivia;
             SyntaxTriviaList newLeadingTrivia;
 
-            if (insertBlankLine)
-            {
+            if (insertBlankLine) {
                 newLeadingTrivia = leadingTrivia.Insert(0, SyntaxFactory.CarriageReturnLineFeed);
-            }
-            else
-            {
+            } else {
                 newLeadingTrivia = leadingTrivia.WithoutBlankLines();
             }
 
@@ -118,35 +111,28 @@ namespace StyleCop.Analyzers.LayoutRules
         private static SyntaxNode GetRelevantNode(SyntaxNode innerNode)
         {
             SyntaxNode currentNode = innerNode;
-            while (currentNode != null)
-            {
-                if (currentNode is BaseTypeDeclarationSyntax)
-                {
+            while (currentNode != null) {
+                if (currentNode is BaseTypeDeclarationSyntax) {
                     return currentNode;
                 }
 
-                if (currentNode is NamespaceDeclarationSyntax)
-                {
+                if (currentNode is NamespaceDeclarationSyntax) {
                     return currentNode;
                 }
 
-                if (currentNode is UsingDirectiveSyntax)
-                {
+                if (currentNode is UsingDirectiveSyntax) {
                     return currentNode;
                 }
 
-                if (currentNode is MemberDeclarationSyntax)
-                {
+                if (currentNode is MemberDeclarationSyntax) {
                     return currentNode;
                 }
 
-                if (currentNode is AccessorDeclarationSyntax)
-                {
+                if (currentNode is AccessorDeclarationSyntax) {
                     return currentNode;
                 }
 
-                if (currentNode is AttributeListSyntax)
-                {
+                if (currentNode is AttributeListSyntax) {
                     return currentNode;
                 }
 
@@ -156,18 +142,15 @@ namespace StyleCop.Analyzers.LayoutRules
             return null;
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1516CodeFixAll;
+            protected override string CodeActionTitle => LayoutResources.SA1516CodeFixAll;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -176,22 +159,21 @@ namespace StyleCop.Analyzers.LayoutRules
                 // Using token replacement, because node replacement will do nothing when replacing child nodes from a replaced parent node.
                 Dictionary<SyntaxToken, SyntaxToken> replaceMap = new Dictionary<SyntaxToken, SyntaxToken>();
 
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     var insertBlankLine = DetermineCodeFixAction(diagnostic);
-                    if (insertBlankLine == null)
-                    {
+                    if (insertBlankLine == null) {
                         continue;
                     }
 
-                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
+                    var node = syntaxRoot.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie
+                                                   : true);
                     node = GetRelevantNode(node);
 
-                    if (node != null)
-                    {
+                    if (node != null) {
                         var firstToken = node.GetFirstToken();
 
-                        replaceMap[firstToken] = ProcessToken(firstToken, insertBlankLine.Value);
+                        replaceMap [firstToken]
+                        = ProcessToken(firstToken, insertBlankLine.Value);
                     }
                 }
 

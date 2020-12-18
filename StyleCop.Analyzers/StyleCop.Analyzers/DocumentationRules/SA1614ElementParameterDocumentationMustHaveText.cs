@@ -25,8 +25,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [NoCodeFix("Cannot generate documentation")]
-    internal class SA1614ElementParameterDocumentationMustHaveText : ElementDocumentationBase
-    {
+    internal class SA1614ElementParameterDocumentationMustHaveText : ElementDocumentationBase {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1614ElementParameterDocumentationMustHaveText"/>
         /// analyzer.
@@ -37,27 +36,26 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1614MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1614Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         public SA1614ElementParameterDocumentationMustHaveText()
-            : base(matchElementName: XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings: true)
+            : base(matchElementName
+                   : XmlCommentHelper.ParamXmlTag, inheritDocSuppressesWarnings
+                   : true)
         {
         }
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         protected override void HandleXmlElement(SyntaxNodeAnalysisContext context, StyleCopSettings settings, bool needsComment, IEnumerable<XmlNodeSyntax> syntaxList, params Location[] diagnosticLocations)
         {
-            foreach (var syntax in syntaxList)
-            {
+            foreach (var syntax in syntaxList) {
                 bool isEmpty = syntax is XmlEmptyElementSyntax || XmlCommentHelper.IsConsideredEmpty(syntax);
 
-                if (isEmpty)
-                {
+                if (isEmpty) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, syntax.GetLocation()));
                 }
             }
@@ -67,15 +65,13 @@ namespace StyleCop.Analyzers.DocumentationRules
         protected override void HandleCompleteDocumentation(SyntaxNodeAnalysisContext context, bool needsComment, XElement completeDocumentation, params Location[] diagnosticLocations)
         {
             var xmlParamTags = completeDocumentation.Nodes()
-                .OfType<XElement>()
-                .Where(e => e.Name == XmlCommentHelper.ParamXmlTag);
+                                   .OfType<XElement>()
+                                   .Where(e => e.Name == XmlCommentHelper.ParamXmlTag);
 
-            foreach (var paramTag in xmlParamTags)
-            {
+            foreach (var paramTag in xmlParamTags) {
                 bool isEmpty = XmlCommentHelper.IsConsideredEmpty(paramTag);
 
-                if (isEmpty)
-                {
+                if (isEmpty) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, diagnosticLocations.First()));
                 }
             }

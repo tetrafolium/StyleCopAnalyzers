@@ -46,8 +46,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1626SingleLineCommentsMustNotUseDocumentationStyleSlashes : DiagnosticAnalyzer
-    {
+    internal class SA1626SingleLineCommentsMustNotUseDocumentationStyleSlashes : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1626SingleLineCommentsMustNotUseDocumentationStyleSlashes"/> analyzer.
@@ -58,14 +57,13 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1626MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1626Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> SingleLineDocumentationTriviaAction = HandleSingleLineDocumentationTrivia;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -78,15 +76,13 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static void HandleSingleLineDocumentationTrivia(SyntaxNodeAnalysisContext context)
         {
-            var node = (DocumentationCommentTriviaSyntax)context.Node;
+            var node = (DocumentationCommentTriviaSyntax) context.Node;
 
             // Check if the comment is not multi line
-            if (node.Content.All(x => x.IsKind(SyntaxKind.XmlText)))
-            {
-                foreach (var trivia in node.DescendantTrivia(descendIntoTrivia: true))
-                {
-                    if (!trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
-                    {
+            if (node.Content.All(x => x.IsKind(SyntaxKind.XmlText))) {
+                foreach (var trivia in node.DescendantTrivia(descendIntoTrivia
+                                                             : true)) {
+                    if (!trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia)) {
                         continue;
                     }
 

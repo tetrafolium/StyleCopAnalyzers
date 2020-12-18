@@ -14,8 +14,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Provides helper methods to work with XML comments.
     /// </summary>
-    internal static class XmlCommentHelper
-    {
+    internal static class XmlCommentHelper {
         internal const string SummaryXmlTag = "summary";
         internal const string ContentXmlTag = "content";
         internal const string InheritdocXmlTag = "inheritdoc";
@@ -58,15 +57,12 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>true, if the comment should be considered empty, false otherwise.</returns>
         internal static bool IsConsideredEmpty(DocumentationCommentTriviaSyntax xmlComment)
         {
-            if (xmlComment == null)
-            {
+            if (xmlComment == null) {
                 return true;
             }
 
-            foreach (XmlNodeSyntax syntax in xmlComment.Content)
-            {
-                if (!IsConsideredEmpty(syntax))
-                {
+            foreach (XmlNodeSyntax syntax in xmlComment.Content) {
+                if (!IsConsideredEmpty(syntax)) {
                     return false;
                 }
             }
@@ -83,12 +79,9 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>true, if the comment should be considered empty, false otherwise.</returns>
         internal static bool IsConsideredEmpty(XmlNodeSyntax xmlSyntax, bool considerEmptyElements = false)
         {
-            if (xmlSyntax is XmlTextSyntax text)
-            {
-                foreach (SyntaxToken token in text.TextTokens)
-                {
-                    if (!string.IsNullOrWhiteSpace(token.ToString()))
-                    {
+            if (xmlSyntax is XmlTextSyntax text) {
+                foreach (SyntaxToken token in text.TextTokens) {
+                    if (!string.IsNullOrWhiteSpace(token.ToString())) {
                         return false;
                     }
                 }
@@ -96,12 +89,9 @@ namespace StyleCop.Analyzers.Helpers
                 return true;
             }
 
-            if (xmlSyntax is XmlElementSyntax element)
-            {
-                foreach (XmlNodeSyntax syntax in element.Content)
-                {
-                    if (!IsConsideredEmpty(syntax))
-                    {
+            if (xmlSyntax is XmlElementSyntax element) {
+                foreach (XmlNodeSyntax syntax in element.Content) {
+                    if (!IsConsideredEmpty(syntax)) {
                         return false;
                     }
                 }
@@ -109,12 +99,9 @@ namespace StyleCop.Analyzers.Helpers
                 return true;
             }
 
-            if (xmlSyntax is XmlCDataSectionSyntax cdataElement)
-            {
-                foreach (SyntaxToken token in cdataElement.TextTokens)
-                {
-                    if (!string.IsNullOrWhiteSpace(token.ToString()))
-                    {
+            if (xmlSyntax is XmlCDataSectionSyntax cdataElement) {
+                foreach (SyntaxToken token in cdataElement.TextTokens) {
+                    if (!string.IsNullOrWhiteSpace(token.ToString())) {
                         return false;
                     }
                 }
@@ -122,8 +109,7 @@ namespace StyleCop.Analyzers.Helpers
                 return true;
             }
 
-            if (xmlSyntax is XmlEmptyElementSyntax)
-            {
+            if (xmlSyntax is XmlEmptyElementSyntax) {
                 // This includes <inheritdoc/>
                 return considerEmptyElements;
             }
@@ -139,17 +125,13 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>true, if the comment should be considered empty, false otherwise.</returns>
         internal static bool IsConsideredEmpty(XNode node)
         {
-            if (node is XText text)
-            {
+            if (node is XText text) {
                 return string.IsNullOrWhiteSpace(text.Value);
             }
 
-            if (node is XElement element)
-            {
-                foreach (XNode syntax in element.Nodes())
-                {
-                    if (!IsConsideredEmpty(syntax))
-                    {
+            if (node is XElement element) {
+                foreach (XNode syntax in element.Nodes()) {
+                    if (!IsConsideredEmpty(syntax)) {
                         return false;
                     }
                 }
@@ -168,21 +150,14 @@ namespace StyleCop.Analyzers.Helpers
         /// <see langword="null"/> if no such element exists.</returns>
         internal static XmlTextSyntax TryGetFirstTextElementWithContent(XmlNodeSyntax node)
         {
-            if (node is XmlEmptyElementSyntax)
-            {
+            if (node is XmlEmptyElementSyntax) {
                 return null;
-            }
-            else if (node is XmlTextSyntax xmlText)
-            {
+            } else if (node is XmlTextSyntax xmlText) {
                 return !IsConsideredEmpty(node) ? xmlText : null;
-            }
-            else if (node is XmlElementSyntax xmlElement)
-            {
-                foreach (var child in xmlElement.Content)
-                {
+            } else if (node is XmlElementSyntax xmlElement) {
+                foreach (var child in xmlElement.Content) {
                     var nestedContent = TryGetFirstTextElementWithContent(child);
-                    if (nestedContent != null)
-                    {
+                    if (nestedContent != null) {
                         return nestedContent;
                     }
                 }
@@ -202,13 +177,11 @@ namespace StyleCop.Analyzers.Helpers
         /// </returns>
         internal static bool IsMissingOrEmpty(SyntaxTrivia commentTrivia)
         {
-            if (!commentTrivia.HasStructure)
-            {
+            if (!commentTrivia.HasStructure) {
                 return true;
             }
 
-            if (commentTrivia.GetStructure() is DocumentationCommentTriviaSyntax structuredTrivia)
-            {
+            if (commentTrivia.GetStructure() is DocumentationCommentTriviaSyntax structuredTrivia) {
                 return IsConsideredEmpty(structuredTrivia);
             }
 
@@ -229,25 +202,21 @@ namespace StyleCop.Analyzers.Helpers
 
         internal static string GetText(XmlNodeSyntax nodeSyntax, bool normalizeWhitespace = false)
         {
-            if (nodeSyntax is XmlTextSyntax xmlTextSyntax)
-            {
+            if (nodeSyntax is XmlTextSyntax xmlTextSyntax) {
                 return GetText(xmlTextSyntax, normalizeWhitespace);
             }
 
-            if (nodeSyntax is XmlElementSyntax xmlElementSyntax)
-            {
+            if (nodeSyntax is XmlElementSyntax xmlElementSyntax) {
                 var stringBuilder = StringBuilderPool.Allocate();
 
-                foreach (var node in xmlElementSyntax.Content)
-                {
+                foreach (var node in xmlElementSyntax.Content) {
                     stringBuilder.Append(GetText(node, normalizeWhitespace));
                 }
 
                 return StringBuilderPool.ReturnAndFree(stringBuilder);
             }
 
-            if (nodeSyntax is XmlEmptyElementSyntax emptyXmlElement)
-            {
+            if (nodeSyntax is XmlEmptyElementSyntax emptyXmlElement) {
                 return emptyXmlElement.NormalizeWhitespace(string.Empty).ToString();
             }
 
@@ -261,21 +230,18 @@ namespace StyleCop.Analyzers.Helpers
 
         internal static string GetText(XmlTextSyntax textElement, bool normalizeWhitespace)
         {
-            if (textElement == null)
-            {
+            if (textElement == null) {
                 return null;
             }
 
             StringBuilder stringBuilder = StringBuilderPool.Allocate();
 
-            foreach (var item in textElement.TextTokens)
-            {
+            foreach (var item in textElement.TextTokens) {
                 stringBuilder.Append(item);
             }
 
             string result = StringBuilderPool.ReturnAndFree(stringBuilder);
-            if (normalizeWhitespace)
-            {
+            if (normalizeWhitespace) {
                 result = Regex.Replace(result, @"\s+", " ");
             }
 
@@ -285,13 +251,11 @@ namespace StyleCop.Analyzers.Helpers
         internal static T GetFirstAttributeOrDefault<T>(XmlNodeSyntax nodeSyntax)
             where T : XmlAttributeSyntax
         {
-            if (nodeSyntax is XmlEmptyElementSyntax emptyElementSyntax)
-            {
+            if (nodeSyntax is XmlEmptyElementSyntax emptyElementSyntax) {
                 return emptyElementSyntax.Attributes.OfType<T>().FirstOrDefault();
             }
 
-            if (nodeSyntax is XmlElementSyntax elementSyntax)
-            {
+            if (nodeSyntax is XmlElementSyntax elementSyntax) {
                 return elementSyntax.StartTag?.Attributes.OfType<T>().FirstOrDefault();
             }
 
@@ -300,13 +264,11 @@ namespace StyleCop.Analyzers.Helpers
 
         internal static bool IsInlineElement(this XmlNodeSyntax nodeSyntax)
         {
-            if (nodeSyntax is XmlEmptyElementSyntax emptyElementSyntax)
-            {
+            if (nodeSyntax is XmlEmptyElementSyntax emptyElementSyntax) {
                 return IsInlineElement(emptyElementSyntax.Name?.LocalName.ValueText);
             }
 
-            if (nodeSyntax is XmlElementSyntax elementSyntax)
-            {
+            if (nodeSyntax is XmlElementSyntax elementSyntax) {
                 return IsInlineElement(elementSyntax.StartTag?.Name?.LocalName.ValueText);
             }
 
@@ -315,8 +277,7 @@ namespace StyleCop.Analyzers.Helpers
 
         internal static bool IsBlockElement(this XmlNodeSyntax nodeSyntax)
         {
-            if (nodeSyntax is XmlElementSyntax elementSyntax)
-            {
+            if (nodeSyntax is XmlElementSyntax elementSyntax) {
                 return IsBlockElement(elementSyntax.StartTag?.Name?.LocalName.ValueText);
             }
 
@@ -325,8 +286,7 @@ namespace StyleCop.Analyzers.Helpers
 
         private static bool IsInlineElement(string localName)
         {
-            switch (localName)
-            {
+            switch (localName) {
             case CXmlTag:
             case ParamRefXmlTag:
             case SeeXmlTag:
@@ -340,8 +300,7 @@ namespace StyleCop.Analyzers.Helpers
 
         private static bool IsBlockElement(string localName)
         {
-            switch (localName)
-            {
+            switch (localName) {
             case CodeXmlTag:
             case ListXmlTag:
             case NoteXmlTag:

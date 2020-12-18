@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IConversionOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IConversionOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IConversionOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> OperandAccessor;
@@ -39,13 +38,11 @@ namespace StyleCop.Analyzers.Lightup
         public bool IsChecked => IsCheckedAccessor(this.WrappedOperation);
         public static IConversionOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

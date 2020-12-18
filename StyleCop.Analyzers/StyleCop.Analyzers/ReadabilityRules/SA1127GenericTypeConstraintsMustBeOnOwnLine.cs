@@ -19,8 +19,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// keyword are on the same line.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1127GenericTypeConstraintsMustBeOnOwnLine : DiagnosticAnalyzer
-    {
+    internal class SA1127GenericTypeConstraintsMustBeOnOwnLine : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1127GenericTypeConstraintsMustBeOnOwnLine"/>.
         /// </summary>
@@ -30,14 +29,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1127MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1127Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> TypeParameterConstraintClauseAction = HandleTypeParameterConstraintClause;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -50,9 +48,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleTypeParameterConstraintClause(SyntaxNodeAnalysisContext context)
         {
-            var syntax = (TypeParameterConstraintClauseSyntax)context.Node;
-            if (!syntax.WhereKeyword.IsFirstInLine())
-            {
+            var syntax = (TypeParameterConstraintClauseSyntax) context.Node;
+            if (!syntax.WhereKeyword.IsFirstInLine()) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, syntax.GetLocation()));
             }
         }

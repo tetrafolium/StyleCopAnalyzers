@@ -10,8 +10,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Provides helper methods to work with token.
     /// </summary>
-    internal static class TokenHelper
-    {
+    internal static class TokenHelper {
         /// <summary>
         /// Gets a value indicating whether the <paramref name="token"/> is first in line.
         /// </summary>
@@ -27,24 +26,17 @@ namespace StyleCop.Analyzers.Helpers
             var fullLineSpan = token.SyntaxTree.GetLineSpan(token.FullSpan);
 
             bool firstInLine;
-            if (token.SyntaxTree == null || fullLineSpan.StartLinePosition.Character == 0)
-            {
+            if (token.SyntaxTree == null || fullLineSpan.StartLinePosition.Character == 0) {
                 firstInLine = true;
-            }
-            else
-            {
+            } else {
                 var tokenLineSpan = token.SyntaxTree.GetLineSpan(token.Span);
                 firstInLine = tokenLineSpan.StartLinePosition.Line != fullLineSpan.StartLinePosition.Line;
             }
 
-            if (firstInLine && !allowNonWhitespaceTrivia)
-            {
-                foreach (var trivia in token.LeadingTrivia.Reverse())
-                {
-                    if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                    {
-                        if (!trivia.HasBuiltinEndLine())
-                        {
+            if (firstInLine && !allowNonWhitespaceTrivia) {
+                foreach (var trivia in token.LeadingTrivia.Reverse()) {
+                    if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia)) {
+                        if (!trivia.HasBuiltinEndLine()) {
                             firstInLine = false;
                         }
 
@@ -68,12 +60,11 @@ namespace StyleCop.Analyzers.Helpers
         internal static bool IsInterpolatedUnaryExpression(this SyntaxToken token)
         {
             SyntaxNode parentNode = (token.Parent.IsKind(SyntaxKind.UnaryMinusExpression)
-                    || token.Parent.IsKind(SyntaxKind.UnaryPlusExpression))
+                                        || token.Parent.IsKind(SyntaxKind.UnaryPlusExpression))
                 ? token.Parent.Parent
                 : token.Parent;
 
-            if (parentNode.IsKind(SyntaxKind.Interpolation))
-            {
+            if (parentNode.IsKind(SyntaxKind.Interpolation)) {
                 return true;
             }
 
@@ -89,16 +80,14 @@ namespace StyleCop.Analyzers.Helpers
         {
             var fullLineSpan = token.SyntaxTree.GetLineSpan(token.FullSpan);
 
-            if (token.SyntaxTree == null || fullLineSpan.EndLinePosition.Character == 0)
-            {
+            if (token.SyntaxTree == null || fullLineSpan.EndLinePosition.Character == 0) {
                 return true;
             }
 
             var tokenLineSpan = token.SyntaxTree.GetLineSpan(token.Span);
 
             if (tokenLineSpan.EndLinePosition.Line != fullLineSpan.EndLinePosition.Line
-                || token.SyntaxTree.Length == token.FullSpan.End)
-            {
+                || token.SyntaxTree.Length == token.FullSpan.End) {
                 return true;
             }
 
@@ -118,8 +107,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             // Perf: Directly access the text instead of the trivia.
             int pos = token.Span.Start - 1;
-            if (pos < 0 || token.SyntaxTree == null)
-            {
+            if (pos < 0 || token.SyntaxTree == null) {
                 return false;
             }
 
@@ -135,16 +123,14 @@ namespace StyleCop.Analyzers.Helpers
         {
             SyntaxToken precedingToken = token.GetPreviousToken();
 
-            if (!precedingToken.IsKind(SyntaxKind.None) && (precedingToken.GetLine() == token.GetLine()))
-            {
+            if (!precedingToken.IsKind(SyntaxKind.None) && (precedingToken.GetLine() == token.GetLine())) {
                 return false;
             }
 
             var precedingTriviaList = TriviaHelper.MergeTriviaLists(precedingToken.TrailingTrivia, token.LeadingTrivia);
-            for (var i = precedingTriviaList.Count - 1; i >= 0; i--)
-            {
-                switch (precedingTriviaList[i].Kind())
-                {
+            for (var i = precedingTriviaList.Count - 1; i >= 0; i--) {
+                switch (precedingTriviaList [i]
+                            .Kind()) {
                 case SyntaxKind.WhitespaceTrivia:
                     break;
                 case SyntaxKind.EndOfLineTrivia:
@@ -165,8 +151,7 @@ namespace StyleCop.Analyzers.Helpers
         internal static bool IsFollowedByWhitespace(this SyntaxToken token)
         {
             SyntaxTriviaList triviaList = token.TrailingTrivia;
-            if (triviaList.Count > 0)
-            {
+            if (triviaList.Count > 0) {
                 return triviaList.First().IsKind(SyntaxKind.WhitespaceTrivia);
             }
 

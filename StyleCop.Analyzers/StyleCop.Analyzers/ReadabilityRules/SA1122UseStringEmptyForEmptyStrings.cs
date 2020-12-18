@@ -29,8 +29,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1122UseStringEmptyForEmptyStrings : DiagnosticAnalyzer
-    {
+    internal class SA1122UseStringEmptyForEmptyStrings : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1122UseStringEmptyForEmptyStrings"/> analyzer.
         /// </summary>
@@ -40,14 +39,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1122MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1122Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> StringLiteralExpressionAction = HandleStringLiteralExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -60,18 +58,15 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleStringLiteralExpression(SyntaxNodeAnalysisContext context)
         {
-            LiteralExpressionSyntax literalExpression = (LiteralExpressionSyntax)context.Node;
+            LiteralExpressionSyntax literalExpression = (LiteralExpressionSyntax) context.Node;
 
             var token = literalExpression.Token;
-            if (token.IsKind(SyntaxKind.StringLiteralToken))
-            {
-                if (HasToBeConstant(literalExpression))
-                {
+            if (token.IsKind(SyntaxKind.StringLiteralToken)) {
+                if (HasToBeConstant(literalExpression)) {
                     return;
                 }
 
-                if (token.ValueText == string.Empty)
-                {
+                if (token.ValueText == string.Empty) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, literalExpression.GetLocation()));
                 }
             }
@@ -83,32 +78,26 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
             if (outermostExpression.Parent.IsKind(SyntaxKind.AttributeArgument)
                 || outermostExpression.Parent.IsKind(SyntaxKind.CaseSwitchLabel)
-                || outermostExpression.Parent.IsKind(SyntaxKindEx.ConstantPattern))
-            {
+                || outermostExpression.Parent.IsKind(SyntaxKindEx.ConstantPattern)) {
                 return true;
             }
 
-            if (outermostExpression.Parent is EqualsValueClauseSyntax equalsValueClause)
-            {
-                if (equalsValueClause.Parent is ParameterSyntax)
-                {
+            if (outermostExpression.Parent is EqualsValueClauseSyntax equalsValueClause) {
+                if (equalsValueClause.Parent is ParameterSyntax) {
                     return true;
                 }
 
-                if (!(equalsValueClause.Parent is VariableDeclaratorSyntax variableDeclaratorSyntax) || !(variableDeclaratorSyntax?.Parent is VariableDeclarationSyntax variableDeclarationSyntax))
-                {
+                if (!(equalsValueClause.Parent is VariableDeclaratorSyntax variableDeclaratorSyntax) || !(variableDeclaratorSyntax?.Parent is VariableDeclarationSyntax variableDeclarationSyntax)) {
                     return false;
                 }
 
                 if (variableDeclarationSyntax.Parent is FieldDeclarationSyntax fieldDeclarationSyntax
-                    && fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
-                {
+                    && fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.ConstKeyword)) {
                     return true;
                 }
 
                 if (variableDeclarationSyntax.Parent is LocalDeclarationStatementSyntax localDeclarationStatementSyntax
-                    && localDeclarationStatementSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
-                {
+                    && localDeclarationStatementSyntax.Modifiers.Any(SyntaxKind.ConstKeyword)) {
                     return true;
                 }
             }
@@ -118,10 +107,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static ExpressionSyntax FindOutermostExpression(ExpressionSyntax node)
         {
-            while (true)
-            {
-                if (!(node.Parent is ExpressionSyntax parent))
-                {
+            while (true) {
+                if (!(node.Parent is ExpressionSyntax parent)) {
                     break;
                 }
 

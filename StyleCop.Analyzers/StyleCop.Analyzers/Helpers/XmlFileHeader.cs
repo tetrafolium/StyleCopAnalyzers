@@ -12,8 +12,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Class containing the parsed file header information.
     /// </summary>
-    internal class XmlFileHeader
-    {
+    internal class XmlFileHeader {
         private readonly XElement headerXml;
         private readonly int fileHeaderStart;
         private readonly int fileHeaderEnd;
@@ -48,7 +47,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             get
             {
-                return new XmlFileHeader { IsMissing = true };
+                return new XmlFileHeader{ IsMissing = true };
             }
         }
 
@@ -62,7 +61,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             get
             {
-                return new XmlFileHeader { IsMalformed = true };
+                return new XmlFileHeader{ IsMalformed = true };
             }
         }
 
@@ -72,7 +71,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// True if the file header is missing.
         /// </value>
-        internal bool IsMissing { get; private set; }
+        internal bool IsMissing
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the file header contains a properly formatted XML structure.
@@ -80,7 +83,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// True if the file header is not properly formatted XML.
         /// </value>
-        internal bool IsMalformed { get; private set; }
+        internal bool IsMalformed
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets a XML element from the file header with the given tag name.
@@ -99,8 +106,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The location representing the start of the file header.</returns>
         internal Location GetLocation(SyntaxTree syntaxTree)
         {
-            if (this.IsMissing || this.IsMalformed)
-            {
+            if (this.IsMissing || this.IsMalformed) {
                 return Location.Create(syntaxTree, new TextSpan(0, 0));
             }
 

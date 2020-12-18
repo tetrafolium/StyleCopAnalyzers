@@ -22,11 +22,10 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1412CodeFixProvider))]
     [Shared]
-    internal class SA1412CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1412CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1412StoreFilesAsUtf8.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1412StoreFilesAsUtf8.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -37,8 +36,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 string usedEncoding = diagnostic.Properties[SA1412StoreFilesAsUtf8.EncodingProperty];
 
                 context.RegisterCodeFix(

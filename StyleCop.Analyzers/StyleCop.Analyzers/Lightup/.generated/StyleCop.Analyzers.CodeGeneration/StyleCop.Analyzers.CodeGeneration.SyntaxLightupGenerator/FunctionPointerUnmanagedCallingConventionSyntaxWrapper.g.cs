@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct FunctionPointerUnmanagedCallingConventionSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct FunctionPointerUnmanagedCallingConventionSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerUnmanagedCallingConventionSyntax";
         private static readonly Type WrappedType;
 
@@ -43,17 +42,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator FunctionPointerUnmanagedCallingConventionSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new FunctionPointerUnmanagedCallingConventionSyntaxWrapper((CSharpSyntaxNode)node);
+            return new FunctionPointerUnmanagedCallingConventionSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator CSharpSyntaxNode(FunctionPointerUnmanagedCallingConventionSyntaxWrapper wrapper)

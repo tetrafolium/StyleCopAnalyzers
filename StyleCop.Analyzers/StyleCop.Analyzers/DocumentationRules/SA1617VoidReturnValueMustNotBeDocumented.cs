@@ -25,8 +25,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// tag within its documentation header.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1617VoidReturnValueMustNotBeDocumented : DiagnosticAnalyzer
-    {
+    internal class SA1617VoidReturnValueMustNotBeDocumented : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1617VoidReturnValueMustNotBeDocumented"/> analyzer.
         /// </summary>
@@ -42,8 +41,7 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1617MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1617Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> MethodDeclarationAction = HandleMethodDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> DelegateDeclarationAction = HandleDelegateDeclaration;
@@ -51,8 +49,8 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly ImmutableDictionary<string, string> NoCodeFixProperties = ImmutableDictionary.Create<string, string>().Add(NoCodeFixKey, string.Empty);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -66,61 +64,54 @@ namespace StyleCop.Analyzers.DocumentationRules
 
         private static void HandleMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+            var methodDeclaration = (MethodDeclarationSyntax) context.Node;
             HandleMember(context, methodDeclaration.ReturnType);
         }
 
         private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
+            var delegateDeclaration = (DelegateDeclarationSyntax) context.Node;
             HandleMember(context, delegateDeclaration?.ReturnType);
         }
 
         private static void HandleMember(SyntaxNodeAnalysisContext context, TypeSyntax returnValue)
         {
             var documentation = context.Node.GetDocumentationCommentTriviaSyntax();
-            if (documentation == null)
-            {
+            if (documentation == null) {
                 return;
             }
 
             // Check if the return type is void.
-            if (!(returnValue is PredefinedTypeSyntax returnType) || !returnType.Keyword.IsKind(SyntaxKind.VoidKeyword))
-            {
+            if (!(returnValue is PredefinedTypeSyntax returnType) || !returnType.Keyword.IsKind(SyntaxKind.VoidKeyword)) {
                 return;
             }
 
             // Check if the return value is documented
             var returnsElement = documentation.Content.GetFirstXmlElement(XmlCommentHelper.ReturnsXmlTag);
-            if (returnsElement == null)
-            {
+            if (returnsElement == null) {
                 var includeElement = documentation.Content.GetFirstXmlElement(XmlCommentHelper.IncludeXmlTag);
-                if (includeElement != null)
-                {
+                if (includeElement != null) {
                     string rawDocumentation;
                     var declaration = context.SemanticModel.GetDeclaredSymbol(context.Node, context.CancellationToken);
-                    if (declaration == null)
-                    {
+                    if (declaration == null) {
                         return;
                     }
 
-                    rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes: true, cancellationToken: context.CancellationToken);
+                    rawDocumentation = declaration.GetDocumentationCommentXml(expandIncludes
+                                                                              : true, cancellationToken
+                                                                              : context.CancellationToken);
                     var completeDocumentation = XElement.Parse(rawDocumentation, LoadOptions.None);
-                    if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag))
-                    {
+                    if (completeDocumentation.Nodes().OfType<XElement>().Any(element => element.Name == XmlCommentHelper.InheritdocXmlTag)) {
                         // Ignore nodes with an <inheritdoc/> tag in the included XML.
                         return;
                     }
 
                     var includedReturnsElement = completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(element => element.Name == XmlCommentHelper.ReturnsXmlTag);
-                    if (includedReturnsElement != null)
-                    {
+                    if (includedReturnsElement != null) {
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, includeElement.GetLocation(), NoCodeFixProperties));
                     }
                 }
-            }
-            else
-            {
+            } else {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, returnsElement.GetLocation()));
             }
         }

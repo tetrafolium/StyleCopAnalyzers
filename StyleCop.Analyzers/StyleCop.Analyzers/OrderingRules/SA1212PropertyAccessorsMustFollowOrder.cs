@@ -38,8 +38,7 @@ namespace StyleCop.Analyzers.OrderingRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1212PropertyAccessorsMustFollowOrder : DiagnosticAnalyzer
-    {
+    internal class SA1212PropertyAccessorsMustFollowOrder : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1212PropertyAccessorsMustFollowOrder"/> analyzer.
         /// </summary>
@@ -49,15 +48,14 @@ namespace StyleCop.Analyzers.OrderingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(OrderingResources.SA1212MessageFormat), OrderingResources.ResourceManager, typeof(OrderingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(OrderingResources.SA1212Description), OrderingResources.ResourceManager, typeof(OrderingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.OrderingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> PropertyDeclarationAction = HandlePropertyDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> IndexerDeclarationAction = HandleIndexerDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -71,36 +69,37 @@ namespace StyleCop.Analyzers.OrderingRules
 
         private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+            var indexerDeclaration = (IndexerDeclarationSyntax) context.Node;
 
             AnalyzeProperty(context, indexerDeclaration);
         }
 
         private static void HandlePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
+            var propertyDeclaration = (PropertyDeclarationSyntax) context.Node;
 
             AnalyzeProperty(context, propertyDeclaration);
         }
 
         private static void AnalyzeProperty(SyntaxNodeAnalysisContext context, BasePropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration?.AccessorList == null)
-            {
+            if (propertyDeclaration?.AccessorList == null) {
                 return;
             }
 
             var accessors = propertyDeclaration.AccessorList.Accessors;
-            if (propertyDeclaration.AccessorList.IsMissing ||
-                accessors.Count != 2)
-            {
+            if (propertyDeclaration.AccessorList.IsMissing || accessors.Count != 2) {
                 return;
             }
 
-            if (accessors[0].Kind() == SyntaxKind.SetAccessorDeclaration &&
-                accessors[1].Kind() == SyntaxKind.GetAccessorDeclaration)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, accessors[0].GetLocation()));
+            if (accessors [0]
+                        .Kind()
+                    == SyntaxKind.SetAccessorDeclaration
+                && accessors [1]
+                        .Kind()
+                    == SyntaxKind.GetAccessorDeclaration) {
+                context.ReportDiagnostic(Diagnostic.Create(Descriptor, accessors [0]
+                                                                           .GetLocation()));
             }
         }
     }

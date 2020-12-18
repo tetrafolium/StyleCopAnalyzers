@@ -12,15 +12,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     using Microsoft.CodeAnalysis.CodeFixes;
     using StyleCop.Analyzers.Helpers;
 
-    internal sealed class SA1412FixAllProvider : FixAllProvider
-    {
+    internal sealed class SA1412FixAllProvider : FixAllProvider {
         public override Task<CodeAction> GetFixAsync(FixAllContext fixAllContext)
         {
             string title = string.Format(MaintainabilityResources.SA1412CodeFix, fixAllContext.CodeActionEquivalenceKey.Substring(fixAllContext.CodeActionEquivalenceKey.IndexOf('.') + 1));
 
             CodeAction fixAction;
-            switch (fixAllContext.Scope)
-            {
+            switch (fixAllContext.Scope) {
             case FixAllScope.Document:
                 fixAction = CodeAction.Create(
                     title,
@@ -53,14 +51,12 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
         private static async Task<Solution> FixDocumentAsync(Solution solution, DocumentId documentId, ImmutableArray<Diagnostic> diagnostics, string codeActionEquivalenceKey, CancellationToken cancellationToken)
         {
-            if (diagnostics.IsEmpty)
-            {
+            if (diagnostics.IsEmpty) {
                 return solution;
             }
 
             string equivalenceKey = nameof(SA1412CodeFixProvider) + "." + diagnostics[0].Properties[SA1412StoreFilesAsUtf8.EncodingProperty];
-            if (codeActionEquivalenceKey != equivalenceKey)
-            {
+            if (codeActionEquivalenceKey != equivalenceKey) {
                 return solution;
             }
 
@@ -72,8 +68,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         {
             var documentDiagnosticsToFix = await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
             ImmutableArray<Diagnostic> diagnostics;
-            if (!documentDiagnosticsToFix.TryGetValue(fixAllContext.Document, out diagnostics))
-            {
+            if (!documentDiagnosticsToFix.TryGetValue(fixAllContext.Document, out diagnostics)) {
                 return fixAllContext.Document.Project.Solution;
             }
 
@@ -85,11 +80,9 @@ namespace StyleCop.Analyzers.MaintainabilityRules
             var documentDiagnosticsToFix = await FixAllContextHelper.GetDocumentDiagnosticsToFixAsync(fixAllContext).ConfigureAwait(false);
 
             Solution solution = fixAllContext.Solution;
-            foreach (var document in documents)
-            {
+            foreach (var document in documents) {
                 ImmutableArray<Diagnostic> diagnostics;
-                if (!documentDiagnosticsToFix.TryGetValue(document, out diagnostics))
-                {
+                if (!documentDiagnosticsToFix.TryGetValue(document, out diagnostics)) {
                     continue;
                 }
 

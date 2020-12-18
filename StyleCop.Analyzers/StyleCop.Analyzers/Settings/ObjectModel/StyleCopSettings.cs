@@ -5,8 +5,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
 {
     using LightJson;
 
-    internal class StyleCopSettings
-    {
+    internal class StyleCopSettings {
         /// <summary>
         /// This is the backing field for the <see cref="Indentation"/> property.
         /// </summary>
@@ -66,11 +65,9 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
         protected internal StyleCopSettings(JsonObject settingsObject)
             : this()
         {
-            foreach (var kvp in settingsObject)
-            {
+            foreach (var kvp in settingsObject) {
                 var childSettingsObject = kvp.Value.AsJsonObject;
-                switch (kvp.Key)
-                {
+                switch (kvp.Key) {
                 case "indentation":
                     kvp.AssertIsObject();
                     this.indentation = new IndentationSettings(childSettingsObject);
@@ -117,28 +114,20 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
             }
         }
 
-        public IndentationSettings Indentation =>
-            this.indentation;
+        public IndentationSettings Indentation => this.indentation;
 
-        public SpacingSettings SpacingRules =>
-            this.spacingRules;
+        public SpacingSettings SpacingRules => this.spacingRules;
 
-        public ReadabilitySettings ReadabilityRules =>
-            this.readabilityRules;
+        public ReadabilitySettings ReadabilityRules => this.readabilityRules;
 
-        public OrderingSettings OrderingRules =>
-            this.orderingRules;
+        public OrderingSettings OrderingRules => this.orderingRules;
 
-        public NamingSettings NamingRules =>
-            this.namingRules;
+        public NamingSettings NamingRules => this.namingRules;
 
-        public MaintainabilitySettings MaintainabilityRules =>
-            this.maintainabilityRules;
+        public MaintainabilitySettings MaintainabilityRules => this.maintainabilityRules;
 
-        public LayoutSettings LayoutRules =>
-            this.layoutRules;
+        public LayoutSettings LayoutRules => this.layoutRules;
 
-        public DocumentationSettings DocumentationRules =>
-            this.documentationRules;
+        public DocumentationSettings DocumentationRules => this.documentationRules;
     }
 }

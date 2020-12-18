@@ -22,11 +22,10 @@ namespace StyleCop.Analyzers.SpacingRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1028CodeFixProvider))]
     [Shared]
-    internal class SA1028CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1028CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1028CodeMustNotContainTrailingWhitespace.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1028CodeMustNotContainTrailingWhitespace.DiagnosticId);
 
         /// <inheritdoc/>
         public sealed override FixAllProvider GetFixAllProvider()
@@ -37,8 +36,7 @@ namespace StyleCop.Analyzers.SpacingRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         SpacingResources.SA1028CodeFix,
@@ -63,18 +61,15 @@ namespace StyleCop.Analyzers.SpacingRules
             return document.WithText(text.WithChanges(new TextChange(diagnostic.Location.SourceSpan, string.Empty)));
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
-        {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
+        private class FixAll : DocumentBasedFixAllProvider {
+            public static FixAllProvider Instance { get; }
+            = new FixAll();
 
-            protected override string CodeActionTitle =>
-                SpacingResources.SA1028CodeFix;
+            protected override string CodeActionTitle => SpacingResources.SA1028CodeFix;
 
             protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
             {
-                if (diagnostics.IsEmpty)
-                {
+                if (diagnostics.IsEmpty) {
                     return null;
                 }
 
@@ -82,8 +77,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
                 List<TextChange> changes = new List<TextChange>();
 
-                foreach (var diagnostic in diagnostics)
-                {
+                foreach (var diagnostic in diagnostics) {
                     changes.Add(new TextChange(diagnostic.Location.SourceSpan, string.Empty));
                 }
 

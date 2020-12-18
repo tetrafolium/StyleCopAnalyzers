@@ -15,8 +15,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// An attribute is placed on the same line of code as another attribute or element.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1134AttributesMustNotShareLine : DiagnosticAnalyzer
-    {
+    internal class SA1134AttributesMustNotShareLine : DiagnosticAnalyzer {
         /// <summary>
         /// Properties key used to indicate that a code fix should be inserted before the attribute.
         /// </summary>
@@ -36,14 +35,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1134MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1134Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> HandleAttributeListAction = HandleAttributeList;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -57,11 +55,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static void HandleAttributeList(SyntaxNodeAnalysisContext context)
         {
             var diagnosticProperties = ImmutableDictionary.CreateBuilder<string, string>();
-            AttributeListSyntax attributeList = (AttributeListSyntax)context.Node;
+            AttributeListSyntax attributeList = (AttributeListSyntax) context.Node;
             bool violation = false;
 
-            if (attributeList.Parent.IsKind(SyntaxKind.Parameter) || attributeList.Parent.IsKind(SyntaxKind.TypeParameter))
-            {
+            if (attributeList.Parent.IsKind(SyntaxKind.Parameter) || attributeList.Parent.IsKind(SyntaxKind.TypeParameter)) {
                 // no analysis required for parameters or type (generic) parameters
                 return;
             }
@@ -69,31 +66,26 @@ namespace StyleCop.Analyzers.ReadabilityRules
             var attributeListLineSpan = attributeList.GetLineSpan();
 
             var prevToken = attributeList.OpenBracketToken.GetPreviousToken();
-            if (!prevToken.IsMissingOrDefault())
-            {
+            if (!prevToken.IsMissingOrDefault()) {
                 var prevTokenLineSpan = prevToken.GetLineSpan();
-                if (prevTokenLineSpan.EndLinePosition.Line == attributeListLineSpan.EndLinePosition.Line)
-                {
+                if (prevTokenLineSpan.EndLinePosition.Line == attributeListLineSpan.EndLinePosition.Line) {
                     diagnosticProperties.Add(FixWithNewLineBeforeKey, string.Empty);
                     violation = true;
                 }
             }
 
             var nextToken = attributeList.CloseBracketToken.GetNextToken();
-            if (!nextToken.IsMissingOrDefault())
-            {
+            if (!nextToken.IsMissingOrDefault()) {
                 var nextTokenLineSpan = nextToken.GetLineSpan();
 
                 // do not report for trailing attribute lists, to prevent unnecessary diagnostics and issues with the code fix
-                if ((nextTokenLineSpan.EndLinePosition.Line == attributeListLineSpan.EndLinePosition.Line) && !nextToken.Parent.IsKind(SyntaxKind.AttributeList))
-                {
+                if ((nextTokenLineSpan.EndLinePosition.Line == attributeListLineSpan.EndLinePosition.Line) && !nextToken.Parent.IsKind(SyntaxKind.AttributeList)) {
                     diagnosticProperties.Add(FixWithNewLineAfterKey, string.Empty);
                     violation = true;
                 }
             }
 
-            if (violation)
-            {
+            if (violation) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, attributeList.OpenBracketToken.GetLocation(), diagnosticProperties.ToImmutable()));
             }
         }

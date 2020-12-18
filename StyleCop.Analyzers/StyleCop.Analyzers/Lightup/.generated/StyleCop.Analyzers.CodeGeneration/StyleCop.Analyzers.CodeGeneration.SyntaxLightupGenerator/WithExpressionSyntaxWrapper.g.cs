@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct WithExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
-    {
+    internal readonly partial struct WithExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.WithExpressionSyntax";
         private static readonly Type WrappedType;
 
@@ -67,17 +66,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator WithExpressionSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new WithExpressionSyntaxWrapper((ExpressionSyntax)node);
+            return new WithExpressionSyntaxWrapper((ExpressionSyntax) node);
         }
 
         public static implicit operator ExpressionSyntax(WithExpressionSyntaxWrapper wrapper)

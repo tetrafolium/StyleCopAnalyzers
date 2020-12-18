@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IEventAssignmentOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IEventAssignmentOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IEventAssignmentOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IOperation> EventReferenceAccessor;
@@ -35,13 +34,11 @@ namespace StyleCop.Analyzers.Lightup
         public bool Adds => AddsAccessor(this.WrappedOperation);
         public static IEventAssignmentOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

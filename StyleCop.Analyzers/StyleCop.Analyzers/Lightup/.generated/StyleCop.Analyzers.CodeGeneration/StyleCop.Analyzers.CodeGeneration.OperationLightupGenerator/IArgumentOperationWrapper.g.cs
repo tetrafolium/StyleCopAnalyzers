@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 
-    internal readonly struct IArgumentOperationWrapper : IOperationWrapper
-    {
+    internal readonly struct IArgumentOperationWrapper : IOperationWrapper {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.Operations.IArgumentOperation";
         private static readonly Type WrappedType;
         private static readonly Func<IOperation, IParameterSymbol> ParameterAccessor;
@@ -35,13 +34,11 @@ namespace StyleCop.Analyzers.Lightup
         public object OutConversion => throw new NotImplementedException("Property 'IArgumentOperation.OutConversion' has unsupported type 'CommonConversion'");
         public static IArgumentOperationWrapper FromOperation(IOperation operation)
         {
-            if (operation == null)
-            {
+            if (operation == null) {
                 return default;
             }
 
-            if (!IsInstance(operation))
-            {
+            if (!IsInstance(operation)) {
                 throw new InvalidCastException($"Cannot cast '{operation.GetType().FullName}' to '{WrappedTypeName}'");
             }
 

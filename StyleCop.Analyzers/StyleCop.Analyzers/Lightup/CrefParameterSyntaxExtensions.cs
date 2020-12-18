@@ -7,8 +7,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class CrefParameterSyntaxExtensions
-    {
+    internal static class CrefParameterSyntaxExtensions {
         private static readonly Func<CrefParameterSyntax, SyntaxToken> RefKindKeywordAccessor;
         private static readonly Func<CrefParameterSyntax, SyntaxToken, CrefParameterSyntax> WithRefKindKeywordAccessor;
 

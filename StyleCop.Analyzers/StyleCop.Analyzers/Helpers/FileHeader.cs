@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Class containing the parsed file header information.
     /// </summary>
-    internal class FileHeader
-    {
+    internal class FileHeader {
         private readonly int fileHeaderStart;
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace StyleCop.Analyzers.Helpers
         {
             get
             {
-                return new FileHeader { IsMissing = true };
+                return new FileHeader{ IsMissing = true };
             }
         }
 
@@ -55,7 +54,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <value>
         /// True if the file header is missing.
         /// </value>
-        internal bool IsMissing { get; private set; }
+        internal bool IsMissing
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets the copyright text, as parsed from the header.
@@ -72,8 +75,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The location representing the start of the file header.</returns>
         internal Location GetLocation(SyntaxTree syntaxTree)
         {
-            if (this.IsMissing)
-            {
+            if (this.IsMissing) {
                 return Location.Create(syntaxTree, new TextSpan(0, 0));
             }
 

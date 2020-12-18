@@ -30,8 +30,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1404CodeAnalysisSuppressionMustHaveJustification : DiagnosticAnalyzer
-    {
+    internal class SA1404CodeAnalysisSuppressionMustHaveJustification : DiagnosticAnalyzer {
         /// <summary>
         /// The placeholder to insert as part of the code fix.
         /// </summary>
@@ -47,14 +46,13 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MaintainabilityResources.SA1404MessageFormat), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MaintainabilityResources.SA1404Description), MaintainabilityResources.ResourceManager, typeof(MaintainabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.MaintainabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<CompilationStartAnalysisContext> CompilationStartAction = HandleCompilationStart;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -74,8 +72,7 @@ namespace StyleCop.Analyzers.MaintainabilityRules
         /// <summary>
         /// This class holds analyzer state information for analysis within a particular <see cref="Compilation"/>.
         /// </summary>
-        private sealed class AnalyzerInstance
-        {
+        private sealed class AnalyzerInstance {
             private readonly ConcurrentDictionary<SyntaxTree, bool> usingAliasCache;
 
             /// <summary>
@@ -91,45 +88,36 @@ namespace StyleCop.Analyzers.MaintainabilityRules
 
             public void HandleAttributeNode(SyntaxNodeAnalysisContext context)
             {
-                var attribute = (AttributeSyntax)context.Node;
+                var attribute = (AttributeSyntax) context.Node;
 
                 // Return fast if the name doesn't match and the file doesn't contain any using alias directives
-                if (!attribute.SyntaxTree.ContainsUsingAlias(this.usingAliasCache))
-                {
-                    if (!(attribute.Name is SimpleNameSyntax simpleNameSyntax))
-                    {
+                if (!attribute.SyntaxTree.ContainsUsingAlias(this.usingAliasCache)) {
+                    if (!(attribute.Name is SimpleNameSyntax simpleNameSyntax)) {
                         QualifiedNameSyntax qualifiedNameSyntax = attribute.Name as QualifiedNameSyntax;
                         simpleNameSyntax = qualifiedNameSyntax.Right;
                     }
 
                     if (simpleNameSyntax.Identifier.ValueText != nameof(SuppressMessageAttribute)
-                        && simpleNameSyntax.Identifier.ValueText != "SuppressMessage")
-                    {
+                        && simpleNameSyntax.Identifier.ValueText != "SuppressMessage") {
                         return;
                     }
                 }
 
                 SymbolInfo symbolInfo = context.SemanticModel.GetSymbolInfo(attribute);
                 ISymbol symbol = symbolInfo.Symbol;
-                if (symbol != null)
-                {
-                    if (this.suppressMessageAttribute == null)
-                    {
+                if (symbol != null) {
+                    if (this.suppressMessageAttribute == null) {
                         this.suppressMessageAttribute = context.SemanticModel.Compilation.GetTypeByMetadataName(typeof(SuppressMessageAttribute).FullName);
                     }
 
-                    if (Equals(symbol.ContainingType, this.suppressMessageAttribute))
-                    {
-                        foreach (var attributeArgument in attribute.ArgumentList.Arguments)
-                        {
-                            if (attributeArgument.NameEquals?.Name?.Identifier.ValueText == nameof(SuppressMessageAttribute.Justification))
-                            {
+                    if (Equals(symbol.ContainingType, this.suppressMessageAttribute)) {
+                        foreach (var attributeArgument in attribute.ArgumentList.Arguments) {
+                            if (attributeArgument.NameEquals?.Name?.Identifier.ValueText == nameof(SuppressMessageAttribute.Justification)) {
                                 // Check if the justification is not empty
                                 var value = context.SemanticModel.GetConstantValue(attributeArgument.Expression);
 
                                 // If value does not have a value the expression is not constant -> Compilation error
-                                if (!value.HasValue || (!string.IsNullOrWhiteSpace(value.Value as string) && (value.Value as string) != JustificationPlaceholder))
-                                {
+                                if (!value.HasValue || (!string.IsNullOrWhiteSpace(value.Value as string) && (value.Value as string) != JustificationPlaceholder)) {
                                     return;
                                 }
 

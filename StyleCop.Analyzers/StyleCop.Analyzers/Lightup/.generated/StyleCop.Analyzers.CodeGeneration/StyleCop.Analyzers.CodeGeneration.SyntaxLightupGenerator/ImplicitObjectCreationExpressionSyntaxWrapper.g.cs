@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct ImplicitObjectCreationExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
-    {
+    internal readonly partial struct ImplicitObjectCreationExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.ImplicitObjectCreationExpressionSyntax";
         private static readonly Type WrappedType;
         private static readonly Func<ExpressionSyntax, SyntaxToken, ExpressionSyntax> WithNewKeywordAccessor;
@@ -38,7 +37,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((BaseObjectCreationExpressionSyntaxWrapper)this).NewKeyword;
+                return ((BaseObjectCreationExpressionSyntaxWrapper) this).NewKeyword;
             }
         }
 
@@ -46,7 +45,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((BaseObjectCreationExpressionSyntaxWrapper)this).ArgumentList;
+                return ((BaseObjectCreationExpressionSyntaxWrapper) this).ArgumentList;
             }
         }
 
@@ -54,28 +53,26 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return ((BaseObjectCreationExpressionSyntaxWrapper)this).Initializer;
+                return ((BaseObjectCreationExpressionSyntaxWrapper) this).Initializer;
             }
         }
 
         public static explicit operator ImplicitObjectCreationExpressionSyntaxWrapper(BaseObjectCreationExpressionSyntaxWrapper node)
         {
-            return (ImplicitObjectCreationExpressionSyntaxWrapper)node.SyntaxNode;
+            return (ImplicitObjectCreationExpressionSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator ImplicitObjectCreationExpressionSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new ImplicitObjectCreationExpressionSyntaxWrapper((ExpressionSyntax)node);
+            return new ImplicitObjectCreationExpressionSyntaxWrapper((ExpressionSyntax) node);
         }
 
         public static implicit operator BaseObjectCreationExpressionSyntaxWrapper(ImplicitObjectCreationExpressionSyntaxWrapper wrapper)

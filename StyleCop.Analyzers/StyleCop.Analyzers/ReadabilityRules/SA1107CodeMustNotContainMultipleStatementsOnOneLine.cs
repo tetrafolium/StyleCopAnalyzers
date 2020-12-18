@@ -19,8 +19,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// statement should begin on a new line.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1107CodeMustNotContainMultipleStatementsOnOneLine : DiagnosticAnalyzer
-    {
+    internal class SA1107CodeMustNotContainMultipleStatementsOnOneLine : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1107CodeMustNotContainMultipleStatementsOnOneLine"/>
         /// analyzer.
@@ -31,14 +30,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1107MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1107Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BlockAction = HandleBlock;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -51,24 +49,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBlock(SyntaxNodeAnalysisContext context)
         {
-            var block = (BlockSyntax)context.Node;
+            var block = (BlockSyntax) context.Node;
 
-            if (block.Statements.Any())
-            {
+            if (block.Statements.Any()) {
                 var previousStatement = block.Statements[0];
                 FileLinePositionSpan previousStatementLocation = previousStatement.GetLineSpan();
                 FileLinePositionSpan currentStatementLocation;
 
-                for (int i = 1; i < block.Statements.Count; i++)
-                {
+                for (int i = 1; i < block.Statements.Count; i++) {
                     var currentStatement = block.Statements[i];
                     currentStatementLocation = currentStatement.GetLineSpan();
 
                     if (previousStatementLocation.EndLinePosition.Line
-                        == currentStatementLocation.StartLinePosition.Line
-                        && !IsLastTokenMissing(previousStatement))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, block.Statements[i].GetLocation()));
+                            == currentStatementLocation.StartLinePosition.Line
+                        && !IsLastTokenMissing(previousStatement)) {
+                        context.ReportDiagnostic(Diagnostic.Create(Descriptor, block.Statements [i]
+                                                                                   .GetLocation()));
                     }
 
                     previousStatementLocation = currentStatementLocation;
@@ -79,7 +75,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static bool IsLastTokenMissing(StatementSyntax previousStatement)
         {
-            return previousStatement.GetLastToken(includeZeroWidth: true, includeSkipped: true).IsMissing;
+            return previousStatement.GetLastToken(includeZeroWidth
+                                                  : true, includeSkipped
+                                                  : true)
+                .IsMissing;
         }
     }
 }

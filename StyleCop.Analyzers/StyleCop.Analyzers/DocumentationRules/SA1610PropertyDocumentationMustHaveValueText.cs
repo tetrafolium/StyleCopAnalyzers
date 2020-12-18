@@ -24,8 +24,7 @@ namespace StyleCop.Analyzers.DocumentationRules
     /// <para>A violation of this rule occurs when the <c>&lt;value&gt;</c> tag for a property is empty.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1610PropertyDocumentationMustHaveValueText : PropertyDocumentationBase
-    {
+    internal class SA1610PropertyDocumentationMustHaveValueText : PropertyDocumentationBase {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1610PropertyDocumentationMustHaveValueText"/> analyzer.
         /// </summary>
@@ -35,12 +34,11 @@ namespace StyleCop.Analyzers.DocumentationRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(DocumentationResources.SA1610MessageFormat), DocumentationResources.ResourceManager, typeof(DocumentationResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(DocumentationResources.SA1610Description), DocumentationResources.ResourceManager, typeof(DocumentationResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.DocumentationRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         protected override string XmlTagToHandle => XmlCommentHelper.ValueXmlTag;
@@ -50,32 +48,25 @@ namespace StyleCop.Analyzers.DocumentationRules
         {
             var properties = ImmutableDictionary.Create<string, string>();
 
-            if (completeDocumentation != null)
-            {
+            if (completeDocumentation != null) {
                 var valueTag = completeDocumentation.Nodes().OfType<XElement>().FirstOrDefault(element => element.Name == XmlCommentHelper.ValueXmlTag);
-                if (valueTag == null)
-                {
+                if (valueTag == null) {
                     // handled by SA1609
                     return;
                 }
 
-                if (!XmlCommentHelper.IsConsideredEmpty(valueTag))
-                {
+                if (!XmlCommentHelper.IsConsideredEmpty(valueTag)) {
                     return;
                 }
 
                 properties = properties.Add(NoCodeFixKey, string.Empty);
-            }
-            else
-            {
-                if (syntax == null)
-                {
+            } else {
+                if (syntax == null) {
                     // Handled by SA1609
                     return;
                 }
 
-                if (!XmlCommentHelper.IsConsideredEmpty(syntax))
-                {
+                if (!XmlCommentHelper.IsConsideredEmpty(syntax)) {
                     return;
                 }
             }

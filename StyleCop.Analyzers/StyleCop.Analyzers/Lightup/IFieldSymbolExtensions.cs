@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Lightup
     using System;
     using Microsoft.CodeAnalysis;
 
-    internal static class IFieldSymbolExtensions
-    {
+    internal static class IFieldSymbolExtensions {
         private static readonly Func<IFieldSymbol, IFieldSymbol> CorrespondingTupleFieldAccessor;
 
         static IFieldSymbolExtensions()

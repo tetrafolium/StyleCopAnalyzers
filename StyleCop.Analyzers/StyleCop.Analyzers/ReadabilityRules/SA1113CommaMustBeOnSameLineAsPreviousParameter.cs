@@ -36,8 +36,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1113CommaMustBeOnSameLineAsPreviousParameter : DiagnosticAnalyzer
-    {
+    internal class SA1113CommaMustBeOnSameLineAsPreviousParameter : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1113CommaMustBeOnSameLineAsPreviousParameter"/>
         /// analyzer.
@@ -48,14 +47,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1113MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1113Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        private static readonly ImmutableArray<SyntaxKind> BaseMethodDeclarationKinds =
-            ImmutableArray.Create(
-                SyntaxKind.MethodDeclaration,
-                SyntaxKind.ConstructorDeclaration,
-                SyntaxKind.OperatorDeclaration);
+        private static readonly ImmutableArray<SyntaxKind> BaseMethodDeclarationKinds = ImmutableArray.Create(
+            SyntaxKind.MethodDeclaration,
+            SyntaxKind.ConstructorDeclaration,
+            SyntaxKind.OperatorDeclaration);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BaseMethodDeclarationAction = HandleBaseMethodDeclaration;
         private static readonly Action<SyntaxNodeAnalysisContext> LocalFunctionStatementAction = HandleLocalFunctionStatement;
@@ -72,8 +69,8 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly Action<SyntaxNodeAnalysisContext> ConstructorInitializerAction = HandleConstructorInitializer;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -98,23 +95,19 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var arrayCreationExpression = (ArrayCreationExpressionSyntax)context.Node;
+            var arrayCreationExpression = (ArrayCreationExpressionSyntax) context.Node;
 
-            if (arrayCreationExpression.Type == null)
-            {
+            if (arrayCreationExpression.Type == null) {
                 return;
             }
 
-            foreach (var arrayRankSpecifierSyntax in arrayCreationExpression.Type.RankSpecifiers)
-            {
+            foreach (var arrayRankSpecifierSyntax in arrayCreationExpression.Type.RankSpecifiers) {
                 var sizes = arrayRankSpecifierSyntax.Sizes;
-                if (sizes.Count < 2)
-                {
+                if (sizes.Count < 2) {
                     continue;
                 }
 
-                if (!arrayRankSpecifierSyntax.CloseBracketToken.IsMissing)
-                {
+                if (!arrayRankSpecifierSyntax.CloseBracketToken.IsMissing) {
                     CheckIfCommasAreAtTheSameLineAsThePreviousParameter(context, sizes.GetWithSeparators());
                 }
             }
@@ -122,13 +115,11 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleAttributeList(SyntaxNodeAnalysisContext context)
         {
-            var attributeList = (AttributeListSyntax)context.Node;
+            var attributeList = (AttributeListSyntax) context.Node;
 
-            if (attributeList != null && !attributeList.IsMissing)
-            {
+            if (attributeList != null && !attributeList.IsMissing) {
                 var attributes = attributeList.Attributes;
-                if (attributes.Count > 1)
-                {
+                if (attributes.Count > 1) {
                     CheckIfCommasAreAtTheSameLineAsThePreviousParameter(context, attributes.GetWithSeparators());
                 }
             }
@@ -136,14 +127,12 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleAttribute(SyntaxNodeAnalysisContext context)
         {
-            var attribute = (AttributeSyntax)context.Node;
+            var attribute = (AttributeSyntax) context.Node;
             var argumentList = attribute.ArgumentList;
 
-            if (argumentList != null && !argumentList.IsMissing)
-            {
+            if (argumentList != null && !argumentList.IsMissing) {
                 var arguments = argumentList.Arguments;
-                if (arguments.Count > 1)
-                {
+                if (arguments.Count > 1) {
                     CheckIfCommasAreAtTheSameLineAsThePreviousParameter(context, arguments.GetWithSeparators());
                 }
             }
@@ -151,71 +140,69 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
         {
-            var parenthesizedLambdaExpression = (ParenthesizedLambdaExpressionSyntax)context.Node;
+            var parenthesizedLambdaExpression = (ParenthesizedLambdaExpressionSyntax) context.Node;
             HandleBaseParameterListSyntax(context, parenthesizedLambdaExpression.ParameterList);
         }
 
         private static void HandleDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
+            var delegateDeclaration = (DelegateDeclarationSyntax) context.Node;
             HandleBaseParameterListSyntax(context, delegateDeclaration.ParameterList);
         }
 
         private static void HandleAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
-            var anonymousMethodExpression = (AnonymousMethodExpressionSyntax)context.Node;
+            var anonymousMethodExpression = (AnonymousMethodExpressionSyntax) context.Node;
             HandleBaseParameterListSyntax(context, anonymousMethodExpression.ParameterList);
         }
 
         private static void HandleElementAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            var elementAccessExpression = (ElementAccessExpressionSyntax)context.Node;
+            var elementAccessExpression = (ElementAccessExpressionSyntax) context.Node;
             HandleBaseArgumentListSyntax(context, elementAccessExpression.ArgumentList);
         }
 
         private static void HandleIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+            var indexerDeclaration = (IndexerDeclarationSyntax) context.Node;
             HandleBaseParameterListSyntax(context, indexerDeclaration.ParameterList);
         }
 
         private static void HandleObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
-            var objectCreationExpression = (ObjectCreationExpressionSyntax)context.Node;
+            var objectCreationExpression = (ObjectCreationExpressionSyntax) context.Node;
             HandleBaseArgumentListSyntax(context, objectCreationExpression.ArgumentList);
         }
 
         private static void HandleInvocationExpression(SyntaxNodeAnalysisContext context)
         {
-            var invocationEpression = (InvocationExpressionSyntax)context.Node;
+            var invocationEpression = (InvocationExpressionSyntax) context.Node;
             HandleBaseArgumentListSyntax(context, invocationEpression.ArgumentList);
         }
 
         private static void HandleBaseMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var baseMethodDeclaration = (BaseMethodDeclarationSyntax)context.Node;
+            var baseMethodDeclaration = (BaseMethodDeclarationSyntax) context.Node;
             HandleBaseParameterListSyntax(context, baseMethodDeclaration.ParameterList);
         }
 
         private static void HandleLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
-            var localFunctionStatement = (LocalFunctionStatementSyntaxWrapper)context.Node;
+            var localFunctionStatement = (LocalFunctionStatementSyntaxWrapper) context.Node;
             HandleBaseParameterListSyntax(context, localFunctionStatement.ParameterList);
         }
 
         private static void HandleConstructorInitializer(SyntaxNodeAnalysisContext context)
         {
-            var constructorInitializer = (ConstructorInitializerSyntax)context.Node;
+            var constructorInitializer = (ConstructorInitializerSyntax) context.Node;
             HandleBaseArgumentListSyntax(context, constructorInitializer.ArgumentList);
         }
 
         private static void HandleBaseArgumentListSyntax(SyntaxNodeAnalysisContext context, BaseArgumentListSyntax argumentList)
         {
-            if (argumentList != null && !argumentList.IsMissing)
-            {
+            if (argumentList != null && !argumentList.IsMissing) {
                 var arguments = argumentList.Arguments;
-                if (arguments.Count > 1)
-                {
+                if (arguments.Count > 1) {
                     CheckIfCommasAreAtTheSameLineAsThePreviousParameter(context, arguments.GetWithSeparators());
                 }
             }
@@ -223,11 +210,9 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBaseParameterListSyntax(SyntaxNodeAnalysisContext context, BaseParameterListSyntax parameterList)
         {
-            if (parameterList != null && !parameterList.IsMissing)
-            {
+            if (parameterList != null && !parameterList.IsMissing) {
                 var parameters = parameterList.Parameters;
-                if (parameters.Count > 1)
-                {
+                if (parameters.Count > 1) {
                     CheckIfCommasAreAtTheSameLineAsThePreviousParameter(context, parameters.GetWithSeparators());
                 }
             }
@@ -238,29 +223,22 @@ namespace StyleCop.Analyzers.ReadabilityRules
             SyntaxNode previousNode = null;
 
             // If index is even we expecting parameter syntax node, otherwise we expecting comma token.
-            for (int index = 0, count = nodeOrTokenList.Count; index < count; ++index)
-            {
+            for (int index = 0, count = nodeOrTokenList.Count; index < count; ++index) {
                 SyntaxNodeOrToken nodeOrToken = nodeOrTokenList[index];
-                if (index % 2 == 0)
-                {
+                if (index % 2 == 0) {
                     // We expecting node here
-                    if (nodeOrToken.IsToken)
-                    {
+                    if (nodeOrToken.IsToken) {
                         return;
                     }
 
                     previousNode = nodeOrToken.AsNode();
-                }
-                else
-                {
+                } else {
                     // We expecting token here
-                    if (nodeOrToken.IsNode)
-                    {
+                    if (nodeOrToken.IsNode) {
                         return;
                     }
 
-                    if (previousNode.GetEndLine() < nodeOrToken.GetLineSpan().StartLinePosition.Line)
-                    {
+                    if (previousNode.GetEndLine() < nodeOrToken.GetLineSpan().StartLinePosition.Line) {
                         var properties = TokenSpacingProperties.RemovePrecedingPreserveLayout;
                         context.ReportDiagnostic(Diagnostic.Create(Descriptor, nodeOrToken.GetLocation(), properties));
                     }

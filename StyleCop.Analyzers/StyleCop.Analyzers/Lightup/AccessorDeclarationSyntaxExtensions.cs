@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Lightup
     using System;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal static class AccessorDeclarationSyntaxExtensions
-    {
+    internal static class AccessorDeclarationSyntaxExtensions {
         private static readonly Func<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax> ExpressionBodyAccessor;
         private static readonly Func<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax, AccessorDeclarationSyntax> WithExpressionBodyAccessor;
 

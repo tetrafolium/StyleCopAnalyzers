@@ -13,8 +13,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Provides helper methods to work with diagnostics options.
     /// </summary>
-    internal static class DiagnosticOptionsHelper
-    {
+    internal static class DiagnosticOptionsHelper {
         /// <summary>
         /// Determines if the diagnostic identified by the given identifier is currently suppressed.
         /// </summary>
@@ -56,8 +55,7 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>True if the diagnostic is currently suppressed.</returns>
         internal static bool IsAnalyzerSuppressed(this CompilationOptions compilationOptions, DiagnosticDescriptor descriptor)
         {
-            switch (descriptor.GetEffectiveSeverity(compilationOptions))
-            {
+            switch (descriptor.GetEffectiveSeverity(compilationOptions)) {
             case ReportDiagnostic.Suppress:
                 return true;
             case ReportDiagnostic.Default:

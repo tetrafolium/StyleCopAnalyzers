@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct UnaryPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
-    {
+    internal readonly partial struct UnaryPatternSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.UnaryPatternSyntax";
         private static readonly Type WrappedType;
 
@@ -49,33 +48,31 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PatternSyntaxWrapper)PatternAccessor(this.SyntaxNode);
+                return (PatternSyntaxWrapper) PatternAccessor(this.SyntaxNode);
             }
         }
 
         public static explicit operator UnaryPatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (UnaryPatternSyntaxWrapper)node.SyntaxNode;
+            return (UnaryPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator UnaryPatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (UnaryPatternSyntaxWrapper)node.SyntaxNode;
+            return (UnaryPatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator UnaryPatternSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new UnaryPatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new UnaryPatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(UnaryPatternSyntaxWrapper wrapper)

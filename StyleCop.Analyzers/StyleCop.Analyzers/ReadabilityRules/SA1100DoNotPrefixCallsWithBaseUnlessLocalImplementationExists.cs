@@ -51,8 +51,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// <c>base.</c>.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists : DiagnosticAnalyzer
-    {
+    internal class SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists"/> analyzer.
@@ -63,14 +62,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1100MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1100Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> BaseExpressionAction = HandleBaseExpression;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -83,37 +81,29 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleBaseExpression(SyntaxNodeAnalysisContext context)
         {
-            var baseExpressionSyntax = (BaseExpressionSyntax)context.Node;
+            var baseExpressionSyntax = (BaseExpressionSyntax) context.Node;
             var parent = baseExpressionSyntax.Parent;
             var targetSymbol = context.SemanticModel.GetSymbolInfo(parent, context.CancellationToken);
-            if (targetSymbol.Symbol == null)
-            {
+            if (targetSymbol.Symbol == null) {
                 return;
             }
 
             ExpressionSyntax speculativeExpression;
 
-            if (parent is MemberAccessExpressionSyntax memberAccessExpression)
-            {
+            if (parent is MemberAccessExpressionSyntax memberAccessExpression) {
                 // make sure to evaluate the complete invocation expression if this is a call, or overload resolution will fail
                 speculativeExpression = memberAccessExpression.WithExpression(SyntaxFactory.ThisExpression());
-                if (memberAccessExpression.Parent is InvocationExpressionSyntax invocationExpression)
-                {
+                if (memberAccessExpression.Parent is InvocationExpressionSyntax invocationExpression) {
                     speculativeExpression = invocationExpression.WithExpression(speculativeExpression);
                 }
-            }
-            else if (parent is ElementAccessExpressionSyntax elementAccessExpression)
-            {
+            } else if (parent is ElementAccessExpressionSyntax elementAccessExpression) {
                 speculativeExpression = elementAccessExpression.WithExpression(SyntaxFactory.ThisExpression());
-            }
-            else
-            {
+            } else {
                 return;
             }
 
             var speculativeSymbol = context.SemanticModel.GetSpeculativeSymbolInfo(parent.SpanStart, speculativeExpression, SpeculativeBindingOption.BindAsExpression);
-            if (!targetSymbol.Symbol.Equals(speculativeSymbol.Symbol))
-            {
+            if (!targetSymbol.Symbol.Equals(speculativeSymbol.Symbol)) {
                 return;
             }
 

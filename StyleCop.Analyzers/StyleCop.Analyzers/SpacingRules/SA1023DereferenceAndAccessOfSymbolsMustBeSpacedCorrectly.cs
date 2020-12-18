@@ -39,8 +39,7 @@ namespace StyleCop.Analyzers.SpacingRules
     /// </code>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1023DereferenceAndAccessOfSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer
-    {
+    internal class SA1023DereferenceAndAccessOfSymbolsMustBeSpacedCorrectly : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the
         /// <see cref="SA1023DereferenceAndAccessOfSymbolsMustBeSpacedCorrectly"/> analyzer.
@@ -59,25 +58,20 @@ namespace StyleCop.Analyzers.SpacingRules
         private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-        internal static readonly DiagnosticDescriptor DescriptorNotPreceded =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotPreceded = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotPreceded, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorNotFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotFollowed = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorFollowed =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorFollowed = new DiagnosticDescriptor(DiagnosticId, Title, MessageFollowed, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorNotAtBeginningOfLine =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotAtBeginningOfLine, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotAtBeginningOfLine = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotAtBeginningOfLine, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-        internal static readonly DiagnosticDescriptor DescriptorNotAtEndOfLine =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageNotAtEndOfLine, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor DescriptorNotAtEndOfLine = new DiagnosticDescriptor(DiagnosticId, Title, MessageNotAtEndOfLine, AnalyzerCategory.SpacingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(DescriptorNotPreceded);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(DescriptorNotPreceded);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -91,10 +85,8 @@ namespace StyleCop.Analyzers.SpacingRules
         private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxNode root = context.Tree.GetCompilationUnitRoot(context.CancellationToken);
-            foreach (var token in root.DescendantTokens())
-            {
-                if (token.IsKind(SyntaxKind.AsteriskToken))
-                {
+            foreach (var token in root.DescendantTokens()) {
+                if (token.IsKind(SyntaxKind.AsteriskToken)) {
                     HandleAsteriskToken(context, token);
                 }
             }
@@ -102,8 +94,7 @@ namespace StyleCop.Analyzers.SpacingRules
 
         private static void HandleAsteriskToken(SyntaxTreeAnalysisContext context, SyntaxToken token)
         {
-            if (token.IsMissing)
-            {
+            if (token.IsMissing) {
                 return;
             }
 
@@ -111,15 +102,13 @@ namespace StyleCop.Analyzers.SpacingRules
             bool allowAtLineEnd;
             bool allowPrecedingSpace;
             bool allowTrailingSpace;
-            switch (token.Parent.Kind())
-            {
+            switch (token.Parent.Kind()) {
             case SyntaxKindEx.FunctionPointerType:
                 allowAtLineStart = true;
                 allowAtLineEnd = true;
                 allowPrecedingSpace = false;
                 var nextToken = token.GetNextToken();
-                switch (nextToken.Kind())
-                {
+                switch (nextToken.Kind()) {
                 case SyntaxKindEx.ManagedKeyword:
                 case SyntaxKindEx.UnmanagedKeyword:
                     allowTrailingSpace = true;
@@ -144,8 +133,7 @@ namespace StyleCop.Analyzers.SpacingRules
                 allowAtLineEnd = true;
                 allowPrecedingSpace = false;
                 nextToken = token.GetNextToken();
-                switch (nextToken.Kind())
-                {
+                switch (nextToken.Kind()) {
                 case SyntaxKind.OpenBracketToken:
                 case SyntaxKind.OpenParenToken:
                 case SyntaxKind.CloseParenToken:
@@ -165,8 +153,7 @@ namespace StyleCop.Analyzers.SpacingRules
                 allowAtLineEnd = false;
                 allowTrailingSpace = false;
                 var prevToken = token.GetPreviousToken();
-                switch (prevToken.Kind())
-                {
+                switch (prevToken.Kind()) {
                 case SyntaxKind.OpenBracketToken:
                 case SyntaxKind.OpenParenToken:
                 case SyntaxKind.CloseParenToken:
@@ -188,31 +175,25 @@ namespace StyleCop.Analyzers.SpacingRules
             bool followedBySpace = token.IsFollowedByWhitespace();
             bool lastInLine = token.IsLastInLine();
 
-            if (!allowAtLineStart && firstInLine)
-            {
+            if (!allowAtLineStart && firstInLine) {
                 // Dereference symbol '*' should {not appear at the beginning of a line}.
                 var properties = TokenSpacingProperties.RemovePreceding;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotAtBeginningOfLine, token.GetLocation(), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-            }
-            else if (!allowPrecedingSpace && precededBySpace)
-            {
+            } else if (!allowPrecedingSpace && precededBySpace) {
                 // Dereference symbol '*' should {not be preceded by a space}.
                 var properties = TokenSpacingProperties.RemovePreceding;
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotPreceded, token.GetLocation(), properties));
             }
 
-            if (!allowAtLineEnd && lastInLine)
-            {
+            if (!allowAtLineEnd && lastInLine) {
                 // Dereference symbol '*' should {not appear at the end of a line}.
                 var properties = TokenSpacingProperties.RemoveFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)
                 context.ReportDiagnostic(Diagnostic.Create(DescriptorNotAtEndOfLine, token.GetLocation(), properties));
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
-            }
-            else if (!allowTrailingSpace && followedBySpace)
-            {
+            } else if (!allowTrailingSpace && followedBySpace) {
                 // Dereference symbol '*' should {not be followed by a space}.
                 var properties = TokenSpacingProperties.RemoveFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)
@@ -220,8 +201,7 @@ namespace StyleCop.Analyzers.SpacingRules
 #pragma warning restore RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor
             }
 
-            if (!followedBySpace && allowTrailingSpace)
-            {
+            if (!followedBySpace && allowTrailingSpace) {
                 // Dereference symbol '*' should {be followed by a space}.
                 var properties = TokenSpacingProperties.InsertFollowing;
 #pragma warning disable RS1005 // ReportDiagnostic invoked with an unsupported DiagnosticDescriptor (https://github.com/dotnet/roslyn-analyzers/issues/4103)

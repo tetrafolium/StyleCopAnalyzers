@@ -23,11 +23,10 @@ namespace StyleCop.Analyzers.SpacingRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1003CodeFixProvider))]
     [Shared]
-    internal class SA1003CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1003CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1003SymbolsMustBeSpacedCorrectly.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1003SymbolsMustBeSpacedCorrectly.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -38,10 +37,8 @@ namespace StyleCop.Analyzers.SpacingRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
-                if (diagnostic.Properties.ContainsKey(SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction))
-                {
+            foreach (var diagnostic in context.Diagnostics) {
+                if (diagnostic.Properties.ContainsKey(SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction)) {
                     context.RegisterCodeFix(
                         CodeAction.Create(
                             SpacingResources.SA1003CodeFix,
@@ -59,11 +56,11 @@ namespace StyleCop.Analyzers.SpacingRules
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var replacements = new Dictionary<SyntaxToken, SyntaxToken>();
 
-            var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start, findInsideTrivia: true);
+            var token = syntaxRoot.FindToken(diagnostic.Location.SourceSpan.Start, findInsideTrivia
+                                             : true);
             SyntaxToken followingToken;
 
-            switch (diagnostic.Properties[SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction])
-            {
+            switch (diagnostic.Properties[SA1003SymbolsMustBeSpacedCorrectly.CodeFixAction]) {
             case SA1003SymbolsMustBeSpacedCorrectly.InsertBeforeTag:
                 replacements[token] = token.WithLeadingTrivia(token.LeadingTrivia.Add(SyntaxFactory.Space));
                 break;

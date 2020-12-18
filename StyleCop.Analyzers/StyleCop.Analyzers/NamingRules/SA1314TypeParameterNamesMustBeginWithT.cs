@@ -18,8 +18,7 @@ namespace StyleCop.Analyzers.NamingRules
     /// letter T. Type parameter names should always begin with T. For example, <c>T</c> or <c>TKey</c>.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1314TypeParameterNamesMustBeginWithT : DiagnosticAnalyzer
-    {
+    internal class SA1314TypeParameterNamesMustBeginWithT : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1314TypeParameterNamesMustBeginWithT"/> analyzer.
         /// </summary>
@@ -29,14 +28,13 @@ namespace StyleCop.Analyzers.NamingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SA1314MessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SA1314Description), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> TypeParameterAction = HandleTypeParameter;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -49,15 +47,13 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void HandleTypeParameter(SyntaxNodeAnalysisContext context)
         {
-            var typeParameter = (TypeParameterSyntax)context.Node;
-            if (typeParameter.Identifier.IsMissing)
-            {
+            var typeParameter = (TypeParameterSyntax) context.Node;
+            if (typeParameter.Identifier.IsMissing) {
                 return;
             }
 
             string name = typeParameter.Identifier.ValueText;
-            if (name != null && !name.StartsWith("T", StringComparison.Ordinal))
-            {
+            if (name != null && !name.StartsWith("T", StringComparison.Ordinal)) {
                 context.ReportDiagnostic(Diagnostic.Create(Descriptor, typeParameter.Identifier.GetLocation()));
             }
         }

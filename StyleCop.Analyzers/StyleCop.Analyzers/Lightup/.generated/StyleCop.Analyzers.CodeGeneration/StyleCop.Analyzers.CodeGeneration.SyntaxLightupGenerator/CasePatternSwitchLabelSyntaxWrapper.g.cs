@@ -9,8 +9,7 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct CasePatternSwitchLabelSyntaxWrapper : ISyntaxWrapper<SwitchLabelSyntax>
-    {
+    internal readonly partial struct CasePatternSwitchLabelSyntaxWrapper : ISyntaxWrapper<SwitchLabelSyntax> {
         internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.CasePatternSwitchLabelSyntax";
         private static readonly Type WrappedType;
 
@@ -53,7 +52,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (PatternSyntaxWrapper)PatternAccessor(this.SyntaxNode);
+                return (PatternSyntaxWrapper) PatternAccessor(this.SyntaxNode);
             }
         }
 
@@ -61,7 +60,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (WhenClauseSyntaxWrapper)WhenClauseAccessor(this.SyntaxNode);
+                return (WhenClauseSyntaxWrapper) WhenClauseAccessor(this.SyntaxNode);
             }
         }
 
@@ -75,17 +74,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator CasePatternSwitchLabelSyntaxWrapper(SyntaxNode node)
         {
-            if (node == null)
-            {
+            if (node == null) {
                 return default;
             }
 
-            if (!IsInstance(node))
-            {
+            if (!IsInstance(node)) {
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new CasePatternSwitchLabelSyntaxWrapper((SwitchLabelSyntax)node);
+            return new CasePatternSwitchLabelSyntaxWrapper((SwitchLabelSyntax) node);
         }
 
         public static implicit operator SwitchLabelSyntax(CasePatternSwitchLabelSyntaxWrapper wrapper)

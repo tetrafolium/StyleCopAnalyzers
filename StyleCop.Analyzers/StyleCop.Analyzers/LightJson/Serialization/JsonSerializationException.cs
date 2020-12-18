@@ -11,8 +11,7 @@ namespace LightJson.Serialization
     /// <remarks>
     /// <para>This exception is only intended to be thrown by LightJson.</para>
     /// </remarks>
-    internal sealed class JsonSerializationException : Exception
-    {
+    internal sealed class JsonSerializationException : Exception {
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonSerializationException"/> class.
         /// </summary>
@@ -45,8 +44,7 @@ namespace LightJson.Serialization
         /// <summary>
         /// Enumerates the types of errors that can occur during serialization.
         /// </summary>
-        public enum ErrorType
-        {
+        public enum ErrorType {
             /// <summary>
             /// Indicates that the cause of the error is unknown.
             /// </summary>
@@ -79,8 +77,7 @@ namespace LightJson.Serialization
 
         private static string GetDefaultMessage(ErrorType type)
         {
-            switch (type)
-            {
+            switch (type) {
             case ErrorType.InvalidNumber:
                 return "The value been serialized contains an invalid number value (NAN, infinity).";
 

@@ -11,8 +11,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Provides helper methods to work with indentation.
     /// </summary>
-    internal static class IndentationHelper
-    {
+    internal static class IndentationHelper {
         /// <summary>
         /// Gets the first token on the textline that the given token is on.
         /// </summary>
@@ -20,16 +19,13 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The first token on the textline of the given token.</returns>
         public static SyntaxToken GetFirstTokenOnTextLine(SyntaxToken token)
         {
-            while (true)
-            {
+            while (true) {
                 var precedingToken = token.GetPreviousToken();
-                if (precedingToken.IsKind(SyntaxKind.None))
-                {
+                if (precedingToken.IsKind(SyntaxKind.None)) {
                     return token;
                 }
 
-                if (precedingToken.GetLine() < token.GetLine())
-                {
+                if (precedingToken.GetLine() < token.GetLine()) {
                     return token;
                 }
 
@@ -73,14 +69,11 @@ namespace StyleCop.Analyzers.Helpers
         {
             string result;
             var indentationCount = indentationSteps * indentationSettings.IndentationSize;
-            if (indentationSettings.UseTabs)
-            {
+            if (indentationSettings.UseTabs) {
                 var tabCount = indentationCount / indentationSettings.TabSize;
                 var spaceCount = indentationCount % indentationSettings.TabSize;
                 result = new string('\t', tabCount) + new string(' ', spaceCount);
-            }
-            else
-            {
+            } else {
                 result = new string(' ', indentationCount);
             }
 
@@ -103,8 +96,7 @@ namespace StyleCop.Analyzers.Helpers
             var triviaSpan = syntaxTree.GetLineSpan(leadingTrivia.FullSpan);
 
             // There is no indentation when the leading trivia doesn't begin at the start of the line.
-            if ((triviaSpan.StartLinePosition == triviaSpan.EndLinePosition) && (triviaSpan.StartLinePosition.Character > 0))
-            {
+            if ((triviaSpan.StartLinePosition == triviaSpan.EndLinePosition) && (triviaSpan.StartLinePosition.Character > 0)) {
                 return 0;
             }
 
@@ -115,10 +107,8 @@ namespace StyleCop.Analyzers.Helpers
         {
             var builder = StringBuilderPool.Allocate();
 
-            foreach (SyntaxTrivia trivia in leadingTrivia.Reverse())
-            {
-                if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                {
+            foreach (SyntaxTrivia trivia in leadingTrivia.Reverse()) {
+                if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia)) {
                     break;
                 }
 
@@ -127,8 +117,7 @@ namespace StyleCop.Analyzers.Helpers
 
             var tabSize = indentationSettings.TabSize;
             var indentationCount = 0;
-            for (var i = 0; i < builder.Length; i++)
-            {
+            for (var i = 0; i < builder.Length; i++) {
                 indentationCount += builder[i] == '\t' ? tabSize - (indentationCount % tabSize) : 1;
             }
 

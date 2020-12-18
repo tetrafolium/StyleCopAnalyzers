@@ -27,8 +27,7 @@ namespace StyleCop.Analyzers.NamingRules
     /// within a <c>NativeMethods</c> class.</para>
     /// </remarks>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SX1309SStaticFieldNamesMustBeginWithUnderscore : DiagnosticAnalyzer
-    {
+    internal class SX1309SStaticFieldNamesMustBeginWithUnderscore : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SX1309SStaticFieldNamesMustBeginWithUnderscore"/>
         /// analyzer.
@@ -39,14 +38,13 @@ namespace StyleCop.Analyzers.NamingRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(NamingResources.SX1309SMessageFormat), NamingResources.ResourceManager, typeof(NamingResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(NamingResources.SX1309SDescription), NamingResources.ResourceManager, typeof(NamingResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.DisabledAlternative, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.NamingRules, DiagnosticSeverity.Warning, AnalyzerConstants.DisabledAlternative, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> FieldDeclarationAction = HandleFieldDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -59,12 +57,10 @@ namespace StyleCop.Analyzers.NamingRules
 
         private static void HandleFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax)context.Node;
+            FieldDeclarationSyntax syntax = (FieldDeclarationSyntax) context.Node;
             bool isStatic = false;
-            foreach (SyntaxToken token in syntax.Modifiers)
-            {
-                switch (token.Kind())
-                {
+            foreach (SyntaxToken token in syntax.Modifiers) {
+                switch (token.Kind()) {
                 case SyntaxKind.StaticKeyword:
                     isStatic = true;
                     break;
@@ -85,37 +81,30 @@ namespace StyleCop.Analyzers.NamingRules
                 }
             }
 
-            if (!isStatic)
-            {
+            if (!isStatic) {
                 return;
             }
 
-            if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax))
-            {
+            if (NamedTypeHelpers.IsContainedInNativeMethodsClass(syntax)) {
                 return;
             }
 
             var variables = syntax.Declaration?.Variables;
-            if (variables == null)
-            {
+            if (variables == null) {
                 return;
             }
 
-            foreach (VariableDeclaratorSyntax variableDeclarator in variables.Value)
-            {
-                if (variableDeclarator == null)
-                {
+            foreach (VariableDeclaratorSyntax variableDeclarator in variables.Value) {
+                if (variableDeclarator == null) {
                     continue;
                 }
 
                 var identifier = variableDeclarator.Identifier;
-                if (identifier.IsMissing)
-                {
+                if (identifier.IsMissing) {
                     continue;
                 }
 
-                if (identifier.ValueText.StartsWith("_", StringComparison.Ordinal))
-                {
+                if (identifier.ValueText.StartsWith("_", StringComparison.Ordinal)) {
                     continue;
                 }
 

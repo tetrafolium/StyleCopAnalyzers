@@ -21,8 +21,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// <seealso href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1104.md">SA1104 Query clause should begin on new line when previous clause spans multiple lines</seealso>
     /// <seealso href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1105.md">SA1105 Query clauses spanning multiple lines should begin on own line</seealso>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA110xQueryClauses : DiagnosticAnalyzer
-    {
+    internal class SA110xQueryClauses : DiagnosticAnalyzer {
         private const string SA1102Identifier = "SA1102";
         private const string SA1103Identifier = "SA1103";
         private const string SA1104Identifier = "SA1104";
@@ -54,37 +53,37 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// Gets the diagnostic descriptor for SA1102.
         /// </summary>
         /// <value>The <see cref="DiagnosticDescriptor"/> for SA1102.</value>
-        public static DiagnosticDescriptor SA1102Descriptor { get; } =
-            new DiagnosticDescriptor(SA1102Identifier, SA1102Title, SA1102MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, SA1102Description, SA1102HelpLink);
+        public static DiagnosticDescriptor SA1102Descriptor { get; }
+        = new DiagnosticDescriptor(SA1102Identifier, SA1102Title, SA1102MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, SA1102Description, SA1102HelpLink);
 
         /// <summary>
         /// Gets the diagnostic descriptor for SA1103.
         /// </summary>
         /// <value>The <see cref="DiagnosticDescriptor"/> for SA1103.</value>
-        public static DiagnosticDescriptor SA1103Descriptor { get; } =
-            new DiagnosticDescriptor(SA1103Identifier, SA1103Title, SA1103MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, SA1103Description, SA1103HelpLink);
+        public static DiagnosticDescriptor SA1103Descriptor { get; }
+        = new DiagnosticDescriptor(SA1103Identifier, SA1103Title, SA1103MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, SA1103Description, SA1103HelpLink);
 
         /// <summary>
         /// Gets the diagnostic descriptor for SA1104.
         /// </summary>
         /// <value>The <see cref="DiagnosticDescriptor"/> for SA1104.</value>
-        public static DiagnosticDescriptor SA1104Descriptor { get; } =
-            new DiagnosticDescriptor(SA1104Identifier, SA1104Title, SA1104MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, SA1104Description, SA1104HelpLink);
+        public static DiagnosticDescriptor SA1104Descriptor { get; }
+        = new DiagnosticDescriptor(SA1104Identifier, SA1104Title, SA1104MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, SA1104Description, SA1104HelpLink);
 
         /// <summary>
         /// Gets the diagnostic descriptor for SA1105.
         /// </summary>
         /// <value>The <see cref="DiagnosticDescriptor"/> for SA1105.</value>
-        public static DiagnosticDescriptor SA1105Descriptor { get; } =
-            new DiagnosticDescriptor(SA1105Identifier, SA1105Title, SA1105MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, SA1105Description, SA1105HelpLink);
+        public static DiagnosticDescriptor SA1105Descriptor { get; }
+        = new DiagnosticDescriptor(SA1105Identifier, SA1105Title, SA1105MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, SA1105Description, SA1105HelpLink);
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(
-                SA1102Descriptor,
-                SA1103Descriptor,
-                SA1104Descriptor,
-                SA1105Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(
+            SA1102Descriptor,
+            SA1103Descriptor,
+            SA1104Descriptor,
+            SA1105Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -97,7 +96,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleQueryExpression(SyntaxNodeAnalysisContext context)
         {
-            var queryExpression = (QueryExpressionSyntax)context.Node;
+            var queryExpression = (QueryExpressionSyntax) context.Node;
             var tokensToCheck = new List<SyntaxToken>();
 
             HandleQueryClause(queryExpression.FromClause, tokensToCheck);
@@ -112,15 +111,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
             bool allOnSeparateLine = true;
             bool suppressSA1103 = false;
 
-            for (var i = 0; i < tokensToCheck.Count - 1; i++)
-            {
+            for (var i = 0; i < tokensToCheck.Count - 1; i++) {
                 var token1 = tokensToCheck[i];
                 var token2 = tokensToCheck[i + 1];
                 var parent1 = token1.Parent;
                 var parent2 = token2.Parent;
 
-                if (parent2 is QueryContinuationSyntax)
-                {
+                if (parent2 is QueryContinuationSyntax) {
                     continue;
                 }
 
@@ -131,8 +128,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 if (((location2.StartLinePosition.Line - location1.EndLinePosition.Line) > 1)
                     && isEnabledSA1102
-                    && !token2.LeadingTrivia.Any(trivia => trivia.IsDirective))
-                {
+                    && !token2.LeadingTrivia.Any(trivia => trivia.IsDirective)) {
                     context.ReportDiagnostic(Diagnostic.Create(SA1102Descriptor, token2.GetLocation()));
                 }
 
@@ -141,8 +137,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 if (onSameLine
                     && isEnabledSA1104
                     && !(parent1 is QueryContinuationSyntax)
-                    && parent1.SpansMultipleLines())
-                {
+                    && parent1.SpansMultipleLines()) {
                     context.ReportDiagnostic(Diagnostic.Create(SA1104Descriptor, token2.GetLocation()));
 
                     // Make sure that SA1103 will not be reported, as there is a more specific diagnostic reported.
@@ -151,8 +146,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                 if (onSameLine
                     && isEnabledSA1105
-                    && parent2.SpansMultipleLines())
-                {
+                    && parent2.SpansMultipleLines()) {
                     context.ReportDiagnostic(Diagnostic.Create(SA1105Descriptor, token2.GetLocation()));
 
                     // Make sure that SA1103 will not be reported, as there is a more specific diagnostic reported.
@@ -163,50 +157,46 @@ namespace StyleCop.Analyzers.ReadabilityRules
                 allOnSeparateLine = allOnSeparateLine && !onSameLine;
             }
 
-            if (!allOnSameLine && !allOnSeparateLine && !suppressSA1103 && isEnabledSA1103)
-            {
+            if (!allOnSameLine && !allOnSeparateLine && !suppressSA1103 && isEnabledSA1103) {
                 context.ReportDiagnostic(Diagnostic.Create(SA1103Descriptor, queryExpression.FromClause.FromKeyword.GetLocation()));
             }
         }
 
         private static void HandleQueryBody(QueryBodySyntax body, List<SyntaxToken> tokensToCheck)
         {
-            foreach (var clause in body.Clauses)
-            {
+            foreach (var clause in body.Clauses) {
                 HandleQueryClause(clause, tokensToCheck);
             }
 
             HandleSelectOrGroup(body.SelectOrGroup, tokensToCheck);
 
-            if (body.Continuation != null)
-            {
+            if (body.Continuation != null) {
                 HandleContinuation(body.Continuation, tokensToCheck);
             }
         }
 
         private static void HandleQueryClause(QueryClauseSyntax queryClause, List<SyntaxToken> tokensToCheck)
         {
-            switch (queryClause.Kind())
-            {
+            switch (queryClause.Kind()) {
             case SyntaxKind.FromClause:
-                var fromClause = (FromClauseSyntax)queryClause;
+                var fromClause = (FromClauseSyntax) queryClause;
                 tokensToCheck.Add(fromClause.FromKeyword);
                 break;
             case SyntaxKind.LetClause:
-                var letClause = (LetClauseSyntax)queryClause;
+                var letClause = (LetClauseSyntax) queryClause;
                 tokensToCheck.Add(letClause.LetKeyword);
                 break;
             case SyntaxKind.WhereClause:
-                var whereClause = (WhereClauseSyntax)queryClause;
+                var whereClause = (WhereClauseSyntax) queryClause;
                 tokensToCheck.Add(whereClause.WhereKeyword);
                 break;
             case SyntaxKind.JoinClause:
             case SyntaxKind.JoinIntoClause:
-                var joinClause = (JoinClauseSyntax)queryClause;
+                var joinClause = (JoinClauseSyntax) queryClause;
                 tokensToCheck.Add(joinClause.JoinKeyword);
                 break;
             case SyntaxKind.OrderByClause:
-                var orderByClause = (OrderByClauseSyntax)queryClause;
+                var orderByClause = (OrderByClauseSyntax) queryClause;
                 tokensToCheck.Add(orderByClause.OrderByKeyword);
                 break;
             }
@@ -214,18 +204,16 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleSelectOrGroup(SelectOrGroupClauseSyntax selectOrGroup, List<SyntaxToken> tokensToCheck)
         {
-            switch (selectOrGroup.Kind())
-            {
+            switch (selectOrGroup.Kind()) {
             case SyntaxKind.SelectClause:
-                var selectClause = (SelectClauseSyntax)selectOrGroup;
-                if (!selectClause.IsMissing)
-                {
+                var selectClause = (SelectClauseSyntax) selectOrGroup;
+                if (!selectClause.IsMissing) {
                     tokensToCheck.Add(selectClause.SelectKeyword);
                 }
 
                 break;
             case SyntaxKind.GroupClause:
-                var groupClause = (GroupClauseSyntax)selectOrGroup;
+                var groupClause = (GroupClauseSyntax) selectOrGroup;
                 tokensToCheck.Add(groupClause.GroupKeyword);
                 break;
             }

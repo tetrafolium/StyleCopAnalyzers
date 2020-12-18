@@ -14,8 +14,7 @@ namespace StyleCop.Analyzers.Helpers
     /// <summary>
     /// Helper class used for working with file headers.
     /// </summary>
-    internal static class FileHeaderHelpers
-    {
+    internal static class FileHeaderHelpers {
         /// <summary>
         /// Parses a comment-only file header.
         /// </summary>
@@ -23,11 +22,11 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The copyright string, as parsed from the file header.</returns>
         internal static FileHeader ParseFileHeader(SyntaxNode root)
         {
-            var firstToken = root.GetFirstToken(includeZeroWidth: true);
+            var firstToken = root.GetFirstToken(includeZeroWidth
+                                                : true);
             var firstNonWhitespaceTrivia = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(firstToken.LeadingTrivia, true);
 
-            if (firstNonWhitespaceTrivia == -1)
-            {
+            if (firstNonWhitespaceTrivia == -1) {
                 return FileHeader.MissingFileHeader;
             }
 
@@ -37,12 +36,10 @@ namespace StyleCop.Analyzers.Helpers
             var fileHeaderStart = int.MaxValue;
             var fileHeaderEnd = int.MinValue;
 
-            for (var i = firstNonWhitespaceTrivia; !done && (i < firstToken.LeadingTrivia.Count); i++)
-            {
+            for (var i = firstNonWhitespaceTrivia; !done && (i < firstToken.LeadingTrivia.Count); i++) {
                 var trivia = firstToken.LeadingTrivia[i];
 
-                switch (trivia.Kind())
-                {
+                switch (trivia.Kind()) {
                 case SyntaxKind.WhitespaceTrivia:
                     endOfLineCount = 0;
                     break;
@@ -58,14 +55,12 @@ namespace StyleCop.Analyzers.Helpers
                     break;
                 case SyntaxKind.MultiLineCommentTrivia:
                     // only process a MultiLineCommentTrivia if no SingleLineCommentTrivia have been processed
-                    if (sb.Length == 0)
-                    {
+                    if (sb.Length == 0) {
                         var triviaString = trivia.ToFullString();
 
                         var startIndex = triviaString.IndexOf("/*", StringComparison.Ordinal) + 2;
                         var endIndex = triviaString.LastIndexOf("*/", StringComparison.Ordinal);
-                        if (endIndex == -1)
-                        {
+                        if (endIndex == -1) {
                             // While editing, it is possible to have a multiline comment trivia that does not contain the closing '*/' yet.
                             return FileHeader.MissingFileHeader;
                         }
@@ -74,8 +69,7 @@ namespace StyleCop.Analyzers.Helpers
 
                         var triviaStringParts = commentContext.Replace("\r\n", "\n").Split('\n');
 
-                        foreach (var part in triviaStringParts)
-                        {
+                        foreach (var part in triviaStringParts) {
                             var trimmedPart = part.TrimStart(' ', '*');
                             sb.AppendLine(trimmedPart);
                         }
@@ -96,14 +90,12 @@ namespace StyleCop.Analyzers.Helpers
                 }
             }
 
-            if (fileHeaderStart > fileHeaderEnd)
-            {
+            if (fileHeaderStart > fileHeaderEnd) {
                 StringBuilderPool.Free(sb);
                 return FileHeader.MissingFileHeader;
             }
 
-            if (sb.Length > 0)
-            {
+            if (sb.Length > 0) {
                 // remove the final newline
                 var eolLength = Environment.NewLine.Length;
                 sb.Remove(sb.Length - eolLength, eolLength);
@@ -119,19 +111,19 @@ namespace StyleCop.Analyzers.Helpers
         /// <returns>The parsed file header.</returns>
         internal static XmlFileHeader ParseXmlFileHeader(SyntaxNode root)
         {
-            var firstToken = root.GetFirstToken(includeZeroWidth: true);
+            var firstToken = root.GetFirstToken(includeZeroWidth
+                                                : true);
             string xmlString;
             int fileHeaderStart;
             int fileHeaderEnd;
 
             var firstNonWhitespaceTrivia = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(firstToken.LeadingTrivia, true);
-            if (firstNonWhitespaceTrivia == -1)
-            {
+            if (firstNonWhitespaceTrivia == -1) {
                 return XmlFileHeader.MissingFileHeader;
             }
 
-            switch (firstToken.LeadingTrivia[firstNonWhitespaceTrivia].Kind())
-            {
+            switch (firstToken.LeadingTrivia [firstNonWhitespaceTrivia]
+                        .Kind()) {
             case SyntaxKind.SingleLineCommentTrivia:
                 xmlString = ProcessSingleLineCommentsHeader(firstToken.LeadingTrivia, firstNonWhitespaceTrivia, out fileHeaderStart, out fileHeaderEnd);
                 break;
@@ -144,25 +136,20 @@ namespace StyleCop.Analyzers.Helpers
                 return XmlFileHeader.MissingFileHeader;
             }
 
-            if (fileHeaderStart > fileHeaderEnd)
-            {
+            if (fileHeaderStart > fileHeaderEnd) {
                 return XmlFileHeader.MissingFileHeader;
             }
 
-            try
-            {
+            try {
                 var parsedFileHeaderXml = XElement.Parse(xmlString);
 
                 // a header without any XML tags is malformed.
-                if (!parsedFileHeaderXml.Descendants().Any())
-                {
+                if (!parsedFileHeaderXml.Descendants().Any()) {
                     return XmlFileHeader.MalformedFileHeader;
                 }
 
                 return new XmlFileHeader(parsedFileHeaderXml, fileHeaderStart, fileHeaderEnd);
-            }
-            catch (XmlException)
-            {
+            } catch (XmlException) {
                 return XmlFileHeader.MalformedFileHeader;
             }
         }
@@ -180,12 +167,10 @@ namespace StyleCop.Analyzers.Helpers
             sb.AppendLine("<root>");
 
             int i;
-            for (i = startIndex; !done && (i < triviaList.Count); i++)
-            {
+            for (i = startIndex; !done && (i < triviaList.Count); i++) {
                 var trivia = triviaList[i];
 
-                switch (trivia.Kind())
-                {
+                switch (trivia.Kind()) {
                 case SyntaxKind.WhitespaceTrivia:
                     endOfLineCount = 0;
                     break;
@@ -196,8 +181,7 @@ namespace StyleCop.Analyzers.Helpers
                     var commentString = trivia.ToFullString();
 
                     // ignore borders
-                    if (commentString.StartsWith("//-", StringComparison.OrdinalIgnoreCase))
-                    {
+                    if (commentString.StartsWith("//-", StringComparison.OrdinalIgnoreCase)) {
                         break;
                     }
 
@@ -238,8 +222,7 @@ namespace StyleCop.Analyzers.Helpers
 
             /* TODO: Ignore borders ??? */
 
-            foreach (var commentLine in commentLines)
-            {
+            foreach (var commentLine in commentLines) {
                 sb.AppendLine(commentLine.TrimStart(' ', '*'));
             }
 

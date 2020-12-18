@@ -25,11 +25,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// </remarks>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1132CodeFixProvider))]
     [Shared]
-    internal class SA1132CodeFixProvider : CodeFixProvider
-    {
+    internal class SA1132CodeFixProvider : CodeFixProvider {
         /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1132DoNotCombineFields.DiagnosticId);
+        public override ImmutableArray<string> FixableDiagnosticIds { get; }
+        = ImmutableArray.Create(SA1132DoNotCombineFields.DiagnosticId);
 
         /// <inheritdoc/>
         public override FixAllProvider GetFixAllProvider()
@@ -40,8 +39,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
         /// <inheritdoc/>
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            foreach (var diagnostic in context.Diagnostics)
-            {
+            foreach (var diagnostic in context.Diagnostics) {
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ReadabilityResources.SA1132CodeFix,
@@ -56,11 +54,10 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var baseFieldDeclaration = (BaseFieldDeclarationSyntax)syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
+            var baseFieldDeclaration = (BaseFieldDeclarationSyntax) syntaxRoot.FindNode(diagnostic.Location.SourceSpan);
             List<BaseFieldDeclarationSyntax> newFieldDeclarations = SplitDeclaration(document, baseFieldDeclaration);
 
-            if (newFieldDeclarations != null)
-            {
+            if (newFieldDeclarations != null) {
                 var editor = new SyntaxEditor(syntaxRoot, document.Project.Solution.Workspace);
                 editor.InsertAfter(baseFieldDeclaration, newFieldDeclarations);
                 editor.RemoveNode(baseFieldDeclaration, SyntaxRemoveOptions.KeepNoTrivia);
@@ -72,8 +69,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static List<BaseFieldDeclarationSyntax> SplitDeclaration(Document document, BaseFieldDeclarationSyntax baseFieldDeclaration)
         {
-            if (baseFieldDeclaration is FieldDeclarationSyntax fieldDeclaration)
-            {
+            if (baseFieldDeclaration is FieldDeclarationSyntax fieldDeclaration) {
                 return DeclarationSplitter(
                     document,
                     fieldDeclaration.Declaration,
@@ -81,8 +77,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
                     fieldDeclaration.SemicolonToken.TrailingTrivia);
             }
 
-            if (baseFieldDeclaration is EventFieldDeclarationSyntax eventFieldDeclaration)
-            {
+            if (baseFieldDeclaration is EventFieldDeclarationSyntax eventFieldDeclaration) {
                 return DeclarationSplitter(
                     document,
                     eventFieldDeclaration.Declaration,
@@ -104,32 +99,27 @@ namespace StyleCop.Analyzers.ReadabilityRules
             BaseFieldDeclarationSyntax previous = null;
             var newFieldDeclarations = new List<BaseFieldDeclarationSyntax>(variables.Count);
 
-            foreach (SyntaxNodeOrToken nodeOrToken in variables.GetWithSeparators())
-            {
-                if (previous == null)
-                {
-                    VariableDeclaratorSyntax variable = (VariableDeclaratorSyntax)nodeOrToken.AsNode();
+            foreach (SyntaxNodeOrToken nodeOrToken in variables.GetWithSeparators()) {
+                if (previous == null) {
+                    VariableDeclaratorSyntax variable = (VariableDeclaratorSyntax) nodeOrToken.AsNode();
                     variable = variable.WithIdentifier(variable.Identifier.WithoutLeadingWhitespace());
                     var variableDeclarator = SyntaxFactory.SingletonSeparatedList(variable);
                     previous = declarationFactory(declaration.WithVariables(variableDeclarator));
 
-                    if (variable != first)
-                    {
+                    if (variable != first) {
                         var triviaList = previous.GetLeadingTrivia().WithoutDirectiveTrivia();
 
                         // Remove all leading blank lines
                         var nonBlankLinetriviaIndex = TriviaHelper.IndexOfFirstNonBlankLineTrivia(triviaList);
-                        if (nonBlankLinetriviaIndex > 0)
-                        {
+                        if (nonBlankLinetriviaIndex > 0) {
                             triviaList = triviaList.RemoveRange(0, nonBlankLinetriviaIndex);
                         }
 
                         // Add a blank line if the first line contains a comment.
                         var nonWhitespaceTriviaIndex = TriviaHelper.IndexOfFirstNonWhitespaceTrivia(triviaList, false);
-                        if (nonWhitespaceTriviaIndex >= 0)
-                        {
-                            switch (triviaList[nonWhitespaceTriviaIndex].Kind())
-                            {
+                        if (nonWhitespaceTriviaIndex >= 0) {
+                            switch (triviaList [nonWhitespaceTriviaIndex]
+                                        .Kind()) {
                             case SyntaxKind.SingleLineCommentTrivia:
                             case SyntaxKind.MultiLineCommentTrivia:
                                 triviaList = triviaList.Insert(0, SyntaxFactory.CarriageReturnLineFeed);
@@ -139,20 +129,14 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
                         previous = previous.WithLeadingTrivia(triviaList);
                     }
-                }
-                else
-                {
+                } else {
                     SyntaxToken commaToken = nodeOrToken.AsToken();
                     SyntaxTriviaList trailingTrivia = commaToken.TrailingTrivia;
-                    if (trailingTrivia.Any())
-                    {
-                        if (!trailingTrivia.Last().IsKind(SyntaxKind.EndOfLineTrivia))
-                        {
+                    if (trailingTrivia.Any()) {
+                        if (!trailingTrivia.Last().IsKind(SyntaxKind.EndOfLineTrivia)) {
                             trailingTrivia = trailingTrivia.WithoutTrailingWhitespace().Add(FormattingHelper.GetNewLineTrivia(document));
                         }
-                    }
-                    else
-                    {
+                    } else {
                         trailingTrivia = SyntaxTriviaList.Create(FormattingHelper.GetNewLineTrivia(document));
                     }
 

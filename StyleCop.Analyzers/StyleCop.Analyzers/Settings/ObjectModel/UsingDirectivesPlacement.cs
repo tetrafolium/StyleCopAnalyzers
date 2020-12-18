@@ -6,8 +6,7 @@ namespace StyleCop.Analyzers.Settings.ObjectModel
     /// <summary>
     /// Specifies the desired placement of using directives.
     /// </summary>
-    internal enum UsingDirectivesPlacement
-    {
+    internal enum UsingDirectivesPlacement {
         /// <summary>
         /// Place using directives inside the namespace definition.
         /// </summary>

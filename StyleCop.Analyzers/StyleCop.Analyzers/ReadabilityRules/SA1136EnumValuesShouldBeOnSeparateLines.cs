@@ -15,8 +15,7 @@ namespace StyleCop.Analyzers.ReadabilityRules
     /// Enum values should be placed on their own lines for maximum readability.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1136EnumValuesShouldBeOnSeparateLines : DiagnosticAnalyzer
-    {
+    internal class SA1136EnumValuesShouldBeOnSeparateLines : DiagnosticAnalyzer {
         /// <summary>
         /// The ID for diagnostics produced by the <see cref="SA1136EnumValuesShouldBeOnSeparateLines"/> analyzer.
         /// </summary>
@@ -26,14 +25,13 @@ namespace StyleCop.Analyzers.ReadabilityRules
         private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1136MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
         private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1136Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
         private static readonly Action<SyntaxNodeAnalysisContext> HandleEnumDeclarationAction = HandleEnumDeclaration;
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(Descriptor);
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
@@ -46,21 +44,20 @@ namespace StyleCop.Analyzers.ReadabilityRules
 
         private static void HandleEnumDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+            var enumDeclaration = (EnumDeclarationSyntax) context.Node;
 
-            if (enumDeclaration.Members.Count < 2)
-            {
+            if (enumDeclaration.Members.Count < 2) {
                 return;
             }
 
-            var previousLine = enumDeclaration.Members[0].GetLineSpan().EndLinePosition.Line;
-            for (var i = 1; i < enumDeclaration.Members.Count; i++)
-            {
+            var previousLine = enumDeclaration.Members [0]
+                                   .GetLineSpan()
+                                   .EndLinePosition.Line;
+            for (var i = 1; i < enumDeclaration.Members.Count; i++) {
                 var currentMember = enumDeclaration.Members[i];
                 var currentLine = currentMember.GetLineSpan().StartLinePosition.Line;
 
-                if (currentLine == previousLine)
-                {
+                if (currentLine == previousLine) {
                     context.ReportDiagnostic(Diagnostic.Create(Descriptor, currentMember.Identifier.GetLocation()));
                 }
 
