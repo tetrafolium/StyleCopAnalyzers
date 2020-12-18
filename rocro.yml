@@ -9,7 +9,7 @@ inspecode:
     clang-format:
       options:
         # -style: LLVM
-        # -style: Google
+        -style: Google
         # -style: Chromium
         # -style: Mozilla
         # -style: WebKit
