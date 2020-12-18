@@ -3,14 +3,14 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal partial struct CommonForEachStatementSyntaxWrapper : ISyntaxWrapper<StatementSyntax> {
-        internal const string FallbackWrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.ForEachStatementSyntax";
+internal partial struct CommonForEachStatementSyntaxWrapper : ISyntaxWrapper<StatementSyntax> {
+	internal const string FallbackWrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.ForEachStatementSyntax";
 
-        public static implicit operator CommonForEachStatementSyntaxWrapper(ForEachStatementSyntax node)
-        {
-            return new CommonForEachStatementSyntaxWrapper(node);
-        }
-    }
+	public static implicit operator CommonForEachStatementSyntaxWrapper(ForEachStatementSyntax node)
+	{
+		return new CommonForEachStatementSyntaxWrapper(node);
+	}
+}
 }

@@ -3,23 +3,23 @@
 
 namespace StyleCop.Analyzers.Settings.ObjectModel
 {
-    /// <summary>
-    /// Specifies the possible values for an option.
-    /// </summary>
-    internal enum OptionSetting {
-        /// <summary>
-        /// The option is allowed, but not required.
-        /// </summary>
-        Allow,
+/// <summary>
+/// Specifies the possible values for an option.
+/// </summary>
+internal enum OptionSetting {
+	/// <summary>
+	/// The option is allowed, but not required.
+	/// </summary>
+	Allow,
 
-        /// <summary>
-        /// The option is required.
-        /// </summary>
-        Require,
+	/// <summary>
+	/// The option is required.
+	/// </summary>
+	Require,
 
-        /// <summary>
-        /// The option is not allowed.
-        /// </summary>
-        Omit,
-    }
+	/// <summary>
+	/// The option is not allowed.
+	/// </summary>
+	Omit,
+}
 }

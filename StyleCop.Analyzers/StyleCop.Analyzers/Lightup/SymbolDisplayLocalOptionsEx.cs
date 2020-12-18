@@ -3,9 +3,9 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
-    internal static class SymbolDisplayLocalOptionsEx {
-        public const SymbolDisplayLocalOptions IncludeRef = (SymbolDisplayLocalOptions) 4;
-    }
+internal static class SymbolDisplayLocalOptionsEx {
+public const SymbolDisplayLocalOptions IncludeRef = (SymbolDisplayLocalOptions) 4;
+}
 }

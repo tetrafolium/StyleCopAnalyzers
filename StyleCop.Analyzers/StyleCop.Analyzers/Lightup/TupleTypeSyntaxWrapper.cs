@@ -3,12 +3,12 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax> {
-        public TupleTypeSyntaxWrapper AddElements(params TupleElementSyntaxWrapper[] items)
-        {
-            return new TupleTypeSyntaxWrapper(this.WithElements(this.Elements.AddRange(items)));
-        }
-    }
+internal partial struct TupleTypeSyntaxWrapper : ISyntaxWrapper<TypeSyntax> {
+	public TupleTypeSyntaxWrapper AddElements(params TupleElementSyntaxWrapper[] items)
+	{
+		return new TupleTypeSyntaxWrapper(this.WithElements(this.Elements.AddRange(items)));
+	}
+}
 }

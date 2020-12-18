@@ -3,86 +3,86 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using System;
-    using System.Collections.Immutable;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct TupleElementSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
-        internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.TupleElementSyntax";
-        private static readonly Type WrappedType;
+internal readonly partial struct TupleElementSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode> {
+	internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.TupleElementSyntax";
+	private static readonly Type WrappedType;
 
-        private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
-        private static readonly Func<CSharpSyntaxNode, SyntaxToken> IdentifierAccessor;
-        private static readonly Func<CSharpSyntaxNode, TypeSyntax, CSharpSyntaxNode> WithTypeAccessor;
-        private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode> WithIdentifierAccessor;
+	private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
+	private static readonly Func<CSharpSyntaxNode, SyntaxToken> IdentifierAccessor;
+	private static readonly Func<CSharpSyntaxNode, TypeSyntax, CSharpSyntaxNode> WithTypeAccessor;
+	private static readonly Func<CSharpSyntaxNode, SyntaxToken, CSharpSyntaxNode> WithIdentifierAccessor;
 
-        private readonly CSharpSyntaxNode node;
+	private readonly CSharpSyntaxNode node;
 
-        static TupleElementSyntaxWrapper()
-        {
-            WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(TupleElementSyntaxWrapper));
-            TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
-            IdentifierAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Identifier));
-            WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
-            WithIdentifierAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Identifier));
-        }
+	static TupleElementSyntaxWrapper()
+	{
+		WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(TupleElementSyntaxWrapper));
+		TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
+		IdentifierAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Identifier));
+		WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
+		WithIdentifierAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Identifier));
+	}
 
-        private TupleElementSyntaxWrapper(CSharpSyntaxNode node)
-        {
-            this.node = node;
-        }
+	private TupleElementSyntaxWrapper(CSharpSyntaxNode node)
+	{
+		this.node = node;
+	}
 
-        public CSharpSyntaxNode SyntaxNode => this.node;
+	public CSharpSyntaxNode SyntaxNode => this.node;
 
-        public TypeSyntax Type
-        {
-            get
-            {
-                return TypeAccessor(this.SyntaxNode);
-            }
-        }
+	public TypeSyntax Type
+	{
+		get
+		{
+			return TypeAccessor(this.SyntaxNode);
+		}
+	}
 
-        public SyntaxToken Identifier
-        {
-            get
-            {
-                return IdentifierAccessor(this.SyntaxNode);
-            }
-        }
+	public SyntaxToken Identifier
+	{
+		get
+		{
+			return IdentifierAccessor(this.SyntaxNode);
+		}
+	}
 
-        public static explicit operator TupleElementSyntaxWrapper(SyntaxNode node)
-        {
-            if (node == null) {
-                return default;
-            }
+	public static explicit operator TupleElementSyntaxWrapper(SyntaxNode node)
+	{
+		if (node == null) {
+			return default;
+		}
 
-            if (!IsInstance(node)) {
-                throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
-            }
+		if (!IsInstance(node)) {
+			throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
+		}
 
-            return new TupleElementSyntaxWrapper((CSharpSyntaxNode) node);
-        }
+		return new TupleElementSyntaxWrapper((CSharpSyntaxNode) node);
+	}
 
-        public static implicit operator CSharpSyntaxNode(TupleElementSyntaxWrapper wrapper)
-        {
-            return wrapper.node;
-        }
+	public static implicit operator CSharpSyntaxNode(TupleElementSyntaxWrapper wrapper)
+	{
+		return wrapper.node;
+	}
 
-        public static bool IsInstance(SyntaxNode node)
-        {
-            return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
-        }
+	public static bool IsInstance(SyntaxNode node)
+	{
+		return node != null && LightupHelpers.CanWrapNode(node, WrappedType);
+	}
 
-        public TupleElementSyntaxWrapper WithType(TypeSyntax type)
-        {
-            return new TupleElementSyntaxWrapper(WithTypeAccessor(this.SyntaxNode, type));
-        }
+	public TupleElementSyntaxWrapper WithType(TypeSyntax type)
+	{
+		return new TupleElementSyntaxWrapper(WithTypeAccessor(this.SyntaxNode, type));
+	}
 
-        public TupleElementSyntaxWrapper WithIdentifier(SyntaxToken identifier)
-        {
-            return new TupleElementSyntaxWrapper(WithIdentifierAccessor(this.SyntaxNode, identifier));
-        }
-    }
+	public TupleElementSyntaxWrapper WithIdentifier(SyntaxToken identifier)
+	{
+		return new TupleElementSyntaxWrapper(WithIdentifierAccessor(this.SyntaxNode, identifier));
+	}
+}
 }
