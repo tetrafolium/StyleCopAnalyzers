@@ -12,7 +12,7 @@ inspecode:
         # -style: Google
         # -style: Chromium
         # -style: Mozilla
-        # -style: WebKit
+        -style: WebKit
         # -style: Microsoft
         # -style: GNU
       auto-fix: true
