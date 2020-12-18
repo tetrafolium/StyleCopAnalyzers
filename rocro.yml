@@ -11,7 +11,7 @@ inspecode:
         # -style: LLVM
         # -style: Google
         # -style: Chromium
-        # -style: Mozilla
+        -style: Mozilla
         # -style: WebKit
         # -style: Microsoft
         # -style: GNU
