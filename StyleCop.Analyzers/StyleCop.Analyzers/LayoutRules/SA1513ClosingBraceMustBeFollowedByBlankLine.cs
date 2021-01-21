@@ -256,7 +256,7 @@ private void AnalyzeCloseBrace(SyntaxToken token)
 		if (nextToken.IsKind(SyntaxKind.CommaToken) || nextToken.IsKind(SyntaxKind.CloseParenToken))
 		{
 			// The close brace is the end of an object initializer, anonymous function, lambda expression,
-			// etc. Comma and close parenthesis never requires a preceeding blank line.
+			// etc. Comma and close parenthesis never requires a preceding blank line.
 			return;
 		}
 
