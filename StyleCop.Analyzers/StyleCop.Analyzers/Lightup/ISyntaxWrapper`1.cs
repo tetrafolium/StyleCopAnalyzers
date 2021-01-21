@@ -3,24 +3,23 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis;
 
-/// <summary>
-/// Represents a light-up wrapper for a type derived from a known back syntax kind <typeparamref name="T"/>.
-/// </summary>
-/// <typeparam name="T">The base syntax kind which is exposed in the referenced API.</typeparam>
-internal interface ISyntaxWrapper<T>
-    where T : SyntaxNode
-{
     /// <summary>
-    /// Gets the wrapped syntax node.
+    /// Represents a light-up wrapper for a type derived from a known back syntax kind <typeparamref name="T"/>.
     /// </summary>
-    /// <value>
-    /// The wrapped syntax node.
-    /// </value>
-    T SyntaxNode
+    /// <typeparam name="T">The base syntax kind which is exposed in the referenced API.</typeparam>
+    internal interface ISyntaxWrapper<T> where T : SyntaxNode
     {
-        get;
+        /// <summary>
+        /// Gets the wrapped syntax node.
+        /// </summary>
+        /// <value>
+        /// The wrapped syntax node.
+        /// </value>
+        T SyntaxNode
+        {
+            get;
+        }
     }
-}
 }

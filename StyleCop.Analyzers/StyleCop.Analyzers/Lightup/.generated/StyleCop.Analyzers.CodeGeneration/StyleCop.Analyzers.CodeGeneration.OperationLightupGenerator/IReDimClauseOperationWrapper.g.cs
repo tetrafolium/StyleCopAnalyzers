@@ -17,8 +17,11 @@ namespace StyleCop.Analyzers.Lightup
         static IReDimClauseOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IReDimClauseOperationWrapper));
-            OperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
-            DimensionSizesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(DimensionSizes));
+            OperandAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
+            DimensionSizesAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                    WrappedType, nameof(DimensionSizes));
         }
 
         private IReDimClauseOperationWrapper(IOperation operation)

@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IUsingDeclarationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IUsingDeclarationOperationWrapper));
-            DeclarationGroupAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(DeclarationGroup));
-            IsAsynchronousAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsAsynchronous));
+            DeclarationGroupAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(DeclarationGroup));
+            IsAsynchronousAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsAsynchronous));
         }
 
         private IUsingDeclarationOperationWrapper(IOperation operation)
@@ -28,7 +30,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public IVariableDeclarationGroupOperationWrapper DeclarationGroup => IVariableDeclarationGroupOperationWrapper.FromOperation(DeclarationGroupAccessor(this.WrappedOperation));
+        public IVariableDeclarationGroupOperationWrapper DeclarationGroup =>
+            IVariableDeclarationGroupOperationWrapper.FromOperation(DeclarationGroupAccessor(this.WrappedOperation));
         public bool IsAsynchronous => IsAsynchronousAccessor(this.WrappedOperation);
         public static IUsingDeclarationOperationWrapper FromOperation(IOperation operation)
         {

@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static ILabeledOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ILabeledOperationWrapper));
-            LabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(Label));
-            OperationAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operation));
+            LabelAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(Label));
+            OperationAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operation));
         }
 
         private ILabeledOperationWrapper(IOperation operation)

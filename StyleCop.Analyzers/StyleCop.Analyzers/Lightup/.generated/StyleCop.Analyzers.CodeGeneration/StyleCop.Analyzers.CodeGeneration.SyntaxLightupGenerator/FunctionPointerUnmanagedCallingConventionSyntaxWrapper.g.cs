@@ -9,9 +9,11 @@ namespace StyleCop.Analyzers.Lightup
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal readonly partial struct FunctionPointerUnmanagedCallingConventionSyntaxWrapper : ISyntaxWrapper<CSharpSyntaxNode>
+    internal readonly partial struct FunctionPointerUnmanagedCallingConventionSyntaxWrapper
+        : ISyntaxWrapper<CSharpSyntaxNode>
     {
-        internal const string WrappedTypeName = "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerUnmanagedCallingConventionSyntax";
+        internal const string WrappedTypeName =
+            "Microsoft.CodeAnalysis.CSharp.Syntax.FunctionPointerUnmanagedCallingConventionSyntax";
         private static readonly Type WrappedType;
 
         private static readonly Func<CSharpSyntaxNode, SyntaxToken> NameAccessor;
@@ -21,9 +23,12 @@ namespace StyleCop.Analyzers.Lightup
 
         static FunctionPointerUnmanagedCallingConventionSyntaxWrapper()
         {
-            WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(FunctionPointerUnmanagedCallingConventionSyntaxWrapper));
-            NameAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Name));
-            WithNameAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Name));
+            WrappedType =
+                SyntaxWrapperHelper.GetWrappedType(typeof(FunctionPointerUnmanagedCallingConventionSyntaxWrapper));
+            NameAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(Name));
+            WithNameAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                WrappedType, nameof(Name));
         }
 
         private FunctionPointerUnmanagedCallingConventionSyntaxWrapper(CSharpSyntaxNode node)
@@ -53,7 +58,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new FunctionPointerUnmanagedCallingConventionSyntaxWrapper((CSharpSyntaxNode)node);
+            return new FunctionPointerUnmanagedCallingConventionSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator CSharpSyntaxNode(FunctionPointerUnmanagedCallingConventionSyntaxWrapper wrapper)

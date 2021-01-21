@@ -19,10 +19,14 @@ namespace StyleCop.Analyzers.Lightup
         static IUsingOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IUsingOperationWrapper));
-            ResourcesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Resources));
-            BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
-            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
-            IsAsynchronousAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsAsynchronous));
+            ResourcesAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Resources));
+            BodyAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
+            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                WrappedType, nameof(Locals));
+            IsAsynchronousAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsAsynchronous));
         }
 
         private IUsingOperationWrapper(IOperation operation)

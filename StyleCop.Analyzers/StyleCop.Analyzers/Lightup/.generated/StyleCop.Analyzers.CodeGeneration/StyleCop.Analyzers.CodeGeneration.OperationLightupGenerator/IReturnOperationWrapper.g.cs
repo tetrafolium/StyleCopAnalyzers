@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IReturnOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IReturnOperationWrapper));
-            ReturnedValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(ReturnedValue));
+            ReturnedValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(ReturnedValue));
         }
 
         private IReturnOperationWrapper(IOperation operation)

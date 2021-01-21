@@ -3,13 +3,13 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-internal partial struct TupleExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
-{
-    public TupleExpressionSyntaxWrapper AddArguments(params ArgumentSyntax[] items)
+    internal partial struct TupleExpressionSyntaxWrapper : ISyntaxWrapper<ExpressionSyntax>
     {
-        return new TupleExpressionSyntaxWrapper(this.WithArguments(this.Arguments.AddRange(items)));
+        public TupleExpressionSyntaxWrapper AddArguments(params ArgumentSyntax[] items)
+        {
+            return new TupleExpressionSyntaxWrapper(this.WithArguments(this.Arguments.AddRange(items)));
+        }
     }
-}
 }

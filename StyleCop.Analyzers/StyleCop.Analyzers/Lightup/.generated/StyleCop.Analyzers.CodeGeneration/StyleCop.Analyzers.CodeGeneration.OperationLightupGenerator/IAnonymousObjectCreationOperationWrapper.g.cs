@@ -16,7 +16,9 @@ namespace StyleCop.Analyzers.Lightup
         static IAnonymousObjectCreationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IAnonymousObjectCreationOperationWrapper));
-            InitializersAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Initializers));
+            InitializersAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                    WrappedType, nameof(Initializers));
         }
 
         private IAnonymousObjectCreationOperationWrapper(IOperation operation)

@@ -24,10 +24,14 @@ namespace StyleCop.Analyzers.Lightup
         static WhenClauseSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(WhenClauseSyntaxWrapper));
-            WhenKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(WhenKeyword));
-            ConditionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Condition));
-            WithWhenKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(WrappedType, nameof(WhenKeyword));
-            WithConditionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(WrappedType, nameof(Condition));
+            WhenKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                WrappedType, nameof(WhenKeyword));
+            ConditionAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
+                WrappedType, nameof(Condition));
+            WithWhenKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxToken>(
+                WrappedType, nameof(WhenKeyword));
+            WithConditionAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, ExpressionSyntax>(
+                WrappedType, nameof(Condition));
         }
 
         private WhenClauseSyntaxWrapper(CSharpSyntaxNode node)
@@ -65,7 +69,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new WhenClauseSyntaxWrapper((CSharpSyntaxNode)node);
+            return new WhenClauseSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator CSharpSyntaxNode(WhenClauseSyntaxWrapper wrapper)

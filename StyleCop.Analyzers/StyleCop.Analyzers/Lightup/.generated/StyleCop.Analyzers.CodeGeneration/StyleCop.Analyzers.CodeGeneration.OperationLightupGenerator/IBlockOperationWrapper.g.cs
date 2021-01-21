@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IBlockOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IBlockOperationWrapper));
-            OperationsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Operations));
-            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
+            OperationsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                WrappedType, nameof(Operations));
+            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                WrappedType, nameof(Locals));
         }
 
         private IBlockOperationWrapper(IOperation operation)

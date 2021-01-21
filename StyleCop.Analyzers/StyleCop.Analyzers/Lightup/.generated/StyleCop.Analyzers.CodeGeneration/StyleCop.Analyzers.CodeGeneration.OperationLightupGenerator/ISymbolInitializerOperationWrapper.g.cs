@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static ISymbolInitializerOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ISymbolInitializerOperationWrapper));
-            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                WrappedType, nameof(Locals));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
         }
 
         private ISymbolInitializerOperationWrapper(IOperation operation)

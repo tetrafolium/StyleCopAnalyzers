@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IInterpolatedStringTextOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IInterpolatedStringTextOperationWrapper));
-            TextAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Text));
+            TextAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Text));
         }
 
         private IInterpolatedStringTextOperationWrapper(IOperation operation)
@@ -27,8 +28,11 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation Text => TextAccessor(this.WrappedOperation);
-        public static explicit operator IInterpolatedStringTextOperationWrapper(IInterpolatedStringContentOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IInterpolatedStringContentOperationWrapper(IInterpolatedStringTextOperationWrapper wrapper) => IInterpolatedStringContentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public static explicit operator IInterpolatedStringTextOperationWrapper(
+            IInterpolatedStringContentOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IInterpolatedStringContentOperationWrapper(
+            IInterpolatedStringTextOperationWrapper wrapper) =>
+            IInterpolatedStringContentOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IInterpolatedStringTextOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

@@ -29,8 +29,7 @@ internal sealed class JsonArray : IEnumerable<JsonValue>
     /// Initializes a new instance of the <see cref="JsonArray"/> class, adding the given values to the collection.
     /// </summary>
     /// <param name="values">The values to be added to this collection.</param>
-    public JsonArray(params JsonValue[] values)
-        : this()
+    public JsonArray(params JsonValue[] values) : this()
     {
         if (values == null)
         {

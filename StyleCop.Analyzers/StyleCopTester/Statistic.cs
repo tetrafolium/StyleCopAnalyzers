@@ -12,24 +12,26 @@ internal struct Statistic
         this.NumberOfTrivia = numberOfTrivia;
     }
 
-    public int NumberofNodes {
+    public int NumberofNodes
+    {
         get;
     }
 
-    public int NumberOfTokens {
+    public int NumberOfTokens
+    {
         get;
     }
 
-    public int NumberOfTrivia {
+    public int NumberOfTrivia
+    {
         get;
     }
 
     public static Statistic operator +(Statistic statistic1, Statistic statistic2)
     {
-        return new Statistic(
-                   statistic1.NumberofNodes + statistic2.NumberofNodes,
-                   statistic1.NumberOfTokens + statistic2.NumberOfTokens,
-                   statistic1.NumberOfTrivia + statistic2.NumberOfTrivia);
+        return new Statistic(statistic1.NumberofNodes + statistic2.NumberofNodes,
+                             statistic1.NumberOfTokens + statistic2.NumberOfTokens,
+                             statistic1.NumberOfTrivia + statistic2.NumberOfTrivia);
     }
 }
 }

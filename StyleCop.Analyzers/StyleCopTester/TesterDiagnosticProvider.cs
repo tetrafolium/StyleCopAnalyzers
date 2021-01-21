@@ -13,16 +13,20 @@ using Microsoft.CodeAnalysis.CodeFixes;
 
 internal sealed class TesterDiagnosticProvider : FixAllContext.DiagnosticProvider
 {
-    private readonly ImmutableDictionary<ProjectId, ImmutableDictionary<string, ImmutableArray<Diagnostic>>> documentDiagnostics;
+    private readonly ImmutableDictionary<ProjectId, ImmutableDictionary<string, ImmutableArray<Diagnostic>>>
+        documentDiagnostics;
     private readonly ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> projectDiagnostics;
 
-    public TesterDiagnosticProvider(ImmutableDictionary<ProjectId, ImmutableDictionary<string, ImmutableArray<Diagnostic>>> documentDiagnostics, ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> projectDiagnostics)
+    public TesterDiagnosticProvider(
+        ImmutableDictionary<ProjectId, ImmutableDictionary<string, ImmutableArray<Diagnostic>>> documentDiagnostics,
+        ImmutableDictionary<ProjectId, ImmutableArray<Diagnostic>> projectDiagnostics)
     {
         this.documentDiagnostics = documentDiagnostics;
         this.projectDiagnostics = projectDiagnostics;
     }
 
-    public override Task<IEnumerable<Diagnostic>> GetAllDiagnosticsAsync(Project project, CancellationToken cancellationToken)
+    public override Task<IEnumerable<Diagnostic>> GetAllDiagnosticsAsync(Project project,
+                                                                         CancellationToken cancellationToken)
     {
         ImmutableArray<Diagnostic> filteredProjectDiagnostics;
         if (!this.projectDiagnostics.TryGetValue(project.Id, out filteredProjectDiagnostics))
@@ -36,10 +40,12 @@ internal sealed class TesterDiagnosticProvider : FixAllContext.DiagnosticProvide
             filteredDocumentDiagnostics = ImmutableDictionary<string, ImmutableArray<Diagnostic>>.Empty;
         }
 
-        return Task.FromResult(filteredProjectDiagnostics.Concat(filteredDocumentDiagnostics.Values.SelectMany(i => i)));
+        return Task.FromResult(
+            filteredProjectDiagnostics.Concat(filteredDocumentDiagnostics.Values.SelectMany(i => i)));
     }
 
-    public override Task<IEnumerable<Diagnostic>> GetDocumentDiagnosticsAsync(Document document, CancellationToken cancellationToken)
+    public override Task<IEnumerable<Diagnostic>> GetDocumentDiagnosticsAsync(Document document,
+                                                                              CancellationToken cancellationToken)
     {
         ImmutableDictionary<string, ImmutableArray<Diagnostic>> projectDocumentDiagnostics;
         if (!this.documentDiagnostics.TryGetValue(document.Project.Id, out projectDocumentDiagnostics))
@@ -56,7 +62,8 @@ internal sealed class TesterDiagnosticProvider : FixAllContext.DiagnosticProvide
         return Task.FromResult(diagnostics.AsEnumerable());
     }
 
-    public override Task<IEnumerable<Diagnostic>> GetProjectDiagnosticsAsync(Project project, CancellationToken cancellationToken)
+    public override Task<IEnumerable<Diagnostic>> GetProjectDiagnosticsAsync(Project project,
+                                                                             CancellationToken cancellationToken)
     {
         ImmutableArray<Diagnostic> diagnostics;
         if (!this.projectDiagnostics.TryGetValue(project.Id, out diagnostics))

@@ -3,158 +3,169 @@
 
 namespace StyleCop.Analyzers.LayoutRules
 {
-using System;
-using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
-using StyleCop.Analyzers.Helpers;
+    using System;
+    using System.Collections.Immutable;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.Diagnostics;
+    using Microsoft.CodeAnalysis.Text;
+    using StyleCop.Analyzers.Helpers;
 
-/// <summary>
-/// The C# code contains multiple blank lines in a row.
-/// </summary>
-/// <remarks>
-/// <para>To improve the readability of the code, StyleCop requires blank lines in certain situations, and prohibits
-/// blank lines in other situations. This results in a consistent visual pattern across the code, which can improve
-/// recognition and readability of unfamiliar code.</para>
-///
-/// <para>A violation of this rule occurs when the code contains more than one blank line in a row. For
-/// example:</para>
-///
-/// <code language="csharp">
-/// public bool Enabled
-/// {
-///     get
-///     {
-///         Console.WriteLine("Getting the enabled flag.");
-///
-///
-///         return this.enabled;
-///     }
-/// }
-/// </code>
-///
-/// <para>The code above would generate an instance of this violation, since it contains blank multiple lines in a
-/// row.</para>
-/// </remarks>
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-internal class SA1507CodeMustNotContainMultipleBlankLinesInARow : DiagnosticAnalyzer
-{
     /// <summary>
-    /// The ID for diagnostics produced by the <see cref="SA1507CodeMustNotContainMultipleBlankLinesInARow"/>
-    /// analyzer.
+    /// The C# code contains multiple blank lines in a row.
     /// </summary>
-    public const string DiagnosticId = "SA1507";
+    /// <remarks>
+    /// <para>To improve the readability of the code, StyleCop requires blank lines in certain situations, and prohibits
+    /// blank lines in other situations. This results in a consistent visual pattern across the code, which can improve
+    /// recognition and readability of unfamiliar code.</para>
+    ///
+    /// <para>A violation of this rule occurs when the code contains more than one blank line in a row. For
+    /// example:</para>
+    ///
+    /// <code language="csharp">
+    /// public bool Enabled
+    /// {
+    ///     get
+    ///     {
+    ///         Console.WriteLine("Getting the enabled flag.");
+    ///
+    ///
+    ///         return this.enabled;
+    ///     }
+    /// }
+    /// </code>
+    ///
+    /// <para>The code above would generate an instance of this violation, since it contains blank multiple lines in a
+    /// row.</para>
+    /// </remarks>
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    internal class SA1507CodeMustNotContainMultipleBlankLinesInARow : DiagnosticAnalyzer
+    {
+        /// <summary>
+        /// The ID for diagnostics produced by the <see cref="SA1507CodeMustNotContainMultipleBlankLinesInARow"/>
+        /// analyzer.
+        /// </summary>
+        public const string DiagnosticId = "SA1507";
 
-    private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1507.md";
-    private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1507Title), LayoutResources.ResourceManager, typeof(LayoutResources));
-    private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1507MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
-    private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1507Description), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1507.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1507Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(LayoutResources.SA1507MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(LayoutResources.SA1507Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-    internal static readonly DiagnosticDescriptor Descriptor =
-        new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        internal static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 #pragma warning restore SA1202 // Elements should be ordered by access
 
-    private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
+        private static readonly Action<SyntaxTreeAnalysisContext> SyntaxTreeAction = HandleSyntaxTree;
 
-    /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics {
-        get;
-    } =
-        ImmutableArray.Create(Descriptor);
-
-    /// <inheritdoc/>
-    public override void Initialize(AnalysisContext context)
-    {
-        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-        context.EnableConcurrentExecution();
-
-        context.RegisterSyntaxTreeAction(SyntaxTreeAction);
-    }
-
-    private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
-    {
-        if (context.Tree.IsWhitespaceOnly(context.CancellationToken))
+        /// <inheritdoc/>
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            // Handling of empty documents is now the responsibility of the analyzers
-            return;
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
+
+        /// <inheritdoc/>
+        public override void Initialize(AnalysisContext context)
+        {
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
+            context.RegisterSyntaxTreeAction(SyntaxTreeAction);
         }
 
-        SyntaxNode root = context.Tree.GetRoot(context.CancellationToken);
-        foreach (var token in root.DescendantTokens(descendIntoTrivia: false))
+        private static void HandleSyntaxTree(SyntaxTreeAnalysisContext context)
         {
-            if (token.IsKind(SyntaxKind.EndOfFileToken))
+            if (context.Tree.IsWhitespaceOnly(context.CancellationToken))
             {
-                // If the file ends with blanks lines, ignore them, they will be handled by SA1518.
-                continue;
+                // Handling of empty documents is now the responsibility of the analyzers
+                return;
             }
 
-            int blankLineIndex = 0;
-            int blankLineEndIndex = -1;
-            int blankLineCount = 0;
-            SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
-            for (int i = 0; i < leadingTrivia.Count; i++)
+            SyntaxNode root = context.Tree.GetRoot(context.CancellationToken);
+            foreach (var token in root.DescendantTokens(descendIntoTrivia : false))
             {
-                switch (leadingTrivia[i].Kind())
+                if (token.IsKind(SyntaxKind.EndOfFileToken))
                 {
-                case SyntaxKind.WhitespaceTrivia:
-                    break;
+                    // If the file ends with blanks lines, ignore them, they will be handled by SA1518.
+                    continue;
+                }
 
-                case SyntaxKind.EndOfLineTrivia:
-                    blankLineEndIndex = i;
-                    blankLineCount++;
-                    break;
+                int blankLineIndex = 0;
+                int blankLineEndIndex = -1;
+                int blankLineCount = 0;
+                SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
+                for (int i = 0; i < leadingTrivia.Count; i++)
+                {
+                    switch (leadingTrivia [i]
+                                .Kind())
+                    {
+                    case SyntaxKind.WhitespaceTrivia:
+                        break;
 
-                default:
-                    ReportDiagnosticIfNecessary(context, leadingTrivia, blankLineIndex, blankLineEndIndex, blankLineCount);
-                    blankLineIndex = i + 1;
-                    blankLineCount = 0;
-                    break;
+                    case SyntaxKind.EndOfLineTrivia:
+                        blankLineEndIndex = i;
+                        blankLineCount++;
+                        break;
+
+                    default:
+                        ReportDiagnosticIfNecessary(context, leadingTrivia, blankLineIndex, blankLineEndIndex,
+                                                    blankLineCount);
+                        blankLineIndex = i + 1;
+                        blankLineCount = 0;
+                        break;
+                    }
+                }
+
+                ReportDiagnosticIfNecessary(context, leadingTrivia, blankLineIndex, blankLineEndIndex, blankLineCount);
+            }
+        }
+
+        private static void ReportDiagnosticIfNecessary(SyntaxTreeAnalysisContext context,
+                                                        SyntaxTriviaList leadingTrivia, int blankLineIndex,
+                                                        int blankLineEndIndex, int blankLineCount)
+        {
+            if (blankLineIndex < 0 || blankLineEndIndex <= blankLineIndex)
+            {
+                // nothing to report
+                return;
+            }
+
+            if (blankLineIndex > 0)
+            {
+                var triviaBeforeBlankLines = leadingTrivia[blankLineIndex - 1];
+                if (triviaBeforeBlankLines.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
+                    triviaBeforeBlankLines.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                {
+                    // when blank lines appear after a comment, skip the first one
+                    // because that's part of the end of the comment trivia.
+                    blankLineIndex++;
+                    blankLineCount--;
                 }
             }
 
-            ReportDiagnosticIfNecessary(context, leadingTrivia, blankLineIndex, blankLineEndIndex, blankLineCount);
-        }
-    }
-
-    private static void ReportDiagnosticIfNecessary(SyntaxTreeAnalysisContext context, SyntaxTriviaList leadingTrivia, int blankLineIndex, int blankLineEndIndex, int blankLineCount)
-    {
-        if (blankLineIndex < 0 || blankLineEndIndex <= blankLineIndex)
-        {
-            // nothing to report
-            return;
-        }
-
-        if (blankLineIndex > 0)
-        {
-            var triviaBeforeBlankLines = leadingTrivia[blankLineIndex - 1];
-            if (triviaBeforeBlankLines.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
-                    triviaBeforeBlankLines.IsKind(SyntaxKind.MultiLineCommentTrivia))
+            if (blankLineCount < 2)
             {
-                // when blank lines appear after a comment, skip the first one
-                // because that's part of the end of the comment trivia.
-                blankLineIndex++;
-                blankLineCount--;
+                // only care about multiple blank lines in a row
+                return;
             }
-        }
 
-        if (blankLineCount < 2)
-        {
-            // only care about multiple blank lines in a row
-            return;
-        }
+            if (leadingTrivia[blankLineIndex].SpanStart == 0)
+            {
+                // blank lines at the beginning are reported by SA1517
+                return;
+            }
 
-        if (leadingTrivia[blankLineIndex].SpanStart == 0)
-        {
-            // blank lines at the beginning are reported by SA1517
-            return;
+            TextSpan span =
+                TextSpan.FromBounds(leadingTrivia[blankLineIndex].SpanStart, leadingTrivia[blankLineEndIndex].Span.End);
+            Location location = Location.Create(context.Tree, span);
+            context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
         }
-
-        TextSpan span = TextSpan.FromBounds(leadingTrivia[blankLineIndex].SpanStart, leadingTrivia[blankLineEndIndex].Span.End);
-        Location location = Location.Create(context.Tree, span);
-        context.ReportDiagnostic(Diagnostic.Create(Descriptor, location));
     }
-}
 }

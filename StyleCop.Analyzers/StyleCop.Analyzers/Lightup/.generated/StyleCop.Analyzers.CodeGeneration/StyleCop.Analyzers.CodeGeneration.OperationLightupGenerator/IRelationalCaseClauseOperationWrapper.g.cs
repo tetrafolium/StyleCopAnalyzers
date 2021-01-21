@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IRelationalCaseClauseOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IRelationalCaseClauseOperationWrapper));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
         }
 
         private IRelationalCaseClauseOperationWrapper(IOperation operation)
@@ -27,11 +28,14 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation Value => ValueAccessor(this.WrappedOperation);
-        public object Relation => throw new NotImplementedException("Property 'IRelationalCaseClauseOperation.Relation' has unsupported type 'BinaryOperatorKind'");
-        public object CaseKind => ((ICaseClauseOperationWrapper)this).CaseKind;
-        public ILabelSymbol Label => ((ICaseClauseOperationWrapper)this).Label;
-        public static explicit operator IRelationalCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ICaseClauseOperationWrapper(IRelationalCaseClauseOperationWrapper wrapper) => ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public object Relation => throw new NotImplementedException(
+            "Property 'IRelationalCaseClauseOperation.Relation' has unsupported type 'BinaryOperatorKind'");
+        public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
+        public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
+        public static explicit operator IRelationalCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ICaseClauseOperationWrapper(IRelationalCaseClauseOperationWrapper wrapper) =>
+            ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IRelationalCaseClauseOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

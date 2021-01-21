@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static ITranslatedQueryOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ITranslatedQueryOperationWrapper));
-            OperationAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operation));
+            OperationAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operation));
         }
 
         private ITranslatedQueryOperationWrapper(IOperation operation)

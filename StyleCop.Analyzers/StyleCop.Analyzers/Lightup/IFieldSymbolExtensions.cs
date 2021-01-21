@@ -3,21 +3,22 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-using System;
-using Microsoft.CodeAnalysis;
+    using System;
+    using Microsoft.CodeAnalysis;
 
-internal static class IFieldSymbolExtensions
-{
-    private static readonly Func<IFieldSymbol, IFieldSymbol> CorrespondingTupleFieldAccessor;
-
-    static IFieldSymbolExtensions()
+    internal static class IFieldSymbolExtensions
     {
-        CorrespondingTupleFieldAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<IFieldSymbol, IFieldSymbol>(typeof(IFieldSymbol), nameof(CorrespondingTupleField));
-    }
+        private static readonly Func<IFieldSymbol, IFieldSymbol> CorrespondingTupleFieldAccessor;
 
-    public static IFieldSymbol CorrespondingTupleField(this IFieldSymbol symbol)
-    {
-        return CorrespondingTupleFieldAccessor(symbol);
+        static IFieldSymbolExtensions()
+        {
+            CorrespondingTupleFieldAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<IFieldSymbol, IFieldSymbol>(
+                typeof(IFieldSymbol), nameof(CorrespondingTupleField));
+        }
+
+        public static IFieldSymbol CorrespondingTupleField(this IFieldSymbol symbol)
+        {
+            return CorrespondingTupleFieldAccessor(symbol);
+        }
     }
-}
 }

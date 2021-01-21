@@ -23,9 +23,13 @@ namespace StyleCop.Analyzers.Lightup
         static PrimaryConstructorBaseTypeSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(PrimaryConstructorBaseTypeSyntaxWrapper));
-            ArgumentListAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<BaseTypeSyntax, ArgumentListSyntax>(WrappedType, nameof(ArgumentList));
-            WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<BaseTypeSyntax, TypeSyntax>(WrappedType, nameof(Type));
-            WithArgumentListAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<BaseTypeSyntax, ArgumentListSyntax>(WrappedType, nameof(ArgumentList));
+            ArgumentListAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<BaseTypeSyntax, ArgumentListSyntax>(
+                WrappedType, nameof(ArgumentList));
+            WithTypeAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<BaseTypeSyntax, TypeSyntax>(WrappedType, nameof(Type));
+            WithArgumentListAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<BaseTypeSyntax, ArgumentListSyntax>(
+                    WrappedType, nameof(ArgumentList));
         }
 
         private PrimaryConstructorBaseTypeSyntaxWrapper(BaseTypeSyntax node)
@@ -63,7 +67,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new PrimaryConstructorBaseTypeSyntaxWrapper((BaseTypeSyntax)node);
+            return new PrimaryConstructorBaseTypeSyntaxWrapper((BaseTypeSyntax) node);
         }
 
         public static implicit operator BaseTypeSyntax(PrimaryConstructorBaseTypeSyntaxWrapper wrapper)

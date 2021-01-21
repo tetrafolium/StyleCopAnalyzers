@@ -21,12 +21,19 @@ namespace StyleCop.Analyzers.Lightup
         static IForToLoopOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IForToLoopOperationWrapper));
-            LoopControlVariableAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(LoopControlVariable));
-            InitialValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(InitialValue));
-            LimitValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(LimitValue));
-            StepValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(StepValue));
-            IsCheckedAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsChecked));
-            NextVariablesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(NextVariables));
+            LoopControlVariableAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(LoopControlVariable));
+            InitialValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(InitialValue));
+            LimitValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(LimitValue));
+            StepValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(StepValue));
+            IsCheckedAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsChecked));
+            NextVariablesAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                    WrappedType, nameof(NextVariables));
         }
 
         private IForToLoopOperationWrapper(IOperation operation)
@@ -42,13 +49,15 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation StepValue => StepValueAccessor(this.WrappedOperation);
         public bool IsChecked => IsCheckedAccessor(this.WrappedOperation);
         public ImmutableArray<IOperation> NextVariables => NextVariablesAccessor(this.WrappedOperation);
-        public object LoopKind => ((ILoopOperationWrapper)this).LoopKind;
-        public IOperation Body => ((ILoopOperationWrapper)this).Body;
-        public ImmutableArray<ILocalSymbol> Locals => ((ILoopOperationWrapper)this).Locals;
-        public ILabelSymbol ContinueLabel => ((ILoopOperationWrapper)this).ContinueLabel;
-        public ILabelSymbol ExitLabel => ((ILoopOperationWrapper)this).ExitLabel;
-        public static explicit operator IForToLoopOperationWrapper(ILoopOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ILoopOperationWrapper(IForToLoopOperationWrapper wrapper) => ILoopOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public object LoopKind =>((ILoopOperationWrapper) this).LoopKind;
+        public IOperation Body =>((ILoopOperationWrapper) this).Body;
+        public ImmutableArray<ILocalSymbol> Locals =>((ILoopOperationWrapper) this).Locals;
+        public ILabelSymbol ContinueLabel =>((ILoopOperationWrapper) this).ContinueLabel;
+        public ILabelSymbol ExitLabel =>((ILoopOperationWrapper) this).ExitLabel;
+        public static explicit operator IForToLoopOperationWrapper(ILoopOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ILoopOperationWrapper(IForToLoopOperationWrapper wrapper) =>
+            ILoopOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IForToLoopOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

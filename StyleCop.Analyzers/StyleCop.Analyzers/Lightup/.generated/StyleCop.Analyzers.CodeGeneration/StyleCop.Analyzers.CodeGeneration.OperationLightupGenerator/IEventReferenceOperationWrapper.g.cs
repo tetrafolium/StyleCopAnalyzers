@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IEventReferenceOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IEventReferenceOperationWrapper));
-            EventAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IEventSymbol>(WrappedType, nameof(Event));
+            EventAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IEventSymbol>(WrappedType, nameof(Event));
         }
 
         private IEventReferenceOperationWrapper(IOperation operation)
@@ -27,10 +28,12 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IEventSymbol Event => EventAccessor(this.WrappedOperation);
-        public IOperation Instance => ((IMemberReferenceOperationWrapper)this).Instance;
-        public ISymbol Member => ((IMemberReferenceOperationWrapper)this).Member;
-        public static explicit operator IEventReferenceOperationWrapper(IMemberReferenceOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IMemberReferenceOperationWrapper(IEventReferenceOperationWrapper wrapper) => IMemberReferenceOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public IOperation Instance =>((IMemberReferenceOperationWrapper) this).Instance;
+        public ISymbol Member =>((IMemberReferenceOperationWrapper) this).Member;
+        public static explicit operator IEventReferenceOperationWrapper(IMemberReferenceOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IMemberReferenceOperationWrapper(IEventReferenceOperationWrapper wrapper) =>
+            IMemberReferenceOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IEventReferenceOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

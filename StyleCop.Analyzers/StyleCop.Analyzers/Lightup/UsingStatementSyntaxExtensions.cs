@@ -3,29 +3,32 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-using System;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using System;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-internal static class UsingStatementSyntaxExtensions
-{
-    private static readonly Func<UsingStatementSyntax, SyntaxToken> AwaitKeywordAccessor;
-    private static readonly Func<UsingStatementSyntax, SyntaxToken, UsingStatementSyntax> WithAwaitKeywordAccessor;
-
-    static UsingStatementSyntaxExtensions()
+    internal static class UsingStatementSyntaxExtensions
     {
-        AwaitKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<UsingStatementSyntax, SyntaxToken>(typeof(UsingStatementSyntax), nameof(AwaitKeyword));
-        WithAwaitKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<UsingStatementSyntax, SyntaxToken>(typeof(UsingStatementSyntax), nameof(AwaitKeyword));
-    }
+        private static readonly Func<UsingStatementSyntax, SyntaxToken> AwaitKeywordAccessor;
+        private static readonly Func<UsingStatementSyntax, SyntaxToken, UsingStatementSyntax> WithAwaitKeywordAccessor;
 
-    public static SyntaxToken AwaitKeyword(this UsingStatementSyntax syntax)
-    {
-        return AwaitKeywordAccessor(syntax);
-    }
+        static UsingStatementSyntaxExtensions()
+        {
+            AwaitKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<UsingStatementSyntax, SyntaxToken>(
+                typeof(UsingStatementSyntax), nameof(AwaitKeyword));
+            WithAwaitKeywordAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<UsingStatementSyntax, SyntaxToken>(
+                    typeof(UsingStatementSyntax), nameof(AwaitKeyword));
+        }
 
-    public static UsingStatementSyntax WithAwaitKeyword(this UsingStatementSyntax syntax, SyntaxToken awaitKeyword)
-    {
-        return WithAwaitKeywordAccessor(syntax, awaitKeyword);
+        public static SyntaxToken AwaitKeyword(this UsingStatementSyntax syntax)
+        {
+            return AwaitKeywordAccessor(syntax);
+        }
+
+        public static UsingStatementSyntax WithAwaitKeyword(this UsingStatementSyntax syntax, SyntaxToken awaitKeyword)
+        {
+            return WithAwaitKeywordAccessor(syntax, awaitKeyword);
+        }
     }
-}
 }

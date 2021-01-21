@@ -40,7 +40,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new VariableDesignationSyntaxWrapper((CSharpSyntaxNode)node);
+            return new VariableDesignationSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator CSharpSyntaxNode(VariableDesignationSyntaxWrapper wrapper)

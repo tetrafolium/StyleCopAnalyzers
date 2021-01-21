@@ -18,9 +18,12 @@ namespace StyleCop.Analyzers.Lightup
         static IIsTypeOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IIsTypeOperationWrapper));
-            ValueOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(ValueOperand));
-            TypeOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(TypeOperand));
-            IsNegatedAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsNegated));
+            ValueOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(ValueOperand));
+            TypeOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                WrappedType, nameof(TypeOperand));
+            IsNegatedAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsNegated));
         }
 
         private IIsTypeOperationWrapper(IOperation operation)

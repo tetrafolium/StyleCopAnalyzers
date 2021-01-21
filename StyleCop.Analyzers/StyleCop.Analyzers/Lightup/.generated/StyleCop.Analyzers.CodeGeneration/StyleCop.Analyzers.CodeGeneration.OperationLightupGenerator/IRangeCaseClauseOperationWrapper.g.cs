@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IRangeCaseClauseOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IRangeCaseClauseOperationWrapper));
-            MinimumValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(MinimumValue));
-            MaximumValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(MaximumValue));
+            MinimumValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(MinimumValue));
+            MaximumValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(MaximumValue));
         }
 
         private IRangeCaseClauseOperationWrapper(IOperation operation)
@@ -30,10 +32,12 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation MinimumValue => MinimumValueAccessor(this.WrappedOperation);
         public IOperation MaximumValue => MaximumValueAccessor(this.WrappedOperation);
-        public object CaseKind => ((ICaseClauseOperationWrapper)this).CaseKind;
-        public ILabelSymbol Label => ((ICaseClauseOperationWrapper)this).Label;
-        public static explicit operator IRangeCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ICaseClauseOperationWrapper(IRangeCaseClauseOperationWrapper wrapper) => ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
+        public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
+        public static explicit operator IRangeCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ICaseClauseOperationWrapper(IRangeCaseClauseOperationWrapper wrapper) =>
+            ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IRangeCaseClauseOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

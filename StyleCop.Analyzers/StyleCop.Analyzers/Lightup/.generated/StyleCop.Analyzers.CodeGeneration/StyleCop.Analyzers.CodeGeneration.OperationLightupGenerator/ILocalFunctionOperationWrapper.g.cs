@@ -18,9 +18,12 @@ namespace StyleCop.Analyzers.Lightup
         static ILocalFunctionOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ILocalFunctionOperationWrapper));
-            SymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(Symbol));
-            BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
-            IgnoredBodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(IgnoredBody));
+            SymbolAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(Symbol));
+            BodyAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Body));
+            IgnoredBodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(IgnoredBody));
         }
 
         private ILocalFunctionOperationWrapper(IOperation operation)
@@ -32,7 +35,8 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IMethodSymbol Symbol => SymbolAccessor(this.WrappedOperation);
         public IBlockOperationWrapper Body => IBlockOperationWrapper.FromOperation(BodyAccessor(this.WrappedOperation));
-        public IBlockOperationWrapper IgnoredBody => IBlockOperationWrapper.FromOperation(IgnoredBodyAccessor(this.WrappedOperation));
+        public IBlockOperationWrapper IgnoredBody =>
+            IBlockOperationWrapper.FromOperation(IgnoredBodyAccessor(this.WrappedOperation));
         public static ILocalFunctionOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

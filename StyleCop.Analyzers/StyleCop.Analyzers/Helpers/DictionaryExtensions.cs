@@ -3,19 +3,19 @@
 
 namespace StyleCop.Analyzers.Helpers
 {
-using System.Collections.Generic;
+    using System.Collections.Generic;
 
-internal static class DictionaryExtensions
-{
-    public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
-    where TKey : notnull
+    internal static class DictionaryExtensions
     {
-        if (!dictionary.TryGetValue(key, out var value))
+        public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key,
+                                                             TValue defaultValue) where TKey : notnull
         {
-            value = defaultValue;
-        }
+            if (!dictionary.TryGetValue(key, out var value))
+            {
+                value = defaultValue;
+            }
 
-        return value;
+            return value;
+        }
     }
-}
 }

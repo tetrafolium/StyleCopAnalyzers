@@ -3,19 +3,19 @@
 
 namespace StyleCop.Analyzers.Helpers
 {
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-internal static class ExpressionSyntaxHelpers
-{
-    public static ExpressionSyntax WalkDownParentheses(this ExpressionSyntax expression)
+    internal static class ExpressionSyntaxHelpers
     {
-        var result = expression;
-        while (result is ParenthesizedExpressionSyntax parenthesizedExpression)
+        public static ExpressionSyntax WalkDownParentheses(this ExpressionSyntax expression)
         {
-            result = parenthesizedExpression.Expression;
-        }
+            var result = expression;
+            while (result is ParenthesizedExpressionSyntax parenthesizedExpression)
+            {
+                result = parenthesizedExpression.Expression;
+            }
 
-        return result;
+            return result;
+        }
     }
-}
 }

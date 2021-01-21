@@ -20,11 +20,16 @@ namespace StyleCop.Analyzers.Lightup
         static IRecursivePatternOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IRecursivePatternOperationWrapper));
-            MatchedTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(WrappedType, nameof(MatchedType));
-            DeconstructSymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(WrappedType, nameof(DeconstructSymbol));
-            DeconstructionSubpatternsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(DeconstructionSubpatterns));
-            PropertySubpatternsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(PropertySubpatterns));
-            DeclaredSymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(WrappedType, nameof(DeclaredSymbol));
+            MatchedTypeAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ITypeSymbol>(
+                WrappedType, nameof(MatchedType));
+            DeconstructSymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
+                WrappedType, nameof(DeconstructSymbol));
+            DeconstructionSubpatternsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                WrappedType, nameof(DeconstructionSubpatterns));
+            PropertySubpatternsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(
+                WrappedType, nameof(PropertySubpatterns));
+            DeclaredSymbolAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ISymbol>(
+                WrappedType, nameof(DeclaredSymbol));
         }
 
         private IRecursivePatternOperationWrapper(IOperation operation)
@@ -36,13 +41,16 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ITypeSymbol MatchedType => MatchedTypeAccessor(this.WrappedOperation);
         public ISymbol DeconstructSymbol => DeconstructSymbolAccessor(this.WrappedOperation);
-        public ImmutableArray<IOperation> DeconstructionSubpatterns => DeconstructionSubpatternsAccessor(this.WrappedOperation);
+        public ImmutableArray<IOperation> DeconstructionSubpatterns =>
+            DeconstructionSubpatternsAccessor(this.WrappedOperation);
         public ImmutableArray<IOperation> PropertySubpatterns => PropertySubpatternsAccessor(this.WrappedOperation);
         public ISymbol DeclaredSymbol => DeclaredSymbolAccessor(this.WrappedOperation);
-        public ITypeSymbol InputType => ((IPatternOperationWrapper)this).InputType;
-        public ITypeSymbol NarrowedType => ((IPatternOperationWrapper)this).NarrowedType;
-        public static explicit operator IRecursivePatternOperationWrapper(IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IPatternOperationWrapper(IRecursivePatternOperationWrapper wrapper) => IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
+        public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
+        public static explicit operator IRecursivePatternOperationWrapper(IPatternOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IPatternOperationWrapper(IRecursivePatternOperationWrapper wrapper) =>
+            IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IRecursivePatternOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

@@ -19,10 +19,14 @@ namespace StyleCop.Analyzers.Lightup
         static IConditionalOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IConditionalOperationWrapper));
-            ConditionAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Condition));
-            WhenTrueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(WhenTrue));
-            WhenFalseAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(WhenFalse));
-            IsRefAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsRef));
+            ConditionAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Condition));
+            WhenTrueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(WhenTrue));
+            WhenFalseAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(WhenFalse));
+            IsRefAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsRef));
         }
 
         private IConditionalOperationWrapper(IOperation operation)

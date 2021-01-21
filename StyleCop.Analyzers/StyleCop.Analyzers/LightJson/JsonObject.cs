@@ -12,7 +12,8 @@ using System.Diagnostics.CodeAnalysis;
 /// </summary>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(JsonObjectDebugView))]
-internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>, IEnumerable<JsonValue>
+internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
+                                   IEnumerable<JsonValue>
 {
     private readonly IDictionary<string, JsonValue> properties;
 
@@ -238,11 +239,11 @@ internal sealed class JsonObject : IEnumerable<KeyValuePair<string, JsonValue>>,
                 {
                     if (this.value.IsJsonObject)
                     {
-                        return (JsonObject)this.value;
+                        return (JsonObject) this.value;
                     }
                     else if (this.value.IsJsonArray)
                     {
-                        return (JsonArray)this.value;
+                        return (JsonArray) this.value;
                     }
                     else
                     {

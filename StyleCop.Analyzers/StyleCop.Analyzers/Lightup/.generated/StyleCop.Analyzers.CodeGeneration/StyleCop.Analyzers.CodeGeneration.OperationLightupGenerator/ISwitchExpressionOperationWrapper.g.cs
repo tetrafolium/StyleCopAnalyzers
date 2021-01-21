@@ -17,7 +17,8 @@ namespace StyleCop.Analyzers.Lightup
         static ISwitchExpressionOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ISwitchExpressionOperationWrapper));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
             ArmsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Arms));
         }
 

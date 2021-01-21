@@ -19,10 +19,14 @@ namespace StyleCop.Analyzers.Lightup
         static IUnaryOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IUnaryOperationWrapper));
-            OperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
-            IsLiftedAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsLifted));
-            IsCheckedAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsChecked));
-            OperatorMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(OperatorMethod));
+            OperandAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
+            IsLiftedAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsLifted));
+            IsCheckedAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsChecked));
+            OperatorMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                WrappedType, nameof(OperatorMethod));
         }
 
         private IUnaryOperationWrapper(IOperation operation)
@@ -32,7 +36,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object OperatorKind => throw new NotImplementedException("Property 'IUnaryOperation.OperatorKind' has unsupported type 'UnaryOperatorKind'");
+        public object OperatorKind => throw new NotImplementedException(
+            "Property 'IUnaryOperation.OperatorKind' has unsupported type 'UnaryOperatorKind'");
         public IOperation Operand => OperandAccessor(this.WrappedOperation);
         public bool IsLifted => IsLiftedAccessor(this.WrappedOperation);
         public bool IsChecked => IsCheckedAccessor(this.WrappedOperation);

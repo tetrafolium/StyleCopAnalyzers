@@ -24,7 +24,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object Id => throw new NotImplementedException("Property 'IFlowCaptureReferenceOperation.Id' has unsupported type 'CaptureId'");
+        public object Id => throw new NotImplementedException(
+            "Property 'IFlowCaptureReferenceOperation.Id' has unsupported type 'CaptureId'");
         public static IFlowCaptureReferenceOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

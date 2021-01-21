@@ -6,8 +6,7 @@ namespace LightJson
 /// <summary>
 /// Enumerates the types of Json values.
 /// </summary>
-internal enum JsonValueType : byte
-{
+internal enum JsonValueType : byte {
     /// <summary>
     /// A null value.
     /// </summary>

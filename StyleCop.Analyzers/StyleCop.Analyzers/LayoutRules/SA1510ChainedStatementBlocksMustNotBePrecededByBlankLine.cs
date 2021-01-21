@@ -3,113 +3,121 @@
 
 namespace StyleCop.Analyzers.LayoutRules
 {
-using System;
-using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
-using StyleCop.Analyzers.Helpers;
+    using System;
+    using System.Collections.Immutable;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.Diagnostics;
+    using StyleCop.Analyzers.Helpers;
 
-/// <summary>
-/// Chained C# statements are separated by a blank line.
-/// </summary>
-/// <remarks>
-/// <para>To improve the readability of the code, StyleCop requires blank lines in certain situations, and prohibits
-/// blank lines in other situations. This results in a consistent visual pattern across the code, which can improve
-/// recognition and readability of unfamiliar code.</para>
-///
-/// <para>Some types of C# statements can only be used when chained to the bottom of another statement. Examples
-/// include catch and finally statements, which must always be chained to the bottom of a try-statement. Another
-/// example is an else-statement, which must always be chained to the bottom of an if-statement, or to another
-/// else-statement. These types of chained statements should not be separated by a blank line. For example:</para>
-///
-/// <code language="csharp">
-/// try
-/// {
-///     this.SomeMethod();
-/// }
-///
-/// catch (Exception ex)
-/// {
-///     Console.WriteLine(ex.ToString());
-/// }
-/// </code>
-/// </remarks>
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-internal class SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine : DiagnosticAnalyzer
-{
     /// <summary>
-    /// The ID for diagnostics produced by the
-    /// <see cref="SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine"/> analyzer.
+    /// Chained C# statements are separated by a blank line.
     /// </summary>
-    public const string DiagnosticId = "SA1510";
-    private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1510.md";
-    private static readonly LocalizableString Title = new LocalizableResourceString(nameof(LayoutResources.SA1510Title), LayoutResources.ResourceManager, typeof(LayoutResources));
-    private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(LayoutResources.SA1510MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
-    private static readonly LocalizableString Description = new LocalizableResourceString(nameof(LayoutResources.SA1510Description), LayoutResources.ResourceManager, typeof(LayoutResources));
-
-    private static readonly DiagnosticDescriptor Descriptor =
-        new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
-
-    private static readonly Action<SyntaxNodeAnalysisContext> ElseStatementAction = HandleElseStatement;
-    private static readonly Action<SyntaxNodeAnalysisContext> CatchClauseAction = HandleCatchClause;
-    private static readonly Action<SyntaxNodeAnalysisContext> FinallyClauseAction = HandleFinallyClause;
-
-    /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics {
-        get;
-    } =
-        ImmutableArray.Create(Descriptor);
-
-    /// <inheritdoc/>
-    public override void Initialize(AnalysisContext context)
+    /// <remarks>
+    /// <para>To improve the readability of the code, StyleCop requires blank lines in certain situations, and prohibits
+    /// blank lines in other situations. This results in a consistent visual pattern across the code, which can improve
+    /// recognition and readability of unfamiliar code.</para>
+    ///
+    /// <para>Some types of C# statements can only be used when chained to the bottom of another statement. Examples
+    /// include catch and finally statements, which must always be chained to the bottom of a try-statement. Another
+    /// example is an else-statement, which must always be chained to the bottom of an if-statement, or to another
+    /// else-statement. These types of chained statements should not be separated by a blank line. For example:</para>
+    ///
+    /// <code language="csharp">
+    /// try
+    /// {
+    ///     this.SomeMethod();
+    /// }
+    ///
+    /// catch (Exception ex)
+    /// {
+    ///     Console.WriteLine(ex.ToString());
+    /// }
+    /// </code>
+    /// </remarks>
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    internal class SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine : DiagnosticAnalyzer
     {
-        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-        context.EnableConcurrentExecution();
+        /// <summary>
+        /// The ID for diagnostics produced by the
+        /// <see cref="SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine"/> analyzer.
+        /// </summary>
+        public const string DiagnosticId = "SA1510";
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1510.md";
+        private static readonly LocalizableString Title = new LocalizableResourceString(
+            nameof(LayoutResources.SA1510Title), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+            nameof(LayoutResources.SA1510MessageFormat), LayoutResources.ResourceManager, typeof(LayoutResources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(
+            nameof(LayoutResources.SA1510Description), LayoutResources.ResourceManager, typeof(LayoutResources));
 
-        context.RegisterSyntaxNodeAction(ElseStatementAction, SyntaxKind.ElseClause);
-        context.RegisterSyntaxNodeAction(CatchClauseAction, SyntaxKind.CatchClause);
-        context.RegisterSyntaxNodeAction(FinallyClauseAction, SyntaxKind.FinallyClause);
-    }
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.LayoutRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-    private static void HandleElseStatement(SyntaxNodeAnalysisContext context)
-    {
-        var elseClause = (ElseClauseSyntax)context.Node;
-        var elseKeyword = elseClause.ElseKeyword;
+        private static readonly Action<SyntaxNodeAnalysisContext> ElseStatementAction = HandleElseStatement;
+        private static readonly Action<SyntaxNodeAnalysisContext> CatchClauseAction = HandleCatchClause;
+        private static readonly Action<SyntaxNodeAnalysisContext> FinallyClauseAction = HandleFinallyClause;
 
-        if (!elseKeyword.IsPrecededByBlankLines())
+        /// <inheritdoc/>
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            return;
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
+
+        /// <inheritdoc/>
+        public override void Initialize(AnalysisContext context)
+        {
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
+            context.RegisterSyntaxNodeAction(ElseStatementAction, SyntaxKind.ElseClause);
+            context.RegisterSyntaxNodeAction(CatchClauseAction, SyntaxKind.CatchClause);
+            context.RegisterSyntaxNodeAction(FinallyClauseAction, SyntaxKind.FinallyClause);
         }
 
-        context.ReportDiagnostic(Diagnostic.Create(Descriptor, elseKeyword.GetLocation(), elseKeyword.ToString()));
-    }
-
-    private static void HandleCatchClause(SyntaxNodeAnalysisContext context)
-    {
-        var catchClause = (CatchClauseSyntax)context.Node;
-        var catchKeyword = catchClause.CatchKeyword;
-
-        if (!catchKeyword.IsPrecededByBlankLines())
+        private static void HandleElseStatement(SyntaxNodeAnalysisContext context)
         {
-            return;
+            var elseClause = (ElseClauseSyntax) context.Node;
+            var elseKeyword = elseClause.ElseKeyword;
+
+            if (!elseKeyword.IsPrecededByBlankLines())
+            {
+                return;
+            }
+
+            context.ReportDiagnostic(Diagnostic.Create(Descriptor, elseKeyword.GetLocation(), elseKeyword.ToString()));
         }
 
-        context.ReportDiagnostic(Diagnostic.Create(Descriptor, catchKeyword.GetLocation(), catchKeyword.ToString()));
-    }
-
-    private static void HandleFinallyClause(SyntaxNodeAnalysisContext context)
-    {
-        var finallyClause = (FinallyClauseSyntax)context.Node;
-        var finallyKeyword = finallyClause.FinallyKeyword;
-
-        if (!finallyKeyword.IsPrecededByBlankLines())
+        private static void HandleCatchClause(SyntaxNodeAnalysisContext context)
         {
-            return;
+            var catchClause = (CatchClauseSyntax) context.Node;
+            var catchKeyword = catchClause.CatchKeyword;
+
+            if (!catchKeyword.IsPrecededByBlankLines())
+            {
+                return;
+            }
+
+            context.ReportDiagnostic(
+                Diagnostic.Create(Descriptor, catchKeyword.GetLocation(), catchKeyword.ToString()));
         }
 
-        context.ReportDiagnostic(Diagnostic.Create(Descriptor, finallyKeyword.GetLocation(), finallyKeyword.ToString()));
+        private static void HandleFinallyClause(SyntaxNodeAnalysisContext context)
+        {
+            var finallyClause = (FinallyClauseSyntax) context.Node;
+            var finallyKeyword = finallyClause.FinallyKeyword;
+
+            if (!finallyKeyword.IsPrecededByBlankLines())
+            {
+                return;
+            }
+
+            context.ReportDiagnostic(
+                Diagnostic.Create(Descriptor, finallyKeyword.GetLocation(), finallyKeyword.ToString()));
+        }
     }
-}
 }

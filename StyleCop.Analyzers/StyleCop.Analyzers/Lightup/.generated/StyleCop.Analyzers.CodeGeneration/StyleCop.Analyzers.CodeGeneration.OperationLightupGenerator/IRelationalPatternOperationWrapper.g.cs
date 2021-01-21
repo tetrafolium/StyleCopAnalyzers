@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IRelationalPatternOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IRelationalPatternOperationWrapper));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
         }
 
         private IRelationalPatternOperationWrapper(IOperation operation)
@@ -26,12 +27,15 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object OperatorKind => throw new NotImplementedException("Property 'IRelationalPatternOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
+        public object OperatorKind => throw new NotImplementedException(
+            "Property 'IRelationalPatternOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
         public IOperation Value => ValueAccessor(this.WrappedOperation);
-        public ITypeSymbol InputType => ((IPatternOperationWrapper)this).InputType;
-        public ITypeSymbol NarrowedType => ((IPatternOperationWrapper)this).NarrowedType;
-        public static explicit operator IRelationalPatternOperationWrapper(IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IPatternOperationWrapper(IRelationalPatternOperationWrapper wrapper) => IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
+        public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
+        public static explicit operator IRelationalPatternOperationWrapper(IPatternOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IPatternOperationWrapper(IRelationalPatternOperationWrapper wrapper) =>
+            IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IRelationalPatternOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

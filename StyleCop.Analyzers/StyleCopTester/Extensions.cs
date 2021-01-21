@@ -8,7 +8,8 @@ using System.Collections.Immutable;
 
 internal static class Extensions
 {
-    internal static void AddToInnerList<TKey, TValue>(this IDictionary<TKey, ImmutableList<TValue>> dictionary, TKey key, TValue item)
+    internal static void AddToInnerList<TKey, TValue>(this IDictionary<TKey, ImmutableList<TValue>> dictionary,
+                                                      TKey key, TValue item)
     {
         ImmutableList<TValue> items;
 
@@ -22,7 +23,8 @@ internal static class Extensions
         }
     }
 
-    internal static void AddToInnerSet<TKey, TValue>(this IDictionary<TKey, ImmutableHashSet<TValue>> dictionary, TKey key, TValue item)
+    internal static void AddToInnerSet<TKey, TValue>(this IDictionary<TKey, ImmutableHashSet<TValue>> dictionary,
+                                                     TKey key, TValue item)
     {
         ImmutableHashSet<TValue> items;
 

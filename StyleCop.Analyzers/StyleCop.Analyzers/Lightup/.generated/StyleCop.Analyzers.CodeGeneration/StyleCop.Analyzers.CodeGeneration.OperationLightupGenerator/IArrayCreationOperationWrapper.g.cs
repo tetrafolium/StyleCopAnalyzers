@@ -17,8 +17,11 @@ namespace StyleCop.Analyzers.Lightup
         static IArrayCreationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IArrayCreationOperationWrapper));
-            DimensionSizesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(DimensionSizes));
-            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Initializer));
+            DimensionSizesAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                    WrappedType, nameof(DimensionSizes));
+            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(Initializer));
         }
 
         private IArrayCreationOperationWrapper(IOperation operation)
@@ -29,7 +32,8 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ImmutableArray<IOperation> DimensionSizes => DimensionSizesAccessor(this.WrappedOperation);
-        public IArrayInitializerOperationWrapper Initializer => IArrayInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
+        public IArrayInitializerOperationWrapper Initializer =>
+            IArrayInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
         public static IArrayCreationOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

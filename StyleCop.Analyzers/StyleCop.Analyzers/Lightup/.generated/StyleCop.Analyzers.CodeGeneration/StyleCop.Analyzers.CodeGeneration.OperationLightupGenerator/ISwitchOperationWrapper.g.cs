@@ -19,10 +19,13 @@ namespace StyleCop.Analyzers.Lightup
         static ISwitchOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ISwitchOperationWrapper));
-            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                WrappedType, nameof(Locals));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
             CasesAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Cases));
-            ExitLabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(ExitLabel));
+            ExitLabelAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(
+                WrappedType, nameof(ExitLabel));
         }
 
         private ISwitchOperationWrapper(IOperation operation)

@@ -3,21 +3,25 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-using System;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using System;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-internal static class ConstructorDeclarationSyntaxExtensions
-{
-    private static readonly Func<ConstructorDeclarationSyntax, ArrowExpressionClauseSyntax, ConstructorDeclarationSyntax> WithExpressionBodyAccessor;
-
-    static ConstructorDeclarationSyntaxExtensions()
+    internal static class ConstructorDeclarationSyntaxExtensions
     {
-        WithExpressionBodyAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ConstructorDeclarationSyntax, ArrowExpressionClauseSyntax>(typeof(ConstructorDeclarationSyntax), nameof(BaseMethodDeclarationSyntaxExtensions.ExpressionBody));
-    }
+        private static readonly Func<ConstructorDeclarationSyntax, ArrowExpressionClauseSyntax,
+                                     ConstructorDeclarationSyntax> WithExpressionBodyAccessor;
 
-    public static ConstructorDeclarationSyntax WithExpressionBody(this ConstructorDeclarationSyntax syntax, ArrowExpressionClauseSyntax expressionBody)
-    {
-        return WithExpressionBodyAccessor(syntax, expressionBody);
+        static ConstructorDeclarationSyntaxExtensions()
+        {
+            WithExpressionBodyAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ConstructorDeclarationSyntax,
+                                                                                         ArrowExpressionClauseSyntax>(
+                typeof(ConstructorDeclarationSyntax), nameof(BaseMethodDeclarationSyntaxExtensions.ExpressionBody));
+        }
+
+        public static ConstructorDeclarationSyntax WithExpressionBody(this ConstructorDeclarationSyntax syntax,
+                                                                      ArrowExpressionClauseSyntax expressionBody)
+        {
+            return WithExpressionBodyAccessor(syntax, expressionBody);
+        }
     }
-}
 }

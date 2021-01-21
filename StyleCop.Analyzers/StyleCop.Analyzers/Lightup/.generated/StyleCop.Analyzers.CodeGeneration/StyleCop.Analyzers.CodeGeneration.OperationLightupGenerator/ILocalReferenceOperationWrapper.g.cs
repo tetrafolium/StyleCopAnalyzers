@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static ILocalReferenceOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ILocalReferenceOperationWrapper));
-            LocalAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILocalSymbol>(WrappedType, nameof(Local));
-            IsDeclarationAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsDeclaration));
+            LocalAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILocalSymbol>(WrappedType, nameof(Local));
+            IsDeclarationAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsDeclaration));
         }
 
         private ILocalReferenceOperationWrapper(IOperation operation)

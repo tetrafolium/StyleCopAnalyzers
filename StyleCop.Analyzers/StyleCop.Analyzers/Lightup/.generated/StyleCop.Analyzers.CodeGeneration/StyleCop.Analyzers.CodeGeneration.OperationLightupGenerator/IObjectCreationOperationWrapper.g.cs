@@ -18,9 +18,12 @@ namespace StyleCop.Analyzers.Lightup
         static IObjectCreationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IObjectCreationOperationWrapper));
-            ConstructorAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(Constructor));
-            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Initializer));
-            ArgumentsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Arguments));
+            ConstructorAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                WrappedType, nameof(Constructor));
+            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(Initializer));
+            ArgumentsAccessor =
+                LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Arguments));
         }
 
         private IObjectCreationOperationWrapper(IOperation operation)
@@ -31,7 +34,8 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IMethodSymbol Constructor => ConstructorAccessor(this.WrappedOperation);
-        public IObjectOrCollectionInitializerOperationWrapper Initializer => IObjectOrCollectionInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
+        public IObjectOrCollectionInitializerOperationWrapper Initializer =>
+            IObjectOrCollectionInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
         public ImmutableArray<IOperation> Arguments => ArgumentsAccessor(this.WrappedOperation);
         public static IObjectCreationOperationWrapper FromOperation(IOperation operation)
         {

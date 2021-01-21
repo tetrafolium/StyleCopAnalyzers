@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IBinaryPatternOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IBinaryPatternOperationWrapper));
-            LeftPatternAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(LeftPattern));
-            RightPatternAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(RightPattern));
+            LeftPatternAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(LeftPattern));
+            RightPatternAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(RightPattern));
         }
 
         private IBinaryPatternOperationWrapper(IOperation operation)
@@ -28,13 +30,18 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object OperatorKind => throw new NotImplementedException("Property 'IBinaryPatternOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
-        public IPatternOperationWrapper LeftPattern => IPatternOperationWrapper.FromOperation(LeftPatternAccessor(this.WrappedOperation));
-        public IPatternOperationWrapper RightPattern => IPatternOperationWrapper.FromOperation(RightPatternAccessor(this.WrappedOperation));
-        public ITypeSymbol InputType => ((IPatternOperationWrapper)this).InputType;
-        public ITypeSymbol NarrowedType => ((IPatternOperationWrapper)this).NarrowedType;
-        public static explicit operator IBinaryPatternOperationWrapper(IPatternOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator IPatternOperationWrapper(IBinaryPatternOperationWrapper wrapper) => IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public object OperatorKind => throw new NotImplementedException(
+            "Property 'IBinaryPatternOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
+        public IPatternOperationWrapper LeftPattern =>
+            IPatternOperationWrapper.FromOperation(LeftPatternAccessor(this.WrappedOperation));
+        public IPatternOperationWrapper RightPattern =>
+            IPatternOperationWrapper.FromOperation(RightPatternAccessor(this.WrappedOperation));
+        public ITypeSymbol InputType =>((IPatternOperationWrapper) this).InputType;
+        public ITypeSymbol NarrowedType =>((IPatternOperationWrapper) this).NarrowedType;
+        public static explicit operator IBinaryPatternOperationWrapper(IPatternOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator IPatternOperationWrapper(IBinaryPatternOperationWrapper wrapper) =>
+            IPatternOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IBinaryPatternOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

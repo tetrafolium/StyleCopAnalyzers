@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static ISingleValueCaseClauseOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ISingleValueCaseClauseOperationWrapper));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
         }
 
         private ISingleValueCaseClauseOperationWrapper(IOperation operation)
@@ -27,10 +28,12 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation Value => ValueAccessor(this.WrappedOperation);
-        public object CaseKind => ((ICaseClauseOperationWrapper)this).CaseKind;
-        public ILabelSymbol Label => ((ICaseClauseOperationWrapper)this).Label;
-        public static explicit operator ISingleValueCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ICaseClauseOperationWrapper(ISingleValueCaseClauseOperationWrapper wrapper) => ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public object CaseKind =>((ICaseClauseOperationWrapper) this).CaseKind;
+        public ILabelSymbol Label =>((ICaseClauseOperationWrapper) this).Label;
+        public static explicit operator ISingleValueCaseClauseOperationWrapper(ICaseClauseOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ICaseClauseOperationWrapper(ISingleValueCaseClauseOperationWrapper wrapper) =>
+            ICaseClauseOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static ISingleValueCaseClauseOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

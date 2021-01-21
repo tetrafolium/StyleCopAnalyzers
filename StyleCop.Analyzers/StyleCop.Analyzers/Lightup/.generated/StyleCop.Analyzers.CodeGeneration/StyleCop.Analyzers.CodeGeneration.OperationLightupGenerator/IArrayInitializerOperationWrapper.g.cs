@@ -16,7 +16,9 @@ namespace StyleCop.Analyzers.Lightup
         static IArrayInitializerOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IArrayInitializerOperationWrapper));
-            ElementValuesAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(ElementValues));
+            ElementValuesAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                    WrappedType, nameof(ElementValues));
         }
 
         private IArrayInitializerOperationWrapper(IOperation operation)

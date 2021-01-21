@@ -19,10 +19,14 @@ namespace StyleCop.Analyzers.Lightup
         static IConversionOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IConversionOperationWrapper));
-            OperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
-            OperatorMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(WrappedType, nameof(OperatorMethod));
-            IsTryCastAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsTryCast));
-            IsCheckedAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsChecked));
+            OperandAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Operand));
+            OperatorMethodAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IMethodSymbol>(
+                WrappedType, nameof(OperatorMethod));
+            IsTryCastAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsTryCast));
+            IsCheckedAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(IsChecked));
         }
 
         private IConversionOperationWrapper(IOperation operation)
@@ -34,7 +38,8 @@ namespace StyleCop.Analyzers.Lightup
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation Operand => OperandAccessor(this.WrappedOperation);
         public IMethodSymbol OperatorMethod => OperatorMethodAccessor(this.WrappedOperation);
-        public object Conversion => throw new NotImplementedException("Property 'IConversionOperation.Conversion' has unsupported type 'CommonConversion'");
+        public object Conversion => throw new NotImplementedException(
+            "Property 'IConversionOperation.Conversion' has unsupported type 'CommonConversion'");
         public bool IsTryCast => IsTryCastAccessor(this.WrappedOperation);
         public bool IsChecked => IsCheckedAccessor(this.WrappedOperation);
         public static IConversionOperationWrapper FromOperation(IOperation operation)

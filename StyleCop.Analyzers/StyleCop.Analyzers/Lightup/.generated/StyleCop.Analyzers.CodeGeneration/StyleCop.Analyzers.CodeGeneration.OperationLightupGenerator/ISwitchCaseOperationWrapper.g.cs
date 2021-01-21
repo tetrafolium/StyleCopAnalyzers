@@ -18,9 +18,12 @@ namespace StyleCop.Analyzers.Lightup
         static ISwitchCaseOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ISwitchCaseOperationWrapper));
-            ClausesAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Clauses));
-            BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Body));
-            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(WrappedType, nameof(Locals));
+            ClausesAccessor =
+                LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Clauses));
+            BodyAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                WrappedType, nameof(Body));
+            LocalsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<ILocalSymbol>>(
+                WrappedType, nameof(Locals));
         }
 
         private ISwitchCaseOperationWrapper(IOperation operation)

@@ -3,21 +3,22 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-using System;
-using Microsoft.CodeAnalysis;
+    using System;
+    using Microsoft.CodeAnalysis;
 
-internal static class ITypeSymbolExtensions
-{
-    private static readonly Func<ITypeSymbol, bool> IsTupleTypeAccessor;
-
-    static ITypeSymbolExtensions()
+    internal static class ITypeSymbolExtensions
     {
-        IsTupleTypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ITypeSymbol, bool>(typeof(ITypeSymbol), nameof(IsTupleType));
-    }
+        private static readonly Func<ITypeSymbol, bool> IsTupleTypeAccessor;
 
-    public static bool IsTupleType(this ITypeSymbol symbol)
-    {
-        return IsTupleTypeAccessor(symbol);
+        static ITypeSymbolExtensions()
+        {
+            IsTupleTypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ITypeSymbol, bool>(typeof(ITypeSymbol),
+                                                                                                 nameof(IsTupleType));
+        }
+
+        public static bool IsTupleType(this ITypeSymbol symbol)
+        {
+            return IsTupleTypeAccessor(symbol);
+        }
     }
-}
 }

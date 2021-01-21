@@ -22,8 +22,10 @@ namespace StyleCop.Analyzers.Lightup
         static TypePatternSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(TypePatternSyntaxWrapper));
-            TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
-            WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
+            TypeAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
+            WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                WrappedType, nameof(Type));
         }
 
         private TypePatternSyntaxWrapper(CSharpSyntaxNode node)
@@ -43,12 +45,12 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator TypePatternSyntaxWrapper(PatternSyntaxWrapper node)
         {
-            return (TypePatternSyntaxWrapper)node.SyntaxNode;
+            return (TypePatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator TypePatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (TypePatternSyntaxWrapper)node.SyntaxNode;
+            return (TypePatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator TypePatternSyntaxWrapper(SyntaxNode node)
@@ -63,7 +65,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new TypePatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new TypePatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator PatternSyntaxWrapper(TypePatternSyntaxWrapper wrapper)

@@ -3,43 +3,52 @@
 
 namespace StyleCop.Analyzers.Helpers
 {
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-internal static class TaskHelper
-{
-    public static bool IsTaskReturningMethod(SemanticModel semanticModel, MethodDeclarationSyntax methodDeclarationSyntax, CancellationToken cancellationToken)
+    internal static class TaskHelper
     {
-        return IsTaskType(semanticModel, methodDeclarationSyntax.ReturnType, cancellationToken);
-    }
-
-    public static bool IsTaskReturningMethod(SemanticModel semanticModel, DelegateDeclarationSyntax delegateDeclarationSyntax, CancellationToken cancellationToken)
-    {
-        return IsTaskType(semanticModel, delegateDeclarationSyntax.ReturnType, cancellationToken);
-    }
-
-    public static bool IsTaskType(SemanticModel semanticModel, TypeSyntax typeSyntax, CancellationToken cancellationToken)
-    {
-        SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(typeSyntax, cancellationToken);
-        if (!(symbolInfo.Symbol is INamedTypeSymbol namedTypeSymbol))
+        public static bool IsTaskReturningMethod(SemanticModel semanticModel,
+                                                 MethodDeclarationSyntax methodDeclarationSyntax,
+                                                 CancellationToken cancellationToken)
         {
-            return false;
+            return IsTaskType(semanticModel, methodDeclarationSyntax.ReturnType, cancellationToken);
         }
 
-        if (!string.Equals(nameof(Task), namedTypeSymbol.Name, StringComparison.Ordinal))
+        public static bool IsTaskReturningMethod(SemanticModel semanticModel,
+                                                 DelegateDeclarationSyntax delegateDeclarationSyntax,
+                                                 CancellationToken cancellationToken)
         {
-            return false;
+            return IsTaskType(semanticModel, delegateDeclarationSyntax.ReturnType, cancellationToken);
         }
 
-        if (!string.Equals(typeof(Task).Namespace, namedTypeSymbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)), StringComparison.Ordinal))
+        public static bool IsTaskType(SemanticModel semanticModel, TypeSyntax typeSyntax,
+                                      CancellationToken cancellationToken)
         {
-            return false;
-        }
+            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(typeSyntax, cancellationToken);
+            if (!(symbolInfo.Symbol is INamedTypeSymbol namedTypeSymbol))
+            {
+                return false;
+            }
 
-        return true;
+            if (!string.Equals(nameof(Task), namedTypeSymbol.Name, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            if (!string.Equals(typeof(Task).Namespace,
+                               namedTypeSymbol.ContainingNamespace?.ToDisplayString(
+                                   SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(
+                                       SymbolDisplayGlobalNamespaceStyle.Omitted)),
+                               StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
-}
 }

@@ -16,7 +16,8 @@ namespace StyleCop.Analyzers.Lightup
         static IBranchOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IBranchOperationWrapper));
-            TargetAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(Target));
+            TargetAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ILabelSymbol>(WrappedType, nameof(Target));
         }
 
         private IBranchOperationWrapper(IOperation operation)
@@ -27,7 +28,8 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ILabelSymbol Target => TargetAccessor(this.WrappedOperation);
-        public object BranchKind => throw new NotImplementedException("Property 'IBranchOperation.BranchKind' has unsupported type 'BranchKind'");
+        public object BranchKind => throw new NotImplementedException(
+            "Property 'IBranchOperation.BranchKind' has unsupported type 'BranchKind'");
         public static IBranchOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

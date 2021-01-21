@@ -3,58 +3,55 @@
 
 namespace StyleCop.Analyzers.Settings.ObjectModel
 {
-using LightJson;
+    using LightJson;
 
-internal class LayoutSettings
-{
-    /// <summary>
-    /// This is the backing field for the <see cref="NewlineAtEndOfFile"/> property.
-    /// </summary>
-    private readonly OptionSetting newlineAtEndOfFile;
-
-    /// <summary>
-    /// This is the backing field for the <see cref="AllowConsecutiveUsings"/> property.
-    /// </summary>
-    private readonly bool allowConsecutiveUsings;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LayoutSettings"/> class.
-    /// </summary>
-    protected internal LayoutSettings()
+    internal class LayoutSettings
     {
-        this.newlineAtEndOfFile = OptionSetting.Allow;
-        this.allowConsecutiveUsings = true;
-    }
+        /// <summary>
+        /// This is the backing field for the <see cref="NewlineAtEndOfFile"/> property.
+        /// </summary>
+        private readonly OptionSetting newlineAtEndOfFile;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LayoutSettings"/> class.
-    /// </summary>
-    /// <param name="layoutSettingsObject">The JSON object containing the settings.</param>
-    protected internal LayoutSettings(JsonObject layoutSettingsObject)
-        : this()
-    {
-        foreach (var kvp in layoutSettingsObject)
+        /// <summary>
+        /// This is the backing field for the <see cref="AllowConsecutiveUsings"/> property.
+        /// </summary>
+        private readonly bool allowConsecutiveUsings;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LayoutSettings"/> class.
+        /// </summary>
+        protected internal LayoutSettings()
         {
-            switch (kvp.Key)
+            this.newlineAtEndOfFile = OptionSetting.Allow;
+            this.allowConsecutiveUsings = true;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LayoutSettings"/> class.
+        /// </summary>
+        /// <param name="layoutSettingsObject">The JSON object containing the settings.</param>
+        protected internal LayoutSettings(JsonObject layoutSettingsObject) : this()
+        {
+            foreach (var kvp in layoutSettingsObject)
             {
-            case "newlineAtEndOfFile":
-                this.newlineAtEndOfFile = kvp.ToEnumValue<OptionSetting>();
-                break;
+                switch (kvp.Key)
+                {
+                case "newlineAtEndOfFile":
+                    this.newlineAtEndOfFile = kvp.ToEnumValue<OptionSetting>();
+                    break;
 
-            case "allowConsecutiveUsings":
-                this.allowConsecutiveUsings = kvp.ToBooleanValue();
-                break;
+                case "allowConsecutiveUsings":
+                    this.allowConsecutiveUsings = kvp.ToBooleanValue();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+                }
             }
         }
+
+        public OptionSetting NewlineAtEndOfFile => this.newlineAtEndOfFile;
+
+        public bool AllowConsecutiveUsings => this.allowConsecutiveUsings;
     }
-
-    public OptionSetting NewlineAtEndOfFile =>
-    this.newlineAtEndOfFile;
-
-    public bool AllowConsecutiveUsings =>
-    this.allowConsecutiveUsings;
-}
 }

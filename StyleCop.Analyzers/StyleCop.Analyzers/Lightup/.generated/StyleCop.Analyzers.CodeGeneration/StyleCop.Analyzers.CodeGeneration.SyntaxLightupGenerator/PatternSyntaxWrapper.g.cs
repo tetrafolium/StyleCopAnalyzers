@@ -30,7 +30,7 @@ namespace StyleCop.Analyzers.Lightup
 
         public static explicit operator PatternSyntaxWrapper(ExpressionOrPatternSyntaxWrapper node)
         {
-            return (PatternSyntaxWrapper)node.SyntaxNode;
+            return (PatternSyntaxWrapper) node.SyntaxNode;
         }
 
         public static explicit operator PatternSyntaxWrapper(SyntaxNode node)
@@ -45,7 +45,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new PatternSyntaxWrapper((CSharpSyntaxNode)node);
+            return new PatternSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator ExpressionOrPatternSyntaxWrapper(PatternSyntaxWrapper wrapper)

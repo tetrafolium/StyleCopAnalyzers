@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static ITupleBinaryOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(ITupleBinaryOperationWrapper));
-            LeftOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(LeftOperand));
-            RightOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(RightOperand));
+            LeftOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(LeftOperand));
+            RightOperandAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(RightOperand));
         }
 
         private ITupleBinaryOperationWrapper(IOperation operation)
@@ -28,7 +30,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public object OperatorKind => throw new NotImplementedException("Property 'ITupleBinaryOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
+        public object OperatorKind => throw new NotImplementedException(
+            "Property 'ITupleBinaryOperation.OperatorKind' has unsupported type 'BinaryOperatorKind'");
         public IOperation LeftOperand => LeftOperandAccessor(this.WrappedOperation);
         public IOperation RightOperand => RightOperandAccessor(this.WrappedOperation);
         public static ITupleBinaryOperationWrapper FromOperation(IOperation operation)

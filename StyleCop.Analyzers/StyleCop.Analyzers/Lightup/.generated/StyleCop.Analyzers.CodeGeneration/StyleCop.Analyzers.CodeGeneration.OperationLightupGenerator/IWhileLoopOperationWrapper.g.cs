@@ -19,10 +19,14 @@ namespace StyleCop.Analyzers.Lightup
         static IWhileLoopOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IWhileLoopOperationWrapper));
-            ConditionAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Condition));
-            ConditionIsTopAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(ConditionIsTop));
-            ConditionIsUntilAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(ConditionIsUntil));
-            IgnoredConditionAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(IgnoredCondition));
+            ConditionAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Condition));
+            ConditionIsTopAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(ConditionIsTop));
+            ConditionIsUntilAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, bool>(WrappedType, nameof(ConditionIsUntil));
+            IgnoredConditionAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(IgnoredCondition));
         }
 
         private IWhileLoopOperationWrapper(IOperation operation)
@@ -36,13 +40,15 @@ namespace StyleCop.Analyzers.Lightup
         public bool ConditionIsTop => ConditionIsTopAccessor(this.WrappedOperation);
         public bool ConditionIsUntil => ConditionIsUntilAccessor(this.WrappedOperation);
         public IOperation IgnoredCondition => IgnoredConditionAccessor(this.WrappedOperation);
-        public object LoopKind => ((ILoopOperationWrapper)this).LoopKind;
-        public IOperation Body => ((ILoopOperationWrapper)this).Body;
-        public ImmutableArray<ILocalSymbol> Locals => ((ILoopOperationWrapper)this).Locals;
-        public ILabelSymbol ContinueLabel => ((ILoopOperationWrapper)this).ContinueLabel;
-        public ILabelSymbol ExitLabel => ((ILoopOperationWrapper)this).ExitLabel;
-        public static explicit operator IWhileLoopOperationWrapper(ILoopOperationWrapper wrapper) => FromOperation(wrapper.WrappedOperation);
-        public static implicit operator ILoopOperationWrapper(IWhileLoopOperationWrapper wrapper) => ILoopOperationWrapper.FromUpcast(wrapper.WrappedOperation);
+        public object LoopKind =>((ILoopOperationWrapper) this).LoopKind;
+        public IOperation Body =>((ILoopOperationWrapper) this).Body;
+        public ImmutableArray<ILocalSymbol> Locals =>((ILoopOperationWrapper) this).Locals;
+        public ILabelSymbol ContinueLabel =>((ILoopOperationWrapper) this).ContinueLabel;
+        public ILabelSymbol ExitLabel =>((ILoopOperationWrapper) this).ExitLabel;
+        public static explicit operator IWhileLoopOperationWrapper(ILoopOperationWrapper wrapper) =>
+            FromOperation(wrapper.WrappedOperation);
+        public static implicit operator ILoopOperationWrapper(IWhileLoopOperationWrapper wrapper) =>
+            ILoopOperationWrapper.FromUpcast(wrapper.WrappedOperation);
         public static IWhileLoopOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

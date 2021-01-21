@@ -3,95 +3,100 @@
 
 namespace StyleCop.Analyzers.LayoutRules
 {
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Composition;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Text;
-using StyleCop.Analyzers.Helpers;
+    using System.Collections.Generic;
+    using System.Collections.Immutable;
+    using System.Composition;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CodeActions;
+    using Microsoft.CodeAnalysis.CodeFixes;
+    using Microsoft.CodeAnalysis.Formatting;
+    using Microsoft.CodeAnalysis.Text;
+    using StyleCop.Analyzers.Helpers;
 
-/// <summary>
-/// Implements a code fix for <see cref="SA1507CodeMustNotContainMultipleBlankLinesInARow"/>.
-/// </summary>
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1507CodeFixProvider))]
-[Shared]
-internal class SA1507CodeFixProvider : CodeFixProvider
-{
-    /// <inheritdoc/>
-    public override ImmutableArray<string> FixableDiagnosticIds {
-        get;
-    } =
-        ImmutableArray.Create(SA1507CodeMustNotContainMultipleBlankLinesInARow.DiagnosticId);
-
-    /// <inheritdoc/>
-    public override FixAllProvider GetFixAllProvider()
+    /// <summary>
+    /// Implements a code fix for <see cref="SA1507CodeMustNotContainMultipleBlankLinesInARow"/>.
+    /// </summary>
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1507CodeFixProvider))]
+    [Shared]
+    internal class SA1507CodeFixProvider : CodeFixProvider
     {
-        return FixAll.Instance;
-    }
-
-    /// <inheritdoc/>
-    public override Task RegisterCodeFixesAsync(CodeFixContext context)
-    {
-        foreach (Diagnostic diagnostic in context.Diagnostics)
+        /// <inheritdoc/>
+        public override ImmutableArray<string> FixableDiagnosticIds
         {
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    LayoutResources.SA1507CodeFix,
-                    cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                    nameof(SA1507CodeFixProvider)),
-                diagnostic);
-        }
-
-        return SpecializedTasks.CompletedTask;
-    }
-
-    private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken token)
-    {
-        var newLine = document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
-
-        var sourceText = await document.GetTextAsync(token).ConfigureAwait(false);
-        var textChange = new TextChange(diagnostic.Location.SourceSpan, newLine);
-
-        return document.WithText(sourceText.WithChanges(textChange));
-    }
-
-    private class FixAll : DocumentBasedFixAllProvider
-    {
-        public static FixAllProvider Instance {
             get;
-        } =
-            new FixAll();
+        }
+        = ImmutableArray.Create(SA1507CodeMustNotContainMultipleBlankLinesInARow.DiagnosticId);
 
-        protected override string CodeActionTitle =>
-        LayoutResources.SA1507CodeFix;
-
-        protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+        /// <inheritdoc/>
+        public override FixAllProvider GetFixAllProvider()
         {
-            if (diagnostics.IsEmpty)
+            return FixAll.Instance;
+        }
+
+        /// <inheritdoc/>
+        public override Task RegisterCodeFixesAsync(CodeFixContext context)
+        {
+            foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                return null;
+                context.RegisterCodeFix(CodeAction.Create(LayoutResources.SA1507CodeFix,
+                                                          cancellationToken => GetTransformedDocumentAsync(
+                                                              context.Document, diagnostic, cancellationToken),
+                                                          nameof(SA1507CodeFixProvider)),
+                                        diagnostic);
             }
 
-            var newLine = fixAllContext.Document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
-            var text = await document.GetTextAsync().ConfigureAwait(false);
+            return SpecializedTasks.CompletedTask;
+        }
 
-            List<TextChange> changes = new List<TextChange>();
+        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic,
+                                                                        CancellationToken token)
+        {
+            var newLine =
+                document.Project.Solution.Workspace.Options.GetOption(FormattingOptions.NewLine, LanguageNames.CSharp);
 
-            foreach (var diagnostic in diagnostics)
+            var sourceText = await document.GetTextAsync(token).ConfigureAwait(false);
+            var textChange = new TextChange(diagnostic.Location.SourceSpan, newLine);
+
+            return document.WithText(sourceText.WithChanges(textChange));
+        }
+
+        private class FixAll : DocumentBasedFixAllProvider
+        {
+            public static FixAllProvider Instance
             {
-                changes.Add(new TextChange(diagnostic.Location.SourceSpan, newLine));
+                get;
             }
+            = new FixAll();
 
-            changes.Sort((left, right) => left.Span.Start.CompareTo(right.Span.Start));
+            protected override string CodeActionTitle => LayoutResources.SA1507CodeFix;
 
-            var tree = await document.GetSyntaxTreeAsync().ConfigureAwait(false);
-            return await tree.WithChangedText(text.WithChanges(changes)).GetRootAsync().ConfigureAwait(false);
+            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext,
+                                                                            Document document,
+                                                                            ImmutableArray<Diagnostic> diagnostics)
+            {
+                if (diagnostics.IsEmpty)
+                {
+                    return null;
+                }
+
+                var newLine = fixAllContext.Document.Project.Solution.Workspace.Options.GetOption(
+                    FormattingOptions.NewLine, LanguageNames.CSharp);
+                var text = await document.GetTextAsync().ConfigureAwait(false);
+
+                List<TextChange> changes = new List<TextChange>();
+
+                foreach (var diagnostic in diagnostics)
+                {
+                    changes.Add(new TextChange(diagnostic.Location.SourceSpan, newLine));
+                }
+
+                changes.Sort((left, right) => left.Span.Start.CompareTo(right.Span.Start));
+
+                var tree = await document.GetSyntaxTreeAsync().ConfigureAwait(false);
+                return await tree.WithChangedText(text.WithChanges(changes)).GetRootAsync().ConfigureAwait(false);
+            }
         }
     }
-}
 }

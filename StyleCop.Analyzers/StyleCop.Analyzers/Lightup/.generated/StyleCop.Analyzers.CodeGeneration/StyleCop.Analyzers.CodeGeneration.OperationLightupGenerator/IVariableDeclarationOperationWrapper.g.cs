@@ -18,9 +18,13 @@ namespace StyleCop.Analyzers.Lightup
         static IVariableDeclarationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IVariableDeclarationOperationWrapper));
-            DeclaratorsAccessor = LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Declarators));
-            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Initializer));
-            IgnoredDimensionsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(IgnoredDimensions));
+            DeclaratorsAccessor =
+                LightupHelpers.CreateOperationListPropertyAccessor<IOperation>(WrappedType, nameof(Declarators));
+            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(Initializer));
+            IgnoredDimensionsAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                    WrappedType, nameof(IgnoredDimensions));
         }
 
         private IVariableDeclarationOperationWrapper(IOperation operation)
@@ -31,7 +35,8 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public ImmutableArray<IOperation> Declarators => DeclaratorsAccessor(this.WrappedOperation);
-        public IVariableInitializerOperationWrapper Initializer => IVariableInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
+        public IVariableInitializerOperationWrapper Initializer =>
+            IVariableInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
         public ImmutableArray<IOperation> IgnoredDimensions => IgnoredDimensionsAccessor(this.WrappedOperation);
         public static IVariableDeclarationOperationWrapper FromOperation(IOperation operation)
         {

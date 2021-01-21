@@ -15,15 +15,20 @@ namespace StyleCop.Analyzers.Lightup
         private static readonly Type WrappedType;
 
         private static readonly Func<TypeParameterConstraintSyntax, SyntaxToken> DefaultKeywordAccessor;
-        private static readonly Func<TypeParameterConstraintSyntax, SyntaxToken, TypeParameterConstraintSyntax> WithDefaultKeywordAccessor;
+        private static readonly Func<TypeParameterConstraintSyntax, SyntaxToken, TypeParameterConstraintSyntax>
+            WithDefaultKeywordAccessor;
 
         private readonly TypeParameterConstraintSyntax node;
 
         static DefaultConstraintSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(DefaultConstraintSyntaxWrapper));
-            DefaultKeywordAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<TypeParameterConstraintSyntax, SyntaxToken>(WrappedType, nameof(DefaultKeyword));
-            WithDefaultKeywordAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeParameterConstraintSyntax, SyntaxToken>(WrappedType, nameof(DefaultKeyword));
+            DefaultKeywordAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<TypeParameterConstraintSyntax, SyntaxToken>(
+                    WrappedType, nameof(DefaultKeyword));
+            WithDefaultKeywordAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<TypeParameterConstraintSyntax, SyntaxToken>(
+                    WrappedType, nameof(DefaultKeyword));
         }
 
         private DefaultConstraintSyntaxWrapper(TypeParameterConstraintSyntax node)
@@ -53,7 +58,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new DefaultConstraintSyntaxWrapper((TypeParameterConstraintSyntax)node);
+            return new DefaultConstraintSyntaxWrapper((TypeParameterConstraintSyntax) node);
         }
 
         public static implicit operator TypeParameterConstraintSyntax(DefaultConstraintSyntaxWrapper wrapper)

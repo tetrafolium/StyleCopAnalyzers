@@ -3,59 +3,58 @@
 
 namespace StyleCop.Analyzers.Settings
 {
-using System.Collections.Immutable;
-using System.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CodeFixes;
-using StyleCop.Analyzers.DocumentationRules;
-using StyleCop.Analyzers.Helpers;
-using StyleCop.Analyzers.Settings.ObjectModel;
+    using System.Collections.Immutable;
+    using System.Composition;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CodeActions;
+    using Microsoft.CodeAnalysis.CodeFixes;
+    using StyleCop.Analyzers.DocumentationRules;
+    using StyleCop.Analyzers.Helpers;
+    using StyleCop.Analyzers.Settings.ObjectModel;
 
-/// <summary>
-/// Implements a code fix that will generate a StyleCop settings file if it does not exist yet.
-/// </summary>
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SettingsFileCodeFixProvider))]
-[Shared]
-internal class SettingsFileCodeFixProvider : CodeFixProvider
-{
-    internal const string DefaultSettingsFileContent = @"{
-  // ACTION REQUIRED: This file was automatically added to your project, but it
-  // will not take effect until additional steps are taken to enable it. See the
-  // following page for additional information:
-  //
-  // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
+    /// <summary>
+    /// Implements a code fix that will generate a StyleCop settings file if it does not exist yet.
+    /// </summary>
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SettingsFileCodeFixProvider))]
+    [Shared]
+    internal class SettingsFileCodeFixProvider : CodeFixProvider
+    {
+        internal const string DefaultSettingsFileContent =
+            @"{
+            // ACTION REQUIRED: This file was automatically added to your project, but it
+            // will not take effect until additional steps are taken to enable it. See the
+            // following page for additional information:
+            //
+            // https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/EnableConfiguration.md
 
-  ""$schema"": ""https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json"",
-  ""settings"": {
-    ""documentationRules"": {
-      ""companyName"": """ + DocumentationSettings.DefaultCompanyName + @"""
+            "" $schema "" : "" https
+            : // raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json"",
+              "" settings "":
+        {
+            "" documentationRules "":
+            {
+                "" companyName "" : "" " + DocumentationSettings.DefaultCompanyName + @" ""
+            }
+        }
     }
-  }
-}
-";
+    ";
 
-    /// <inheritdoc/>
-    public override ImmutableArray<string> FixableDiagnosticIds {
+        /// <inheritdoc/>
+        public override ImmutableArray<string> FixableDiagnosticIds
+    {
         get;
-    } =
-        ImmutableArray.Create(
-            SA1600ElementsMustBeDocumented.DiagnosticId,
-            SA1601PartialElementsMustBeDocumented.DiagnosticId,
-            SA1602EnumerationItemsMustBeDocumented.DiagnosticId,
-            FileHeaderAnalyzers.SA1633DescriptorMissing.Id,
-            FileHeaderAnalyzers.SA1634Descriptor.Id,
-            FileHeaderAnalyzers.SA1635Descriptor.Id,
-            FileHeaderAnalyzers.SA1636Descriptor.Id,
-            FileHeaderAnalyzers.SA1637Descriptor.Id,
-            FileHeaderAnalyzers.SA1638Descriptor.Id,
-            FileHeaderAnalyzers.SA1639Descriptor.Id,
-            FileHeaderAnalyzers.SA1640Descriptor.Id,
-            FileHeaderAnalyzers.SA1641Descriptor.Id,
-            SA1649FileNameMustMatchTypeName.DiagnosticId);
+    }
+    = ImmutableArray.Create(SA1600ElementsMustBeDocumented.DiagnosticId,
+                            SA1601PartialElementsMustBeDocumented.DiagnosticId,
+                            SA1602EnumerationItemsMustBeDocumented.DiagnosticId,
+                            FileHeaderAnalyzers.SA1633DescriptorMissing.Id, FileHeaderAnalyzers.SA1634Descriptor.Id,
+                            FileHeaderAnalyzers.SA1635Descriptor.Id, FileHeaderAnalyzers.SA1636Descriptor.Id,
+                            FileHeaderAnalyzers.SA1637Descriptor.Id, FileHeaderAnalyzers.SA1638Descriptor.Id,
+                            FileHeaderAnalyzers.SA1639Descriptor.Id, FileHeaderAnalyzers.SA1640Descriptor.Id,
+                            FileHeaderAnalyzers.SA1641Descriptor.Id, SA1649FileNameMustMatchTypeName.DiagnosticId);
 
     /// <inheritdoc/>
     public override Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -78,10 +77,9 @@ internal class SettingsFileCodeFixProvider : CodeFixProvider
         foreach (var diagnostic in context.Diagnostics)
         {
             context.RegisterCodeFix(
-                CodeAction.Create(
-                    SettingsResources.SettingsFileCodeFix,
-                    cancellationToken => GetTransformedSolutionAsync(context.Document, cancellationToken),
-                    nameof(SettingsFileCodeFixProvider)),
+                CodeAction.Create(SettingsResources.SettingsFileCodeFix,
+                                  cancellationToken => GetTransformedSolutionAsync(context.Document, cancellationToken),
+                                  nameof(SettingsFileCodeFixProvider)),
                 diagnostic);
         }
 
@@ -105,7 +103,8 @@ internal class SettingsFileCodeFixProvider : CodeFixProvider
 
         var newDocumentId = DocumentId.CreateNewId(project.Id);
 
-        var newSolution = solution.AddAdditionalDocument(newDocumentId, SettingsHelper.SettingsFileName, DefaultSettingsFileContent);
+        var newSolution =
+            solution.AddAdditionalDocument(newDocumentId, SettingsHelper.SettingsFileName, DefaultSettingsFileContent);
 
         return Task.FromResult(newSolution);
     }

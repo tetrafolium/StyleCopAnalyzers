@@ -3,28 +3,34 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-using System;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using System;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-internal static class AccessorDeclarationSyntaxExtensions
-{
-    private static readonly Func<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax> ExpressionBodyAccessor;
-    private static readonly Func<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax, AccessorDeclarationSyntax> WithExpressionBodyAccessor;
-
-    static AccessorDeclarationSyntaxExtensions()
+    internal static class AccessorDeclarationSyntaxExtensions
     {
-        ExpressionBodyAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax>(typeof(AccessorDeclarationSyntax), nameof(ExpressionBody));
-        WithExpressionBodyAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax>(typeof(AccessorDeclarationSyntax), nameof(ExpressionBody));
-    }
+        private static readonly Func<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax> ExpressionBodyAccessor;
+        private static readonly Func<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax, AccessorDeclarationSyntax>
+            WithExpressionBodyAccessor;
 
-    public static ArrowExpressionClauseSyntax ExpressionBody(this AccessorDeclarationSyntax syntax)
-    {
-        return ExpressionBodyAccessor(syntax);
-    }
+        static AccessorDeclarationSyntaxExtensions()
+        {
+            ExpressionBodyAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax>(
+                    typeof(AccessorDeclarationSyntax), nameof(ExpressionBody));
+            WithExpressionBodyAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<AccessorDeclarationSyntax, ArrowExpressionClauseSyntax>(
+                    typeof(AccessorDeclarationSyntax), nameof(ExpressionBody));
+        }
 
-    public static AccessorDeclarationSyntax WithExpressionBody(this AccessorDeclarationSyntax syntax, ArrowExpressionClauseSyntax expressionBody)
-    {
-        return WithExpressionBodyAccessor(syntax, expressionBody);
+        public static ArrowExpressionClauseSyntax ExpressionBody(this AccessorDeclarationSyntax syntax)
+        {
+            return ExpressionBodyAccessor(syntax);
+        }
+
+        public static AccessorDeclarationSyntax WithExpressionBody(this AccessorDeclarationSyntax syntax,
+                                                                   ArrowExpressionClauseSyntax expressionBody)
+        {
+            return WithExpressionBodyAccessor(syntax, expressionBody);
+        }
     }
-}
 }

@@ -24,10 +24,15 @@ namespace StyleCop.Analyzers.Lightup
         static DeclarationExpressionSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(DeclarationExpressionSyntaxWrapper));
-            TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, TypeSyntax>(WrappedType, nameof(Type));
-            DesignationAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, CSharpSyntaxNode>(WrappedType, nameof(Designation));
-            WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, TypeSyntax>(WrappedType, nameof(Type));
-            WithDesignationAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, CSharpSyntaxNode>(WrappedType, nameof(Designation));
+            TypeAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, TypeSyntax>(WrappedType, nameof(Type));
+            DesignationAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<ExpressionSyntax, CSharpSyntaxNode>(
+                WrappedType, nameof(Designation));
+            WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, TypeSyntax>(
+                WrappedType, nameof(Type));
+            WithDesignationAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<ExpressionSyntax, CSharpSyntaxNode>(
+                    WrappedType, nameof(Designation));
         }
 
         private DeclarationExpressionSyntaxWrapper(ExpressionSyntax node)
@@ -49,7 +54,7 @@ namespace StyleCop.Analyzers.Lightup
         {
             get
             {
-                return (VariableDesignationSyntaxWrapper)DesignationAccessor(this.SyntaxNode);
+                return (VariableDesignationSyntaxWrapper) DesignationAccessor(this.SyntaxNode);
             }
         }
 
@@ -65,7 +70,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new DeclarationExpressionSyntaxWrapper((ExpressionSyntax)node);
+            return new DeclarationExpressionSyntaxWrapper((ExpressionSyntax) node);
         }
 
         public static implicit operator ExpressionSyntax(DeclarationExpressionSyntaxWrapper wrapper)

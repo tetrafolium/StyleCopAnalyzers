@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IIsPatternOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IIsPatternOperationWrapper));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
-            PatternAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Pattern));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            PatternAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Pattern));
         }
 
         private IIsPatternOperationWrapper(IOperation operation)
@@ -29,7 +31,8 @@ namespace StyleCop.Analyzers.Lightup
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
         public IOperation Value => ValueAccessor(this.WrappedOperation);
-        public IPatternOperationWrapper Pattern => IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
+        public IPatternOperationWrapper Pattern =>
+            IPatternOperationWrapper.FromOperation(PatternAccessor(this.WrappedOperation));
         public static IIsPatternOperationWrapper FromOperation(IOperation operation)
         {
             if (operation == null)

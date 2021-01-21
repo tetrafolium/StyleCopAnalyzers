@@ -3,134 +3,146 @@
 
 namespace StyleCop.Analyzers.ReadabilityRules
 {
-using System;
-using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
-using StyleCop.Analyzers.Lightup;
+    using System;
+    using System.Collections.Immutable;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.Diagnostics;
+    using StyleCop.Analyzers.Lightup;
 
-/// <summary>
-/// The C# code includes an empty string, written as <c>""</c>.
-/// </summary>
-/// <remarks>
-/// <para>A violation of this rule occurs when the code contains an empty string. For example:</para>
-///
-/// <code language="csharp">
-/// string s = "";
-/// </code>
-///
-/// <para>This will cause the compiler to embed an empty string into the compiled code. Rather than including a
-/// hard-coded empty string, use the static <see cref="string.Empty"/> field:</para>
-///
-/// <code language="csharp">
-/// string s = string.Empty;
-/// </code>
-/// </remarks>
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-internal class SA1122UseStringEmptyForEmptyStrings : DiagnosticAnalyzer
-{
     /// <summary>
-    /// The ID for diagnostics produced by the <see cref="SA1122UseStringEmptyForEmptyStrings"/> analyzer.
+    /// The C# code includes an empty string, written as <c>""</c>.
     /// </summary>
-    public const string DiagnosticId = "SA1122";
-    private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1122.md";
-    private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1122Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-    private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1122MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-    private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1122Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-
-    private static readonly DiagnosticDescriptor Descriptor =
-        new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
-
-    private static readonly Action<SyntaxNodeAnalysisContext> StringLiteralExpressionAction = HandleStringLiteralExpression;
-
-    /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics {
-        get;
-    } =
-        ImmutableArray.Create(Descriptor);
-
-    /// <inheritdoc/>
-    public override void Initialize(AnalysisContext context)
+    /// <remarks>
+    /// <para>A violation of this rule occurs when the code contains an empty string. For example:</para>
+    ///
+    /// <code language="csharp">
+    /// string s = "";
+    /// </code>
+    ///
+    /// <para>This will cause the compiler to embed an empty string into the compiled code. Rather than including a
+    /// hard-coded empty string, use the static <see cref="string.Empty"/> field:</para>
+    ///
+    /// <code language="csharp">
+    /// string s = string.Empty;
+    /// </code>
+    /// </remarks>
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    internal class SA1122UseStringEmptyForEmptyStrings : DiagnosticAnalyzer
     {
-        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-        context.EnableConcurrentExecution();
+        /// <summary>
+        /// The ID for diagnostics produced by the <see cref="SA1122UseStringEmptyForEmptyStrings"/> analyzer.
+        /// </summary>
+        public const string DiagnosticId = "SA1122";
+        private const string HelpLink =
+            "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1122.md";
+        private static readonly LocalizableString Title =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1122Title),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString MessageFormat =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1122MessageFormat),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        private static readonly LocalizableString Description =
+            new LocalizableResourceString(nameof(ReadabilityResources.SA1122Description),
+                                          ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
 
-        context.RegisterSyntaxNodeAction(StringLiteralExpressionAction, SyntaxKind.StringLiteralExpression);
-    }
+        private static readonly DiagnosticDescriptor Descriptor = new DiagnosticDescriptor(
+            DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning,
+            AnalyzerConstants.EnabledByDefault, Description, HelpLink);
 
-    private static void HandleStringLiteralExpression(SyntaxNodeAnalysisContext context)
-    {
-        LiteralExpressionSyntax literalExpression = (LiteralExpressionSyntax)context.Node;
+        private static readonly Action<SyntaxNodeAnalysisContext> StringLiteralExpressionAction =
+            HandleStringLiteralExpression;
 
-        var token = literalExpression.Token;
-        if (token.IsKind(SyntaxKind.StringLiteralToken))
+        /// <inheritdoc/>
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            if (HasToBeConstant(literalExpression))
-            {
-                return;
-            }
+            get;
+        }
+        = ImmutableArray.Create(Descriptor);
 
-            if (token.ValueText == string.Empty)
+        /// <inheritdoc/>
+        public override void Initialize(AnalysisContext context)
+        {
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
+            context.RegisterSyntaxNodeAction(StringLiteralExpressionAction, SyntaxKind.StringLiteralExpression);
+        }
+
+        private static void HandleStringLiteralExpression(SyntaxNodeAnalysisContext context)
+        {
+            LiteralExpressionSyntax literalExpression = (LiteralExpressionSyntax) context.Node;
+
+            var token = literalExpression.Token;
+            if (token.IsKind(SyntaxKind.StringLiteralToken))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, literalExpression.GetLocation()));
+                if (HasToBeConstant(literalExpression))
+                {
+                    return;
+                }
+
+                if (token.ValueText == string.Empty)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Descriptor, literalExpression.GetLocation()));
+                }
             }
         }
-    }
 
-    private static bool HasToBeConstant(LiteralExpressionSyntax literalExpression)
-    {
-        ExpressionSyntax outermostExpression = FindOutermostExpression(literalExpression);
-
-        if (outermostExpression.Parent.IsKind(SyntaxKind.AttributeArgument)
-                || outermostExpression.Parent.IsKind(SyntaxKind.CaseSwitchLabel)
-                || outermostExpression.Parent.IsKind(SyntaxKindEx.ConstantPattern))
+        private static bool HasToBeConstant(LiteralExpressionSyntax literalExpression)
         {
-            return true;
-        }
+            ExpressionSyntax outermostExpression = FindOutermostExpression(literalExpression);
 
-        if (outermostExpression.Parent is EqualsValueClauseSyntax equalsValueClause)
-        {
-            if (equalsValueClause.Parent is ParameterSyntax)
+            if (outermostExpression.Parent.IsKind(SyntaxKind.AttributeArgument) ||
+                outermostExpression.Parent.IsKind(SyntaxKind.CaseSwitchLabel) ||
+                outermostExpression.Parent.IsKind(SyntaxKindEx.ConstantPattern))
             {
                 return true;
             }
 
-            if (!(equalsValueClause.Parent is VariableDeclaratorSyntax variableDeclaratorSyntax) || !(variableDeclaratorSyntax?.Parent is VariableDeclarationSyntax variableDeclarationSyntax))
+            if (outermostExpression.Parent is EqualsValueClauseSyntax equalsValueClause)
             {
-                return false;
+                if (equalsValueClause.Parent is ParameterSyntax)
+                {
+                    return true;
+                }
+
+                if (!(equalsValueClause.Parent is VariableDeclaratorSyntax variableDeclaratorSyntax) ||
+                    !(variableDeclaratorSyntax?.Parent is VariableDeclarationSyntax variableDeclarationSyntax))
+                {
+                    return false;
+                }
+
+                if (variableDeclarationSyntax.Parent is FieldDeclarationSyntax fieldDeclarationSyntax &&
+                    fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
+                {
+                    return true;
+                }
+
+                if (variableDeclarationSyntax.Parent is LocalDeclarationStatementSyntax
+                        localDeclarationStatementSyntax &&
+                    localDeclarationStatementSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
+                {
+                    return true;
+                }
             }
 
-            if (variableDeclarationSyntax.Parent is FieldDeclarationSyntax fieldDeclarationSyntax
-                    && fieldDeclarationSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
-            {
-                return true;
-            }
-
-            if (variableDeclarationSyntax.Parent is LocalDeclarationStatementSyntax localDeclarationStatementSyntax
-                    && localDeclarationStatementSyntax.Modifiers.Any(SyntaxKind.ConstKeyword))
-            {
-                return true;
-            }
+            return false;
         }
 
-        return false;
-    }
-
-    private static ExpressionSyntax FindOutermostExpression(ExpressionSyntax node)
-    {
-        while (true)
+        private static ExpressionSyntax FindOutermostExpression(ExpressionSyntax node)
         {
-            if (!(node.Parent is ExpressionSyntax parent))
+            while (true)
             {
-                break;
+                if (!(node.Parent is ExpressionSyntax parent))
+                {
+                    break;
+                }
+
+                node = parent;
             }
 
-            node = parent;
+            return node;
         }
-
-        return node;
     }
-}
 }

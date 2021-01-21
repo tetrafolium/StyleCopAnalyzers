@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IDynamicObjectCreationOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IDynamicObjectCreationOperationWrapper));
-            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Initializer));
-            ArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(WrappedType, nameof(Arguments));
+            InitializerAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(
+                WrappedType, nameof(Initializer));
+            ArgumentsAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, ImmutableArray<IOperation>>(
+                WrappedType, nameof(Arguments));
         }
 
         private IDynamicObjectCreationOperationWrapper(IOperation operation)
@@ -28,7 +30,8 @@ namespace StyleCop.Analyzers.Lightup
 
         public IOperation WrappedOperation => this.operation;
         public ITypeSymbol Type => this.WrappedOperation.Type;
-        public IObjectOrCollectionInitializerOperationWrapper Initializer => IObjectOrCollectionInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
+        public IObjectOrCollectionInitializerOperationWrapper Initializer =>
+            IObjectOrCollectionInitializerOperationWrapper.FromOperation(InitializerAccessor(this.WrappedOperation));
         public ImmutableArray<IOperation> Arguments => ArgumentsAccessor(this.WrappedOperation);
         public static IDynamicObjectCreationOperationWrapper FromOperation(IOperation operation)
         {

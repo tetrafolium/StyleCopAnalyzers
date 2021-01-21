@@ -17,7 +17,8 @@ namespace StyleCop.Analyzers.Lightup
         private static readonly Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>> AttributeListsAccessor;
         private static readonly Func<CSharpSyntaxNode, SyntaxTokenList> ModifiersAccessor;
         private static readonly Func<CSharpSyntaxNode, TypeSyntax> TypeAccessor;
-        private static readonly Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>, CSharpSyntaxNode> WithAttributeListsAccessor;
+        private static readonly Func<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>, CSharpSyntaxNode>
+            WithAttributeListsAccessor;
         private static readonly Func<CSharpSyntaxNode, SyntaxTokenList, CSharpSyntaxNode> WithModifiersAccessor;
         private static readonly Func<CSharpSyntaxNode, TypeSyntax, CSharpSyntaxNode> WithTypeAccessor;
 
@@ -26,12 +27,20 @@ namespace StyleCop.Analyzers.Lightup
         static BaseParameterSyntaxWrapper()
         {
             WrappedType = SyntaxWrapperHelper.GetWrappedType(typeof(BaseParameterSyntaxWrapper));
-            AttributeListsAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>>(WrappedType, nameof(AttributeLists));
-            ModifiersAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxTokenList>(WrappedType, nameof(Modifiers));
-            TypeAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
-            WithAttributeListsAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>>(WrappedType, nameof(AttributeLists));
-            WithModifiersAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxTokenList>(WrappedType, nameof(Modifiers));
-            WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
+            AttributeListsAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>>(
+                    WrappedType, nameof(AttributeLists));
+            ModifiersAccessor = LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, SyntaxTokenList>(
+                WrappedType, nameof(Modifiers));
+            TypeAccessor =
+                LightupHelpers.CreateSyntaxPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(WrappedType, nameof(Type));
+            WithAttributeListsAccessor =
+                LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxList<AttributeListSyntax>>(
+                    WrappedType, nameof(AttributeLists));
+            WithModifiersAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, SyntaxTokenList>(
+                WrappedType, nameof(Modifiers));
+            WithTypeAccessor = LightupHelpers.CreateSyntaxWithPropertyAccessor<CSharpSyntaxNode, TypeSyntax>(
+                WrappedType, nameof(Type));
         }
 
         private BaseParameterSyntaxWrapper(CSharpSyntaxNode node)
@@ -77,7 +86,7 @@ namespace StyleCop.Analyzers.Lightup
                 throw new InvalidCastException($"Cannot cast '{node.GetType().FullName}' to '{WrappedTypeName}'");
             }
 
-            return new BaseParameterSyntaxWrapper((CSharpSyntaxNode)node);
+            return new BaseParameterSyntaxWrapper((CSharpSyntaxNode) node);
         }
 
         public static implicit operator CSharpSyntaxNode(BaseParameterSyntaxWrapper wrapper)

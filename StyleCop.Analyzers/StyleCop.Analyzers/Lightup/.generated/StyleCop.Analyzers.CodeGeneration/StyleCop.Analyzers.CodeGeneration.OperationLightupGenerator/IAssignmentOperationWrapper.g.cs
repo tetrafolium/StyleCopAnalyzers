@@ -17,8 +17,10 @@ namespace StyleCop.Analyzers.Lightup
         static IAssignmentOperationWrapper()
         {
             WrappedType = OperationWrapperHelper.GetWrappedType(typeof(IAssignmentOperationWrapper));
-            TargetAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Target));
-            ValueAccessor = LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
+            TargetAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Target));
+            ValueAccessor =
+                LightupHelpers.CreateOperationPropertyAccessor<IOperation, IOperation>(WrappedType, nameof(Value));
         }
 
         private IAssignmentOperationWrapper(IOperation operation)
