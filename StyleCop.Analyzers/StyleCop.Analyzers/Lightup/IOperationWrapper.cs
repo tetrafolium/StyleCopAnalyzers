@@ -5,28 +5,32 @@
 
 namespace StyleCop.Analyzers.Lightup
 {
-    using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
-    internal interface IOperationWrapper
-    {
-        IOperation? WrappedOperation { get; }
-
-        ////IOperationWrapper Parent { get; }
-
-        ////OperationKind Kind { get; }
-
-        ////SyntaxNode Syntax { get; }
-
-        ITypeSymbol? Type { get; }
-
-        ////Optional<object> ConstantValue { get; }
-
-        ////IEnumerable<IOperationWrapper> Children { get; }
-
-        ////string Language { get; }
-
-        ////bool IsImplicit { get; }
-
-        ////SemanticModel SemanticModel { get; }
+internal interface IOperationWrapper
+{
+    IOperation? WrappedOperation {
+        get;
     }
+
+    ////IOperationWrapper Parent { get; }
+
+    ////OperationKind Kind { get; }
+
+    ////SyntaxNode Syntax { get; }
+
+    ITypeSymbol? Type {
+        get;
+    }
+
+    ////Optional<object> ConstantValue { get; }
+
+    ////IEnumerable<IOperationWrapper> Children { get; }
+
+    ////string Language { get; }
+
+    ////bool IsImplicit { get; }
+
+    ////SemanticModel SemanticModel { get; }
+}
 }

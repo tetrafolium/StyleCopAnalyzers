@@ -3,160 +3,164 @@
 
 namespace StyleCop.Analyzers.LayoutRules
 {
-    using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.Composition;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CodeActions;
-    using Microsoft.CodeAnalysis.CodeFixes;
-    using Microsoft.CodeAnalysis.CSharp;
-    using StyleCop.Analyzers.Helpers;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Composition;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
+using StyleCop.Analyzers.Helpers;
 
-    /// <summary>
-    /// Implements a code fix for <see cref="SA1512SingleLineCommentsMustNotBeFollowedByBlankLine"/>.
-    /// </summary>
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1512CodeFixProvider))]
-    [Shared]
-    internal class SA1512CodeFixProvider : CodeFixProvider
+/// <summary>
+/// Implements a code fix for <see cref="SA1512SingleLineCommentsMustNotBeFollowedByBlankLine"/>.
+/// </summary>
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SA1512CodeFixProvider))]
+[Shared]
+internal class SA1512CodeFixProvider : CodeFixProvider
+{
+    /// <inheritdoc/>
+    public override ImmutableArray<string> FixableDiagnosticIds {
+        get;
+    } =
+        ImmutableArray.Create(SA1512SingleLineCommentsMustNotBeFollowedByBlankLine.DiagnosticId);
+
+    /// <inheritdoc/>
+    public override FixAllProvider GetFixAllProvider()
     {
-        /// <inheritdoc/>
-        public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(SA1512SingleLineCommentsMustNotBeFollowedByBlankLine.DiagnosticId);
+        return FixAll.Instance;
+    }
 
-        /// <inheritdoc/>
-        public override FixAllProvider GetFixAllProvider()
+    /// <inheritdoc/>
+    public override Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            return FixAll.Instance;
+            context.RegisterCodeFix(
+                CodeAction.Create(
+                    LayoutResources.SA1512CodeFix,
+                    cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
+                    nameof(SA1512CodeFixProvider)),
+                diagnostic);
         }
 
-        /// <inheritdoc/>
-        public override Task RegisterCodeFixesAsync(CodeFixContext context)
+        return SpecializedTasks.CompletedTask;
+    }
+
+    private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
+    {
+        var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        var singleLineComment = syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start);
+        var commentArray = new[] { singleLineComment };
+
+        var leadingTrivia = FixTriviaList(singleLineComment.Token.LeadingTrivia, commentArray);
+        var trailingTrivia = FixTriviaList(singleLineComment.Token.TrailingTrivia, commentArray);
+
+        var newToken = singleLineComment.Token
+                       .WithLeadingTrivia(leadingTrivia)
+                       .WithTrailingTrivia(trailingTrivia);
+
+        var newSyntaxRoot = syntaxRoot.ReplaceToken(singleLineComment.Token, newToken);
+
+        return document.WithSyntaxRoot(newSyntaxRoot);
+    }
+
+    private static SyntaxTriviaList FixTriviaList(SyntaxTriviaList triviaList, IEnumerable<SyntaxTrivia> commentTrivias)
+    {
+        foreach (var singleLineComment in commentTrivias)
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            int commentLocation = triviaList.IndexOf(singleLineComment);
+            if (commentLocation == -1)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        LayoutResources.SA1512CodeFix,
-                        cancellationToken => GetTransformedDocumentAsync(context.Document, diagnostic, cancellationToken),
-                        nameof(SA1512CodeFixProvider)),
-                    diagnostic);
+                continue;
             }
 
-            return SpecializedTasks.CompletedTask;
-        }
+            int index = commentLocation + 1;
 
-        private static async Task<Document> GetTransformedDocumentAsync(Document document, Diagnostic diagnostic, CancellationToken cancellationToken)
-        {
-            var syntaxRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var singleLineComment = syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start);
-            var commentArray = new[] { singleLineComment };
-
-            var leadingTrivia = FixTriviaList(singleLineComment.Token.LeadingTrivia, commentArray);
-            var trailingTrivia = FixTriviaList(singleLineComment.Token.TrailingTrivia, commentArray);
-
-            var newToken = singleLineComment.Token
-                .WithLeadingTrivia(leadingTrivia)
-                .WithTrailingTrivia(trailingTrivia);
-
-            var newSyntaxRoot = syntaxRoot.ReplaceToken(singleLineComment.Token, newToken);
-
-            return document.WithSyntaxRoot(newSyntaxRoot);
-        }
-
-        private static SyntaxTriviaList FixTriviaList(SyntaxTriviaList triviaList, IEnumerable<SyntaxTrivia> commentTrivias)
-        {
-            foreach (var singleLineComment in commentTrivias)
+            index++;
+            while (index < triviaList.Count && index > 0)
             {
-                int commentLocation = triviaList.IndexOf(singleLineComment);
-                if (commentLocation == -1)
+                switch (triviaList[index].Kind())
                 {
-                    continue;
-                }
+                case SyntaxKind.EndOfLineTrivia:
+                case SyntaxKind.WhitespaceTrivia:
+                    index++;
+                    break;
 
-                int index = commentLocation + 1;
+                default:
 
-                index++;
-                while (index < triviaList.Count && index > 0)
-                {
-                    switch (triviaList[index].Kind())
-                    {
-                    case SyntaxKind.EndOfLineTrivia:
-                    case SyntaxKind.WhitespaceTrivia:
-                        index++;
-                        break;
-
-                    default:
-
-                        if (triviaList[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
-                        {
-                            index--;
-                        }
-
-                        triviaList = SyntaxTriviaList.Empty.AddRange(triviaList.Take(commentLocation + 2).Concat(triviaList.Skip(index)));
-
-                        // We found the trivia so we don't have to loop any longer
-                        index = -1;
-                        break;
-                    }
-                }
-
-                if (index == triviaList.Count)
-                {
                     if (triviaList[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
                     {
                         index--;
                     }
 
                     triviaList = SyntaxTriviaList.Empty.AddRange(triviaList.Take(commentLocation + 2).Concat(triviaList.Skip(index)));
+
+                    // We found the trivia so we don't have to loop any longer
+                    index = -1;
+                    break;
                 }
             }
 
-            return triviaList;
+            if (index == triviaList.Count)
+            {
+                if (triviaList[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
+                {
+                    index--;
+                }
+
+                triviaList = SyntaxTriviaList.Empty.AddRange(triviaList.Take(commentLocation + 2).Concat(triviaList.Skip(index)));
+            }
         }
 
-        private class FixAll : DocumentBasedFixAllProvider
+        return triviaList;
+    }
+
+    private class FixAll : DocumentBasedFixAllProvider
+    {
+        public static FixAllProvider Instance {
+            get;
+        } =
+            new FixAll();
+
+        protected override string CodeActionTitle =>
+        LayoutResources.SA1512CodeFix;
+
+        protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
         {
-            public static FixAllProvider Instance { get; } =
-                new FixAll();
-
-            protected override string CodeActionTitle =>
-                LayoutResources.SA1512CodeFix;
-
-            protected override async Task<SyntaxNode> FixAllInDocumentAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+            if (diagnostics.IsEmpty)
             {
-                if (diagnostics.IsEmpty)
-                {
-                    return null;
-                }
-
-                var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
-
-                List<SyntaxTrivia> trivias = new List<SyntaxTrivia>();
-
-                foreach (var diagnostic in diagnostics)
-                {
-                    trivias.Add(syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start));
-                }
-
-                var tokensWithTrivia = trivias.GroupBy(x => x.Token);
-
-                Dictionary<SyntaxToken, SyntaxToken> replacements = new Dictionary<SyntaxToken, SyntaxToken>();
-
-                foreach (var tokenWithTrivia in tokensWithTrivia)
-                {
-                    var token = tokenWithTrivia.Key;
-                    var newLeadingTrivia = FixTriviaList(token.LeadingTrivia, tokenWithTrivia);
-                    var newTrailingTrivia = FixTriviaList(token.TrailingTrivia, tokenWithTrivia);
-
-                    replacements.Add(token, token.WithLeadingTrivia(newLeadingTrivia).WithTrailingTrivia(newTrailingTrivia));
-                }
-
-                return syntaxRoot.ReplaceTokens(replacements.Keys, (oldToken, newToken) => replacements[oldToken]);
+                return null;
             }
+
+            var syntaxRoot = await document.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            List<SyntaxTrivia> trivias = new List<SyntaxTrivia>();
+
+            foreach (var diagnostic in diagnostics)
+            {
+                trivias.Add(syntaxRoot.FindTrivia(diagnostic.Location.SourceSpan.Start));
+            }
+
+            var tokensWithTrivia = trivias.GroupBy(x => x.Token);
+
+            Dictionary<SyntaxToken, SyntaxToken> replacements = new Dictionary<SyntaxToken, SyntaxToken>();
+
+            foreach (var tokenWithTrivia in tokensWithTrivia)
+            {
+                var token = tokenWithTrivia.Key;
+                var newLeadingTrivia = FixTriviaList(token.LeadingTrivia, tokenWithTrivia);
+                var newTrailingTrivia = FixTriviaList(token.TrailingTrivia, tokenWithTrivia);
+
+                replacements.Add(token, token.WithLeadingTrivia(newLeadingTrivia).WithTrailingTrivia(newTrailingTrivia));
+            }
+
+            return syntaxRoot.ReplaceTokens(replacements.Keys, (oldToken, newToken) => replacements[oldToken]);
         }
     }
+}
 }

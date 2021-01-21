@@ -3,60 +3,62 @@
 
 namespace StyleCop.Analyzers.ReadabilityRules
 {
-    using System;
-    using System.Collections.Immutable;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Microsoft.CodeAnalysis.Diagnostics;
+using System;
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
+/// <summary>
+/// Two or more attribute uses appeared within the same set of square brackets.
+/// </summary>
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+internal class SA1133DoNotCombineAttributes : DiagnosticAnalyzer
+{
     /// <summary>
-    /// Two or more attribute uses appeared within the same set of square brackets.
+    /// The ID for diagnostics produced by the <see cref="SA1133DoNotCombineAttributes"/> analyzer.
     /// </summary>
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class SA1133DoNotCombineAttributes : DiagnosticAnalyzer
+    public const string DiagnosticId = "SA1133";
+    private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1133.md";
+    private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1133Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+    private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1133MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+    private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1133Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+
+    private static readonly DiagnosticDescriptor Descriptor =
+        new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+
+    private static readonly Action<SyntaxNodeAnalysisContext> HandleAttributeListAction = HandleAttributeList;
+
+    /// <inheritdoc/>
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics {
+        get;
+    } =
+        ImmutableArray.Create(Descriptor);
+
+    /// <inheritdoc/>
+    public override void Initialize(AnalysisContext context)
     {
-        /// <summary>
-        /// The ID for diagnostics produced by the <see cref="SA1133DoNotCombineAttributes"/> analyzer.
-        /// </summary>
-        public const string DiagnosticId = "SA1133";
-        private const string HelpLink = "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1133.md";
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(ReadabilityResources.SA1133Title), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(ReadabilityResources.SA1133MessageFormat), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(ReadabilityResources.SA1133Description), ReadabilityResources.ResourceManager, typeof(ReadabilityResources));
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+        context.EnableConcurrentExecution();
 
-        private static readonly DiagnosticDescriptor Descriptor =
-            new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, AnalyzerCategory.ReadabilityRules, DiagnosticSeverity.Warning, AnalyzerConstants.EnabledByDefault, Description, HelpLink);
+        context.RegisterSyntaxNodeAction(HandleAttributeListAction, SyntaxKind.AttributeList);
+    }
 
-        private static readonly Action<SyntaxNodeAnalysisContext> HandleAttributeListAction = HandleAttributeList;
+    private static void HandleAttributeList(SyntaxNodeAnalysisContext context)
+    {
+        AttributeListSyntax attributeList = (AttributeListSyntax)context.Node;
 
-        /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            ImmutableArray.Create(Descriptor);
-
-        /// <inheritdoc/>
-        public override void Initialize(AnalysisContext context)
+        if (attributeList.Parent.IsKind(SyntaxKind.Parameter) || attributeList.Parent.IsKind(SyntaxKind.TypeParameter))
         {
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.EnableConcurrentExecution();
-
-            context.RegisterSyntaxNodeAction(HandleAttributeListAction, SyntaxKind.AttributeList);
+            // no analysis required for parameters or type (generic) parameters
+            return;
         }
 
-        private static void HandleAttributeList(SyntaxNodeAnalysisContext context)
+        if (attributeList.Attributes.Count > 1)
         {
-            AttributeListSyntax attributeList = (AttributeListSyntax)context.Node;
-
-            if (attributeList.Parent.IsKind(SyntaxKind.Parameter) || attributeList.Parent.IsKind(SyntaxKind.TypeParameter))
-            {
-                // no analysis required for parameters or type (generic) parameters
-                return;
-            }
-
-            if (attributeList.Attributes.Count > 1)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(Descriptor, attributeList.Attributes[1].Name.GetLocation()));
-            }
+            context.ReportDiagnostic(Diagnostic.Create(Descriptor, attributeList.Attributes[1].Name.GetLocation()));
         }
     }
+}
 }

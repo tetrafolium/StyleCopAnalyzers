@@ -3,96 +3,102 @@
 
 namespace StyleCop.Analyzers.Settings.ObjectModel
 {
-    using System.Collections.Immutable;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using LightJson;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text.RegularExpressions;
+using LightJson;
 
-    internal class NamingSettings
+internal class NamingSettings
+{
+    /// <summary>
+    /// This is the backing field for the <see cref="AllowedHungarianPrefixes"/> property.
+    /// </summary>
+    private readonly ImmutableArray<string>.Builder allowedHungarianPrefixes;
+
+    /// <summary>
+    /// This is the backing field for the <see cref="AllowedNamespaceComponents"/> property.
+    /// </summary>
+    private readonly ImmutableArray<string>.Builder allowedNamespaceComponents;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NamingSettings"/> class.
+    /// </summary>
+    protected internal NamingSettings()
     {
-        /// <summary>
-        /// This is the backing field for the <see cref="AllowedHungarianPrefixes"/> property.
-        /// </summary>
-        private readonly ImmutableArray<string>.Builder allowedHungarianPrefixes;
+        this.AllowCommonHungarianPrefixes = true;
+        this.allowedHungarianPrefixes = ImmutableArray.CreateBuilder<string>();
+        this.allowedNamespaceComponents = ImmutableArray.CreateBuilder<string>();
 
-        /// <summary>
-        /// This is the backing field for the <see cref="AllowedNamespaceComponents"/> property.
-        /// </summary>
-        private readonly ImmutableArray<string>.Builder allowedNamespaceComponents;
+        this.IncludeInferredTupleElementNames = false;
+        this.TupleElementNameCasing = TupleElementNameCase.PascalCase;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NamingSettings"/> class.
-        /// </summary>
-        protected internal NamingSettings()
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NamingSettings"/> class.
+    /// </summary>
+    /// <param name="namingSettingsObject">The JSON object containing the settings.</param>
+    protected internal NamingSettings(JsonObject namingSettingsObject)
+        : this()
+    {
+        foreach (var kvp in namingSettingsObject)
         {
-            this.AllowCommonHungarianPrefixes = true;
-            this.allowedHungarianPrefixes = ImmutableArray.CreateBuilder<string>();
-            this.allowedNamespaceComponents = ImmutableArray.CreateBuilder<string>();
-
-            this.IncludeInferredTupleElementNames = false;
-            this.TupleElementNameCasing = TupleElementNameCase.PascalCase;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NamingSettings"/> class.
-        /// </summary>
-        /// <param name="namingSettingsObject">The JSON object containing the settings.</param>
-        protected internal NamingSettings(JsonObject namingSettingsObject)
-            : this()
-        {
-            foreach (var kvp in namingSettingsObject)
+            switch (kvp.Key)
             {
-                switch (kvp.Key)
+            case "allowCommonHungarianPrefixes":
+                this.AllowCommonHungarianPrefixes = kvp.ToBooleanValue();
+                break;
+
+            case "allowedHungarianPrefixes":
+                kvp.AssertIsArray();
+                foreach (var prefixJsonValue in kvp.Value.AsJsonArray)
                 {
-                case "allowCommonHungarianPrefixes":
-                    this.AllowCommonHungarianPrefixes = kvp.ToBooleanValue();
-                    break;
+                    var prefix = prefixJsonValue.ToStringValue(kvp.Key);
 
-                case "allowedHungarianPrefixes":
-                    kvp.AssertIsArray();
-                    foreach (var prefixJsonValue in kvp.Value.AsJsonArray)
+                    if (!Regex.IsMatch(prefix, "^[a-z]{1,2}$"))
                     {
-                        var prefix = prefixJsonValue.ToStringValue(kvp.Key);
-
-                        if (!Regex.IsMatch(prefix, "^[a-z]{1,2}$"))
-                        {
-                            continue;
-                        }
-
-                        this.allowedHungarianPrefixes.Add(prefix);
+                        continue;
                     }
 
-                    break;
-
-                case "allowedNamespaceComponents":
-                    kvp.AssertIsArray();
-                    this.allowedNamespaceComponents.AddRange(kvp.Value.AsJsonArray.Select(x => x.ToStringValue(kvp.Key)));
-                    break;
-
-                case "includeInferredTupleElementNames":
-                    this.IncludeInferredTupleElementNames = kvp.ToBooleanValue();
-                    break;
-
-                case "tupleElementNameCasing":
-                    this.TupleElementNameCasing = kvp.ToEnumValue<TupleElementNameCase>();
-                    break;
-
-                default:
-                    break;
+                    this.allowedHungarianPrefixes.Add(prefix);
                 }
+
+                break;
+
+            case "allowedNamespaceComponents":
+                kvp.AssertIsArray();
+                this.allowedNamespaceComponents.AddRange(kvp.Value.AsJsonArray.Select(x => x.ToStringValue(kvp.Key)));
+                break;
+
+            case "includeInferredTupleElementNames":
+                this.IncludeInferredTupleElementNames = kvp.ToBooleanValue();
+                break;
+
+            case "tupleElementNameCasing":
+                this.TupleElementNameCasing = kvp.ToEnumValue<TupleElementNameCase>();
+                break;
+
+            default:
+                break;
             }
         }
-
-        public bool AllowCommonHungarianPrefixes { get; }
-
-        public ImmutableArray<string> AllowedHungarianPrefixes
-            => this.allowedHungarianPrefixes.ToImmutable();
-
-        public ImmutableArray<string> AllowedNamespaceComponents
-            => this.allowedNamespaceComponents.ToImmutable();
-
-        public bool IncludeInferredTupleElementNames { get; }
-
-        public TupleElementNameCase TupleElementNameCasing { get; }
     }
+
+    public bool AllowCommonHungarianPrefixes {
+        get;
+    }
+
+    public ImmutableArray<string> AllowedHungarianPrefixes
+    => this.allowedHungarianPrefixes.ToImmutable();
+
+    public ImmutableArray<string> AllowedNamespaceComponents
+    => this.allowedNamespaceComponents.ToImmutable();
+
+    public bool IncludeInferredTupleElementNames {
+        get;
+    }
+
+    public TupleElementNameCase TupleElementNameCasing {
+        get;
+    }
+}
 }

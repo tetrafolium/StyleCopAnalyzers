@@ -3,29 +3,29 @@
 
 namespace StyleCop.Analyzers.Helpers
 {
-    using System;
+using System;
 
+/// <summary>
+/// This class contains helper methods for argument validation.
+/// </summary>
+internal static class Requires
+{
     /// <summary>
-    /// This class contains helper methods for argument validation.
+    /// Validates that an argument is not null.
     /// </summary>
-    internal static class Requires
+    /// <typeparam name="T">The parameter type.</typeparam>
+    /// <param name="argument">The argument value.</param>
+    /// <param name="parameterName">The name of the parameter.</param>
+    /// <exception cref="ArgumentNullException">
+    /// If <paramref name="argument"/> is <see langword="null"/>.
+    /// </exception>
+    public static void NotNull<T>(T argument, string parameterName)
+    where T : class
     {
-        /// <summary>
-        /// Validates that an argument is not null.
-        /// </summary>
-        /// <typeparam name="T">The parameter type.</typeparam>
-        /// <param name="argument">The argument value.</param>
-        /// <param name="parameterName">The name of the parameter.</param>
-        /// <exception cref="ArgumentNullException">
-        /// If <paramref name="argument"/> is <see langword="null"/>.
-        /// </exception>
-        public static void NotNull<T>(T argument, string parameterName)
-            where T : class
+        if (argument == null)
         {
-            if (argument == null)
-            {
-                throw new ArgumentNullException(parameterName);
-            }
+            throw new ArgumentNullException(parameterName);
         }
     }
+}
 }
