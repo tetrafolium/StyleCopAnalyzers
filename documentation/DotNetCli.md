@@ -2,7 +2,7 @@
 
 StyleCop Analyzers can be used with the **dotnet** tooling, including ASP.NET Core.
 
-## .NET SDK Projects (*.csproj)
+## .NET SDK Projects (\*.csproj)
 
 Edit the project file and add a package reference to **StyleCop.Analyzers**. Make sure to set **PrivateAssets** so the
 reference is not included when transitive dependencies are calculated across project references:
@@ -42,7 +42,7 @@ Update the project file to include the following:
 </PropertyGroup>
 ```
 
-## Legacy Projects (*.xproj)
+## Legacy Projects (\*.xproj)
 
 Legacy projects use **project.json** to configure analyzers and other build options. Start by adding the following to
 the `dependencies` section of **project.json**:

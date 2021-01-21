@@ -15,29 +15,29 @@ implementation deviated from its own documented rules. For completeness, these c
 found them. The following symbol is used to mark cases which are not simply a documentation error:
 
 > :warning: Cases where the StyleCop Analyzers implementation will produce different warnings from StyleCop Classic for
-the same code are marked with this symbol.
+> the same code are marked with this symbol.
 
 ## Disabled Rules
 
 Several rules present in StyleCop Classic have been intentionally omitted from StyleCop Analyzers. The following table
 lists each of these issues, along with a link to the issue where the decision was made to omit the rule.
 
-| ID | Title | Issue |
-| --- | --- | --- |
-| SA1109 | Block statements should not contain embedded regions | [#998](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/998) |
-| SA1126 | Prefix calls correctly | [#59](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/59) |
-| SA1215 | Instance readonly elements should appear before instance non-readonly elements | [#1812](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/pull/1812) |
-| SA1409 | Remove unnecessary code | [#1058](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1058) |
-| SA1603 | Documentation should contain valid XML | [#1291](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1291) |
-| SA1628 | Documentation text should begin with a capital letter | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
-| SA1630 | Documentation text should contain whitespace | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
-| SA1631 | Documentation should meet character percentage | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
-| SA1632 | Documentation text should meet minimum character length | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
-| SA1644 | DocumentationHeadersMustNotContainBlankLines | [#164](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/164) |
-| SA1645 | Included documentation file does not exist | [#165](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/165) |
-| SA1646 | Included documentation XPath does not exist | [#166](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/166) |
-| SA1647 | Include node does not contain valid file and path | [#167](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/167) |
-| SA1650 | Element documentation should be spelled correctly | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
+| ID     | Title                                                                          | Issue                                                                     |
+| ------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| SA1109 | Block statements should not contain embedded regions                           | [#998](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/998)   |
+| SA1126 | Prefix calls correctly                                                         | [#59](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/59)     |
+| SA1215 | Instance readonly elements should appear before instance non-readonly elements | [#1812](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/pull/1812)   |
+| SA1409 | Remove unnecessary code                                                        | [#1058](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1058) |
+| SA1603 | Documentation should contain valid XML                                         | [#1291](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1291) |
+| SA1628 | Documentation text should begin with a capital letter                          | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
+| SA1630 | Documentation text should contain whitespace                                   | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
+| SA1631 | Documentation should meet character percentage                                 | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
+| SA1632 | Documentation text should meet minimum character length                        | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
+| SA1644 | DocumentationHeadersMustNotContainBlankLines                                   | [#164](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/164)   |
+| SA1645 | Included documentation file does not exist                                     | [#165](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/165)   |
+| SA1646 | Included documentation XPath does not exist                                    | [#166](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/166)   |
+| SA1647 | Include node does not contain valid file and path                              | [#167](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/167)   |
+| SA1650 | Element documentation should be spelled correctly                              | [#1057](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/1057) |
 
 ## Spacing Rules
 
@@ -70,9 +70,9 @@ The following changes were made to SA1000:
 :warning: A slight change was made to the spacing around commas in open generic types. The following table demonstrates this
 change.
 
-| StyleCop Analyzers | StyleCop Classic |
-| --- | --- |
-| `typeof(Func<,>)` | `typeof(Func<, >)` |
+| StyleCop Analyzers | StyleCop Classic   |
+| ------------------ | ------------------ |
+| `typeof(Func<,>)`  | `typeof(Func<, >)` |
 
 ### SA1002
 
@@ -132,9 +132,9 @@ still under review.
 
 StyleCop Analyzers examines several constructs which are not mentioned in the original documentation for these rules:
 
-* Delegate declarations
-* Anonymous method expressions
-* Lambda expressions
+- Delegate declarations
+- Anonymous method expressions
+- Lambda expressions
 
 ### SA1119
 
@@ -164,6 +164,7 @@ StyleCop Analyzers considers alias-qualifiers when sorting using directives, in 
 Visual Studio 2015. StyleCop Classic ignores alias-qualifiers when sorting using directives.
 
 Example showing sorting order for StyleCop Analyzers:
+
 ```csharp
 using Beer;
 using global::Wine;
@@ -171,6 +172,7 @@ using Tea;
 ```
 
 Example showing sorting order for StyleCop Classic:
+
 ```csharp
 using Beer;
 using Tea;
